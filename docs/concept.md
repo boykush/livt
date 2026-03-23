@@ -8,8 +8,8 @@ Collaborative outcomes evolve alongside the product as living text.
 
 ## Opportunities
 
-- Discovery-phase artifacts (Example Mapping, USM, etc.) live in synchronous collaboration tools (Miro, Figjam) and become stale after the session — they lack version control, AI integration, and consistency checks
-- As Rules and Examples evolve through development, changes are not tracked back to Discovery artifacts, breaking the link between Discovery and Formulation
+- Stale Discovery: Discovery-phase artifacts are not persisted after synchronous collaboration sessions
+- Discovery-Development Gap: Persisted discovery artifacts are not leveraged in the development process
 
 ## Solutions
 
