@@ -1,0 +1,26 @@
+name: Stale Discovery Artifacts
+
+activities:
+  - key: story-mapping
+    name: Story Mapping
+    steps:
+      - key: identify-activities
+        name: Identify user activities
+      - key: break-into-tasks
+        name: Break activities into tasks
+      - key: discover-stories
+        name: Discover stories
+      - key: slice-releases
+        name: Slice into releases
+
+  - key: example-mapping
+    name: Example Mapping
+    steps:
+      - key: pick-story
+        name: Pick a story to explore
+      - key: discover-rules
+        name: Discover rules
+      - key: illustrate-examples
+        name: Illustrate with examples
+      - key: capture-questions
+        name: Capture questions
