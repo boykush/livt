@@ -1,8 +1,8 @@
-package server
+package builder
 
 import (
 	"html/template"
-	"net/http"
+	"io"
 
 	"github.com/boykush/livt/internal/parser"
 )
@@ -40,7 +40,7 @@ var mappingTmpl = template.Must(template.New("mapping").Parse(`<!DOCTYPE html>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen p-10">
-<a href="/" class="text-sm text-gray-500 hover:text-gray-700">← Back</a>
+<a href="../index.html" class="text-sm text-gray-500 hover:text-gray-700">← Back</a>
 
 <div class="bg-yellow-100 border-l-4 border-yellow-400 p-4 rounded shadow text-center text-lg font-bold text-gray-800 mt-4 mb-6">
   {{.StoryName}}
@@ -75,17 +75,21 @@ var mappingTmpl = template.Must(template.New("mapping").Parse(`<!DOCTYPE html>
 </body>
 </html>`))
 
+type IndexEntry struct {
+	StoryKey  string
+	StoryName string
+	Path      string
+}
+
 type mappingView struct {
 	StoryName string
 	Mapping   *parser.ExampleMapping
 }
 
-func renderIndex(w http.ResponseWriter, entries []indexEntry) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	indexTmpl.Execute(w, entries)
+func renderIndex(w io.Writer, entries []IndexEntry) error {
+	return indexTmpl.Execute(w, entries)
 }
 
-func renderMapping(w http.ResponseWriter, em *parser.ExampleMapping, storyName string) {
-	w.Header().Set("Content-Type", "text/html; charset=utf-8")
-	mappingTmpl.Execute(w, mappingView{StoryName: storyName, Mapping: em})
+func renderMapping(w io.Writer, em *parser.ExampleMapping, storyName string) error {
+	return mappingTmpl.Execute(w, mappingView{StoryName: storyName, Mapping: em})
 }
