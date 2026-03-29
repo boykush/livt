@@ -7,4 +7,30 @@ rules:
       - id: EX-01
         name: A YAML with only a story reference displays a single yellow Story card
 
+  - id: R-02
+    name: Cards are laid out following the Example Mapping format
+    examples:
+      - id: EX-01
+        name: Rules are displayed as blue cards in a row below the Story card
+      - id: EX-02
+        name: Examples are displayed as green cards stacked under their Rule
+      - id: EX-03
+        name: Questions are displayed as red cards in a separate column
+
+  - id: R-03
+    name: Each card displays its name
+    examples:
+      - id: EX-01
+        name: A Rule card shows the rule name text
+      - id: EX-02
+        name: A Story card shows the story name text
+
+  - id: R-04
+    name: Multiple examples under a rule are stacked vertically
+    examples:
+      - id: EX-01
+        name: A Rule with 3 examples shows 3 green cards stacked below the blue card
+      - id: EX-02
+        name: A Rule with no examples shows only the blue card with no green cards below
+
 questions: []
