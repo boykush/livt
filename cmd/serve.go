@@ -20,7 +20,8 @@ var serveCmd = &cobra.Command{
 	Short: "Start a local server to view artifacts as sticky notes",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		mappingsDir := filepath.Join("discoveries", "example-mappings")
+		storiesDir := "stories"
 		fmt.Printf("Starting livt server on http://localhost:%d\n", port)
-		return server.Start(port, mappingsDir)
+		return server.Start(port, mappingsDir, storiesDir)
 	},
 }

@@ -11,16 +11,25 @@ import (
 
 type Server struct {
 	mappingsDir string
+	storiesDir  string
 }
 
-func Start(port int, mappingsDir string) error {
-	s := &Server{mappingsDir: mappingsDir}
+func Start(port int, mappingsDir, storiesDir string) error {
+	s := &Server{mappingsDir: mappingsDir, storiesDir: storiesDir}
 
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", s.handleIndex)
 	mux.HandleFunc("/mapping/", s.handleMapping)
 
 	return http.ListenAndServe(fmt.Sprintf(":%d", port), mux)
+}
+
+func (s *Server) resolveStoryName(key string) string {
+	story, err := parser.FindStoryByKey(s.storiesDir, key)
+	if err != nil {
+		return key
+	}
+	return story.Name
 }
 
 func (s *Server) handleIndex(w http.ResponseWriter, r *http.Request) {
@@ -42,8 +51,9 @@ func (s *Server) handleIndex(w http.ResponseWriter, r *http.Request) {
 			continue
 		}
 		mappings = append(mappings, indexEntry{
-			Story: em.Story,
-			Path:  "/mapping/" + em.Story,
+			StoryKey:  em.Story,
+			StoryName: s.resolveStoryName(em.Story),
+			Path:      "/mapping/" + em.Story,
 		})
 	}
 
@@ -64,10 +74,12 @@ func (s *Server) handleMapping(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	renderMapping(w, em)
+	storyName := s.resolveStoryName(storyKey)
+	renderMapping(w, em, storyName)
 }
 
 type indexEntry struct {
-	Story string
-	Path  string
+	StoryKey  string
+	StoryName string
+	Path      string
 }

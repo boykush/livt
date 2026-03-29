@@ -23,7 +23,7 @@ rules:
       - id: EX-01
         name: A Rule card shows the rule name text
       - id: EX-02
-        name: A Story card shows the story name text
+        name: The Story card shows the name from the story markdown file, not the key
 
   - id: R-04
     name: Multiple examples under a rule are stacked vertically
