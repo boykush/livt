@@ -17,35 +17,40 @@ type Builder struct {
 }
 
 func (b *Builder) Build() error {
+	if err := os.MkdirAll(filepath.Join(b.OutDir, "story"), 0o755); err != nil {
+		return err
+	}
 	if err := os.MkdirAll(filepath.Join(b.OutDir, "mapping"), 0o755); err != nil {
 		return err
 	}
 
-	files, err := filepath.Glob(filepath.Join(b.MappingsDir, "*.yaml"))
+	stories, err := parser.ParseAllStories(b.StoriesDir)
 	if err != nil {
 		return err
 	}
 
 	var entries []IndexEntry
-	for _, f := range files {
-		em, err := parser.ParseExampleMapping(f)
-		if err != nil {
-			return fmt.Errorf("parse %s: %w", f, err)
-		}
-
-		storyName := b.resolveStoryName(em.Story)
+	for _, story := range stories {
 		entries = append(entries, IndexEntry{
-			StoryKey:  em.Story,
-			StoryName: storyName,
-			Path:      "mapping/" + em.Story + ".html",
+			StoryKey:  story.Key,
+			StoryName: story.Name,
+			Path:      "story/" + story.Key + ".html",
 		})
 
-		outPath := filepath.Join(b.OutDir, "mapping", em.Story+".html")
-		if err := b.buildMapping(outPath, em, storyName); err != nil {
-			return err
+		mappingPath := ""
+		if b.hasExampleMapping(story.Key) {
+			mappingPath = "../mapping/" + story.Key + ".html"
 		}
 
-		fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))
+		storyOutPath := filepath.Join(b.OutDir, "story", story.Key+".html")
+		if err := b.buildStory(storyOutPath, story, mappingPath); err != nil {
+			return err
+		}
+		fmt.Printf("  %s\n", strings.TrimPrefix(storyOutPath, b.OutDir+"/"))
+	}
+
+	if err := b.buildMappings(); err != nil {
+		return err
 	}
 
 	indexPath := filepath.Join(b.OutDir, "index.html")
@@ -53,6 +58,36 @@ func (b *Builder) Build() error {
 		return err
 	}
 	fmt.Printf("  index.html\n")
+
+	return nil
+}
+
+func (b *Builder) hasExampleMapping(storyKey string) bool {
+	path := filepath.Join(b.MappingsDir, storyKey+".yaml")
+	_, err := os.Stat(path)
+	return err == nil
+}
+
+func (b *Builder) buildMappings() error {
+	files, err := filepath.Glob(filepath.Join(b.MappingsDir, "*.yaml"))
+	if err != nil {
+		return err
+	}
+
+	for _, f := range files {
+		em, err := parser.ParseExampleMapping(f)
+		if err != nil {
+			return fmt.Errorf("parse %s: %w", f, err)
+		}
+
+		storyName := b.resolveStoryName(em.Story)
+
+		outPath := filepath.Join(b.OutDir, "mapping", em.Story+".html")
+		if err := b.buildMapping(outPath, em, storyName); err != nil {
+			return err
+		}
+		fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))
+	}
 
 	return nil
 }
@@ -72,6 +107,15 @@ func (b *Builder) buildIndex(path string, entries []IndexEntry) error {
 	}
 	defer f.Close()
 	return renderIndex(f, entries)
+}
+
+func (b *Builder) buildStory(path string, story *domain.Story, mappingPath string) error {
+	f, err := os.Create(path)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	return renderStory(f, story, mappingPath)
 }
 
 func (b *Builder) buildMapping(path string, em *domain.ExampleMapping, storyName string) error {

@@ -12,22 +12,39 @@ var indexTmpl = template.Must(template.New("index").Parse(`<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>livt - Example Mappings</title>
+<title>livt - Stories</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen p-10">
-<h1 class="text-2xl font-bold text-gray-800 mb-6">Example Mappings</h1>
-<div class="flex flex-wrap gap-4">
+<h1 class="text-2xl font-bold text-gray-800 mb-6">Stories</h1>
+<ul class="space-y-2">
 {{range .}}
-  <a href="{{.Path}}" class="block">
-    <div class="bg-yellow-100 border-l-4 border-yellow-400 p-5 rounded shadow hover:-translate-y-0.5 transition-transform min-w-[200px]">
-      <span class="font-semibold text-gray-800">{{.StoryName}}</span>
-    </div>
-  </a>
+  <li><a href="{{.Path}}" class="text-blue-600 hover:underline">{{.StoryName}}</a></li>
 {{else}}
-  <p class="text-gray-500">No example mappings found.</p>
+  <p class="text-gray-500">No stories found.</p>
 {{end}}
-</div>
+</ul>
+</body>
+</html>`))
+
+var storyTmpl = template.Must(template.New("story").Parse(`<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{.Story.Name}} - livt</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen p-10">
+<a href="../index.html" class="text-sm text-gray-500 hover:text-gray-700">&larr; Back</a>
+
+<h1 class="text-2xl font-bold text-gray-800 mt-4 mb-4">{{.Story.Name}}</h1>
+
+<pre class="text-gray-700 whitespace-pre-wrap mb-6">{{.Story.Body}}</pre>
+
+{{if .MappingPath}}
+  <a href="{{.MappingPath}}" class="text-blue-600 hover:underline">Example Mapping</a>
+{{end}}
 </body>
 </html>`))
 
@@ -40,7 +57,7 @@ var mappingTmpl = template.Must(template.New("mapping").Parse(`<!DOCTYPE html>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-100 min-h-screen p-10">
-<a href="../index.html" class="text-sm text-gray-500 hover:text-gray-700">← Back</a>
+<a href="../index.html" class="text-sm text-gray-500 hover:text-gray-700">&larr; Back</a>
 
 <div class="bg-yellow-100 border-l-4 border-yellow-400 p-4 rounded shadow text-center text-lg font-bold text-gray-800 mt-4 mb-6">
   {{.StoryName}}
@@ -81,6 +98,11 @@ type IndexEntry struct {
 	Path      string
 }
 
+type storyView struct {
+	Story       *domain.Story
+	MappingPath string
+}
+
 type mappingView struct {
 	StoryName string
 	Mapping   *domain.ExampleMapping
@@ -88,6 +110,10 @@ type mappingView struct {
 
 func renderIndex(w io.Writer, entries []IndexEntry) error {
 	return indexTmpl.Execute(w, entries)
+}
+
+func renderStory(w io.Writer, story *domain.Story, mappingPath string) error {
+	return storyTmpl.Execute(w, storyView{Story: story, MappingPath: mappingPath})
 }
 
 func renderMapping(w io.Writer, em *domain.ExampleMapping, storyName string) error {

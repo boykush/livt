@@ -5,23 +5,22 @@ import (
 	"os"
 	"path/filepath"
 	"strings"
+
+	"github.com/boykush/livt/internal/domain"
 )
 
-type Story struct {
-	Key  string
-	Name string
-}
-
-func ParseStory(path string) (*Story, error) {
+func ParseStory(path string) (*domain.Story, error) {
 	f, err := os.Open(path)
 	if err != nil {
 		return nil, err
 	}
 	defer f.Close()
 
-	s := &Story{}
+	var key, name string
+	var bodyLines []string
 	scanner := bufio.NewScanner(f)
 	inFrontmatter := false
+	pastTitle := false
 
 	for scanner.Scan() {
 		line := scanner.Text()
@@ -37,21 +36,36 @@ func ParseStory(path string) (*Story, error) {
 
 		if inFrontmatter {
 			if strings.HasPrefix(line, "key:") {
-				s.Key = strings.TrimSpace(strings.TrimPrefix(line, "key:"))
+				key = strings.TrimSpace(strings.TrimPrefix(line, "key:"))
 			}
 			continue
 		}
 
-		if strings.HasPrefix(line, "# ") {
-			s.Name = strings.TrimPrefix(line, "# ")
-			break
+		if !pastTitle {
+			if strings.HasPrefix(line, "# ") {
+				name = strings.TrimPrefix(line, "# ")
+				pastTitle = true
+			}
+			continue
 		}
+
+		bodyLines = append(bodyLines, line)
 	}
 
-	return s, scanner.Err()
+	if err := scanner.Err(); err != nil {
+		return nil, err
+	}
+
+	body := strings.TrimSpace(strings.Join(bodyLines, "\n"))
+
+	return &domain.Story{
+		Key:  key,
+		Name: name,
+		Body: body,
+	}, nil
 }
 
-func FindStoryByKey(storiesDir string, key string) (*Story, error) {
+func FindStoryByKey(storiesDir string, key string) (*domain.Story, error) {
 	files, err := filepath.Glob(filepath.Join(storiesDir, "*.md"))
 	if err != nil {
 		return nil, err
@@ -67,5 +81,23 @@ func FindStoryByKey(storiesDir string, key string) (*Story, error) {
 		}
 	}
 
-	return &Story{Key: key, Name: key}, nil
+	return &domain.Story{Key: key, Name: key}, nil
+}
+
+func ParseAllStories(storiesDir string) ([]*domain.Story, error) {
+	files, err := filepath.Glob(filepath.Join(storiesDir, "*.md"))
+	if err != nil {
+		return nil, err
+	}
+
+	var stories []*domain.Story
+	for _, f := range files {
+		story, err := ParseStory(f)
+		if err != nil {
+			return nil, err
+		}
+		stories = append(stories, story)
+	}
+
+	return stories, nil
 }
