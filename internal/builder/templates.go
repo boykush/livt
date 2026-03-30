@@ -4,7 +4,7 @@ import (
 	"html/template"
 	"io"
 
-	"github.com/boykush/livt/internal/parser"
+	"github.com/boykush/livt/internal/domain"
 )
 
 var indexTmpl = template.Must(template.New("index").Parse(`<!DOCTYPE html>
@@ -83,13 +83,13 @@ type IndexEntry struct {
 
 type mappingView struct {
 	StoryName string
-	Mapping   *parser.ExampleMapping
+	Mapping   *domain.ExampleMapping
 }
 
 func renderIndex(w io.Writer, entries []IndexEntry) error {
 	return indexTmpl.Execute(w, entries)
 }
 
-func renderMapping(w io.Writer, em *parser.ExampleMapping, storyName string) error {
+func renderMapping(w io.Writer, em *domain.ExampleMapping, storyName string) error {
 	return mappingTmpl.Execute(w, mappingView{StoryName: storyName, Mapping: em})
 }

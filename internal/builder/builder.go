@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/boykush/livt/internal/domain"
 	"github.com/boykush/livt/internal/parser"
 )
 
@@ -73,7 +74,7 @@ func (b *Builder) buildIndex(path string, entries []IndexEntry) error {
 	return renderIndex(f, entries)
 }
 
-func (b *Builder) buildMapping(path string, em *parser.ExampleMapping, storyName string) error {
+func (b *Builder) buildMapping(path string, em *domain.ExampleMapping, storyName string) error {
 	f, err := os.Create(path)
 	if err != nil {
 		return err

@@ -1,5 +1,3 @@
-story: browse-stories
-
 rules:
   - id: R-01
     name: Story list is generated from all md files under stories/

@@ -1,5 +1,3 @@
-story: view-example-mapping
-
 rules:
   - id: R-01
     name: An example mapping can be rendered as a sticky view with only a story reference
