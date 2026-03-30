@@ -6,14 +6,23 @@
 <title>livt - Stories</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-100 min-h-screen p-10">
-<h1 class="text-2xl font-bold text-gray-800 mb-6">Stories</h1>
-<ul class="space-y-2">
-{{range .}}
-  <li><a href="{{.Path}}" class="text-blue-600 hover:underline">{{.StoryName}}</a></li>
-{{else}}
-  <p class="text-gray-500">No stories found.</p>
-{{end}}
-</ul>
+<body class="bg-gray-50 min-h-screen">
+<header class="bg-white border-b border-gray-200">
+  <div class="max-w-3xl mx-auto px-6 py-4">
+    <h1 class="text-xl font-bold text-gray-900 tracking-tight">livt</h1>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-6 py-8">
+  <h2 class="text-lg font-semibold text-gray-700 mb-4">Stories</h2>
+  {{range .}}
+  <a href="{{.Path}}" class="block bg-white rounded-lg border border-gray-200 px-5 py-4 mb-3 hover:border-blue-300 hover:shadow-sm transition">
+    <span class="text-base font-medium text-gray-900">{{.StoryName}}</span>
+    <span class="block text-xs text-gray-400 mt-1">{{.StoryKey}}</span>
+  </a>
+  {{else}}
+  <p class="text-gray-400 text-sm">No stories found.</p>
+  {{end}}
+</main>
 </body>
 </html>
