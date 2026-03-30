@@ -1,7 +1,7 @@
 package domain
 
 type ExampleMapping struct {
-	Story     string
+	StoryKey  StoryKey
 	Rules     []Rule
 	Questions []Question
 }

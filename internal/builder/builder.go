@@ -32,17 +32,17 @@ func (b *Builder) Build() error {
 	var entries []IndexEntry
 	for _, story := range stories {
 		entries = append(entries, IndexEntry{
-			StoryKey:  story.Key,
+			StoryKey:  story.Key.Value,
 			StoryName: story.Name,
-			Path:      "story/" + story.Key + ".html",
+			Path:      "story/" + story.Key.Value + ".html",
 		})
 
 		mappingPath := ""
 		if b.hasExampleMapping(story.Key) {
-			mappingPath = "../mapping/" + story.Key + ".html"
+			mappingPath = "../mapping/" + story.Key.Value + ".html"
 		}
 
-		storyOutPath := filepath.Join(b.OutDir, "story", story.Key+".html")
+		storyOutPath := filepath.Join(b.OutDir, "story", story.Key.Value+".html")
 		if err := b.buildStory(storyOutPath, story, mappingPath); err != nil {
 			return err
 		}
@@ -62,8 +62,8 @@ func (b *Builder) Build() error {
 	return nil
 }
 
-func (b *Builder) hasExampleMapping(storyKey string) bool {
-	path := filepath.Join(b.MappingsDir, storyKey+".yaml")
+func (b *Builder) hasExampleMapping(storyKey domain.StoryKey) bool {
+	path := filepath.Join(b.MappingsDir, storyKey.Value+".yaml")
 	_, err := os.Stat(path)
 	return err == nil
 }
@@ -80,9 +80,9 @@ func (b *Builder) buildMappings() error {
 			return fmt.Errorf("parse %s: %w", f, err)
 		}
 
-		storyName := b.resolveStoryName(em.Story)
+		storyName := b.resolveStoryName(em.StoryKey)
 
-		outPath := filepath.Join(b.OutDir, "mapping", em.Story+".html")
+		outPath := filepath.Join(b.OutDir, "mapping", em.StoryKey.Value+".html")
 		if err := b.buildMapping(outPath, em, storyName); err != nil {
 			return err
 		}
@@ -92,10 +92,10 @@ func (b *Builder) buildMappings() error {
 	return nil
 }
 
-func (b *Builder) resolveStoryName(key string) string {
+func (b *Builder) resolveStoryName(key domain.StoryKey) string {
 	story, err := parser.FindStoryByKey(b.StoriesDir, key)
 	if err != nil {
-		return key
+		return key.Value
 	}
 	return story.Name
 }

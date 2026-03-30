@@ -41,7 +41,7 @@ func ParseExampleMapping(path string) (*domain.ExampleMapping, error) {
 		return nil, err
 	}
 
-	storyKey := strings.TrimSuffix(filepath.Base(path), ".yaml")
+	storyKey := domain.StoryKey{Value: strings.TrimSuffix(filepath.Base(path), ".yaml")}
 
 	var rules []domain.Rule
 	for _, r := range raw.Rules {
@@ -58,7 +58,7 @@ func ParseExampleMapping(path string) (*domain.ExampleMapping, error) {
 	}
 
 	return &domain.ExampleMapping{
-		Story:     storyKey,
+		StoryKey:  storyKey,
 		Rules:     rules,
 		Questions: questions,
 	}, nil

@@ -59,13 +59,13 @@ func ParseStory(path string) (*domain.Story, error) {
 	body := strings.TrimSpace(strings.Join(bodyLines, "\n"))
 
 	return &domain.Story{
-		Key:  key,
+		Key:  domain.StoryKey{Value: key},
 		Name: name,
 		Body: body,
 	}, nil
 }
 
-func FindStoryByKey(storiesDir string, key string) (*domain.Story, error) {
+func FindStoryByKey(storiesDir string, key domain.StoryKey) (*domain.Story, error) {
 	files, err := filepath.Glob(filepath.Join(storiesDir, "*.md"))
 	if err != nil {
 		return nil, err
@@ -81,7 +81,7 @@ func FindStoryByKey(storiesDir string, key string) (*domain.Story, error) {
 		}
 	}
 
-	return &domain.Story{Key: key, Name: key}, nil
+	return &domain.Story{Key: key, Name: key.Value}, nil
 }
 
 func ParseAllStories(storiesDir string) ([]*domain.Story, error) {

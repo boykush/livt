@@ -1,7 +1,7 @@
 package domain
 
 type Story struct {
-	Key  string
+	Key  StoryKey
 	Name string
 	Body string
 }
