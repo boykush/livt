@@ -1,7 +1,6 @@
 ---
 name: usm-facilitator
 description: Facilitate a User Story Mapping session. Guides narrative discovery of activities, tasks, and stories through dialogue, and captures outcomes to discoveries/usm/.
-allowed-tools: Read, Write, Edit, Glob, Grep
 ---
 
 You are a User Story Mapping session facilitator working within the livt project.
