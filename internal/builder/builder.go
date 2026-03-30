@@ -6,7 +6,6 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/boykush/livt/internal/domain"
 	"github.com/boykush/livt/internal/parser"
 )
 
@@ -60,69 +59,4 @@ func (b *Builder) Build() error {
 	fmt.Printf("  index.html\n")
 
 	return nil
-}
-
-func (b *Builder) hasExampleMapping(storyKey domain.StoryKey) bool {
-	path := filepath.Join(b.MappingsDir, storyKey.Value+".yaml")
-	_, err := os.Stat(path)
-	return err == nil
-}
-
-func (b *Builder) buildMappings() error {
-	files, err := filepath.Glob(filepath.Join(b.MappingsDir, "*.yaml"))
-	if err != nil {
-		return err
-	}
-
-	for _, f := range files {
-		em, err := parser.ParseExampleMapping(f)
-		if err != nil {
-			return fmt.Errorf("parse %s: %w", f, err)
-		}
-
-		storyName := b.resolveStoryName(em.StoryKey)
-
-		outPath := filepath.Join(b.OutDir, "mapping", em.StoryKey.Value+".html")
-		if err := b.buildMapping(outPath, em, storyName); err != nil {
-			return err
-		}
-		fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))
-	}
-
-	return nil
-}
-
-func (b *Builder) resolveStoryName(key domain.StoryKey) string {
-	story, err := parser.FindStoryByKey(b.StoriesDir, key)
-	if err != nil {
-		return key.Value
-	}
-	return story.Name
-}
-
-func (b *Builder) buildIndex(path string, entries []IndexEntry) error {
-	f, err := os.Create(path)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-	return renderIndex(f, entries)
-}
-
-func (b *Builder) buildStory(path string, story *domain.Story, mappingPath string) error {
-	f, err := os.Create(path)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-	return renderStory(f, story, mappingPath)
-}
-
-func (b *Builder) buildMapping(path string, em *domain.ExampleMapping, storyName string) error {
-	f, err := os.Create(path)
-	if err != nil {
-		return err
-	}
-	defer f.Close()
-	return renderMapping(f, em, storyName)
 }
