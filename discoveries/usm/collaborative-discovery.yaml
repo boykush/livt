@@ -15,6 +15,11 @@ activities:
             name: Confirm story context
           - key: confirm-story-map
             name: Confirm story map
+      - key: record-stories
+        name: Record stories
+        stories:
+          - key: write-out-stories-from-usm
+            name: Write out stories from USM
       - key: slice-releases
         name: Slice into releases
 
