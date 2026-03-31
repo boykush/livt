@@ -1,4 +1,6 @@
-# Confirm story map
+---
+name: Confirm story map
+---
 
 As a team member
 I want to view the story map as a board

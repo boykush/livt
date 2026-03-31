@@ -19,10 +19,15 @@ type activityYAML struct {
 	Steps []stepYAML `yaml:"steps"`
 }
 
+type storyRefYAML struct {
+	Key  string `yaml:"key"`
+	Name string `yaml:"name"`
+}
+
 type stepYAML struct {
-	Key     string   `yaml:"key"`
-	Name    string   `yaml:"name"`
-	Stories []string `yaml:"stories"`
+	Key     string         `yaml:"key"`
+	Name    string         `yaml:"name"`
+	Stories []storyRefYAML `yaml:"stories"`
 }
 
 func ParseStoryMap(path string) (*domain.StoryMap, error) {
@@ -42,7 +47,7 @@ func ParseStoryMap(path string) (*domain.StoryMap, error) {
 		for _, s := range a.Steps {
 			var storyKeys []domain.StoryKey
 			for _, sk := range s.Stories {
-				storyKeys = append(storyKeys, domain.StoryKey{Value: sk})
+				storyKeys = append(storyKeys, domain.StoryKey{Value: sk.Key})
 			}
 			steps = append(steps, domain.Step{
 				Key:     s.Key,

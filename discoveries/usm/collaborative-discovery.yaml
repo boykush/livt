@@ -11,8 +11,10 @@ activities:
       - key: discover-stories
         name: Discover stories
         stories:
-          - confirm-story-context
-          - confirm-story-map
+          - key: confirm-story-context
+            name: Confirm story context
+          - key: confirm-story-map
+            name: Confirm story map
       - key: slice-releases
         name: Slice into releases
 
@@ -24,7 +26,8 @@ activities:
       - key: discover-rules
         name: Discover rules
         stories:
-          - confirm-discovery-outcomes
+          - key: confirm-discovery-outcomes
+            name: Confirm discovery outcomes
       - key: illustrate-examples
         name: Illustrate with examples
       - key: capture-questions

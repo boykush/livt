@@ -22,24 +22,24 @@ func ParseStory(path string) (*domain.Story, error) {
 	var bodyLines []string
 	scanner := bufio.NewScanner(f)
 	inFrontmatter := false
-	pastTitle := false
+	frontmatterDone := false
 
 	for scanner.Scan() {
 		line := scanner.Text()
 
 		if line == "---" {
-			inFrontmatter = !inFrontmatter
-			continue
+			if !frontmatterDone {
+				inFrontmatter = !inFrontmatter
+				if !inFrontmatter {
+					frontmatterDone = true
+				}
+				continue
+			}
 		}
 
 		if inFrontmatter {
-			continue
-		}
-
-		if !pastTitle {
-			if strings.HasPrefix(line, "# ") {
-				name = strings.TrimPrefix(line, "# ")
-				pastTitle = true
+			if strings.HasPrefix(line, "name:") {
+				name = strings.TrimSpace(strings.TrimPrefix(line, "name:"))
 			}
 			continue
 		}

@@ -1,4 +1,6 @@
-# Confirm story context
+---
+name: Confirm story context
+---
 
 As a team member
 I want to confirm each story's context and access its discovery artifacts
