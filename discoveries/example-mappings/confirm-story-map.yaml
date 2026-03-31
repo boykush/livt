@@ -1,0 +1,34 @@
+story: confirm-story-map
+
+rules:
+  - id: R-01
+    name: Activities are displayed horizontally at the top of the board
+    examples:
+      - id: EX-01
+        name: Single activity is displayed as one item
+      - id: EX-02
+        name: Two activities (Story Mapping, Discovery) are displayed left to right
+
+  - id: R-02
+    name: Steps are displayed horizontally under their activity
+    examples:
+      - id: EX-01
+        name: Single step is displayed under its activity
+      - id: EX-02
+        name: Multiple steps (Identify activities, Break into tasks, ...) are displayed left to right within the activity
+
+  - id: R-03
+    name: Stories are displayed vertically under their step
+    examples:
+      - id: EX-01
+        name: Single story is displayed under its step
+      - id: EX-02
+        name: Multiple stories are stacked top to bottom under the step
+
+  - id: R-04
+    name: Elements are displayed even without children
+    examples:
+      - id: EX-01
+        name: Activity with no steps is still displayed on the backbone
+      - id: EX-02
+        name: Step with no stories is still displayed on the backbone

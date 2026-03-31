@@ -10,6 +10,9 @@ activities:
         name: Break activities into tasks
       - key: discover-stories
         name: Discover stories
+        stories:
+          - confirm-story-context
+          - confirm-story-map
       - key: slice-releases
         name: Slice into releases
 
@@ -20,6 +23,8 @@ activities:
         name: Pick a story to explore
       - key: discover-rules
         name: Discover rules
+        stories:
+          - confirm-discovery-outcomes
       - key: illustrate-examples
         name: Illustrate with examples
       - key: capture-questions

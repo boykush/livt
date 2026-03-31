@@ -1,6 +1,5 @@
 ---
 key: confirm-discovery-outcomes
-step: discover-rules
 ---
 
 # Confirm discovery outcomes

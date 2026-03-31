@@ -1,6 +1,5 @@
 ---
 key: confirm-story-context
-step: discover-stories
 ---
 
 # Confirm story context
