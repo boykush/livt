@@ -46,10 +46,15 @@ type storyMapViewStory struct {
 	HasPage bool
 }
 
-type storyMapViewStep struct {
-	Key     string
+type storyMapViewReleaseSlice struct {
 	Name    string
 	Stories []storyMapViewStory
+}
+
+type storyMapViewStep struct {
+	Key           string
+	Name          string
+	ReleaseSlices []storyMapViewReleaseSlice
 }
 
 type storyMapViewActivity struct {
@@ -68,22 +73,23 @@ type storyMapView struct {
 }
 
 func (b *Builder) toStoryMapView(sm *domain.StoryMap) storyMapView {
+	// Build story key → release index map
+	storyRelease := make(map[string]int)
+	for i, r := range sm.Releases {
+		for _, sk := range r.Stories {
+			storyRelease[sk.Value] = i
+		}
+	}
+
 	var activities []storyMapViewActivity
 	for _, a := range sm.Activities {
 		var steps []storyMapViewStep
 		for _, s := range a.Steps {
-			var stories []storyMapViewStory
-			for _, sk := range s.Stories {
-				stories = append(stories, storyMapViewStory{
-					Key:     sk.Value,
-					Name:    b.resolveStoryName(sk),
-					HasPage: b.hasStoryPage(sk),
-				})
-			}
+			releaseSlices := b.groupStoriesByRelease(s.Stories, sm.Releases, storyRelease)
 			steps = append(steps, storyMapViewStep{
-				Key:     s.Key,
-				Name:    s.Name,
-				Stories: stories,
+				Key:           s.Key,
+				Name:          s.Name,
+				ReleaseSlices: releaseSlices,
 			})
 		}
 		activities = append(activities, storyMapViewActivity{
@@ -99,6 +105,55 @@ func (b *Builder) toStoryMapView(sm *domain.StoryMap) storyMapView {
 			Activities: activities,
 		},
 	}
+}
+
+func (b *Builder) groupStoriesByRelease(storyKeys []domain.StoryKey, releases []domain.Release, storyRelease map[string]int) []storyMapViewReleaseSlice {
+	if len(releases) == 0 {
+		// No releases defined: single slice with no name (R-05)
+		var stories []storyMapViewStory
+		for _, sk := range storyKeys {
+			stories = append(stories, storyMapViewStory{
+				Key:     sk.Value,
+				Name:    b.resolveStoryName(sk),
+				HasPage: b.hasStoryPage(sk),
+			})
+		}
+		if len(stories) == 0 {
+			return nil
+		}
+		return []storyMapViewReleaseSlice{{Stories: stories}}
+	}
+
+	// Group stories by release index
+	perRelease := make(map[int][]storyMapViewStory)
+	var unscoped []storyMapViewStory
+	for _, sk := range storyKeys {
+		vs := storyMapViewStory{
+			Key:     sk.Value,
+			Name:    b.resolveStoryName(sk),
+			HasPage: b.hasStoryPage(sk),
+		}
+		if idx, ok := storyRelease[sk.Value]; ok {
+			perRelease[idx] = append(perRelease[idx], vs)
+		} else {
+			unscoped = append(unscoped, vs)
+		}
+	}
+
+	var slices []storyMapViewReleaseSlice
+	for i, r := range releases {
+		if stories, ok := perRelease[i]; ok {
+			slices = append(slices, storyMapViewReleaseSlice{
+				Name:    r.Name,
+				Stories: stories,
+			})
+		}
+	}
+	if len(unscoped) > 0 {
+		slices = append(slices, storyMapViewReleaseSlice{Stories: unscoped})
+	}
+
+	return slices
 }
 
 func (b *Builder) buildStoryMap(path string, view storyMapView) error {

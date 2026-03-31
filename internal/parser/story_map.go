@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 
@@ -11,6 +12,12 @@ import (
 type storyMapYAML struct {
 	Name       string         `yaml:"name"`
 	Activities []activityYAML `yaml:"activities"`
+	Releases   []releaseYAML  `yaml:"releases"`
+}
+
+type releaseYAML struct {
+	Name    string         `yaml:"name"`
+	Stories []string       `yaml:"stories"`
 }
 
 type activityYAML struct {
@@ -62,9 +69,27 @@ func ParseStoryMap(path string) (*domain.StoryMap, error) {
 		})
 	}
 
+	var releases []domain.Release
+	seen := make(map[string]bool)
+	for _, r := range raw.Releases {
+		var storyKeys []domain.StoryKey
+		for _, sk := range r.Stories {
+			if seen[sk] {
+				return nil, fmt.Errorf("story %q belongs to multiple releases", sk)
+			}
+			seen[sk] = true
+			storyKeys = append(storyKeys, domain.StoryKey{Value: sk})
+		}
+		releases = append(releases, domain.Release{
+			Name:    r.Name,
+			Stories: storyKeys,
+		})
+	}
+
 	return &domain.StoryMap{
 		Name:       raw.Name,
 		Activities: activities,
+		Releases:   releases,
 	}, nil
 }
 

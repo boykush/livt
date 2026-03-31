@@ -1,0 +1,40 @@
+story: split-release-scope
+
+rules:
+  - id: R-01
+    name: Release slices are displayed as horizontal dividers across the story map board
+    examples:
+      - id: EX-01
+        name: One release defined, a horizontal line separates release stories from the rest of the board
+
+  - id: R-02
+    name: Stories under a step are sorted by release order, not step-side definition order
+    examples:
+      - id: EX-01
+        name: Step defines stories [confirm-story-context, confirm-story-map] but release 1 has only confirm-story-map, so confirm-story-map appears above the release line
+
+  - id: R-03
+    name: Release name is displayed on the divider when provided
+    examples:
+      - id: EX-01
+        name: Release with name "Walking Skeleton" shows the name on the horizontal divider
+      - id: EX-02
+        name: Release without name still shows a horizontal divider without label
+
+  - id: R-04
+    name: Stories not belonging to any release are displayed below all release slices
+    examples:
+      - id: EX-01
+        name: 3 stories exist, 2 belong to release 1, the remaining story appears below the release divider
+
+  - id: R-05
+    name: When no releases are defined, stories are displayed without any dividers
+    examples:
+      - id: EX-01
+        name: USM has no releases defined, stories are listed under their steps as before with no horizontal lines
+
+  - id: R-06
+    name: A story cannot belong to multiple releases
+    examples:
+      - id: EX-01
+        name: Same story key appears in release 1 and release 2, validation reports an error

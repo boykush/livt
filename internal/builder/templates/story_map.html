@@ -42,7 +42,17 @@
     <div class="flex gap-2 items-start">
     {{range .Steps}}
       <div class="flex flex-col gap-2 w-[180px]">
-        {{range .Stories}}
+        {{range $sliceIdx, $slice := .ReleaseSlices}}
+        {{if $sliceIdx}}
+        <div class="border-t-2 border-dashed border-gray-400 my-1 relative">
+          {{if $slice.Name}}<span class="absolute -top-2.5 left-1 bg-gray-50 px-1 text-xs text-gray-500">{{$slice.Name}}</span>{{end}}
+        </div>
+        {{else}}
+        {{if $slice.Name}}
+        <div class="text-xs text-gray-500 px-1">{{$slice.Name}}</div>
+        {{end}}
+        {{end}}
+        {{range $slice.Stories}}
         {{if .HasPage}}
         <a href="../story/{{.Key}}.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow text-sm text-gray-700 hover:bg-yellow-200 transition">
           <span>{{.Name}}</span><span>&rarr;</span>
@@ -51,6 +61,7 @@
         <div class="block bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow text-sm text-gray-700">
           {{.Name}}
         </div>
+        {{end}}
         {{end}}
         {{end}}
       </div>

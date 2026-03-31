@@ -3,6 +3,7 @@ package domain
 type StoryMap struct {
 	Name       string
 	Activities []Activity
+	Releases   []Release
 }
 
 type Activity struct {
