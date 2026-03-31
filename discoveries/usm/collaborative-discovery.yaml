@@ -1,4 +1,4 @@
-name: Stale Discovery Artifacts
+name: Collaborative Discovery
 
 activities:
   - key: story-mapping
@@ -13,8 +13,8 @@ activities:
       - key: slice-releases
         name: Slice into releases
 
-  - key: example-mapping
-    name: Example Mapping
+  - key: discovery
+    name: Discovery
     steps:
       - key: pick-story
         name: Pick a story to explore

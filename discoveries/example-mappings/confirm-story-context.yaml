@@ -3,7 +3,7 @@ rules:
     name: Story list is generated from all md files under stories/
     examples:
       - id: EX-01
-        name: stories/view-example-mapping.md exists, index.html shows "View Example Mapping as sticky notes" as a list item
+        name: stories/confirm-discovery-outcomes.md exists, index.html shows "Confirm discovery outcomes" as a list item
   - id: R-02
     name: View is a simple list
     examples: []
@@ -16,17 +16,17 @@ rules:
     name: Story name links to detail page at story/{key}.html
     examples:
       - id: EX-01
-        name: Clicking "View Example Mapping as sticky notes" navigates to story/view-example-mapping.html
+        name: Clicking "Confirm discovery outcomes" navigates to story/confirm-discovery-outcomes.html
   - id: R-05
     name: Detail page shows story name and body
     examples:
       - id: EX-01
-        name: story/view-example-mapping.html shows title and "As a team member I want to view..."
+        name: story/confirm-discovery-outcomes.html shows title and "As a team member I want to confirm..."
   - id: R-06
     name: Detail page links to example mapping if it exists
     examples:
       - id: EX-01
-        name: view-example-mapping has an example mapping YAML, detail page shows link to mapping/view-example-mapping.html
+        name: confirm-discovery-outcomes has an example mapping YAML, detail page shows link to mapping/confirm-discovery-outcomes.html
       - id: EX-02
         name: Story has no example mapping YAML, detail page shows no link
 
