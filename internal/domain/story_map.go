@@ -15,5 +15,5 @@ type Activity struct {
 type Step struct {
 	Key     string
 	Name    string
-	Stories []StoryKey
+	Stories []StoryCard
 }

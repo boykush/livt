@@ -52,14 +52,17 @@ func ParseStoryMap(path string) (*domain.StoryMap, error) {
 	for _, a := range raw.Activities {
 		var steps []domain.Step
 		for _, s := range a.Steps {
-			var storyKeys []domain.StoryKey
+			var storyCards []domain.StoryCard
 			for _, sk := range s.Stories {
-				storyKeys = append(storyKeys, domain.StoryKey{Value: sk.Key})
+				storyCards = append(storyCards, domain.StoryCard{
+					Key:  domain.StoryKey{Value: sk.Key},
+					Name: sk.Name,
+				})
 			}
 			steps = append(steps, domain.Step{
 				Key:     s.Key,
 				Name:    s.Name,
-				Stories: storyKeys,
+				Stories: storyCards,
 			})
 		}
 		activities = append(activities, domain.Activity{
@@ -69,20 +72,33 @@ func ParseStoryMap(path string) (*domain.StoryMap, error) {
 		})
 	}
 
+	// Build key-to-name lookup from activities for release resolution
+	cardNameByKey := make(map[string]string)
+	for _, a := range activities {
+		for _, s := range a.Steps {
+			for _, sc := range s.Stories {
+				cardNameByKey[sc.Key.Value] = sc.Name
+			}
+		}
+	}
+
 	var releases []domain.Release
 	seen := make(map[string]bool)
 	for _, r := range raw.Releases {
-		var storyKeys []domain.StoryKey
+		var storyCards []domain.StoryCard
 		for _, sk := range r.Stories {
 			if seen[sk] {
 				return nil, fmt.Errorf("story %q belongs to multiple releases", sk)
 			}
 			seen[sk] = true
-			storyKeys = append(storyKeys, domain.StoryKey{Value: sk})
+			storyCards = append(storyCards, domain.StoryCard{
+				Key:  domain.StoryKey{Value: sk},
+				Name: cardNameByKey[sk],
+			})
 		}
 		releases = append(releases, domain.Release{
 			Name:    r.Name,
-			Stories: storyKeys,
+			Stories: storyCards,
 		})
 	}
 

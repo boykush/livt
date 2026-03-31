@@ -4,7 +4,7 @@ import "fmt"
 
 type Release struct {
 	Name    string
-	Stories []StoryKey
+	Stories []StoryCard
 }
 
 func (r Release) DisplayName(index int) string {

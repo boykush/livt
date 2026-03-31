@@ -30,8 +30,8 @@ func (b *Builder) buildStoryMaps() (map[string]string, error) {
 		relativePath := "../story-map/" + sm.Name + ".html"
 		for _, a := range sm.Activities {
 			for _, s := range a.Steps {
-				for _, sk := range s.Stories {
-					storyToMap[sk.Value] = relativePath
+				for _, sc := range s.Stories {
+					storyToMap[sc.Key.Value] = relativePath
 				}
 			}
 		}
@@ -41,9 +41,9 @@ func (b *Builder) buildStoryMaps() (map[string]string, error) {
 }
 
 type storyMapViewStory struct {
-	Key     string
-	Name    string
-	HasPage bool
+	Key    string
+	Name   string
+	Opened bool
 }
 
 type storyMapViewStepHeader struct {
@@ -81,8 +81,8 @@ func (b *Builder) toStoryMapView(sm *domain.StoryMap) storyMapView {
 	// Build story key → release index map
 	storyRelease := make(map[string]int)
 	for i, r := range sm.Releases {
-		for _, sk := range r.Stories {
-			storyRelease[sk.Value] = i
+		for _, sc := range r.Stories {
+			storyRelease[sc.Key.Value] = i
 		}
 	}
 
@@ -129,13 +129,13 @@ func (b *Builder) buildReleaseRows(allActivities []domain.Activity, releases []d
 		ag := activityGroup{}
 		for _, s := range a.Steps {
 			sg := stepGroup{perRelease: make(map[int][]storyMapViewStory)}
-			for _, sk := range s.Stories {
+			for _, sc := range s.Stories {
 				vs := storyMapViewStory{
-					Key:     sk.Value,
-					Name:    b.resolveStoryName(sk),
-					HasPage: b.hasStoryPage(sk),
+					Key:    sc.Key.Value,
+					Name:   sc.Name,
+					Opened: b.hasStoryPage(sc.Key),
 				}
-				if idx, ok := storyRelease[sk.Value]; ok {
+				if idx, ok := storyRelease[sc.Key.Value]; ok {
 					sg.perRelease[idx] = append(sg.perRelease[idx], vs)
 				} else {
 					sg.unscoped = append(sg.unscoped, vs)
