@@ -46,26 +46,31 @@ type storyMapViewStory struct {
 	HasPage bool
 }
 
-type storyMapViewReleaseSlice struct {
-	Name    string
-	Stories []storyMapViewStory
-}
-
-type storyMapViewStep struct {
-	Key           string
-	Name          string
-	ReleaseSlices []storyMapViewReleaseSlice
+type storyMapViewStepHeader struct {
+	Key  string
+	Name string
 }
 
 type storyMapViewActivity struct {
 	Key   string
 	Name  string
-	Steps []storyMapViewStep
+	Steps []storyMapViewStepHeader
+}
+
+type storyMapViewActivityStepStories struct {
+	StepStories [][]storyMapViewStory
+}
+
+type storyMapViewReleaseRow struct {
+	Name       string
+	Activities []storyMapViewActivityStepStories
 }
 
 type storyMapViewData struct {
-	Name       string
-	Activities []storyMapViewActivity
+	Name            string
+	Activities      []storyMapViewActivity
+	ReleaseRows     []storyMapViewReleaseRow
+	UnscopedStories *storyMapViewReleaseRow
 }
 
 type storyMapView struct {
@@ -83,77 +88,109 @@ func (b *Builder) toStoryMapView(sm *domain.StoryMap) storyMapView {
 
 	var activities []storyMapViewActivity
 	for _, a := range sm.Activities {
-		var steps []storyMapViewStep
+		var stepHeaders []storyMapViewStepHeader
 		for _, s := range a.Steps {
-			releaseSlices := b.groupStoriesByRelease(s.Stories, sm.Releases, storyRelease)
-			steps = append(steps, storyMapViewStep{
-				Key:           s.Key,
-				Name:          s.Name,
-				ReleaseSlices: releaseSlices,
+			stepHeaders = append(stepHeaders, storyMapViewStepHeader{
+				Key:  s.Key,
+				Name: s.Name,
 			})
 		}
 		activities = append(activities, storyMapViewActivity{
 			Key:   a.Key,
 			Name:  a.Name,
-			Steps: steps,
+			Steps: stepHeaders,
 		})
 	}
 
+	releaseRows, unscopedStories := b.buildReleaseRows(sm.Activities, sm.Releases, storyRelease)
+
 	return storyMapView{
 		StoryMap: storyMapViewData{
-			Name:       sm.Name,
-			Activities: activities,
+			Name:            sm.Name,
+			Activities:      activities,
+			ReleaseRows:     releaseRows,
+			UnscopedStories: unscopedStories,
 		},
 	}
 }
 
-func (b *Builder) groupStoriesByRelease(storyKeys []domain.StoryKey, releases []domain.Release, storyRelease map[string]int) []storyMapViewReleaseSlice {
+func (b *Builder) buildReleaseRows(allActivities []domain.Activity, releases []domain.Release, storyRelease map[string]int) ([]storyMapViewReleaseRow, *storyMapViewReleaseRow) {
+	// Collect per-activity, per-step story grouping
+	type stepGroup struct {
+		perRelease map[int][]storyMapViewStory
+		unscoped   []storyMapViewStory
+	}
+	type activityGroup struct {
+		stepGroups []stepGroup
+	}
+
+	var actGroups []activityGroup
+	for _, a := range allActivities {
+		ag := activityGroup{}
+		for _, s := range a.Steps {
+			sg := stepGroup{perRelease: make(map[int][]storyMapViewStory)}
+			for _, sk := range s.Stories {
+				vs := storyMapViewStory{
+					Key:     sk.Value,
+					Name:    b.resolveStoryName(sk),
+					HasPage: b.hasStoryPage(sk),
+				}
+				if idx, ok := storyRelease[sk.Value]; ok {
+					sg.perRelease[idx] = append(sg.perRelease[idx], vs)
+				} else {
+					sg.unscoped = append(sg.unscoped, vs)
+				}
+			}
+			ag.stepGroups = append(ag.stepGroups, sg)
+		}
+		actGroups = append(actGroups, ag)
+	}
+
 	if len(releases) == 0 {
-		// No releases defined: single slice with no name (R-05)
-		var stories []storyMapViewStory
-		for _, sk := range storyKeys {
-			stories = append(stories, storyMapViewStory{
-				Key:     sk.Value,
-				Name:    b.resolveStoryName(sk),
-				HasPage: b.hasStoryPage(sk),
-			})
+		row := storyMapViewReleaseRow{}
+		for _, ag := range actGroups {
+			actStories := storyMapViewActivityStepStories{}
+			for _, sg := range ag.stepGroups {
+				actStories.StepStories = append(actStories.StepStories, sg.unscoped)
+			}
+			row.Activities = append(row.Activities, actStories)
 		}
-		if len(stories) == 0 {
-			return nil
-		}
-		return []storyMapViewReleaseSlice{{Stories: stories}}
+		return nil, &row
 	}
 
-	// Group stories by release index
-	perRelease := make(map[int][]storyMapViewStory)
-	var unscoped []storyMapViewStory
-	for _, sk := range storyKeys {
-		vs := storyMapViewStory{
-			Key:     sk.Value,
-			Name:    b.resolveStoryName(sk),
-			HasPage: b.hasStoryPage(sk),
-		}
-		if idx, ok := storyRelease[sk.Value]; ok {
-			perRelease[idx] = append(perRelease[idx], vs)
-		} else {
-			unscoped = append(unscoped, vs)
-		}
-	}
-
-	var slices []storyMapViewReleaseSlice
+	var rows []storyMapViewReleaseRow
 	for i, r := range releases {
-		if stories, ok := perRelease[i]; ok {
-			slices = append(slices, storyMapViewReleaseSlice{
-				Name:    r.Name,
-				Stories: stories,
-			})
+		row := storyMapViewReleaseRow{Name: r.DisplayName(i)}
+		for _, ag := range actGroups {
+			actStories := storyMapViewActivityStepStories{}
+			for _, sg := range ag.stepGroups {
+				actStories.StepStories = append(actStories.StepStories, sg.perRelease[i])
+			}
+			row.Activities = append(row.Activities, actStories)
 		}
-	}
-	if len(unscoped) > 0 {
-		slices = append(slices, storyMapViewReleaseSlice{Stories: unscoped})
+		rows = append(rows, row)
 	}
 
-	return slices
+	// Unscoped stories
+	hasUnscoped := false
+	unscopedRow := storyMapViewReleaseRow{}
+	for _, ag := range actGroups {
+		actStories := storyMapViewActivityStepStories{}
+		for _, sg := range ag.stepGroups {
+			actStories.StepStories = append(actStories.StepStories, sg.unscoped)
+			if len(sg.unscoped) > 0 {
+				hasUnscoped = true
+			}
+		}
+		unscopedRow.Activities = append(unscopedRow.Activities, actStories)
+	}
+
+	var unscoped *storyMapViewReleaseRow
+	if hasUnscoped {
+		unscoped = &unscopedRow
+	}
+
+	return rows, unscoped
 }
 
 func (b *Builder) buildStoryMap(path string, view storyMapView) error {

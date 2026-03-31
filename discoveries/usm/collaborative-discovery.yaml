@@ -42,9 +42,11 @@ activities:
         name: Capture questions
 
 releases:
-  - stories:
+  - name: Walking Skeleton
+    stories:
       - confirm-story-context
       - confirm-story-map
+      - confirm-discovery-outcomes
+  - stories:
       - write-out-stories-from-usm
       - split-release-scope
-      - confirm-discovery-outcomes

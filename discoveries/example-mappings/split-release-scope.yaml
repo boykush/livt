@@ -14,26 +14,34 @@ rules:
         name: Step defines stories [confirm-story-context, confirm-story-map] but release 1 has only confirm-story-map, so confirm-story-map appears above the release line
 
   - id: R-03
-    name: Release name is displayed on the divider when provided
+    name: Each defined release shows a horizontal divider after its stories
     examples:
       - id: EX-01
-        name: Release with name "Walking Skeleton" shows the name on the horizontal divider
+        name: Release 1 has stories, a divider line is displayed after them
       - id: EX-02
-        name: Release without name still shows a horizontal divider without label
+        name: Last release in the list also shows a divider after its stories
 
   - id: R-04
-    name: Stories not belonging to any release are displayed below all release slices
+    name: Release name is overlaid on the divider line when provided
     examples:
       - id: EX-01
-        name: 3 stories exist, 2 belong to release 1, the remaining story appears below the release divider
+        name: Release with name "Walking Skeleton" shows the name on top of its divider line
+      - id: EX-02
+        name: Release without name shows a divider line without label
 
   - id: R-05
+    name: Stories not belonging to any release are displayed below all release slices without a divider
+    examples:
+      - id: EX-01
+        name: 3 stories exist, 2 belong to release 1, the remaining story appears below the release divider with no line after it
+
+  - id: R-06
     name: When no releases are defined, stories are displayed without any dividers
     examples:
       - id: EX-01
         name: USM has no releases defined, stories are listed under their steps as before with no horizontal lines
 
-  - id: R-06
+  - id: R-07
     name: A story cannot belong to multiple releases
     examples:
       - id: EX-01
