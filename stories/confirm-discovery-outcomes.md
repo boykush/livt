@@ -1,7 +1,3 @@
----
-key: confirm-discovery-outcomes
----
-
 # Confirm discovery outcomes
 
 As a team member

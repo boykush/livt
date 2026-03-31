@@ -1,7 +1,3 @@
----
-key: confirm-story-map
----
-
 # Confirm story map
 
 As a team member

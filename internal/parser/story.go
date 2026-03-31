@@ -16,7 +16,9 @@ func ParseStory(path string) (*domain.Story, error) {
 	}
 	defer f.Close()
 
-	var key, name string
+	key := strings.TrimSuffix(filepath.Base(path), ".md")
+
+	var name string
 	var bodyLines []string
 	scanner := bufio.NewScanner(f)
 	inFrontmatter := false
@@ -26,18 +28,11 @@ func ParseStory(path string) (*domain.Story, error) {
 		line := scanner.Text()
 
 		if line == "---" {
-			if !inFrontmatter {
-				inFrontmatter = true
-				continue
-			}
-			inFrontmatter = false
+			inFrontmatter = !inFrontmatter
 			continue
 		}
 
 		if inFrontmatter {
-			if strings.HasPrefix(line, "key:") {
-				key = strings.TrimSpace(strings.TrimPrefix(line, "key:"))
-			}
 			continue
 		}
 
@@ -66,22 +61,12 @@ func ParseStory(path string) (*domain.Story, error) {
 }
 
 func FindStoryByKey(storiesDir string, key domain.StoryKey) (*domain.Story, error) {
-	files, err := filepath.Glob(filepath.Join(storiesDir, "*.md"))
+	path := filepath.Join(storiesDir, key.Value+".md")
+	story, err := ParseStory(path)
 	if err != nil {
-		return nil, err
+		return &domain.Story{Key: key, Name: key.Value}, nil
 	}
-
-	for _, f := range files {
-		story, err := ParseStory(f)
-		if err != nil {
-			continue
-		}
-		if story.Key == key {
-			return story, nil
-		}
-	}
-
-	return &domain.Story{Key: key, Name: key.Value}, nil
+	return story, nil
 }
 
 func ParseAllStories(storiesDir string) ([]*domain.Story, error) {

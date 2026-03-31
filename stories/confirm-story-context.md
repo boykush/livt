@@ -1,7 +1,3 @@
----
-key: confirm-story-context
----
-
 # Confirm story context
 
 As a team member
