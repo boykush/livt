@@ -17,27 +17,31 @@
 
 <main class="max-w-full mx-auto px-6 py-8">
 <div class="flex items-center gap-4 text-xs text-gray-500 mb-4">
-  <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-purple-100 border-l-2 border-purple-400 rounded-sm"></span>Story Map</span>
+  <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-purple-100 border-l-2 border-purple-400 rounded-sm"></span>Opportunity</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-indigo-100 border-l-2 border-indigo-400 rounded-sm"></span>Activity</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-blue-100 border-l-2 border-blue-400 rounded-sm"></span>Step</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-yellow-100 border-l-2 border-yellow-400 rounded-sm"></span>Story</span>
 </div>
-<div class="bg-purple-100 border-l-4 border-purple-400 p-4 rounded shadow text-center text-lg font-bold text-gray-800 mb-6">
+<div class="bg-purple-100 border-l-4 border-purple-400 p-3 rounded shadow font-bold text-gray-800 w-[180px] mb-6">
   {{.StoryMap.Name}}
 </div>
 
-<div class="flex gap-6 items-start">
+<div class="flex gap-8 items-start overflow-x-auto pb-4">
 {{range .StoryMap.Activities}}
-  <div class="flex flex-col gap-2 min-w-[200px]">
-    <div class="bg-indigo-100 border-l-4 border-indigo-400 p-4 rounded shadow font-semibold text-gray-800">
+  <div class="flex flex-col gap-2">
+    <div class="bg-indigo-100 border-l-4 border-indigo-400 p-3 rounded shadow font-semibold text-gray-800 w-[180px]">
       {{.Name}}
+    </div>
+    <div class="flex gap-2">
+    {{range .Steps}}
+      <div class="bg-blue-100 border-l-4 border-blue-400 p-3 rounded shadow text-sm font-semibold text-gray-800 w-[180px]">
+        {{.Name}}
+      </div>
+    {{end}}
     </div>
     <div class="flex gap-2 items-start">
     {{range .Steps}}
-      <div class="flex flex-col gap-2 min-w-[180px] max-w-[220px]">
-        <div class="bg-blue-100 border-l-4 border-blue-400 p-3 rounded shadow text-sm font-semibold text-gray-800">
-          {{.Name}}
-        </div>
+      <div class="flex flex-col gap-2 w-[180px]">
         {{range .Stories}}
         <a href="../story/{{.Key}}.html" class="block bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow text-sm text-gray-700 hover:bg-yellow-200 transition">
           {{.Name}}
