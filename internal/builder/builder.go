@@ -12,6 +12,7 @@ import (
 type Builder struct {
 	MappingsDir string
 	StoriesDir  string
+	USMDir      string
 	OutDir      string
 }
 
@@ -20,6 +21,14 @@ func (b *Builder) Build() error {
 		return err
 	}
 	if err := os.MkdirAll(filepath.Join(b.OutDir, "mapping"), 0o755); err != nil {
+		return err
+	}
+	if err := os.MkdirAll(filepath.Join(b.OutDir, "story-map"), 0o755); err != nil {
+		return err
+	}
+
+	storyToMap, err := b.buildStoryMaps()
+	if err != nil {
 		return err
 	}
 
@@ -41,8 +50,10 @@ func (b *Builder) Build() error {
 			mappingPath = "../mapping/" + story.Key.Value + ".html"
 		}
 
+		storyMapPath := storyToMap[story.Key.Value]
+
 		storyOutPath := filepath.Join(b.OutDir, "story", story.Key.Value+".html")
-		if err := b.buildStory(storyOutPath, story, mappingPath); err != nil {
+		if err := b.buildStory(storyOutPath, story, mappingPath, storyMapPath); err != nil {
 			return err
 		}
 		fmt.Printf("  %s\n", strings.TrimPrefix(storyOutPath, b.OutDir+"/"))

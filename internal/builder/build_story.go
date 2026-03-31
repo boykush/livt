@@ -13,11 +13,11 @@ func (b *Builder) hasExampleMapping(storyKey domain.StoryKey) bool {
 	return err == nil
 }
 
-func (b *Builder) buildStory(path string, story *domain.Story, mappingPath string) error {
+func (b *Builder) buildStory(path string, story *domain.Story, mappingPath, storyMapPath string) error {
 	f, err := os.Create(path)
 	if err != nil {
 		return err
 	}
 	defer f.Close()
-	return renderStory(f, story, mappingPath)
+	return renderStory(f, story, mappingPath, storyMapPath)
 }

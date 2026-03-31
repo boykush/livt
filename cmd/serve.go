@@ -24,6 +24,7 @@ var serveCmd = &cobra.Command{
 		b := &builder.Builder{
 			MappingsDir: filepath.Join("discoveries", "example-mappings"),
 			StoriesDir:  "stories",
+			USMDir:      filepath.Join("discoveries", "usm"),
 			OutDir:      outDir,
 		}
 		fmt.Printf("Building to %s/\n", outDir)

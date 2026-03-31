@@ -25,11 +25,18 @@
   </div>
   {{end}}
 
+  <div class="flex gap-3 flex-wrap">
+  {{if .StoryMapPath}}
+  <a href="{{.StoryMapPath}}" class="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 text-sm font-medium px-4 py-2 rounded-lg border border-purple-200 hover:bg-purple-100 transition">
+    Story Map &rarr;
+  </a>
+  {{end}}
   {{if .MappingPath}}
   <a href="{{.MappingPath}}" class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-sm font-medium px-4 py-2 rounded-lg border border-blue-200 hover:bg-blue-100 transition">
     Example Mapping &rarr;
   </a>
   {{end}}
+  </div>
 </main>
 </body>
 </html>
