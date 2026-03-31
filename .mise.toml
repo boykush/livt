@@ -1,2 +1,7 @@
 [tools]
 go = "1.26.1"
+hk = "latest"
+pkl = "latest"
+
+[hooks]
+postinstall = "hk install"
