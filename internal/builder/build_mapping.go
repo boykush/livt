@@ -23,9 +23,13 @@ func (b *Builder) buildMappings() error {
 		}
 
 		storyName := b.resolveStoryName(em.StoryKey)
+		storyPath := ""
+		if b.hasStoryPage(em.StoryKey) {
+			storyPath = "../story/" + em.StoryKey.Value + ".html"
+		}
 
 		outPath := filepath.Join(b.OutDir, "mapping", em.StoryKey.Value+".html")
-		if err := b.buildMapping(outPath, em, storyName); err != nil {
+		if err := b.buildMapping(outPath, em, storyName, storyPath); err != nil {
 			return err
 		}
 		fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))
@@ -42,11 +46,11 @@ func (b *Builder) resolveStoryName(key domain.StoryKey) string {
 	return story.Name
 }
 
-func (b *Builder) buildMapping(path string, em *domain.ExampleMapping, storyName string) error {
+func (b *Builder) buildMapping(path string, em *domain.ExampleMapping, storyName, storyPath string) error {
 	f, err := os.Create(path)
 	if err != nil {
 		return err
 	}
 	defer f.Close()
-	return renderMapping(f, em, storyName)
+	return renderMapping(f, em, storyName, storyPath)
 }

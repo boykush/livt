@@ -22,6 +22,9 @@ activities:
             name: Write out stories from USM
       - key: slice-releases
         name: Slice into releases
+        stories:
+          - key: split-release-scope
+            name: Split release scope
 
   - key: discovery
     name: Discovery

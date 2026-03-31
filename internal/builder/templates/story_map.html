@@ -43,9 +43,15 @@
     {{range .Steps}}
       <div class="flex flex-col gap-2 w-[180px]">
         {{range .Stories}}
-        <a href="../story/{{.Key}}.html" class="block bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow text-sm text-gray-700 hover:bg-yellow-200 transition">
-          {{.Name}}
+        {{if .HasPage}}
+        <a href="../story/{{.Key}}.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow text-sm text-gray-700 hover:bg-yellow-200 transition">
+          <span>{{.Name}}</span><span>&rarr;</span>
         </a>
+        {{else}}
+        <div class="block bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow text-sm text-gray-700">
+          {{.Name}}
+        </div>
+        {{end}}
         {{end}}
       </div>
     {{end}}

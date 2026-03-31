@@ -7,6 +7,12 @@ import (
 	"github.com/boykush/livt/internal/domain"
 )
 
+func (b *Builder) hasStoryPage(storyKey domain.StoryKey) bool {
+	path := filepath.Join(b.StoriesDir, storyKey.Value+".md")
+	_, err := os.Stat(path)
+	return err == nil
+}
+
 func (b *Builder) hasExampleMapping(storyKey domain.StoryKey) bool {
 	path := filepath.Join(b.MappingsDir, storyKey.Value+".yaml")
 	_, err := os.Stat(path)

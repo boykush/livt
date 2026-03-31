@@ -41,8 +41,9 @@ func (b *Builder) buildStoryMaps() (map[string]string, error) {
 }
 
 type storyMapViewStory struct {
-	Key  string
-	Name string
+	Key     string
+	Name    string
+	HasPage bool
 }
 
 type storyMapViewStep struct {
@@ -74,8 +75,9 @@ func (b *Builder) toStoryMapView(sm *domain.StoryMap) storyMapView {
 			var stories []storyMapViewStory
 			for _, sk := range s.Stories {
 				stories = append(stories, storyMapViewStory{
-					Key:  sk.Value,
-					Name: b.resolveStoryName(sk),
+					Key:     sk.Value,
+					Name:    b.resolveStoryName(sk),
+					HasPage: b.hasStoryPage(sk),
 				})
 			}
 			steps = append(steps, storyMapViewStep{

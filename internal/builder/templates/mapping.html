@@ -22,9 +22,15 @@
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm"></span>Example</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-red-100 border-l-2 border-red-400 rounded-sm"></span>Question</span>
 </div>
+{{if .StoryPath}}
+<a href="{{.StoryPath}}" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow font-bold text-gray-800 w-[180px] mb-6 hover:bg-yellow-200 transition">
+  <span>{{.StoryName}}</span><span>&rarr;</span>
+</a>
+{{else}}
 <div class="bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow font-bold text-gray-800 w-[180px] mb-6">
   {{.StoryName}}
 </div>
+{{end}}
 
 <div class="flex flex-col gap-2 overflow-x-auto pb-4">
 <div class="flex gap-4">

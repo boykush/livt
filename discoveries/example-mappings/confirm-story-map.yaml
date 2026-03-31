@@ -32,3 +32,11 @@ rules:
         name: Activity with no steps is still displayed on the backbone
       - id: EX-02
         name: Step with no stories is still displayed on the backbone
+
+  - id: R-05
+    name: Story card links to detail page only when story md exists
+    examples:
+      - id: EX-01
+        name: Story md exists, card is a clickable link to story/{key}.html
+      - id: EX-02
+        name: Story md does not exist, card is displayed as plain text without link
