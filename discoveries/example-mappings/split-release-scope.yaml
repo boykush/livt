@@ -22,26 +22,30 @@ rules:
         name: Last release in the list also shows a divider after its stories
 
   - id: R-04
-    name: Release name is overlaid on the divider line when provided
+    name: Release name is overlaid on the divider line
     examples:
       - id: EX-01
-        name: Release with name "Walking Skeleton" shows the name on top of its divider line
-      - id: EX-02
-        name: Release without name shows a divider line without label
+        name: Release with name "Walking Skeleton" shows "Walking Skeleton" on top of its divider line
 
   - id: R-05
+    name: Release without explicit name defaults to "Release N" based on position
+    examples:
+      - id: EX-01
+        name: Second release has no name in YAML, divider shows "Release 2"
+
+  - id: R-06
     name: Stories not belonging to any release are displayed below all release slices without a divider
     examples:
       - id: EX-01
         name: 3 stories exist, 2 belong to release 1, the remaining story appears below the release divider with no line after it
 
-  - id: R-06
+  - id: R-07
     name: When no releases are defined, stories are displayed without any dividers
     examples:
       - id: EX-01
         name: USM has no releases defined, stories are listed under their steps as before with no horizontal lines
 
-  - id: R-07
+  - id: R-08
     name: A story cannot belong to multiple releases
     examples:
       - id: EX-01
