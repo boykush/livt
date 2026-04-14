@@ -25,14 +25,6 @@ livt build [flags]
 |------|-------|---------|-------------|
 | `--out` | `-o` | `dist` | Output directory |
 
-## `livt open`
-
-Open a story card for conversation in your default editor.
-
-```bash
-livt open <story-key>
-```
-
 ## `livt version`
 
 Print the version of livt.
