@@ -1,0 +1,8 @@
+[book]
+title = "livt - Living Text"
+description = "Collaborate on board. Make it living in text."
+authors = ["boykush"]
+language = "en"
+
+[build]
+build-dir = "book"

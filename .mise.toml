@@ -5,6 +5,7 @@ experimental = true
 go = "1.26.1"
 hk = "latest"
 pkl = "latest"
+"cargo:mdbook" = "latest"
 
 [hooks]
 postinstall = "hk install"
