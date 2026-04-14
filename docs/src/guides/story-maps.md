@@ -73,3 +73,5 @@ releases:
   - stories:
       - split-release-scope
 ```
+
+![Story map board](../images/story-map.png)

@@ -1,3 +1,4 @@
 livt
 dist/
 docs/book/
+.playwright-mcp/

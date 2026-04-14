@@ -33,3 +33,5 @@ livt serve
 ```
 
 4. Open <http://localhost:3000> in your browser to view the board.
+
+![Stories index](images/stories-index.png)

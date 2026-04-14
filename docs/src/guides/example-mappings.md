@@ -55,3 +55,5 @@ rules:
 
 questions: []
 ```
+
+![Example mapping board](../images/example-mapping.png)

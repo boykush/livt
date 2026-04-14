@@ -29,3 +29,5 @@ So that I can visually confirm the discovery outcomes maintained in text
 ```
 
 This story has key `confirm-story-map`, which is used to reference it from story maps and example mappings.
+
+![Story detail page](../images/story-detail.png)
