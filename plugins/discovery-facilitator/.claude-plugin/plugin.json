@@ -1,0 +1,10 @@
+{
+  "name": "discovery-facilitator",
+  "version": "0.1.0",
+  "description": "Facilitation skills and expert agents for BDD Example Mapping and User Story Mapping workshops",
+  "author": {
+    "name": "boykush",
+    "email": "boykush315@gmail.com"
+  },
+  "repository": "https://github.com/boykush/livt"
+}

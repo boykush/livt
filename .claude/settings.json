@@ -1,0 +1,5 @@
+{
+  "enabledPlugins": {
+    "discovery-facilitator@livt-claude-code-plugins": true
+  }
+}
