@@ -4,14 +4,12 @@ activities:
   - key: story-mapping
     name: Discover the whole story
     steps:
-      - key: identify-activities
-        name: Identify user activities
-      - key: break-into-tasks
-        name: Break activities into tasks
-      - key: discover-stories
-        name: Discover stories
-      - key: slice-releases
-        name: Slice into releases
+      - key: frame-user-journey
+        name: Frame user journey
+      - key: identify-story-candidates
+        name: Identify story candidates
+      - key: shape-release-slices
+        name: Shape release slices
 
   - key: refine-whole-story
     name: Refine the whole story
@@ -19,28 +17,19 @@ activities:
       - key: confirm-story-map
         name: Confirm the story map
         stories:
+          - key: draft-story-map-yaml-with-ai-agent
+            name: Draft story map YAML with AI agent
           - key: confirm-story-map
-            name: Confirm story map
-      - key: review-narrative-flow
-        name: Review narrative flow
+            name: Preview story map in browser
+      - key: refine-story-map-structure
+        name: Refine story map structure
         stories:
-          - key: confirm-refinements-while-editing
-            name: Confirm refinements while editing
-      - key: align-activity-task-granularity
-        name: Align activity and task granularity
-      - key: reposition-stories
-        name: Reposition stories
-      - key: write-out-stories
-        name: Write out stories
-        stories:
-          - key: write-out-stories-from-usm
-            name: Write out stories from USM
-      - key: review-release-slices
-        name: Review release slices
-        stories:
-          - key: adjust-release-scope
-            name: Adjust release scope
-
+          - key: review-story-map-structure-with-usm-expert
+            name: Review story map structure with USM expert
+          - key: apply-structure-suggestions-with-ai-agent
+            name: Apply structure suggestions with AI agent
+          - key: preview-refinements-while-editing
+            name: Preview refinements while editing
   - key: discovery
     name: Discovery
     steps:
@@ -55,13 +44,3 @@ activities:
         name: Illustrate with examples
       - key: capture-questions
         name: Capture questions
-
-releases:
-  - name: Walking Skeleton
-    stories:
-      - confirm-story-map
-      - confirm-discovery-outcomes
-  - stories:
-      - confirm-refinements-while-editing
-      - write-out-stories-from-usm
-      - adjust-release-scope

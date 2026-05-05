@@ -1,7 +1,7 @@
 ---
-name: Confirm story map
+name: Preview story map in browser
 ---
 
-As a team member
-I want to view the story map as a board
-So that I can visually confirm the discovery outcomes maintained in text
+As a Story Map Maintainer
+I want to serve the story map locally
+So that I can confirm the whole story as a board while refining it
