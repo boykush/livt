@@ -31,6 +31,9 @@ func (b *Builder) buildStoryMaps() (map[string]string, error) {
 		for _, a := range sm.Activities {
 			for _, s := range a.Steps {
 				for _, sc := range s.Stories {
+					if !sc.HasKey() {
+						continue
+					}
 					storyToMap[sc.Key.Value] = relativePath
 				}
 			}
@@ -82,6 +85,9 @@ func (b *Builder) toStoryMapView(sm *domain.StoryMap) storyMapView {
 	storyRelease := make(map[string]int)
 	for i, r := range sm.Releases {
 		for _, sc := range r.Stories {
+			if !sc.HasKey() {
+				continue
+			}
 			storyRelease[sc.Key.Value] = i
 		}
 	}
@@ -133,13 +139,15 @@ func (b *Builder) buildReleaseRows(allActivities []domain.Activity, releases []d
 				vs := storyMapViewStory{
 					Key:    sc.Key.Value,
 					Name:   sc.Name,
-					Opened: b.hasStoryPage(sc.Key),
+					Opened: sc.HasKey() && b.hasStoryPage(sc.Key),
 				}
-				if idx, ok := storyRelease[sc.Key.Value]; ok {
-					sg.perRelease[idx] = append(sg.perRelease[idx], vs)
-				} else {
-					sg.unscoped = append(sg.unscoped, vs)
+				if sc.HasKey() {
+					if idx, ok := storyRelease[sc.Key.Value]; ok {
+						sg.perRelease[idx] = append(sg.perRelease[idx], vs)
+						continue
+					}
 				}
+				sg.unscoped = append(sg.unscoped, vs)
 			}
 			ag.stepGroups = append(ag.stepGroups, sg)
 		}

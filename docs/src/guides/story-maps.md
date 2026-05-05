@@ -16,6 +16,7 @@ activities:
         stories:
           - key: story-key
             name: Story Card Name
+          - name: Lightweight Story Card
 
 releases:
   - name: Release Name
@@ -29,6 +30,7 @@ releases:
 - Stories listed in a release appear above its divider
 - A release without `name` defaults to "Release N" based on position
 - Stories not in any release appear below all dividers
+- Story cards without `key` appear as plain cards and are not included in releases
 - A story cannot belong to multiple releases
 
 ## Example
@@ -49,6 +51,7 @@ activities:
             name: Confirm story context
           - key: confirm-story-map
             name: Confirm story map
+          - name: Draft session outcomes
       - key: slice-releases
         name: Slice into releases
         stories:

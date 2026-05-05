@@ -16,8 +16,8 @@ type storyMapYAML struct {
 }
 
 type releaseYAML struct {
-	Name    string         `yaml:"name"`
-	Stories []string       `yaml:"stories"`
+	Name    string   `yaml:"name"`
+	Stories []string `yaml:"stories"`
 }
 
 type activityYAML struct {
@@ -77,6 +77,9 @@ func ParseStoryMap(path string) (*domain.StoryMap, error) {
 	for _, a := range activities {
 		for _, s := range a.Steps {
 			for _, sc := range s.Stories {
+				if !sc.HasKey() {
+					continue
+				}
 				cardNameByKey[sc.Key.Value] = sc.Name
 			}
 		}
