@@ -52,6 +52,7 @@ activities:
 ```
 
 - Keys are kebab-case identifiers used for cross-referencing
+- Story cards may be captured with only `name` when the story is still lightweight and not ready for a stable key
 - Story files in `stories/` reference backbone steps via the `step` frontmatter field
 - Write to the YAML after each activity or step is agreed upon
 
