@@ -2,7 +2,7 @@ name: Collaborative Discovery
 
 activities:
   - key: story-mapping
-    name: Story Mapping
+    name: Discover the whole story
     steps:
       - key: identify-activities
         name: Identify user activities
@@ -10,21 +10,36 @@ activities:
         name: Break activities into tasks
       - key: discover-stories
         name: Discover stories
+      - key: slice-releases
+        name: Slice into releases
+
+  - key: refine-whole-story
+    name: Refine the whole story
+    steps:
+      - key: confirm-story-map
+        name: Confirm the story map
         stories:
-          - key: confirm-story-context
-            name: Confirm story context
           - key: confirm-story-map
             name: Confirm story map
-      - key: record-stories
-        name: Record stories
+      - key: review-narrative-flow
+        name: Review narrative flow
+        stories:
+          - key: confirm-refinements-while-editing
+            name: Confirm refinements while editing
+      - key: align-activity-task-granularity
+        name: Align activity and task granularity
+      - key: reposition-stories
+        name: Reposition stories
+      - key: write-out-stories
+        name: Write out stories
         stories:
           - key: write-out-stories-from-usm
             name: Write out stories from USM
-      - key: slice-releases
-        name: Slice into releases
+      - key: review-release-slices
+        name: Review release slices
         stories:
-          - key: split-release-scope
-            name: Split release scope
+          - key: adjust-release-scope
+            name: Adjust release scope
 
   - key: discovery
     name: Discovery
@@ -44,9 +59,9 @@ activities:
 releases:
   - name: Walking Skeleton
     stories:
-      - confirm-story-context
       - confirm-story-map
       - confirm-discovery-outcomes
   - stories:
+      - confirm-refinements-while-editing
       - write-out-stories-from-usm
-      - split-release-scope
+      - adjust-release-scope
