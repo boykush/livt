@@ -25,6 +25,19 @@ livt build [flags]
 |------|-------|---------|-------------|
 | `--out` | `-o` | `dist` | Output directory |
 
+## `livt story init`
+
+Initialize a story Markdown file.
+
+```bash
+livt story init <key> --name "Story name"
+```
+
+| Flag | Short | Default | Description |
+|------|-------|---------|-------------|
+| `--name` | | | Story display name |
+| `--stories-dir` | | `stories` | Stories directory |
+
 ## `livt version`
 
 Print the version of livt.
