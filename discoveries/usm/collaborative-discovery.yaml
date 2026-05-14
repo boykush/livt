@@ -17,19 +17,18 @@ activities:
       - key: confirm-story-map
         name: Confirm the story map
         stories:
-          - key: draft-story-map-yaml-with-ai-agent
-            name: Draft story map YAML with AI agent
-          - key: confirm-story-map
-            name: Preview story map in browser
+          - name: Draft story map YAML with AI agent
+          - name: Preview story map in browser
       - key: refine-story-map-structure
         name: Refine story map structure
         stories:
-          - key: review-story-map-structure-with-usm-expert
-            name: Review story map structure with USM expert
-          - key: apply-structure-suggestions-with-ai-agent
-            name: Apply structure suggestions with AI agent
-          - key: preview-refinements-while-editing
-            name: Preview refinements while editing
+          - name: Review story map structure with USM expert
+          - name: Apply structure suggestions with AI agent
+          - name: Preview refinements while editing
+      - key: prepare-stories-for-detailed-discovery
+        name: Prepare stories for detailed discovery
+        stories:
+          - name: Promote story candidates to stories
   - key: discovery
     name: Discovery
     steps:
@@ -38,8 +37,7 @@ activities:
       - key: discover-rules
         name: Discover rules
         stories:
-          - key: confirm-discovery-outcomes
-            name: Confirm discovery outcomes
+          - name: Confirm discovery outcomes
       - key: illustrate-examples
         name: Illustrate with examples
       - key: capture-questions
