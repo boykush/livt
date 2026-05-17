@@ -81,15 +81,9 @@ type storyMapView struct {
 }
 
 func (b *Builder) toStoryMapView(sm *domain.StoryMap) storyMapView {
-	// Build story key → release index map
-	storyRelease := make(map[string]int)
+	releaseIndexByID := make(map[string]int)
 	for i, r := range sm.Releases {
-		for _, sc := range r.Stories {
-			if !sc.HasKey() {
-				continue
-			}
-			storyRelease[sc.Key.Value] = i
-		}
+		releaseIndexByID[r.ID] = i
 	}
 
 	var activities []storyMapViewActivity
@@ -108,7 +102,7 @@ func (b *Builder) toStoryMapView(sm *domain.StoryMap) storyMapView {
 		})
 	}
 
-	releaseRows, unscopedStories := b.buildReleaseRows(sm.Activities, sm.Releases, storyRelease)
+	releaseRows, unscopedStories := b.buildReleaseRows(sm.Activities, sm.Releases, releaseIndexByID)
 
 	return storyMapView{
 		StoryMap: storyMapViewData{
@@ -120,7 +114,7 @@ func (b *Builder) toStoryMapView(sm *domain.StoryMap) storyMapView {
 	}
 }
 
-func (b *Builder) buildReleaseRows(allActivities []domain.Activity, releases []domain.Release, storyRelease map[string]int) ([]storyMapViewReleaseRow, *storyMapViewReleaseRow) {
+func (b *Builder) buildReleaseRows(allActivities []domain.Activity, releases []domain.Release, releaseIndexByID map[string]int) ([]storyMapViewReleaseRow, *storyMapViewReleaseRow) {
 	// Collect per-activity, per-step story grouping
 	type stepGroup struct {
 		perRelease map[int][]storyMapViewStory
@@ -141,8 +135,8 @@ func (b *Builder) buildReleaseRows(allActivities []domain.Activity, releases []d
 					Name:   sc.Name,
 					Opened: sc.HasKey() && b.hasStoryPage(sc.Key),
 				}
-				if sc.HasKey() {
-					if idx, ok := storyRelease[sc.Key.Value]; ok {
+				if sc.Release != "" {
+					if idx, ok := releaseIndexByID[sc.Release]; ok {
 						sg.perRelease[idx] = append(sg.perRelease[idx], vs)
 						continue
 					}

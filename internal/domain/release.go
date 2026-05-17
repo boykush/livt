@@ -3,8 +3,8 @@ package domain
 import "fmt"
 
 type Release struct {
-	Name    string
-	Stories []StoryCard
+	ID   string
+	Name string
 }
 
 func (r Release) DisplayName(index int) string {

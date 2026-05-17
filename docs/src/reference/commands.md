@@ -25,6 +25,19 @@ livt build [flags]
 |------|-------|---------|-------------|
 | `--out` | `-o` | `dist` | Output directory |
 
+## `livt story commit`
+
+Commit a story candidate to detailed discovery by creating its story Markdown file.
+
+```bash
+livt story commit <key> --name "Story name"
+```
+
+| Flag | Short | Default | Description |
+|------|-------|---------|-------------|
+| `--name` | | | Story display name |
+| `--stories-dir` | | `stories` | Stories directory |
+
 ## `livt version`
 
 Print the version of livt.
