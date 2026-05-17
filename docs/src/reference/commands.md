@@ -25,12 +25,12 @@ livt build [flags]
 |------|-------|---------|-------------|
 | `--out` | `-o` | `dist` | Output directory |
 
-## `livt story init`
+## `livt story commit`
 
-Initialize a story Markdown file.
+Commit a story candidate to detailed discovery by creating its story Markdown file.
 
 ```bash
-livt story init <key> --name "Story name"
+livt story commit <key> --name "Story name"
 ```
 
 | Flag | Short | Default | Description |

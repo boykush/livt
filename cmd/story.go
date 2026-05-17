@@ -13,9 +13,9 @@ var storyName string
 var storiesDir string
 
 func init() {
-	storyInitCmd.Flags().StringVar(&storyName, "name", "", "story display name")
-	storyInitCmd.Flags().StringVar(&storiesDir, "stories-dir", "stories", "stories directory")
-	storyCmd.AddCommand(storyInitCmd)
+	storyCommitCmd.Flags().StringVar(&storyName, "name", "", "story display name")
+	storyCommitCmd.Flags().StringVar(&storiesDir, "stories-dir", "stories", "stories directory")
+	storyCmd.AddCommand(storyCommitCmd)
 	rootCmd.AddCommand(storyCmd)
 }
 
@@ -24,9 +24,9 @@ var storyCmd = &cobra.Command{
 	Short: "Work with story files",
 }
 
-var storyInitCmd = &cobra.Command{
-	Use:   "init <key>",
-	Short: "Initialize a story file",
+var storyCommitCmd = &cobra.Command{
+	Use:   "commit <key>",
+	Short: "Commit a story candidate to detailed discovery",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		key := strings.TrimSpace(args[0])
@@ -53,7 +53,7 @@ var storyInitCmd = &cobra.Command{
 			return err
 		}
 
-		fmt.Printf("Initialized %s\n", path)
+		fmt.Printf("Committed %s\n", path)
 		return nil
 	},
 }

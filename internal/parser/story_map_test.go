@@ -9,6 +9,9 @@ import (
 func TestParseStoryMapAllowsStoryCardsWithoutKeys(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "map.yaml")
 	data := []byte(`name: discovery
+releases:
+  - id: first-release
+    name: First release
 activities:
   - key: activity
     name: Activity
@@ -17,12 +20,9 @@ activities:
         name: Step
         stories:
           - name: Lightweight card
+            release: first-release
           - key: detailed-card
             name: Detailed card
-releases:
-  - name: First release
-    stories:
-      - detailed-card
 `)
 	if err := os.WriteFile(path, data, 0o644); err != nil {
 		t.Fatal(err)
@@ -44,11 +44,53 @@ releases:
 		t.Fatalf("got keyless story name %q", stories[0].Name)
 	}
 
-	releaseStories := storyMap.Releases[0].Stories
-	if len(releaseStories) != 1 {
-		t.Fatalf("got %d release stories, want 1", len(releaseStories))
+	if storyMap.Releases[0].ID != "first-release" {
+		t.Fatalf("got release id %q", storyMap.Releases[0].ID)
 	}
-	if releaseStories[0].Name != "Detailed card" {
-		t.Fatalf("got release story name %q", releaseStories[0].Name)
+	if stories[0].Release != "first-release" {
+		t.Fatalf("got keyless story release %q", stories[0].Release)
+	}
+}
+
+func TestParseStoryMapRejectsDuplicateReleaseIDs(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "map.yaml")
+	data := []byte(`name: discovery
+releases:
+  - id: first-release
+    name: First release
+  - id: first-release
+    name: Duplicate release
+`)
+	if err := os.WriteFile(path, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err := ParseStoryMap(path); err == nil {
+		t.Fatal("expected duplicate release id error")
+	}
+}
+
+func TestParseStoryMapRejectsUnknownStoryRelease(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "map.yaml")
+	data := []byte(`name: discovery
+releases:
+  - id: first-release
+    name: First release
+activities:
+  - key: activity
+    name: Activity
+    steps:
+      - key: step
+        name: Step
+        stories:
+          - name: Lightweight card
+            release: missing-release
+`)
+	if err := os.WriteFile(path, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err := ParseStoryMap(path); err == nil {
+		t.Fatal("expected unknown release error")
 	}
 }

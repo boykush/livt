@@ -16,22 +16,23 @@ activities:
         stories:
           - key: story-key
             name: Story Card Name
+            release: release-id
           - name: Lightweight Story Card
 
 releases:
-  - name: Release Name
-    stories:
-      - story-key
+  - id: release-id
+    name: Release Name
 ```
 
 ## Releases
 
 - Each release defines a horizontal divider on the board
-- Stories listed in a release appear above its divider
+- Each release has an `id` that story cards reference with `release`
+- Stories with a `release` appear above that release's divider
 - A release without `name` defaults to "Release N" based on position
 - Stories not in any release appear below all dividers
-- Story cards without `key` appear as plain cards and are not included in releases
-- A story cannot belong to multiple releases
+- Story cards without `key` appear as plain cards and can still belong to a release
+- A story can reference only one release
 
 ## Example
 
@@ -49,14 +50,17 @@ activities:
         stories:
           - key: confirm-story-context
             name: Confirm story context
+            release: walking-skeleton
           - key: confirm-story-map
             name: Confirm story map
+            release: walking-skeleton
           - name: Draft session outcomes
       - key: slice-releases
         name: Slice into releases
         stories:
           - key: split-release-scope
             name: Split release scope
+            release: release-2
 
   - key: discovery
     name: Discovery
@@ -66,15 +70,12 @@ activities:
         stories:
           - key: confirm-discovery-outcomes
             name: Confirm discovery outcomes
+            release: walking-skeleton
 
 releases:
-  - name: Walking Skeleton
-    stories:
-      - confirm-story-context
-      - confirm-story-map
-      - confirm-discovery-outcomes
-  - stories:
-      - split-release-scope
+  - id: walking-skeleton
+    name: Walking Skeleton
+  - id: release-2
 ```
 
 ![Story map board](../images/story-map.png)

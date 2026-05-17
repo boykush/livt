@@ -28,7 +28,7 @@ activities:
       - key: prepare-stories-for-detailed-discovery
         name: Prepare stories for detailed discovery
         stories:
-          - name: Initialize story files from candidates
+          - name: Commit story candidates for detailed discovery
   - key: discovery
     name: Discovery
     steps:

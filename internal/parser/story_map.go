@@ -16,8 +16,8 @@ type storyMapYAML struct {
 }
 
 type releaseYAML struct {
-	Name    string   `yaml:"name"`
-	Stories []string `yaml:"stories"`
+	ID   string `yaml:"id"`
+	Name string `yaml:"name"`
 }
 
 type activityYAML struct {
@@ -27,8 +27,9 @@ type activityYAML struct {
 }
 
 type storyRefYAML struct {
-	Key  string `yaml:"key"`
-	Name string `yaml:"name"`
+	Key     string `yaml:"key"`
+	Name    string `yaml:"name"`
+	Release string `yaml:"release"`
 }
 
 type stepYAML struct {
@@ -55,8 +56,9 @@ func ParseStoryMap(path string) (*domain.StoryMap, error) {
 			var storyCards []domain.StoryCard
 			for _, sk := range s.Stories {
 				storyCards = append(storyCards, domain.StoryCard{
-					Key:  domain.StoryKey{Value: sk.Key},
-					Name: sk.Name,
+					Key:     domain.StoryKey{Value: sk.Key},
+					Name:    sk.Name,
+					Release: sk.Release,
 				})
 			}
 			steps = append(steps, domain.Step{
@@ -72,37 +74,30 @@ func ParseStoryMap(path string) (*domain.StoryMap, error) {
 		})
 	}
 
-	// Build key-to-name lookup from activities for release resolution
-	cardNameByKey := make(map[string]string)
+	var releases []domain.Release
+	releaseIDs := make(map[string]bool)
+	for _, r := range raw.Releases {
+		if r.ID == "" {
+			return nil, fmt.Errorf("release %q is missing id", r.Name)
+		}
+		if releaseIDs[r.ID] {
+			return nil, fmt.Errorf("release id %q is duplicated", r.ID)
+		}
+		releaseIDs[r.ID] = true
+		releases = append(releases, domain.Release{
+			ID:   r.ID,
+			Name: r.Name,
+		})
+	}
+
 	for _, a := range activities {
 		for _, s := range a.Steps {
 			for _, sc := range s.Stories {
-				if !sc.HasKey() {
-					continue
+				if sc.Release != "" && !releaseIDs[sc.Release] {
+					return nil, fmt.Errorf("story %q references unknown release %q", sc.Name, sc.Release)
 				}
-				cardNameByKey[sc.Key.Value] = sc.Name
 			}
 		}
-	}
-
-	var releases []domain.Release
-	seen := make(map[string]bool)
-	for _, r := range raw.Releases {
-		var storyCards []domain.StoryCard
-		for _, sk := range r.Stories {
-			if seen[sk] {
-				return nil, fmt.Errorf("story %q belongs to multiple releases", sk)
-			}
-			seen[sk] = true
-			storyCards = append(storyCards, domain.StoryCard{
-				Key:  domain.StoryKey{Value: sk},
-				Name: cardNameByKey[sk],
-			})
-		}
-		releases = append(releases, domain.Release{
-			Name:    r.Name,
-			Stories: storyCards,
-		})
 	}
 
 	return &domain.StoryMap{
