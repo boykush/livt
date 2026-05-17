@@ -94,3 +94,28 @@ activities:
 		t.Fatal("expected unknown release error")
 	}
 }
+
+func TestParseStoryMapRejectsDuplicateStoryCardNames(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "map.yaml")
+	data := []byte(`name: discovery
+activities:
+  - key: activity
+    name: Activity
+    steps:
+      - key: first-step
+        name: First step
+        stories:
+          - name: Duplicate card
+      - key: second-step
+        name: Second step
+        stories:
+          - name: Duplicate card
+`)
+	if err := os.WriteFile(path, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	if _, err := ParseStoryMap(path); err == nil {
+		t.Fatal("expected duplicate story card name error")
+	}
+}

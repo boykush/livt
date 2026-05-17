@@ -1,5 +1,4 @@
 name: Collaborative Discovery
-
 activities:
   - key: story-mapping
     name: Discover the whole story
@@ -10,7 +9,6 @@ activities:
         name: Identify story candidates
       - key: shape-release-slices
         name: Shape release slices
-
   - key: refine-whole-story
     name: Refine the whole story
     steps:
@@ -29,6 +27,7 @@ activities:
         name: Prepare stories for detailed discovery
         stories:
           - name: Commit story candidates for detailed discovery
+            key: commit-story-candidates-for-detailed-discovery
   - key: discovery
     name: Discovery
     steps:

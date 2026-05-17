@@ -28,14 +28,21 @@ livt build [flags]
 ## `livt story commit`
 
 Commit a story candidate to detailed discovery by creating its story Markdown file.
+The story key must be kebab-case. When committing from a story map, livt creates the story file first and then writes the key back to the matching story candidate in the story map.
 
 ```bash
-livt story commit <key> --name "Story name"
+livt story commit --usm discoveries/usm/map.yaml --candidate "Story name" --key story-key
 ```
 
 | Flag | Short | Default | Description |
 |------|-------|---------|-------------|
-| `--name` | | | Story display name |
+| `--key` | | | Story key, in kebab-case |
+| `--usm` | | | Story map YAML file |
+| `--candidate` | | | Story candidate name in the story map |
+| `--name` | | | Story display name for standalone story creation |
+| `--as` | | | Story persona |
+| `--want` | | | Story goal |
+| `--so-that` | | | Story benefit |
 | `--stories-dir` | | `stories` | Stories directory |
 
 ## `livt version`

@@ -50,11 +50,19 @@ func ParseStoryMap(path string) (*domain.StoryMap, error) {
 	}
 
 	var activities []domain.Activity
+	storyNames := make(map[string]bool)
 	for _, a := range raw.Activities {
 		var steps []domain.Step
 		for _, s := range a.Steps {
 			var storyCards []domain.StoryCard
 			for _, sk := range s.Stories {
+				if sk.Name == "" {
+					return nil, fmt.Errorf("story card in step %q is missing name", s.Key)
+				}
+				if storyNames[sk.Name] {
+					return nil, fmt.Errorf("story card name %q is duplicated", sk.Name)
+				}
+				storyNames[sk.Name] = true
 				storyCards = append(storyCards, domain.StoryCard{
 					Key:     domain.StoryKey{Value: sk.Key},
 					Name:    sk.Name,

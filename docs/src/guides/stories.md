@@ -1,6 +1,7 @@
 # Stories
 
 Stories are Markdown files with YAML frontmatter, stored in the `stories/` directory.
+The `stories/` directory is the committed story registry: once a story candidate is committed for detailed discovery, its key is owned by `stories/{story-key}.md`.
 
 ## Format
 
@@ -13,6 +14,8 @@ Story body in Markdown.
 ```
 
 The `name` field in frontmatter is required. The **story key** is derived from the filename (without `.md`).
+Story keys must be kebab-case, using lowercase letters, numbers, and hyphens.
+Key uniqueness is enforced by the filesystem: two committed stories cannot use the same `stories/{story-key}.md` path.
 
 ## Example
 
@@ -29,5 +32,15 @@ So that I can visually confirm the discovery outcomes maintained in text
 ```
 
 This story has key `confirm-story-map`, which is used to reference it from story maps and example mappings.
+
+## Commit from a story map
+
+Use `livt story commit` to commit a story candidate from a story map into the story registry:
+
+```bash
+livt story commit --usm discoveries/usm/map.yaml --candidate "Story name" --key story-key
+```
+
+The command creates `stories/story-key.md` first. After the story file is written, it writes the same `key` back to the matching story candidate in the story map.
 
 ![Story detail page](../images/story-detail.png)

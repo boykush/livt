@@ -14,6 +14,8 @@ project-root/
 ```
 
 - Story keys are derived from filenames (without extension)
+- Story keys must be kebab-case: lowercase letters, numbers, and hyphens
+- The `stories/` directory is the committed story registry, and `stories/{story-key}.md` provides story key uniqueness
 - Example mapping filenames must match story keys to link them
 
 ## Output
