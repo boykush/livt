@@ -6,7 +6,9 @@ go = "1.26.1"
 node = "24.14.1"
 hk = "latest"
 pkl = "latest"
-"cargo:mdbook" = "latest"
+"aqua:rust-lang/mdBook" = "0.5.2"
 
 [hooks]
 postinstall = "hk install"
+
+[env]
