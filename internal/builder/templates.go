@@ -15,11 +15,22 @@ var indexTmpl = template.Must(template.ParseFS(templateFS, "templates/index.html
 var storyTmpl = template.Must(template.ParseFS(templateFS, "templates/story.html"))
 var mappingTmpl = template.Must(template.ParseFS(templateFS, "templates/mapping.html"))
 var storyMapTmpl = template.Must(template.ParseFS(templateFS, "templates/story_map.html"))
+var glossaryTmpl = template.Must(template.ParseFS(templateFS, "templates/glossary.html"))
 
 type IndexEntry struct {
 	StoryKey  string
 	StoryName string
 	Path      string
+}
+
+type glossaryCard struct {
+	Key        string
+	Name       string
+	Definition string
+}
+
+type glossaryView struct {
+	Terms []glossaryCard
 }
 
 type storyView struct {
@@ -48,4 +59,8 @@ func renderMapping(w io.Writer, em *domain.ExampleMapping, storyName, storyPath 
 
 func renderStoryMap(w io.Writer, view storyMapView) error {
 	return storyMapTmpl.Execute(w, view)
+}
+
+func renderGlossary(w io.Writer, view glossaryView) error {
+	return glossaryTmpl.Execute(w, view)
 }

@@ -20,10 +20,11 @@ var buildCmd = &cobra.Command{
 	Short: "Build static HTML from artifacts",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		b := &builder.Builder{
-			MappingsDir: filepath.Join("discoveries", "example-mappings"),
-			StoriesDir:  "stories",
-			USMDir:      filepath.Join("discoveries", "usm"),
-			OutDir:      outDir,
+			MappingsDir:   filepath.Join("discoveries", "example-mappings"),
+			StoriesDir:    "stories",
+			USMDir:        filepath.Join("discoveries", "usm"),
+			UbiquitousDir: "ubiquitous",
+			OutDir:        outDir,
 		}
 		fmt.Printf("Building to %s/\n", outDir)
 		return b.Build()

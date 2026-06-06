@@ -10,10 +10,11 @@ import (
 )
 
 type Builder struct {
-	MappingsDir string
-	StoriesDir  string
-	USMDir      string
-	OutDir      string
+	MappingsDir   string
+	StoriesDir    string
+	USMDir        string
+	UbiquitousDir string
+	OutDir        string
 }
 
 func (b *Builder) Build() error {
@@ -60,6 +61,10 @@ func (b *Builder) Build() error {
 	}
 
 	if err := b.buildMappings(); err != nil {
+		return err
+	}
+
+	if err := b.buildGlossary(); err != nil {
 		return err
 	}
 
