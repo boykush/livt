@@ -11,12 +11,15 @@ project-root/
       {map-name}.yaml                     # Story map files
     example-mappings/
       {story-key}.yaml                    # Example mapping files
+  ubiquitous/
+    {term-key}.md                         # Ubiquitous language term files
 ```
 
 - Story keys are derived from filenames (without extension)
 - Story keys must be kebab-case: lowercase letters, numbers, and hyphens
 - The `stories/` directory is the committed story registry, and `stories/{story-key}.md` provides story key uniqueness
 - Example mapping filenames must match story keys to link them
+- Term keys are derived from `ubiquitous/{term-key}.md` filenames and used as `ubiquitous.html#{term-key}` link anchors
 
 ## Output
 
@@ -31,4 +34,5 @@ dist/
     {story-key}.html                      # Example mapping boards
   story-map/
     {map-name}.html                       # Story map boards
+  ubiquitous.html                         # Ubiquitous language table
 ```

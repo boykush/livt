@@ -21,10 +21,11 @@ var serveCmd = &cobra.Command{
 	Short: "Build and start a local server to view artifacts as sticky notes",
 	RunE: func(cmd *cobra.Command, args []string) error {
 		b := &builder.Builder{
-			MappingsDir: filepath.Join("discoveries", "example-mappings"),
-			StoriesDir:  "stories",
-			USMDir:      filepath.Join("discoveries", "usm"),
-			OutDir:      outDir,
+			MappingsDir:   filepath.Join("discoveries", "example-mappings"),
+			StoriesDir:    "stories",
+			USMDir:        filepath.Join("discoveries", "usm"),
+			UbiquitousDir: "ubiquitous",
+			OutDir:        outDir,
 		}
 		return server.Serve(b, port)
 	},

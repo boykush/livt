@@ -11,7 +11,7 @@ go install github.com/boykush/livt@latest
 1. Create the required directories:
 
 ```bash
-mkdir -p stories discoveries/usm discoveries/example-mappings
+mkdir -p stories discoveries/usm discoveries/example-mappings ubiquitous
 ```
 
 2. Create your first story in `stories/my-first-story.md`:
