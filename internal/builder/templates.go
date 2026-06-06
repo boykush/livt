@@ -39,10 +39,19 @@ type storyView struct {
 	StoryMapPath string
 }
 
+// termCard is a referenced ubiquitous language term rendered as a pink sticky on
+// a board. Href is the link to its glossary row, or empty when the term has no
+// matching ubiquitous/{key}.md file (then it renders as a plain card).
+type termCard struct {
+	Name string
+	Href string
+}
+
 type mappingView struct {
-	StoryName string
-	StoryPath string
-	Mapping   *domain.ExampleMapping
+	StoryName  string
+	StoryPath  string
+	Mapping    *domain.ExampleMapping
+	Ubiquitous []termCard
 }
 
 func renderIndex(w io.Writer, entries []IndexEntry) error {
@@ -53,8 +62,8 @@ func renderStory(w io.Writer, story *domain.Story, mappingPath, storyMapPath str
 	return storyTmpl.Execute(w, storyView{Story: story, MappingPath: mappingPath, StoryMapPath: storyMapPath})
 }
 
-func renderMapping(w io.Writer, em *domain.ExampleMapping, storyName, storyPath string) error {
-	return mappingTmpl.Execute(w, mappingView{StoryName: storyName, StoryPath: storyPath, Mapping: em})
+func renderMapping(w io.Writer, em *domain.ExampleMapping, storyName, storyPath string, ubiquitous []termCard) error {
+	return mappingTmpl.Execute(w, mappingView{StoryName: storyName, StoryPath: storyPath, Mapping: em, Ubiquitous: ubiquitous})
 }
 
 func renderStoryMap(w io.Writer, view storyMapView) error {

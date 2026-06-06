@@ -34,5 +34,21 @@ name: ストーリーマップ
 
 `livt build` renders every term as a row on a single page at `ubiquitous.html`,
 with **Term**, **Key**, and **Definition** columns. Each row carries an
-`id={term-key}` anchor, so a term is linkable as `ubiquitous.html#{term-key}` —
-for example, to reference it from a story map or example mapping board.
+`id={term-key}` anchor, so a term is linkable as `ubiquitous.html#{term-key}`.
+
+## Referencing terms from boards
+
+Story maps and example mappings can declare the terms they use with a top-level
+`ubiquitous` list of term keys:
+
+```yaml
+ubiquitous:
+  - story-map
+  - story
+```
+
+Referenced terms render as pink stickies below the board, each linking to its
+glossary row (`ubiquitous.html#{term-key}`). A key with no matching
+`ubiquitous/{term-key}.md` file renders as a plain pink card, so references
+degrade gracefully. See [Story Maps](./story-maps.md) and
+[Example Mappings](./example-mappings.md).

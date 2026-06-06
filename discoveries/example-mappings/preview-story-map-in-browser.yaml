@@ -1,0 +1,27 @@
+rules:
+  - id: R-01
+    name: アクティビティとステップを俯瞰できる
+    examples:
+      - id: EX-01
+        name: アクティビティが横並びで、その下にステップが並ぶ
+  - id: R-02
+    name: コミット済みストーリーは詳細ページにリンクする
+    examples:
+      - id: EX-01
+        name: ストーリーファイルがあるカードは矢印付きのリンクになる
+      - id: EX-02
+        name: キーのないストーリー候補はプレーンなカードで表示される
+  - id: R-03
+    name: リリーススライスでストーリー行が区切られる
+    examples:
+      - id: EX-01
+        name: リリース未指定のストーリーは未スコープ行にまとまる
+
+questions:
+  - id: Q-01
+    text: ストーリーマップが複数ある場合の一覧導線をどうするか
+
+ubiquitous:
+  - story-map
+  - story
+  - release-slice

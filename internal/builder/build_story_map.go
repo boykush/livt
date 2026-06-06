@@ -74,6 +74,7 @@ type storyMapViewData struct {
 	Activities      []storyMapViewActivity
 	ReleaseRows     []storyMapViewReleaseRow
 	UnscopedStories *storyMapViewReleaseRow
+	Ubiquitous      []termCard
 }
 
 type storyMapView struct {
@@ -110,6 +111,7 @@ func (b *Builder) toStoryMapView(sm *domain.StoryMap) storyMapView {
 			Activities:      activities,
 			ReleaseRows:     releaseRows,
 			UnscopedStories: unscopedStories,
+			Ubiquitous:      b.resolveTermCards(sm.Ubiquitous),
 		},
 	}
 }
