@@ -27,6 +27,11 @@ func (b *Builder) buildGlossary() error {
 		})
 	}
 
+	sb, err := b.sidebar("ubiquitous", "")
+	if err != nil {
+		return err
+	}
+
 	outPath := filepath.Join(b.OutDir, "ubiquitous.html")
 	f, err := os.Create(outPath)
 	if err != nil {
@@ -34,7 +39,7 @@ func (b *Builder) buildGlossary() error {
 	}
 	defer f.Close()
 
-	if err := renderGlossary(f, glossaryView{Terms: cards}); err != nil {
+	if err := renderGlossary(f, glossaryView{Sidebar: sb, Terms: cards}); err != nil {
 		return err
 	}
 	fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))

@@ -17,18 +17,65 @@ type Builder struct {
 	OutDir        string
 }
 
+type sidebarCounts struct {
+	mappings  int
+	storyMaps int
+	stories   int
+	terms     int
+}
+
+// computeCounts tallies every resource type so the shared sidebar can show
+// per-type counts on each hub page.
+func (b *Builder) computeCounts() (sidebarCounts, error) {
+	maps, err := parser.ParseAllStoryMaps(b.USMDir)
+	if err != nil {
+		return sidebarCounts{}, err
+	}
+	stories, err := parser.ParseAllStories(b.StoriesDir)
+	if err != nil {
+		return sidebarCounts{}, err
+	}
+	mappingFiles, err := filepath.Glob(filepath.Join(b.MappingsDir, "*.yaml"))
+	if err != nil {
+		return sidebarCounts{}, err
+	}
+	terms, err := parser.ParseAllTerms(b.UbiquitousDir)
+	if err != nil {
+		return sidebarCounts{}, err
+	}
+	return sidebarCounts{
+		mappings:  len(mappingFiles),
+		storyMaps: len(maps),
+		stories:   len(stories),
+		terms:     len(terms),
+	}, nil
+}
+
+// sidebar builds the shared navigation data for a hub page. prefix is the
+// relative path back to the output root, active marks the current resource type.
+func (b *Builder) sidebar(active, prefix string) (Sidebar, error) {
+	c, err := b.computeCounts()
+	if err != nil {
+		return Sidebar{}, err
+	}
+	return Sidebar{
+		Prefix:    prefix,
+		Active:    active,
+		Mappings:  c.mappings,
+		StoryMaps: c.storyMaps,
+		Stories:   c.stories,
+		Terms:     c.terms,
+	}, nil
+}
+
 func (b *Builder) Build() error {
-	if err := os.MkdirAll(filepath.Join(b.OutDir, "story"), 0o755); err != nil {
-		return err
-	}
-	if err := os.MkdirAll(filepath.Join(b.OutDir, "mapping"), 0o755); err != nil {
-		return err
-	}
-	if err := os.MkdirAll(filepath.Join(b.OutDir, "story-map"), 0o755); err != nil {
-		return err
+	for _, d := range []string{"story", "mapping", "story-map"} {
+		if err := os.MkdirAll(filepath.Join(b.OutDir, d), 0o755); err != nil {
+			return err
+		}
 	}
 
-	storyToMap, err := b.buildStoryMaps()
+	storyToMap, storyMapTiles, err := b.buildStoryMaps()
 	if err != nil {
 		return err
 	}
@@ -38,13 +85,9 @@ func (b *Builder) Build() error {
 		return err
 	}
 
-	var entries []IndexEntry
+	var storyItems []storyItem
 	for _, story := range stories {
-		entries = append(entries, IndexEntry{
-			StoryKey:  story.Key.Value,
-			StoryName: story.Name,
-			Path:      "story/" + story.Key.Value + ".html",
-		})
+		storyItems = append(storyItems, storyItem{Key: story.Key.Value, Name: story.Name})
 
 		mappingPath := ""
 		if b.hasExampleMapping(story.Key) {
@@ -60,7 +103,8 @@ func (b *Builder) Build() error {
 		fmt.Printf("  %s\n", strings.TrimPrefix(storyOutPath, b.OutDir+"/"))
 	}
 
-	if err := b.buildMappings(); err != nil {
+	mappingTiles, err := b.buildMappings()
+	if err != nil {
 		return err
 	}
 
@@ -68,11 +112,21 @@ func (b *Builder) Build() error {
 		return err
 	}
 
-	indexPath := filepath.Join(b.OutDir, "index.html")
-	if err := b.buildIndex(indexPath, entries); err != nil {
+	// Hub pages share the sidebar; index.html is the Example Mappings overview.
+	if err := b.buildMappingsIndex(mappingTiles); err != nil {
 		return err
 	}
 	fmt.Printf("  index.html\n")
+
+	if err := b.buildStoryMapsIndex(storyMapTiles); err != nil {
+		return err
+	}
+	fmt.Printf("  story-maps.html\n")
+
+	if err := b.buildStoriesIndex(storyItems); err != nil {
+		return err
+	}
+	fmt.Printf("  stories.html\n")
 
 	return nil
 }
