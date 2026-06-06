@@ -1,35 +1,48 @@
 # Discovery Facilitator Plugin
 
-Facilitation skills and expert agents for BDD Example Mapping and User Story Mapping workshops.
+Skills and expert agents for turning collaborative discovery sessions — BDD Example Mapping and User Story Mapping — into reviewed, reconciled artifacts.
 
 ## Overview
 
-This plugin provides AI-powered facilitation for two key discovery practices:
+Live facilitation happens with people on a board (Miro, sticky notes). This plugin handles the **post-collaboration** workflow: writing the board out and refining it through a three-step pipeline, where every step is a skill.
 
-- **User Story Mapping** (Jeff Patton) — Discover activities, tasks, and stories through narrative-driven dialogue
-- **Example Mapping** (BDD Discovery) — Explore concrete examples, extract rules, and capture questions
+```
+Transcribe ──▶ Review (清書) ──▶ Reconcile
+  (skill)         (skill +          (skill)
+                 expert agent)
+```
 
-Each practice includes a facilitator skill for running sessions and an expert agent for consulting and reviewing artifacts.
+1. **Transcribe** — write the agreed board out to YAML faithfully, committed with no review as the diff baseline.
+2. **Review / 清書** — brush up the structure and ship it as a reviewable PR diff on top of the baseline, backed by an expert agent. The review's value is exactly that diff.
+3. **Reconcile** — diff the result against the current implementation to surface gaps and omissions.
 
 ## Skills
 
-### `/usm-facilitator`
+### Transcribe
 
-Facilitate a User Story Mapping session. Guides the team through discovering activities, breaking them into steps, and slicing releases. Outputs to `discoveries/usm/{map-name}.yaml`.
+- **`/usm-transcriber`** — transcribe a completed User Story Mapping board into `discoveries/usm/{map-name}.yaml`. Faithfully captures the backbone (activities, steps) and story cards in board order, committed as the review-free baseline.
+- **`/example-mapping-transcriber`** — transcribe a completed Example Mapping board into `discoveries/example-mappings/{story-key}.yaml`. Faithfully captures rules, examples, and questions, committed as the review-free baseline.
 
-### `/example-mapping-facilitator`
+### Review (清書)
 
-Facilitate an Example Mapping session on a story. Walks through concrete examples, extracts business rules, and captures unresolved questions. Outputs to `discoveries/example-mappings/{story-key}.yaml`.
+- **`/usm-reviewer`** — brush up a transcribed story-map baseline (backbone narrative, granularity, story framing) and ship it as a reviewable PR diff, consulting `usm-expert`.
+- **`/example-mapping-reviewer`** — brush up a transcribed example-mapping baseline (rule/example clarity, naming, grouping) and ship it as a reviewable PR diff, consulting `bdd-expert`.
+
+### Reconcile
+
+- **`/example-mapping-reconciler`** — reconcile a reviewed example mapping against the current implementation. Diffs rules/examples/questions against what the code actually does and surfaces contradictions, missing implementations, and omissions in the collaboration outcome. The implementation's location is specified by the user.
 
 ## Agents
 
+The expert agents are the **knowledge backend** the review skills consult; they can also be used standalone for ad-hoc consulting.
+
 ### `usm-expert`
 
-Expert consultant grounded in Jeff Patton's User Story Mapping methodology. Use for reviewing USM artifacts, challenging scope, and answering questions about narrative flow, backbone structure, and release slicing.
+Expert consultant grounded in Jeff Patton's User Story Mapping methodology — narrative flow, backbone structure, release slicing, and story scope.
 
 ### `bdd-expert`
 
-Expert in Behaviour-Driven Development processes (Discovery, Formulation, Automation), Example Mapping, and Gherkin syntax. Use for reviewing stories and example mappings, answering BDD practice questions, and consulting on artifact consistency.
+Expert in Behaviour-Driven Development processes (Discovery, Formulation, Automation), Example Mapping, and Gherkin syntax.
 
 ## Install
 
