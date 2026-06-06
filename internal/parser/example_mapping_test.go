@@ -8,7 +8,7 @@ import (
 
 func TestParseExampleMappingReadsReferencedTerms(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "story.yaml")
-	data := []byte("rules: []\nterms:\n  - story-map\n  - story\n")
+	data := []byte("rules: []\nubiquitous:\n  - story-map\n  - story\n")
 	if err := os.WriteFile(path, data, 0o644); err != nil {
 		t.Fatal(err)
 	}

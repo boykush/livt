@@ -21,7 +21,7 @@ questions:
   - id: Q-01
     text: ストーリーマップが複数ある場合の一覧導線をどうするか
 
-terms:
+ubiquitous:
   - story-map
   - story
   - release-slice

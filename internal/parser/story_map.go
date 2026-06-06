@@ -13,7 +13,7 @@ type storyMapYAML struct {
 	Name       string         `yaml:"name"`
 	Activities []activityYAML `yaml:"activities"`
 	Releases   []releaseYAML  `yaml:"releases"`
-	Terms      []string       `yaml:"terms"`
+	Terms      []string       `yaml:"ubiquitous"`
 }
 
 type releaseYAML struct {

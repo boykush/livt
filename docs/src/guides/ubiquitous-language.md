@@ -39,10 +39,10 @@ with **Term**, **Key**, and **Definition** columns. Each row carries an
 ## Referencing terms from boards
 
 Story maps and example mappings can declare the terms they use with a top-level
-`terms` list of term keys:
+`ubiquitous` list of term keys:
 
 ```yaml
-terms:
+ubiquitous:
   - story-map
   - story
 ```

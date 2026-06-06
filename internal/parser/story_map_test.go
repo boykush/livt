@@ -8,7 +8,7 @@ import (
 
 func TestParseStoryMapReadsReferencedTerms(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "map.yaml")
-	data := []byte("name: discovery\nterms:\n  - story-map\n  - story\n")
+	data := []byte("name: discovery\nubiquitous:\n  - story-map\n  - story\n")
 	if err := os.WriteFile(path, data, 0o644); err != nil {
 		t.Fatal(err)
 	}

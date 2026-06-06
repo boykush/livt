@@ -12,7 +12,7 @@ import (
 type exampleMappingYAML struct {
 	Rules     []ruleYAML     `yaml:"rules"`
 	Questions []questionYAML `yaml:"questions"`
-	Terms     []string       `yaml:"terms"`
+	Terms     []string       `yaml:"ubiquitous"`
 }
 
 type ruleYAML struct {
