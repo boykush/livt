@@ -1,5 +1,19 @@
 {
   "enabledPlugins": {
     "discovery-facilitator@livt-claude-code-plugins": true
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "cd ${CLAUDE_PROJECT_DIR} && lsof -ti:3000 | xargs kill -9 2>/dev/null; go run . serve >/tmp/livt-serve.log 2>&1 &",
+            "async": true,
+            "statusMessage": "Starting livt serve..."
+          }
+        ]
+      }
+    ]
   }
 }

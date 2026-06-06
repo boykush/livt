@@ -23,7 +23,7 @@ activities:
         stories:
           - name: USMエキスパートでストーリーマップ構造をレビューする
           - name: AIエージェントで構造の提案を反映する
-          - name: 編集しながらプレビューする
+          - name: 編集しながらストーリーマップをプレビューする
       - key: prepare-stories-for-detailed-discovery
         name: 詳細ディスカバリーに向けてストーリーを準備する
         stories:
@@ -54,7 +54,7 @@ activities:
         stories:
           - name: BDDエキスパートで実例マッピング構造をレビューする
           - name: 清書をレビュー可能な差分として反映する
-          - name: 編集しながらプレビューする
+          - name: 編集しながら実例マッピングをプレビューする
       - key: reconcile-with-implementation
         name: 実装・デザインと突き合わせる
         stories:
