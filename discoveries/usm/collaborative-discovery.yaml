@@ -17,6 +17,7 @@ activities:
         stories:
           - name: Draft story map YAML with AI agent
           - name: Preview story map in browser
+            key: preview-story-map-in-browser
       - key: refine-story-map-structure
         name: Refine story map structure
         stories:
