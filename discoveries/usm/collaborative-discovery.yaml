@@ -36,8 +36,6 @@ activities:
         name: Pick a story to explore
       - key: discover-rules
         name: Discover rules
-        stories:
-          - name: Confirm discovery outcomes
       - key: illustrate-examples
         name: Illustrate with examples
       - key: capture-questions
