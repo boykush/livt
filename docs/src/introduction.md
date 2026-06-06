@@ -16,3 +16,7 @@ Collaborative outcomes evolve alongside the product as living text.
 - Provide a CLI tool that captures collaborative outcomes as text files (YAML, Markdown)
 - Track consistency across artifacts via ID-based references with automated checks
 - Treat Formulation artifacts (Gherkin scenarios) as generated output, not the source of truth — the master lives in Discovery artifacts
+
+## Live Demo
+
+livt dogfoods itself: its own discovery artifacts — stories, story maps, example mappings, and ubiquitous language — are published with `livt build` as a [live demo](https://boykush.github.io/livt/demo/). It shows exactly what the guides below describe.
