@@ -18,7 +18,7 @@ func TestParseExampleMappingReadsReferencedTerms(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if len(em.Terms) != 2 || em.Terms[0] != "story-map" || em.Terms[1] != "story" {
-		t.Fatalf("got terms %v, want [story-map story]", em.Terms)
+	if len(em.Ubiquitous) != 2 || em.Ubiquitous[0] != "story-map" || em.Ubiquitous[1] != "story" {
+		t.Fatalf("got ubiquitous %v, want [story-map story]", em.Ubiquitous)
 	}
 }

@@ -98,11 +98,11 @@
 </div>
 </div>
 
-{{if .StoryMap.Terms}}
+{{if .StoryMap.Ubiquitous}}
 <div class="mt-8">
   <div class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">Ubiquitous Language</div>
   <div class="flex flex-wrap gap-2">
-  {{range .StoryMap.Terms}}
+  {{range .StoryMap.Ubiquitous}}
     {{if .Href}}
     <a href="{{.Href}}" class="bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-pink-200 transition">{{.Name}}</a>
     {{else}}

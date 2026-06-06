@@ -44,15 +44,15 @@ func TestStoryMapViewResolvesReferencedTerms(t *testing.T) {
 	}
 
 	b := Builder{UbiquitousDir: dir}
-	view := b.toStoryMapView(&domain.StoryMap{Name: "discovery", Terms: []string{"story-map", "missing"}})
+	view := b.toStoryMapView(&domain.StoryMap{Name: "discovery", Ubiquitous: []string{"story-map", "missing"}})
 
-	if len(view.StoryMap.Terms) != 2 {
-		t.Fatalf("got %d term cards, want 2", len(view.StoryMap.Terms))
+	if len(view.StoryMap.Ubiquitous) != 2 {
+		t.Fatalf("got %d term cards, want 2", len(view.StoryMap.Ubiquitous))
 	}
-	if view.StoryMap.Terms[0].Href == "" {
+	if view.StoryMap.Ubiquitous[0].Href == "" {
 		t.Fatal("expected the resolved term to link to the glossary")
 	}
-	if view.StoryMap.Terms[1].Href != "" {
+	if view.StoryMap.Ubiquitous[1].Href != "" {
 		t.Fatal("expected the unresolved term to render without a link")
 	}
 }

@@ -18,8 +18,8 @@ func TestParseStoryMapReadsReferencedTerms(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if len(storyMap.Terms) != 2 || storyMap.Terms[0] != "story-map" || storyMap.Terms[1] != "story" {
-		t.Fatalf("got terms %v, want [story-map story]", storyMap.Terms)
+	if len(storyMap.Ubiquitous) != 2 || storyMap.Ubiquitous[0] != "story-map" || storyMap.Ubiquitous[1] != "story" {
+		t.Fatalf("got ubiquitous %v, want [story-map story]", storyMap.Ubiquitous)
 	}
 }
 

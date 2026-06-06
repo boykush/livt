@@ -4,7 +4,7 @@ type StoryMap struct {
 	Name       string
 	Activities []Activity
 	Releases   []Release
-	Terms      []string
+	Ubiquitous []string
 }
 
 type Activity struct {

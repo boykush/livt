@@ -48,10 +48,10 @@ type termCard struct {
 }
 
 type mappingView struct {
-	StoryName string
-	StoryPath string
-	Mapping   *domain.ExampleMapping
-	Terms     []termCard
+	StoryName  string
+	StoryPath  string
+	Mapping    *domain.ExampleMapping
+	Ubiquitous []termCard
 }
 
 func renderIndex(w io.Writer, entries []IndexEntry) error {
@@ -62,8 +62,8 @@ func renderStory(w io.Writer, story *domain.Story, mappingPath, storyMapPath str
 	return storyTmpl.Execute(w, storyView{Story: story, MappingPath: mappingPath, StoryMapPath: storyMapPath})
 }
 
-func renderMapping(w io.Writer, em *domain.ExampleMapping, storyName, storyPath string, terms []termCard) error {
-	return mappingTmpl.Execute(w, mappingView{StoryName: storyName, StoryPath: storyPath, Mapping: em, Terms: terms})
+func renderMapping(w io.Writer, em *domain.ExampleMapping, storyName, storyPath string, ubiquitous []termCard) error {
+	return mappingTmpl.Execute(w, mappingView{StoryName: storyName, StoryPath: storyPath, Mapping: em, Ubiquitous: ubiquitous})
 }
 
 func renderStoryMap(w io.Writer, view storyMapView) error {
