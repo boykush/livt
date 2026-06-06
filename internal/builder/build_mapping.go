@@ -10,16 +10,19 @@ import (
 	"github.com/boykush/livt/internal/parser"
 )
 
-func (b *Builder) buildMappings() error {
+// buildMappings builds example mapping HTML pages and returns a preview tile per
+// mapping for the Example Mappings overview page (index.html).
+func (b *Builder) buildMappings() ([]mappingTile, error) {
 	files, err := filepath.Glob(filepath.Join(b.MappingsDir, "*.yaml"))
 	if err != nil {
-		return err
+		return nil, err
 	}
 
+	var tiles []mappingTile
 	for _, f := range files {
 		em, err := parser.ParseExampleMapping(f)
 		if err != nil {
-			return fmt.Errorf("parse %s: %w", f, err)
+			return nil, fmt.Errorf("parse %s: %w", f, err)
 		}
 
 		storyName := b.resolveStoryName(em.StoryKey)
@@ -32,12 +35,14 @@ func (b *Builder) buildMappings() error {
 
 		outPath := filepath.Join(b.OutDir, "mapping", em.StoryKey.Value+".html")
 		if err := b.buildMapping(outPath, em, storyName, storyPath, ubiquitous); err != nil {
-			return err
+			return nil, err
 		}
 		fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))
+
+		tiles = append(tiles, mappingTile{Key: em.StoryKey.Value, StoryName: storyName})
 	}
 
-	return nil
+	return tiles, nil
 }
 
 func (b *Builder) resolveStoryName(key domain.StoryKey) string {

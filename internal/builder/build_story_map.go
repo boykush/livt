@@ -10,22 +10,26 @@ import (
 	"github.com/boykush/livt/internal/parser"
 )
 
-// buildStoryMaps builds story map HTML pages and returns a map of story key to story map path
-// (relative from story/ directory).
-func (b *Builder) buildStoryMaps() (map[string]string, error) {
+// buildStoryMaps builds story map HTML pages. It returns a map of story key to
+// story map path (relative from story/ directory) and a preview tile per map for
+// the Story Maps overview page.
+func (b *Builder) buildStoryMaps() (map[string]string, []storyMapTile, error) {
 	maps, err := parser.ParseAllStoryMaps(b.USMDir)
 	if err != nil {
-		return nil, err
+		return nil, nil, err
 	}
 
 	storyToMap := make(map[string]string)
+	var tiles []storyMapTile
 	for _, sm := range maps {
 		view := b.toStoryMapView(sm)
 		outPath := filepath.Join(b.OutDir, "story-map", sm.Name+".html")
 		if err := b.buildStoryMap(outPath, view); err != nil {
-			return nil, err
+			return nil, nil, err
 		}
 		fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))
+
+		tiles = append(tiles, storyMapTile{Name: sm.Name})
 
 		relativePath := "../story-map/" + sm.Name + ".html"
 		for _, a := range sm.Activities {
@@ -40,7 +44,7 @@ func (b *Builder) buildStoryMaps() (map[string]string, error) {
 		}
 	}
 
-	return storyToMap, nil
+	return storyToMap, tiles, nil
 }
 
 type storyMapViewStory struct {

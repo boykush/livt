@@ -32,6 +32,8 @@ So that I get value
 livt serve
 ```
 
-4. Open <http://localhost:3000> in your browser to view the board.
+4. Open <http://localhost:3000> in your browser. Every page has a sidebar to
+   switch between Example Mappings, Story Maps, Stories, and Ubiquitous Language.
+   Open **Stories** to find the story you just created:
 
-![Stories index](images/stories-index.png)
+![Stories list and sidebar navigation](images/stories-index.png)

@@ -3,27 +3,39 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>livt - Stories</title>
+<title>livt - Example Mappings</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<style>
+  /* iframe preview: crop the page header so only the board shows */
+  .thumb { position: relative; overflow: hidden; background: #fff; }
+  .thumb iframe { position: absolute; left: 0; border: 0; pointer-events: none; transform-origin: top left;
+    width: 250%; height: 900px; transform: scale(0.40); top: -24px; }
+</style>
 </head>
 <body class="bg-gray-50 min-h-screen">
-<header class="bg-white border-b border-gray-200">
-  <div class="max-w-3xl mx-auto px-6 py-4 flex items-center justify-between">
-    <h1 class="text-xl font-bold text-gray-900 tracking-tight">livt</h1>
-    <a href="ubiquitous.html" class="text-sm text-pink-600 hover:text-pink-700 font-medium">Ubiquitous Language &rarr;</a>
-  </div>
-</header>
-
-<main class="max-w-3xl mx-auto px-6 py-8">
-  <h2 class="text-lg font-semibold text-gray-700 mb-4">Stories</h2>
-  {{range .}}
-  <a href="{{.Path}}" class="block bg-white rounded-lg border border-gray-200 px-5 py-4 mb-3 hover:border-blue-300 hover:shadow-sm transition">
-    <span class="text-base font-medium text-gray-900">{{.StoryName}}</span>
-    <span class="block text-xs text-gray-400 mt-1">{{.StoryKey}}</span>
-  </a>
+<div class="flex min-h-screen">
+{{template "sidebar" .Sidebar}}
+<div class="flex-1 min-w-0">
+  <header class="bg-white border-b border-gray-200 px-8 py-4">
+    <h2 class="text-lg font-semibold text-gray-800">Example Mappings</h2>
+  </header>
+  <main class="px-8 py-8 space-y-6">
+  {{range .Mappings}}
+    <a href="mapping/{{.Key}}.html" class="block rounded-xl border border-green-200 bg-white shadow-sm overflow-hidden hover:shadow-md transition">
+      <div class="flex items-center gap-2 px-4 py-2.5 border-b border-green-100 bg-green-50">
+        <span class="w-2.5 h-2.5 rounded-sm bg-green-400"></span>
+        <span class="text-sm font-semibold text-green-900">{{.StoryName}}</span>
+        <span class="ml-auto text-green-400 text-sm">&rarr;</span>
+      </div>
+      <div class="thumb" style="height: 220px;">
+        <iframe src="mapping/{{.Key}}.html" scrolling="no" loading="lazy"></iframe>
+      </div>
+    </a>
   {{else}}
-  <p class="text-gray-400 text-sm">No stories found.</p>
+    <p class="text-gray-400 text-sm">No example mappings yet.</p>
   {{end}}
-</main>
+  </main>
+</div>
+</div>
 </body>
 </html>
