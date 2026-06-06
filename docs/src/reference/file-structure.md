@@ -27,12 +27,18 @@ project-root/
 
 ```
 dist/
-  index.html                              # Story list
+  index.html                              # Example mappings overview (home)
+  story-maps.html                         # Story maps overview
+  stories.html                            # Story list
+  ubiquitous.html                         # Ubiquitous language table
   story/
     {story-key}.html                      # Story detail pages
   mapping/
     {story-key}.html                      # Example mapping boards
   story-map/
     {map-name}.html                       # Story map boards
-  ubiquitous.html                         # Ubiquitous language table
 ```
+
+Every page shares a left sidebar that links the four resource types
+(Example Mappings, Story Maps, Stories, Ubiquitous Language). The overview
+pages render each example mapping and story map as a preview card.
