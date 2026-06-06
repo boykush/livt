@@ -5,7 +5,7 @@
     "email": "boykush315@gmail.com"
   },
   "metadata": {
-    "description": "Claude Code plugins for livt - BDD Discovery and User Story Mapping facilitation",
+    "description": "Claude Code plugins for livt - post-collaboration BDD Discovery and User Story Mapping pipeline (transcribe, review, reconcile)",
     "version": "0.1.0"
   },
   "plugins": [

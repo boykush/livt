@@ -1,35 +1,43 @@
 # Discovery Facilitator Plugin
 
-Facilitation skills and expert agents for BDD Example Mapping and User Story Mapping workshops.
+Skills and expert agents for turning collaborative discovery sessions — BDD Example Mapping and User Story Mapping — into reviewed, reconciled artifacts.
 
 ## Overview
 
-This plugin provides AI-powered facilitation for two key discovery practices:
+Live facilitation happens with people on a board (Miro, sticky notes). This plugin handles the **post-collaboration** workflow: writing the board out and refining it through a three-step pipeline.
 
-- **User Story Mapping** (Jeff Patton) — Discover activities, tasks, and stories through narrative-driven dialogue
-- **Example Mapping** (BDD Discovery) — Explore concrete examples, extract rules, and capture questions
+```
+Transcribe ──▶ Review (清書) ──▶ Reconcile
+  (skill)        (expert agent)     (skill)
+```
 
-Each practice includes a facilitator skill for running sessions and an expert agent for consulting and reviewing artifacts.
+1. **Transcribe** — write the agreed board out to YAML faithfully, committed with no review as the diff baseline.
+2. **Review / 清書** — an expert agent brushes up the structure and ships it as a reviewable PR diff on top of the baseline. The review's value is exactly that diff.
+3. **Reconcile** — diff the result against the current implementation and design to surface gaps and omissions.
 
 ## Skills
 
-### `/usm-facilitator`
+### `/usm-transcriber`
 
-Facilitate a User Story Mapping session. Guides the team through discovering activities, breaking them into steps, and slicing releases. Outputs to `discoveries/usm/{map-name}.yaml`.
+Transcribe a completed User Story Mapping board into `discoveries/usm/{map-name}.yaml`. Faithfully captures the backbone (activities, steps) and story cards in board order, and commits the result as the review-free baseline.
 
-### `/example-mapping-facilitator`
+### `/example-mapping-transcriber`
 
-Facilitate an Example Mapping session on a story. Walks through concrete examples, extracts business rules, and captures unresolved questions. Outputs to `discoveries/example-mappings/{story-key}.yaml`.
+Transcribe a completed Example Mapping board into `discoveries/example-mappings/{story-key}.yaml`. Faithfully captures rules, examples, and questions, and commits the result as the review-free baseline.
+
+### `/example-mapping-reconciler`
+
+Reconcile a reviewed example mapping against the current implementation and design. Diffs rules/examples/questions against what the code and design actually do, and surfaces contradictions, missing implementations, and omissions in the collaboration outcome.
 
 ## Agents
 
 ### `usm-expert`
 
-Expert consultant grounded in Jeff Patton's User Story Mapping methodology. Use for reviewing USM artifacts, challenging scope, and answering questions about narrative flow, backbone structure, and release slicing.
+Expert consultant grounded in Jeff Patton's User Story Mapping methodology. Serves as the **reviewer (清書)** for story-map artifacts — challenging scope and answering questions about narrative flow, backbone structure, and release slicing.
 
 ### `bdd-expert`
 
-Expert in Behaviour-Driven Development processes (Discovery, Formulation, Automation), Example Mapping, and Gherkin syntax. Use for reviewing stories and example mappings, answering BDD practice questions, and consulting on artifact consistency.
+Expert in Behaviour-Driven Development processes (Discovery, Formulation, Automation), Example Mapping, and Gherkin syntax. Serves as the **reviewer (清書)** for stories and example mappings, answering BDD practice questions and consulting on artifact consistency.
 
 ## Install
 
