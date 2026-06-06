@@ -6,6 +6,23 @@ import (
 	"testing"
 )
 
+func TestParseStoryMapReadsReferencedTerms(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "map.yaml")
+	data := []byte("name: discovery\nterms:\n  - story-map\n  - story\n")
+	if err := os.WriteFile(path, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	storyMap, err := ParseStoryMap(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(storyMap.Terms) != 2 || storyMap.Terms[0] != "story-map" || storyMap.Terms[1] != "story" {
+		t.Fatalf("got terms %v, want [story-map story]", storyMap.Terms)
+	}
+}
+
 func TestParseStoryMapAllowsStoryCardsWithoutKeys(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "map.yaml")
 	data := []byte(`name: discovery

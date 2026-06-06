@@ -4,6 +4,7 @@ type StoryMap struct {
 	Name       string
 	Activities []Activity
 	Releases   []Release
+	Terms      []string
 }
 
 type Activity struct {

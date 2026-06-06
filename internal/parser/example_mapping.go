@@ -12,6 +12,7 @@ import (
 type exampleMappingYAML struct {
 	Rules     []ruleYAML     `yaml:"rules"`
 	Questions []questionYAML `yaml:"questions"`
+	Terms     []string       `yaml:"terms"`
 }
 
 type ruleYAML struct {
@@ -61,5 +62,6 @@ func ParseExampleMapping(path string) (*domain.ExampleMapping, error) {
 		StoryKey:  storyKey,
 		Rules:     rules,
 		Questions: questions,
+		Terms:     raw.Terms,
 	}, nil
 }

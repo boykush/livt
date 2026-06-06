@@ -17,10 +17,14 @@ rules:
 questions:
   - id: Q-01
     text: Question text
+
+terms:
+  - term-key
 ```
 
 - `story` is optional (links to the corresponding story detail page)
 - IDs must be unique within their rule or question list
+- `terms` is optional: each entry is a [ubiquitous language](./ubiquitous-language.md) term key, rendered as a pink sticky linking to `ubiquitous.html#{term-key}`. A key with no matching term file renders as a plain pink card.
 
 ## Visual Layout
 
@@ -30,6 +34,7 @@ The board renders cards in the [Example Mapping](https://cucumber.io/blog/bdd/ex
 - **Blue** cards: Rules (row below story)
 - **Green** cards: Examples (stacked under their rule)
 - **Red** cards: Questions (separate column)
+- **Pink** cards: Ubiquitous language terms (referenced via `terms`, below the board)
 
 ## Example
 

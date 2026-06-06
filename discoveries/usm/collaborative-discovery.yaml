@@ -1,4 +1,10 @@
 name: 協働ディスカバリー
+terms:
+  - story-map
+  - example-mapping
+  - story
+  - discovery
+  - ubiquitous-language
 activities:
   - key: story-mapping
     name: 全体ストーリーを発見する
