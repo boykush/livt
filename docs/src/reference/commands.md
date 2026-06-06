@@ -4,6 +4,11 @@
 
 Build artifacts and start a local server.
 
+While the server is running, livt watches the input directories
+(`discoveries/example-mappings`, `stories`, and `discoveries/usm`). When a file
+changes, livt rebuilds and reloads the page in the browser automatically, so you
+can preview refinements while editing.
+
 ```bash
 livt serve [flags]
 ```

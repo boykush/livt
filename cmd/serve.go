@@ -1,11 +1,10 @@
 package cmd
 
 import (
-	"fmt"
-	"net/http"
 	"path/filepath"
 
 	"github.com/boykush/livt/internal/builder"
+	"github.com/boykush/livt/internal/server"
 	"github.com/spf13/cobra"
 )
 
@@ -27,12 +26,6 @@ var serveCmd = &cobra.Command{
 			USMDir:      filepath.Join("discoveries", "usm"),
 			OutDir:      outDir,
 		}
-		fmt.Printf("Building to %s/\n", outDir)
-		if err := b.Build(); err != nil {
-			return err
-		}
-
-		fmt.Printf("Serving on http://localhost:%d\n", port)
-		return http.ListenAndServe(fmt.Sprintf(":%d", port), http.FileServer(http.Dir(outDir)))
+		return server.Serve(b, port)
 	},
 }
