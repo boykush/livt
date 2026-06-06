@@ -22,7 +22,7 @@ This skill is the first of three post-collaboration steps. Know where you sit:
 
 1. **Transcribe (you)** — board → YAML, committed with **NO review** as the diff baseline.
 2. **Review / 清書** — the `bdd-expert` agent brushes up structure and ships it as a reviewable PR diff on top of your baseline. The review's value comes from that diff, so your baseline must be an honest transcription, not a pre-polished one.
-3. **Reconcile** — `example-mapping-reconciler` diffs the result against the current implementation and design.
+3. **Reconcile** — `example-mapping-reconciler` diffs the result against the current implementation.
 
 If you polish during transcription, the 清書 diff becomes meaningless. Keep the baseline raw.
 
