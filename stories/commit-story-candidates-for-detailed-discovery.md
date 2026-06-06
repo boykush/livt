@@ -1,7 +1,7 @@
 ---
-name: Commit story candidates for detailed discovery
+name: 詳細ディスカバリー用にストーリー候補をコミットする
 ---
 
-As a Story Map Maintainer
-I want to commit a story candidate to detailed discovery
-So that I can create a story file and continue discovery from the story map
+ストーリーマップメンテナーとして
+ストーリー候補を詳細ディスカバリーにコミットしたい
+そうすればストーリーファイルを作成し、ストーリーマップからディスカバリーを継続できる

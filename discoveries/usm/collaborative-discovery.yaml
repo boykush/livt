@@ -1,42 +1,62 @@
-name: Collaborative Discovery
+name: 協働ディスカバリー
 activities:
   - key: story-mapping
-    name: Discover the whole story
+    name: 全体ストーリーを発見する
     steps:
       - key: frame-user-journey
-        name: Frame user journey
+        name: ユーザージャーニーを描く
       - key: identify-story-candidates
-        name: Identify story candidates
+        name: ストーリー候補を洗い出す
       - key: shape-release-slices
-        name: Shape release slices
+        name: リリーススライスを切り出す
   - key: refine-whole-story
-    name: Refine the whole story
+    name: 全体ストーリーをブラッシュアップする
     steps:
       - key: confirm-story-map
-        name: Confirm the story map
+        name: ストーリーマップを確認する
         stories:
-          - name: Draft story map YAML with AI agent
-          - name: Preview story map in browser
+          - name: AIエージェントでストーリーマップYAMLを起こす
+          - name: ブラウザでストーリーマップをプレビューする
             key: preview-story-map-in-browser
       - key: refine-story-map-structure
-        name: Refine story map structure
+        name: ストーリーマップの構造をブラッシュアップする
         stories:
-          - name: Review story map structure with USM expert
-          - name: Apply structure suggestions with AI agent
-          - name: Preview refinements while editing
+          - name: USMエキスパートでストーリーマップ構造をレビューする
+          - name: AIエージェントで構造の提案を反映する
+          - name: 編集しながらプレビューする
       - key: prepare-stories-for-detailed-discovery
-        name: Prepare stories for detailed discovery
+        name: 詳細ディスカバリーに向けてストーリーを準備する
         stories:
-          - name: Commit story candidates for detailed discovery
+          - name: 詳細ディスカバリー用にストーリー候補をコミットする
             key: commit-story-candidates-for-detailed-discovery
   - key: discovery
-    name: Discovery
+    name: ディスカバリー
     steps:
       - key: pick-story
-        name: Pick a story to explore
+        name: 探索するストーリーを選ぶ
       - key: discover-rules
-        name: Discover rules
+        name: ルールを発見する
       - key: illustrate-examples
-        name: Illustrate with examples
+        name: 実例で示す
       - key: capture-questions
-        name: Capture questions
+        name: 疑問を記録する
+  - key: refine-discovery
+    name: ディスカバリーをブラッシュアップする
+    steps:
+      - key: transcribe-collaboration-outcome
+        name: 協働結果を転記する
+        stories:
+          - name: ボードから実例マッピングYAMLを転記する
+          - name: ブラウザで実例マッピングをプレビューする
+          - name: 差分のベースラインとして転記をコミットする
+      - key: refine-example-mapping-structure
+        name: 実例マッピングの構造をブラッシュアップする
+        stories:
+          - name: BDDエキスパートで実例マッピング構造をレビューする
+          - name: 清書をレビュー可能な差分として反映する
+          - name: 編集しながらプレビューする
+      - key: reconcile-with-implementation
+        name: 実装・デザインと突き合わせる
+        stories:
+          - name: 実例マッピングを現状の実装・デザインと差分比較する
+          - name: 協働結果の漏れを調査する

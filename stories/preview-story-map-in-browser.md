@@ -1,7 +1,7 @@
 ---
-name: Preview story map in browser
+name: ブラウザでストーリーマップをプレビューする
 ---
 
-As a Story Map Maintainer
-I want to preview the story map in a browser
-So that I can confirm the refined story map structure visually
+ストーリーマップメンテナーとして
+ブラウザでストーリーマップをプレビューしたい
+そうすれば、ブラッシュアップしたストーリーマップの構造を視覚的に確認できる
