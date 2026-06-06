@@ -22,7 +22,16 @@ activities:
 releases:
   - id: release-id
     name: Release Name
+
+ubiquitous:
+  - term-key
 ```
+
+## Ubiquitous Language
+
+- `ubiquitous` is optional: each entry is a [ubiquitous language](./ubiquitous-language.md) term key
+- Referenced terms render as pink stickies below the board, linking to `ubiquitous.html#{term-key}`
+- A key with no matching term file renders as a plain pink card
 
 ## Releases
 

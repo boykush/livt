@@ -6,6 +6,23 @@ import (
 	"testing"
 )
 
+func TestParseStoryMapReadsReferencedTerms(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "map.yaml")
+	data := []byte("name: discovery\nubiquitous:\n  - story-map\n  - story\n")
+	if err := os.WriteFile(path, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	storyMap, err := ParseStoryMap(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if len(storyMap.Ubiquitous) != 2 || storyMap.Ubiquitous[0] != "story-map" || storyMap.Ubiquitous[1] != "story" {
+		t.Fatalf("got ubiquitous %v, want [story-map story]", storyMap.Ubiquitous)
+	}
+}
+
 func TestParseStoryMapAllowsStoryCardsWithoutKeys(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "map.yaml")
 	data := []byte(`name: discovery

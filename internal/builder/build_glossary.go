@@ -45,3 +45,27 @@ func (b *Builder) buildGlossary() error {
 	fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))
 	return nil
 }
+
+// resolveTermCards turns referenced term keys (from a story map or example
+// mapping) into pink sticky cards. A key with a matching ubiquitous/{key}.md
+// file links to its glossary row; an unresolved key renders as a plain card
+// showing the key, mirroring how keyless story cards degrade.
+func (b *Builder) resolveTermCards(keys []string) []termCard {
+	var cards []termCard
+	for _, key := range keys {
+		cards = append(cards, b.resolveTermCard(key))
+	}
+	return cards
+}
+
+func (b *Builder) resolveTermCard(key string) termCard {
+	path := filepath.Join(b.UbiquitousDir, key+".md")
+	if _, err := os.Stat(path); err != nil {
+		return termCard{Name: key}
+	}
+	term, err := parser.ParseTerm(path)
+	if err != nil || term.Name == "" {
+		return termCard{Name: key, Href: "../ubiquitous.html#" + key}
+	}
+	return termCard{Name: term.Name, Href: "../ubiquitous.html#" + key}
+}

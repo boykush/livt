@@ -13,6 +13,7 @@ type storyMapYAML struct {
 	Name       string         `yaml:"name"`
 	Activities []activityYAML `yaml:"activities"`
 	Releases   []releaseYAML  `yaml:"releases"`
+	Ubiquitous []string       `yaml:"ubiquitous"`
 }
 
 type releaseYAML struct {
@@ -112,6 +113,7 @@ func ParseStoryMap(path string) (*domain.StoryMap, error) {
 		Name:       raw.Name,
 		Activities: activities,
 		Releases:   releases,
+		Ubiquitous: raw.Ubiquitous,
 	}, nil
 }
 
