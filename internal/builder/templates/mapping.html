@@ -38,8 +38,12 @@
 <div class="min-w-max flex flex-col gap-2">
 <div class="flex gap-4">
 {{range .Mapping.Rules}}
-  <div class="bg-blue-100 border-l-4 border-blue-400 p-3 rounded shadow font-semibold text-gray-800 w-[180px]">
+  <div{{if .ID}} id="rule-{{.ID}}"{{end}} class="relative bg-blue-100 border-l-4 border-blue-400 px-3 pt-3 pb-6 rounded shadow font-semibold text-gray-800 w-[180px] scroll-mt-4 target:ring-2 target:ring-blue-500">
     {{.Name}}
+    {{if .ID}}
+    <a href="#rule-{{.ID}}" data-copy-link title="Copy link"
+       class="absolute bottom-1 right-2 font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 cursor-pointer select-none">🔗 {{.ID}}</a>
+    {{end}}
   </div>
 {{end}}
 {{if .Mapping.Questions}}
@@ -86,5 +90,18 @@
 </div>
 {{end}}
 </main>
+<script>
+  document.querySelectorAll('a[data-copy-link]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      if (!navigator.clipboard) return;
+      var url = location.href.split('#')[0] + a.getAttribute('href');
+      navigator.clipboard.writeText(url).then(function () {
+        var label = a.textContent;
+        a.textContent = '✓ Copied';
+        setTimeout(function () { a.textContent = label; }, 1200);
+      });
+    });
+  });
+</script>
 </body>
 </html>
