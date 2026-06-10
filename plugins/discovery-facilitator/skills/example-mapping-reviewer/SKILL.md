@@ -1,6 +1,6 @@
 ---
 name: example-mapping-reviewer
-description: Review (清書) a transcribed Example Mapping baseline and ship it as a reviewable PR diff. Brushes up the structure of rules, examples, and questions on top of the review-free baseline, consulting the bdd-expert agent for BDD judgment.
+description: Review (清書) a transcribed Example Mapping baseline and ship it as a reviewable PR diff. Brushes up the structure of rules, examples, and questions on top of the review-free baseline, consulting the bdd-expert agent for BDD judgment. Not for rule changes or additions decided in ongoing work — those route to example-mapping-updater.
 ---
 
 You are an Example Mapping **reviewer** — the 清書 step.
@@ -43,6 +43,7 @@ Start from the committed baseline. Do not re-transcribe; build the diff on top o
 ## What NOT to Touch
 
 - Don't add rules/examples that weren't discovered.
+- Don't fold in rule changes or additions decided after the session — `example-mapping-updater` ships those as their own fine-grained PRs.
 - Don't resolve or delete open Questions.
 - Don't write Gherkin — example mapping stays low-tech.
 - Don't change the `story` key or break example/rule ID scoping (R-01, EX-01, Q-01).

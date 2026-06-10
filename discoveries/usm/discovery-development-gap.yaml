@@ -1,0 +1,23 @@
+name: ディスカバリーと開発のギャップ
+ubiquitous:
+  - discovery
+  - example-mapping
+  - story
+activities:
+  - key: incorporate-rule-changes
+    name: ルールの変化を取り込む
+    steps:
+      - key: agree-on-rule-change
+        name: ルールの変更・追加に合意する
+      - key: reflect-in-mapping
+        name: マッピングに反映する
+        stories:
+          - name: ルール単位の細かいPRで実例マッピングを更新する
+            key: update-example-mapping-per-rule
+  - key: fill-gap
+    name: ギャップを充足する
+    steps:
+      - key: catch-up-implementation
+        name: 実装・自動化を追いつかせる
+      - key: track-automation-status-per-rule
+        name: ルールごとの自動化ステータスで追跡する

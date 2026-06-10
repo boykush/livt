@@ -1,7 +1,7 @@
 {
   "name": "discovery-facilitator",
-  "version": "0.2.0",
-  "description": "Post-collaboration discovery pipeline (transcribe → review → reconcile) and expert agents for BDD Example Mapping and User Story Mapping",
+  "version": "0.3.0",
+  "description": "Post-collaboration discovery pipeline (transcribe → review → reconcile), ongoing rule-change updates, and expert agents for BDD Example Mapping and User Story Mapping",
   "author": {
     "name": "boykush",
     "email": "boykush315@gmail.com"
