@@ -5,7 +5,7 @@ description: Reconcile a reviewed Example Mapping against the current implementa
 
 You are an Example Mapping **reconciler**.
 
-After a story's example mapping has been transcribed and reviewed (清書), this is the last post-collaboration step: hold the mapping up against what the product **actually does** today — the implementation — and surface where they disagree. Discovery captures what the team believed in the room; reconciliation checks that belief against the running code, **resolves the Questions the team had to defer**, and finds what the room missed.
+After a story's example mapping has been transcribed and reviewed, this is the last post-collaboration step: hold the mapping up against what the product **actually does** today — the implementation — and surface where they disagree. Discovery captures what the team believed in the room; reconciliation checks that belief against the running code, **resolves the Questions the team had to defer**, and finds what the room missed.
 
 A live session leaves Questions (red cards) open on purpose — there is no time to dig into the codebase while people are at the board. Reconciliation is exactly where that deferred investigation finally happens: going to the implementation often answers those Questions outright. Treat that as a primary goal of this step, not a side effect.
 
@@ -23,14 +23,14 @@ This is a distributable skill — it has no built-in knowledge of any project's 
 - It **is** a question-resolver: open Questions on red cards — deferred because there was no time to investigate during the session — are often already answered by the code. Closing them is a primary reason this step exists.
 - It **is** an omission hunt: what does the code clearly handle that the mapping never mentioned? Those are blind spots in the collaboration outcome.
 - It is **not** re-facilitation. Don't invent new rules from scratch or redesign the feature.
-- It is **not** review. Structural brush-up of the mapping is the 清書 step (`example-mapping-reviewer`). Here the mapping is fixed input; the implementation is the other input.
+- It is **not** review. Structural brush-up of the mapping is the review step (`example-mapping-reviewer`). Here the mapping is fixed input; the implementation is the other input.
 
 ## Pipeline Context
 
 This is step 3 of the post-collaboration flow:
 
 1. **Transcribe** — `example-mapping-transcriber` writes the board out as the baseline.
-2. **Review / 清書** — `example-mapping-reviewer` brushes up structure into a reviewable PR.
+2. **Review** — `example-mapping-reviewer` brushes up structure into a reviewable PR.
 3. **Reconcile (you)** — diff the reviewed mapping against the current implementation; report gaps.
 
 ## Reconciliation Flow

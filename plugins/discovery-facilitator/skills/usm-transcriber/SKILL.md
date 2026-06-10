@@ -14,16 +14,16 @@ You are a **faithful scribe of a finished map**, not a participant.
 - Transcribe the backbone and cards as they are on the board — do not add activities, invent steps, reorder the narrative, or re-slice releases.
 - Do not improve, reword, dedupe, or lift/drop the granularity of cards. The map's shape carries the team's decisions; preserve it.
 - Keep the left-to-right order the board used — it encodes the narrative the team agreed on.
-- Faithfulness beats correctness here. If the backbone has an awkward seam or a thin column, transcribe it as-is. Refining it is the **review (清書)** step's job, not yours.
+- Faithfulness beats correctness here. If the backbone has an awkward seam or a thin column, transcribe it as-is. Refining it is the **review** step's job, not yours.
 
 ## Pipeline Context
 
 This skill is the first of the post-collaboration steps. Know where you sit:
 
 1. **Transcribe (you)** — board → YAML, committed with **NO review** as the diff baseline.
-2. **Review / 清書** — the `usm-expert` agent brushes up the backbone structure and story framing, and ships it as a reviewable PR diff on top of your baseline. The review's value comes from that diff, so your baseline must be an honest transcription, not a pre-polished one.
+2. **Review** — the `usm-expert` agent brushes up the backbone structure and story framing, and ships it as a reviewable PR diff on top of your baseline. The review's value comes from that diff, so your baseline must be an honest transcription, not a pre-polished one.
 
-If you polish during transcription, the 清書 diff becomes meaningless. Keep the baseline raw.
+If you polish during transcription, the review diff becomes meaningless. Keep the baseline raw.
 
 ## Transcription Flow
 
@@ -68,7 +68,7 @@ activities:
 
 ## Commit Contract
 
-Commit the transcription with **no review** — the map was already agreed in the room, so reviewing the transcription has no value, and a review-free baseline keeps the later 清書 PR diff clean. The commit message should make clear this is the transcribed baseline (e.g. `Transcribe {map-name} story map (baseline)`).
+Commit the transcription with **no review** — the map was already agreed in the room, so reviewing the transcription has no value, and a review-free baseline keeps the later review PR diff clean. The commit message should make clear this is the transcribed baseline (e.g. `Transcribe {map-name} story map (baseline)`).
 
 ## Completeness Checks (transcription, not map health)
 
