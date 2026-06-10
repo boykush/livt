@@ -1,4 +1,4 @@
-name: ディスカバリーと開発のギャップ
+name: Discovery-Development Gap
 ubiquitous:
   - discovery
   - example-mapping
@@ -14,10 +14,22 @@ activities:
         stories:
           - name: ルール単位の細かいPRで実例マッピングを更新する
             key: update-example-mapping-per-rule
-  - key: fill-gap
-    name: ギャップを充足する
+  - key: assess-automation-status
+    name: 自動化ステータスを見極める
     steps:
-      - key: catch-up-implementation
-        name: 実装・自動化を追いつかせる
-      - key: track-automation-status-per-rule
-        name: ルールごとの自動化ステータスで追跡する
+      - key: verify-rule-against-implementation
+        name: ルールが実装で満たされているか確かめる
+      - key: judge-status-per-rule
+        name: ルール単位で判定する
+  - key: fill-unautomated-gap
+    name: 未自動化のギャップを開発で埋める
+    steps:
+      - key: file-atdd-issue
+        name: ATDD前提のIssueを起票する
+      - key: automate-test-driven
+        name: テスト駆動で自動化する
+  - key: visualize-automation-status
+    name: 自動化ステータスを可視化する
+    steps:
+      - key: render-status-in-ssg
+        name: SSGでステータスを表示する
