@@ -9,7 +9,7 @@ import (
 func TestParseTermReadsNameAndBody(t *testing.T) {
 	dir := t.TempDir()
 	path := filepath.Join(dir, "story-map.md")
-	data := []byte("---\nname: ストーリーマップ\n---\n\nアクティビティ・ステップ・ストーリーを俯瞰するボード。\n")
+	data := []byte("---\nname: Story Map\n---\n\nA board to overview activities, steps, and stories.\n")
 	if err := os.WriteFile(path, data, 0o644); err != nil {
 		t.Fatal(err)
 	}
@@ -22,10 +22,10 @@ func TestParseTermReadsNameAndBody(t *testing.T) {
 	if term.Key != "story-map" {
 		t.Fatalf("got key %q, want story-map", term.Key)
 	}
-	if term.Name != "ストーリーマップ" {
+	if term.Name != "Story Map" {
 		t.Fatalf("got name %q", term.Name)
 	}
-	if term.Body != "アクティビティ・ステップ・ストーリーを俯瞰するボード。" {
+	if term.Body != "A board to overview activities, steps, and stories." {
 		t.Fatalf("got body %q", term.Body)
 	}
 }

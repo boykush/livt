@@ -9,7 +9,7 @@ import (
 
 func TestBuildGlossaryRendersTermAsAnchoredRow(t *testing.T) {
 	ubiquitousDir := t.TempDir()
-	if err := os.WriteFile(filepath.Join(ubiquitousDir, "story-map.md"), []byte("---\nname: ストーリーマップ\n---\n\n全体ストーリーを俯瞰するボード。\n"), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(ubiquitousDir, "story-map.md"), []byte("---\nname: Story Map\n---\n\nA board to overview the whole story.\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 
@@ -28,10 +28,10 @@ func TestBuildGlossaryRendersTermAsAnchoredRow(t *testing.T) {
 	if !strings.Contains(html, `id="story-map"`) {
 		t.Fatal("expected term card to carry an id anchor")
 	}
-	if !strings.Contains(html, "ストーリーマップ") {
+	if !strings.Contains(html, "Story Map") {
 		t.Fatal("expected term name to be rendered")
 	}
-	if !strings.Contains(html, "全体ストーリーを俯瞰するボード。") {
+	if !strings.Contains(html, "A board to overview the whole story.") {
 		t.Fatal("expected definition body to be rendered")
 	}
 }
