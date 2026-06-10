@@ -24,10 +24,10 @@ letters, numbers, and hyphens. The body is the term's definition.
 
 ```markdown
 ---
-name: ストーリーマップ
+name: Story Map
 ---
 
-アクティビティ・ステップ・ストーリーをリリーススライスと共に俯瞰するボード。
+A board to overview activities, steps, and stories alongside release slices.
 ```
 
 ## Visual Layout

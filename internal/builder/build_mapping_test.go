@@ -10,7 +10,7 @@ import (
 
 func TestRenderMappingRuleCarriesIDAnchorAndBadge(t *testing.T) {
 	em := &domain.ExampleMapping{
-		Rules: []domain.Rule{{ID: "R-01", Name: "アクティビティとステップを俯瞰できる"}},
+		Rules: []domain.Rule{{ID: "R-01", Name: "Activities and steps can be overviewed"}},
 	}
 
 	var buf bytes.Buffer
@@ -35,7 +35,7 @@ func TestRenderMappingRuleCarriesIDAnchorAndBadge(t *testing.T) {
 
 func TestRenderMappingRuleWithoutIDOmitsAnchor(t *testing.T) {
 	em := &domain.ExampleMapping{
-		Rules: []domain.Rule{{Name: "IDのないルール"}},
+		Rules: []domain.Rule{{Name: "A rule without an ID"}},
 	}
 
 	var buf bytes.Buffer

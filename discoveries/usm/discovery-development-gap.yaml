@@ -1,0 +1,35 @@
+name: Discovery-Development Gap
+ubiquitous:
+  - discovery
+  - example-mapping
+  - story
+activities:
+  - key: incorporate-rule-changes
+    name: ルールの変化を取り込む
+    steps:
+      - key: agree-on-rule-change
+        name: ルールの変更・追加に合意する
+      - key: reflect-in-mapping
+        name: マッピングに反映する
+        stories:
+          - name: ルール単位の細かいPRで実例マッピングを更新する
+            key: update-example-mapping-per-rule
+  - key: assess-automation-status
+    name: 自動化ステータスを見極める
+    steps:
+      - key: verify-rule-against-implementation
+        name: ルールが実装で満たされているか確かめる
+      - key: judge-status-per-rule
+        name: ルール単位で判定する
+  - key: fill-unautomated-gap
+    name: 未自動化のギャップを開発で埋める
+    steps:
+      - key: file-atdd-issue
+        name: ATDD前提のIssueを起票する
+      - key: automate-test-driven
+        name: テスト駆動で自動化する
+  - key: visualize-automation-status
+    name: 自動化ステータスを可視化する
+    steps:
+      - key: render-status-in-ssg
+        name: SSGでステータスを表示する

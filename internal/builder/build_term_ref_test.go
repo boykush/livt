@@ -10,15 +10,15 @@ import (
 
 func TestResolveTermCardLinksResolvedTerm(t *testing.T) {
 	dir := t.TempDir()
-	if err := os.WriteFile(filepath.Join(dir, "story-map.md"), []byte("---\nname: ストーリーマップ\n---\n"), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, "story-map.md"), []byte("---\nname: Story Map\n---\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 
 	b := Builder{UbiquitousDir: dir}
 	card := b.resolveTermCard("story-map")
 
-	if card.Name != "ストーリーマップ" {
-		t.Fatalf("got name %q, want ストーリーマップ", card.Name)
+	if card.Name != "Story Map" {
+		t.Fatalf("got name %q, want Story Map", card.Name)
 	}
 	if card.Href != "../ubiquitous.html#story-map" {
 		t.Fatalf("got href %q", card.Href)
@@ -39,7 +39,7 @@ func TestResolveTermCardUnresolvedRendersPlainCard(t *testing.T) {
 
 func TestStoryMapViewResolvesReferencedTerms(t *testing.T) {
 	dir := t.TempDir()
-	if err := os.WriteFile(filepath.Join(dir, "story-map.md"), []byte("---\nname: ストーリーマップ\n---\n"), 0o644); err != nil {
+	if err := os.WriteFile(filepath.Join(dir, "story-map.md"), []byte("---\nname: Story Map\n---\n"), 0o644); err != nil {
 		t.Fatal(err)
 	}
 
