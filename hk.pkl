@@ -3,7 +3,12 @@ import "package://github.com/jdx/hk/releases/download/v1.39.0/hk@1.39.0#/Builtin
 
 local linters = new Mapping<String, Step> {
     ["go_fmt"] = Builtins.go_fmt
-    ["go_vet"] = Builtins.go_vet
+    // The builtin runs `go vet {{files}}`, which fails on commits spanning
+    // multiple packages and on test-only changes (files are compiled without
+    // the rest of their package). Vet whole packages instead.
+    ["go_vet"] = (Builtins.go_vet) {
+        check = "go vet ./..."
+    }
     ["gomod_tidy"] = Builtins.gomod_tidy
 }
 
