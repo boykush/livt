@@ -19,9 +19,22 @@ When there is no fresh transcription baseline and the ask is "this rule changed 
 ## Update Philosophy
 
 - **One rule-level change per PR.** A rule added, changed, or retired — together with the examples that illustrate it. Unrelated rule changes are separate PRs, even when they touch the same mapping.
-- **The change was agreed elsewhere; you record it.** The decision happened in ongoing work — a conversation, a ticket, an incident. Capture what was decided, in the user's words. If it is still being debated, it is a Question card, not a rule edit.
+- **The change was agreed elsewhere; you record it.** The decision happened in ongoing work — a conversation, a ticket, an incident. Capture what was decided, in the user's words. A card becomes a rule or example only if you can point to where it was agreed; if the only source is your own reasoning, it stays a Question — confidence is not authority. If it is still being debated, it is a Question card, not a rule edit.
 - **The diff is the deliverable.** A reviewer must see exactly one business decision in the PR. Don't mix in structural tidying — that noise belongs to a separate review pass, if one is ever needed.
 - **The mapping may lead the implementation.** After your PR lands, the code may not match the mapping yet. That gap is the reconciler's business, not a reason to hold the update back.
+
+## Questions
+
+A Question (red card) records something this update is **not** entitled to settle on its own. Guard the `questions[]` list as deliberately as the rules.
+
+- **Default to a Question.** A card becomes a rule or example only when you can cite where it was agreed — the change's source (a conversation, a ticket, an incident). If the only source is your own reasoning or a confident guess, it stays a Question. Confidence is not authority.
+- **Don't tidy unknowns away.** How many Questions stay open is a readiness signal; suppressing them hides risk. Raise the bar against *reflexive* Questions you could settle from the agreed source — never against genuine ones.
+- **A change may raise a Question.** Recording an agreed rule can surface a new unknown the team must decide — e.g. a rule you understand but whose bound you are not authorized to pick. Append it to `questions[]`; that is healthy, not noise.
+- **Close a Question only when an authority answered it:**
+  - **A cited decision answered it** → fold the resolved meaning into a rule or example and delete the Question, in the *same* PR. The decision is the agreed change; closing the Question is part of recording it.
+  - **The code answered it** → that is the reconciler's job; it resolves deferred Questions against the implementation. Leave the Question open here.
+  - Never resolve a Question from your own reasoning, and never answer one *in passing* while making an unrelated change.
+- **Smell test.** If one agreed rule spawns *many* Questions you can't even frame without more discussion, the rule isn't actually agreed or atomic — stop; that is discovery (facilitator/reviewer), not an update. A few *bounded* Questions — you understand the rule, you just can't decide the specifics — are expected and fine.
 
 ## Update Flow
 
@@ -31,7 +44,7 @@ When there is no fresh transcription baseline and the ask is "this rule changed 
    - **Added rule** — append it with the next unused rule ID, with the examples agreed alongside it.
    - **Changed rule** — update its `name`, and bring its examples in line with the new meaning in the same PR (an example illustrating the old rule is now wrong).
    - **Retired rule** — remove the rule together with its examples.
-   - New open questions raised by the change go to `questions[]`; resolved meaning goes to rules, not answers scribbled onto Questions.
+   - Questions: follow **Questions** above — append a genuinely new one to `questions[]`, and delete a Question only when this same agreed decision resolves it, folding its meaning into the rule or example.
 4. Re-read the diff: it must contain exactly the one agreed change, nothing structural elsewhere.
 5. Ship it as its own PR (see PR Contract).
 6. More than one rule changed? Repeat the flow — one PR each.
@@ -50,7 +63,7 @@ When there is no fresh transcription baseline and the ask is "this rule changed 
 ## What NOT to Do
 
 - Don't restructure, rename, or re-file anything outside the agreed change — that is the reviewer's job, on its own diff.
-- Don't add rules or examples beyond what was agreed, and don't answer open Questions in passing.
+- Don't add rules or examples beyond what was agreed. Don't resolve or delete a Question this PR's decision didn't answer — code-driven resolution is the reconciler's job.
 - Don't check the change against the implementation — that is the reconciler's job, after the update lands.
 - Don't batch unrelated rule changes into one PR, even if they arrived together.
 

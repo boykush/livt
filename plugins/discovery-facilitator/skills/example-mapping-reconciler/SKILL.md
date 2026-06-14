@@ -48,7 +48,7 @@ This is step 3 of the post-collaboration flow:
 - **Contradiction** — a rule/example the implementation actively violates. Highest priority; either the code is wrong or the discovery was.
 - **Missing implementation** — a rule/example with no corresponding behavior in the code yet.
 - **Omission in the outcome** — behavior the code handles that the mapping never discussed. The team's blind spot.
-- **Resolved question** — a red card the implementation already answers. A primary target of this step. Capture the **answer the code gives, with evidence**, so the team can fold it back in — as a new rule/example, or by simply closing the card.
+- **Resolved question** — a red card the implementation already answers. A primary target of this step. Capture the **answer the code gives, with evidence**, so the team can fold it back in — as a new rule/example, or by closing the card (deleting the resolved Question) once the user confirms. Code-driven Question closing is yours; a Question settled out-of-band by a *decision* (no code to check) is the updater's to close instead.
 - **Unverifiable** — a rule/example you could not confirm either way within the given scope; say what evidence is missing.
 
 ## Output
