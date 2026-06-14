@@ -5,6 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{.StoryName}} - livt</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<style>
+  .rule-card:target {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 5px #7c3aed;
+    animation: ruleFlash 1.1s ease-out 1;
+  }
+  @keyframes ruleFlash {
+    0%       { box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(124, 58, 237, 0); }
+    30%, 65% { box-shadow: 0 0 0 2px #fff, 0 0 0 9px rgba(124, 58, 237, 0.9); }
+    100%     { box-shadow: 0 0 0 2px #fff, 0 0 0 5px #7c3aed; }
+  }
+</style>
 </head>
 <body class="bg-gray-50 min-h-screen">
 <header class="bg-white border-b border-gray-200">
@@ -34,11 +45,11 @@
 </div>
 {{end}}
 
-<div class="overflow-x-auto pb-4">
+<div class="overflow-x-auto pt-3 px-3 pb-4">
 <div class="min-w-max flex flex-col gap-2">
 <div class="flex gap-4">
 {{range .Mapping.Rules}}
-  <div{{if .ID}} id="rule-{{.ID}}"{{end}} class="relative bg-blue-100 border-l-4 border-blue-400 px-3 pt-3 pb-6 rounded shadow font-semibold text-gray-800 w-[180px] scroll-mt-4 target:ring-2 target:ring-blue-500">
+  <div{{if .ID}} id="rule-{{.ID}}"{{end}} class="rule-card relative bg-blue-100 border-l-4 border-blue-400 px-3 pt-3 pb-6 rounded shadow font-semibold text-gray-800 w-[180px] scroll-mt-24">
     {{.Name}}
     {{if .ID}}
     <a href="#rule-{{.ID}}" data-copy-link title="Copy link"
