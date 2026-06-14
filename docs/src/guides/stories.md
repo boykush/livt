@@ -35,12 +35,9 @@ This story has key `confirm-story-map`, which is used to reference it from story
 
 ## Commit from a story map
 
-Use `livt story commit` to commit a story candidate from a story map into the story registry:
-
-```bash
-livt story commit --usm discoveries/usm/map.yaml --candidate "Story name" --key story-key
-```
-
-The command creates `stories/story-key.md` first. After the story file is written, it writes the same `key` back to the matching story candidate in the story map.
+Committing a story candidate from a story map into the registry is handled by the
+`/story-committer` skill (from the `discovery-facilitator` plugin), rather than a CLI command.
+Given the story map and the candidate, it creates `stories/{story-key}.md` first and then writes
+the same `key` back to the matching candidate in the story map.
 
 ![Story detail page](../images/story-detail.png)

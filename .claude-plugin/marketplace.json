@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Claude Code plugins for livt - post-collaboration BDD Discovery and User Story Mapping pipeline (transcribe, review, reconcile) with ongoing rule-change updates",
-    "version": "0.3.0"
+    "version": "0.4.0"
   },
   "plugins": [
     {
