@@ -50,9 +50,8 @@ activities:
       - key: transcribe-collaboration-outcome
         name: 協働結果を転記する
         stories:
-          - name: ボードから実例マッピングYAMLを転記する
+          - name: ボードから実例マッピングYAMLを素のまま転記する
           - name: ブラウザで実例マッピングをプレビューする
-          - name: 差分のベースラインとして転記をコミットする
       - key: refine-example-mapping-structure
         name: 実例マッピングの構造をブラッシュアップする
         stories:
@@ -62,3 +61,13 @@ activities:
         stories:
           - name: 実例マッピングを現状の実装・デザインと差分比較する
           - name: 協働結果の漏れを調査する
+  - key: maintain-living-master
+    name: マスタを生かし続ける
+    steps:
+      - key: agree-on-rule-change
+        name: ルールの変更・追加に合意する
+      - key: reflect-in-master-mapping
+        name: 実例マッピングマスタに反映する
+        stories:
+          - name: ルール単位の細かいPRで実例マッピングを更新する
+            key: update-example-mapping-per-rule
