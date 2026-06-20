@@ -4,17 +4,29 @@ import (
 	"path/filepath"
 
 	"github.com/boykush/livt/internal/domain"
+	"gopkg.in/yaml.v3"
 )
 
+type termFrontmatter struct {
+	Name string `yaml:"name"`
+}
+
 func ParseTerm(path string) (*domain.Term, error) {
-	key, name, body, err := parseMarkdownDoc(path)
+	key, frontmatter, body, err := splitFrontmatter(path)
 	if err != nil {
 		return nil, err
 	}
 
+	var fm termFrontmatter
+	if frontmatter != "" {
+		if err := yaml.Unmarshal([]byte(frontmatter), &fm); err != nil {
+			return nil, err
+		}
+	}
+
 	return &domain.Term{
 		Key:  key,
-		Name: name,
+		Name: fm.Name,
 		Body: body,
 	}, nil
 }

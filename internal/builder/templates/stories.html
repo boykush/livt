@@ -15,9 +15,14 @@
   </header>
   <main class="px-8 py-8 max-w-3xl">
   {{range .Stories}}
-    <a href="story/{{.Key}}.html" class="block bg-white rounded-lg border border-gray-200 px-5 py-4 mb-3 hover:border-yellow-300 hover:shadow-sm transition">
+    <a href="story/{{.Key}}.html" class="block bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
       <span class="text-base font-medium text-gray-900">{{.Name}}</span>
-      <span class="block text-xs text-gray-400 mt-1">{{.Key}}</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">{{.Key}}</span>
+        {{if .StoryMapPath}}<span class="text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-2 py-0.5">Story Map</span>{{end}}
+        {{if .MappingPath}}<span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">Example Mapping</span>{{end}}
+        {{range .Links}}<span class="text-xs text-gray-600 bg-white border border-gray-200 rounded-full px-2 py-0.5">&#128279; {{.Key}}</span>{{end}}
+      </div>
     </a>
   {{else}}
     <p class="text-gray-400 text-sm">No stories found.</p>
