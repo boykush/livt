@@ -87,8 +87,6 @@ func (b *Builder) Build() error {
 
 	var storyItems []storyItem
 	for _, story := range stories {
-		storyItems = append(storyItems, storyItem{Key: story.Key.Value, Name: story.Name})
-
 		mappingPath := ""
 		if b.hasExampleMapping(story.Key) {
 			mappingPath = "../mapping/" + story.Key.Value + ".html"
@@ -101,6 +99,19 @@ func (b *Builder) Build() error {
 			return err
 		}
 		fmt.Printf("  %s\n", strings.TrimPrefix(storyOutPath, b.OutDir+"/"))
+
+		// List links resolve from the output root, not the story/ directory.
+		listMappingPath := ""
+		if mappingPath != "" {
+			listMappingPath = "mapping/" + story.Key.Value + ".html"
+		}
+		storyItems = append(storyItems, storyItem{
+			Key:          story.Key.Value,
+			Name:         story.Name,
+			StoryMapPath: strings.TrimPrefix(storyMapPath, "../"),
+			MappingPath:  listMappingPath,
+			Links:        urlMetaFieldViews(story.Meta),
+		})
 	}
 
 	mappingTiles, err := b.buildMappings()

@@ -4,6 +4,7 @@ import (
 	"embed"
 	"html/template"
 	"io"
+	"strings"
 
 	"github.com/boykush/livt/internal/domain"
 )
@@ -47,8 +48,49 @@ type storyMapsIndexView struct {
 }
 
 type storyItem struct {
-	Key  string
-	Name string
+	Key          string
+	Name         string
+	StoryMapPath string
+	MappingPath  string
+	Links        []metaFieldView
+}
+
+// metaFieldView renders one Story frontmatter field. Href is non-empty only when
+// Value is an http(s) URL, so templates branch on its presence to link the value
+// (mirrors termCard.Href) instead of carrying a boolean.
+type metaFieldView struct {
+	Key   string
+	Value string
+	Href  string
+}
+
+func isHTTPURL(s string) bool {
+	return strings.HasPrefix(s, "https://") || strings.HasPrefix(s, "http://")
+}
+
+// metaFieldViews maps every frontmatter field to a view, auto-linking URL values.
+func metaFieldViews(meta []domain.MetaField) []metaFieldView {
+	views := make([]metaFieldView, 0, len(meta))
+	for _, m := range meta {
+		view := metaFieldView{Key: m.Key, Value: m.Value}
+		if isHTTPURL(m.Value) {
+			view.Href = m.Value
+		}
+		views = append(views, view)
+	}
+	return views
+}
+
+// urlMetaFieldViews keeps only URL-valued fields, used as quick-link chips on the
+// Stories list.
+func urlMetaFieldViews(meta []domain.MetaField) []metaFieldView {
+	var views []metaFieldView
+	for _, m := range meta {
+		if isHTTPURL(m.Value) {
+			views = append(views, metaFieldView{Key: m.Key, Value: m.Value, Href: m.Value})
+		}
+	}
+	return views
 }
 
 type storiesIndexView struct {
@@ -69,6 +111,7 @@ type glossaryView struct {
 
 type storyView struct {
 	Story        *domain.Story
+	Meta         []metaFieldView
 	MappingPath  string
 	StoryMapPath string
 }
@@ -101,7 +144,12 @@ func renderStoriesIndex(w io.Writer, view storiesIndexView) error {
 }
 
 func renderStory(w io.Writer, story *domain.Story, mappingPath, storyMapPath string) error {
-	return tmpl.ExecuteTemplate(w, "story.html", storyView{Story: story, MappingPath: mappingPath, StoryMapPath: storyMapPath})
+	return tmpl.ExecuteTemplate(w, "story.html", storyView{
+		Story:        story,
+		Meta:         metaFieldViews(story.Meta),
+		MappingPath:  mappingPath,
+		StoryMapPath: storyMapPath,
+	})
 }
 
 func renderMapping(w io.Writer, em *domain.ExampleMapping, storyName, storyPath string, ubiquitous []termCard) error {

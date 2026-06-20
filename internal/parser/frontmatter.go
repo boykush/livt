@@ -1,57 +1,38 @@
 package parser
 
 import (
-	"bufio"
 	"os"
 	"path/filepath"
 	"strings"
 )
 
-// parseMarkdownDoc reads a Markdown file with optional YAML frontmatter and
-// returns the key (filename without extension), the frontmatter name field, and
-// the trimmed body. It backs both story and term parsing, which share this
-// name + body shape.
-func parseMarkdownDoc(path string) (key, name, body string, err error) {
-	f, err := os.Open(path)
+// splitFrontmatter reads a Markdown file and separates an optional leading YAML
+// frontmatter block (delimited by --- fences) from the body. It returns the key
+// (filename without extension), the raw frontmatter (the text between the
+// fences, empty when there is none), and the trimmed body. Story and term
+// parsing share this shape, then each unmarshals the frontmatter into its own
+// schema.
+func splitFrontmatter(path string) (key, frontmatter, body string, err error) {
+	data, err := os.ReadFile(path)
 	if err != nil {
 		return "", "", "", err
 	}
-	defer f.Close()
 
 	key = strings.TrimSuffix(filepath.Base(path), ".md")
+	lines := strings.Split(string(data), "\n")
 
-	var bodyLines []string
-	scanner := bufio.NewScanner(f)
-	inFrontmatter := false
-	frontmatterDone := false
-
-	for scanner.Scan() {
-		line := scanner.Text()
-
-		if line == "---" {
-			if !frontmatterDone {
-				inFrontmatter = !inFrontmatter
-				if !inFrontmatter {
-					frontmatterDone = true
-				}
-				continue
+	// Frontmatter is only recognized when the file opens with a --- fence.
+	if len(lines) > 0 && strings.TrimRight(lines[0], "\r") == "---" {
+		for i := 1; i < len(lines); i++ {
+			if strings.TrimRight(lines[i], "\r") == "---" {
+				frontmatter = strings.Join(lines[1:i], "\n")
+				body = strings.TrimSpace(strings.Join(lines[i+1:], "\n"))
+				return key, frontmatter, body, nil
 			}
 		}
-
-		if inFrontmatter {
-			if strings.HasPrefix(line, "name:") {
-				name = strings.TrimSpace(strings.TrimPrefix(line, "name:"))
-			}
-			continue
-		}
-
-		bodyLines = append(bodyLines, line)
+		// Unterminated fence: treat the remainder as frontmatter, no body.
+		return key, strings.Join(lines[1:], "\n"), "", nil
 	}
 
-	if err := scanner.Err(); err != nil {
-		return "", "", "", err
-	}
-
-	body = strings.TrimSpace(strings.Join(bodyLines, "\n"))
-	return key, name, body, nil
+	return key, "", strings.TrimSpace(string(data)), nil
 }
