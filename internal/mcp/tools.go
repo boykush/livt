@@ -11,39 +11,13 @@ import (
 	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
-// registerTools wires the tool handlers. One tool per rule of the
-// automate-from-master-in-impl-repos example mapping.
+// registerTools wires the discovery tool. The spec reads (example mappings and
+// rules) are exposed as resources instead — see registerResources.
 func (s *Server) registerTools(srv *mcpsdk.Server) {
 	mcpsdk.AddTool(srv, &mcpsdk.Tool{
-		Name:        "get_example_mapping",
-		Description: "Get the example mapping (rules, examples, questions, ubiquitous terms) for a story by its key.",
-	}, s.getExampleMapping)
-	mcpsdk.AddTool(srv, &mcpsdk.Tool{
-		Name:        "get_rule",
-		Description: "Get a single rule and its examples from a story's example mapping, by story key and rule id.",
-	}, s.getRule)
-	mcpsdk.AddTool(srv, &mcpsdk.Tool{
 		Name:        "list_stories",
-		Description: "List all stories, each flagged with whether it has an example mapping.",
+		Description: "List all stories. Each entry links to its example mapping resource (livt://mapping/{key}) when one exists.",
 	}, s.listStories)
-}
-
-// --- handlers (thin adapters: query the master, then stamp the spec version) ---
-
-func (s *Server) getExampleMapping(_ context.Context, _ *mcpsdk.CallToolRequest, in getExampleMappingInput) (*mcpsdk.CallToolResult, getExampleMappingOutput, error) {
-	em, err := s.cfg.exampleMapping(in.StoryKey)
-	if err != nil {
-		return nil, getExampleMappingOutput{}, err
-	}
-	return nil, getExampleMappingOutput{versioned: s.versioned(), Mapping: toExampleMappingJSON(em)}, nil
-}
-
-func (s *Server) getRule(_ context.Context, _ *mcpsdk.CallToolRequest, in getRuleInput) (*mcpsdk.CallToolResult, getRuleOutput, error) {
-	rule, err := s.cfg.rule(in.StoryKey, in.RuleID)
-	if err != nil {
-		return nil, getRuleOutput{}, err
-	}
-	return nil, getRuleOutput{versioned: s.versioned(), Rule: toRuleJSON(rule)}, nil
 }
 
 func (s *Server) listStories(_ context.Context, _ *mcpsdk.CallToolRequest, _ listStoriesInput) (*mcpsdk.CallToolResult, listStoriesOutput, error) {
@@ -58,11 +32,16 @@ func (s *Server) versioned() versioned {
 	return versioned{SpecVersion: specVersion(s.cfg.Root)}
 }
 
-// --- data access on Config (pure; unit-tested directly with temp dirs) ---
+// --- data access on Config (pure; shared by the tool and the resource handlers) ---
 
 // exampleMapping loads the example mapping for storyKey. It distinguishes a
-// missing mapping ("not found") from a malformed one (parse error).
+// missing mapping ("not found") from a malformed one (parse error). The key is
+// validated first so an externally-supplied key (tool argument or resource URI)
+// cannot escape the mappings directory.
 func (c Config) exampleMapping(storyKey string) (*domain.ExampleMapping, error) {
+	if !validSegment(storyKey) {
+		return nil, fmt.Errorf("example mapping for story %q not found", storyKey)
+	}
 	path := filepath.Join(c.mappingsDir(), storyKey+".yaml")
 	if _, err := os.Stat(path); err != nil {
 		return nil, fmt.Errorf("example mapping for story %q not found", storyKey)
@@ -88,8 +67,8 @@ func (c Config) rule(storyKey, ruleID string) (domain.Rule, error) {
 	return domain.Rule{}, fmt.Errorf("rule %q not found in story %q", ruleID, storyKey)
 }
 
-// stories lists every story, flagging whether each has an example mapping. A
-// missing stories directory yields an empty list, not an error.
+// stories lists every story, linking to its example mapping resource when one
+// exists. A missing stories directory yields an empty list, not an error.
 func (c Config) stories() ([]storySummaryJSON, error) {
 	all, err := parser.ParseAllStories(c.storiesDir())
 	if err != nil {
@@ -97,11 +76,11 @@ func (c Config) stories() ([]storySummaryJSON, error) {
 	}
 	out := make([]storySummaryJSON, 0, len(all))
 	for _, story := range all {
-		out = append(out, storySummaryJSON{
-			Key:               story.Key.Value,
-			Name:              story.Name,
-			HasExampleMapping: c.hasExampleMapping(story.Key.Value),
-		})
+		summary := storySummaryJSON{Key: story.Key.Value, Name: story.Name}
+		if c.hasExampleMapping(story.Key.Value) {
+			summary.ExampleMappingURI = mappingURI(story.Key.Value)
+		}
+		out = append(out, summary)
 	}
 	return out, nil
 }

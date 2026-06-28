@@ -48,5 +48,6 @@ func (s *Server) Run(ctx context.Context) error {
 func (s *Server) mcpServer() *mcpsdk.Server {
 	srv := mcpsdk.NewServer(&mcpsdk.Implementation{Name: "livt", Version: s.version}, nil)
 	s.registerTools(srv)
+	s.registerResources(srv)
 	return srv
 }
