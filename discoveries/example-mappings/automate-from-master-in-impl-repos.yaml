@@ -1,0 +1,38 @@
+rules:
+  - id: R-01
+    name: livtはマスタをMCPサーバーとして公開し、消費側はlivtのソースを読まずに仕様を取得する
+    examples:
+      - id: EX-01
+        name: livt mcp コマンドでstdioのMCPサーバーが起動する
+      - id: EX-02
+        name: 消費側エージェントはツール経由で実例マッピング/ルールを取得する
+  - id: R-02
+    name: 実装リポジトリは別ディレクトリにあるマスタの場所を指定できる
+    examples:
+      - id: EX-01
+        name: 環境変数 LIVT_ROOT でマスタのルートディレクトリを指定する
+      - id: EX-02
+        name: CLI引数 --root が環境変数より優先される
+      - id: EX-03
+        name: いずれも未指定ならカレントディレクトリをルートとする
+  - id: R-03
+    name: 各ツールはマスタのバージョン（gitリビジョン）を返し、仕様のズレを防ぐ
+    examples:
+      - id: EX-01
+        name: ツール出力に spec_version としてマスタのgit HEADが含まれる
+      - id: EX-02
+        name: マスタがgitリポジトリでない場合 spec_version は空になる
+questions:
+  - id: Q-01
+    text: 実装からルールを参照するために公開するツールをどう選定するか（粒度・命名・最小セットの取捨。例 get_example_mapping / get_rule / list_example_mappings）
+  - id: Q-02
+    text: 受動的コンテキスト添付のためのResource（livt://story/{key} 等）を公開するか
+  - id: Q-03
+    text: stdioに加えてHTTP transportを提供する必要があるか
+  - id: Q-04
+    text: spec_versionはgitの短縮revか、タグ込みのgit describeか
+
+ubiquitous:
+  - example-mapping
+  - story
+  - discovery
