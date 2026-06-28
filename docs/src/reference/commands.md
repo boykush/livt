@@ -30,6 +30,37 @@ livt build [flags]
 |------|-------|---------|-------------|
 | `--out` | `-o` | `dist` | Output directory |
 
+## `livt mcp`
+
+Run an MCP ([Model Context Protocol](https://modelcontextprotocol.io)) server
+over stdio that exposes the discovery master (stories and example mappings). An
+implementation repo's coding agent can then fetch the spec for a story or rule
+without reading livt's source.
+
+The master usually lives in a separate checkout from the consumer, so point at
+it with `--root` or the `LIVT_ROOT` environment variable. The flag takes
+precedence; both default to the current directory.
+
+```bash
+livt mcp [flags]
+```
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--root` | `$LIVT_ROOT`, then `.` | Path to the livt project root holding the discovery master |
+
+### Tools
+
+| Tool | Arguments | Returns |
+|------|-----------|---------|
+| `list_stories` | — | Every story with its key, name, and whether it has an example mapping |
+| `get_example_mapping` | `story_key` | The story's rules, examples, questions, and ubiquitous terms |
+| `get_rule` | `story_key`, `rule_id` | A single rule and its examples |
+
+Every tool result also includes a `spec_version` field -- the git revision of
+the master -- so consumers can tell which version of the spec they are reading
+and detect drift.
+
 ## `livt version`
 
 Print the version of livt.
