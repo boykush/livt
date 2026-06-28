@@ -22,9 +22,30 @@ rules:
         name: ツール出力に spec_version としてマスタのgit HEADが含まれる
       - id: EX-02
         name: マスタがgitリポジトリでない場合 spec_version は空になる
+  - id: R-04
+    name: 実装リポジトリはストーリー単位で実例マッピングを取得できる
+    examples:
+      - id: EX-01
+        name: get_example_mapping(story_key) でそのストーリーのルール・実例・質問を取得する
+      - id: EX-02
+        name: 未知のstory_keyを指定するとnot foundエラーになる
+  - id: R-05
+    name: 実装リポジトリはルール単位で仕様（ルールと実例）を取得できる
+    examples:
+      - id: EX-01
+        name: get_rule(story_key, rule_id) で単一ルールとその実例を取得する
+      - id: EX-02
+        name: 未知のrule_idを指定するとnot foundエラーになる
+  - id: R-06
+    name: 実装リポジトリは利用可能なストーリーの一覧を取得できる
+    examples:
+      - id: EX-01
+        name: list_stories で全ストーリーのキーと名前を取得する
+      - id: EX-02
+        name: 各エントリは実例マッピングの有無（has_example_mapping）を示す
 questions:
   - id: Q-01
-    text: 実装からルールを参照するために公開するツールをどう選定するか（粒度・命名・最小セットの取捨。例 get_example_mapping / get_rule / list_example_mappings）
+    text: get_example_mapping / get_rule / list_stories 以外に公開するツールをどこまで足すか（get_story / story-map系 / term系を1 tool 1 ruleで順次検討）
   - id: Q-02
     text: 受動的コンテキスト添付のためのResource（livt://story/{key} 等）を公開するか
   - id: Q-03
