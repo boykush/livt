@@ -41,55 +41,54 @@ func writeFile(t *testing.T, path, content string) {
 	}
 }
 
-func TestGetExampleMappingReturnsRulesExamplesQuestions(t *testing.T) {
-	s := newTestServer(t)
-
-	_, out, err := s.getExampleMapping(context.Background(), nil, getExampleMappingInput{StoryKey: "demo"})
+func TestExampleMappingReturnsRulesExamplesQuestions(t *testing.T) {
+	em, err := newTestServer(t).cfg.exampleMapping("demo")
 	if err != nil {
-		t.Fatalf("getExampleMapping: %v", err)
+		t.Fatalf("exampleMapping: %v", err)
 	}
-
-	if out.Mapping.StoryKey != "demo" {
-		t.Errorf("story_key = %q, want demo", out.Mapping.StoryKey)
+	if em.StoryKey.Value != "demo" {
+		t.Errorf("story key = %q, want demo", em.StoryKey.Value)
 	}
-	if len(out.Mapping.Rules) != 1 || out.Mapping.Rules[0].ID != "R-01" {
-		t.Fatalf("rules = %+v, want one R-01", out.Mapping.Rules)
+	if len(em.Rules) != 1 || em.Rules[0].ID != "R-01" {
+		t.Fatalf("rules = %+v, want one R-01", em.Rules)
 	}
-	if len(out.Mapping.Rules[0].Examples) != 1 || out.Mapping.Rules[0].Examples[0].ID != "EX-01" {
-		t.Errorf("examples = %+v, want one EX-01", out.Mapping.Rules[0].Examples)
+	if len(em.Rules[0].Examples) != 1 || em.Rules[0].Examples[0].ID != "EX-01" {
+		t.Errorf("examples = %+v, want one EX-01", em.Rules[0].Examples)
 	}
-	if len(out.Mapping.Questions) != 1 || out.Mapping.Questions[0].ID != "Q-01" {
-		t.Errorf("questions = %+v, want one Q-01", out.Mapping.Questions)
+	if len(em.Questions) != 1 || em.Questions[0].ID != "Q-01" {
+		t.Errorf("questions = %+v, want one Q-01", em.Questions)
 	}
 }
 
-func TestGetExampleMappingUnknownStoryErrors(t *testing.T) {
-	s := newTestServer(t)
-	if _, _, err := s.getExampleMapping(context.Background(), nil, getExampleMappingInput{StoryKey: "nope"}); err == nil {
+func TestExampleMappingUnknownStoryErrors(t *testing.T) {
+	if _, err := newTestServer(t).cfg.exampleMapping("nope"); err == nil {
 		t.Fatal("expected error for unknown story key")
 	}
 }
 
-func TestGetRuleReturnsSingleRule(t *testing.T) {
-	s := newTestServer(t)
-
-	_, out, err := s.getRule(context.Background(), nil, getRuleInput{StoryKey: "demo", RuleID: "R-01"})
-	if err != nil {
-		t.Fatalf("getRule: %v", err)
-	}
-	if out.Rule.ID != "R-01" || out.Rule.Name != "ルール1" {
-		t.Errorf("rule = %+v, want R-01 ルール1", out.Rule)
+func TestExampleMappingRejectsTraversalKey(t *testing.T) {
+	if _, err := newTestServer(t).cfg.exampleMapping("../../etc/passwd"); err == nil {
+		t.Fatal("expected error for traversal key")
 	}
 }
 
-func TestGetRuleUnknownRuleErrors(t *testing.T) {
-	s := newTestServer(t)
-	if _, _, err := s.getRule(context.Background(), nil, getRuleInput{StoryKey: "demo", RuleID: "R-99"}); err == nil {
+func TestRuleReturnsSingleRule(t *testing.T) {
+	rule, err := newTestServer(t).cfg.rule("demo", "R-01")
+	if err != nil {
+		t.Fatalf("rule: %v", err)
+	}
+	if rule.ID != "R-01" || rule.Name != "ルール1" {
+		t.Errorf("rule = %+v, want R-01 ルール1", rule)
+	}
+}
+
+func TestRuleUnknownRuleErrors(t *testing.T) {
+	if _, err := newTestServer(t).cfg.rule("demo", "R-99"); err == nil {
 		t.Fatal("expected error for unknown rule id")
 	}
 }
 
-func TestListStoriesFlagsExampleMapping(t *testing.T) {
+func TestListStoriesLinksExampleMapping(t *testing.T) {
 	s := newTestServer(t)
 
 	_, out, err := s.listStories(context.Background(), nil, listStoriesInput{})
@@ -97,21 +96,25 @@ func TestListStoriesFlagsExampleMapping(t *testing.T) {
 		t.Fatalf("listStories: %v", err)
 	}
 
-	flags := map[string]bool{}
+	uris := map[string]string{}
+	present := map[string]bool{}
 	for _, st := range out.Stories {
-		flags[st.Key] = st.HasExampleMapping
+		uris[st.Key] = st.ExampleMappingURI
+		present[st.Key] = true
 	}
-	if got, ok := flags["demo"]; !ok || !got {
-		t.Errorf("demo has_example_mapping = %v (present=%v), want true", got, ok)
+	if got := uris["demo"]; got != "livt://mapping/demo" {
+		t.Errorf("demo example_mapping_uri = %q, want livt://mapping/demo", got)
 	}
-	if got, ok := flags["other"]; !ok || got {
-		t.Errorf("other has_example_mapping = %v (present=%v), want false", got, ok)
+	if !present["other"] {
+		t.Fatal("story other missing from list")
+	}
+	if got := uris["other"]; got != "" {
+		t.Errorf("other example_mapping_uri = %q, want empty (no mapping)", got)
 	}
 }
 
 func TestServerRegistersToolsWithoutPanic(t *testing.T) {
-	s := newTestServer(t)
-	if s.mcpServer() == nil {
+	if newTestServer(t).mcpServer() == nil {
 		t.Fatal("mcpServer returned nil")
 	}
 }

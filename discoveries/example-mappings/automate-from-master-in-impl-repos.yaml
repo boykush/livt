@@ -5,7 +5,7 @@ rules:
       - id: EX-01
         name: livt mcp コマンドでstdioのMCPサーバーが起動する
       - id: EX-02
-        name: 消費側エージェントはツール経由で実例マッピング/ルールを取得する
+        name: 消費側エージェントはツール/リソース経由で実例マッピング・ルールを取得する
   - id: R-02
     name: 実装リポジトリは別ディレクトリにあるマスタの場所を指定できる
     examples:
@@ -16,38 +16,41 @@ rules:
       - id: EX-03
         name: いずれも未指定ならカレントディレクトリをルートとする
   - id: R-03
-    name: 各ツールはマスタのバージョン（gitリビジョン）を返し、仕様のズレを防ぐ
+    name: 各レスポンス（ツール・リソース）はマスタのバージョン（gitリビジョン）を返し、仕様のズレを防ぐ
     examples:
       - id: EX-01
-        name: ツール出力に spec_version としてマスタのgit HEADが含まれる
+        name: 出力に spec_version としてマスタのgit HEADが含まれる
       - id: EX-02
         name: マスタがgitリポジトリでない場合 spec_version は空になる
   - id: R-04
-    name: 実装リポジトリはストーリー単位で実例マッピングを取得できる
+    name: 実装リポジトリはストーリー単位で実例マッピングをリソースとして取得できる
     examples:
       - id: EX-01
-        name: get_example_mapping(story_key) でそのストーリーのルール・実例・質問を取得する
+        name: resources/templates/list に livt://mapping/{story_key} が現れる
       - id: EX-02
-        name: 未知のstory_keyを指定するとnot foundエラーになる
+        name: resources/read livt://mapping/{story_key} でルール・実例・質問を取得する
+      - id: EX-03
+        name: 各ルールは自分のリソースURI（livt://mapping/{story_key}/rule/{rule_id}）を持つ
   - id: R-05
-    name: 実装リポジトリはルール単位で仕様（ルールと実例）を取得できる
+    name: 実装リポジトリはルール単位で仕様をリソースとして取得できる
     examples:
       - id: EX-01
-        name: get_rule(story_key, rule_id) で単一ルールとその実例を取得する
+        name: resources/read livt://mapping/{story_key}/rule/{rule_id} で単一ルールと実例を取得する
       - id: EX-02
-        name: 未知のrule_idを指定するとnot foundエラーになる
+        name: 存在しないキーやルールIDのURIは not found を返す
   - id: R-06
     name: 実装リポジトリは利用可能なストーリーの一覧を取得できる
     examples:
       - id: EX-01
         name: list_stories で全ストーリーのキーと名前を取得する
       - id: EX-02
-        name: 各エントリは実例マッピングの有無（has_example_mapping）を示す
+        name: 各エントリは実例マッピングがあれば、そのリソースURI（livt://mapping/{key}）を示す
+
 questions:
   - id: Q-01
-    text: get_example_mapping / get_rule / list_stories 以外に公開するツールをどこまで足すか（get_story / story-map系 / term系を1 tool 1 ruleで順次検討）
+    text: list_stories 以外に公開するツール、および story や term をリソース化するかを1単位ずつ検討する
   - id: Q-02
-    text: 受動的コンテキスト添付のためのResource（livt://story/{key} 等）を公開するか
+    text: concrete resource を resources/list に掲載する／変更通知（subscribe）まで広げるか（mapping・rule は template で対応済み）
   - id: Q-03
     text: stdioに加えてHTTP transportを提供する必要があるか
   - id: Q-04

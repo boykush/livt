@@ -53,13 +53,22 @@ livt mcp [flags]
 
 | Tool | Arguments | Returns |
 |------|-----------|---------|
-| `list_stories` | — | Every story with its key, name, and whether it has an example mapping |
-| `get_example_mapping` | `story_key` | The story's rules, examples, questions, and ubiquitous terms |
-| `get_rule` | `story_key`, `rule_id` | A single rule and its examples |
+| `list_stories` | — | Every story with its key and name. Stories that have an example mapping include `example_mapping_uri`, the resource URI below. |
 
-Every tool result also includes a `spec_version` field -- the git revision of
-the master -- so consumers can tell which version of the spec they are reading
-and detect drift.
+### Resources
+
+The spec itself is exposed as resources, addressable by URI (story → mapping → rule):
+
+| URI | Returns |
+|-----|---------|
+| `livt://mapping/{story_key}` | The story's example mapping (rules, examples, questions, ubiquitous terms). Each rule carries its own `uri`. |
+| `livt://mapping/{story_key}/rule/{rule_id}` | A single rule and its examples. |
+
+Read them with `resources/read`; both appear in `resources/templates/list`.
+
+Every tool and resource payload also includes a `spec_version` field -- the git
+revision of the master -- so consumers can tell which version of the spec they
+are reading and detect drift.
 
 ## `livt version`
 
