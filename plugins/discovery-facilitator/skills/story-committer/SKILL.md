@@ -11,11 +11,11 @@ A User Story Map holds story candidates hanging under the backbone. Most stay li
 
 This skill is the **bridge** from the map level to per-story discovery. Know where you sit:
 
-- Before you: the User Story Map was transcribed (`usm-transcriber`) and brushed up (`usm-reviewer`). Candidates live in `discoveries/usm/{map-name}.yaml`.
+- Before you: the User Story Map was transcribed (`usm-transcriber`) and refined (`usm-refiner`). Candidates live in `discoveries/usm/{map-name}.yaml`.
 - You: promote one candidate into `stories/{story-key}.md` and stamp its `key` back onto the map.
 - After you: `example-mapping-transcriber` reads `stories/{story-key}.md` and begins that story's Example Mapping.
 
-You do **not** change agreed meaning. Reframing a story or restructuring the map is the reviewer's job; changing a rule later is the updater's. You take a candidate as it stands and register it.
+You do **not** change agreed meaning. Reframing a story or restructuring the map is the refiner's job; changing a rule later is the updater's. You take a candidate as it stands and register it.
 
 ## Commit Flow
 
@@ -44,11 +44,11 @@ When a story is conceived directly — with no candidate on a map — create `st
 
 ## Commit Contract
 
-Committing a candidate does not change agreed meaning, so it ships as a single, plain git commit — not a review PR. The commit pairs the new `stories/{key}.md` with the one-line `key:` addition to the map. The message names the key, e.g. `Commit story candidate {key} for detailed discovery`.
+Committing a candidate does not change agreed meaning, so it ships as a single, plain git commit — not a refinement PR. The commit pairs the new `stories/{key}.md` with the one-line `key:` addition to the map. The message names the key, e.g. `Commit story candidate {key} for detailed discovery`.
 
 ## What NOT to Do
 
 - Don't reword, restructure, re-file, or reformat anything in the map beyond adding the one `key:`.
 - Don't re-key a candidate that already has a key, and don't overwrite an existing `stories/{key}.md`.
-- Don't reframe the story or rewrite its name — take the candidate as agreed. Reframing is the reviewer's job.
+- Don't reframe the story or rewrite its name — take the candidate as agreed. Reframing is the refiner's job.
 - Don't add Example Mapping content (rules, examples, questions) — that is `example-mapping-transcriber`'s job, after you.

@@ -4,6 +4,9 @@ ubiquitous:
   - example-mapping
   - story
   - discovery
+  - transcribe
+  - refine
+  - planning
   - ubiquitous-language
 activities:
   - key: story-mapping
@@ -27,7 +30,7 @@ activities:
       - key: refine-story-map-structure
         name: ストーリーマップの構造をブラッシュアップする
         stories:
-          - name: USMエキスパートでレビューし清書PRを出す
+          - name: USMエキスパートに相談して清書PRを出す
       - key: prepare-stories-for-detailed-discovery
         name: 詳細ディスカバリーに向けてストーリーを準備する
         stories:
@@ -55,11 +58,11 @@ activities:
       - key: refine-example-mapping-structure
         name: 実例マッピングの構造をブラッシュアップする
         stories:
-          - name: BDDエキスパートでレビューし清書PRを出す
-      - key: reconcile-with-implementation
-        name: 実装・デザインと突き合わせる
+          - name: BDDエキスパートに相談して清書PRを出す
+      - key: plan-against-implementation-and-design
+        name: 実装・デザインと突き合わせて計画する
         stories:
-          - name: 実例マッピングを現状の実装・デザインと差分比較する
+          - name: 実例マッピングを実装・デザインと突き合わせて計画する
           - name: 協働結果の漏れを調査する
   - key: maintain-living-master
     name: マスタを生かし続ける
