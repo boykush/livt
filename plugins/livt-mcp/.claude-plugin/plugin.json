@@ -1,0 +1,16 @@
+{
+  "name": "livt-mcp",
+  "version": "0.1.0",
+  "description": "Connect an implementation repo's agent to a locally running livt MCP server (livt mcp --http), exposing the discovery spec -- stories, example mappings, and rules -- as MCP tools and resources",
+  "author": {
+    "name": "boykush",
+    "email": "boykush315@gmail.com"
+  },
+  "repository": "https://github.com/boykush/livt",
+  "mcpServers": {
+    "livt": {
+      "type": "http",
+      "url": "${LIVT_MCP_URL:-http://localhost:5488/mcp}"
+    }
+  }
+}

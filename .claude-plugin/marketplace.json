@@ -5,13 +5,17 @@
     "email": "boykush315@gmail.com"
   },
   "metadata": {
-    "description": "Claude Code plugins for livt - post-collaboration BDD Discovery and User Story Mapping pipeline (transcribe, refine, plan) with ongoing rule-change updates",
-    "version": "0.4.0"
+    "description": "Claude Code plugins for livt - author the discovery master (transcribe, refine, plan, update) with discovery-facilitator, and consume it from implementation repos over MCP with livt-mcp",
+    "version": "0.5.0"
   },
   "plugins": [
     {
       "name": "discovery-facilitator",
       "source": "./plugins/discovery-facilitator"
+    },
+    {
+      "name": "livt-mcp",
+      "source": "./plugins/livt-mcp"
     }
   ]
 }

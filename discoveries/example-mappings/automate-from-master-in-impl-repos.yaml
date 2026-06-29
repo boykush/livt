@@ -45,16 +45,34 @@ rules:
         name: list_stories で全ストーリーのキーと名前を取得する
       - id: EX-02
         name: 各エントリは実例マッピングがあれば、そのリソースURI（livt://mapping/{key}）を示す
+  - id: R-07
+    name: 消費側は stdio で livt mcp をサブプロセスとして起動し、消費者ごとに1対1で接続する
+    examples:
+      - id: EX-01
+        name: クライアントが livt mcp をサブプロセスとして spawn し、標準入出力で接続する
+      - id: EX-02
+        name: マスタの場所は --root / LIVT_ROOT で指す（消費側に別チェックアウトが要る）
+      - id: EX-03
+        name: 1消費者につき1プロセスで、サーバーは共有しない
+  - id: R-08
+    name: 消費側は常駐する1つの livt mcp --http サーバーをURL参照で共有する
+    examples:
+      - id: EX-01
+        name: マスタ側で livt mcp --http localhost:5488 を常駐起動する
+      - id: EX-02
+        name: 複数リポジトリが http://localhost:5488/mcp を共有参照し、per-repo の LIVT_ROOT は不要
+      - id: EX-03
+        name: ステートレス・読み取り専用なので1プロセスで複数クライアントを捌く
 
 questions:
   - id: Q-01
     text: list_stories 以外に公開するツール、および story や term をリソース化するかを1単位ずつ検討する
   - id: Q-02
     text: concrete resource を resources/list に掲載する／変更通知（subscribe）まで広げるか（mapping・rule は template で対応済み）
-  - id: Q-03
-    text: stdioに加えてHTTP transportを提供する必要があるか
   - id: Q-04
     text: spec_versionはgitの短縮revか、タグ込みのgit describeか
+  - id: Q-05
+    text: ネットワーク（非ローカル）公開する場合の認証・公開モデルをどうするか（現状はローカル利用前提で認証なし）
 
 ubiquitous:
   - example-mapping

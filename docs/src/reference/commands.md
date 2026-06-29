@@ -33,7 +33,7 @@ livt build [flags]
 ## `livt mcp`
 
 Run an MCP ([Model Context Protocol](https://modelcontextprotocol.io)) server
-over stdio that exposes the discovery master (stories and example mappings). An
+that exposes the discovery master (stories and example mappings). An
 implementation repo's coding agent can then fetch the spec for a story or rule
 without reading livt's source.
 
@@ -48,6 +48,29 @@ livt mcp [flags]
 | Flag | Default | Description |
 |------|---------|-------------|
 | `--root` | `$LIVT_ROOT`, then `.` | Path to the livt project root holding the discovery master |
+| `--http` | (off; stdio) | Serve over Streamable HTTP at this address (e.g. `localhost:5488`) instead of stdio; the MCP endpoint is `<addr>/mcp` |
+
+### Transports
+
+By default the server runs over **stdio**, spawned per consumer — the client
+launches `livt mcp` as a subprocess. This suits a single repo with the master
+checked out alongside it.
+
+Pass **`--http`** to instead serve over Streamable HTTP from one long-running
+process, so several repos on the same machine can share a single server without
+each holding a checkout of the master:
+
+```bash
+livt mcp --http localhost:5488
+```
+
+Each consumer points its MCP client at `http://localhost:5488/mcp`. The server
+is stateless and read-only, so one process backs many clients; keep `git pull`
+current on its checkout and the served spec (and `spec_version`) updates live.
+For distributing this client configuration to implementation repos, see the
+[`livt-mcp` plugin](https://github.com/boykush/livt/tree/main/plugins/livt-mcp).
+This mode assumes local use with no authentication — the server is meant to bind
+to localhost, not a public network.
 
 ### Tools
 

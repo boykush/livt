@@ -6,10 +6,17 @@ package mcp
 
 import (
 	"context"
+	"errors"
+	"net/http"
 	"path/filepath"
+	"time"
 
 	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
 )
+
+// httpPath is where the Streamable HTTP transport is mounted. Consumers point
+// their MCP client at this path, e.g. http://localhost:5488/mcp.
+const httpPath = "/mcp"
 
 // Config locates the discovery master. Root points at a livt project root; the
 // input subdirectories are derived from it the same way build/serve lay them out.
@@ -41,6 +48,39 @@ func NewServer(cfg Config, version string) *Server {
 // is cancelled.
 func (s *Server) Run(ctx context.Context) error {
 	return s.mcpServer().Run(ctx, &mcpsdk.StdioTransport{})
+}
+
+// RunHTTP serves the master over Streamable HTTP at addr, blocking until ctx is
+// cancelled. The master is read-only and identical for every client, so the
+// handler is stateless: each request is served from a temporary session with no
+// retained per-client state, which lets one local server back many repos.
+// Responses are plain JSON -- the spec server never pushes server-initiated
+// notifications, so it needs no event stream.
+func (s *Server) RunHTTP(ctx context.Context, addr string) error {
+	httpSrv := &http.Server{Addr: addr, Handler: s.httpHandler()}
+	go func() {
+		<-ctx.Done()
+		shutCtx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
+		defer cancel()
+		_ = httpSrv.Shutdown(shutCtx)
+	}()
+	if err := httpSrv.ListenAndServe(); !errors.Is(err, http.ErrServerClosed) {
+		return err
+	}
+	return nil
+}
+
+// httpHandler builds the Streamable HTTP handler mounted at httpPath. Split out
+// from RunHTTP so tests can drive it via httptest without binding a port.
+func (s *Server) httpHandler() http.Handler {
+	srv := s.mcpServer()
+	handler := mcpsdk.NewStreamableHTTPHandler(
+		func(*http.Request) *mcpsdk.Server { return srv },
+		&mcpsdk.StreamableHTTPOptions{Stateless: true, JSONResponse: true},
+	)
+	mux := http.NewServeMux()
+	mux.Handle(httpPath, handler)
+	return mux
 }
 
 // mcpServer builds the configured SDK server. Split out so tests can assert tool
