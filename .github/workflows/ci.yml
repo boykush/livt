@@ -1,0 +1,77 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Least privilege by default; the job grants only what it needs.
+permissions: {}
+
+# Cancel superseded runs on the same ref (e.g. successive pushes to a PR).
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  go:
+    name: go
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # checkout
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          persist-credentials: false
+
+      # Installs Go and golangci-lint at the versions pinned in .mise.toml — the
+      # same source of truth the local pre-commit hooks (hk) use. install_args
+      # limits the install to these two tools (not node/mdBook/pkl/hk), keeping
+      # the job lean. mise-action caches the installed tools across runs.
+      - name: Setup mise
+        uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
+        with:
+          install_args: go golangci-lint
+
+      - name: Cache Go build & module cache
+        uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-go-
+
+      # Mirrors the hk go_fmt hook. gofmt -l prints files that need formatting;
+      # any output fails the job.
+      - name: Format (gofmt)
+        run: |
+          unformatted=$(gofmt -l .)
+          if [ -n "$unformatted" ]; then
+            echo "::error::These files need gofmt:"
+            echo "$unformatted"
+            exit 1
+          fi
+
+      # Mirrors the hk go_vet hook (whole packages, not per-file).
+      - name: Vet
+        run: go vet ./...
+
+      - name: Lint (golangci-lint)
+        run: golangci-lint run
+
+      # Mirrors the hk gomod_tidy hook: tidy, then fail if it changed anything.
+      - name: Tidy (go.mod / go.sum up to date)
+        run: |
+          go mod tidy
+          git diff --exit-code -- go.mod go.sum
+
+      - name: Build
+        run: go build ./...
+
+      # The gap the hooks don't cover. -race because the dev server fans rebuild
+      # events out to SSE clients across goroutines.
+      - name: Test
+        run: go test -race ./...

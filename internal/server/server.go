@@ -87,7 +87,7 @@ func htmlInjector(dir string) http.Handler {
 		}
 		w.Header().Set("Content-Type", "text/html; charset=utf-8")
 		w.Header().Set("Cache-Control", "no-store")
-		w.Write(injectScript(html))
+		_, _ = w.Write(injectScript(html)) // headers already sent; nothing to recover
 	})
 }
 

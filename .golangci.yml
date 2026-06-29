@@ -1,0 +1,13 @@
+version: "2"
+
+# Shared by local runs (`golangci-lint run`, pinned via .mise.toml) and the
+# `lint` step in .github/workflows/ci.yml — one source of truth for both.
+linters:
+  # errcheck, govet, ineffassign, staticcheck, unused.
+  default: standard
+  exclusions:
+    # Don't flag the conventional fire-and-forget calls: deferred *.Close(),
+    # *.Flush(), Fprint to stdout/stderr, etc. errcheck still catches every
+    # other unchecked error.
+    presets:
+      - std-error-handling
