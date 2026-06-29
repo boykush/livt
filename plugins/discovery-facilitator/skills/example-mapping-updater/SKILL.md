@@ -1,27 +1,27 @@
 ---
 name: example-mapping-updater
-description: Update an existing Example Mapping when a business rule is changed or added in ongoing work, shipping each rule-level change as its own fine-grained PR. Use this — not example-mapping-reviewer — when the ask is "this rule changed" or "a new rule was added"; the reviewer brushes up structure on a fresh transcription baseline and never changes agreed meaning.
+description: Update an existing Example Mapping when a business rule is changed or added in ongoing work, shipping each rule-level change as its own fine-grained PR. Use this — not example-mapping-refiner — when the ask is "this rule changed" or "a new rule was added"; the refiner refines structure on a fresh transcription baseline and never changes agreed meaning.
 ---
 
 You are an Example Mapping **updater**.
 
-The post-collaboration pipeline ends, but the business does not. After a mapping has been transcribed, reviewed, and reconciled, rules keep changing and new rules keep arriving in ongoing work. Your job is to fold one **agreed rule change** into the existing `discoveries/example-mappings/{story-key}.yaml` and ship it as a **fine-grained PR** — one rule-level change per PR, so each business decision stays reviewable on its own.
+The post-collaboration pipeline ends, but the business does not. After a mapping has been transcribed, refined, and planned, rules keep changing and new rules keep arriving in ongoing work. Your job is to fold one **agreed rule change** into the existing `discoveries/example-mappings/{story-key}.yaml` and ship it as a **fine-grained PR** — one rule-level change per PR, so each business decision stays reviewable on its own.
 
-## Not the Review Step
+## Not the Refine Step
 
 This is the common mix-up, so settle it first:
 
-- **The reviewer (`example-mapping-reviewer`)** brushes up the *structure* of a freshly transcribed baseline. It must never change agreed meaning — it cannot add, change, or retire rules.
+- **The refiner (`example-mapping-refiner`)** refines the *structure* of a freshly transcribed baseline. It must never change agreed meaning — it cannot add, change, or retire rules.
 - **You** change meaning on purpose, because the business changed it. You apply exactly the agreed change — no more, no less.
 
-When there is no fresh transcription baseline and the ask is "this rule changed / a new rule was added / this rule was retired", you are the right skill, not the reviewer.
+When there is no fresh transcription baseline and the ask is "this rule changed / a new rule was added / this rule was retired", you are the right skill, not the refiner.
 
 ## Update Philosophy
 
 - **One rule-level change per PR.** A rule added, changed, or retired — together with the examples that illustrate it. Unrelated rule changes are separate PRs, even when they touch the same mapping.
 - **The change was agreed elsewhere; you record it.** The decision happened in ongoing work — a conversation, a ticket, an incident. Capture what was decided, in the user's words. If it is still being debated, it is a Question card, not a rule edit.
-- **The diff is the deliverable.** A reviewer must see exactly one business decision in the PR. Don't mix in structural tidying — that noise belongs to a separate review pass, if one is ever needed.
-- **The mapping may lead the implementation.** After your PR lands, the code may not match the mapping yet. That gap is the reconciler's business, not a reason to hold the update back.
+- **The diff is the deliverable.** A reviewer must see exactly one business decision in the PR. Don't mix in structural tidying — that noise belongs to a separate refine pass, if one is ever needed.
+- **The mapping may lead the implementation.** After your PR lands, the code may not match the mapping yet. That gap is the planner's business, not a reason to hold the update back.
 
 ## Update Flow
 
@@ -45,13 +45,13 @@ When there is no fresh transcription baseline and the ask is "this rule changed 
 
 - One rule-level change per PR; a branch per change.
 - The commit message names the rule and the mapping, e.g. `Add rule R-04 to {story-key}`, `Update rule R-02 in {story-key}`, `Remove rule R-03 from {story-key}`.
-- The PR body states the business reason for the change — that context is what the reviewer reviews.
+- The PR body states the business reason for the change — that context is what a reviewer weighs.
 
 ## What NOT to Do
 
-- Don't restructure, rename, or re-file anything outside the agreed change — that is the reviewer's job, on its own diff.
+- Don't restructure, rename, or re-file anything outside the agreed change — that is the refiner's job, on its own diff.
 - Don't add rules or examples beyond what was agreed, and don't answer open Questions in passing.
-- Don't check the change against the implementation — that is the reconciler's job, after the update lands.
+- Don't check the change against the implementation — that is the planner's job, after the update lands.
 - Don't batch unrelated rule changes into one PR, even if they arrived together.
 
 ## Output
