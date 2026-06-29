@@ -58,27 +58,12 @@ jobs:
           cp -r docs/book/. _site/
           cp -r dist/. _site/demo/
 
-      # upload-pages-artifact@v3 internally calls actions/upload-artifact@v4
-      # (tag-pinned), which the repo's "pin actions to a full-length SHA"
-      # policy rejects. Inline its archive + upload steps so every action
-      # stays SHA-pinned.
-      - name: Archive artifact
-        run: |
-          tar \
-            --dereference --hard-dereference \
-            --directory _site \
-            -cvf "$RUNNER_TEMP/artifact.tar" \
-            --exclude=.git \
-            --exclude=.github \
-            .
-
+      # v4.0.0+ pins its internal actions/upload-artifact to a SHA, satisfying
+      # the repo's "pin actions to a full-length SHA" policy (v3 did not).
       - name: Upload artifact
-        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        uses: actions/upload-pages-artifact@7b1f4a764d45c48632c6b24a0339c27f5614fb0b # v4.0.0
         with:
-          name: github-pages
-          path: ${{ runner.temp }}/artifact.tar
-          retention-days: 1
-          if-no-files-found: error
+          path: _site
 
       - name: Deploy to GitHub Pages
         id: deployment
