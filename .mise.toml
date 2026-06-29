@@ -6,6 +6,7 @@ go = "1.26.1"
 node = "24.14.1"
 hk = "latest"
 pkl = "latest"
+golangci-lint = "2.12.2"
 "aqua:rust-lang/mdBook" = "0.5.2"
 
 [hooks]
