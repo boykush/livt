@@ -1,6 +1,7 @@
 # Summary
 
 - [Introduction](./introduction.md)
+- [Installation](./installation.md)
 - [Getting Started](./getting-started.md)
 - [Guides]()
   - [Stories](./guides/stories.md)

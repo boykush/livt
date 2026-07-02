@@ -7,6 +7,7 @@ node = "24.14.1"
 hk = "latest"
 pkl = "latest"
 golangci-lint = "2.12.2"
+goreleaser = "2.16.0"
 "aqua:rust-lang/mdBook" = "0.5.2"
 
 # Check commands shared by CI (.github/workflows/ci.yml) and the hk pre-commit
@@ -47,6 +48,10 @@ run = "go test -race ./..."
 [tasks.check]
 description = "Run all CI checks"
 depends = ["fmt", "vet", "lint", "tidy", "build", "test"]
+
+[tasks.snapshot]
+description = "Dry-run the goreleaser release build locally (no publish)"
+run = "goreleaser release --snapshot --clean"
 
 [hooks]
 postinstall = "hk install"

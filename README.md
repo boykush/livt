@@ -30,8 +30,36 @@ Discovery outcomes are written as plain text files (YAML, Markdown) and visualiz
 
 ## Installation
 
+See the [Installation guide](https://boykush.github.io/livt/installation.html) for details on how release artifacts are verified.
+
+### Prebuilt binaries
+
+Download the archive for your platform from [GitHub Releases](https://github.com/boykush/livt/releases).
+
+Every artifact is listed in `checksums.txt` (SHA-256) and carries a Sigstore-signed [build provenance attestation](https://github.com/boykush/livt/attestations), so you can verify it was built by this repository's release workflow before running it:
+
 ```bash
-go install github.com/boykush/livt@latest
+gh attestation verify livt_<version>_<os>_<arch>.tar.gz --repo boykush/livt
+```
+
+### mise
+
+```bash
+mise use "github:boykush/livt@<version>"
+```
+
+The [`github` backend](https://mise.jdx.dev/dev-tools/backends/github.html) downloads the release binary and, by default, verifies its GitHub artifact attestation (Sigstore build provenance). With [`lockfile = true`](https://mise.jdx.dev/dev-tools/mise-lock.html), the checksum and provenance are also pinned in `mise.lock`.
+
+To build from source instead, use the [`go` backend](https://mise.jdx.dev/dev-tools/backends/go.html) (requires Go; verified by the [Go checksum database](https://sum.golang.org/)):
+
+```bash
+mise use "go:github.com/boykush/livt@<version>"
+```
+
+### go install
+
+```bash
+go install github.com/boykush/livt@<version>
 ```
 
 ## Quick Start
@@ -73,6 +101,10 @@ discoveries/
 
 See [File Structure reference](https://boykush.github.io/livt/reference/file-structure.html) for output details.
 
+## Contributing
+
+Issues and pull requests are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). For vulnerability reports, see [SECURITY.md](SECURITY.md).
+
 ## License
 
-MIT
+[MIT](LICENSE)

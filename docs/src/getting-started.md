@@ -2,9 +2,13 @@
 
 ## Installation
 
+Install with [mise](https://mise.jdx.dev/), which verifies the release binary's build provenance attestation by default:
+
 ```bash
-go install github.com/boykush/livt@latest
+mise use "github:boykush/livt@<version>"
 ```
+
+See [Installation](installation.md) for all methods and how release artifacts are verified.
 
 ## Quick Start
 
