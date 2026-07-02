@@ -27,6 +27,20 @@ func TestInjectScriptAppendsWhenNoBody(t *testing.T) {
 	}
 }
 
+// Index pages embed each mapping and story map as an iframe preview. The
+// injected script must bail out inside frames so previews don't each open an
+// SSE connection and exhaust the browser's per-origin connection limit.
+func TestLiveReloadScriptSkipsIframes(t *testing.T) {
+	guard := "if (window.self !== window.top) return;"
+	idx := strings.Index(liveReloadScript, guard)
+	if idx < 0 {
+		t.Fatal("expected live-reload script to skip iframe contexts")
+	}
+	if src := strings.Index(liveReloadScript, "new EventSource"); src < idx {
+		t.Fatal("expected iframe guard to run before opening the SSE connection")
+	}
+}
+
 func TestSnapshotDetectsAddedFile(t *testing.T) {
 	dir := t.TempDir()
 	if err := os.WriteFile(filepath.Join(dir, "a.md"), []byte("a"), 0o644); err != nil {
