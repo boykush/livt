@@ -9,6 +9,45 @@ pkl = "latest"
 golangci-lint = "2.12.2"
 "aqua:rust-lang/mdBook" = "0.5.2"
 
+# Check commands shared by CI (.github/workflows/ci.yml) and the hk pre-commit
+# hooks (hk.pkl) — one definition, no drift. Run them all with `mise run check`.
+[tasks.fmt]
+description = "Check gofmt formatting"
+# Scope to tracked files so nested local worktrees (.claude/worktrees) don't
+# leak into the check; `.` would recurse into them.
+run = '''
+files=$(gofmt -s -l $(git ls-files '*.go'))
+if [ -n "$files" ]; then
+  echo "Needs formatting (run: gofmt -s -w .):"
+  echo "$files"
+  exit 1
+fi
+'''
+
+[tasks.vet]
+description = "Run go vet"
+run = "go vet ./..."
+
+[tasks.lint]
+description = "Run golangci-lint"
+run = "golangci-lint run"
+
+[tasks.tidy]
+description = "Check go.mod/go.sum are tidy (run: go mod tidy)"
+run = "go mod tidy -diff"
+
+[tasks.build]
+description = "Build all packages"
+run = "go build ./..."
+
+[tasks.test]
+description = "Run tests with the race detector"
+run = "go test -race ./..."
+
+[tasks.check]
+description = "Run all CI checks"
+depends = ["fmt", "vet", "lint", "tidy", "build", "test"]
+
 [hooks]
 postinstall = "hk install"
 
