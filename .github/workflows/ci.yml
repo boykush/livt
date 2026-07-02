@@ -44,34 +44,24 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-
 
-      # Mirrors the hk go_fmt hook. gofmt -l prints files that need formatting;
-      # any output fails the job.
+      # Every check runs through a mise task from .mise.toml, so CI and the local
+      # hk pre-commit hooks share one definition and can't drift. Steps stay
+      # separate (rather than one `mise run check`) for per-check CI status.
       - name: Format (gofmt)
-        run: |
-          unformatted=$(gofmt -l .)
-          if [ -n "$unformatted" ]; then
-            echo "::error::These files need gofmt:"
-            echo "$unformatted"
-            exit 1
-          fi
+        run: mise run fmt
 
-      # Mirrors the hk go_vet hook (whole packages, not per-file).
       - name: Vet
-        run: go vet ./...
+        run: mise run vet
 
       - name: Lint (golangci-lint)
-        run: golangci-lint run
+        run: mise run lint
 
-      # Mirrors the hk gomod_tidy hook: tidy, then fail if it changed anything.
-      - name: Tidy (go.mod / go.sum up to date)
-        run: |
-          go mod tidy
-          git diff --exit-code -- go.mod go.sum
+      - name: Tidy (go.mod / go.sum)
+        run: mise run tidy
 
       - name: Build
-        run: go build ./...
+        run: mise run build
 
-      # The gap the hooks don't cover. -race because the dev server fans rebuild
-      # events out to SSE clients across goroutines.
+      # go test -race — the gap the pre-commit hooks don't cover.
       - name: Test
-        run: go test -race ./...
+        run: mise run test

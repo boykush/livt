@@ -1,25 +1,28 @@
 amends "package://github.com/jdx/hk/releases/download/v1.39.0/hk@1.39.0#/Config.pkl"
-import "package://github.com/jdx/hk/releases/download/v1.39.0/hk@1.39.0#/Builtins.pkl"
 
+// The check commands live in .mise.toml [tasks] so these hooks and CI
+// (.github/workflows/ci.yml) share one definition and never drift. Each step
+// delegates to `mise run <task>`. The glob skips a step when no matching file
+// is staged, but the task itself checks the whole module (not just the staged
+// files). Checks no longer auto-fix — apply the fix each task's output hints at.
 local linters = new Mapping<String, Step> {
-    ["go_fmt"] = Builtins.go_fmt
-    // The builtin runs `go vet {{files}}`, which fails on commits spanning
-    // multiple packages and on test-only changes (files are compiled without
-    // the rest of their package). Vet whole packages instead.
-    ["go_vet"] = (Builtins.go_vet) {
-        check = "go vet ./..."
+    ["fmt"] = new Step {
+        glob = "**/*.go"
+        check = "mise run fmt"
     }
-    ["gomod_tidy"] = Builtins.gomod_tidy
+    ["vet"] = new Step {
+        glob = "**/*.go"
+        check = "mise run vet"
+    }
+    ["tidy"] = new Step {
+        glob = "**/go.mod"
+        check = "mise run tidy"
+    }
 }
 
 hooks {
     ["pre-commit"] {
-        fix = true
         stash = "git"
-        steps = linters
-    }
-    ["fix"] {
-        fix = true
         steps = linters
     }
     ["check"] {
