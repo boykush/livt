@@ -1,6 +1,6 @@
 # Discovery Facilitator Plugin
 
-Skills and expert agents for turning collaborative discovery sessions — BDD Example Mapping and User Story Mapping — into refined, planned artifacts.
+Pipeline and expert skills for turning collaborative discovery sessions — BDD Example Mapping and User Story Mapping — into refined, planned artifacts.
 
 ## Overview
 
@@ -9,11 +9,11 @@ Live facilitation happens with people on a board (Miro, sticky notes). This plug
 ```
 Transcribe ──▶ Refine ──▶ Plan
   (skill)     (skill +     (skill)
-            expert agent)
+            expert skill)
 ```
 
 1. **Transcribe** — write the agreed board out to YAML faithfully, committed with no refinement as the diff baseline.
-2. **Refine** — refine the structure and ship it as a reviewable PR diff on top of the baseline, backed by an expert agent. The refinement's value is exactly that diff.
+2. **Refine** — refine the structure and ship it as a reviewable PR diff on top of the baseline, backed by an expert skill. The refinement's value is exactly that diff.
 3. **Plan** — hold the result against the current implementation and design to surface the work ahead.
 
 Between the map and per-story discovery sits a bridge: when a story candidate on a refined User Story Map is ready for detailed discovery, the **Commit** skill promotes it into the `stories/` registry — creating its story file and stamping the key back onto the map — so its Example Mapping can begin.
@@ -44,17 +44,19 @@ The pipeline runs once per session, but the mapping keeps living afterwards: whe
 
 - **`/example-mapping-updater`** — fold a rule change or addition from ongoing work into an existing example mapping and ship it as a fine-grained PR, one rule-level change per PR. The right skill when "a rule changed" or "a rule was added" — the refiner never changes agreed meaning.
 
-## Agents
+## Expert skills
 
-The expert agents are the **knowledge backend** the refine skills consult; they can also be used standalone for ad-hoc consulting.
+The expert skills are the **knowledge backend** the refine skills consult; you can also invoke them standalone (`/usm-expert`, `/bdd-expert`) for ad-hoc consulting.
+
+They are plain [Agent Skills](https://agentskills.io), so the consultation travels with the plugin's `skills/` and works in any conformant runtime — the refine skills reference them as peer skills, not as runtime-specific subagents.
 
 ### `usm-expert`
 
-Expert consultant grounded in Jeff Patton's User Story Mapping methodology — narrative flow, backbone structure, release slicing, and story scope.
+Expertise grounded in Jeff Patton's User Story Mapping methodology — narrative flow, backbone structure, release slicing, and story scope.
 
 ### `bdd-expert`
 
-Expert in Behaviour-Driven Development processes (Discovery, Formulation, Automation), Example Mapping, and Gherkin syntax.
+Expertise in Behaviour-Driven Development processes (Discovery, Formulation, Automation), Example Mapping, and Gherkin syntax.
 
 ## Install
 
