@@ -1,6 +1,6 @@
 {
   "name": "discovery-facilitator",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Post-collaboration discovery pipeline (transcribe → refine → plan), ongoing rule-change updates, and expert skills for BDD Example Mapping and User Story Mapping",
   "author": {
     "name": "boykush",

@@ -1,6 +1,6 @@
 ---
-name: example-mapping-refiner
-description: Refine a transcribed Example Mapping baseline and ship it as a reviewable PR diff. Refines the structure of rules, examples, and questions on top of the raw baseline, consulting the bdd-expert skill for BDD judgment. Not for rule changes or additions decided in ongoing work — those route to example-mapping-updater — nor for checking against implementation, which is example-mapping-planner's job.
+name: example-mapping-refine
+description: Refine a transcribed Example Mapping baseline and ship it as a reviewable PR diff. Refines the structure of rules, examples, and questions on top of the raw baseline, consulting the bdd-expert skill for BDD judgment. Not for rule changes or additions decided in ongoing work — those route to example-mapping-update — nor for checking against implementation, which is example-mapping-plan's job.
 ---
 
 You are an Example Mapping **refiner** — the refine step of the pipeline.
@@ -18,9 +18,9 @@ A transcriber has already written the board out to `discoveries/example-mappings
 
 This is step 2 of the post-collaboration flow:
 
-1. **Transcribe** — `example-mapping-transcriber` writes the board out as the raw baseline.
+1. **Transcribe** — `example-mapping-transcribe` writes the board out as the raw baseline.
 2. **Refine (you)** — refine structure into a reviewable PR diff, backed by `bdd-expert`.
-3. **Plan** — `example-mapping-planner` holds the result against the implementation and design.
+3. **Plan** — `example-mapping-plan` holds the result against the implementation and design.
 
 Start from the committed baseline. Do not re-transcribe; build the diff on top of it.
 
@@ -43,7 +43,7 @@ Start from the committed baseline. Do not re-transcribe; build the diff on top o
 ## What NOT to Touch
 
 - Don't add rules/examples that weren't discovered.
-- Don't fold in rule changes or additions decided after the session — `example-mapping-updater` ships those as their own fine-grained PRs.
+- Don't fold in rule changes or additions decided after the session — `example-mapping-update` ships those as their own fine-grained PRs.
 - Don't resolve or delete open Questions.
 - Don't check the mapping against the implementation or design — that is the planner's job.
 - Don't write Gherkin — example mapping stays low-tech.

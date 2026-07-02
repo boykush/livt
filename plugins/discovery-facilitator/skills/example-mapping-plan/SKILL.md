@@ -1,6 +1,6 @@
 ---
-name: example-mapping-planner
-description: Plan implementation from a refined Example Mapping by holding it against the current implementation and design. Surfaces the work ahead — unimplemented rules, contradictions, and Questions the code or design already answers — scoped forward. Implementation and design locations are specified by the user or the story's frontmatter. Not for folding existing behaviour back into the mapping — that routes to example-mapping-updater.
+name: example-mapping-plan
+description: Plan implementation from a refined Example Mapping by holding it against the current implementation and design. Surfaces the work ahead — unimplemented rules, contradictions, and Questions the code or design already answers — scoped forward. Implementation and design locations are specified by the user or the story's frontmatter. Not for folding existing behaviour back into the mapping — that routes to example-mapping-update.
 ---
 
 You are an Example Mapping **planner**.
@@ -12,7 +12,7 @@ After a story's example mapping has been transcribed and refined, this step turn
 Planning looks **forward** — from the mapping toward the work that makes it true:
 
 - **In scope**: rules/examples not built yet (`missing`), places the code or design **contradicts** the mapping (`contradicts`), and open Questions the implementation or design already settles (`resolved-question`).
-- **Out of scope**: behaviour the code already has that the mapping never mentioned — the backward (implementation → mapping) direction. Folding existing behaviour back into the mapping is the Sync step's job (`example-mapping-updater`). Surfacing it here only re-mixes planning with sync; leave it to Sync.
+- **Out of scope**: behaviour the code already has that the mapping never mentioned — the backward (implementation → mapping) direction. Folding existing behaviour back into the mapping is the Sync step's job (`example-mapping-update`). Surfacing it here only re-mixes planning with sync; leave it to Sync.
 
 ## Where the Implementation and Design Live
 
@@ -26,8 +26,8 @@ This is a distributable skill — it has no built-in knowledge of any project's 
 
 This is step 3 of the post-collaboration flow:
 
-1. **Transcribe** — `example-mapping-transcriber` writes the board out as the baseline.
-2. **Refine** — `example-mapping-refiner` refines structure into a reviewable PR.
+1. **Transcribe** — `example-mapping-transcribe` writes the board out as the baseline.
+2. **Refine** — `example-mapping-refine` refines structure into a reviewable PR.
 3. **Plan (you)** — hold the refined mapping against the implementation and design; produce the work-ahead plan.
 
 ## Planning Flow
@@ -61,7 +61,7 @@ Default to a written plan for human review. Only update the mapping YAML or open
 
 ## Principles
 
-- Look forward. Planning is about the work ahead, not cataloguing what already exists — that backward direction belongs to Sync (`example-mapping-updater`).
+- Look forward. Planning is about the work ahead, not cataloguing what already exists — that backward direction belongs to Sync (`example-mapping-update`).
 - Be concrete. Every item cites where you looked — a file, a symbol, a design frame. No unsubstantiated claims.
 - Don't fabricate. If you cannot find the implementation or reach the design in scope, that is `unverifiable` or `missing`, never `built`.
 - Treat design as a first-class input alongside code, but stay tool-agnostic: read it if you can, mark it `unverifiable` if you can't.

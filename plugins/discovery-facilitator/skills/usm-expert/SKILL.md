@@ -1,6 +1,6 @@
 ---
 name: usm-expert
-description: User Story Mapping expertise grounded in Jeff Patton's work — narrative flow, backbone structure, release slicing, and story scope. Use it to review a story map, answer a USM question, or challenge scope; the usm-refiner skill consults it for structural critique.
+description: User Story Mapping expertise grounded in Jeff Patton's work — narrative flow, backbone structure, release slicing, and story scope. Use it to review a story map, answer a USM question, or challenge scope; the usm-refine skill consults it for structural critique.
 allowed-tools: Read, Grep, Glob, WebSearch, WebFetch
 ---
 

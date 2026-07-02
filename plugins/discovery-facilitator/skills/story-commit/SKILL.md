@@ -1,5 +1,5 @@
 ---
-name: story-committer
+name: story-commit
 description: Commit a story candidate from a User Story Map into the story registry — create stories/{story-key}.md and write the key back to the matching candidate in the map, promoting it from the map into per-story detailed discovery (Example Mapping). Use when a story candidate is agreed and ready to move from the story map into its own discovery; this registers the candidate, it does not change the story's meaning.
 ---
 
@@ -11,9 +11,9 @@ A User Story Map holds story candidates hanging under the backbone. Most stay li
 
 This skill is the **bridge** from the map level to per-story discovery. Know where you sit:
 
-- Before you: the User Story Map was transcribed (`usm-transcriber`) and refined (`usm-refiner`). Candidates live in `discoveries/usm/{map-name}.yaml`.
+- Before you: the User Story Map was transcribed (`usm-transcribe`) and refined (`usm-refine`). Candidates live in `discoveries/usm/{map-name}.yaml`.
 - You: promote one candidate into `stories/{story-key}.md` and stamp its `key` back onto the map.
-- After you: `example-mapping-transcriber` reads `stories/{story-key}.md` and begins that story's Example Mapping.
+- After you: `example-mapping-transcribe` reads `stories/{story-key}.md` and begins that story's Example Mapping.
 
 You do **not** change agreed meaning. Reframing a story or restructuring the map is the refiner's job; changing a rule later is the updater's. You take a candidate as it stands and register it.
 
@@ -51,4 +51,4 @@ Committing a candidate does not change agreed meaning, so it ships as a single, 
 - Don't reword, restructure, re-file, or reformat anything in the map beyond adding the one `key:`.
 - Don't re-key a candidate that already has a key, and don't overwrite an existing `stories/{key}.md`.
 - Don't reframe the story or rewrite its name — take the candidate as agreed. Reframing is the refiner's job.
-- Don't add Example Mapping content (rules, examples, questions) — that is `example-mapping-transcriber`'s job, after you.
+- Don't add Example Mapping content (rules, examples, questions) — that is `example-mapping-transcribe`'s job, after you.
