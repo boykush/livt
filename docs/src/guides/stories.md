@@ -36,7 +36,7 @@ This story has key `confirm-story-map`, which is used to reference it from story
 ## Commit from a story map
 
 Committing a story candidate from a story map into the registry is handled by the
-`/story-committer` skill (from the `discovery-facilitator` plugin), rather than a CLI command.
+`/story-commit` skill (from the `discovery-facilitator` plugin), rather than a CLI command.
 Given the story map and the candidate, it creates `stories/{story-key}.md` first and then writes
 the same `key` back to the matching candidate in the story map.
 

@@ -1,5 +1,5 @@
 ---
-name: usm-refiner
+name: usm-refine
 description: Refine a transcribed User Story Mapping baseline and ship it as a reviewable PR diff. Refines the backbone narrative, granularity, and story framing on top of the raw baseline, consulting the usm-expert skill for User Story Mapping judgment.
 ---
 
@@ -18,7 +18,7 @@ A transcriber has already written the board out to `discoveries/usm/{map-name}.y
 
 This is step 2 of the post-collaboration flow:
 
-1. **Transcribe** — `usm-transcriber` writes the board out as the raw baseline.
+1. **Transcribe** — `usm-transcribe` writes the board out as the raw baseline.
 2. **Refine (you)** — refine structure into a reviewable PR diff, backed by `usm-expert`.
 
 Start from the committed baseline. Do not re-transcribe; build the diff on top of it.

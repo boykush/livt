@@ -1,6 +1,6 @@
 ---
-name: example-mapping-updater
-description: Update an existing Example Mapping when a business rule is changed or added in ongoing work, shipping each rule-level change as its own fine-grained PR. Use this — not example-mapping-refiner — when the ask is "this rule changed" or "a new rule was added"; the refiner refines structure on a fresh transcription baseline and never changes agreed meaning.
+name: example-mapping-update
+description: Update an existing Example Mapping when a business rule is changed or added in ongoing work, shipping each rule-level change as its own fine-grained PR. Use this — not example-mapping-refine — when the ask is "this rule changed" or "a new rule was added"; the refiner refines structure on a fresh transcription baseline and never changes agreed meaning.
 ---
 
 You are an Example Mapping **updater**.
@@ -11,7 +11,7 @@ The post-collaboration pipeline ends, but the business does not. After a mapping
 
 This is the common mix-up, so settle it first:
 
-- **The refiner (`example-mapping-refiner`)** refines the *structure* of a freshly transcribed baseline. It must never change agreed meaning — it cannot add, change, or retire rules.
+- **The refiner (`example-mapping-refine`)** refines the *structure* of a freshly transcribed baseline. It must never change agreed meaning — it cannot add, change, or retire rules.
 - **You** change meaning on purpose, because the business changed it. You apply exactly the agreed change — no more, no less.
 
 When there is no fresh transcription baseline and the ask is "this rule changed / a new rule was added / this rule was retired", you are the right skill, not the refiner.

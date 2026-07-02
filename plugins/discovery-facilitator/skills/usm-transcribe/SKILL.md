@@ -1,5 +1,5 @@
 ---
-name: usm-transcriber
+name: usm-transcribe
 description: Transcribe a completed User Story Mapping board into YAML. The mapping session already happened with people on the board; this faithfully writes out the backbone (activities, steps) and story cards and commits the result as the refinement-free diff baseline.
 ---
 
@@ -21,7 +21,7 @@ You are a **faithful scribe of a finished map**, not a participant.
 This skill is the first of the post-collaboration steps. Know where you sit:
 
 1. **Transcribe (you)** — board → YAML, committed with **NO refinement** as the diff baseline.
-2. **Refine** — the `usm-refiner` skill refines the backbone structure and story framing (consulting `usm-expert`), and ships it as a reviewable PR diff on top of your baseline. The refinement's value comes from that diff, so your baseline must be an honest transcription, not a pre-polished one.
+2. **Refine** — the `usm-refine` skill refines the backbone structure and story framing (consulting `usm-expert`), and ships it as a reviewable PR diff on top of your baseline. The refinement's value comes from that diff, so your baseline must be an honest transcription, not a pre-polished one.
 
 If you polish during transcription, the refine diff becomes meaningless. Keep the baseline raw.
 

@@ -24,25 +24,25 @@ The pipeline runs once per session, but the mapping keeps living afterwards: whe
 
 ### Transcribe
 
-- **`/usm-transcriber`** — transcribe a completed User Story Mapping board into `discoveries/usm/{map-name}.yaml`. Faithfully captures the backbone (activities, steps) and story cards in board order, committed as the refinement-free baseline.
-- **`/example-mapping-transcriber`** — transcribe a completed Example Mapping board into `discoveries/example-mappings/{story-key}.yaml`. Faithfully captures rules, examples, and questions, committed as the refinement-free baseline.
+- **`/usm-transcribe`** — transcribe a completed User Story Mapping board into `discoveries/usm/{map-name}.yaml`. Faithfully captures the backbone (activities, steps) and story cards in board order, committed as the refinement-free baseline.
+- **`/example-mapping-transcribe`** — transcribe a completed Example Mapping board into `discoveries/example-mappings/{story-key}.yaml`. Faithfully captures rules, examples, and questions, committed as the refinement-free baseline.
 
 ### Refine
 
-- **`/usm-refiner`** — refine a transcribed story-map baseline (backbone narrative, granularity, story framing) and ship it as a reviewable PR diff, consulting `usm-expert`.
-- **`/example-mapping-refiner`** — refine a transcribed example-mapping baseline (rule/example clarity, naming, grouping) and ship it as a reviewable PR diff, consulting `bdd-expert`.
+- **`/usm-refine`** — refine a transcribed story-map baseline (backbone narrative, granularity, story framing) and ship it as a reviewable PR diff, consulting `usm-expert`.
+- **`/example-mapping-refine`** — refine a transcribed example-mapping baseline (rule/example clarity, naming, grouping) and ship it as a reviewable PR diff, consulting `bdd-expert`.
 
 ### Commit
 
-- **`/story-committer`** — commit a story candidate from a User Story Map into the story registry: create `stories/{story-key}.md` and write the key back to the matching candidate in the map. The bridge from the map to per-story detailed discovery — run it when a candidate is ready to move from the story map into its own Example Mapping.
+- **`/story-commit`** — commit a story candidate from a User Story Map into the story registry: create `stories/{story-key}.md` and write the key back to the matching candidate in the map. The bridge from the map to per-story detailed discovery — run it when a candidate is ready to move from the story map into its own Example Mapping.
 
 ### Plan
 
-- **`/example-mapping-planner`** — plan implementation from a refined example mapping by holding it against the current implementation and design. Surfaces the work ahead — unimplemented rules, contradictions, and Questions the code or design already answers — scoped forward. The implementation and design locations are specified by the user or the story's frontmatter.
+- **`/example-mapping-plan`** — plan implementation from a refined example mapping by holding it against the current implementation and design. Surfaces the work ahead — unimplemented rules, contradictions, and Questions the code or design already answers — scoped forward. The implementation and design locations are specified by the user or the story's frontmatter.
 
 ### Update
 
-- **`/example-mapping-updater`** — fold a rule change or addition from ongoing work into an existing example mapping and ship it as a fine-grained PR, one rule-level change per PR. The right skill when "a rule changed" or "a rule was added" — the refiner never changes agreed meaning.
+- **`/example-mapping-update`** — fold a rule change or addition from ongoing work into an existing example mapping and ship it as a fine-grained PR, one rule-level change per PR. The right skill when "a rule changed" or "a rule was added" — the refiner never changes agreed meaning.
 
 ## Expert skills
 

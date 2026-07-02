@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Claude Code plugins for livt - author the discovery master (transcribe, refine, plan, update) with discovery-facilitator, and consume it from implementation repos over MCP with livt-mcp",
-    "version": "0.6.0"
+    "version": "0.7.0"
   },
   "plugins": [
     {

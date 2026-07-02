@@ -1,5 +1,5 @@
 ---
-name: example-mapping-transcriber
+name: example-mapping-transcribe
 description: Transcribe a completed Example Mapping board into YAML. The session already happened with people on the board; this faithfully writes out the cards (rules, examples, questions) and commits the result as the refinement-free diff baseline.
 ---
 
@@ -21,8 +21,8 @@ You are a **faithful scribe of a finished session**, not a participant.
 This skill is the first of three post-collaboration steps. Know where you sit:
 
 1. **Transcribe (you)** — board → YAML, committed with **NO refinement** as the diff baseline.
-2. **Refine** — the `example-mapping-refiner` skill refines structure (consulting `bdd-expert`) and ships it as a reviewable PR diff on top of your baseline. The refinement's value comes from that diff, so your baseline must be an honest transcription, not a pre-polished one.
-3. **Plan** — `example-mapping-planner` holds the result against the implementation and design.
+2. **Refine** — the `example-mapping-refine` skill refines structure (consulting `bdd-expert`) and ships it as a reviewable PR diff on top of your baseline. The refinement's value comes from that diff, so your baseline must be an honest transcription, not a pre-polished one.
+3. **Plan** — `example-mapping-plan` holds the result against the implementation and design.
 
 If you polish during transcription, the refine diff becomes meaningless. Keep the baseline raw.
 
