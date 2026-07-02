@@ -1,0 +1,73 @@
+# GoReleaser configuration (v2 schema), run by .github/workflows/release.yml
+# on tag push. Dry-run locally with `mise run snapshot`.
+version: 2
+
+project_name: livt
+
+# Build from the module as served by the Go module proxy instead of the local
+# checkout: the proxy copy is verified against the Go checksum database
+# (sum.golang.org), and anyone can reproduce the released binaries from the
+# public module. Snapshot builds skip the proxy automatically.
+gomod:
+  proxy: true
+
+builds:
+  - main: .
+    binary: livt
+    env:
+      - CGO_ENABLED=0
+    # Reproducible builds: strip filesystem paths and debug info, pin file
+    # timestamps to the commit. No -X version injection needed — `livt
+    # version` reads the module version via runtime/debug.ReadBuildInfo.
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - formats: [tar.gz]
+    format_overrides:
+      - goos: windows
+        formats: [zip]
+
+checksum:
+  name_template: checksums.txt
+  algorithm: sha256
+
+changelog:
+  sort: asc
+  groups:
+    - title: Features
+      regexp: '^feat(\(.*\))?!?:'
+      order: 0
+    - title: Bug fixes
+      regexp: '^fix(\(.*\))?!?:'
+      order: 1
+    - title: Other changes
+      order: 999
+  filters:
+    exclude:
+      - "^Merge pull request"
+      - "^Merge branch"
+
+release:
+  # Keep hand-written notes if the release was created in the GitHub UI
+  # before the tag push triggered this build.
+  mode: keep-existing
+  footer: |
+    ---
+    All artifacts are listed in `checksums.txt` (SHA-256) and carry a
+    Sigstore-signed [build provenance attestation](https://github.com/boykush/livt/attestations).
+    Verify before running:
+
+    ```bash
+    gh attestation verify <artifact> --repo boykush/livt
+    ```

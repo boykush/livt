@@ -1,0 +1,52 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - "v*"
+
+# Least privilege by default; the job grants only what it needs.
+permissions: {}
+
+jobs:
+  goreleaser:
+    name: goreleaser
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # create the GitHub Release and upload assets
+      id-token: write # keyless (Sigstore) signing of the build provenance
+      attestations: write # persist the provenance attestation
+    steps:
+      - name: Checkout
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 0 # full history and tags for the release changelog
+          persist-credentials: false
+
+      # Same toolchain source of truth as CI (.mise.toml). Cache is disabled:
+      # restoring a cache into a job that publishes release artifacts is a
+      # cache-poisoning vector (zizmor: cache-poisoning).
+      - name: Setup mise
+        uses: jdx/mise-action@e6a8b3978addb5a52f2b4cd9d91eafa7f0ab959d # v4.2.0
+        with:
+          install_args: go golangci-lint goreleaser
+          cache: false
+
+      # Gate the release on the same checks CI runs (fmt/vet/lint/tidy/build/test).
+      - name: Check
+        run: mise run check
+
+      - name: Build and publish release
+        run: goreleaser release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Sigstore-signed build provenance for every artifact, verifiable with
+      # `gh attestation verify <artifact> --repo boykush/livt`.
+      - name: Attest build provenance
+        uses: actions/attest-build-provenance@0f67c3f4856b2e3261c31976d6725780e5e4c373 # v4.1.1
+        with:
+          subject-path: |
+            dist/*.tar.gz
+            dist/*.zip
+            dist/checksums.txt
