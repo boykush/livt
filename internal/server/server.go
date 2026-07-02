@@ -22,8 +22,16 @@ const liveReloadPath = "/livereload"
 // liveReloadScript reconnects the browser to the SSE endpoint and reloads the
 // page whenever the server signals a rebuild. It is injected into served HTML
 // only; the static build output produced by `livt build` is left untouched.
+//
+// The iframe guard is essential: index pages embed every mapping and story map
+// as an iframe preview, so without it each preview would open its own SSE
+// connection. A handful of previews exhausts the browser's per-origin HTTP/1.1
+// connection limit (typically 6), starving navigation requests and deadlocking
+// the page. Only the top-level document keeps a connection, and its reload
+// refreshes the embedded previews along with it.
 const liveReloadScript = `<script>
 (function () {
+  if (window.self !== window.top) return;
   var es = new EventSource("` + liveReloadPath + `");
   es.onmessage = function () { location.reload(); };
 })();
