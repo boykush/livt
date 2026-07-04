@@ -14,7 +14,27 @@ var templateFS embed.FS
 
 // All templates are parsed into a single set so pages can share the
 // {{define "sidebar"}} partial in _sidebar.html.
-var tmpl = template.Must(template.ParseFS(templateFS, "templates/*.html"))
+var tmpl = template.Must(template.New("").Funcs(template.FuncMap{
+	"issueLabel": issueLabel,
+}).ParseFS(templateFS, "templates/*.html"))
+
+// issueLabel shortens an automation Issue URL to a sticky-sized link label:
+// https://github.com/{owner}/{repo}/issues/{n} becomes "{repo}#{n}". Anything
+// else falls back to its host so foreign trackers still read as a chip.
+func issueLabel(url string) string {
+	rest, ok := strings.CutPrefix(url, "https://")
+	if !ok {
+		rest, ok = strings.CutPrefix(url, "http://")
+	}
+	if !ok {
+		return url
+	}
+	parts := strings.Split(rest, "/")
+	if len(parts) >= 5 && parts[0] == "github.com" && parts[3] == "issues" {
+		return parts[2] + "#" + parts[4]
+	}
+	return parts[0]
+}
 
 // Sidebar is the shared navigation rendered on every hub page. Prefix is the
 // relative path back to the output root ("" for root pages); Active marks the

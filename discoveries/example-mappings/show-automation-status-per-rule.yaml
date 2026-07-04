@@ -13,9 +13,7 @@ rules:
       - id: EX-01
         name: SSGはruleのautomatedとissuesのみを読み、GitHubには問い合わせない
 
-questions:
-  - id: Q-02
-    text: 実例カードの安定id（アンカー化）は本スライスに含めるか
+questions: []
 
 ubiquitous:
   - example-mapping
