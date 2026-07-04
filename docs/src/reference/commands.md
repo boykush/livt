@@ -90,7 +90,7 @@ mappings and story maps):
 | `livt://story-map/{map_name}` | A story map: activities, steps, story cards, and releases. Committed story cards link to their story resource. `{map_name}` is the map's display name (percent-encoded) — the same identifier the build output uses for `story-map/{name}.html`. |
 | `livt://story/{story_key}` | The story's name, body, and frontmatter meta (e.g. `issue`), plus `example_mapping_uri` when a mapping exists. |
 | `livt://mapping/{story_key}` | The story's example mapping (rules, examples, questions, ubiquitous terms). Each rule carries its own `uri`, and `ubiquitous_terms` resolves each referenced term to its resource URI. |
-| `livt://mapping/{story_key}/rule/{rule_id}` | A single rule and its examples. |
+| `livt://mapping/{story_key}/rule/{rule_id}` | A single rule and its examples, plus its recorded automation: `issues` (automation Issue URLs) and `automated` (whether the rule is automated by tests). Rules inside `livt://mapping/{story_key}` carry the same fields. |
 | `livt://ubiquitous/{term_key}` | A ubiquitous language term's name and definition. |
 
 Read them with `resources/read`; all appear in `resources/templates/list`. The

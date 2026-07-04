@@ -76,8 +76,8 @@ func TestEndToEnd(t *testing.T) {
 	if err := json.Unmarshal([]byte(resourceText(t, mr)), &em); err != nil {
 		t.Fatalf("decode mapping: %v", err)
 	}
-	if em.Mapping.StoryKey != "demo" || len(em.Mapping.Rules) != 1 {
-		t.Fatalf("mapping = %+v, want demo with one rule", em.Mapping)
+	if em.Mapping.StoryKey != "demo" || len(em.Mapping.Rules) != 2 {
+		t.Fatalf("mapping = %+v, want demo with two rules", em.Mapping)
 	}
 	if em.Mapping.Rules[0].URI != "livt://mapping/demo/rule/R-01" {
 		t.Errorf("rule uri = %q, want livt://mapping/demo/rule/R-01", em.Mapping.Rules[0].URI)
@@ -97,6 +97,9 @@ func TestEndToEnd(t *testing.T) {
 	}
 	if rule.Rule.ID != "R-01" || rule.Rule.Name != "ルール1" {
 		t.Errorf("rule = %+v, want R-01 ルール1", rule.Rule)
+	}
+	if len(rule.Rule.Issues) != 1 || !rule.Rule.Automated {
+		t.Errorf("rule = %+v, want the recorded issue URL and automated=true over the wire", rule.Rule)
 	}
 
 	// Discover story maps, then read one through the URI the tool handed out —
