@@ -33,6 +33,28 @@ func TestRenderMappingRuleCarriesIDAnchorAndBadge(t *testing.T) {
 	}
 }
 
+func TestRenderMappingMarksAutomatedRules(t *testing.T) {
+	em := &domain.ExampleMapping{
+		Rules: []domain.Rule{
+			{ID: "R-01", Name: "An automated rule", Automated: true},
+			{ID: "R-02", Name: "A rule not yet automated"},
+		},
+	}
+
+	var buf bytes.Buffer
+	if err := renderMapping(&buf, em, "Story", "", nil); err != nil {
+		t.Fatal(err)
+	}
+	html := buf.String()
+
+	if got := strings.Count(html, "✓ automated"); got != 1 {
+		t.Fatalf("automated badge rendered %d times, want once (only on the automated rule)", got)
+	}
+	if !strings.Contains(html, "Automated rule") {
+		t.Fatal("expected the legend to explain the automated mark")
+	}
+}
+
 func TestRenderMappingRuleWithoutIDOmitsAnchor(t *testing.T) {
 	em := &domain.ExampleMapping{
 		Rules: []domain.Rule{{Name: "A rule without an ID"}},
