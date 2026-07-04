@@ -11,6 +11,7 @@ activities:
         name: ストーリーごとに親Issueを起票する
         stories:
           - name: ストーリー単位の親Issueを起票してルールIssueを束ねる
+            key: file-story-parent-issues-to-impl-repos
       - key: file-rule-issues
         name: ルールごとに自動化Issueを起票する
         stories:
