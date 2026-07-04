@@ -12,6 +12,7 @@ rules:
     examples:
       - id: EX-01
         name: SSGはruleのautomatedとissuesのみを読み、GitHubには問い合わせない
+    automated: true
 
 questions: []
 

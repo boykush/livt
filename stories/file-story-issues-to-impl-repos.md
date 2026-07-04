@@ -1,5 +1,9 @@
 ---
 name: livt経由でストーリー単位のIssueを起票する
+repos:
+  - boykush/livt
+issues:
+  - https://github.com/boykush/livt/issues/62
 ---
 
 ストーリーマップメンテナーとして
