@@ -5,4 +5,4 @@ issue: https://github.com/boykush/livt/issues/28
 
 リビングドキュメントの読者として
 ルールごとに自動化の状況を色分けで見たい
-そうすればどのルールが covered / verified かを一目で把握できる
+そうすればどのルールが自動化済みかを一目で把握できる

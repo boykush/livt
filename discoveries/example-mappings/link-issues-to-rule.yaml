@@ -20,20 +20,18 @@ rules:
       - id: EX-03
         name: livt経由でないIssueも、URLをruleに貼れば同じ紐づけになる
   - id: R-03
-    name: ruleは自動化の判定結果をstatusとして持てる
+    name: ruleは自動化済みかどうかをautomatedとして持てる
     examples:
       - id: EX-01
-        name: Issueの起票・クローズと、ルールが実際に自動化されたか（契約テスト的判定）は別で、statusは後者を記録する
+        name: Issueの起票・クローズと、ルールが自動化済みかは別で、automatedは後者を記録する
       - id: EX-02
-        name: statusはSSGのルール付箋の表示に反映される（色分けの表現はshow-automation-status-per-ruleのスコープ）
+        name: automatedのないruleは未自動化として扱われる
+      - id: EX-03
+        name: 表示への反映はshow-automation-status-per-ruleのスコープ
 
 questions:
   - id: Q-01
-    text: statusの値の語彙をどうするか（unverified / covered / verified / staleの4グレードとの関係）
-  - id: Q-02
-    text: statusを更新する主体は誰か（人手の合意を記録するか、契約テストの結果からAIスキルが更新するか）
-  - id: Q-03
-    text: 紐づけ・status付与の後にルール本文が変わった場合のズレ（stale）はどう検知するか
+    text: automatedを立てる・外すのは誰のどの手順に組み込むか（Issueクローズ時に立て、ルール変更時に外す、など）
 
 ubiquitous:
   - example-mapping
