@@ -1,0 +1,41 @@
+rules:
+  - id: R-01
+    name: 実例マッピングYAMLの各ruleは、対応する自動化IssueのURLをissuesとして持てる
+    examples:
+      - id: EX-01
+        name: ruleにissuesを書くと、そのルールの自動化Issueへの参照になる
+      - id: EX-02
+        name: 1つのルールが複数の実装リポジトリで自動化される場合、issuesに複数のURLを列挙する
+      - id: EX-03
+        name: issuesのないruleは未紐づけ（未自動化）として扱われる
+      - id: EX-04
+        name: issuesに置くのはIssueのURLに統一し、PR・テストへの直リンクは置かない
+  - id: R-02
+    name: 紐づけの正はマスタが持ち、GitHub側の構造には依存しない
+    examples:
+      - id: EX-01
+        name: 親子関係はstory⊃ruleというマスタの構造から把握し、GitHubのsub-issueグラフは読まない
+      - id: EX-02
+        name: livt経由で起票したIssueは書き戻しにより自動で紐づく
+      - id: EX-03
+        name: livt経由でないIssueも、URLをruleに貼れば同じ紐づけになる
+  - id: R-03
+    name: ruleは自動化の判定結果をstatusとして持てる
+    examples:
+      - id: EX-01
+        name: Issueの起票・クローズと、ルールが実際に自動化されたか（契約テスト的判定）は別で、statusは後者を記録する
+      - id: EX-02
+        name: statusはSSGのルール付箋の表示に反映される（色分けの表現はshow-automation-status-per-ruleのスコープ）
+
+questions:
+  - id: Q-01
+    text: statusの値の語彙をどうするか（unverified / covered / verified / staleの4グレードとの関係）
+  - id: Q-02
+    text: statusを更新する主体は誰か（人手の合意を記録するか、契約テストの結果からAIスキルが更新するか）
+  - id: Q-03
+    text: 紐づけ・status付与の後にルール本文が変わった場合のズレ（stale）はどう検知するか
+
+ubiquitous:
+  - example-mapping
+  - story
+  - discovery
