@@ -14,7 +14,7 @@ Transcribe ──▶ Refine ──▶ Plan
 
 1. **Transcribe** — write the agreed board out to YAML faithfully, committed with no refinement as the diff baseline.
 2. **Refine** — refine the structure and ship it as a reviewable PR diff on top of the baseline, backed by an expert skill. The refinement's value is exactly that diff.
-3. **Plan** — hold the result against the current implementation and design to surface the work ahead.
+3. **Plan** — take the refined mapping into sprint planning against the current implementation and design: work out how to build each rule — whether it's feasible, what the work is, and which decisions it needs.
 
 Between the map and per-story discovery sits a bridge: when a story candidate on a refined User Story Map is ready for detailed discovery, the **Commit** skill promotes it into the `stories/` registry — creating its story file and stamping the key back onto the map — so its Example Mapping can begin.
 
@@ -40,7 +40,7 @@ When a mapping is ready to drive implementation, the **File** skills carry it ou
 
 ### Plan
 
-- **`/example-mapping-plan`** — plan implementation from a refined example mapping by holding it against the current implementation and design. Surfaces the work ahead — unimplemented rules, contradictions, and Questions the code or design already answers — scoped forward. The implementation and design locations are specified by the user or the story's frontmatter.
+- **`/example-mapping-plan`** — plan implementation from a refined example mapping the way a team takes a backlog item into sprint planning: hold it against the current implementation and design and work out how to realize each rule — whether it's feasible, what the work is, which decisions it needs, and where it conflicts with what exists. The implementation and design locations are specified by the user or the story's frontmatter. Not an audit of what's already built, nor a sync from the code back into the mapping.
 
 ### Update
 
