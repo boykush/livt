@@ -29,9 +29,9 @@ activities:
     name: 自動化の状況を映す
     steps:
       - key: link-issues-to-rule
-        name: Issueをルールに紐づける
+        name: ルールの自動化を記録する
         stories:
-          - name: 起票したIssueをルールに紐づける
+          - name: ルールの自動化をマスタに記録する
             key: link-issues-to-rule
             release: coordinate-with-issues
       - key: show-status-per-rule
