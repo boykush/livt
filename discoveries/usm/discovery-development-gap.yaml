@@ -11,16 +11,20 @@ activities:
         name: ストーリーごとに親Issueを起票する
         stories:
           - name: ストーリー単位の親Issueを起票してルールIssueを束ねる
+            key: file-story-parent-issues-to-impl-repos
+            release: coordinate-with-issues
       - key: file-rule-issues
         name: ルールごとに自動化Issueを起票する
         stories:
           - name: livt経由で各実装リポジトリに自動化Issueを起票する
             key: file-automation-issues-to-impl-repos
+            release: coordinate-with-issues
       - key: automate-in-impl-repos
         name: 実装リポジトリ側で自動化する
         stories:
           - name: 実装リポジトリがマスタを見てテスト駆動で自動化する
             key: automate-from-master-in-impl-repos
+            release: read-spec
   - key: reflect-automation-status
     name: 自動化の状況を映す
     steps:
@@ -29,13 +33,23 @@ activities:
         stories:
           - name: 起票したIssueをルールに紐づける
             key: link-issues-to-rule
+            release: coordinate-with-issues
       - key: show-status-per-rule
         name: ルールごとに自動化の状況を映す
         stories:
           - name: ルールが自動化されているかを色分けで映す
             key: show-automation-status-per-rule
+            release: reflect-status
       - key: trace-rule-to-tests
         name: ルールから対応テストを辿る
         stories:
           - name: ルール付箋から対応Issue・テストへ辿る
             key: trace-rule-to-tests
+            release: reflect-status
+releases:
+  - id: read-spec
+    name: 実装リポジトリが仕様を読める
+  - id: coordinate-with-issues
+    name: Issueで協調できる
+  - id: reflect-status
+    name: 自動化の状態が映る
