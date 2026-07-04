@@ -1,0 +1,37 @@
+rules:
+  - id: R-01
+    name: ルール付箋はstatusに応じて色分けされる
+    examples:
+      - id: EX-01
+        name: statusのないruleはunverifiedとして描画される
+      - id: EX-02
+        name: covered / verified / staleはそれぞれ別の色で描画される
+      - id: EX-03
+        name: 凡例が各値の意味を説明する
+  - id: R-02
+    name: coveredとverifiedの区別を表現の中心に置く
+    examples:
+      - id: EX-01
+        name: レイヤテストで守られただけのルールはcovered、契約テスト的判定まで済んだルールはverified
+      - id: EX-02
+        name: 全ルールがcoveredでも、ストーリーが検証済みであることを意味しない
+  - id: R-03
+    name: 色分けはマスタの記録だけから導出され、buildはネットワークに出ない
+    examples:
+      - id: EX-01
+        name: SSGはruleのstatusとissuesのみを読み、GitHubには問い合わせない
+      - id: EX-02
+        name: statusの変化はマッピングYAMLのdiffとして履歴に残る
+
+questions:
+  - id: Q-01
+    text: statusの語彙はunverified / covered / verified / staleの4値でよいか（省略時はunverified扱い）
+  - id: Q-02
+    text: staleは人が記録するか、ルール変更の検知から導出するか
+  - id: Q-03
+    text: 実例カードの安定id（アンカー化）は本スライスに含めるか
+
+ubiquitous:
+  - example-mapping
+  - story
+  - discovery
