@@ -1,0 +1,25 @@
+rules:
+  - id: R-01
+    name: ルール付箋から、記録された自動化Issueへ辿れる
+    examples:
+      - id: EX-01
+        name: issuesのあるruleの付箋には、各Issueへの外部リンクが記録順で付く
+      - id: EX-02
+        name: リンクのラベルはリポジトリ名とIssue番号（例 livt#25）に短縮される
+      - id: EX-03
+        name: issuesのないruleにはリンクが付かない
+      - id: EX-04
+        name: PR・テスト（真実）へはリンク先のIssueから辿る
+    automated: true
+  - id: R-02
+    name: リンクはマスタの記録をそのまま使い、buildはネットワークに出ない
+    examples:
+      - id: EX-01
+        name: SSGはissuesのURLをそのまま出力し、状態の問い合わせや解決はしない
+
+questions: []
+
+ubiquitous:
+  - example-mapping
+  - story
+  - discovery
