@@ -50,6 +50,22 @@ rules:
         name: スキルはマスタを読み、gh CLI（既存の認証）で対象リポジトリへ起票する
       - id: EX-02
         name: 書き戻しはワーキングツリーの編集までとし、コミットやPRは通常のレビューフローに委ねる
+  - id: R-08
+    name: 実例マッピングYAMLの各ruleは、対応する自動化IssueのURLをissuesとして持てる
+    examples:
+      - id: EX-01
+        name: 1つのルールが複数の実装リポジトリで自動化される場合、issuesに複数のURLを列挙する
+      - id: EX-02
+        name: issuesに置くのはIssueのURLに統一し、PR・テストへの直リンクは置かない
+      - id: EX-03
+        name: issuesのないruleは未紐づけとして扱われる
+  - id: R-09
+    name: 紐づけの正はマスタが持ち、GitHub側の構造には依存しない
+    examples:
+      - id: EX-01
+        name: 親子関係はstory⊃ruleというマスタの構造から把握し、GitHubのsub-issueグラフは読まない
+      - id: EX-02
+        name: livt経由でないIssueも、URLをruleに貼れば同じ紐づけになる
 
 questions:
   - id: Q-01

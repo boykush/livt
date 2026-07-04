@@ -1,25 +1,5 @@
 rules:
   - id: R-01
-    name: 実例マッピングYAMLの各ruleは、対応する自動化IssueのURLをissuesとして持てる
-    examples:
-      - id: EX-01
-        name: ruleにissuesを書くと、そのルールの自動化Issueへの参照になる
-      - id: EX-02
-        name: 1つのルールが複数の実装リポジトリで自動化される場合、issuesに複数のURLを列挙する
-      - id: EX-03
-        name: issuesのないruleは未紐づけ（未自動化）として扱われる
-      - id: EX-04
-        name: issuesに置くのはIssueのURLに統一し、PR・テストへの直リンクは置かない
-  - id: R-02
-    name: 紐づけの正はマスタが持ち、GitHub側の構造には依存しない
-    examples:
-      - id: EX-01
-        name: 親子関係はstory⊃ruleというマスタの構造から把握し、GitHubのsub-issueグラフは読まない
-      - id: EX-02
-        name: livt経由で起票したIssueは書き戻しにより自動で紐づく
-      - id: EX-03
-        name: livt経由でないIssueも、URLをruleに貼れば同じ紐づけになる
-  - id: R-03
     name: ruleは自動化済みかどうかをautomatedとして持てる
     examples:
       - id: EX-01
@@ -27,6 +7,8 @@ rules:
       - id: EX-02
         name: automatedのないruleは未自動化として扱われる
       - id: EX-03
+        name: 自動化状況の変化はマッピングYAMLのdiffとして履歴に残る
+      - id: EX-04
         name: 表示への反映はshow-automation-status-per-ruleのスコープ
 
 questions:
