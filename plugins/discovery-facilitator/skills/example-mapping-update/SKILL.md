@@ -29,7 +29,7 @@ When there is no fresh transcription baseline and the ask is "this rule changed 
 2. Capture the agreed change from the user: which rule, what changed, and why. Don't invent or extrapolate.
 3. Apply the minimal rule-level edit:
    - **Added rule** — append it with the next unused rule ID, with the examples agreed alongside it.
-   - **Changed rule** — update its `name`, and bring its examples in line with the new meaning in the same PR (an example illustrating the old rule is now wrong).
+   - **Changed rule** — update its `name`, and bring its examples in line with the new meaning in the same PR (an example illustrating the old rule is now wrong). If the rule carries `automated:`, remove the flag in the same PR — the recorded automation covered the old meaning (`record-rule-automation`), and it is set again once the implementation catches up.
    - **Retired rule** — remove the rule together with its examples.
    - New open questions raised by the change go to `questions[]`; resolved meaning goes to rules, not answers scribbled onto Questions.
 4. Re-read the diff: it must contain exactly the one agreed change, nothing structural elsewhere.
@@ -40,6 +40,7 @@ When there is no fresh transcription baseline and the ask is "this rule changed 
 
 - A new rule takes the next unused `R-NN`; its examples start from `EX-01` (example IDs are rule-scoped).
 - Never renumber existing IDs. Retiring R-02 leaves a gap — R-03 stays R-03. Stable IDs keep PR history and past discussion legible.
+- Filed rule IDs are backpointer targets: automation issues (`rule-issue-file`) and the living document's `#rule-{ID}` anchors point at them from outside the repo, so renumbering or reusing one silently re-targets those pointers. Shared policy with `example-mapping-refine` — a rule ID, once filed, is immutable.
 
 ## PR Contract
 

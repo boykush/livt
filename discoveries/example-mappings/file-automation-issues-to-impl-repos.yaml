@@ -66,10 +66,15 @@ rules:
         name: 親子関係はstory⊃ruleというマスタの構造から把握し、GitHubのsub-issueグラフは読まない
       - id: EX-02
         name: livt経由でないIssueも、URLをruleに貼れば同じ紐づけになる
-
-questions:
-  - id: Q-01
-    text: 対象実装リポジトリはどこで宣言するか（livtの設定ファイル・ストーリーのメタ・スキル実行時の指定のどれか）
+  - id: R-10
+    name: 対象実装リポジトリは、ストーリーのfrontmatterのreposで宣言する
+    examples:
+      - id: EX-01
+        name: reposはowner/repo形式のリポジトリのリストで、複数の実装リポジトリを宣言できる
+      - id: EX-02
+        name: ルールIssueの起票先は、所属ストーリーのreposを参照する
+      - id: EX-03
+        name: マスタ自身のリポジトリもreposに宣言でき、自リポジトリへの起票も同じ手順で成立する
 
 ubiquitous:
   - example-mapping

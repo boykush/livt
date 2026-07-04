@@ -20,6 +20,8 @@ Between the map and per-story discovery sits a bridge: when a story candidate on
 
 The pipeline runs once per session, but the mapping keeps living afterwards: when a business rule is changed or added in ongoing work, the **Update** skill folds that change in as a fine-grained PR — one rule-level change per PR — instead of re-running the refine.
 
+When a mapping is ready to drive implementation, the **File** skills carry it outward as GitHub issues to the story's declared implementation repositories — the master, not GitHub, keeps the record of what is filed where.
+
 ## Skills
 
 ### Transcribe
@@ -43,6 +45,11 @@ The pipeline runs once per session, but the mapping keeps living afterwards: whe
 ### Update
 
 - **`/example-mapping-update`** — fold a rule change or addition from ongoing work into an existing example mapping and ship it as a fine-grained PR, one rule-level change per PR. The right skill when "a rule changed" or "a rule was added" — the refiner never changes agreed meaning.
+
+### File
+
+- **`/story-issue-file`** — file a story-level issue to a declared implementation repository (story frontmatter `repos:`), carrying the story body and backpointers to the master. Rule issues already filed in that repository are adopted as sub-issues; the created URL is written back to the story's frontmatter `issues:` as a working-tree edit.
+- **`/rule-issue-file`** — file automation issues for business rules, one per rule × declared repository, deduped by the mapping's own record. Each issue carries the rule, its examples, and backpointers (story-key, rule-id, the living document's `#rule-{ID}` anchor, spec rev); the created URL is written back to the rule's `issues:` as a working-tree edit. Filed under the story issue as a sub-issue when one exists in that repository.
 
 ## Expert skills
 
