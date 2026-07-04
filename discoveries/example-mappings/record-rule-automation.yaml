@@ -10,10 +10,13 @@ rules:
         name: 自動化状況の変化はマッピングYAMLのdiffとして履歴に残る
       - id: EX-04
         name: 表示への反映はshow-automation-status-per-ruleのスコープ
-
-questions:
-  - id: Q-01
-    text: automatedを立てる・外すのは誰のどの手順に組み込むか（Issueクローズ時に立て、ルール変更時に外す、など）
+  - id: R-02
+    name: automatedはルールの変化に合わせて、人の手順の中で更新される
+    examples:
+      - id: EX-01
+        name: 自動化Issueがクローズされたら、ルールメンテナーがautomatedを立てる
+      - id: EX-02
+        name: ルールを変更するPRでは、該当ruleのautomatedを外す（example-mapping-updateの手順に組み込む）
 
 ubiquitous:
   - example-mapping
