@@ -7,12 +7,14 @@ rules:
       - id: EX-02
         name: Issueの本文はマスタへのバックポインタ（story-key）と起票時点のspec_versionを運ぶ
   - id: R-02
-    name: 起票したIssueのURLは、スキルがストーリーに書き戻す
+    name: 起票したIssueのURLは、スキルがストーリーのfrontmatterのissuesに書き戻す
     examples:
       - id: EX-01
-        name: 起票に成功すると、ストーリーのfrontmatterにそのURLが記録される
+        name: 起票に成功すると、frontmatterのissues（URLのリスト）にそのURLが追記される
       - id: EX-02
         name: 書き戻しがそのまま紐づけになり、手作業を要しない
+      - id: EX-03
+        name: 既存の任意メタissue（単数）はissuesとは別物で、移行せずそのまま残す
   - id: R-03
     name: dedupeはマスタ側の記録で判定し、同じストーリー×対象リポジトリに二重起票しない
     examples:
@@ -43,8 +45,6 @@ rules:
         name: 同じreposの宣言が、ストーリー単位のIssueとルールIssueの両方の起票先になる
 
 questions:
-  - id: Q-01
-    text: ストーリー側の記録フィールドをどうするか（frontmatterのissuesにするか、既存の任意メタissueとの関係をどう整理するか）
   - id: Q-03
     text: ルールIssue起票と同じスキルに統合し、粒度（ストーリー/ルール）を指定で選ぶ形にするか、別スキルにするか
 
