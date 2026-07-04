@@ -28,16 +28,16 @@ activities:
   - key: reflect-automation-status
     name: 自動化の状況を映す
     steps:
-      - key: link-issues-to-rule
+      - key: record-rule-automation
         name: ルールの自動化を記録する
         stories:
           - name: ルールの自動化をマスタに記録する
-            key: link-issues-to-rule
+            key: record-rule-automation
             release: coordinate-with-issues
       - key: show-status-per-rule
         name: ルールごとに自動化の状況を映す
         stories:
-          - name: ルールが自動化されているかを色分けで映す
+          - name: ルールが自動化されているかを一目で映す
             key: show-automation-status-per-rule
             release: reflect-status
       - key: trace-rule-to-tests

@@ -1,0 +1,21 @@
+rules:
+  - id: R-01
+    name: ruleは自動化済みかどうかをautomatedとして持てる
+    examples:
+      - id: EX-01
+        name: Issueの起票・クローズと、ルールが自動化済みかは別で、automatedは後者を記録する
+      - id: EX-02
+        name: automatedのないruleは未自動化として扱われる
+      - id: EX-03
+        name: 自動化状況の変化はマッピングYAMLのdiffとして履歴に残る
+      - id: EX-04
+        name: 表示への反映はshow-automation-status-per-ruleのスコープ
+
+questions:
+  - id: Q-01
+    text: automatedを立てる・外すのは誰のどの手順に組み込むか（Issueクローズ時に立て、ルール変更時に外す、など）
+
+ubiquitous:
+  - example-mapping
+  - story
+  - discovery
