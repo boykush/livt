@@ -1,7 +1,8 @@
-// Package mcp serves the discovery master (stories, example mappings) over the
-// Model Context Protocol so implementation repos can fetch the spec for a story
-// or rule without reading livt's source. The master usually lives in a separate
-// checkout from the consumer, so Config.Root locates it explicitly.
+// Package mcp serves the discovery master (story maps, stories, example
+// mappings, ubiquitous language) over the Model Context Protocol so
+// implementation repos can fetch the spec for a story or rule without reading
+// livt's source. The master usually lives in a separate checkout from the
+// consumer, so Config.Root locates it explicitly.
 package mcp
 
 import (
@@ -30,6 +31,14 @@ func (c Config) mappingsDir() string {
 
 func (c Config) storiesDir() string {
 	return filepath.Join(c.Root, "stories")
+}
+
+func (c Config) usmDir() string {
+	return filepath.Join(c.Root, "discoveries", "usm")
+}
+
+func (c Config) ubiquitousDir() string {
+	return filepath.Join(c.Root, "ubiquitous")
 }
 
 // Server exposes the master under Config over MCP. version is the livt build

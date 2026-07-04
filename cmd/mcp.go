@@ -26,8 +26,9 @@ var mcpCmd = &cobra.Command{
 	Use:   "mcp",
 	Short: "Run an MCP server exposing the discovery master over stdio or HTTP",
 	Long: `Run a Model Context Protocol server that exposes the discovery master
-(stories and example mappings), so an implementation repo's agent can fetch the
-spec for a story or rule without reading livt's source.
+(story maps, stories, example mappings, and the ubiquitous language), so an
+implementation repo's agent can fetch the spec for a story or rule without
+reading livt's source.
 
 By default it serves over stdio, spawned per consumer. Pass --http to instead
 serve over Streamable HTTP from one long-running process, so several local repos
