@@ -16,9 +16,11 @@ type exampleMappingYAML struct {
 }
 
 type ruleYAML struct {
-	ID       string        `yaml:"id"`
-	Name     string        `yaml:"name"`
-	Examples []exampleYAML `yaml:"examples"`
+	ID        string        `yaml:"id"`
+	Name      string        `yaml:"name"`
+	Examples  []exampleYAML `yaml:"examples"`
+	Issues    []string      `yaml:"issues"`
+	Automated bool          `yaml:"automated"`
 }
 
 type exampleYAML struct {
@@ -50,7 +52,7 @@ func ParseExampleMapping(path string) (*domain.ExampleMapping, error) {
 		for _, ex := range r.Examples {
 			examples = append(examples, domain.Example{ID: ex.ID, Name: ex.Name})
 		}
-		rules = append(rules, domain.Rule{ID: r.ID, Name: r.Name, Examples: examples})
+		rules = append(rules, domain.Rule{ID: r.ID, Name: r.Name, Examples: examples, Issues: r.Issues, Automated: r.Automated})
 	}
 
 	var questions []domain.Question
