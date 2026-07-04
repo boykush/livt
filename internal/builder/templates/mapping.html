@@ -54,6 +54,13 @@
     {{if .Automated}}
     <span title="Automated by tests" class="absolute -top-2 -right-2 rounded-full bg-blue-600 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ automated</span>
     {{end}}
+    {{if .Issues}}
+    <div class="mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      {{range .Issues}}
+      <a href="{{.}}" target="_blank" rel="noopener" class="text-blue-600 hover:underline">&#8599; {{issueLabel .}}</a>
+      {{end}}
+    </div>
+    {{end}}
     {{if .ID}}
     <a href="#rule-{{.ID}}" data-copy-link title="Copy link"
        class="absolute bottom-1 right-2 font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 cursor-pointer select-none">🔗 {{.ID}}</a>
