@@ -1,0 +1,51 @@
+rules:
+  - id: R-01
+    name: ルールメンテナーはマスタのルールを指定して、対象実装リポジトリへ自動化Issueを起票できる
+    examples:
+      - id: EX-01
+        name: story-keyとrule-idを指定すると、そのルール1件分のIssueが起票される
+      - id: EX-02
+        name: story-keyのみ指定すると、そのストーリーの未起票ルール全件が起票される
+  - id: R-02
+    name: Issue本文はルール・実例の本文とマスタへのバックポインタを運ぶ
+    examples:
+      - id: EX-01
+        name: 本文にルール名と実例の一覧を含む
+      - id: EX-02
+        name: バックポインタとしてstory-key・rule-idと、リビングドキュメントのルールアンカー（#rule-{ID}）へのリンクを含む
+      - id: EX-03
+        name: 起票時点のマスタのrevをspec_versionとして記す
+  - id: R-03
+    name: ルール単位のdedupeにより、同じルールを二重起票しない
+    examples:
+      - id: EX-01
+        name: 同じルールに対して再実行しても、既存Issueを検出してスキップする
+      - id: EX-02
+        name: dedupeは対象リポジトリのIssueからバックポインタ（story-key + rule-id）を検索して判定する
+  - id: R-04
+    name: ストーリーの親Issueが起票済みなら、ルールIssueはそのsub-issueとして束ねられる
+    examples:
+      - id: EX-01
+        name: 起票されたルールIssueは、同じストーリー・同じリポジトリの親Issueに紐づく
+  - id: R-05
+    name: livtは実装リポジトリのコードを読まず、Issueというポインタだけを送る
+    examples:
+      - id: EX-01
+        name: 起票はGitHub APIのみで行い、対象リポジトリのチェックアウトを必要としない
+      - id: EX-02
+        name: 起票後の進捗の把握はlegの導出（link-issues-to-rule）に委ねる
+
+questions:
+  - id: Q-01
+    text: 対象実装リポジトリはどこで宣言するか（livtの設定ファイル・ストーリーのメタ・コマンド引数のどれか）
+  - id: Q-02
+    text: CLIコマンドとMCPツールのどちらで提供するか（両方か）
+  - id: Q-03
+    text: 認証はgh CLIへの委任でよいか（トークンの受け渡しを設けるか）
+  - id: Q-04
+    text: 起票後にルールが清書で改名・再構成された場合の追従（ルールIDの不変ポリシーをどこで担保するか）
+
+ubiquitous:
+  - example-mapping
+  - story
+  - discovery
