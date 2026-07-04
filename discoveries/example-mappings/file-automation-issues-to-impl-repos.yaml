@@ -12,7 +12,7 @@ rules:
       - id: EX-01
         name: 起票に成功すると、該当ruleのissuesにそのURLが追記される
       - id: EX-02
-        name: 書き戻しがそのまま紐づけ（link-issues-to-rule）になり、手作業を要しない
+        name: 書き戻しがそのままマスタへの記録（record-rule-automation）になり、手作業を要しない
   - id: R-03
     name: dedupeはマスタ側の記録で判定し、同じルール×対象リポジトリを二重起票しない
     examples:
