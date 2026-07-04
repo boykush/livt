@@ -3,9 +3,10 @@ rules:
     name: ルール付箋は自動化済みかどうかを人間が一目で見分けられる
     examples:
       - id: EX-01
-        name: automatedのあるruleとないruleは、付箋の見た目で判別できる
+        name: automatedのあるruleには付箋の角に ✓ automated スタンプが付く（色だけに頼らない）
       - id: EX-02
         name: 凡例が見分け方を説明する
+    automated: true
   - id: R-02
     name: 表示はマスタの記録だけから導出され、buildはネットワークに出ない
     examples:
@@ -13,8 +14,6 @@ rules:
         name: SSGはruleのautomatedとissuesのみを読み、GitHubには問い合わせない
 
 questions:
-  - id: Q-01
-    text: 見分けの表現をどうするか（色分け・バッジ・ラベルなど。付箋の色は既にカード種別を表している点に注意）
   - id: Q-02
     text: 実例カードの安定id（アンカー化）は本スライスに含めるか
 
