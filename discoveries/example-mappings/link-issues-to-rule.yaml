@@ -1,0 +1,53 @@
+rules:
+  - id: R-01
+    name: legはルールと自動化の根拠（Issue・PR・テスト）を結ぶ参照で、リンク先が真実
+    examples:
+      - id: EX-01
+        name: legはrule-idとIssue/PRのURLの組で表される
+      - id: EX-02
+        name: legの状態はリンク先の事実（open / closed / merged）から導出され、手では管理しない
+  - id: R-02
+    name: legは起票時のバックポインタから導出され、手動登録を必要としない
+    examples:
+      - id: EX-01
+        name: file-rule-issuesが起票したIssueはバックポインタを持ち、その検索でルールとの対応を再構成できる
+      - id: EX-02
+        name: 手動で作られたIssue・PRも、バックポインタを書けばlegとして拾われる
+  - id: R-03
+    name: マッピングYAMLは4フィールドのまま、導出したlegはスナップショットとして別に書き出す
+    examples:
+      - id: EX-01
+        name: 実例マッピングファイルにはleg情報を書かない
+      - id: EX-02
+        name: 同期コマンドがleg一覧と状態をコミット可能なスナップショットに書き出し、状態の変化がdiffとして残る
+      - id: EX-03
+        name: livt buildはネットワークに出ず、スナップショットだけを読む
+  - id: R-04
+    name: レイヤlegが全て閉じてもverifiedにはならず、合成の証明はシームlegが別に担う
+    examples:
+      - id: EX-01
+        name: legはkind（layer / seam）を持つ
+      - id: EX-02
+        name: シームlegは消費者駆動契約（Pact等）の検証状態を指す
+  - id: R-05
+    name: legは検証時点のマスタのrevを伴い、以後のルール変更を検知できる
+    examples:
+      - id: EX-01
+        name: legのスナップショットは各legのspec_versionを持つ
+      - id: EX-02
+        name: legのspec_version以降にルールが変わっていれば、ズレ（stale）として導出できる
+
+questions:
+  - id: Q-01
+    text: スナップショットの置き場所と形式（コミットするか、gitignoreするか）
+  - id: Q-02
+    text: シームlegの宣言単位（ストーリー・マップ・リポジトリ対のどれに紐づけるか）
+  - id: Q-03
+    text: 初期スコープはGitHub由来のレイヤlegのみとし、Pact Broker連携（シーム状態の自動導出）は後続でよいか
+  - id: Q-04
+    text: レイヤlegを閉じたと判定する一次シグナルはPRのmergeかIssueのcloseか
+
+ubiquitous:
+  - example-mapping
+  - story
+  - discovery
