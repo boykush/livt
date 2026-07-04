@@ -1,0 +1,51 @@
+rules:
+  - id: R-01
+    name: ストーリーマップメンテナーはストーリーを指定して、対象実装リポジトリへストーリー単位のIssueを起票できる
+    examples:
+      - id: EX-01
+        name: story-keyと対象リポジトリを指定すると、ストーリーの本文を含むIssueが1件起票される
+      - id: EX-02
+        name: Issueの本文はマスタへのバックポインタ（story-key）と起票時点のspec_versionを運ぶ
+  - id: R-02
+    name: 起票したIssueのURLは、スキルがストーリーに書き戻す
+    examples:
+      - id: EX-01
+        name: 起票に成功すると、ストーリーのfrontmatterにそのURLが記録される
+      - id: EX-02
+        name: 書き戻しがそのまま紐づけになり、手作業を要しない
+  - id: R-03
+    name: dedupeはマスタ側の記録で判定し、同じストーリー×対象リポジトリに二重起票しない
+    examples:
+      - id: EX-01
+        name: ストーリーに対象リポジトリのIssueが既に記録されていればスキップする
+      - id: EX-02
+        name: 別の実装リポジトリへの起票は、既存の紐づけがあっても妨げない
+  - id: R-04
+    name: ストーリー単位のIssueはルールIssueなしでも成立し、両方あるときだけ親子になる
+    examples:
+      - id: EX-01
+        name: ルールIssueが1件もないストーリーでも、ストーリー単位のIssueは単独で起票できる
+      - id: EX-02
+        name: 同じストーリー・同じリポジトリにルールIssueがあれば、sub-issueとして束ねられる（起票の順序に依存しない）
+      - id: EX-03
+        name: 以後のルールIssueは起票時にこのIssueへ紐づく（file-automation-issues-to-impl-repos側のルール）
+  - id: R-05
+    name: 本ストーリーはAIスキルとして提供し、livtのCLIコマンドやMCPツールは追加しない
+    examples:
+      - id: EX-01
+        name: スキルはマスタを読み、gh CLI（既存の認証）で対象リポジトリへ起票する
+      - id: EX-02
+        name: 書き戻しはワーキングツリーの編集までとし、コミットやPRは通常のレビューフローに委ねる
+
+questions:
+  - id: Q-01
+    text: ストーリー側の記録フィールドをどうするか（frontmatterのissuesにするか、既存の任意メタissueとの関係をどう整理するか）
+  - id: Q-02
+    text: 対象実装リポジトリの宣言はfile-automation-issues-to-impl-reposと共通の仕組みでよいか
+  - id: Q-03
+    text: ルールIssue起票と同じスキルに統合し、粒度（ストーリー/ルール）を指定で選ぶ形にするか、別スキルにするか
+
+ubiquitous:
+  - example-mapping
+  - story
+  - discovery
