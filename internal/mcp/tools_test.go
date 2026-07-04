@@ -22,6 +22,11 @@ func newTestServer(t *testing.T) *Server {
 			"    examples:\n"+
 			"      - id: EX-01\n"+
 			"        name: 実例1\n"+
+			"    issues:\n"+
+			"      - https://github.com/boykush/livt/issues/25\n"+
+			"    automated: true\n"+
+			"  - id: R-02\n"+
+			"    name: ルール2\n"+
 			"questions:\n"+
 			"  - id: Q-01\n"+
 			"    text: 質問1\n"+
@@ -72,8 +77,8 @@ func TestExampleMappingReturnsRulesExamplesQuestions(t *testing.T) {
 	if em.StoryKey.Value != "demo" {
 		t.Errorf("story key = %q, want demo", em.StoryKey.Value)
 	}
-	if len(em.Rules) != 1 || em.Rules[0].ID != "R-01" {
-		t.Fatalf("rules = %+v, want one R-01", em.Rules)
+	if len(em.Rules) != 2 || em.Rules[0].ID != "R-01" {
+		t.Fatalf("rules = %+v, want R-01 first of two", em.Rules)
 	}
 	if len(em.Rules[0].Examples) != 1 || em.Rules[0].Examples[0].ID != "EX-01" {
 		t.Errorf("examples = %+v, want one EX-01", em.Rules[0].Examples)
@@ -102,6 +107,31 @@ func TestRuleReturnsSingleRule(t *testing.T) {
 	}
 	if rule.ID != "R-01" || rule.Name != "ルール1" {
 		t.Errorf("rule = %+v, want R-01 ルール1", rule)
+	}
+}
+
+func TestRuleJSONCarriesIssuesAndAutomated(t *testing.T) {
+	cfg := newTestServer(t).cfg
+
+	recorded, err := cfg.rule("demo", "R-01")
+	if err != nil {
+		t.Fatalf("rule: %v", err)
+	}
+	j := toRuleJSON("demo", recorded)
+	if len(j.Issues) != 1 || j.Issues[0] != "https://github.com/boykush/livt/issues/25" {
+		t.Errorf("issues = %v, want the recorded URL", j.Issues)
+	}
+	if !j.Automated {
+		t.Error("R-01 should be automated")
+	}
+
+	bare, err := cfg.rule("demo", "R-02")
+	if err != nil {
+		t.Fatalf("rule: %v", err)
+	}
+	bj := toRuleJSON("demo", bare)
+	if len(bj.Issues) != 0 || bj.Automated {
+		t.Errorf("R-02 should be unlinked and not automated, got issues=%v automated=%v", bj.Issues, bj.Automated)
 	}
 }
 

@@ -93,6 +93,11 @@ type ruleJSON struct {
 	URI      string        `json:"uri"`
 	Name     string        `json:"name"`
 	Examples []exampleJSON `json:"examples,omitempty"`
+	// Issues are the rule's automation Issue URLs as recorded on the master.
+	Issues []string `json:"issues,omitempty"`
+	// Automated is always present: consumers read the recorded judgment
+	// without distinguishing absent from false.
+	Automated bool `json:"automated"`
 }
 
 type questionJSON struct {
@@ -182,7 +187,7 @@ func toRuleJSON(storyKey string, r domain.Rule) ruleJSON {
 	for _, e := range r.Examples {
 		examples = append(examples, exampleJSON{ID: e.ID, Name: e.Name})
 	}
-	return ruleJSON{ID: r.ID, URI: ruleURI(storyKey, r.ID), Name: r.Name, Examples: examples}
+	return ruleJSON{ID: r.ID, URI: ruleURI(storyKey, r.ID), Name: r.Name, Examples: examples, Issues: r.Issues, Automated: r.Automated}
 }
 
 // toExampleMappingJSON is a Config method because resolving the referenced
