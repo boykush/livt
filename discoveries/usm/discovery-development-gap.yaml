@@ -7,6 +7,10 @@ activities:
   - key: fill-unautomated-gap
     name: 実装リポジトリでギャップを埋める
     steps:
+      - key: file-story-issues
+        name: ストーリーごとに親Issueを起票する
+        stories:
+          - name: ストーリー単位の親Issueを起票してルールIssueを束ねる
       - key: file-rule-issues
         name: ルールごとに自動化Issueを起票する
         stories:
