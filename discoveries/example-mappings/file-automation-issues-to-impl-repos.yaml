@@ -59,6 +59,7 @@ rules:
         name: issuesに置くのはIssueのURLに統一し、PR・テストへの直リンクは置かない
       - id: EX-03
         name: issuesのないruleは未紐づけとして扱われる
+    automated: true
   - id: R-09
     name: 紐づけの正はマスタが持ち、GitHub側の構造には依存しない
     examples:

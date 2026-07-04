@@ -10,6 +10,7 @@ rules:
         name: 自動化状況の変化はマッピングYAMLのdiffとして履歴に残る
       - id: EX-04
         name: 表示への反映はshow-automation-status-per-ruleのスコープ
+    automated: true
   - id: R-02
     name: automatedはルールの変化に合わせて、人の手順の中で更新される
     examples:

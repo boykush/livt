@@ -16,6 +16,7 @@ rules:
     examples:
       - id: EX-01
         name: SSGはissuesのURLをそのまま出力し、状態の問い合わせや解決はしない
+    automated: true
 
 questions: []
 
