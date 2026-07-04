@@ -6,6 +6,7 @@ rules:
         name: livt mcp コマンドでstdioのMCPサーバーが起動する
       - id: EX-02
         name: 消費側エージェントはツール/リソース経由で実例マッピング・ルールを取得する
+    automated: true
   - id: R-02
     name: 実装リポジトリは別ディレクトリにあるマスタの場所を指定できる
     examples:
@@ -15,6 +16,7 @@ rules:
         name: CLI引数 --root が環境変数より優先される
       - id: EX-03
         name: いずれも未指定ならカレントディレクトリをルートとする
+    automated: true
   - id: R-03
     name: 各レスポンス（ツール・リソース）はマスタのバージョン（gitリビジョン）を返し、仕様のズレを防ぐ
     examples:
@@ -22,6 +24,7 @@ rules:
         name: 出力に spec_version としてマスタのgit HEAD（rev-parse --short の短縮リビジョン）が含まれる
       - id: EX-02
         name: マスタがgitリポジトリでない場合 spec_version は空になる
+    automated: true
   - id: R-04
     name: 実装リポジトリはストーリー単位で実例マッピングをリソースとして取得できる
     examples:
@@ -31,6 +34,7 @@ rules:
         name: resources/read livt://mapping/{story_key} でルール・実例・質問を取得する
       - id: EX-03
         name: 各ルールは自分のリソースURI（livt://mapping/{story_key}/rule/{rule_id}）を持つ
+    automated: true
   - id: R-05
     name: 実装リポジトリはルール単位で仕様をリソースとして取得できる
     examples:
@@ -38,6 +42,7 @@ rules:
         name: resources/read livt://mapping/{story_key}/rule/{rule_id} で単一ルールと実例を取得する
       - id: EX-02
         name: 存在しないキーやルールIDのURIは not found を返す
+    automated: true
   - id: R-06
     name: 実装リポジトリは利用可能なストーリーの一覧を取得できる
     examples:
@@ -45,6 +50,7 @@ rules:
         name: list_stories で全ストーリーのキーと名前を取得する
       - id: EX-02
         name: 各エントリは実例マッピングがあれば、そのリソースURI（livt://mapping/{key}）を示す
+    automated: true
   - id: R-07
     name: 消費側は stdio で livt mcp をサブプロセスとして起動し、消費者ごとに1対1で接続する
     examples:
@@ -54,6 +60,7 @@ rules:
         name: マスタの場所は --root / LIVT_ROOT で指す（消費側に別チェックアウトが要る）
       - id: EX-03
         name: 1消費者につき1プロセスで、サーバーは共有しない
+    automated: true
   - id: R-08
     name: 消費側は常駐する1つの livt mcp --http サーバーをURL参照で共有する
     examples:
@@ -63,6 +70,7 @@ rules:
         name: 複数リポジトリが http://localhost:5488/mcp を共有参照し、per-repo の LIVT_ROOT は不要
       - id: EX-03
         name: ステートレス・読み取り専用なので1プロセスで複数クライアントを捌く
+    automated: true
   - id: R-09
     name: 実装リポジトリはストーリーマップをリソースとして取得できる
     examples:
@@ -74,6 +82,7 @@ rules:
         name: マップ名はビルド出力（story-map/{name}.html）と同じ表示名で、URI上はパーセントエンコードして表す
       - id: EX-04
         name: 存在しないマップ名は not found を返す
+    automated: true
   - id: R-10
     name: 実装リポジトリはストーリー本文をリソースとして取得できる
     examples:
@@ -85,6 +94,7 @@ rules:
         name: 実例マッピングがあるストーリーは、そのリソースURI（livt://mapping/{story_key}）も示す
       - id: EX-04
         name: 存在しないストーリーキーは not found を返す
+    automated: true
   - id: R-11
     name: 実装リポジトリはユビキタス言語の用語をリソースとして取得できる
     examples:
@@ -96,6 +106,7 @@ rules:
         name: 用語ファイルがないキーはURIなしでキーのみを示す
       - id: EX-04
         name: 存在しない用語キーは not found を返す
+    automated: true
   - id: R-12
     name: 公開対象の一覧はツールとリソーステンプレートで提供し、concrete resources と変更通知には広げない
     examples:
@@ -106,6 +117,7 @@ rules:
       - id: EX-03
         name: 消費側はマスタの更新を spec_version の変化で検知する
 
+    automated: true
 questions:
   - id: Q-05
     text: ネットワーク（非ローカル）公開する場合の認証・公開モデルをどうするか（現状はローカル利用前提で認証なし）
