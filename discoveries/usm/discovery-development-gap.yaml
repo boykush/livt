@@ -37,7 +37,7 @@ activities:
       - key: show-status-per-rule
         name: ルールごとに自動化の状況を映す
         stories:
-          - name: ルールが自動化されているかを色分けで映す
+          - name: ルールが自動化されているかを一目で映す
             key: show-automation-status-per-rule
             release: reflect-status
       - key: trace-rule-to-tests
