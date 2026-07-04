@@ -33,9 +33,9 @@ livt build [flags]
 ## `livt mcp`
 
 Run an MCP ([Model Context Protocol](https://modelcontextprotocol.io)) server
-that exposes the discovery master (stories and example mappings). An
-implementation repo's coding agent can then fetch the spec for a story or rule
-without reading livt's source.
+that exposes the discovery master (story maps, stories, example mappings, and
+the ubiquitous language). An implementation repo's coding agent can then fetch
+the spec for a story or rule without reading livt's source.
 
 The master usually lives in a separate checkout from the consumer, so point at
 it with `--root` or the `LIVT_ROOT` environment variable. The flag takes
@@ -76,22 +76,30 @@ to localhost, not a public network.
 
 | Tool | Arguments | Returns |
 |------|-----------|---------|
-| `list_stories` | — | Every story with its key and name. Stories that have an example mapping include `example_mapping_uri`, the resource URI below. |
+| `list_stories` | — | Every story with its key and name. Each entry links to its story resource (`uri`); stories that have an example mapping also include `example_mapping_uri`. |
+| `list_story_maps` | — | Every story map with its name and its story map resource URI (`uri`). |
 
 ### Resources
 
-The spec itself is exposed as resources, addressable by URI (story → mapping → rule):
+The spec itself is exposed as resources, addressable by URI
+(story map → story → mapping → rule, with ubiquitous terms linked from
+mappings and story maps):
 
 | URI | Returns |
 |-----|---------|
-| `livt://mapping/{story_key}` | The story's example mapping (rules, examples, questions, ubiquitous terms). Each rule carries its own `uri`. |
+| `livt://story-map/{map_name}` | A story map: activities, steps, story cards, and releases. Committed story cards link to their story resource. `{map_name}` is the map's display name (percent-encoded) — the same identifier the build output uses for `story-map/{name}.html`. |
+| `livt://story/{story_key}` | The story's name, body, and frontmatter meta (e.g. `issue`), plus `example_mapping_uri` when a mapping exists. |
+| `livt://mapping/{story_key}` | The story's example mapping (rules, examples, questions, ubiquitous terms). Each rule carries its own `uri`, and `ubiquitous_terms` resolves each referenced term to its resource URI. |
 | `livt://mapping/{story_key}/rule/{rule_id}` | A single rule and its examples. |
+| `livt://ubiquitous/{term_key}` | A ubiquitous language term's name and definition. |
 
-Read them with `resources/read`; both appear in `resources/templates/list`.
+Read them with `resources/read`; all appear in `resources/templates/list`. The
+server advertises templates only — there is no concrete resource list and no
+change notification (subscribe); every read is served fresh from disk.
 
-Every tool and resource payload also includes a `spec_version` field -- the git
-revision of the master -- so consumers can tell which version of the spec they
-are reading and detect drift.
+Every tool and resource payload also includes a `spec_version` field -- the
+short git revision of the master -- so consumers can tell which version of the
+spec they are reading and detect drift.
 
 ## `livt version`
 

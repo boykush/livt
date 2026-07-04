@@ -19,7 +19,7 @@ rules:
     name: 各レスポンス（ツール・リソース）はマスタのバージョン（gitリビジョン）を返し、仕様のズレを防ぐ
     examples:
       - id: EX-01
-        name: 出力に spec_version としてマスタのgit HEADが含まれる
+        name: 出力に spec_version としてマスタのgit HEAD（rev-parse --short の短縮リビジョン）が含まれる
       - id: EX-02
         name: マスタがgitリポジトリでない場合 spec_version は空になる
   - id: R-04
@@ -63,18 +63,56 @@ rules:
         name: 複数リポジトリが http://localhost:5488/mcp を共有参照し、per-repo の LIVT_ROOT は不要
       - id: EX-03
         name: ステートレス・読み取り専用なので1プロセスで複数クライアントを捌く
+  - id: R-09
+    name: 実装リポジトリはストーリーマップをリソースとして取得できる
+    examples:
+      - id: EX-01
+        name: list_story_maps で全ストーリーマップの名前とリソースURI（livt://story-map/{map_name}）を取得する
+      - id: EX-02
+        name: resources/read livt://story-map/{map_name} でアクティビティ・ステップ・ストーリーカード・リリースを取得する
+      - id: EX-03
+        name: マップ名はビルド出力（story-map/{name}.html）と同じ表示名で、URI上はパーセントエンコードして表す
+      - id: EX-04
+        name: 存在しないマップ名は not found を返す
+  - id: R-10
+    name: 実装リポジトリはストーリー本文をリソースとして取得できる
+    examples:
+      - id: EX-01
+        name: resources/read livt://story/{story_key} でストーリーの名前・本文・frontmatterメタ（例 issue）を取得する
+      - id: EX-02
+        name: list_stories の各エントリとストーリーマップ内のストーリーカードは、ストーリーのリソースURI（livt://story/{story_key}）を示す
+      - id: EX-03
+        name: 実例マッピングがあるストーリーは、そのリソースURI（livt://mapping/{story_key}）も示す
+      - id: EX-04
+        name: 存在しないストーリーキーは not found を返す
+  - id: R-11
+    name: 実装リポジトリはユビキタス言語の用語をリソースとして取得できる
+    examples:
+      - id: EX-01
+        name: resources/read livt://ubiquitous/{term_key} で用語の名前と定義本文を取得する
+      - id: EX-02
+        name: 実例マッピング・ストーリーマップのレスポンスは ubiquitous の各用語キーに解決済みの名前とリソースURIを添える（既存の ubiquitous フィールドはそのまま維持する）
+      - id: EX-03
+        name: 用語ファイルがないキーはURIなしでキーのみを示す
+      - id: EX-04
+        name: 存在しない用語キーは not found を返す
+  - id: R-12
+    name: 公開対象の一覧はツールとリソーステンプレートで提供し、concrete resources と変更通知には広げない
+    examples:
+      - id: EX-01
+        name: resources/templates/list に全リソーステンプレート（mapping・rule・story-map・story・ubiquitous）が現れる
+      - id: EX-02
+        name: resources/list への concrete resources 掲載や subscribe は提供せず、毎リクエスト読みのステートレスを保つ
+      - id: EX-03
+        name: 消費側はマスタの更新を spec_version の変化で検知する
 
 questions:
-  - id: Q-01
-    text: list_stories 以外に公開するツール、および story や term をリソース化するかを1単位ずつ検討する
-  - id: Q-02
-    text: concrete resource を resources/list に掲載する／変更通知（subscribe）まで広げるか（mapping・rule は template で対応済み）
-  - id: Q-04
-    text: spec_versionはgitの短縮revか、タグ込みのgit describeか
   - id: Q-05
     text: ネットワーク（非ローカル）公開する場合の認証・公開モデルをどうするか（現状はローカル利用前提で認証なし）
 
 ubiquitous:
   - example-mapping
   - story
+  - story-map
+  - ubiquitous-language
   - discovery
