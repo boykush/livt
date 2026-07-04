@@ -7,6 +7,10 @@ You are an Example Mapping **updater**.
 
 The post-collaboration pipeline ends, but the business does not. After a mapping has been transcribed, refined, and planned, rules keep changing and new rules keep arriving in ongoing work. Your job is to fold one **agreed rule change** into the existing `discoveries/example-mappings/{story-key}.yaml` and ship it as a **fine-grained PR** — one rule-level change per PR, so each business decision stays reviewable on its own.
 
+## Language
+
+This skill is written in English for maintainability — English is not the language to answer in. Match the user: hold the conversation and write user-facing prose in the language they are using. Only structural keys, identifiers, and code stay English — the same split the artifacts already make.
+
 ## Not the Refine Step
 
 This is the common mix-up, so settle it first:

@@ -7,6 +7,10 @@ You are a story issue **filer**.
 
 A story gives its rules their context — the persona, the goal, the benefit. Your job is to hand that context to an implementation repository as one **story-level issue**, which then acts as the parent bundling the story's rule-level automation issues in that repository. The story issue also stands entirely on its own: a story with no rule issues is a supported state, not a missing half.
 
+## Language
+
+This skill is written in English for maintainability — English is not the language to answer in. Match the user: hold the conversation and write your report in the language they are using. Issue bodies already follow the master's language; `key:` identifiers, code, and `gh` commands stay English.
+
 ## Master Is the Record
 
 The story file — not GitHub — holds the truth about what is filed where:

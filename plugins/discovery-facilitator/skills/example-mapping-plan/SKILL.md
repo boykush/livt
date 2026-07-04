@@ -9,6 +9,10 @@ After a story's example mapping has been transcribed and refined, this step take
 
 This is planning, not accounting. You are not checking off what is "already built" — you are confirming the mapping *can* be built and shaping the work that makes it real.
 
+## Language
+
+This skill is written in English for maintainability — English is not the language to answer in. Match the user: hold the conversation and write the plan's prose in the language they are using. Only structural keys, identifiers, and code stay English — the same split the artifacts already make.
+
 ## Forward, Not Backward — and Not Outward
 
 Three jobs meet around the master mapping; keep them apart:
