@@ -76,7 +76,7 @@ to localhost, not a public network.
 
 | Tool | Arguments | Returns |
 |------|-----------|---------|
-| `list_stories` | — | Every story with its key and name. Each entry links to its story resource (`uri`); stories that have an example mapping also include `example_mapping_uri`. |
+| `list_stories` | `opportunity` (optional) — an opportunity name, matched exactly against a story map display name; keeps only the stories on that map, and an unknown name yields an empty list | Every story with its key and name. Each entry links to its story resource (`uri`); stories that have an example mapping also include `example_mapping_uri`, and stories on a story map carry `opportunities` — one map name plus story map resource URI per map they sit on. |
 | `list_story_maps` | — | Every story map with its name and its story map resource URI (`uri`). |
 
 ### Resources
@@ -88,7 +88,7 @@ mappings and story maps):
 | URI | Returns |
 |-----|---------|
 | `livt://story-map/{map_name}` | A story map: activities, steps, story cards, and releases. Committed story cards link to their story resource. `{map_name}` is the map's display name (percent-encoded) — the same identifier the build output uses for `story-map/{name}.html`. |
-| `livt://story/{story_key}` | The story's name, body, and frontmatter meta (e.g. `issue`), plus `example_mapping_uri` when a mapping exists. |
+| `livt://story/{story_key}` | The story's name, body, and frontmatter meta (e.g. `issue`), plus `example_mapping_uri` when a mapping exists and `opportunities` — the story maps the story sits on, as map name plus story map resource URI. |
 | `livt://mapping/{story_key}` | The story's example mapping (rules, examples, questions, ubiquitous terms). Each rule carries its own `uri`, and `ubiquitous_terms` resolves each referenced term to its resource URI. |
 | `livt://mapping/{story_key}/rule/{rule_id}` | A single rule and its examples, plus its recorded automation: `issues` (automation Issue URLs) and `automated` (whether the rule is automated by tests). Rules inside `livt://mapping/{story_key}` carry the same fields. |
 | `livt://ubiquitous/{term_key}` | A ubiquitous language term's name and definition. |

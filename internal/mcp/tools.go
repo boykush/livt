@@ -17,7 +17,7 @@ import (
 func (s *Server) registerTools(srv *mcpsdk.Server) {
 	mcpsdk.AddTool(srv, &mcpsdk.Tool{
 		Name:        "list_stories",
-		Description: "List all stories. Each entry links to its story resource (livt://story/{key}) and, when one exists, its example mapping resource (livt://mapping/{key}).",
+		Description: "List all stories. Each entry links to its story resource (livt://story/{key}), its example mapping resource (livt://mapping/{key}) when one exists, and the opportunities (story maps, livt://story-map/{map_name}) it sits on. Pass opportunity to list only the stories on that map.",
 	}, s.listStories)
 	mcpsdk.AddTool(srv, &mcpsdk.Tool{
 		Name:        "list_story_maps",
@@ -25,8 +25,8 @@ func (s *Server) registerTools(srv *mcpsdk.Server) {
 	}, s.listStoryMaps)
 }
 
-func (s *Server) listStories(_ context.Context, _ *mcpsdk.CallToolRequest, _ listStoriesInput) (*mcpsdk.CallToolResult, listStoriesOutput, error) {
-	stories, err := s.cfg.stories()
+func (s *Server) listStories(_ context.Context, _ *mcpsdk.CallToolRequest, in listStoriesInput) (*mcpsdk.CallToolResult, listStoriesOutput, error) {
+	stories, err := s.cfg.stories(in.Opportunity)
 	if err != nil {
 		return nil, listStoriesOutput{}, err
 	}
@@ -80,23 +80,72 @@ func (c Config) rule(storyKey, ruleID string) (domain.Rule, error) {
 	return domain.Rule{}, fmt.Errorf("rule %q not found in story %q", ruleID, storyKey)
 }
 
-// stories lists every story, linking to its own story resource and to its
-// example mapping resource when one exists. A missing stories directory yields
-// an empty list, not an error.
-func (c Config) stories() ([]storySummaryJSON, error) {
+// stories lists every story, linking to its own story resource, to its example
+// mapping resource when one exists, and to the opportunities (story maps) it
+// sits on. A non-empty opportunity keeps only the stories on the map with that
+// exact name; an unknown name yields an empty list, not an error — which
+// opportunities exist is the master's business, not the caller's. A missing
+// stories directory yields an empty list, not an error.
+func (c Config) stories(opportunity string) ([]storySummaryJSON, error) {
 	all, err := parser.ParseAllStories(c.storiesDir())
+	if err != nil {
+		return nil, err
+	}
+	index, err := c.storyOpportunities()
 	if err != nil {
 		return nil, err
 	}
 	out := make([]storySummaryJSON, 0, len(all))
 	for _, story := range all {
-		summary := storySummaryJSON{Key: story.Key.Value, Name: story.Name, URI: storyURI(story.Key.Value)}
+		refs := index[story.Key.Value]
+		if opportunity != "" && !hasOpportunity(refs, opportunity) {
+			continue
+		}
+		summary := storySummaryJSON{Key: story.Key.Value, Name: story.Name, URI: storyURI(story.Key.Value), Opportunities: refs}
 		if c.hasExampleMapping(story.Key.Value) {
 			summary.ExampleMappingURI = mappingURI(story.Key.Value)
 		}
 		out = append(out, summary)
 	}
 	return out, nil
+}
+
+// hasOpportunity reports whether refs include a story map with this name.
+func hasOpportunity(refs []opportunityRefJSON, name string) bool {
+	for _, r := range refs {
+		if r.Name == name {
+			return true
+		}
+	}
+	return false
+}
+
+// storyOpportunities indexes every story key to the opportunities (story maps)
+// it sits on, one ref per map in map file order — the same story-to-maps
+// derivation the site build uses for its opportunity chips. A key can recur
+// across steps within one map and still gets a single ref for it.
+func (c Config) storyOpportunities() (map[string][]opportunityRefJSON, error) {
+	maps, err := parser.ParseAllStoryMaps(c.usmDir())
+	if err != nil {
+		return nil, err
+	}
+	index := make(map[string][]opportunityRefJSON)
+	for _, sm := range maps {
+		ref := opportunityRefJSON{Name: sm.Name, URI: storyMapURI(sm.Name)}
+		seen := make(map[string]bool)
+		for _, a := range sm.Activities {
+			for _, st := range a.Steps {
+				for _, sc := range st.Stories {
+					if !sc.HasKey() || seen[sc.Key.Value] {
+						continue
+					}
+					seen[sc.Key.Value] = true
+					index[sc.Key.Value] = append(index[sc.Key.Value], ref)
+				}
+			}
+		}
+	}
+	return index, nil
 }
 
 func (c Config) hasExampleMapping(storyKey string) bool {

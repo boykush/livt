@@ -172,6 +172,99 @@ func TestListStoriesLinksExampleMapping(t *testing.T) {
 	}
 }
 
+// demoMapRef is the opportunity ref the test master's デモマップ resolves to:
+// the map name plus its story map resource URI (display name percent-encoded).
+var demoMapRef = opportunityRefJSON{Name: "デモマップ", URI: "livt://story-map/%E3%83%87%E3%83%A2%E3%83%9E%E3%83%83%E3%83%97"}
+
+// R-13 EX-01: each entry shows its opportunities — the story maps it sits on,
+// as map name plus story map resource URI — and a story on no map shows none.
+func TestListStoriesCarriesOpportunities(t *testing.T) {
+	s := newTestServer(t)
+
+	_, out, err := s.listStories(context.Background(), nil, listStoriesInput{})
+	if err != nil {
+		t.Fatalf("listStories: %v", err)
+	}
+	byKey := storiesByKey(out.Stories)
+	if got := byKey["demo"].Opportunities; len(got) != 1 || got[0] != demoMapRef {
+		t.Errorf("demo opportunities = %+v, want [%+v]", got, demoMapRef)
+	}
+	if got := byKey["other"].Opportunities; len(got) != 0 {
+		t.Errorf("other opportunities = %+v, want none (on no map)", got)
+	}
+}
+
+// R-13 EX-02: the opportunity parameter keeps only the stories on that map.
+func TestListStoriesFiltersByOpportunity(t *testing.T) {
+	s := newTestServer(t)
+
+	_, out, err := s.listStories(context.Background(), nil, listStoriesInput{Opportunity: "デモマップ"})
+	if err != nil {
+		t.Fatalf("listStories: %v", err)
+	}
+	if len(out.Stories) != 1 || out.Stories[0].Key != "demo" {
+		t.Fatalf("stories = %+v, want only demo (the one story on デモマップ)", out.Stories)
+	}
+}
+
+// R-13 EX-03: an unknown opportunity name yields an empty list, not an error.
+func TestListStoriesUnknownOpportunityYieldsEmptyList(t *testing.T) {
+	s := newTestServer(t)
+
+	_, out, err := s.listStories(context.Background(), nil, listStoriesInput{Opportunity: "存在しないマップ"})
+	if err != nil {
+		t.Fatalf("listStories: %v", err)
+	}
+	if len(out.Stories) != 0 {
+		t.Errorf("stories = %+v, want empty for an unknown opportunity", out.Stories)
+	}
+}
+
+// A story on several maps carries one ref per map in map file order, a key
+// recurring across steps within one map still gets a single ref, and the
+// filter matches the story through either of its maps.
+func TestListStoriesStoryOnSeveralMaps(t *testing.T) {
+	s := newTestServer(t)
+	writeFile(t, filepath.Join(s.cfg.Root, "discoveries", "usm", "second-map.yaml"),
+		"name: 第二マップ\n"+
+			"activities:\n"+
+			"  - name: アクティビティ\n"+
+			"    steps:\n"+
+			"      - name: ステップ1\n"+
+			"        stories:\n"+
+			"          - name: デモストーリー\n"+
+			"            key: demo\n"+
+			"      - name: ステップ2\n"+
+			"        stories:\n"+
+			"          - name: デモストーリー（再掲）\n"+
+			"            key: demo\n")
+
+	_, out, err := s.listStories(context.Background(), nil, listStoriesInput{})
+	if err != nil {
+		t.Fatalf("listStories: %v", err)
+	}
+	got := storiesByKey(out.Stories)["demo"].Opportunities
+	if len(got) != 2 || got[0].Name != "デモマップ" || got[1].Name != "第二マップ" {
+		t.Fatalf("demo opportunities = %+v, want [デモマップ 第二マップ] in map file order", got)
+	}
+
+	_, filtered, err := s.listStories(context.Background(), nil, listStoriesInput{Opportunity: "第二マップ"})
+	if err != nil {
+		t.Fatalf("listStories filtered: %v", err)
+	}
+	if len(filtered.Stories) != 1 || filtered.Stories[0].Key != "demo" {
+		t.Fatalf("filtered stories = %+v, want only demo (on 第二マップ)", filtered.Stories)
+	}
+}
+
+func storiesByKey(stories []storySummaryJSON) map[string]storySummaryJSON {
+	byKey := make(map[string]storySummaryJSON, len(stories))
+	for _, st := range stories {
+		byKey[st.Key] = st
+	}
+	return byKey
+}
+
 func TestListStoryMapsLinksStoryMapResource(t *testing.T) {
 	s := newTestServer(t)
 
@@ -233,7 +326,10 @@ func TestStoryReturnsNameBodyMeta(t *testing.T) {
 		t.Fatalf("story: %v", err)
 	}
 
-	got := cfg.toStoryJSON(story)
+	got, err := cfg.toStoryJSON(story)
+	if err != nil {
+		t.Fatalf("toStoryJSON: %v", err)
+	}
 	if got.Key != "demo" || got.Name != "デモストーリー" || got.Body != "本文" {
 		t.Errorf("story = %+v, want demo/デモストーリー/本文", got)
 	}
@@ -251,8 +347,42 @@ func TestStoryWithoutMappingHasNoMappingURI(t *testing.T) {
 	if err != nil {
 		t.Fatalf("story: %v", err)
 	}
-	if got := cfg.toStoryJSON(story).ExampleMappingURI; got != "" {
-		t.Errorf("example_mapping_uri = %q, want empty (no mapping)", got)
+	got, err := cfg.toStoryJSON(story)
+	if err != nil {
+		t.Fatalf("toStoryJSON: %v", err)
+	}
+	if got.ExampleMappingURI != "" {
+		t.Errorf("example_mapping_uri = %q, want empty (no mapping)", got.ExampleMappingURI)
+	}
+}
+
+// R-13 EX-04: the story resource shows the same opportunities as the list —
+// the maps the story sits on, empty for a story on no map.
+func TestStoryJSONCarriesOpportunities(t *testing.T) {
+	cfg := newTestServer(t).cfg
+
+	story, err := cfg.story("demo")
+	if err != nil {
+		t.Fatalf("story: %v", err)
+	}
+	got, err := cfg.toStoryJSON(story)
+	if err != nil {
+		t.Fatalf("toStoryJSON: %v", err)
+	}
+	if len(got.Opportunities) != 1 || got.Opportunities[0] != demoMapRef {
+		t.Errorf("demo opportunities = %+v, want [%+v]", got.Opportunities, demoMapRef)
+	}
+
+	unmapped, err := cfg.story("other")
+	if err != nil {
+		t.Fatalf("story: %v", err)
+	}
+	oj, err := cfg.toStoryJSON(unmapped)
+	if err != nil {
+		t.Fatalf("toStoryJSON: %v", err)
+	}
+	if len(oj.Opportunities) != 0 {
+		t.Errorf("other opportunities = %+v, want none (on no map)", oj.Opportunities)
 	}
 }
 

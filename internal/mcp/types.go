@@ -11,7 +11,12 @@ type versioned struct {
 
 // --- list_stories tool ---
 
-type listStoriesInput struct{}
+type listStoriesInput struct {
+	// Opportunity narrows the list to the stories on one story map, matched by
+	// exact display name — in livt a story map is one opportunity, so the map
+	// name doubles as the filter axis. Unknown names yield an empty list.
+	Opportunity string `json:"opportunity,omitempty" jsonschema:"Keep only stories on this opportunity, matched exactly against a story map display name (one story map is one opportunity). Unknown names yield an empty list; omit to list every story."`
+}
 
 type listStoriesOutput struct {
 	versioned
@@ -29,6 +34,9 @@ type storySummaryJSON struct {
 	// a boolean flag: absent means no mapping, present gives a handle the client
 	// can read via resources/read.
 	ExampleMappingURI string `json:"example_mapping_uri,omitempty"`
+	// Opportunities are the story maps this story sits on, one ref per map in
+	// map order; empty for a story on no map.
+	Opportunities []opportunityRefJSON `json:"opportunities,omitempty"`
 }
 
 // --- list_story_maps tool ---
@@ -159,6 +167,8 @@ type storyJSON struct {
 	Meta []metaFieldJSON `json:"meta,omitempty"`
 	// ExampleMappingURI as on storySummaryJSON: present only when a mapping exists.
 	ExampleMappingURI string `json:"example_mapping_uri,omitempty"`
+	// Opportunities as on storySummaryJSON: the story maps this story sits on.
+	Opportunities []opportunityRefJSON `json:"opportunities,omitempty"`
 }
 
 type metaFieldJSON struct {
@@ -180,6 +190,14 @@ type termRefJSON struct {
 	Key  string `json:"key"`
 	Name string `json:"name,omitempty"`
 	URI  string `json:"uri,omitempty"`
+}
+
+// opportunityRefJSON points at one story map a story belongs to. In livt a
+// story map is one opportunity, so Name is the opportunity name (= map name)
+// and URI is the story map resource (livt://story-map/{map_name}).
+type opportunityRefJSON struct {
+	Name string `json:"name"`
+	URI  string `json:"uri"`
 }
 
 func toRuleJSON(storyKey string, r domain.Rule) ruleJSON {
@@ -240,7 +258,11 @@ func (c Config) toStoryMapJSON(sm *domain.StoryMap) storyMapJSON {
 	}
 }
 
-func (c Config) toStoryJSON(story *domain.Story) storyJSON {
+// toStoryJSON is a Config method because linking the example mapping and
+// resolving the story's opportunities read the master's mappings and usm
+// directories. Unlike term refs, a malformed story map is an error, not a bare
+// ref: silently dropping opportunities would misreport the story as unattached.
+func (c Config) toStoryJSON(story *domain.Story) (storyJSON, error) {
 	meta := make([]metaFieldJSON, 0, len(story.Meta))
 	for _, m := range story.Meta {
 		meta = append(meta, metaFieldJSON{Key: m.Key, Value: m.Value})
@@ -249,7 +271,12 @@ func (c Config) toStoryJSON(story *domain.Story) storyJSON {
 	if c.hasExampleMapping(story.Key.Value) {
 		out.ExampleMappingURI = mappingURI(story.Key.Value)
 	}
-	return out
+	index, err := c.storyOpportunities()
+	if err != nil {
+		return storyJSON{}, err
+	}
+	out.Opportunities = index[story.Key.Value]
+	return out, nil
 }
 
 func toTermJSON(term *domain.Term) termJSON {

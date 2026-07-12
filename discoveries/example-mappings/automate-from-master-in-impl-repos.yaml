@@ -131,6 +131,7 @@ rules:
         name: livt://story/{story_key} リソースも所属オポチュニティを示す
     issues:
       - https://github.com/boykush/livt/issues/82
+    automated: true
 questions:
   - id: Q-05
     text: ネットワーク（非ローカル）公開する場合の認証・公開モデルをどうするか（現状はローカル利用前提で認証なし）
