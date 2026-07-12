@@ -1,8 +1,10 @@
 package builder
 
 import (
+	"bytes"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/boykush/livt/internal/domain"
@@ -142,4 +144,95 @@ func TestStoryMapViewWithoutReleasesHasNoReleaseRows(t *testing.T) {
 	if view.StoryMap.UnscopedStories == nil {
 		t.Fatal("expected stories to render without release dividers")
 	}
+}
+
+func TestStoryMapRendersActivitiesInARowWithStepsBeneath(t *testing.T) {
+	b := Builder{}
+	view := b.toStoryMapView(&domain.StoryMap{
+		Name: "discovery",
+		Activities: []domain.Activity{
+			{
+				Key:  "browse",
+				Name: "Browse catalog",
+				Steps: []domain.Step{
+					{Key: "search", Name: "Search products"},
+					{Key: "view", Name: "View product"},
+				},
+			},
+			{
+				Key:  "checkout",
+				Name: "Check out",
+				Steps: []domain.Step{
+					{Key: "pay", Name: "Pay for order"},
+				},
+			},
+		},
+	})
+
+	var buf bytes.Buffer
+	if err := renderStoryMap(&buf, view); err != nil {
+		t.Fatal(err)
+	}
+	html := buf.String()
+
+	const activitiesRow = `<div class="flex gap-8 items-start">`
+	if got := strings.Count(html, activitiesRow); got != 1 {
+		t.Fatalf("activities row container rendered %d times, want a single shared row", got)
+	}
+	rowStart := strings.Index(html, activitiesRow)
+	rowEnd := matchingDivEnd(t, html, rowStart)
+
+	browse := indexOf(t, html, "Browse catalog")
+	checkout := indexOf(t, html, "Check out")
+	if browse < rowStart || rowEnd < browse || checkout < rowStart || rowEnd < checkout {
+		t.Fatal("expected every activity card inside the single row container")
+	}
+	if checkout < browse {
+		t.Fatal("expected activity cards to keep declaration order")
+	}
+
+	search := indexOf(t, html, "Search products")
+	viewProduct := indexOf(t, html, "View product")
+	pay := indexOf(t, html, "Pay for order")
+	if browse >= search || search >= viewProduct || viewProduct >= checkout {
+		t.Fatal("expected the first activity's steps beneath its card, before the next activity")
+	}
+	if checkout >= pay || pay >= rowEnd {
+		t.Fatal("expected the second activity's steps beneath its card, inside the row")
+	}
+}
+
+func indexOf(t *testing.T, html, substr string) int {
+	t.Helper()
+	i := strings.Index(html, substr)
+	if i == -1 {
+		t.Fatalf("expected rendered story map to contain %q", substr)
+	}
+	return i
+}
+
+// matchingDivEnd returns the offset just past the </div> that closes the div
+// opening at start, so callers can assert containment by position.
+func matchingDivEnd(t *testing.T, html string, start int) int {
+	t.Helper()
+	depth := 0
+	for i := start; i < len(html); {
+		open := strings.Index(html[i:], "<div")
+		close := strings.Index(html[i:], "</div>")
+		if close == -1 {
+			break
+		}
+		if open != -1 && open < close {
+			depth++
+			i += open + len("<div")
+			continue
+		}
+		depth--
+		i += close + len("</div>")
+		if depth == 0 {
+			return i
+		}
+	}
+	t.Fatal("no matching </div> for the row container")
+	return -1
 }
