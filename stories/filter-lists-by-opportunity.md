@@ -1,5 +1,9 @@
 ---
 name: 一覧をオポチュニティで絞り込む
+repos:
+  - boykush/livt
+issues:
+  - https://github.com/boykush/livt/issues/75
 ---
 
 リビングドキュメントの閲覧者として
