@@ -55,6 +55,7 @@ activities:
         stories:
           - name: ボードから実例マッピングYAMLを素のまま転記する
           - name: ブラウザで実例マッピングをプレビューする
+            key: preview-example-mapping-in-browser
       - key: refine-example-mapping-structure
         name: 実例マッピングの構造をブラッシュアップする
         stories:
