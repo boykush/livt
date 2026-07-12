@@ -1,0 +1,22 @@
+name: 複数プロジェクトで活用しても目的の成果に辿り着ける
+ubiquitous:
+  - opportunity
+  - story-map
+  - example-mapping
+  - story
+  - ubiquitous-language
+activities:
+  - key: find-in-living-document
+    name: 目的のものを見つける
+    steps:
+      - key: browse-lists
+        name: 一覧から探す
+        stories:
+          - name: 一覧をオポチュニティで絞り込む
+  - key: read-contents
+    name: 内容を読み解く
+    steps:
+      - key: look-up-terms
+        name: 用語を引く
+        stories:
+          - name: ユビキタス言語を用語集で引く
