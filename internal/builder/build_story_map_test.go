@@ -194,10 +194,10 @@ func TestStoryMapRendersActivitiesInARowWithStepsBeneath(t *testing.T) {
 	search := indexOf(t, html, "Search products")
 	viewProduct := indexOf(t, html, "View product")
 	pay := indexOf(t, html, "Pay for order")
-	if !(browse < search && search < viewProduct && viewProduct < checkout) {
+	if browse >= search || search >= viewProduct || viewProduct >= checkout {
 		t.Fatal("expected the first activity's steps beneath its card, before the next activity")
 	}
-	if !(checkout < pay && pay < rowEnd) {
+	if checkout >= pay || pay >= rowEnd {
 		t.Fatal("expected the second activity's steps beneath its card, inside the row")
 	}
 }
