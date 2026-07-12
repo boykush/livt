@@ -13,6 +13,7 @@ activities:
         name: 一覧から探す
         stories:
           - name: 一覧をオポチュニティで絞り込む
+            key: filter-lists-by-opportunity
   - key: read-contents
     name: 内容を読み解く
     steps:
@@ -20,3 +21,4 @@ activities:
         name: 用語を引く
         stories:
           - name: ユビキタス言語を用語集で引く
+            key: look-up-terms-in-glossary

@@ -1,0 +1,49 @@
+rules:
+  - id: R-01
+    name: 一覧はオポチュニティで絞り込める
+    examples:
+      - id: EX-01
+        name: Stories一覧でオポチュニティを選ぶと、そのマップに載るストーリーだけが表示される
+      - id: EX-02
+        name: Example Mappings一覧でも同じ軸で絞り込める
+      - id: EX-03
+        name: 絞り込みを解除すると全件表示に戻る
+    issues:
+      - https://github.com/boykush/livt/issues/76
+  - id: R-02
+    name: 各カードは所属オポチュニティを映す
+    examples:
+      - id: EX-01
+        name: ストーリーカードの汎用「Story Map」バッジは、オポチュニティ名のチップに置き換わる
+      - id: EX-02
+        name: 複数のマップに載るストーリーは、その数だけチップを持つ
+      - id: EX-03
+        name: どのマップにも載らないストーリーはチップを持たず、どのオポチュニティの絞り込みにも現れない
+    issues:
+      - https://github.com/boykush/livt/issues/77
+  - id: R-03
+    name: 絞り込みはビルド済みHTMLの中で完結する
+    examples:
+      - id: EX-01
+        name: フィルタはクライアントサイドで動き、buildはネットワークに出ない
+    issues:
+      - https://github.com/boykush/livt/issues/78
+  - id: R-04
+    name: 絞り込み状態をURLで共有できる
+    examples:
+      - id: EX-01
+        name: オポチュニティで絞り込むと、その状態がURLに反映される
+      - id: EX-02
+        name: 共有されたURLを開くと、同じ絞り込みが適用された一覧が表示される
+    issues:
+      - https://github.com/boykush/livt/issues/79
+
+questions:
+  - id: Q-01
+    text: MCPのレスポンス（list_storiesなど）にもオポチュニティを載せるか
+
+ubiquitous:
+  - opportunity
+  - story-map
+  - story
+  - example-mapping
