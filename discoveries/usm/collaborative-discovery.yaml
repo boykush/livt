@@ -63,6 +63,7 @@ activities:
         name: 実例マッピングの構造をブラッシュアップする
         stories:
           - name: BDDエキスパートに相談して清書PRを出す
+            key: refine-example-mapping-with-bdd-expert
       - key: plan-against-implementation-and-design
         name: 実装・デザインと突き合わせて計画する
         stories:
