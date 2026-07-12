@@ -42,9 +42,7 @@ rules:
       - https://github.com/boykush/livt/issues/79
     automated: true
 
-questions:
-  - id: Q-01
-    text: MCPのレスポンス（list_storiesなど）にもオポチュニティを載せるか
+questions: []
 
 ubiquitous:
   - opportunity
