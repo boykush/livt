@@ -25,6 +25,7 @@ activities:
         name: ストーリーマップを確認する
         stories:
           - name: AIエージェントでストーリーマップYAMLを起こす
+            key: transcribe-story-map-with-ai-agent
           - name: ブラウザでストーリーマップをプレビューする
             key: preview-story-map-in-browser
       - key: refine-story-map-structure
