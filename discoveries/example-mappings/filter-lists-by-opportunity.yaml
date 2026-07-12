@@ -10,6 +10,7 @@ rules:
         name: 絞り込みを解除すると全件表示に戻る
     issues:
       - https://github.com/boykush/livt/issues/76
+    automated: true
   - id: R-02
     name: 各カードは所属オポチュニティを映す
     examples:
@@ -21,6 +22,7 @@ rules:
         name: どのマップにも載らないストーリーはチップを持たず、どのオポチュニティの絞り込みにも現れない
     issues:
       - https://github.com/boykush/livt/issues/77
+    automated: true
   - id: R-03
     name: 絞り込みはビルド済みHTMLの中で完結する
     examples:
@@ -28,6 +30,7 @@ rules:
         name: フィルタはクライアントサイドで動き、buildはネットワークに出ない
     issues:
       - https://github.com/boykush/livt/issues/78
+    automated: true
   - id: R-04
     name: 絞り込み状態をURLで共有できる
     examples:
@@ -37,6 +40,7 @@ rules:
         name: 共有されたURLを開くと、同じ絞り込みが適用された一覧が表示される
     issues:
       - https://github.com/boykush/livt/issues/79
+    automated: true
 
 questions:
   - id: Q-01

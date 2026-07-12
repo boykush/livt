@@ -6,8 +6,9 @@ import (
 )
 
 // buildMappingsIndex renders index.html: the Example Mappings overview, where
-// each mapping appears as an iframe preview card.
-func (b *Builder) buildMappingsIndex(tiles []mappingTile) error {
+// each mapping appears as an iframe preview card. filterOpportunities are the
+// opportunity axes the list can be filtered by.
+func (b *Builder) buildMappingsIndex(tiles []mappingTile, filterOpportunities []string) error {
 	sb, err := b.sidebar("example-mapping", "")
 	if err != nil {
 		return err
@@ -17,7 +18,7 @@ func (b *Builder) buildMappingsIndex(tiles []mappingTile) error {
 		return err
 	}
 	defer f.Close()
-	return renderMappingsIndex(f, mappingsIndexView{Sidebar: sb, Mappings: tiles})
+	return renderMappingsIndex(f, mappingsIndexView{Sidebar: sb, Mappings: tiles, FilterOpportunities: filterOpportunities})
 }
 
 // buildStoryMapsIndex renders story-maps.html: the Story Maps overview, where
@@ -35,8 +36,9 @@ func (b *Builder) buildStoryMapsIndex(tiles []storyMapTile) error {
 	return renderStoryMapsIndex(f, storyMapsIndexView{Sidebar: sb, StoryMaps: tiles})
 }
 
-// buildStoriesIndex renders stories.html: the Stories list.
-func (b *Builder) buildStoriesIndex(items []storyItem) error {
+// buildStoriesIndex renders stories.html: the Stories list. filterOpportunities
+// are the opportunity axes the list can be filtered by.
+func (b *Builder) buildStoriesIndex(items []storyItem, filterOpportunities []string) error {
 	sb, err := b.sidebar("story", "")
 	if err != nil {
 		return err
@@ -46,5 +48,5 @@ func (b *Builder) buildStoriesIndex(items []storyItem) error {
 		return err
 	}
 	defer f.Close()
-	return renderStoriesIndex(f, storiesIndexView{Sidebar: sb, Stories: items})
+	return renderStoriesIndex(f, storiesIndexView{Sidebar: sb, Stories: items, FilterOpportunities: filterOpportunities})
 }

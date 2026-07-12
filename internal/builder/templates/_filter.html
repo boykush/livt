@@ -1,0 +1,79 @@
+{{define "opportunity-filter"}}
+{{/*
+The opportunity filter bar, shared by the Stories and Example Mappings lists.
+Its dot (.) is the list's []FilterOpportunities. Each button carries the
+opportunity name in data-opportunity; the empty "All" button clears the filter.
+The pressed look is keyed on aria-pressed so it survives the client-side toggle
+without depending on Tailwind's runtime class scan.
+*/}}
+{{if .}}
+<style>
+  .opp-chip { cursor: pointer; }
+  .opp-chip[aria-pressed="true"] { background-color: #7c3aed; border-color: #7c3aed; color: #fff; }
+</style>
+<div class="mb-6 flex items-center gap-2 flex-wrap" data-opportunity-filter>
+  <span class="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">Opportunity</span>
+  <button type="button" data-opportunity="" aria-pressed="true"
+    class="opp-chip text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-3 py-1 hover:bg-purple-100 transition">All</button>
+  {{range .}}
+  <button type="button" data-opportunity="{{.}}" aria-pressed="false"
+    class="opp-chip text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-3 py-1 hover:bg-purple-100 transition">{{.}}</button>
+  {{end}}
+</div>
+{{end}}
+{{end}}
+
+{{define "opportunity-filter-script"}}
+{{/*
+Client-side only (R-03): reads and writes the ?opportunity= query param and
+shows only the cards whose data-opportunities includes the selected name. No
+network — URLSearchParams handles encoding of non-ASCII opportunity names.
+*/}}
+<script>
+(function () {
+  var bar = document.querySelector('[data-opportunity-filter]');
+  if (!bar) return;
+  var cards = document.querySelectorAll('[data-opportunities]');
+  var chips = bar.querySelectorAll('[data-opportunity]');
+  var PARAM = 'opportunity';
+
+  function opportunitiesOf(card) {
+    try { return JSON.parse(card.getAttribute('data-opportunities') || '[]'); }
+    catch (e) { return []; }
+  }
+
+  function apply(selected) {
+    cards.forEach(function (card) {
+      var show = !selected || opportunitiesOf(card).indexOf(selected) !== -1;
+      card.style.display = show ? '' : 'none';
+    });
+    chips.forEach(function (chip) {
+      var on = (chip.getAttribute('data-opportunity') || '') === selected;
+      chip.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+  }
+
+  function fromURL() {
+    return new URLSearchParams(location.search).get(PARAM) || '';
+  }
+
+  function toURL(selected) {
+    var params = new URLSearchParams(location.search);
+    if (selected) params.set(PARAM, selected);
+    else params.delete(PARAM);
+    var qs = params.toString();
+    history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
+  }
+
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var value = chip.getAttribute('data-opportunity') || '';
+      apply(value);
+      toURL(value);
+    });
+  });
+
+  apply(fromURL());
+})();
+</script>
+{{end}}

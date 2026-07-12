@@ -1,6 +1,7 @@
 package builder
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -22,7 +23,7 @@ func emptyDirsBuilder(t *testing.T) Builder {
 
 func TestBuildMappingsIndexRendersPreviewCards(t *testing.T) {
 	b := emptyDirsBuilder(t)
-	if err := b.buildMappingsIndex([]mappingTile{{Key: "checkout", StoryName: "Checkout flow"}}); err != nil {
+	if err := b.buildMappingsIndex([]mappingTile{{Key: "checkout", StoryName: "Checkout flow"}}, nil); err != nil {
 		t.Fatal(err)
 	}
 
@@ -45,7 +46,7 @@ func TestBuildMappingsIndexRendersPreviewCards(t *testing.T) {
 
 func TestBuildMappingsIndexEmptyState(t *testing.T) {
 	b := emptyDirsBuilder(t)
-	if err := b.buildMappingsIndex(nil); err != nil {
+	if err := b.buildMappingsIndex(nil, nil); err != nil {
 		t.Fatal(err)
 	}
 
@@ -82,7 +83,7 @@ func TestBuildStoryMapsIndexRendersPreviewCards(t *testing.T) {
 
 func TestBuildStoriesIndexRendersList(t *testing.T) {
 	b := emptyDirsBuilder(t)
-	if err := b.buildStoriesIndex([]storyItem{{Key: "first-story", Name: "First story"}}); err != nil {
+	if err := b.buildStoriesIndex([]storyItem{{Key: "first-story", Name: "First story"}}, nil); err != nil {
 		t.Fatal(err)
 	}
 
@@ -96,5 +97,189 @@ func TestBuildStoriesIndexRendersList(t *testing.T) {
 	}
 	if !strings.Contains(html, `href="story/first-story.html"`) {
 		t.Fatal("expected link to story page")
+	}
+}
+
+func readRendered(t *testing.T, path string) string {
+	t.Helper()
+	out, err := os.ReadFile(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return string(out)
+}
+
+// mapHref mirrors how html/template normalizes an href: bytes outside the URL
+// unreserved set (so every byte of a non-ASCII map name) become lowercase %xx.
+// Chip links to Japanese-named maps therefore ship URL-encoded, which is also
+// what lets a filtered URL round-trip (R-04).
+func mapHref(prefix, name string) string {
+	var b strings.Builder
+	b.WriteString(prefix)
+	for _, c := range []byte(name) {
+		if (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') ||
+			c == '-' || c == '.' || c == '_' || c == '~' {
+			b.WriteByte(c)
+		} else {
+			fmt.Fprintf(&b, "%%%02x", c)
+		}
+	}
+	b.WriteString(".html")
+	return b.String()
+}
+
+// R-02 EX-01: a story on one map carries a chip named after that opportunity
+// (the map), linked to its board, in place of the old generic "Story Map" badge.
+func TestBuildStoriesIndexShowsOpportunityChipNamedAfterTheMap(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	items := []storyItem{{
+		Key:  "filter-lists-by-opportunity",
+		Name: "Filter lists by opportunity",
+		Opportunities: []opportunityRef{
+			{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"},
+		},
+	}}
+	if err := b.buildStoriesIndex(items, nil); err != nil {
+		t.Fatal(err)
+	}
+	html := readRendered(t, filepath.Join(b.OutDir, "stories.html"))
+
+	if !strings.Contains(html, "協働ディスカバリー") {
+		t.Fatal("expected the opportunity (map) name on the story card")
+	}
+	if !strings.Contains(html, `href="`+mapHref("story-map/", "協働ディスカバリー")+`"`) {
+		t.Fatal("expected the opportunity chip to link to the map board")
+	}
+	if strings.Contains(html, `>Story Map</span>`) {
+		t.Fatal(`expected the generic "Story Map" badge to be replaced by an opportunity chip`)
+	}
+}
+
+// R-02 EX-02: a story on several maps carries one chip per map.
+func TestBuildStoriesIndexShowsAChipPerMapForMultiMapStory(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	items := []storyItem{{
+		Key:  "record-rule-automation",
+		Name: "Record rule automation",
+		Opportunities: []opportunityRef{
+			{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"},
+			{Name: "ディスカバリーと開発のギャップ", Path: "story-map/ディスカバリーと開発のギャップ.html"},
+		},
+	}}
+	if err := b.buildStoriesIndex(items, nil); err != nil {
+		t.Fatal(err)
+	}
+	html := readRendered(t, filepath.Join(b.OutDir, "stories.html"))
+
+	for _, name := range []string{"協働ディスカバリー", "ディスカバリーと開発のギャップ"} {
+		if !strings.Contains(html, name) {
+			t.Fatalf("expected a chip for map %q", name)
+		}
+		if !strings.Contains(html, `href="`+mapHref("story-map/", name)+`"`) {
+			t.Fatalf("expected chip for %q to link to its board", name)
+		}
+	}
+}
+
+// R-02 EX-03: a story on no map carries no chip and its filter data is empty, so
+// it matches no opportunity filter axis.
+func TestBuildStoriesIndexStoryOnNoMapHasNoChipAndMatchesNoFilter(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	items := []storyItem{{
+		Key:  "orphan-story",
+		Name: "Orphan story",
+	}}
+	if err := b.buildStoriesIndex(items, nil); err != nil {
+		t.Fatal(err)
+	}
+	html := readRendered(t, filepath.Join(b.OutDir, "stories.html"))
+
+	if !strings.Contains(html, `data-opportunities="[]"`) {
+		t.Fatal("expected an empty opportunity set so the card matches no filter")
+	}
+	if strings.Contains(html, "story-map/") {
+		t.Fatal("expected no opportunity chip linking to a map board")
+	}
+}
+
+// R-01: the Stories list renders opportunity filter controls, including a reset.
+func TestBuildStoriesIndexRendersOpportunityFilterControls(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	items := []storyItem{{Key: "s", Name: "S", Opportunities: []opportunityRef{{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"}}}}
+	if err := b.buildStoriesIndex(items, []string{"協働ディスカバリー"}); err != nil {
+		t.Fatal(err)
+	}
+	html := readRendered(t, filepath.Join(b.OutDir, "stories.html"))
+
+	if !strings.Contains(html, "data-opportunity-filter") {
+		t.Fatal("expected an opportunity filter bar")
+	}
+	if !strings.Contains(html, `data-opportunity="協働ディスカバリー"`) {
+		t.Fatal("expected a filter button carrying the opportunity name")
+	}
+	if !strings.Contains(html, `data-opportunity=""`) || !strings.Contains(html, ">All<") {
+		t.Fatal("expected an All button that clears the filter")
+	}
+}
+
+// R-03 & R-04: the filter runs client-side (no network) and reflects its state
+// in the ?opportunity= query param so a shared URL restores the same view.
+func TestBuildStoriesIndexFilterIsClientSideAndSyncsURL(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	items := []storyItem{{Key: "s", Name: "S"}}
+	if err := b.buildStoriesIndex(items, []string{"協働ディスカバリー"}); err != nil {
+		t.Fatal(err)
+	}
+	html := readRendered(t, filepath.Join(b.OutDir, "stories.html"))
+
+	for _, hook := range []string{"<script>", "URLSearchParams", "'opportunity'", "history.replaceState"} {
+		if !strings.Contains(html, hook) {
+			t.Fatalf("expected client-side filter hook %q", hook)
+		}
+	}
+	for _, network := range []string{"fetch(", "XMLHttpRequest"} {
+		if strings.Contains(html, network) {
+			t.Fatalf("filter must stay client-side, found %q", network)
+		}
+	}
+}
+
+// R-01 EX-02 & R-02: the Example Mappings list carries the same opportunity chip
+// and filter, resolved through mapping → story → map.
+func TestBuildMappingsIndexShowsOpportunityChipsAndFilter(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	tiles := []mappingTile{{
+		Key:       "filter-lists-by-opportunity",
+		StoryName: "Filter lists by opportunity",
+		Opportunities: []opportunityRef{
+			{Name: "複数プロジェクトで活用しても目的の成果に辿り着ける", Path: "story-map/複数プロジェクトで活用しても目的の成果に辿り着ける.html"},
+		},
+	}}
+	if err := b.buildMappingsIndex(tiles, []string{"複数プロジェクトで活用しても目的の成果に辿り着ける"}); err != nil {
+		t.Fatal(err)
+	}
+	html := readRendered(t, filepath.Join(b.OutDir, "index.html"))
+
+	if !strings.Contains(html, `data-opportunities="[&#34;複数プロジェクトで活用しても目的の成果に辿り着ける&#34;]"`) {
+		t.Fatal("expected the tile to carry its opportunity set as the filter hook")
+	}
+	if !strings.Contains(html, `href="`+mapHref("story-map/", "複数プロジェクトで活用しても目的の成果に辿り着ける")+`"`) {
+		t.Fatal("expected the mapping tile's opportunity chip to link to the map board")
+	}
+	if !strings.Contains(html, "data-opportunity-filter") {
+		t.Fatal("expected an opportunity filter bar on the Example Mappings list")
+	}
+}
+
+// A mapping tile on no map has an empty filter set, matching no opportunity axis.
+func TestBuildMappingsIndexTileOnNoMapHasEmptyFilterData(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	tiles := []mappingTile{{Key: "orphan", StoryName: "Orphan"}}
+	if err := b.buildMappingsIndex(tiles, nil); err != nil {
+		t.Fatal(err)
+	}
+	html := readRendered(t, filepath.Join(b.OutDir, "index.html"))
+	if !strings.Contains(html, `data-opportunities="[]"`) {
+		t.Fatal("expected an empty opportunity set on a mapping with no map")
 	}
 }

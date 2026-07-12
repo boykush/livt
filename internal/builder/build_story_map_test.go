@@ -317,6 +317,59 @@ func TestStoryMapHeaderLinksBackToStoryMapsIndex(t *testing.T) {
 	}
 }
 
+// R-02 EX-02 at the source: a story key that appears on two maps collects an
+// opportunity ref per map, so its card can carry a chip for each.
+func TestBuildStoryMapsCollectsMultipleOpportunitiesPerStory(t *testing.T) {
+	usmDir := t.TempDir()
+	mapYAML := func(name string) string {
+		return "name: " + name + "\n" +
+			"activities:\n" +
+			"  - key: act\n" +
+			"    name: Act\n" +
+			"    steps:\n" +
+			"      - key: step\n" +
+			"        name: Step\n" +
+			"        stories:\n" +
+			"          - name: Shared story\n" +
+			"            key: shared-story\n"
+	}
+	if err := os.WriteFile(filepath.Join(usmDir, "map-a.yaml"), []byte(mapYAML("Map A")), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if err := os.WriteFile(filepath.Join(usmDir, "map-b.yaml"), []byte(mapYAML("Map B")), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	outDir := t.TempDir()
+	if err := os.MkdirAll(filepath.Join(outDir, "story-map"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	b := Builder{USMDir: usmDir, OutDir: outDir}
+
+	storyToMaps, _, err := b.buildStoryMaps()
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	refs := storyToMaps["shared-story"]
+	if len(refs) != 2 {
+		t.Fatalf("got %d opportunities for the shared story, want 2", len(refs))
+	}
+	names := map[string]string{}
+	for _, r := range refs {
+		names[r.Name] = r.Path
+	}
+	for _, name := range []string{"Map A", "Map B"} {
+		path, ok := names[name]
+		if !ok {
+			t.Fatalf("expected the shared story to belong to %q", name)
+		}
+		if want := "../story-map/" + name + ".html"; path != want {
+			t.Fatalf("got path %q for %q, want %q", path, name, want)
+		}
+	}
+}
+
 func indexOf(t *testing.T, html, substr string) int {
 	t.Helper()
 	i := strings.Index(html, substr)
