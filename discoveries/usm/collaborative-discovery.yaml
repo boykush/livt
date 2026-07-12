@@ -25,12 +25,14 @@ activities:
         name: ストーリーマップを確認する
         stories:
           - name: AIエージェントでストーリーマップYAMLを起こす
+            key: transcribe-story-map-with-ai-agent
           - name: ブラウザでストーリーマップをプレビューする
             key: preview-story-map-in-browser
       - key: refine-story-map-structure
         name: ストーリーマップの構造をブラッシュアップする
         stories:
           - name: USMエキスパートに相談して清書PRを出す
+            key: refine-story-map-with-usm-expert
       - key: prepare-stories-for-detailed-discovery
         name: 詳細ディスカバリーに向けてストーリーを準備する
         stories:
@@ -54,15 +56,19 @@ activities:
         name: 協働結果を転記する
         stories:
           - name: ボードから実例マッピングYAMLを素のまま転記する
+            key: transcribe-example-mapping-from-board
           - name: ブラウザで実例マッピングをプレビューする
+            key: preview-example-mapping-in-browser
       - key: refine-example-mapping-structure
         name: 実例マッピングの構造をブラッシュアップする
         stories:
           - name: BDDエキスパートに相談して清書PRを出す
+            key: refine-example-mapping-with-bdd-expert
       - key: plan-against-implementation-and-design
         name: 実装・デザインと突き合わせて計画する
         stories:
           - name: 実例マッピングを実装・デザインと突き合わせて計画する
+            key: plan-example-mapping-against-implementation-and-design
           - name: 協働結果の漏れを調査する
   - key: maintain-living-master
     name: マスタを生かし続ける
