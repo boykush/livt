@@ -118,6 +118,19 @@ rules:
         name: 消費側はマスタの更新を spec_version の変化で検知する
 
     automated: true
+  - id: R-13
+    name: 実装リポジトリはストーリーの一覧をオポチュニティで絞り込める
+    examples:
+      - id: EX-01
+        name: list_stories の各エントリは所属オポチュニティ（マップ名とストーリーマップのリソースURI）を示し、無所属なら空になる
+      - id: EX-02
+        name: list_stories に opportunity パラメータ（マップ名）を指定すると、そのマップに載るストーリーだけが返る
+      - id: EX-03
+        name: 存在しないオポチュニティ名の指定は空の一覧を返す
+      - id: EX-04
+        name: livt://story/{story_key} リソースも所属オポチュニティを示す
+    issues:
+      - https://github.com/boykush/livt/issues/82
 questions:
   - id: Q-05
     text: ネットワーク（非ローカル）公開する場合の認証・公開モデルをどうするか（現状はローカル利用前提で認証なし）
@@ -128,3 +141,4 @@ ubiquitous:
   - story-map
   - ubiquitous-language
   - discovery
+  - opportunity
