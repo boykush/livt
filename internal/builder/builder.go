@@ -75,7 +75,7 @@ func (b *Builder) Build() error {
 		}
 	}
 
-	storyToMap, storyMapTiles, err := b.buildStoryMaps()
+	storyToMaps, storyMapTiles, err := b.buildStoryMaps()
 	if err != nil {
 		return err
 	}
@@ -86,16 +86,18 @@ func (b *Builder) Build() error {
 	}
 
 	var storyItems []storyItem
+	var storyOpportunitySets [][]opportunityRef
 	for _, story := range stories {
 		mappingPath := ""
 		if b.hasExampleMapping(story.Key) {
 			mappingPath = "../mapping/" + story.Key.Value + ".html"
 		}
 
-		storyMapPath := storyToMap[story.Key.Value]
+		// Story-page links resolve from the story/ directory ("../story-map/..").
+		opportunities := storyToMaps[story.Key.Value]
 
 		storyOutPath := filepath.Join(b.OutDir, "story", story.Key.Value+".html")
-		if err := b.buildStory(storyOutPath, story, mappingPath, storyMapPath); err != nil {
+		if err := b.buildStory(storyOutPath, story, mappingPath, opportunities); err != nil {
 			return err
 		}
 		fmt.Printf("  %s\n", strings.TrimPrefix(storyOutPath, b.OutDir+"/"))
@@ -105,12 +107,14 @@ func (b *Builder) Build() error {
 		if mappingPath != "" {
 			listMappingPath = "mapping/" + story.Key.Value + ".html"
 		}
+		listOpportunities := rootRelativeOpportunities(opportunities)
+		storyOpportunitySets = append(storyOpportunitySets, listOpportunities)
 		storyItems = append(storyItems, storyItem{
-			Key:          story.Key.Value,
-			Name:         story.Name,
-			StoryMapPath: strings.TrimPrefix(storyMapPath, "../"),
-			MappingPath:  listMappingPath,
-			Links:        urlMetaFieldViews(story.Meta),
+			Key:           story.Key.Value,
+			Name:          story.Name,
+			Opportunities: listOpportunities,
+			MappingPath:   listMappingPath,
+			Links:         urlMetaFieldViews(story.Meta),
 		})
 	}
 
@@ -118,13 +122,20 @@ func (b *Builder) Build() error {
 	if err != nil {
 		return err
 	}
+	// A mapping belongs to the same opportunities as its story (mapping → story
+	// → map), so the Example Mappings list filters on the same axis.
+	var mappingOpportunitySets [][]opportunityRef
+	for i := range mappingTiles {
+		mappingTiles[i].Opportunities = rootRelativeOpportunities(storyToMaps[mappingTiles[i].Key])
+		mappingOpportunitySets = append(mappingOpportunitySets, mappingTiles[i].Opportunities)
+	}
 
 	if err := b.buildGlossary(); err != nil {
 		return err
 	}
 
 	// Hub pages share the sidebar; index.html is the Example Mappings overview.
-	if err := b.buildMappingsIndex(mappingTiles); err != nil {
+	if err := b.buildMappingsIndex(mappingTiles, distinctOpportunityNames(mappingOpportunitySets)); err != nil {
 		return err
 	}
 	fmt.Printf("  index.html\n")
@@ -134,7 +145,7 @@ func (b *Builder) Build() error {
 	}
 	fmt.Printf("  story-maps.html\n")
 
-	if err := b.buildStoriesIndex(storyItems); err != nil {
+	if err := b.buildStoriesIndex(storyItems, distinctOpportunityNames(storyOpportunitySets)); err != nil {
 		return err
 	}
 	fmt.Printf("  stories.html\n")

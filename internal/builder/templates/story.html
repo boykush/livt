@@ -41,13 +41,13 @@
   </section>
   {{end}}
 
-  {{if or .StoryMapPath .MappingPath}}
+  {{if or .Opportunities .MappingPath}}
   <section class="mt-7">
     <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">Related</h2>
     <div class="flex gap-3 flex-wrap">
-    {{if .StoryMapPath}}
-      <a href="{{.StoryMapPath}}" class="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 text-sm font-medium px-4 py-2 rounded-lg border border-purple-200 hover:bg-purple-100 transition">
-        Story Map &rarr;
+    {{range .Opportunities}}
+      <a href="{{.Path}}" class="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 text-sm font-medium px-4 py-2 rounded-lg border border-purple-200 hover:bg-purple-100 transition">
+        {{.Name}} &rarr;
       </a>
     {{end}}
     {{if .MappingPath}}

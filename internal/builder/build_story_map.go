@@ -11,15 +11,16 @@ import (
 )
 
 // buildStoryMaps builds story map HTML pages. It returns a map of story key to
-// story map path (relative from story/ directory) and a preview tile per map for
-// the Story Maps overview page.
-func (b *Builder) buildStoryMaps() (map[string]string, []storyMapTile, error) {
+// the opportunities (story maps) it belongs to, with paths relative to the
+// story/ directory, plus a preview tile per map for the Story Maps overview.
+// A story can sit on several maps, so each key maps to a slice in map order.
+func (b *Builder) buildStoryMaps() (map[string][]opportunityRef, []storyMapTile, error) {
 	maps, err := parser.ParseAllStoryMaps(b.USMDir)
 	if err != nil {
 		return nil, nil, err
 	}
 
-	storyToMap := make(map[string]string)
+	storyToMaps := make(map[string][]opportunityRef)
 	var tiles []storyMapTile
 	for _, sm := range maps {
 		view := b.toStoryMapView(sm)
@@ -31,20 +32,23 @@ func (b *Builder) buildStoryMaps() (map[string]string, []storyMapTile, error) {
 
 		tiles = append(tiles, storyMapTile{Name: sm.Name})
 
-		relativePath := "../story-map/" + sm.Name + ".html"
+		ref := opportunityRef{Name: sm.Name, Path: "../story-map/" + sm.Name + ".html"}
+		// A key can recur across steps/releases within one map; add its chip once.
+		seen := make(map[string]bool)
 		for _, a := range sm.Activities {
 			for _, s := range a.Steps {
 				for _, sc := range s.Stories {
-					if !sc.HasKey() {
+					if !sc.HasKey() || seen[sc.Key.Value] {
 						continue
 					}
-					storyToMap[sc.Key.Value] = relativePath
+					seen[sc.Key.Value] = true
+					storyToMaps[sc.Key.Value] = append(storyToMaps[sc.Key.Value], ref)
 				}
 			}
 		}
 	}
 
-	return storyToMap, tiles, nil
+	return storyToMaps, tiles, nil
 }
 
 type storyMapViewStory struct {

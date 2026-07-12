@@ -2,6 +2,7 @@ package builder
 
 import (
 	"embed"
+	"encoding/json"
 	"html/template"
 	"io"
 	"strings"
@@ -15,7 +16,8 @@ var templateFS embed.FS
 // All templates are parsed into a single set so pages can share the
 // {{define "sidebar"}} partial in _sidebar.html.
 var tmpl = template.Must(template.New("").Funcs(template.FuncMap{
-	"issueLabel": issueLabel,
+	"issueLabel":       issueLabel,
+	"opportunityNames": opportunityNamesJSON,
 }).ParseFS(templateFS, "templates/*.html"))
 
 // issueLabel shortens an automation Issue URL to a sticky-sized link label:
@@ -36,6 +38,57 @@ func issueLabel(url string) string {
 	return parts[0]
 }
 
+// opportunityRef links a card to one story map it belongs to. In livt a story
+// map is one opportunity, so Name is the opportunity name (= map name) and Path
+// links to that map's board, relative to the page doing the rendering.
+type opportunityRef struct {
+	Name string
+	Path string
+}
+
+// opportunityNamesJSON encodes the opportunity names as a JSON array for a
+// card's data-opportunities attribute, the hook the client-side filter matches
+// against. A story on no map serializes to "[]" so it matches no filter axis.
+func opportunityNamesJSON(refs []opportunityRef) string {
+	names := make([]string, len(refs))
+	for i, r := range refs {
+		names[i] = r.Name
+	}
+	b, err := json.Marshal(names)
+	if err != nil {
+		return "[]"
+	}
+	return string(b)
+}
+
+// rootRelativeOpportunities rebases refs whose Path is relative to the story/
+// directory ("../story-map/x.html") onto the output root ("story-map/x.html"),
+// where the Stories and Example Mappings lists render.
+func rootRelativeOpportunities(refs []opportunityRef) []opportunityRef {
+	out := make([]opportunityRef, len(refs))
+	for i, r := range refs {
+		out[i] = opportunityRef{Name: r.Name, Path: strings.TrimPrefix(r.Path, "../")}
+	}
+	return out
+}
+
+// distinctOpportunityNames collects the unique opportunity names across a list's
+// cards in first-appearance order, so a list only offers filter axes that match
+// at least one of its cards.
+func distinctOpportunityNames(perCard [][]opportunityRef) []string {
+	seen := make(map[string]bool)
+	var names []string
+	for _, refs := range perCard {
+		for _, r := range refs {
+			if !seen[r.Name] {
+				seen[r.Name] = true
+				names = append(names, r.Name)
+			}
+		}
+	}
+	return names
+}
+
 // Sidebar is the shared navigation rendered on every hub page. Prefix is the
 // relative path back to the output root ("" for root pages); Active marks the
 // current resource type.
@@ -49,13 +102,15 @@ type Sidebar struct {
 }
 
 type mappingTile struct {
-	Key       string
-	StoryName string
+	Key           string
+	StoryName     string
+	Opportunities []opportunityRef
 }
 
 type mappingsIndexView struct {
-	Sidebar  Sidebar
-	Mappings []mappingTile
+	Sidebar             Sidebar
+	Mappings            []mappingTile
+	FilterOpportunities []string
 }
 
 type storyMapTile struct {
@@ -68,11 +123,11 @@ type storyMapsIndexView struct {
 }
 
 type storyItem struct {
-	Key          string
-	Name         string
-	StoryMapPath string
-	MappingPath  string
-	Links        []metaFieldView
+	Key           string
+	Name          string
+	Opportunities []opportunityRef
+	MappingPath   string
+	Links         []metaFieldView
 }
 
 // metaFieldView renders one Story frontmatter field. Href is non-empty only when
@@ -114,8 +169,9 @@ func urlMetaFieldViews(meta []domain.MetaField) []metaFieldView {
 }
 
 type storiesIndexView struct {
-	Sidebar Sidebar
-	Stories []storyItem
+	Sidebar             Sidebar
+	Stories             []storyItem
+	FilterOpportunities []string
 }
 
 type glossaryCard struct {
@@ -130,10 +186,10 @@ type glossaryView struct {
 }
 
 type storyView struct {
-	Story        *domain.Story
-	Meta         []metaFieldView
-	MappingPath  string
-	StoryMapPath string
+	Story         *domain.Story
+	Meta          []metaFieldView
+	MappingPath   string
+	Opportunities []opportunityRef
 }
 
 // termCard is a referenced ubiquitous language term rendered as a pink sticky on
@@ -163,12 +219,12 @@ func renderStoriesIndex(w io.Writer, view storiesIndexView) error {
 	return tmpl.ExecuteTemplate(w, "stories.html", view)
 }
 
-func renderStory(w io.Writer, story *domain.Story, mappingPath, storyMapPath string) error {
+func renderStory(w io.Writer, story *domain.Story, mappingPath string, opportunities []opportunityRef) error {
 	return tmpl.ExecuteTemplate(w, "story.html", storyView{
-		Story:        story,
-		Meta:         metaFieldViews(story.Meta),
-		MappingPath:  mappingPath,
-		StoryMapPath: storyMapPath,
+		Story:         story,
+		Meta:          metaFieldViews(story.Meta),
+		MappingPath:   mappingPath,
+		Opportunities: opportunities,
 	})
 }
 

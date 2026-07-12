@@ -14,21 +14,29 @@
     <h2 class="text-lg font-semibold text-gray-800">Stories</h2>
   </header>
   <main class="px-8 py-8 max-w-3xl">
+  {{template "opportunity-filter" .FilterOpportunities}}
   {{range .Stories}}
-    <a href="story/{{.Key}}.html" class="block bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+    {{/*
+    The card links to the story via a stretched overlay anchor so the whole
+    card stays clickable while the opportunity chips remain their own links to
+    the maps (anchors cannot nest). data-opportunities is the filter hook.
+    */}}
+    <div data-opportunities="{{opportunityNames .Opportunities}}" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/{{.Key}}.html" class="absolute inset-0 z-10 rounded-lg" aria-label="{{.Name}}"></a>
       <span class="text-base font-medium text-gray-900">{{.Name}}</span>
       <div class="flex items-center gap-2 mt-2 flex-wrap">
         <span class="font-mono text-xs text-gray-400">{{.Key}}</span>
-        {{if .StoryMapPath}}<span class="text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-2 py-0.5">Story Map</span>{{end}}
+        {{range .Opportunities}}<a href="{{.Path}}" class="relative z-20 text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-2 py-0.5 hover:bg-purple-100 transition">{{.Name}}</a>{{end}}
         {{if .MappingPath}}<span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">Example Mapping</span>{{end}}
         {{range .Links}}<span class="text-xs text-gray-600 bg-white border border-gray-200 rounded-full px-2 py-0.5">&#128279; {{.Key}}</span>{{end}}
       </div>
-    </a>
+    </div>
   {{else}}
     <p class="text-gray-400 text-sm">No stories found.</p>
   {{end}}
   </main>
 </div>
 </div>
+{{template "opportunity-filter-script"}}
 </body>
 </html>
