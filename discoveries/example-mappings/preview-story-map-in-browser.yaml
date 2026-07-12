@@ -21,6 +21,17 @@ rules:
       - id: EX-01
         name: リリース未指定のストーリーは未スコープ行にまとまる
     automated: true
+  - id: R-04
+    name: ストーリーカードのリンクを容易に取得できる
+    examples:
+      - id: EX-01
+        name: キーのあるストーリーカードに🔗のコピーリンクが付き、ワンクリックでUSMページ上のそのカードへのディープリンクがクリップボードに入る
+      - id: EX-02
+        name: ディープリンクを開くと、マップ上の該当カードの位置に移動する
+      - id: EX-03
+        name: キーのないストーリー候補にはコピーリンクが付かない
+    issues:
+      - https://github.com/boykush/livt/issues/69
 
 questions:
   - id: Q-01
