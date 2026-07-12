@@ -210,7 +210,11 @@ func (s *Server) readStory(_ context.Context, req *mcpsdk.ReadResourceRequest) (
 	if err != nil {
 		return nil, mcpsdk.ResourceNotFoundError(uri)
 	}
-	return jsonResource(uri, storyResult{versioned: s.versioned(), Story: s.cfg.toStoryJSON(story)})
+	out, err := s.cfg.toStoryJSON(story)
+	if err != nil {
+		return nil, err
+	}
+	return jsonResource(uri, storyResult{versioned: s.versioned(), Story: out})
 }
 
 // readTerm serves livt://ubiquitous/{term_key}.

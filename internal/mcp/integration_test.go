@@ -53,6 +53,39 @@ func TestEndToEnd(t *testing.T) {
 	if uri := storyURIOf(list.Stories, "demo"); uri != "livt://story/demo" {
 		t.Errorf("demo uri = %q, want livt://story/demo", uri)
 	}
+	// Each entry shows its opportunities over the wire: a mapped story carries
+	// its map's name and story map resource URI, an unmapped one carries none.
+	if got := opportunitiesOf(list.Stories, "demo"); len(got) != 1 || got[0] != demoMapRef {
+		t.Errorf("demo opportunities = %+v, want [%+v]", got, demoMapRef)
+	}
+	if got := opportunitiesOf(list.Stories, "other"); len(got) != 0 {
+		t.Errorf("other opportunities = %+v, want none (on no map)", got)
+	}
+
+	// Filtering by opportunity keeps only that map's stories; an unknown name
+	// yields an empty list, not an error.
+	res, err = cs.CallTool(ctx, &mcpsdk.CallToolParams{Name: "list_stories", Arguments: map[string]any{"opportunity": "デモマップ"}})
+	if err != nil {
+		t.Fatalf("call list_stories filtered: %v", err)
+	}
+	var filtered listStoriesOutput
+	if err := json.Unmarshal([]byte(contentText(res)), &filtered); err != nil {
+		t.Fatalf("decode filtered list_stories: %v", err)
+	}
+	if len(filtered.Stories) != 1 || filtered.Stories[0].Key != "demo" {
+		t.Fatalf("filtered stories = %+v, want only demo", filtered.Stories)
+	}
+	res, err = cs.CallTool(ctx, &mcpsdk.CallToolParams{Name: "list_stories", Arguments: map[string]any{"opportunity": "存在しないマップ"}})
+	if err != nil {
+		t.Fatalf("call list_stories with unknown opportunity: %v", err)
+	}
+	var unknown listStoriesOutput
+	if err := json.Unmarshal([]byte(contentText(res)), &unknown); err != nil {
+		t.Fatalf("decode unknown-opportunity list_stories: %v", err)
+	}
+	if len(unknown.Stories) != 0 {
+		t.Errorf("unknown-opportunity stories = %+v, want empty", unknown.Stories)
+	}
 
 	// Resources: every template is advertised, and only templates (no concrete
 	// resources, no subscribe) — the server stays stateless.
@@ -149,6 +182,10 @@ func TestEndToEnd(t *testing.T) {
 	if story.Story.ExampleMappingURI != "livt://mapping/demo" {
 		t.Errorf("story example_mapping_uri = %q, want livt://mapping/demo", story.Story.ExampleMappingURI)
 	}
+	// The story resource shows the same opportunities as the list entries.
+	if got := story.Story.Opportunities; len(got) != 1 || got[0] != demoMapRef {
+		t.Errorf("story opportunities = %+v, want [%+v]", got, demoMapRef)
+	}
 
 	// Follow a resolved term ref to the ubiquitous term resource.
 	tr, err := cs.ReadResource(ctx, &mcpsdk.ReadResourceParams{URI: "livt://ubiquitous/story"})
@@ -237,4 +274,13 @@ func storyURIOf(stories []storySummaryJSON, key string) string {
 		}
 	}
 	return ""
+}
+
+func opportunitiesOf(stories []storySummaryJSON, key string) []opportunityRefJSON {
+	for _, st := range stories {
+		if st.Key == key {
+			return st.Opportunities
+		}
+	}
+	return nil
 }
