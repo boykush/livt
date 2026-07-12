@@ -32,6 +32,7 @@ rules:
         name: キーのないストーリー候補にはコピーリンクが付かない
     issues:
       - https://github.com/boykush/livt/issues/69
+    automated: true
 
 questions:
   - id: Q-01
