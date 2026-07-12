@@ -32,6 +32,7 @@ activities:
         name: ストーリーマップの構造をブラッシュアップする
         stories:
           - name: USMエキスパートに相談して清書PRを出す
+            key: refine-story-map-with-usm-expert
       - key: prepare-stories-for-detailed-discovery
         name: 詳細ディスカバリーに向けてストーリーを準備する
         stories:
