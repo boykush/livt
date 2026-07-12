@@ -69,6 +69,9 @@ func TestBuildStoryMapsIndexRendersPreviewCards(t *testing.T) {
 		t.Fatal(err)
 	}
 	html := string(out)
+	if !strings.Contains(html, `href="story-map/discovery.html"`) {
+		t.Fatal("expected tile to link to the story map board")
+	}
 	if !strings.Contains(html, `src="story-map/discovery.html"`) {
 		t.Fatal("expected story map preview iframe source")
 	}
