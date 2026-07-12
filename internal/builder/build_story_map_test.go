@@ -295,6 +295,28 @@ func TestRenderStoryMapKeylessCardHasNoCopyLink(t *testing.T) {
 	}
 }
 
+func TestStoryMapHeaderLinksBackToStoryMapsIndex(t *testing.T) {
+	b := Builder{}
+	view := b.toStoryMapView(&domain.StoryMap{
+		Name: "discovery",
+		Activities: []domain.Activity{
+			{
+				Key:   "activity",
+				Name:  "Activity",
+				Steps: []domain.Step{{Key: "step", Name: "Step"}},
+			},
+		},
+	})
+
+	var buf bytes.Buffer
+	if err := renderStoryMap(&buf, view); err != nil {
+		t.Fatal(err)
+	}
+	if !strings.Contains(buf.String(), `href="../story-maps.html"`) {
+		t.Fatal("expected board header to link back to the story maps index")
+	}
+}
+
 func indexOf(t *testing.T, html, substr string) int {
 	t.Helper()
 	i := strings.Index(html, substr)
