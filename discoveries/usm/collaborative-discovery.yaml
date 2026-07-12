@@ -55,6 +55,7 @@ activities:
         name: 協働結果を転記する
         stories:
           - name: ボードから実例マッピングYAMLを素のまま転記する
+            key: transcribe-example-mapping-from-board
           - name: ブラウザで実例マッピングをプレビューする
             key: preview-example-mapping-in-browser
       - key: refine-example-mapping-structure
