@@ -68,6 +68,7 @@ activities:
         name: 実装・デザインと突き合わせて計画する
         stories:
           - name: 実例マッピングを実装・デザインと突き合わせて計画する
+            key: plan-example-mapping-against-implementation-and-design
           - name: 協働結果の漏れを調査する
   - key: maintain-living-master
     name: マスタを生かし続ける
