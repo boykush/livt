@@ -6,6 +6,7 @@ rules:
         name: アクティビティが横並びで、その下にステップが並ぶ
     issues:
       - https://github.com/boykush/livt/issues/63
+    automated: true
   - id: R-02
     name: コミット済みストーリーは詳細ページにリンクする
     examples:
