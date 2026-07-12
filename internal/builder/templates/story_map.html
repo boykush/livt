@@ -5,6 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{.StoryMap.Name}} - livt</title>
 <script src="https://cdn.tailwindcss.com"></script>
+<style>
+  .story-card:target {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 5px #7c3aed;
+    animation: storyFlash 1.1s ease-out 1;
+  }
+  @keyframes storyFlash {
+    0%       { box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(124, 58, 237, 0); }
+    30%, 65% { box-shadow: 0 0 0 2px #fff, 0 0 0 9px rgba(124, 58, 237, 0.9); }
+    100%     { box-shadow: 0 0 0 2px #fff, 0 0 0 5px #7c3aed; }
+  }
+</style>
 </head>
 <body class="bg-gray-50 min-h-screen">
 <header class="bg-white border-b border-gray-200">
@@ -52,15 +63,7 @@
   {{range .StepStories}}
     <div class="flex flex-col gap-2 w-[180px]">
       {{range .}}
-      {{if .Opened}}
-      <a href="../story/{{.Key}}.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow text-sm text-gray-700 hover:bg-yellow-200 transition">
-        <span>{{.Name}}</span><span>&rarr;</span>
-      </a>
-      {{else}}
-      <div class="block bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow text-sm text-gray-700">
-        {{.Name}}
-      </div>
-      {{end}}
+      {{template "story-card" .}}
       {{end}}
     </div>
   {{end}}
@@ -78,15 +81,7 @@
   {{range .StepStories}}
     <div class="flex flex-col gap-2 w-[180px]">
       {{range .}}
-      {{if .Opened}}
-      <a href="../story/{{.Key}}.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow text-sm text-gray-700 hover:bg-yellow-200 transition">
-        <span>{{.Name}}</span><span>&rarr;</span>
-      </a>
-      {{else}}
-      <div class="block bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow text-sm text-gray-700">
-        {{.Name}}
-      </div>
-      {{end}}
+      {{template "story-card" .}}
       {{end}}
     </div>
   {{end}}
@@ -112,5 +107,18 @@
 </div>
 {{end}}
 </main>
+<script>
+  document.querySelectorAll('a[data-copy-link]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      if (!navigator.clipboard) return;
+      var url = location.href.split('#')[0] + a.getAttribute('href');
+      navigator.clipboard.writeText(url).then(function () {
+        var label = a.textContent;
+        a.textContent = '✓ Copied';
+        setTimeout(function () { a.textContent = label; }, 1200);
+      });
+    });
+  });
+</script>
 </body>
 </html>

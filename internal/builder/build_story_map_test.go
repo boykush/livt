@@ -202,6 +202,99 @@ func TestStoryMapRendersActivitiesInARowWithStepsBeneath(t *testing.T) {
 	}
 }
 
+func TestRenderStoryMapKeyedCardCarriesIDAnchorAndCopyLink(t *testing.T) {
+	storiesDir := t.TempDir()
+	if err := os.WriteFile(filepath.Join(storiesDir, "detailed-card.md"), []byte("---\nname: Detailed card\n---\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	b := Builder{StoriesDir: storiesDir}
+	view := b.toStoryMapView(&domain.StoryMap{
+		Name: "discovery",
+		Activities: []domain.Activity{
+			{
+				Key:  "activity",
+				Name: "Activity",
+				Steps: []domain.Step{
+					{
+						Key:  "step",
+						Name: "Step",
+						Stories: []domain.StoryCard{
+							{Key: domain.StoryKey{Value: "detailed-card"}, Name: "Detailed card", Release: "first-release"},
+							{Key: domain.StoryKey{Value: "planned-card"}, Name: "Planned card"},
+						},
+					},
+				},
+			},
+		},
+		Releases: []domain.Release{
+			{
+				ID:   "first-release",
+				Name: "First release",
+			},
+		},
+	})
+
+	var buf bytes.Buffer
+	if err := renderStoryMap(&buf, view); err != nil {
+		t.Fatal(err)
+	}
+	html := buf.String()
+
+	// detailed-card sits in a release row as a story-page link, planned-card in
+	// the unscoped row as a plain card; both keyed shapes carry the same anchor
+	// and one-click copy-link trigger.
+	for _, key := range []string{"detailed-card", "planned-card"} {
+		if !strings.Contains(html, `id="story-`+key+`"`) {
+			t.Fatalf("expected story card %s to carry an id anchor", key)
+		}
+		if !strings.Contains(html, `href="#story-`+key+`" data-copy-link`) {
+			t.Fatalf("expected a one-click copy-link trigger on story card %s", key)
+		}
+	}
+	if !strings.Contains(html, "🔗") {
+		t.Fatal("expected a link emoji to signal the trigger is copyable")
+	}
+	if !strings.Contains(html, `class="story-card relative scroll-mt-24"`) {
+		t.Fatal("expected anchored story cards to keep a scroll margin so deep links land on the card")
+	}
+}
+
+func TestRenderStoryMapKeylessCardHasNoCopyLink(t *testing.T) {
+	b := Builder{}
+	view := b.toStoryMapView(&domain.StoryMap{
+		Name: "discovery",
+		Activities: []domain.Activity{
+			{
+				Key:  "activity",
+				Name: "Activity",
+				Steps: []domain.Step{
+					{
+						Key:  "step",
+						Name: "Step",
+						Stories: []domain.StoryCard{
+							{Name: "Lightweight card"},
+						},
+					},
+				},
+			},
+		},
+	})
+
+	var buf bytes.Buffer
+	if err := renderStoryMap(&buf, view); err != nil {
+		t.Fatal(err)
+	}
+	html := buf.String()
+
+	if strings.Contains(html, `data-copy-link title=`) {
+		t.Fatal("expected no copy-link trigger on a keyless story candidate")
+	}
+	if strings.Contains(html, `id="story-`) {
+		t.Fatal("expected no id anchor on a keyless story candidate")
+	}
+}
+
 func TestStoryMapHeaderLinksBackToStoryMapsIndex(t *testing.T) {
 	b := Builder{}
 	view := b.toStoryMapView(&domain.StoryMap{
