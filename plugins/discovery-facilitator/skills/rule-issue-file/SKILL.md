@@ -24,7 +24,7 @@ The mapping YAML — not GitHub — holds the truth about what is filed where:
 
 - **story-key** (required), and optionally a **rule-id**. With a rule-id you file that one rule; with only a story-key you file every rule not yet filed to a target.
 - **Target repositories** come from the story's frontmatter `repos:` — a list of `owner/repo`. Ask the user if it is missing. The master's own repository is a valid target; nothing in the flow assumes the target is a different repository.
-- **Living document URL** — the base URL where this project's `livt build` output is published (often in the repo's README or Pages workflow). Ask if you can't find it; if no site is published, point the backpointer at the mapping YAML in the master repository instead and say so in your report.
+- **Living document URL** (optional) — the base URL where this project's `livt build` output is published (often in the repo's README or Pages workflow). It buys the reader a browsable link, nothing more; the livt URIs are the backpointer either way, so never block filing on finding it.
 
 ## Filing Flow
 
@@ -52,18 +52,18 @@ The body carries the rule, its examples, and backpointers to the master — quot
 
 ### Examples
 
-- {example-id} — {example name}
+- `livt://mapping/{story-key}/rule/{rule-id}/example/{example-id}` — {example name}
 - …
 
 ## Master
 
-- story: `{story-key}`
-- rule: `{rule-id}`
-- living document: {living-doc-url}/mapping/{story-key}.html#rule-{rule-id}
+- rule: `livt://mapping/{story-key}/rule/{rule-id}`
+- story: `livt://story/{story-key}`
 - spec_version: `{short rev}`
+- living document: {living-doc-url}/mapping/{story-key}.html#rule-{rule-id}
 ```
 
-The living document anchor `#rule-{rule-id}` is the stable deep link to this rule's sticky note; `spec_version` pins which revision of the master the issue was cut from.
+Every reference is a **livt URI** — the citation form the implementation repo carries onward into test comments. A bare `{rule-id}` names nothing on its own: rule and example ids restart in every mapping. `spec_version` pins which revision of the master the issue was cut from. The living document anchor is a convenience link for humans in a browser; it depends on where the site is deployed, so it never replaces the URI. No site published? Drop that line — the URIs stand alone.
 
 ## Sub-issue Linking
 
@@ -97,6 +97,7 @@ Once filed, the issue's backpointer and the living-document anchor point at the 
 - Don't commit or open a PR for the write-back; leave the working tree for the user's normal review flow.
 - Don't file story-level issues — that is `story-issue-file`'s job. Missing story issue? Suggest running it; don't improvise one.
 - Don't put PR or test links in `issues:`, and don't set or unset `automated:`.
+- Don't cite the rule or its examples by bare id, and don't let the living-document URL stand in for the livt URI.
 - Don't consult GitHub (search or sub-issue graph) to decide what is already filed — the mapping's record is the only dedupe source.
 - Don't re-file a rule × repository pair that is already linked, and don't let an existing link stop you filing the same rule to a *different* declared repository.
 

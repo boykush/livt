@@ -49,11 +49,11 @@ The body carries the story verbatim — in the story's language — plus backpoi
 
 ## Master
 
-- story: `{story-key}`
+- story: `livt://story/{story-key}`
 - spec_version: `{short rev}`
 ```
 
-If you know the living document URL (where `livt build` output is published), add its story page — `{living-doc-url}/story/{story-key}.html` — to the Master section; don't block filing on it.
+The **livt URI** is the citation form the implementation repo carries onward; `spec_version` pins which revision of the master the issue was cut from. If you know the living document URL (where `livt build` output is published), add its story page — `{living-doc-url}/story/{story-key}.html` — below as a browsable convenience for humans. It depends on where the site is deployed, so it never replaces the URI; don't block filing on finding it.
 
 ## Sub-issue Linking
 

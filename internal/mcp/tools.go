@@ -18,11 +18,11 @@ import (
 func (s *Server) registerTools(srv *mcpsdk.Server) {
 	mcpsdk.AddTool(srv, &mcpsdk.Tool{
 		Name:        "list_stories",
-		Description: "List all stories. Each entry links to its story resource (livt://story/{key}), its example mapping resource (livt://mapping/{key}) when one exists, and the opportunities (story maps, livt://story-map/{map_name}) it sits on. Pass opportunity to list only the stories on that map.",
+		Description: "List all stories. Each entry hands out the uris to read next: its story resource (livt://story/{key}), its example mapping resource (livt://mapping/{key}) when one exists, and the opportunities (story maps, livt://story-map/{map_name}) it sits on. Pass opportunity to list only the stories on that map.",
 	}, s.listStories)
 	mcpsdk.AddTool(srv, &mcpsdk.Tool{
 		Name:        "list_story_maps",
-		Description: "List all story maps. Each entry links to its story map resource (livt://story-map/{map_name}).",
+		Description: "List all story maps. Each entry hands out the uri of its story map resource (livt://story-map/{map_name}).",
 	}, s.listStoryMaps)
 }
 

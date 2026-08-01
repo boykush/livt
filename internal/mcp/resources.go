@@ -17,28 +17,28 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "example-mapping",
 		Title:       "Example mapping",
-		Description: "An example mapping (rules, examples, questions, ubiquitous terms) for a story, addressed by story key.",
+		Description: "An example mapping (rules, examples, questions, ubiquitous terms) for a story, addressed by story key. Every rule, example, and question inside carries its own uri — the address to read next or to cite.",
 		MIMEType:    "application/json",
 		URITemplate: uri.MappingTemplate,
 	}, s.readMapping)
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "rule",
 		Title:       "Rule",
-		Description: "A single rule and its examples from a story's example mapping.",
+		Description: "A single rule, its examples, and its automation record (issues, automated) from a story's example mapping. Rule ids restart in every mapping, so the whole uri — story key included — is what addresses this rule.",
 		MIMEType:    "application/json",
 		URITemplate: uri.RuleTemplate,
 	}, s.readRule)
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "example",
 		Title:       "Example",
-		Description: "A single example of a rule. Example ids are numbered within their rule, so the address carries the rule id.",
+		Description: "A single example of a rule. Example ids are numbered within their rule, so the address carries the rule id: EX-01 names nothing on its own.",
 		MIMEType:    "application/json",
 		URITemplate: uri.ExampleTemplate,
 	}, s.readExample)
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "question",
 		Title:       "Question",
-		Description: "A single open question from a story's example mapping.",
+		Description: "A single open question from a story's example mapping. Questions hang off the mapping rather than off a rule, so the address stops at the story key.",
 		MIMEType:    "application/json",
 		URITemplate: uri.QuestionTemplate,
 	}, s.readQuestion)
@@ -52,7 +52,7 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "story",
 		Title:       "Story",
-		Description: "A story's name, body, and frontmatter meta, addressed by story key.",
+		Description: "A story's name, body, and frontmatter meta, addressed by story key, plus the uris of its example mapping and of the opportunities it sits on.",
 		MIMEType:    "application/json",
 		URITemplate: uri.StoryTemplate,
 	}, s.readStory)
