@@ -89,15 +89,11 @@ The link is write-only sugar for GitHub's UI. Never read the sub-issue graph bac
 
 ## IDs Are Forever
 
-Your issue quotes the rule-id and every example-id in it, so you depend on this contract — but filing is not what creates it. The IDs were already immutable; an unfiled rule is not a free ID.
+Your issue quotes the rule-id and every example-id in it, so you depend on this contract — but filing is not what creates it. The IDs were already immutable; an unfiled rule is not a free ID. You never mint or retire one yourself: the write-back touches `issues:` and nothing else.
 
-Canonical statement in `example-mapping-update`; these three bullets are verbatim from it.
+The half you rely on, verbatim from the canonical statement in `example-mapping-update`:
 
-- **Numbering** — a new ID is one past the highest ever used in its scope, **retired IDs included**. Rules and questions are numbered within the story (`R-NN`, `Q-NN`), examples within their rule (each rule starts from `EX-01`). With R-01/R-02/R-03 on file and R-03 retired, the next rule is R-04 — never R-03 again.
 - **Immutability** — an ID, once used, keeps pointing at the same thing. Never renumber, never reuse, and never move an item to where its ID would change. This holds whether or not an automation issue was filed: the item's livt URI is quoted by MCP consumers, by the board's copy-link, in test comments, and in commit messages, and the master records none of those — there is no list of references to check before breaking one.
-- **Retire, don't delete** — an item that no longer holds gets `retired: true` and stays in the file, its ID taken and its text readable. Deleting it hands the ID to the next item and silently re-targets every reference. Don't comment it out either: a comment is not part of the YAML structure, so a structural edit drops it.
-
-You never renumber anything yourself: the write-back touches `issues:` and nothing else.
 
 ## What NOT to Do
 
