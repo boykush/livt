@@ -303,8 +303,11 @@ func renderStory(w io.Writer, story *domain.Story, mappingPath string, opportuni
 	})
 }
 
+// renderMapping draws the board from the mapping's active view: a retired
+// sticky is off the wall, whichever kind it is, so the board shows what the
+// spec asks for today.
 func renderMapping(w io.Writer, em *domain.ExampleMapping, storyName, storyPath string, ubiquitous []termCard) error {
-	return tmpl.ExecuteTemplate(w, "mapping.html", mappingView{StoryName: storyName, StoryPath: storyPath, Mapping: em, Ubiquitous: ubiquitous})
+	return tmpl.ExecuteTemplate(w, "mapping.html", mappingView{StoryName: storyName, StoryPath: storyPath, Mapping: em.Active(), Ubiquitous: ubiquitous})
 }
 
 func renderStoryMap(w io.Writer, view storyMapView) error {

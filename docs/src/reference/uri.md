@@ -46,6 +46,11 @@ recurs under every rule of a board, so `#example-EX-01` would land on whichever
 one happened to be first. The sticky's own badge still shows the local `EX-01` —
 that is the ID the master numbers — while the link behind it carries the rule.
 
+A [retired](../guides/example-mappings.md#retiring-an-item) item has no sticky,
+so its URI lands on the board with nothing to scroll to. The URI still resolves:
+ask the tooling, which answers with the item and `retired: true`. Deriving a
+page is how a reference is *shown*, not how it is *resolved*.
+
 ## Store the URI, render the URL
 
 Nothing in the master records where the site is deployed. The deployment URL is

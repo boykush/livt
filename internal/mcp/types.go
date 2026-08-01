@@ -112,6 +112,8 @@ type exampleJSON struct {
 	// numbered within their rule, so the address carries the rule.
 	URI  string `json:"uri"`
 	Name string `json:"name"`
+	// Retired as on ruleJSON.
+	Retired bool `json:"retired,omitempty"`
 }
 
 type ruleJSON struct {
@@ -126,6 +128,10 @@ type ruleJSON struct {
 	// Automated is always present: consumers read the recorded judgment
 	// without distinguishing absent from false.
 	Automated bool `json:"automated"`
+	// Retired says the rule is no longer part of the spec. Unlike Automated it
+	// is omitted when false: it marks the exception, and every live rule
+	// carrying "retired": false would drown the flag in noise.
+	Retired bool `json:"retired,omitempty"`
 }
 
 type questionJSON struct {
@@ -134,6 +140,8 @@ type questionJSON struct {
 	// (livt://mapping/{story_key}/question/{id}).
 	URI  string `json:"uri"`
 	Text string `json:"text"`
+	// Retired as on ruleJSON; a retired question is no longer open.
+	Retired bool `json:"retired,omitempty"`
 }
 
 type exampleMappingJSON struct {
@@ -228,19 +236,20 @@ func toRuleJSON(storyKey string, r domain.Rule) ruleJSON {
 	for _, e := range r.Examples {
 		examples = append(examples, toExampleJSON(storyKey, r.ID, e))
 	}
-	return ruleJSON{ID: r.ID, URI: uri.Rule(storyKey, r.ID), Name: r.Name, Examples: examples, Issues: r.Issues, Automated: r.Automated}
+	return ruleJSON{ID: r.ID, URI: uri.Rule(storyKey, r.ID), Name: r.Name, Examples: examples, Issues: r.Issues, Automated: r.Automated, Retired: r.Retired}
 }
 
 func toExampleJSON(storyKey, ruleID string, e domain.Example) exampleJSON {
-	return exampleJSON{ID: e.ID, URI: uri.Example(storyKey, ruleID, e.ID), Name: e.Name}
+	return exampleJSON{ID: e.ID, URI: uri.Example(storyKey, ruleID, e.ID), Name: e.Name, Retired: e.Retired}
 }
 
 func toQuestionJSON(storyKey string, q domain.Question) questionJSON {
-	return questionJSON{ID: q.ID, URI: uri.Question(storyKey, q.ID), Text: q.Text}
+	return questionJSON{ID: q.ID, URI: uri.Question(storyKey, q.ID), Text: q.Text, Retired: q.Retired}
 }
 
 // toExampleMappingJSON is a Config method because resolving the referenced
-// ubiquitous terms reads the master's ubiquitous directory.
+// ubiquitous terms reads the master's ubiquitous directory. Retired rules and
+// questions stay in the projection, flagged — see the note in tools.go.
 func (c Config) toExampleMappingJSON(em *domain.ExampleMapping) exampleMappingJSON {
 	rules := make([]ruleJSON, 0, len(em.Rules))
 	for _, r := range em.Rules {

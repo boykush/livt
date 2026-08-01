@@ -51,6 +51,7 @@ rules:
         name: 本文を残すので、退役した内容が後から読める
       - id: EX-04
         name: YAMLのコメントアウトでは代用しない（構造的な編集でコメントは消えるため）
+    automated: true
   - id: R-06
     name: 新しいIDはretiredを含めたmax + 1で採番する
     examples:

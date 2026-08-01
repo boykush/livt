@@ -52,6 +52,10 @@ be hunted for board by board:
 - **Un-automated Rules** — every rule with no `automated: true` recorded. These
   close by a test, so they read as the list of behaviour still to build.
 
+[Retired](../guides/example-mappings.md#retiring-an-item) items are on neither
+list, and off the boards as well: nothing can close them, so they would sit here
+forever.
+
 Each item names the story it came from and links to its own sticky on that
 story's mapping board. Both lists are filtered together by opportunity, and the
 selection is mirrored in the `?opportunity=` query parameter so a filtered view

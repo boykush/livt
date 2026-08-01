@@ -48,6 +48,12 @@ func (s *Server) versioned() versioned {
 
 // --- data access on Config (pure; shared by the tool and the resource handlers) ---
 
+// Retirement never turns a read into not-found: a rule, example, or question
+// keeps resolving by its URI and carries retired so the caller can tell. The
+// mapping keeps its retired entries too — it is the structural record their ids
+// are numbered from, and dropping them would make a taken id look free. The
+// list_* tools enumerate stories and story maps, which have no retired concept.
+
 // exampleMapping loads the example mapping for storyKey. It distinguishes a
 // missing mapping ("not found") from a malformed one (parse error). The key is
 // validated first so an externally-supplied key (tool argument or resource URI)
@@ -97,8 +103,8 @@ func (c Config) example(storyKey, ruleID, exampleID string) (domain.Example, err
 	return domain.Example{}, fmt.Errorf("example %q not found in rule %q of story %q", exampleID, ruleID, storyKey)
 }
 
-// question returns a single open question by id from the story's example
-// mapping. Questions hang off the mapping, not off a rule.
+// question returns a single question by id from the story's example mapping,
+// retired or not. Questions hang off the mapping, not off a rule.
 func (c Config) question(storyKey, questionID string) (domain.Question, error) {
 	em, err := c.exampleMapping(storyKey)
 	if err != nil {

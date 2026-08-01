@@ -89,11 +89,15 @@ terms linked from mappings and story maps):
 |-----|---------|
 | `livt://story-map/{map_name}` | A story map: activities, steps, story cards, and releases. Committed story cards link to their story resource. `{map_name}` is the map's display name (percent-encoded) — the same identifier the build output uses for `story-map/{name}.html`. |
 | `livt://story/{story_key}` | The story's name, body, and frontmatter meta (e.g. `issue`), plus `example_mapping_uri` when a mapping exists and `opportunities` — the story maps the story sits on, as map name plus story map resource URI. |
-| `livt://mapping/{story_key}` | The story's example mapping (rules, examples, questions, ubiquitous terms). Each rule, example, and question carries its own `uri`, and `ubiquitous_terms` resolves each referenced term to its resource URI. |
+| `livt://mapping/{story_key}` | The story's example mapping (rules, examples, questions, ubiquitous terms). Each rule, example, and question carries its own `uri`, and `ubiquitous_terms` resolves each referenced term to its resource URI. [Retired](../guides/example-mappings.md#retiring-an-item) entries are listed too, flagged — the mapping is the structural record their ids are numbered from. |
 | `livt://mapping/{story_key}/rule/{rule_id}` | A single rule and its examples, plus its recorded automation: `issues` (automation Issue URLs) and `automated` (whether the rule is automated by tests). Rules inside `livt://mapping/{story_key}` carry the same fields. |
 | `livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}` | A single example of a rule. Example ids are numbered within their rule, so the address carries `{rule_id}` — `EX-01` alone does not identify an example. |
-| `livt://mapping/{story_key}/question/{question_id}` | A single open question. Questions hang off the mapping rather than off a rule, so the address stops at `{story_key}`. |
+| `livt://mapping/{story_key}/question/{question_id}` | A single question. Questions hang off the mapping rather than off a rule, so the address stops at `{story_key}`. |
 | `livt://ubiquitous/{term_key}` | A ubiquitous language term's name and definition. |
+
+A retired rule, example, or question keeps resolving by its URI and carries
+`retired: true`, so a reference to it reads as retired rather than failing (or,
+worse, landing on whatever reused its id). Live items omit the field.
 
 Read them with `resources/read`; all appear in `resources/templates/list`. The
 server advertises templates only — there is no concrete resource list and no

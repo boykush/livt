@@ -67,6 +67,34 @@ func TestBuildKeepsUnrelatedFilesInOutDir(t *testing.T) {
 	}
 }
 
+// livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02: the sidebar's Tasks
+// badge counts what the Tasks page lists, so a retired question or rule is out
+// of the number as well as out of the list.
+func TestComputeCountsLeavesRetiredItemsOutOfTasks(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	writeFile(t, filepath.Join(b.MappingsDir, "demo.yaml"),
+		"rules:\n"+
+			"  - id: R-01\n"+
+			"    name: 現役の未自動化ルール\n"+
+			"  - id: R-02\n"+
+			"    name: 退役したルール\n"+
+			"    retired: true\n"+
+			"questions:\n"+
+			"  - id: Q-01\n"+
+			"    text: 現役の疑問\n"+
+			"  - id: Q-02\n"+
+			"    text: 退役した疑問\n"+
+			"    retired: true\n")
+
+	counts, err := b.computeCounts()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if counts.tasks != 2 {
+		t.Fatalf("tasks = %d, want 2 (the live question and the live un-automated rule)", counts.tasks)
+	}
+}
+
 func writeFile(t *testing.T, path, content string) {
 	t.Helper()
 	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {

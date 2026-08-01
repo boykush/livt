@@ -24,7 +24,7 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "rule",
 		Title:       "Rule",
-		Description: "A single rule, its examples, and its automation record (issues, automated) from a story's example mapping. Rule ids restart in every mapping, so the whole uri — story key included — is what addresses this rule.",
+		Description: "A single rule, its examples, and its automation record (issues, automated) from a story's example mapping. Rule ids restart in every mapping, so the whole uri — story key included — is what addresses this rule. A retired rule resolves too, carrying retired: true.",
 		MIMEType:    "application/json",
 		URITemplate: uri.RuleTemplate,
 	}, s.readRule)
@@ -38,7 +38,7 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "question",
 		Title:       "Question",
-		Description: "A single open question from a story's example mapping. Questions hang off the mapping rather than off a rule, so the address stops at the story key.",
+		Description: "A single question from a story's example mapping. Questions hang off the mapping rather than off a rule, so the address stops at the story key. A retired question resolves too, carrying retired: true.",
 		MIMEType:    "application/json",
 		URITemplate: uri.QuestionTemplate,
 	}, s.readQuestion)

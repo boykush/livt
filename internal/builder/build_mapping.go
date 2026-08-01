@@ -67,7 +67,12 @@ func (o *taskSet) add(other taskSet) {
 // the Tasks page, each deep-linked to its own sticky on the board through the
 // same derivation the board itself anchors by.
 func collectTasks(em *domain.ExampleMapping, storyName, storyPath string) taskSet {
-	key := em.StoryKey.Value
+	// Retired items are not unfinished work: a retired question is not open, and
+	// a retired rule is not waiting for a test. Left in, they would sit on this
+	// page forever, since nothing can happen to close them.
+	active := em.Active()
+
+	key := active.StoryKey.Value
 	// An item without an ID has no anchor to aim at (the board only renders one
 	// for keyed stickies), so it links to the board itself.
 	sticky := func(id string, locate func(string, string) string) string {
@@ -89,10 +94,10 @@ func collectTasks(em *domain.ExampleMapping, storyName, storyPath string) taskSe
 	}
 
 	var out taskSet
-	for _, q := range em.Questions {
+	for _, q := range active.Questions {
 		out.Questions = append(out.Questions, item("question", q.ID, q.Text, sticky(q.ID, uri.QuestionPage)))
 	}
-	for _, r := range em.Rules {
+	for _, r := range active.Rules {
 		if r.Automated {
 			continue
 		}

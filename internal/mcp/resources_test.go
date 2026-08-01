@@ -3,6 +3,8 @@ package mcp
 import (
 	"context"
 	"encoding/json"
+	"path/filepath"
+	"strings"
 	"testing"
 
 	"github.com/boykush/livt/internal/uri"
@@ -112,6 +114,102 @@ func TestMappingLinksExamplesAndQuestions(t *testing.T) {
 	}
 	if got := em.Questions[0].URI; got != "livt://mapping/demo/question/Q-01" {
 		t.Errorf("question uri = %q, want livt://mapping/demo/question/Q-01", got)
+	}
+}
+
+// newRetiredTestServer lays out a master whose demo mapping holds retired items
+// beside live ones: rule R-02, example EX-02 of the live R-01, and question Q-02
+// are retired, so their ids stay taken and their text stays on file.
+func newRetiredTestServer(t *testing.T) *Server {
+	t.Helper()
+	root := t.TempDir()
+	writeFile(t, filepath.Join(root, "discoveries", "example-mappings", "demo.yaml"),
+		"rules:\n"+
+			"  - id: R-01\n"+
+			"    name: 現役のルール\n"+
+			"    examples:\n"+
+			"      - id: EX-01\n"+
+			"        name: 現役の実例\n"+
+			"      - id: EX-02\n"+
+			"        name: 退役した実例\n"+
+			"        retired: true\n"+
+			"  - id: R-02\n"+
+			"    name: 退役したルール\n"+
+			"    retired: true\n"+
+			"questions:\n"+
+			"  - id: Q-01\n"+
+			"    text: 現役の疑問\n"+
+			"  - id: Q-02\n"+
+			"    text: 退役した疑問\n"+
+			"    retired: true\n")
+	return NewServer(Config{Root: root}, "test")
+}
+
+// livt://mapping/trace-test-to-rule/rule/R-05/example/EX-01 and EX-03: a retired
+// rule, example, and question each resolve by URI — flagged retired, text intact
+// — rather than 404ing, which is what a reference embedded elsewhere follows.
+func TestReadRetiredItemsResolveAsRetired(t *testing.T) {
+	s := newRetiredTestServer(t)
+
+	rule := readResource[ruleResult](t, s.readRule, uri.Rule("demo", "R-02")).Rule
+	if !rule.Retired || rule.Name != "退役したルール" {
+		t.Errorf("rule = %+v, want R-02 retired with its text kept", rule)
+	}
+	example := readResource[exampleResult](t, s.readExample, uri.Example("demo", "R-01", "EX-02")).Example
+	if !example.Retired || example.Name != "退役した実例" {
+		t.Errorf("example = %+v, want EX-02 retired with its text kept", example)
+	}
+	question := readResource[questionResult](t, s.readQuestion, uri.Question("demo", "Q-02")).Question
+	if !question.Retired || question.Text != "退役した疑問" {
+		t.Errorf("question = %+v, want Q-02 retired with its text kept", question)
+	}
+
+	live := readResource[ruleResult](t, s.readRule, uri.Rule("demo", "R-01")).Rule
+	if live.Retired {
+		t.Errorf("rule = %+v, want R-01 live", live)
+	}
+}
+
+// livt://mapping/trace-test-to-rule/rule/R-05: the mapping resource is the
+// structural record its ids are numbered from, so it keeps retired entries —
+// flagged, so a consumer can drop them, but never making a taken id look free.
+func TestMappingKeepsRetiredEntriesFlagged(t *testing.T) {
+	s := newRetiredTestServer(t)
+
+	em := readResource[exampleMappingResult](t, s.readMapping, uri.Mapping("demo")).Mapping
+	if len(em.Rules) != 2 || !em.Rules[1].Retired {
+		t.Fatalf("rules = %+v, want both, the second flagged retired", em.Rules)
+	}
+	if len(em.Rules[0].Examples) != 2 || !em.Rules[0].Examples[1].Retired {
+		t.Errorf("examples = %+v, want both, the second flagged retired", em.Rules[0].Examples)
+	}
+	if len(em.Questions) != 2 || !em.Questions[1].Retired {
+		t.Errorf("questions = %+v, want both, the second flagged retired", em.Questions)
+	}
+}
+
+// A live item carries no retired field at all, so the flag reads as the
+// exception it marks rather than as noise on every item.
+func TestLiveItemsOmitRetiredFromJSON(t *testing.T) {
+	s := newRetiredTestServer(t)
+
+	// Leaf resources only: a rule's payload nests its examples, one of which is
+	// retired here.
+	leaves := []struct {
+		read   func(context.Context, *mcpsdk.ReadResourceRequest) (*mcpsdk.ReadResourceResult, error)
+		resURI string
+	}{
+		{s.readExample, uri.Example("demo", "R-01", "EX-01")},
+		{s.readQuestion, uri.Question("demo", "Q-01")},
+	}
+	for _, leaf := range leaves {
+		res, err := leaf.read(context.Background(), readReq(leaf.resURI))
+		if err != nil {
+			t.Fatalf("read %q: %v", leaf.resURI, err)
+		}
+		if body := resourceText(t, res); strings.Contains(body, "retired") {
+			t.Errorf("live payload mentions retired: %s", body)
+		}
 	}
 }
 
