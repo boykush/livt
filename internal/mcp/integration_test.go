@@ -3,6 +3,7 @@ package mcp
 import (
 	"context"
 	"encoding/json"
+	"strings"
 	"testing"
 
 	"github.com/boykush/livt/internal/uri"
@@ -30,6 +31,13 @@ func TestEndToEnd(t *testing.T) {
 		t.Fatalf("client connect: %v", err)
 	}
 	defer cs.Close()
+
+	// livt://mapping/automate-from-master-in-impl-repos/rule/R-14/example/EX-01:
+	// the handshake instructs the consuming agent on how to cite the master. The
+	// wording is free to change; that it arrives and names the uri is not.
+	if got := cs.InitializeResult().Instructions; got == "" || !strings.Contains(got, "uri") {
+		t.Errorf("instructions = %q, want non-empty and naming the uri", got)
+	}
 
 	// Discovery: the list tools hand out resource URIs.
 	tools, err := cs.ListTools(ctx, nil)

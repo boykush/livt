@@ -52,7 +52,7 @@ Start from the committed baseline. Do not re-transcribe; build the diff on top o
 - Don't check the mapping against the implementation or design — that is the planner's job.
 - Don't write Gherkin — example mapping stays low-tech.
 - Don't change the `story` key or break example/rule ID scoping (R-01, EX-01, Q-01).
-- Don't renumber or reassign rule IDs, even where regrouping would make the numbering tidier. Once a rule is filed as an automation issue (`rule-issue-file`), its ID is a backpointer target — the issue and the living document's `#rule-{ID}` anchor point at it for life. Shared policy with `example-mapping-update`.
+- Don't renumber or reassign rule IDs, even where regrouping would make the numbering tidier. Once a rule is filed as an automation issue (`rule-issue-file`), its ID is a backpointer target — the rule's livt URI ends in it, and so does the living document's `#rule-{ID}` anchor. Shared policy with `example-mapping-update`.
 
 ## Output
 

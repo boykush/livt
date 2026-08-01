@@ -107,6 +107,22 @@ Every tool and resource payload also includes a `spec_version` field -- the
 short git revision of the master -- so consumers can tell which version of the
 spec they are reading and detect drift.
 
+### Citing the master
+
+The handshake carries `instructions`, so every session tells the consuming agent
+how to reference the master in what it produces: copy the `uri` from the result
+verbatim, and never write a bare `id`. Ids are unique only within one mapping
+file, so `R-02` exists in every mapping and identifies nothing on its own.
+
+```go
+// livt://mapping/place-order-with-saved-card/rule/R-13/example/EX-01
+```
+
+That applies wherever a reference leaves the master -- a test comment, an issue
+body, a commit message, a PR description. A published living-document URL is a
+convenience link for humans, not the citation form: it depends on where the site
+is deployed, and the livt URI does not.
+
 ## `livt version`
 
 Print the version of livt.
