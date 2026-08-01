@@ -68,11 +68,32 @@ func (b *Builder) sidebar(active, prefix string) (Sidebar, error) {
 	}, nil
 }
 
-func (b *Builder) Build() error {
-	for _, d := range []string{"story", "mapping", "story-map"} {
-		if err := os.MkdirAll(filepath.Join(b.OutDir, d), 0o755); err != nil {
+// generatedDirs are the output subdirectories holding one page per resource.
+// Build owns their contents end to end, so it empties them on every run.
+var generatedDirs = []string{"story", "mapping", "story-map"}
+
+// resetGeneratedDirs empties the per-resource output subdirectories, so a page
+// for a renamed or deleted resource cannot outlive its source and keep being
+// served by `livt serve`. Only these fixed subdirectories are removed, never
+// OutDir itself: --out is user supplied and may point at a directory holding
+// files livt did not write. The hub pages at the output root are a fixed set
+// that every build rewrites, so they cannot go stale this way.
+func (b *Builder) resetGeneratedDirs() error {
+	for _, d := range generatedDirs {
+		dir := filepath.Join(b.OutDir, d)
+		if err := os.RemoveAll(dir); err != nil {
 			return err
 		}
+		if err := os.MkdirAll(dir, 0o755); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+func (b *Builder) Build() error {
+	if err := b.resetGeneratedDirs(); err != nil {
+		return err
 	}
 
 	storyToMaps, storyMapTiles, err := b.buildStoryMaps()
