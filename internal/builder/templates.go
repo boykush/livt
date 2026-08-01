@@ -93,12 +93,15 @@ func distinctOpportunityNames(perCard [][]opportunityRef) []string {
 // relative path back to the output root ("" for root pages); Active marks the
 // current resource type.
 type Sidebar struct {
-	Prefix    string
-	Active    string
-	Mappings  int
-	StoryMaps int
-	Stories   int
-	Terms     int
+	Prefix string
+	Active string
+	// Outstanding is what the home page lists: open questions plus rules with
+	// no automation recorded.
+	Outstanding int
+	Mappings    int
+	StoryMaps   int
+	Stories     int
+	Terms       int
 }
 
 type mappingTile struct {
@@ -174,6 +177,34 @@ type storiesIndexView struct {
 	FilterOpportunities []string
 }
 
+// outstandingItem is one thing the master says is not finished, lifted off its
+// example mapping onto the home page: an open question, or a rule with no
+// automation recorded. Kind ("question" or "rule") picks the sticky colour the
+// item carries on its board. StoryPath is empty when the story has no page
+// (mirrors mappingView.StoryPath); MappingPath deep-links to the item's own
+// sticky.
+type outstandingItem struct {
+	Kind          string
+	ID            string
+	Text          string
+	StoryKey      string
+	StoryName     string
+	StoryPath     string
+	MappingPath   string
+	Opportunities []opportunityRef
+}
+
+// homeView is the master's two unfinished flanks either side of the example
+// mapping: questions close by a conversation, un-automated rules close by a
+// test. One FilterOpportunities set serves both lists, since a single filter bar
+// drives the page.
+type homeView struct {
+	Sidebar             Sidebar
+	Questions           []outstandingItem
+	UnautomatedRules    []outstandingItem
+	FilterOpportunities []string
+}
+
 type glossaryCard struct {
 	Key        string
 	Name       string
@@ -207,8 +238,12 @@ type mappingView struct {
 	Ubiquitous []termCard
 }
 
-func renderMappingsIndex(w io.Writer, view mappingsIndexView) error {
+func renderHome(w io.Writer, view homeView) error {
 	return tmpl.ExecuteTemplate(w, "index.html", view)
+}
+
+func renderMappingsIndex(w io.Writer, view mappingsIndexView) error {
+	return tmpl.ExecuteTemplate(w, "example-mappings.html", view)
 }
 
 func renderStoryMapsIndex(w io.Writer, view storyMapsIndexView) error {

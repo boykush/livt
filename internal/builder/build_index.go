@@ -5,15 +5,31 @@ import (
 	"path/filepath"
 )
 
-// buildMappingsIndex renders index.html: the Example Mappings overview, where
-// each mapping appears as an iframe preview card. filterOpportunities are the
-// opportunity axes the list can be filtered by.
+// buildHome renders index.html: the landing page, listing what the master
+// leaves unfinished — open questions and un-automated rules.
+// filterOpportunities are the opportunity axes both lists can be filtered by.
+func (b *Builder) buildHome(questions, unautomatedRules []outstandingItem, filterOpportunities []string) error {
+	sb, err := b.sidebar("home", "")
+	if err != nil {
+		return err
+	}
+	f, err := os.Create(filepath.Join(b.OutDir, "index.html"))
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	return renderHome(f, homeView{Sidebar: sb, Questions: questions, UnautomatedRules: unautomatedRules, FilterOpportunities: filterOpportunities})
+}
+
+// buildMappingsIndex renders example-mappings.html: the Example Mappings
+// overview, where each mapping appears as an iframe preview card.
+// filterOpportunities are the opportunity axes the list can be filtered by.
 func (b *Builder) buildMappingsIndex(tiles []mappingTile, filterOpportunities []string) error {
 	sb, err := b.sidebar("example-mapping", "")
 	if err != nil {
 		return err
 	}
-	f, err := os.Create(filepath.Join(b.OutDir, "index.html"))
+	f, err := os.Create(filepath.Join(b.OutDir, "example-mappings.html"))
 	if err != nil {
 		return err
 	}

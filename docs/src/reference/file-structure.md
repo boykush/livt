@@ -27,7 +27,8 @@ project-root/
 
 ```
 dist/
-  index.html                              # Example mappings overview (home)
+  index.html                              # Overview: open questions and un-automated rules (home)
+  example-mappings.html                   # Example mappings overview
   story-maps.html                         # Story maps overview
   stories.html                            # Story list
   ubiquitous.html                         # Ubiquitous language table
@@ -39,6 +40,20 @@ dist/
     {map-name}.html                       # Story map boards
 ```
 
-Every page shares a left sidebar that links the four resource types
-(Example Mappings, Story Maps, Stories, Ubiquitous Language). The overview
-pages render each example mapping and story map as a preview card.
+Every page shares a left sidebar that links the home page (Overview) and the
+four resource types (Example Mappings, Story Maps, Stories, Ubiquitous
+Language). The example mapping and story map overviews render each board as a
+preview card.
+
+The home page gathers what the master leaves unfinished, so neither has to be
+hunted for board by board:
+
+- **Open Questions** — every `questions` entry across the example mappings.
+  These close by a conversation, so they feed the next discovery session.
+- **Un-automated Rules** — every rule with no `automated: true` recorded. These
+  close by a test, so they read as the list of behaviour still to build.
+
+Each item names the story it came from and links to its own sticky on that
+story's mapping board. Both lists are filtered together by opportunity, and the
+selection is mirrored in the `?opportunity=` query parameter so a filtered view
+is shareable.

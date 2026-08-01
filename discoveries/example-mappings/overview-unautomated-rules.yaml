@@ -8,6 +8,7 @@ rules:
         name: 自動化済みのルールは一覧に現れない
       - id: EX-03
         name: マスタ全体のルールが全て自動化済みなら、その旨が分かる
+    automated: true
 
   - id: R-02
     name: 各ルールはどのストーリーのものか分かり、その付箋まで辿れる
@@ -16,6 +17,7 @@ rules:
         name: ルールカードは出どころのストーリー名を持つ
       - id: EX-02
         name: ルールカードから実例マッピングボードの当該のルール付箋へ直接ジャンプできる
+    automated: true
 
   - id: R-03
     name: 一覧はオポチュニティで絞り込める
@@ -26,6 +28,7 @@ rules:
         name: 既存の一覧と同じ絞り込みUIで、同じ軸が使える
       - id: EX-03
         name: 絞り込み状態はURLに反映され、共有したURLで同じ一覧が開く
+    automated: true
 
 questions:
   - id: Q-01

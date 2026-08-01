@@ -96,6 +96,78 @@ func TestIssueLabelFallsBackToHost(t *testing.T) {
 	}
 }
 
+// overview-open-questions R-02 EX-02: a question sticky is linkable, so the home
+// page can send the reader to the exact red card, not just the board.
+func TestRenderMappingQuestionCarriesIDAnchor(t *testing.T) {
+	em := &domain.ExampleMapping{
+		Questions: []domain.Question{{ID: "Q-01", Text: "解決した疑問はどう扱うか"}, {Text: "An unkeyed question"}},
+	}
+
+	var buf bytes.Buffer
+	if err := renderMapping(&buf, em, "Story", "", nil); err != nil {
+		t.Fatal(err)
+	}
+	html := buf.String()
+
+	if !strings.Contains(html, `id="question-Q-01"`) {
+		t.Fatal("expected the question sticky to carry an id anchor")
+	}
+	if strings.Contains(html, `id="question-"`) {
+		t.Fatal("expected no empty anchor when a question has no ID")
+	}
+}
+
+// overview-open-questions R-01 & overview-unautomated-rules R-01: a mapping
+// contributes its questions and only its un-automated rules; automated rules are
+// finished and stay off the list.
+func TestCollectOutstandingSplitsQuestionsFromUnautomatedRules(t *testing.T) {
+	em := &domain.ExampleMapping{
+		StoryKey: domain.StoryKey{Value: "overview-open-questions"},
+		Rules: []domain.Rule{
+			{ID: "R-01", Name: "A proven rule", Automated: true},
+			{ID: "R-02", Name: "A rule not yet proven"},
+		},
+		Questions: []domain.Question{{ID: "Q-01", Text: "An open question"}},
+	}
+
+	out := collectOutstanding(em, "疑問を見渡す", "story/overview-open-questions.html")
+
+	if len(out.Questions) != 1 || out.Questions[0].Text != "An open question" {
+		t.Fatalf("questions = %+v, want the one open question", out.Questions)
+	}
+	if len(out.UnautomatedRules) != 1 || out.UnautomatedRules[0].Text != "A rule not yet proven" {
+		t.Fatalf("un-automated rules = %+v, want only the unproven rule", out.UnautomatedRules)
+	}
+	for _, item := range append(out.Questions, out.UnautomatedRules...) {
+		if item.StoryName != "疑問を見渡す" {
+			t.Errorf("item %q lost the story it came from (R-02 EX-01)", item.Text)
+		}
+	}
+}
+
+// overview-open-questions R-02 EX-02 & overview-unautomated-rules R-02 EX-02:
+// each item deep-links to its own sticky, using that sticky's anchor scheme.
+func TestCollectOutstandingLinksItemsToTheirStickies(t *testing.T) {
+	em := &domain.ExampleMapping{
+		StoryKey:  domain.StoryKey{Value: "checkout"},
+		Rules:     []domain.Rule{{ID: "R-02", Name: "A rule"}, {Name: "A rule with no ID"}},
+		Questions: []domain.Question{{ID: "Q-01", Text: "A question"}},
+	}
+
+	out := collectOutstanding(em, "Checkout", "story/checkout.html")
+
+	if got := out.Questions[0].MappingPath; got != "mapping/checkout.html#question-Q-01" {
+		t.Errorf("question link = %q, want the question sticky's anchor", got)
+	}
+	if got := out.UnautomatedRules[0].MappingPath; got != "mapping/checkout.html#rule-R-02" {
+		t.Errorf("rule link = %q, want the rule sticky's anchor", got)
+	}
+	// An unkeyed sticky renders no anchor, so its card aims at the board itself.
+	if got := out.UnautomatedRules[1].MappingPath; got != "mapping/checkout.html" {
+		t.Errorf("unkeyed rule link = %q, want the board with no fragment", got)
+	}
+}
+
 func TestRenderMappingRuleWithoutIDOmitsAnchor(t *testing.T) {
 	em := &domain.ExampleMapping{
 		Rules: []domain.Rule{{Name: "A rule without an ID"}},

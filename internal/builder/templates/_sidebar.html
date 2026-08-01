@@ -5,7 +5,10 @@
     <p class="text-[11px] text-gray-400 mt-0.5 leading-snug">Collaborate on board.<br>Make it living in text.</p>
   </div>
   <nav class="flex-1 px-3 py-4 space-y-1 text-sm">
-    <a href="{{.Prefix}}index.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg {{if eq .Active "example-mapping"}}bg-green-50 text-green-900 font-medium{{else}}text-gray-600 hover:bg-gray-50{{end}}">
+    <a href="{{.Prefix}}index.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg {{if eq .Active "home"}}bg-gray-100 text-gray-900 font-medium{{else}}text-gray-600 hover:bg-gray-50{{end}}">
+      <span class="w-2.5 h-2.5 rounded-sm border border-gray-300"></span>Overview<span class="ml-auto text-xs text-gray-400">{{.Outstanding}}</span>
+    </a>
+    <a href="{{.Prefix}}example-mappings.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg {{if eq .Active "example-mapping"}}bg-green-50 text-green-900 font-medium{{else}}text-gray-600 hover:bg-gray-50{{end}}">
       <span class="w-2.5 h-2.5 rounded-sm bg-green-400"></span>Example Mappings<span class="ml-auto text-xs text-gray-400">{{.Mappings}}</span>
     </a>
     <a href="{{.Prefix}}story-maps.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg {{if eq .Active "story-map"}}bg-purple-50 text-purple-900 font-medium{{else}}text-gray-600 hover:bg-gray-50{{end}}">

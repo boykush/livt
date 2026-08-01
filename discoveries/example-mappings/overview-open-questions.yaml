@@ -8,6 +8,7 @@ rules:
         name: 疑問を持たない実例マッピングは一覧に現れない
       - id: EX-03
         name: マスタ全体で疑問が1件もなければ、空状態のメッセージが表示される
+    automated: true
 
   - id: R-02
     name: 各疑問はどのストーリーのものか分かり、その付箋まで辿れる
@@ -16,6 +17,7 @@ rules:
         name: 疑問カードは出どころのストーリー名を持つ
       - id: EX-02
         name: 疑問カードから実例マッピングボードの当該の疑問付箋へ直接ジャンプできる
+    automated: true
 
   - id: R-03
     name: 一覧はオポチュニティで絞り込める
@@ -26,6 +28,7 @@ rules:
         name: Stories・Example Mappings一覧と同じ絞り込みUIで、同じ軸が使える
       - id: EX-03
         name: 絞り込み状態はURLに反映され、共有したURLで同じ一覧が開く
+    automated: true
 
 questions:
   - id: Q-01
