@@ -59,6 +59,155 @@ func TestBuildMappingsIndexEmptyState(t *testing.T) {
 	}
 }
 
+// overview-open-questions R-01 EX-01 / R-02 EX-01 and overview-unautomated-rules
+// R-01 EX-01 / R-02 EX-01: the Tasks page gathers both flanks in one place, each
+// item carrying the story it came from and a link to its sticky.
+func TestBuildTasksListsOpenQuestionsAndUnautomatedRules(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	questions := []taskItem{{
+		Kind: "question", ID: "Q-01", Text: "解決した疑問はどう扱うか",
+		StoryKey: "overview-open-questions", StoryName: "未解決の疑問を横断で見渡す",
+		StoryPath: "story/overview-open-questions.html", MappingPath: "mapping/overview-open-questions.html#question-Q-01",
+	}}
+	rules := []taskItem{{
+		Kind: "rule", ID: "R-01", Text: "未自動化のルールは全実例マッピングを横断して一覧できる",
+		StoryKey: "overview-unautomated-rules", StoryName: "未自動化のルールを横断で見渡す",
+		StoryPath: "story/overview-unautomated-rules.html", MappingPath: "mapping/overview-unautomated-rules.html#rule-R-01",
+	}}
+	if err := b.buildTasks(questions, rules, nil); err != nil {
+		t.Fatal(err)
+	}
+	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
+
+	for _, want := range []string{
+		"解決した疑問はどう扱うか",                // a question, gathered from its mapping
+		"未自動化のルールは全実例マッピングを横断して一覧できる", // an un-automated rule, gathered from another
+		"未解決の疑問を横断で見渡す",               // the story a question came from
+		"未自動化のルールを横断で見渡す",             // the story a rule came from
+		`href="mapping/overview-open-questions.html#question-Q-01"`,
+		`href="mapping/overview-unautomated-rules.html#rule-R-01"`,
+	} {
+		if !strings.Contains(html, want) {
+			t.Fatalf("tasks.html missing %q", want)
+		}
+	}
+}
+
+// overview-open-questions R-01 EX-03 and overview-unautomated-rules R-01 EX-03:
+// each list says so when there is nothing left in it — an empty questions list
+// and a fully automated master read differently.
+func TestBuildTasksEmptyStatesReadPerList(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	if err := b.buildTasks(nil, nil, nil); err != nil {
+		t.Fatal(err)
+	}
+	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
+
+	for _, want := range []string{"No open questions.", "Every rule is automated."} {
+		if !strings.Contains(html, want) {
+			t.Fatalf("tasks.html missing empty state %q", want)
+		}
+	}
+}
+
+// overview-open-questions R-03 and overview-unautomated-rules R-03: one filter
+// bar, one axis, driving every card on the page whichever list it sits in.
+func TestBuildTasksFilterCoversBothLists(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	opp := []opportunityRef{{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"}}
+	questions := []taskItem{{Kind: "question", Text: "A question", StoryName: "S", Opportunities: opp}}
+	rules := []taskItem{{Kind: "rule", Text: "A rule", StoryName: "S", Opportunities: opp}}
+	if err := b.buildTasks(questions, rules, []string{"協働ディスカバリー"}); err != nil {
+		t.Fatal(err)
+	}
+	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
+
+	// The attribute also appears in the script's selector, so match the element.
+	if got := strings.Count(html, "data-opportunity-filter>"); got != 1 {
+		t.Fatalf("filter bar rendered %d times, want one bar driving both lists", got)
+	}
+	if got := strings.Count(html, `data-opportunities="[&#34;協働ディスカバリー&#34;]"`); got != 2 {
+		t.Fatalf("filter hook on %d cards, want both the question and the rule", got)
+	}
+	if !strings.Contains(html, `data-opportunity="協働ディスカバリー"`) {
+		t.Fatal("expected a filter button carrying the opportunity name")
+	}
+	// R-03 EX-03: the selection rides in the query param, so a filtered Tasks
+	// page is shareable and restores on load.
+	for _, hook := range []string{"URLSearchParams", "'opportunity'", "history.replaceState"} {
+		if !strings.Contains(html, hook) {
+			t.Fatalf("expected the filter to sync the URL, missing %q", hook)
+		}
+	}
+}
+
+// Filtering to an opportunity a section has nothing for must not leave its
+// heading claiming the unfiltered count over an empty gap. The section needs
+// three things for the shared filter to put that right, and the filter has to
+// actually use them — hooks nothing reads would render the same defect.
+func TestBuildTasksSectionsStayHonestWhenAFilterEmptiesThem(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	opp := []opportunityRef{{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"}}
+	questions := []taskItem{{Kind: "question", Text: "A question", StoryName: "S", Opportunities: opp}}
+	rules := []taskItem{{Kind: "rule", Text: "A rule", StoryName: "S", Opportunities: opp}}
+	if err := b.buildTasks(questions, rules, []string{"協働ディスカバリー"}); err != nil {
+		t.Fatal(err)
+	}
+	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
+
+	// Match the elements, not the bare attribute: the filter script mentions
+	// each name again in its own selectors, which the last assertion checks for.
+	for _, hook := range []string{
+		"<section data-filter-scope", // the countable group
+		"<span data-filter-count",    // the number to correct
+		"<p data-filter-empty",       // the line explaining the gap
+	} {
+		if got := strings.Count(html, hook); got != 2 {
+			t.Errorf("%s appears %d times, want one per section", hook, got)
+		}
+	}
+
+	// The filtered-empty line ships hidden, so an unfiltered page does not carry
+	// two empty states at once.
+	if !strings.Contains(html, `data-filter-empty style="display: none"`) {
+		t.Error("expected the filtered-empty line to start hidden")
+	}
+	// It has to say the filter emptied the section, not that the master is done —
+	// "Every rule is automated." would be a lie about the master.
+	for _, msg := range []string{
+		"No open questions for this opportunity.",
+		"Every rule for this opportunity is automated.",
+	} {
+		if !strings.Contains(html, msg) {
+			t.Errorf("missing filtered-empty line %q", msg)
+		}
+	}
+
+	// Without this the hooks are inert decoration and the count never moves.
+	for _, selector := range []string{"[data-filter-scope]", "[data-filter-count]", "[data-filter-empty]"} {
+		if !strings.Contains(html, selector) {
+			t.Errorf("filter script never reads %s, so the section cannot correct itself", selector)
+		}
+	}
+}
+
+// An item whose story has no page still names its story; only the link drops.
+func TestBuildTasksItemWithoutStoryPageStillNamesItsStory(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	questions := []taskItem{{Kind: "question", Text: "A question", StoryName: "orphan-story"}}
+	if err := b.buildTasks(questions, nil, nil); err != nil {
+		t.Fatal(err)
+	}
+	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
+
+	if !strings.Contains(html, "orphan-story") {
+		t.Fatal("expected the story name even with no page to link to")
+	}
+	if strings.Contains(html, `href="story/`) {
+		t.Fatal("expected no story link when the story has no page")
+	}
+}
+
 func TestBuildStoryMapsIndexRendersPreviewCards(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	if err := b.buildStoryMapsIndex([]storyMapTile{{Name: "discovery"}}); err != nil {
@@ -252,18 +401,18 @@ func TestBuildMappingsIndexShowsOpportunityChipsAndFilter(t *testing.T) {
 		Key:       "filter-lists-by-opportunity",
 		StoryName: "Filter lists by opportunity",
 		Opportunities: []opportunityRef{
-			{Name: "複数プロジェクトで活用しても目的の成果に辿り着ける", Path: "story-map/複数プロジェクトで活用しても目的の成果に辿り着ける.html"},
+			{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"},
 		},
 	}}
-	if err := b.buildMappingsIndex(tiles, []string{"複数プロジェクトで活用しても目的の成果に辿り着ける"}); err != nil {
+	if err := b.buildMappingsIndex(tiles, []string{"協働ディスカバリー"}); err != nil {
 		t.Fatal(err)
 	}
 	html := readRendered(t, filepath.Join(b.OutDir, "index.html"))
 
-	if !strings.Contains(html, `data-opportunities="[&#34;複数プロジェクトで活用しても目的の成果に辿り着ける&#34;]"`) {
+	if !strings.Contains(html, `data-opportunities="[&#34;協働ディスカバリー&#34;]"`) {
 		t.Fatal("expected the tile to carry its opportunity set as the filter hook")
 	}
-	if !strings.Contains(html, `href="`+mapHref("story-map/", "複数プロジェクトで活用しても目的の成果に辿り着ける")+`"`) {
+	if !strings.Contains(html, `href="`+mapHref("story-map/", "協働ディスカバリー")+`"`) {
 		t.Fatal("expected the mapping tile's opportunity chip to link to the map board")
 	}
 	if !strings.Contains(html, "data-opportunity-filter") {

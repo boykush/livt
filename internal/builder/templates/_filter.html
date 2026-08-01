@@ -51,6 +51,20 @@ network — URLSearchParams handles encoding of non-ASCII opportunity names.
       var on = (chip.getAttribute('data-opportunity') || '') === selected;
       chip.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
+    // A page that groups its cards marks each group data-filter-scope, so a
+    // filtered group reports what is actually showing instead of the number it
+    // was built with, and says that the filter — not the master — emptied it.
+    // The message stays hidden for a group the master left empty: that case has
+    // its own server-rendered line, which would otherwise be contradicted.
+    document.querySelectorAll('[data-filter-scope]').forEach(function (scope) {
+      var scoped = scope.querySelectorAll('[data-opportunities]');
+      var shown = 0;
+      scoped.forEach(function (card) { if (card.style.display !== 'none') shown++; });
+      var count = scope.querySelector('[data-filter-count]');
+      if (count) count.textContent = shown;
+      var empty = scope.querySelector('[data-filter-empty]');
+      if (empty) empty.style.display = (shown === 0 && scoped.length > 0) ? '' : 'none';
+    });
   }
 
   function fromURL() {

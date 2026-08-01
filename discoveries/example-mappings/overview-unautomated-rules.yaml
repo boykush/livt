@@ -1,0 +1,43 @@
+rules:
+  - id: R-01
+    name: 未自動化のルールは全実例マッピングを横断して一覧できる
+    examples:
+      - id: EX-01
+        name: automatedが立っていないルールだけが、複数のマッピングを横断して1か所に集まる
+      - id: EX-02
+        name: 自動化済みのルールは一覧に現れない
+      - id: EX-03
+        name: マスタ全体のルールが全て自動化済みなら、その旨が分かる
+    automated: true
+
+  - id: R-02
+    name: 各ルールはどのストーリーのものか分かり、その付箋まで辿れる
+    examples:
+      - id: EX-01
+        name: ルールカードは出どころのストーリー名を持つ
+      - id: EX-02
+        name: ルールカードから実例マッピングボードの当該のルール付箋へ直接ジャンプできる
+    automated: true
+
+  - id: R-03
+    name: 一覧はオポチュニティで絞り込める
+    examples:
+      - id: EX-01
+        name: オポチュニティを選ぶと、そのマップに載るストーリーのルールだけが表示される
+      - id: EX-02
+        name: 既存の一覧と同じ絞り込みUIで、同じ軸が使える
+      - id: EX-03
+        name: 絞り込み状態はURLに反映され、共有したURLで同じ一覧が開く
+    automated: true
+
+questions:
+  - id: Q-01
+    text: 並び順を何を軸に決めるか（TDDのテストリストとして「どこから書くか」に答えるなら順序が要るが、リリーススライスは3マップ中2マップに存在せず軸にならない）
+  - id: Q-02
+    text: 自動化Issueが起票済みのルールを「着手済み」として区別するか（マスタはIssueのリンクだけを持ち、その開閉状態は持たない）
+
+ubiquitous:
+  - example-mapping
+  - story
+  - opportunity
+  - release-slice

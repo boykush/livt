@@ -18,6 +18,7 @@ type Builder struct {
 }
 
 type sidebarCounts struct {
+	tasks     int
 	mappings  int
 	storyMaps int
 	stories   int
@@ -35,7 +36,7 @@ func (b *Builder) computeCounts() (sidebarCounts, error) {
 	if err != nil {
 		return sidebarCounts{}, err
 	}
-	mappingFiles, err := filepath.Glob(filepath.Join(b.MappingsDir, "*.yaml"))
+	mappings, err := parser.ParseAllExampleMappings(b.MappingsDir)
 	if err != nil {
 		return sidebarCounts{}, err
 	}
@@ -43,8 +44,18 @@ func (b *Builder) computeCounts() (sidebarCounts, error) {
 	if err != nil {
 		return sidebarCounts{}, err
 	}
+	tasks := 0
+	for _, em := range mappings {
+		tasks += len(em.Questions)
+		for _, r := range em.Rules {
+			if !r.Automated {
+				tasks++
+			}
+		}
+	}
 	return sidebarCounts{
-		mappings:  len(mappingFiles),
+		tasks:     tasks,
+		mappings:  len(mappings),
 		storyMaps: len(maps),
 		stories:   len(stories),
 		terms:     len(terms),
@@ -61,6 +72,7 @@ func (b *Builder) sidebar(active, prefix string) (Sidebar, error) {
 	return Sidebar{
 		Prefix:    prefix,
 		Active:    active,
+		Tasks:     c.tasks,
 		Mappings:  c.mappings,
 		StoryMaps: c.storyMaps,
 		Stories:   c.stories,
@@ -139,7 +151,7 @@ func (b *Builder) Build() error {
 		})
 	}
 
-	mappingTiles, err := b.buildMappings()
+	mappingTiles, open, err := b.buildMappings()
 	if err != nil {
 		return err
 	}
@@ -151,15 +163,31 @@ func (b *Builder) Build() error {
 		mappingOpportunitySets = append(mappingOpportunitySets, mappingTiles[i].Opportunities)
 	}
 
+	// Unfinished items inherit their story's opportunities the same way, so the
+	// Tasks page filters on that one axis across both of its lists.
+	var openOpportunitySets [][]opportunityRef
+	for _, items := range [][]taskItem{open.Questions, open.UnautomatedRules} {
+		for i := range items {
+			items[i].Opportunities = rootRelativeOpportunities(storyToMaps[items[i].StoryKey])
+			openOpportunitySets = append(openOpportunitySets, items[i].Opportunities)
+		}
+	}
+
 	if err := b.buildGlossary(); err != nil {
 		return err
 	}
 
-	// Hub pages share the sidebar; index.html is the Example Mappings overview.
+	// Hub pages share the sidebar; index.html is the Example Mappings overview
+	// and the site's landing page.
 	if err := b.buildMappingsIndex(mappingTiles, distinctOpportunityNames(mappingOpportunitySets)); err != nil {
 		return err
 	}
 	fmt.Printf("  index.html\n")
+
+	if err := b.buildTasks(open.Questions, open.UnautomatedRules, distinctOpportunityNames(openOpportunitySets)); err != nil {
+		return err
+	}
+	fmt.Printf("  tasks.html\n")
 
 	if err := b.buildStoryMapsIndex(storyMapTiles); err != nil {
 		return err

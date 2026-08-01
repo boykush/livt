@@ -11,18 +11,20 @@ import (
 )
 
 // buildMappings builds example mapping HTML pages and returns a preview tile per
-// mapping for the Example Mappings overview page (index.html).
-func (b *Builder) buildMappings() ([]mappingTile, error) {
+// mapping for the Example Mappings overview page, plus everything the mappings
+// leave unfinished — open questions and un-automated rules — for the Tasks page.
+func (b *Builder) buildMappings() ([]mappingTile, taskSet, error) {
 	files, err := filepath.Glob(filepath.Join(b.MappingsDir, "*.yaml"))
 	if err != nil {
-		return nil, err
+		return nil, taskSet{}, err
 	}
 
 	var tiles []mappingTile
+	var open taskSet
 	for _, f := range files {
 		em, err := parser.ParseExampleMapping(f)
 		if err != nil {
-			return nil, fmt.Errorf("parse %s: %w", f, err)
+			return nil, taskSet{}, fmt.Errorf("parse %s: %w", f, err)
 		}
 
 		storyName := b.resolveStoryName(em.StoryKey)
@@ -35,14 +37,63 @@ func (b *Builder) buildMappings() ([]mappingTile, error) {
 
 		outPath := filepath.Join(b.OutDir, "mapping", em.StoryKey.Value+".html")
 		if err := b.buildMapping(outPath, em, storyName, storyPath, ubiquitous); err != nil {
-			return nil, err
+			return nil, taskSet{}, err
 		}
 		fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))
 
 		tiles = append(tiles, mappingTile{Key: em.StoryKey.Value, StoryName: storyName})
+		// The Tasks page renders at the output root, so its links resolve from
+		// there, not from the mapping/ directory.
+		open.add(collectTasks(em, storyName, strings.TrimPrefix(storyPath, "../")))
 	}
 
-	return tiles, nil
+	return tiles, open, nil
+}
+
+// taskSet holds what the mappings leave unfinished, split by how it gets closed:
+// a question by a conversation, an un-automated rule by a test.
+type taskSet struct {
+	Questions        []taskItem
+	UnautomatedRules []taskItem
+}
+
+func (o *taskSet) add(other taskSet) {
+	o.Questions = append(o.Questions, other.Questions...)
+	o.UnautomatedRules = append(o.UnautomatedRules, other.UnautomatedRules...)
+}
+
+// collectTasks lifts one mapping's open questions and un-automated rules onto
+// the Tasks page, each deep-linked to its own sticky on the board. An item
+// without an ID has no anchor to aim at (the board only renders one for keyed
+// stickies), so it links to the board itself.
+func collectTasks(em *domain.ExampleMapping, storyName, storyPath string) taskSet {
+	item := func(kind, id, text string) taskItem {
+		mappingPath := "mapping/" + em.StoryKey.Value + ".html"
+		if id != "" {
+			mappingPath += "#" + kind + "-" + id
+		}
+		return taskItem{
+			Kind:        kind,
+			ID:          id,
+			Text:        text,
+			StoryKey:    em.StoryKey.Value,
+			StoryName:   storyName,
+			StoryPath:   storyPath,
+			MappingPath: mappingPath,
+		}
+	}
+
+	var out taskSet
+	for _, q := range em.Questions {
+		out.Questions = append(out.Questions, item("question", q.ID, q.Text))
+	}
+	for _, r := range em.Rules {
+		if r.Automated {
+			continue
+		}
+		out.UnautomatedRules = append(out.UnautomatedRules, item("rule", r.ID, r.Name))
+	}
+	return out
 }
 
 func (b *Builder) resolveStoryName(key domain.StoryKey) string {

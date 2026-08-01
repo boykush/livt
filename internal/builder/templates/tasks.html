@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>livt - Tasks</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="flex min-h-screen">
+{{template "sidebar" .Sidebar}}
+<div class="flex-1 min-w-0">
+  <header class="bg-white border-b border-gray-200 px-8 py-4">
+    <h2 class="text-lg font-semibold text-gray-800">Tasks</h2>
+  </header>
+  <main class="px-8 py-8 max-w-3xl">
+  {{/*
+  The master's two unfinished flanks, either side of the example mapping:
+  questions are what the team does not know yet and get closed by a
+  conversation; un-automated rules are known behaviour not yet proven and get
+  closed by a test. One filter bar drives both lists — the script picks up every
+  [data-opportunities] card on the page regardless of section.
+
+  There is no status on a card, and cannot be one that tracks an issue: a rule
+  carries its automation issue URLs but not their open/closed state, and the
+  build is not allowed to ask GitHub (show-automation-status-per-rule R-02). An
+  item leaves this page by being resolved — a question becomes a rule, a rule
+  becomes automated — rather than by moving through states.
+  */}}
+  {{template "opportunity-filter" .FilterOpportunities}}
+
+  {{/*
+  data-filter-scope marks a group the filter should keep honest: it corrects the
+  data-filter-count number to what is actually showing and reveals the
+  data-filter-empty line when the filter, rather than the master, is what left
+  the section empty. The {{else}} line below covers the other case — the master
+  itself has nothing here — and the two must not claim each other's meaning.
+  */}}
+  <section data-filter-scope class="mb-10">
+    <div class="flex items-baseline gap-2 mb-3">
+      <span class="w-2.5 h-2.5 rounded-sm bg-red-400"></span>
+      <h3 class="text-sm font-semibold text-gray-800">Open Questions</h3>
+      <span data-filter-count class="text-xs text-gray-400">{{len .Questions}}</span>
+      <span class="text-xs text-gray-400 ml-1">&mdash; closed by a conversation</span>
+    </div>
+    {{range .Questions}}
+    {{template "task-card" .}}
+    {{else}}
+    <p class="text-gray-400 text-sm">No open questions.</p>
+    {{end}}
+    <p data-filter-empty style="display: none" class="text-gray-400 text-sm">No open questions for this opportunity.</p>
+  </section>
+
+  <section data-filter-scope>
+    <div class="flex items-baseline gap-2 mb-3">
+      <span class="w-2.5 h-2.5 rounded-sm bg-blue-400"></span>
+      <h3 class="text-sm font-semibold text-gray-800">Un-automated Rules</h3>
+      <span data-filter-count class="text-xs text-gray-400">{{len .UnautomatedRules}}</span>
+      <span class="text-xs text-gray-400 ml-1">&mdash; closed by a test</span>
+    </div>
+    {{range .UnautomatedRules}}
+    {{template "task-card" .}}
+    {{else}}
+    <p class="text-gray-400 text-sm">Every rule is automated.</p>
+    {{end}}
+    <p data-filter-empty style="display: none" class="text-gray-400 text-sm">Every rule for this opportunity is automated.</p>
+  </section>
+  </main>
+</div>
+</div>
+{{template "opportunity-filter-script"}}
+</body>
+</html>
+
+{{define "task-card"}}
+{{/*
+One unfinished item. Like the Stories list, a stretched overlay anchor keeps the
+whole card linking to its sticky on the mapping board while the story and
+opportunity chips stay their own links (anchors cannot nest). Accent is the
+sticky colour the item carries on that board.
+*/}}
+<div data-opportunities="{{opportunityNames .Opportunities}}" class="relative bg-white rounded-lg border border-gray-200 border-l-4 {{if eq .Kind "question"}}border-l-red-400 hover:border-l-red-500{{else}}border-l-blue-400 hover:border-l-blue-500{{end}} px-5 py-4 mb-3 hover:shadow-sm transition">
+  <a href="{{.MappingPath}}" class="absolute inset-0 z-10 rounded-lg" aria-label="{{.Text}}"></a>
+  <span class="text-base text-gray-900">{{.Text}}</span>
+  <div class="flex items-center gap-2 mt-2 flex-wrap">
+    {{if .ID}}<span class="font-mono text-xs text-gray-400">{{.ID}}</span>{{end}}
+    {{if .StoryPath}}
+    <a href="{{.StoryPath}}" class="relative z-20 text-xs text-yellow-800 bg-yellow-50 border border-yellow-200 rounded-full px-2 py-0.5 hover:bg-yellow-100 transition">{{.StoryName}}</a>
+    {{else}}
+    <span class="text-xs text-yellow-800 bg-yellow-50 border border-yellow-200 rounded-full px-2 py-0.5">{{.StoryName}}</span>
+    {{end}}
+    {{range .Opportunities}}<a href="{{.Path}}" class="relative z-20 text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-2 py-0.5 hover:bg-purple-100 transition">{{.Name}}</a>{{end}}
+  </div>
+</div>
+{{end}}

@@ -17,6 +17,14 @@
     <a href="{{.Prefix}}ubiquitous.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg {{if eq .Active "ubiquitous"}}bg-pink-50 text-pink-900 font-medium{{else}}text-gray-600 hover:bg-gray-50{{end}}">
       <span class="w-2.5 h-2.5 rounded-sm bg-pink-400"></span>Ubiquitous Language<span class="ml-auto text-xs text-gray-400">{{.Terms}}</span>
     </a>
+    {{/*
+    Tasks sits below the four resource types, and carries an outline marker
+    rather than a sticky colour, because it is a view derived from the mappings
+    rather than a resource the master holds.
+    */}}
+    <a href="{{.Prefix}}tasks.html" class="flex items-center gap-2.5 px-3 py-2 mt-3 rounded-lg {{if eq .Active "task"}}bg-gray-100 text-gray-900 font-medium{{else}}text-gray-600 hover:bg-gray-50{{end}}">
+      <span class="w-2.5 h-2.5 rounded-sm border border-gray-300"></span>Tasks<span class="ml-auto text-xs text-gray-400">{{.Tasks}}</span>
+    </a>
   </nav>
 </aside>
 {{end}}

@@ -67,3 +67,21 @@ func ParseExampleMapping(path string) (*domain.ExampleMapping, error) {
 		Ubiquitous: raw.Ubiquitous,
 	}, nil
 }
+
+func ParseAllExampleMappings(mappingsDir string) ([]*domain.ExampleMapping, error) {
+	files, err := filepath.Glob(filepath.Join(mappingsDir, "*.yaml"))
+	if err != nil {
+		return nil, err
+	}
+
+	var mappings []*domain.ExampleMapping
+	for _, f := range files {
+		em, err := ParseExampleMapping(f)
+		if err != nil {
+			return nil, err
+		}
+		mappings = append(mappings, em)
+	}
+
+	return mappings, nil
+}

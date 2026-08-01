@@ -43,12 +43,22 @@ activities:
     steps:
       - key: pick-story
         name: 探索するストーリーを選ぶ
+        stories:
+          - name: 一覧をオポチュニティで絞り込む
+            key: filter-lists-by-opportunity
+          - name: サイト内をテキストで検索する
+            key: search-site-by-text
       - key: discover-rules
         name: ルールを発見する
       - key: illustrate-examples
         name: 実例で示す
       - key: capture-questions
         name: 疑問を記録する
+      - key: align-language
+        name: 言葉を揃える
+        stories:
+          - name: ユビキタス言語を用語集で引く
+            key: look-up-terms-in-glossary
   - key: refine-discovery
     name: ディスカバリーをブラッシュアップする
     steps:
@@ -80,3 +90,8 @@ activities:
         stories:
           - name: ルール単位の細かいPRで実例マッピングを更新する
             key: update-example-mapping-per-rule
+      - key: follow-up-open-questions
+        name: 未解決の疑問を追う
+        stories:
+          - name: 未解決の疑問を横断で見渡す
+            key: overview-open-questions

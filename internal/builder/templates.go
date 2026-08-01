@@ -93,8 +93,11 @@ func distinctOpportunityNames(perCard [][]opportunityRef) []string {
 // relative path back to the output root ("" for root pages); Active marks the
 // current resource type.
 type Sidebar struct {
-	Prefix    string
-	Active    string
+	Prefix string
+	Active string
+	// Tasks is what the Tasks page lists: open questions plus rules with no
+	// automation recorded.
+	Tasks     int
 	Mappings  int
 	StoryMaps int
 	Stories   int
@@ -174,6 +177,36 @@ type storiesIndexView struct {
 	FilterOpportunities []string
 }
 
+// taskItem is one thing the master says is not finished, lifted off its example
+// mapping onto the Tasks page: an open question, or a rule with no automation
+// recorded. It carries no status, and cannot carry one derived from an issue —
+// the master holds automation issue URLs but not their open/closed state, and
+// the build may not ask GitHub (show-automation-status-per-rule R-02). Kind
+// ("question" or "rule") picks the sticky colour the item carries on its board.
+// StoryPath is empty when the story has no page (mirrors mappingView.StoryPath);
+// MappingPath deep-links to the item's own sticky.
+type taskItem struct {
+	Kind          string
+	ID            string
+	Text          string
+	StoryKey      string
+	StoryName     string
+	StoryPath     string
+	MappingPath   string
+	Opportunities []opportunityRef
+}
+
+// tasksView is the master's two unfinished flanks either side of the example
+// mapping: questions close by a conversation, un-automated rules close by a
+// test. One FilterOpportunities set serves both lists, since a single filter bar
+// drives the page.
+type tasksView struct {
+	Sidebar             Sidebar
+	Questions           []taskItem
+	UnautomatedRules    []taskItem
+	FilterOpportunities []string
+}
+
 type glossaryCard struct {
 	Key        string
 	Name       string
@@ -205,6 +238,10 @@ type mappingView struct {
 	StoryPath  string
 	Mapping    *domain.ExampleMapping
 	Ubiquitous []termCard
+}
+
+func renderTasks(w io.Writer, view tasksView) error {
+	return tmpl.ExecuteTemplate(w, "tasks.html", view)
 }
 
 func renderMappingsIndex(w io.Writer, view mappingsIndexView) error {
