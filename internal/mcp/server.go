@@ -19,6 +19,18 @@ import (
 // their MCP client at this path, e.g. http://localhost:5488/mcp.
 const httpPath = "/mcp"
 
+// instructions rides the MCP handshake, so it reaches the consuming agent on
+// every session. It carries the one practice the payloads cannot teach on their
+// own: how to cite the master in artifacts that outlive the connection.
+const instructions = `livt serves the discovery master: story maps, stories, example mappings, and ubiquitous language. It is the agreed spec, read-only.
+
+Cite the master by livt URI. Whenever a rule, example, or question is referenced outside the master — a test comment, an issue body, a commit message, a PR description — copy the "uri" from the result verbatim, and never write a bare "id". Ids are unique only within one mapping file, so R-02 exists in every mapping and identifies nothing on its own.
+
+    good: // livt://mapping/place-order-with-saved-card/rule/R-13/example/EX-01
+    bad:  // R-13 EX-01
+
+A published living-document URL is a convenience link for humans, not the citation form: it depends on where the site is deployed, and the livt URI does not.`
+
 // Config locates the discovery master. Root points at a livt project root; the
 // input subdirectories are derived from it the same way build/serve lay them out.
 type Config struct {
@@ -95,7 +107,10 @@ func (s *Server) httpHandler() http.Handler {
 // mcpServer builds the configured SDK server. Split out so tests can assert tool
 // registration without standing up a transport.
 func (s *Server) mcpServer() *mcpsdk.Server {
-	srv := mcpsdk.NewServer(&mcpsdk.Implementation{Name: "livt", Version: s.version}, nil)
+	srv := mcpsdk.NewServer(
+		&mcpsdk.Implementation{Name: "livt", Version: s.version},
+		&mcpsdk.ServerOptions{Instructions: instructions},
+	)
 	s.registerTools(srv)
 	s.registerResources(srv)
 	return srv

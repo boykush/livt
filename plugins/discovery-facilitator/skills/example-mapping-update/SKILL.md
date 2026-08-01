@@ -44,7 +44,7 @@ When there is no fresh transcription baseline and the ask is "this rule changed 
 
 - A new rule takes the next unused `R-NN`; its examples start from `EX-01` (example IDs are rule-scoped).
 - Never renumber existing IDs. Retiring R-02 leaves a gap — R-03 stays R-03. Stable IDs keep PR history and past discussion legible.
-- Filed rule IDs are backpointer targets: automation issues (`rule-issue-file`) and the living document's `#rule-{ID}` anchors point at them from outside the repo, so renumbering or reusing one silently re-targets those pointers. Shared policy with `example-mapping-refine` — a rule ID, once filed, is immutable.
+- Filed rule IDs are backpointer targets: the rule's livt URI — quoted in automation issues (`rule-issue-file`), test comments, and commit messages — ends in that ID, as does the living document's `#rule-{ID}` anchor, so renumbering or reusing one silently re-targets every pointer. Shared policy with `example-mapping-refine` — a rule ID, once filed, is immutable.
 
 ## PR Contract
 
