@@ -8,6 +8,7 @@ import (
 
 	"github.com/boykush/livt/internal/domain"
 	"github.com/boykush/livt/internal/parser"
+	"github.com/boykush/livt/internal/uri"
 	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
@@ -52,7 +53,7 @@ func (s *Server) versioned() versioned {
 // validated first so an externally-supplied key (tool argument or resource URI)
 // cannot escape the mappings directory.
 func (c Config) exampleMapping(storyKey string) (*domain.ExampleMapping, error) {
-	if !validSegment(storyKey) {
+	if !uri.ValidSegment(storyKey) {
 		return nil, fmt.Errorf("example mapping for story %q not found", storyKey)
 	}
 	path := filepath.Join(c.mappingsDir(), storyKey+".yaml")
@@ -80,6 +81,37 @@ func (c Config) rule(storyKey, ruleID string) (domain.Rule, error) {
 	return domain.Rule{}, fmt.Errorf("rule %q not found in story %q", ruleID, storyKey)
 }
 
+// example returns a single example by id from a rule. The lookup is scoped by
+// rule because example ids are numbered within their rule — the same reason the
+// example URI carries the rule id.
+func (c Config) example(storyKey, ruleID, exampleID string) (domain.Example, error) {
+	r, err := c.rule(storyKey, ruleID)
+	if err != nil {
+		return domain.Example{}, err
+	}
+	for _, e := range r.Examples {
+		if e.ID == exampleID {
+			return e, nil
+		}
+	}
+	return domain.Example{}, fmt.Errorf("example %q not found in rule %q of story %q", exampleID, ruleID, storyKey)
+}
+
+// question returns a single open question by id from the story's example
+// mapping. Questions hang off the mapping, not off a rule.
+func (c Config) question(storyKey, questionID string) (domain.Question, error) {
+	em, err := c.exampleMapping(storyKey)
+	if err != nil {
+		return domain.Question{}, err
+	}
+	for _, q := range em.Questions {
+		if q.ID == questionID {
+			return q, nil
+		}
+	}
+	return domain.Question{}, fmt.Errorf("question %q not found in story %q", questionID, storyKey)
+}
+
 // stories lists every story, linking to its own story resource, to its example
 // mapping resource when one exists, and to the opportunities (story maps) it
 // sits on. A non-empty opportunity keeps only the stories on the map with that
@@ -101,9 +133,9 @@ func (c Config) stories(opportunity string) ([]storySummaryJSON, error) {
 		if opportunity != "" && !hasOpportunity(refs, opportunity) {
 			continue
 		}
-		summary := storySummaryJSON{Key: story.Key.Value, Name: story.Name, URI: storyURI(story.Key.Value), Opportunities: refs}
+		summary := storySummaryJSON{Key: story.Key.Value, Name: story.Name, URI: uri.Story(story.Key.Value), Opportunities: refs}
 		if c.hasExampleMapping(story.Key.Value) {
-			summary.ExampleMappingURI = mappingURI(story.Key.Value)
+			summary.ExampleMappingURI = uri.Mapping(story.Key.Value)
 		}
 		out = append(out, summary)
 	}
@@ -131,7 +163,7 @@ func (c Config) storyOpportunities() (map[string][]opportunityRefJSON, error) {
 	}
 	index := make(map[string][]opportunityRefJSON)
 	for _, sm := range maps {
-		ref := opportunityRefJSON{Name: sm.Name, URI: storyMapURI(sm.Name)}
+		ref := opportunityRefJSON{Name: sm.Name, URI: uri.StoryMap(sm.Name)}
 		seen := make(map[string]bool)
 		for _, a := range sm.Activities {
 			for _, st := range a.Steps {
@@ -162,7 +194,7 @@ func (c Config) storyMaps() ([]storyMapSummaryJSON, error) {
 	}
 	out := make([]storyMapSummaryJSON, 0, len(all))
 	for _, sm := range all {
-		out = append(out, storyMapSummaryJSON{Name: sm.Name, URI: storyMapURI(sm.Name)})
+		out = append(out, storyMapSummaryJSON{Name: sm.Name, URI: uri.StoryMap(sm.Name)})
 	}
 	return out, nil
 }
@@ -187,7 +219,7 @@ func (c Config) storyMap(name string) (*domain.StoryMap, error) {
 // story loads a story by key. Unlike parser.FindStoryByKey it reports a
 // missing story as not found instead of fabricating a placeholder.
 func (c Config) story(storyKey string) (*domain.Story, error) {
-	if !validSegment(storyKey) {
+	if !uri.ValidSegment(storyKey) {
 		return nil, fmt.Errorf("story %q not found", storyKey)
 	}
 	path := filepath.Join(c.storiesDir(), storyKey+".md")
@@ -208,7 +240,7 @@ func (c Config) hasStory(storyKey string) bool {
 
 // term loads a ubiquitous language term by key.
 func (c Config) term(termKey string) (*domain.Term, error) {
-	if !validSegment(termKey) {
+	if !uri.ValidSegment(termKey) {
 		return nil, fmt.Errorf("term %q not found", termKey)
 	}
 	path := filepath.Join(c.ubiquitousDir(), termKey+".md")

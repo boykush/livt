@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/boykush/livt/internal/uri"
 	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
@@ -93,7 +94,10 @@ func TestEndToEnd(t *testing.T) {
 	if err != nil {
 		t.Fatalf("list resource templates: %v", err)
 	}
-	for _, want := range []string{mappingURITemplate, ruleURITemplate, storyMapURITemplate, storyURITemplate, termURITemplate} {
+	for _, want := range []string{
+		uri.MappingTemplate, uri.RuleTemplate, uri.ExampleTemplate, uri.QuestionTemplate,
+		uri.StoryMapTemplate, uri.StoryTemplate, uri.TermTemplate,
+	} {
 		if !hasTemplate(tmpls.ResourceTemplates, want) {
 			t.Errorf("resource template %q not advertised", want)
 		}
@@ -133,6 +137,35 @@ func TestEndToEnd(t *testing.T) {
 	}
 	if len(rule.Rule.Issues) != 1 || !rule.Rule.Automated {
 		t.Errorf("rule = %+v, want the recorded issue URL and automated=true over the wire", rule.Rule)
+	}
+
+	// livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02: follow the rule's
+	// example to its own resource. The example URI carries the rule, and the
+	// longer shape still routes past the rule template to the example handler.
+	er, err := cs.ReadResource(ctx, &mcpsdk.ReadResourceParams{URI: rule.Rule.Examples[0].URI})
+	if err != nil {
+		t.Fatalf("read example %q: %v", rule.Rule.Examples[0].URI, err)
+	}
+	var example exampleResult
+	if err := json.Unmarshal([]byte(resourceText(t, er)), &example); err != nil {
+		t.Fatalf("decode example: %v", err)
+	}
+	if example.Example.ID != "EX-01" || example.Example.Name != "実例1" {
+		t.Errorf("example = %+v, want EX-01 実例1", example.Example)
+	}
+
+	// livt://mapping/trace-test-to-rule/rule/R-01/example/EX-03: a question is
+	// addressed off the mapping, and the mapping hands out its URI.
+	qr, err := cs.ReadResource(ctx, &mcpsdk.ReadResourceParams{URI: em.Mapping.Questions[0].URI})
+	if err != nil {
+		t.Fatalf("read question %q: %v", em.Mapping.Questions[0].URI, err)
+	}
+	var question questionResult
+	if err := json.Unmarshal([]byte(resourceText(t, qr)), &question); err != nil {
+		t.Fatalf("decode question: %v", err)
+	}
+	if question.Question.ID != "Q-01" || question.Question.Text != "質問1" {
+		t.Errorf("question = %+v, want Q-01 質問1", question.Question)
 	}
 
 	// Discover story maps, then read one through the URI the tool handed out —
@@ -201,15 +234,17 @@ func TestEndToEnd(t *testing.T) {
 	}
 
 	// Unknown URIs are resource errors.
-	for _, uri := range []string{
+	for _, resURI := range []string{
 		"livt://mapping/nope",
 		"livt://mapping/demo/rule/R-99",
-		storyMapURI("なし"),
+		"livt://mapping/demo/rule/R-01/example/EX-99",
+		"livt://mapping/demo/question/Q-99",
+		uri.StoryMap("なし"),
 		"livt://story/nope",
 		"livt://ubiquitous/nope",
 	} {
-		if _, err := cs.ReadResource(ctx, &mcpsdk.ReadResourceParams{URI: uri}); err == nil {
-			t.Errorf("expected error reading %q", uri)
+		if _, err := cs.ReadResource(ctx, &mcpsdk.ReadResourceParams{URI: resURI}); err == nil {
+			t.Errorf("expected error reading %q", resURI)
 		}
 	}
 }

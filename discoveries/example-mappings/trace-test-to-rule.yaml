@@ -10,6 +10,7 @@ rules:
         name: 疑問は livt://mapping/{story-key}/question/{question-id}
       - id: EX-04
         name: 裸のR-02は10個のマッピング全部に存在し、単体ではどのマッピングか復元できない
+    automated: true
   - id: R-02
     name: livt URIはデプロイ先に依存しない
     examples:
