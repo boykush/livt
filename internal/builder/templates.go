@@ -8,6 +8,7 @@ import (
 	"strings"
 
 	"github.com/boykush/livt/internal/domain"
+	"github.com/boykush/livt/internal/uri"
 )
 
 //go:embed templates/*.html
@@ -18,7 +19,44 @@ var templateFS embed.FS
 var tmpl = template.Must(template.New("").Funcs(template.FuncMap{
 	"issueLabel":       issueLabel,
 	"opportunityNames": opportunityNamesJSON,
+	"ruleAnchor":       uri.RuleAnchor,
+	"exampleAnchor":    uri.ExampleAnchor,
+	"questionAnchor":   uri.QuestionAnchor,
+	"storyCardAnchor":  uri.StoryCardAnchor,
+	"ruleBadge":        ruleBadge,
+	"exampleBadge":     exampleBadge,
+	"questionBadge":    questionBadge,
+	"storyBadge":       storyBadge,
 }).ParseFS(templateFS, "templates/*.html"))
+
+// idBadge is a sticky's own ID rendered bottom-right by the id-badge partial.
+// Label is the ID as the master numbers it, which for an example is local to
+// its rule and so shorter than Anchor. Tint follows the sticky's own
+// border-{colour}-400 so the badge recedes into the card it belongs to.
+type idBadge struct {
+	Anchor string
+	Label  string
+	Tint   string
+}
+
+func ruleBadge(ruleID string) idBadge {
+	return idBadge{Anchor: uri.RuleAnchor(ruleID), Label: ruleID, Tint: "text-blue-400/70 hover:text-blue-600"}
+}
+
+func exampleBadge(ruleID, exampleID string) idBadge {
+	return idBadge{Anchor: uri.ExampleAnchor(ruleID, exampleID), Label: exampleID, Tint: "text-green-400/70 hover:text-green-600"}
+}
+
+func questionBadge(questionID string) idBadge {
+	return idBadge{Anchor: uri.QuestionAnchor(questionID), Label: questionID, Tint: "text-red-400/70 hover:text-red-600"}
+}
+
+// storyBadge labels a story card with its story key. Yellow breaks the
+// border-matching shade the other three share: yellow-400 on the card's
+// yellow-100 is barely there, so the badge drops to yellow-600.
+func storyBadge(storyKey string) idBadge {
+	return idBadge{Anchor: uri.StoryCardAnchor(storyKey), Label: storyKey, Tint: "text-yellow-600/70 hover:text-yellow-700"}
+}
 
 // issueLabel shortens an automation Issue URL to a sticky-sized link label:
 // https://github.com/{owner}/{repo}/issues/{n} becomes "{repo}#{n}". Anything

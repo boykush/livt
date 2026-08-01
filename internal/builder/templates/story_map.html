@@ -107,18 +107,6 @@
 </div>
 {{end}}
 </main>
-<script>
-  document.querySelectorAll('a[data-copy-link]').forEach(function (a) {
-    a.addEventListener('click', function () {
-      if (!navigator.clipboard) return;
-      var url = location.href.split('#')[0] + a.getAttribute('href');
-      navigator.clipboard.writeText(url).then(function () {
-        var label = a.textContent;
-        a.textContent = '✓ Copied';
-        setTimeout(function () { a.textContent = label; }, 1200);
-      });
-    });
-  });
-</script>
+{{template "id-badge-script"}}
 </body>
 </html>
