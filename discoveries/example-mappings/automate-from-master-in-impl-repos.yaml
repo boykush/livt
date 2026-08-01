@@ -132,6 +132,17 @@ rules:
     issues:
       - https://github.com/boykush/livt/issues/82
     automated: true
+  - id: R-14
+    name: マスタの参照を成果物に残すときは、IDではなくlivt URIで引用する
+    examples:
+      - id: EX-01
+        name: MCPサーバは接続時にこの引用作法を指示する
+      - id: EX-02
+        name: テストコメント・Issue本文・コミットメッセージが対象
+      - id: EX-03
+        name: 裸のR-13 EX-01は、どのマッピングの話か復元できない
+      - id: EX-04
+        name: デプロイ済みサイトのURLを一次の引用形にしない
 questions:
   - id: Q-05
     text: ネットワーク（非ローカル）公開する場合の認証・公開モデルをどうするか（現状はローカル利用前提で認証なし）
@@ -143,3 +154,4 @@ ubiquitous:
   - ubiquitous-language
   - discovery
   - opportunity
+  - livt-uri

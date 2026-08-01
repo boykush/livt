@@ -3,6 +3,7 @@ ubiquitous:
   - discovery
   - example-mapping
   - story
+  - livt-uri
 activities:
   - key: fill-unautomated-gap
     name: 実装リポジトリでギャップを埋める
@@ -50,6 +51,12 @@ activities:
         stories:
           - name: ルール付箋から対応Issue・テストへ辿る
             key: trace-rule-to-tests
+            release: reflect-status
+      - key: trace-test-to-rule
+        name: テストからルールを辿る
+        stories:
+          - name: テストからルール・実例へ辿る
+            key: trace-test-to-rule
             release: reflect-status
       - key: show-status-rollup
         name: ストーリー・リリース単位で自動化の状況を映す
