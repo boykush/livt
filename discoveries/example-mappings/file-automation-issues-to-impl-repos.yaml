@@ -76,8 +76,18 @@ rules:
         name: ルールIssueの起票先は、所属ストーリーのreposを参照する
       - id: EX-03
         name: マスタ自身のリポジトリもreposに宣言でき、自リポジトリへの起票も同じ手順で成立する
+  - id: R-11
+    name: Issue本文の一次参照はlivt URIで、デプロイ済みURLは補助にとどめる
+    examples:
+      - id: EX-01
+        name: ルール・実例のlivt URIをIssue本文に載せる
+      - id: EX-02
+        name: 人が踏めるHTTPリンクは併記してよいが、一次はlivt URI
+      - id: EX-03
+        name: 他リポジトリのIssueは後から直せないので、デプロイ先に依存させない
 
 ubiquitous:
+  - livt-uri
   - example-mapping
   - story
   - discovery
