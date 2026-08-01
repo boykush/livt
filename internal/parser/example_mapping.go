@@ -21,16 +21,22 @@ type ruleYAML struct {
 	Examples  []exampleYAML `yaml:"examples"`
 	Issues    []string      `yaml:"issues"`
 	Automated bool          `yaml:"automated"`
+	// Retired is a field rather than a commented-out block so a structural edit
+	// of the YAML cannot drop it, and so the id stays visible to whoever numbers
+	// the next one. Omitted means live.
+	Retired bool `yaml:"retired"`
 }
 
 type exampleYAML struct {
-	ID   string `yaml:"id"`
-	Name string `yaml:"name"`
+	ID      string `yaml:"id"`
+	Name    string `yaml:"name"`
+	Retired bool   `yaml:"retired"`
 }
 
 type questionYAML struct {
-	ID   string `yaml:"id"`
-	Text string `yaml:"text"`
+	ID      string `yaml:"id"`
+	Text    string `yaml:"text"`
+	Retired bool   `yaml:"retired"`
 }
 
 func ParseExampleMapping(path string) (*domain.ExampleMapping, error) {
@@ -50,14 +56,14 @@ func ParseExampleMapping(path string) (*domain.ExampleMapping, error) {
 	for _, r := range raw.Rules {
 		var examples []domain.Example
 		for _, ex := range r.Examples {
-			examples = append(examples, domain.Example{ID: ex.ID, Name: ex.Name})
+			examples = append(examples, domain.Example{ID: ex.ID, Name: ex.Name, Retired: ex.Retired})
 		}
-		rules = append(rules, domain.Rule{ID: r.ID, Name: r.Name, Examples: examples, Issues: r.Issues, Automated: r.Automated})
+		rules = append(rules, domain.Rule{ID: r.ID, Name: r.Name, Examples: examples, Issues: r.Issues, Automated: r.Automated, Retired: r.Retired})
 	}
 
 	var questions []domain.Question
 	for _, q := range raw.Questions {
-		questions = append(questions, domain.Question{ID: q.ID, Text: q.Text})
+		questions = append(questions, domain.Question{ID: q.ID, Text: q.Text, Retired: q.Retired})
 	}
 
 	return &domain.ExampleMapping{

@@ -168,6 +168,90 @@ func TestCollectTasksLinksItemsToTheirStickies(t *testing.T) {
 	}
 }
 
+// livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02: retired stickies are
+// off the board, whichever kind they are — a retired rule, a retired example
+// under a live rule, and a retired question alike.
+func TestRenderMappingOmitsRetiredStickies(t *testing.T) {
+	em := &domain.ExampleMapping{
+		Rules: []domain.Rule{
+			{ID: "R-01", Name: "現役のルール", Examples: []domain.Example{
+				{ID: "EX-01", Name: "現役の実例"},
+				{ID: "EX-02", Name: "退役した実例", Retired: true},
+			}},
+			{ID: "R-02", Name: "退役したルール", Retired: true},
+		},
+		Questions: []domain.Question{
+			{ID: "Q-01", Text: "現役の疑問"},
+			{ID: "Q-02", Text: "退役した疑問", Retired: true},
+		},
+	}
+
+	var buf bytes.Buffer
+	if err := renderMapping(&buf, em, "Story", "", nil); err != nil {
+		t.Fatal(err)
+	}
+	html := buf.String()
+
+	for _, live := range []string{"現役のルール", "現役の実例", "現役の疑問"} {
+		if !strings.Contains(html, live) {
+			t.Errorf("board dropped a live sticky: %q", live)
+		}
+	}
+	for _, retired := range []string{
+		"退役したルール", "退役した実例", "退役した疑問",
+		`id="rule-R-02"`, `id="question-Q-02"`, // nor their anchors
+	} {
+		if strings.Contains(html, retired) {
+			t.Errorf("board still shows retired %q", retired)
+		}
+	}
+}
+
+// livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02: a board whose only
+// question is retired carries no Questions column at all — an empty one would
+// read as an open question scrolled out of sight.
+func TestRenderMappingDropsQuestionsColumnWhenEveryQuestionIsRetired(t *testing.T) {
+	em := &domain.ExampleMapping{
+		Questions: []domain.Question{{ID: "Q-01", Text: "退役した疑問", Retired: true}},
+	}
+
+	var buf bytes.Buffer
+	if err := renderMapping(&buf, em, "Story", "", nil); err != nil {
+		t.Fatal(err)
+	}
+
+	// "Questions" is the column header; the legend says "Question".
+	if strings.Contains(buf.String(), "Questions") {
+		t.Fatal("expected no Questions column when every question is retired")
+	}
+}
+
+// livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02: retired items are
+// not unfinished work. A retired question left in "open questions" could never
+// be closed by a conversation, nor a retired rule by a test.
+func TestCollectTasksSkipsRetiredItems(t *testing.T) {
+	em := &domain.ExampleMapping{
+		StoryKey: domain.StoryKey{Value: "trace-test-to-rule"},
+		Rules: []domain.Rule{
+			{ID: "R-01", Name: "現役の未自動化ルール"},
+			{ID: "R-02", Name: "退役したルール", Retired: true},
+		},
+		Questions: []domain.Question{
+			{ID: "Q-01", Text: "現役の疑問"},
+			{ID: "Q-02", Text: "退役した疑問", Retired: true},
+		},
+	}
+
+	out := collectTasks(em, "テストからルールを辿る", "story/trace-test-to-rule.html")
+
+	if len(out.Questions) != 1 || out.Questions[0].ID != "Q-01" {
+		t.Errorf("questions = %+v, want only the live Q-01", out.Questions)
+	}
+	if len(out.UnautomatedRules) != 1 || out.UnautomatedRules[0].ID != "R-01" {
+		t.Errorf("un-automated rules = %+v, want only the live R-01", out.UnautomatedRules)
+	}
+}
+
 func TestRenderMappingRuleWithoutIDOmitsAnchor(t *testing.T) {
 	em := &domain.ExampleMapping{
 		Rules: []domain.Rule{{Name: "A rule without an ID"}},

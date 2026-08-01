@@ -40,6 +40,52 @@ func TestParseExampleMappingReadsRuleIssuesAndAutomated(t *testing.T) {
 	}
 }
 
+// livt://mapping/trace-test-to-rule/rule/R-05/example/EX-04: retirement is a
+// field on the item, so a structural edit of the YAML cannot lose it the way it
+// would lose a commented-out block — and the retired body stays readable (EX-03).
+func TestParseExampleMappingReadsRetired(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "story.yaml")
+	data := []byte("rules:\n" +
+		"  - id: R-01\n" +
+		"    name: 現役のルール\n" +
+		"    examples:\n" +
+		"      - id: EX-01\n" +
+		"        name: 現役の実例\n" +
+		"      - id: EX-02\n" +
+		"        name: 退役した実例\n" +
+		"        retired: true\n" +
+		"  - id: R-02\n" +
+		"    name: 退役したルール\n" +
+		"    retired: true\n" +
+		"questions:\n" +
+		"  - id: Q-01\n" +
+		"    text: 現役の疑問\n" +
+		"  - id: Q-02\n" +
+		"    text: 退役した疑問\n" +
+		"    retired: true\n")
+	if err := os.WriteFile(path, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	em, err := ParseExampleMapping(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if em.Rules[0].Retired || em.Rules[0].Examples[0].Retired || em.Questions[0].Retired {
+		t.Error("items without the field should default to live")
+	}
+	if !em.Rules[1].Retired || em.Rules[1].Name != "退役したルール" {
+		t.Errorf("rule = %+v, want R-02 retired with its text kept", em.Rules[1])
+	}
+	if !em.Rules[0].Examples[1].Retired {
+		t.Errorf("example = %+v, want EX-02 retired", em.Rules[0].Examples[1])
+	}
+	if !em.Questions[1].Retired || em.Questions[1].Text != "退役した疑問" {
+		t.Errorf("question = %+v, want Q-02 retired with its text kept", em.Questions[1])
+	}
+}
+
 func TestParseExampleMappingReadsReferencedTerms(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "story.yaml")
 	data := []byte("rules: []\nubiquitous:\n  - story-map\n  - story\n")

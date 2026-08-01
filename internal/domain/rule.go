@@ -11,4 +11,9 @@ type Rule struct {
 	// which is independent of Issues being filed or closed. Absent means
 	// not automated.
 	Automated bool
+	// Retired records that the rule is no longer part of the spec. It stays in
+	// the master rather than being deleted so its id is never handed to another
+	// rule — references to it keep resolving, as retired, instead of quietly
+	// pointing at whatever took the id. Absent means live.
+	Retired bool
 }

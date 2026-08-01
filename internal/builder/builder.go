@@ -46,8 +46,11 @@ func (b *Builder) computeCounts() (sidebarCounts, error) {
 	}
 	tasks := 0
 	for _, em := range mappings {
-		tasks += len(em.Questions)
-		for _, r := range em.Rules {
+		// Counted off the active view, so the badge matches what the Tasks page
+		// lists rather than counting retired items it never shows.
+		active := em.Active()
+		tasks += len(active.Questions)
+		for _, r := range active.Rules {
 			if !r.Automated {
 				tasks++
 			}

@@ -24,7 +24,7 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "rule",
 		Title:       "Rule",
-		Description: "A single rule and its examples from a story's example mapping.",
+		Description: "A single rule and its examples from a story's example mapping. A retired rule resolves too, carrying retired: true.",
 		MIMEType:    "application/json",
 		URITemplate: uri.RuleTemplate,
 	}, s.readRule)
@@ -38,7 +38,7 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "question",
 		Title:       "Question",
-		Description: "A single open question from a story's example mapping.",
+		Description: "A single question from a story's example mapping. A retired question resolves too, carrying retired: true.",
 		MIMEType:    "application/json",
 		URITemplate: uri.QuestionTemplate,
 	}, s.readQuestion)
