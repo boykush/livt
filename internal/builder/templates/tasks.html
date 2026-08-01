@@ -41,7 +41,7 @@
       <span class="w-2.5 h-2.5 rounded-sm bg-red-400"></span>
       <h3 class="text-sm font-semibold text-gray-800">Open Questions</h3>
       <span data-filter-count class="text-xs text-gray-400">{{len .Questions}}</span>
-      <span class="text-xs text-gray-400 ml-1">&mdash; 次のディスカバリーで埋める</span>
+      <span class="text-xs text-gray-400 ml-1">&mdash; closed by a conversation</span>
     </div>
     {{range .Questions}}
     {{template "task-card" .}}
@@ -56,7 +56,7 @@
       <span class="w-2.5 h-2.5 rounded-sm bg-blue-400"></span>
       <h3 class="text-sm font-semibold text-gray-800">Un-automated Rules</h3>
       <span data-filter-count class="text-xs text-gray-400">{{len .UnautomatedRules}}</span>
-      <span class="text-xs text-gray-400 ml-1">&mdash; 次のテストで埋める</span>
+      <span class="text-xs text-gray-400 ml-1">&mdash; closed by a test</span>
     </div>
     {{range .UnautomatedRules}}
     {{template "task-card" .}}
