@@ -59,9 +59,10 @@ func TestBuildMappingsIndexEmptyState(t *testing.T) {
 	}
 }
 
-// overview-open-questions R-01 EX-01 / R-02 EX-01 and overview-unautomated-rules
-// R-01 EX-01 / R-02 EX-01: the Tasks page gathers both flanks in one place, each
-// item carrying the story it came from and a link to its sticky.
+// livt://mapping/overview-open-questions/rule/R-01/example/EX-01 and R-02/EX-01,
+// and their mirrors in overview-unautomated-rules: the Tasks page gathers both
+// flanks in one place, each item carrying the story it came from and a link to
+// its sticky.
 func TestBuildTasksListsOpenQuestionsAndUnautomatedRules(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	questions := []taskItem{{
@@ -93,9 +94,9 @@ func TestBuildTasksListsOpenQuestionsAndUnautomatedRules(t *testing.T) {
 	}
 }
 
-// overview-open-questions R-01 EX-03 and overview-unautomated-rules R-01 EX-03:
-// each list says so when there is nothing left in it — an empty questions list
-// and a fully automated master read differently.
+// livt://mapping/overview-open-questions/rule/R-01/example/EX-03 and its mirror
+// in overview-unautomated-rules: each list says so when there is nothing left in
+// it — an empty questions list and a fully automated master read differently.
 func TestBuildTasksEmptyStatesReadPerList(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	if err := b.buildTasks(nil, nil, nil); err != nil {
@@ -110,8 +111,9 @@ func TestBuildTasksEmptyStatesReadPerList(t *testing.T) {
 	}
 }
 
-// overview-open-questions R-03 and overview-unautomated-rules R-03: one filter
-// bar, one axis, driving every card on the page whichever list it sits in.
+// livt://mapping/overview-open-questions/rule/R-03 and its mirror in
+// overview-unautomated-rules: one filter bar, one axis, driving every card on
+// the page whichever list it sits in.
 func TestBuildTasksFilterCoversBothLists(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	opp := []opportunityRef{{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"}}
@@ -132,8 +134,9 @@ func TestBuildTasksFilterCoversBothLists(t *testing.T) {
 	if !strings.Contains(html, `data-opportunity="協働ディスカバリー"`) {
 		t.Fatal("expected a filter button carrying the opportunity name")
 	}
-	// R-03 EX-03: the selection rides in the query param, so a filtered Tasks
-	// page is shareable and restores on load.
+	// livt://mapping/overview-open-questions/rule/R-03/example/EX-03 and its
+	// mirror in overview-unautomated-rules: the selection rides in the query
+	// param, so a filtered Tasks page is shareable and restores on load.
 	for _, hook := range []string{"URLSearchParams", "'opportunity'", "history.replaceState"} {
 		if !strings.Contains(html, hook) {
 			t.Fatalf("expected the filter to sync the URL, missing %q", hook)
@@ -261,7 +264,8 @@ func readRendered(t *testing.T, path string) string {
 // mapHref mirrors how html/template normalizes an href: bytes outside the URL
 // unreserved set (so every byte of a non-ASCII map name) become lowercase %xx.
 // Chip links to Japanese-named maps therefore ship URL-encoded, which is also
-// what lets a filtered URL round-trip (R-04).
+// what lets a filtered URL round-trip
+// (livt://mapping/filter-lists-by-opportunity/rule/R-04).
 func mapHref(prefix, name string) string {
 	var b strings.Builder
 	b.WriteString(prefix)
@@ -277,8 +281,9 @@ func mapHref(prefix, name string) string {
 	return b.String()
 }
 
-// R-02 EX-01: a story on one map carries a chip named after that opportunity
-// (the map), linked to its board, in place of the old generic "Story Map" badge.
+// livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-01: a story on
+// one map carries a chip named after that opportunity (the map), linked to its
+// board, in place of the old generic "Story Map" badge.
 func TestBuildStoriesIndexShowsOpportunityChipNamedAfterTheMap(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	items := []storyItem{{
@@ -304,7 +309,8 @@ func TestBuildStoriesIndexShowsOpportunityChipNamedAfterTheMap(t *testing.T) {
 	}
 }
 
-// R-02 EX-02: a story on several maps carries one chip per map.
+// livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-02: a story on
+// several maps carries one chip per map.
 func TestBuildStoriesIndexShowsAChipPerMapForMultiMapStory(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	items := []storyItem{{
@@ -330,8 +336,9 @@ func TestBuildStoriesIndexShowsAChipPerMapForMultiMapStory(t *testing.T) {
 	}
 }
 
-// R-02 EX-03: a story on no map carries no chip and its filter data is empty, so
-// it matches no opportunity filter axis.
+// livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-03: a story on
+// no map carries no chip and its filter data is empty, so it matches no
+// opportunity filter axis.
 func TestBuildStoriesIndexStoryOnNoMapHasNoChipAndMatchesNoFilter(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	items := []storyItem{{
@@ -351,7 +358,8 @@ func TestBuildStoriesIndexStoryOnNoMapHasNoChipAndMatchesNoFilter(t *testing.T) 
 	}
 }
 
-// R-01: the Stories list renders opportunity filter controls, including a reset.
+// livt://mapping/filter-lists-by-opportunity/rule/R-01: the Stories list renders
+// opportunity filter controls, including a reset.
 func TestBuildStoriesIndexRendersOpportunityFilterControls(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	items := []storyItem{{Key: "s", Name: "S", Opportunities: []opportunityRef{{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"}}}}
@@ -371,8 +379,9 @@ func TestBuildStoriesIndexRendersOpportunityFilterControls(t *testing.T) {
 	}
 }
 
-// R-03 & R-04: the filter runs client-side (no network) and reflects its state
-// in the ?opportunity= query param so a shared URL restores the same view.
+// livt://mapping/filter-lists-by-opportunity/rule/R-03 and R-04: the filter runs
+// client-side (no network) and reflects its state in the ?opportunity= query
+// param so a shared URL restores the same view.
 func TestBuildStoriesIndexFilterIsClientSideAndSyncsURL(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	items := []storyItem{{Key: "s", Name: "S"}}
@@ -393,8 +402,9 @@ func TestBuildStoriesIndexFilterIsClientSideAndSyncsURL(t *testing.T) {
 	}
 }
 
-// R-01 EX-02 & R-02: the Example Mappings list carries the same opportunity chip
-// and filter, resolved through mapping → story → map.
+// livt://mapping/filter-lists-by-opportunity/rule/R-01/example/EX-02 and R-02:
+// the Example Mappings list carries the same opportunity chip and filter,
+// resolved through mapping → story → map.
 func TestBuildMappingsIndexShowsOpportunityChipsAndFilter(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	tiles := []mappingTile{{

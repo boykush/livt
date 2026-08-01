@@ -176,8 +176,9 @@ func TestListStoriesLinksExampleMapping(t *testing.T) {
 // the map name plus its story map resource URI (display name percent-encoded).
 var demoMapRef = opportunityRefJSON{Name: "デモマップ", URI: "livt://story-map/%E3%83%87%E3%83%A2%E3%83%9E%E3%83%83%E3%83%97"}
 
-// R-13 EX-01: each entry shows its opportunities — the story maps it sits on,
-// as map name plus story map resource URI — and a story on no map shows none.
+// livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-01:
+// each entry shows its opportunities — the story maps it sits on, as map name
+// plus story map resource URI — and a story on no map shows none.
 func TestListStoriesCarriesOpportunities(t *testing.T) {
 	s := newTestServer(t)
 
@@ -194,7 +195,8 @@ func TestListStoriesCarriesOpportunities(t *testing.T) {
 	}
 }
 
-// R-13 EX-02: the opportunity parameter keeps only the stories on that map.
+// livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-02:
+// the opportunity parameter keeps only the stories on that map.
 func TestListStoriesFiltersByOpportunity(t *testing.T) {
 	s := newTestServer(t)
 
@@ -207,7 +209,8 @@ func TestListStoriesFiltersByOpportunity(t *testing.T) {
 	}
 }
 
-// R-13 EX-03: an unknown opportunity name yields an empty list, not an error.
+// livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-03:
+// an unknown opportunity name yields an empty list, not an error.
 func TestListStoriesUnknownOpportunityYieldsEmptyList(t *testing.T) {
 	s := newTestServer(t)
 
@@ -356,8 +359,9 @@ func TestStoryWithoutMappingHasNoMappingURI(t *testing.T) {
 	}
 }
 
-// R-13 EX-04: the story resource shows the same opportunities as the list —
-// the maps the story sits on, empty for a story on no map.
+// livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-04:
+// the story resource shows the same opportunities as the list — the maps the
+// story sits on, empty for a story on no map.
 func TestStoryJSONCarriesOpportunities(t *testing.T) {
 	cfg := newTestServer(t).cfg
 

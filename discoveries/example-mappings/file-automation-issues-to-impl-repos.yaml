@@ -85,6 +85,7 @@ rules:
         name: 人が踏めるHTTPリンクは併記してよいが、一次はlivt URI
       - id: EX-03
         name: 他リポジトリのIssueは後から直せないので、デプロイ先に依存させない
+    automated: true
 
 ubiquitous:
   - livt-uri

@@ -63,7 +63,7 @@ The body carries the rule, its examples, and backpointers to the master — quot
 - living document: {living-doc-url}/mapping/{story-key}.html#rule-{rule-id}
 ```
 
-Every reference is a **livt URI** — the citation form the implementation repo carries onward into test comments. A bare `{rule-id}` names nothing on its own: rule and example ids restart in every mapping. `spec_version` pins which revision of the master the issue was cut from. The living document anchor is a convenience link for humans in a browser; it depends on where the site is deployed, so it never replaces the URI. No site published? Drop that line — the URIs stand alone.
+Every reference is a **livt URI** — the citation form the implementation repo carries onward into test comments. A bare `{rule-id}` names nothing on its own: rule and example ids restart in every mapping. `spec_version` pins which revision of the master the issue was cut from. The living document anchor is a convenience link for humans in a browser; it depends on where the site is deployed, and an issue in someone else's repository is not yours to edit later, so it never replaces the URI. No site published? Drop that line — the URIs stand alone.
 
 ## Sub-issue Linking
 

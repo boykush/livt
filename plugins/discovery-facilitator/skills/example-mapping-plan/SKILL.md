@@ -60,11 +60,13 @@ planned_against:
 plan:
   - id: P-01
     type: feasible | needs-decision | contradicts | resolved-question | unverifiable
-    refers_to: R-01 / EX-01 / Q-01
+    refers_to: livt://mapping/{story-key}/rule/{rule-id}
     evidence: {file:line or symbol; design frame / URL}
     answer: {for resolved-question — what the planning investigation settled, and on what evidence; omit otherwise}
     work: {how to build it — the approach and what it depends on; for contradicts, which side must move and why}
 ```
+
+`refers_to` is a **livt URI** — a rule, an example (`livt://mapping/{story-key}/rule/{rule-id}/example/{example-id}`), or a question (`livt://mapping/{story-key}/question/{question-id}`). Plan items travel: into an issue, a commit message, a follow-up story. A bare `R-01` survives that trip naming nothing — every mapping has one.
 
 Default to a written plan for human review. Only update the mapping YAML or hand work outward (issues, follow-up stories) if the user asks.
 
