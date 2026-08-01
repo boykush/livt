@@ -29,7 +29,7 @@ The mapping YAML — not GitHub — holds the truth about what is filed where:
 ## Filing Flow
 
 1. Read `discoveries/example-mappings/{story-key}.yaml` and `stories/{story-key}.md`. Resolve the target repositories from the story's `repos:`.
-2. Select the rules to file (rule-id → that one; story-key only → all), then dedupe each **rule × repository** pair: skip it when the rule's `issues:` already holds a URL in that repository. A link to one repository never blocks filing to another.
+2. Select the rules to file (rule-id → that one; story-key only → all), skipping any rule marked `retired: true` — the spec no longer asks for it, so there is nothing to automate. Then dedupe each **rule × repository** pair: skip it when the rule's `issues:` already holds a URL in that repository. A link to one repository never blocks filing to another.
 3. Record the spec rev of the master: `git rev-parse --short HEAD`.
 4. Compose each issue (see Issue Content) and file it with existing `gh` auth — no checkout of the target, ever:
 
@@ -63,7 +63,7 @@ The body carries the rule, its examples, and backpointers to the master — quot
 - living document: {living-doc-url}/mapping/{story-key}.html#rule-{rule-id}
 ```
 
-Every reference is a **livt URI** — the citation form the implementation repo carries onward into test comments. A bare `{rule-id}` names nothing on its own: rule and example ids restart in every mapping. `spec_version` pins which revision of the master the issue was cut from. The living document anchor is a convenience link for humans in a browser; it depends on where the site is deployed, and an issue in someone else's repository is not yours to edit later, so it never replaces the URI. No site published? Drop that line — the URIs stand alone.
+List only the rule's live examples; a retired one no longer illustrates it. Every reference is a **livt URI** — the citation form the implementation repo carries onward into test comments. A bare `{rule-id}` names nothing on its own: rule and example ids restart in every mapping. `spec_version` pins which revision of the master the issue was cut from. The living document anchor is a convenience link for humans in a browser; it depends on where the site is deployed, and an issue in someone else's repository is not yours to edit later, so it never replaces the URI. No site published? Drop that line — the URIs stand alone.
 
 ## Sub-issue Linking
 
@@ -87,9 +87,13 @@ gh api graphql \
 
 The link is write-only sugar for GitHub's UI. Never read the sub-issue graph back to decide anything — dedupe and parenthood are always answered by the master.
 
-## Rule IDs Are Forever
+## IDs Are Forever
 
-Once filed, the issue's backpointer and the living-document anchor point at the rule-id. `example-mapping-refine` and `example-mapping-update` share this policy: rule IDs are never renumbered or reused after filing. You rely on it — and you never renumber anything yourself either.
+Your issue quotes the rule-id and every example-id in it, so you depend on this contract — but filing is not what creates it. The IDs were already immutable; an unfiled rule is not a free ID. You never mint or retire one yourself: the write-back touches `issues:` and nothing else.
+
+The half you rely on, verbatim from the canonical statement in `example-mapping-update`:
+
+- **Immutability** — an ID, once used, keeps pointing at the same thing. Never renumber, never reuse, and never move an item to where its ID would change. This holds whether or not an automation issue was filed: the item's livt URI is quoted by MCP consumers, by the board's copy-link, in test comments, and in commit messages, and the master records none of those — there is no list of references to check before breaking one.
 
 ## What NOT to Do
 

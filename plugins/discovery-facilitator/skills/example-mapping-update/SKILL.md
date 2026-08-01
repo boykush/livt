@@ -31,25 +31,27 @@ When there is no fresh transcription baseline and the ask is "this rule changed 
 
 1. Identify the affected story and read `discoveries/example-mappings/{story-key}.yaml` and `stories/{story-key}.md`. Ask the user which mapping if it is ambiguous.
 2. Capture the agreed change from the user: which rule, what changed, and why. Don't invent or extrapolate.
-3. Apply the minimal rule-level edit:
-   - **Added rule** — append it with the next unused rule ID, with the examples agreed alongside it.
-   - **Changed rule** — update its `name`, and bring its examples in line with the new meaning in the same PR (an example illustrating the old rule is now wrong). If the rule carries `automated:`, remove the flag in the same PR — the recorded automation covered the old meaning (`record-rule-automation`), and it is set again once the implementation catches up.
-   - **Retired rule** — remove the rule together with its examples.
-   - New open questions raised by the change go to `questions[]`; resolved meaning goes to rules, not answers scribbled onto Questions.
+3. Apply the minimal rule-level edit (IDs throughout follow the ID Contract):
+   - **Added rule** — append it with the next rule ID, with the examples agreed alongside it.
+   - **Changed rule** — update its `name`, and bring its examples in line with the new meaning in the same PR (an example illustrating the old rule is now wrong). Retire the ones that no longer illustrate it and add the replacements as new examples; don't rewrite an example into a different one under the same ID. If the rule carries `automated:`, remove the flag in the same PR — the recorded automation covered the old meaning (`record-rule-automation`), and it is set again once the implementation catches up.
+   - **Retired rule** — mark it `retired: true`, and every one of its examples too: the flag does not cascade, so an unflagged example under a retired rule still resolves as live. Nothing is deleted.
+   - New open questions raised by the change take the next question ID; a question this change settles is retired, with the settled meaning landing as a rule — not as an answer scribbled onto the Question.
 4. Re-read the diff: it must contain exactly the one agreed change, nothing structural elsewhere.
 5. Ship it as its own PR (see PR Contract).
 6. More than one rule changed? Repeat the flow — one PR each.
 
 ## ID Contract
 
-- A new rule takes the next unused `R-NN`; its examples start from `EX-01` (example IDs are rule-scoped).
-- Never renumber existing IDs. Retiring R-02 leaves a gap — R-03 stays R-03. Stable IDs keep PR history and past discussion legible.
-- Filed rule IDs are backpointer targets: the rule's livt URI — quoted in automation issues (`rule-issue-file`), test comments, and commit messages — ends in that ID, as does the living document's `#rule-{ID}` anchor, so renumbering or reusing one silently re-targets every pointer. Shared policy with `example-mapping-refine` — a rule ID, once filed, is immutable.
+This is the canonical statement. `example-mapping-transcribe`, `example-mapping-refine`, and `rule-issue-file` repeat these three bullets verbatim — a skill loads on its own, so every skill that can mint or move an ID has to carry them. Change one, change all four.
+
+- **Numbering** — a new ID is one past the highest ever used in its scope, **retired IDs included**. Rules and questions are numbered within the story (`R-NN`, `Q-NN`), examples within their rule (each rule starts from `EX-01`). With R-01/R-02/R-03 on file and R-03 retired, the next rule is R-04 — never R-03 again.
+- **Immutability** — an ID, once used, keeps pointing at the same thing. Never renumber, never reuse, and never move an item to where its ID would change. This holds whether or not an automation issue was filed: the item's livt URI is quoted by MCP consumers, by the board's copy-link, in test comments, and in commit messages, and the master records none of those — there is no list of references to check before breaking one.
+- **Retire, don't delete** — an item that no longer holds gets `retired: true` and stays in the file, its ID taken and its text readable. Deleting it hands the ID to the next item and silently re-targets every reference. Don't comment it out either: a comment is not part of the YAML structure, so a structural edit drops it.
 
 ## PR Contract
 
 - One rule-level change per PR; a branch per change.
-- The commit message names the rule and the mapping, e.g. `Add rule R-04 to {story-key}`, `Update rule R-02 in {story-key}`, `Remove rule R-03 from {story-key}`.
+- The commit message names the rule and the mapping, e.g. `Add rule R-04 to {story-key}`, `Update rule R-02 in {story-key}`, `Retire rule R-03 in {story-key}`.
 - The PR body states the business reason for the change — that context is what a reviewer weighs.
 
 ## What NOT to Do
