@@ -60,7 +60,7 @@ func TestBuildMappingsIndexEmptyState(t *testing.T) {
 }
 
 // overview-open-questions R-01 EX-01 / R-02 EX-01 and overview-unautomated-rules
-// R-01 EX-01 / R-02 EX-01: the home page gathers both flanks in one place, each
+// R-01 EX-01 / R-02 EX-01: the Tasks page gathers both flanks in one place, each
 // item carrying the story it came from and a link to its sticky.
 func TestBuildTasksListsOpenQuestionsAndUnautomatedRules(t *testing.T) {
 	b := emptyDirsBuilder(t)
@@ -88,7 +88,7 @@ func TestBuildTasksListsOpenQuestionsAndUnautomatedRules(t *testing.T) {
 		`href="mapping/overview-unautomated-rules.html#rule-R-01"`,
 	} {
 		if !strings.Contains(html, want) {
-			t.Fatalf("index.html missing %q", want)
+			t.Fatalf("tasks.html missing %q", want)
 		}
 	}
 }
@@ -105,7 +105,7 @@ func TestBuildTasksEmptyStatesReadPerList(t *testing.T) {
 
 	for _, want := range []string{"No open questions.", "Every rule is automated."} {
 		if !strings.Contains(html, want) {
-			t.Fatalf("index.html missing empty state %q", want)
+			t.Fatalf("tasks.html missing empty state %q", want)
 		}
 	}
 }
@@ -132,7 +132,7 @@ func TestBuildTasksFilterCoversBothLists(t *testing.T) {
 	if !strings.Contains(html, `data-opportunity="協働ディスカバリー"`) {
 		t.Fatal("expected a filter button carrying the opportunity name")
 	}
-	// R-03 EX-03: the selection rides in the query param, so a filtered home
+	// R-03 EX-03: the selection rides in the query param, so a filtered Tasks
 	// page is shareable and restores on load.
 	for _, hook := range []string{"URLSearchParams", "'opportunity'", "history.replaceState"} {
 		if !strings.Contains(html, hook) {
@@ -401,18 +401,18 @@ func TestBuildMappingsIndexShowsOpportunityChipsAndFilter(t *testing.T) {
 		Key:       "filter-lists-by-opportunity",
 		StoryName: "Filter lists by opportunity",
 		Opportunities: []opportunityRef{
-			{Name: "複数プロジェクトで活用しても目的の成果に辿り着ける", Path: "story-map/複数プロジェクトで活用しても目的の成果に辿り着ける.html"},
+			{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"},
 		},
 	}}
-	if err := b.buildMappingsIndex(tiles, []string{"複数プロジェクトで活用しても目的の成果に辿り着ける"}); err != nil {
+	if err := b.buildMappingsIndex(tiles, []string{"協働ディスカバリー"}); err != nil {
 		t.Fatal(err)
 	}
 	html := readRendered(t, filepath.Join(b.OutDir, "index.html"))
 
-	if !strings.Contains(html, `data-opportunities="[&#34;複数プロジェクトで活用しても目的の成果に辿り着ける&#34;]"`) {
+	if !strings.Contains(html, `data-opportunities="[&#34;協働ディスカバリー&#34;]"`) {
 		t.Fatal("expected the tile to carry its opportunity set as the filter hook")
 	}
-	if !strings.Contains(html, `href="`+mapHref("story-map/", "複数プロジェクトで活用しても目的の成果に辿り着ける")+`"`) {
+	if !strings.Contains(html, `href="`+mapHref("story-map/", "協働ディスカバリー")+`"`) {
 		t.Fatal("expected the mapping tile's opportunity chip to link to the map board")
 	}
 	if !strings.Contains(html, "data-opportunity-filter") {
