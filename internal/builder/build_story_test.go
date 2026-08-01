@@ -8,9 +8,10 @@ import (
 	"github.com/boykush/livt/internal/domain"
 )
 
-// R-02 on the story page: the Related section links to each opportunity by name
-// (one link per map), replacing the single generic "Story Map" link. Paths are
-// relative to the story/ directory.
+// livt://mapping/filter-lists-by-opportunity/rule/R-02 on the story page: the
+// Related section links to each opportunity by name (one link per map),
+// replacing the single generic "Story Map" link. Paths are relative to the
+// story/ directory.
 func TestRenderStoryLinksEachOpportunityByName(t *testing.T) {
 	story := &domain.Story{Key: domain.StoryKey{Value: "record-rule-automation"}, Name: "Record rule automation"}
 	opportunities := []opportunityRef{

@@ -323,8 +323,9 @@ func TestStoryMapHeaderLinksBackToStoryMapsIndex(t *testing.T) {
 	}
 }
 
-// R-02 EX-02 at the source: a story key that appears on two maps collects an
-// opportunity ref per map, so its card can carry a chip for each.
+// livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-02 at the
+// source: a story key that appears on two maps collects an opportunity ref per
+// map, so its card can carry a chip for each.
 func TestBuildStoryMapsCollectsMultipleOpportunitiesPerStory(t *testing.T) {
 	usmDir := t.TempDir()
 	mapYAML := func(name string) string {

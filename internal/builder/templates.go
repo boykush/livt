@@ -219,8 +219,9 @@ type storiesIndexView struct {
 // mapping onto the Tasks page: an open question, or a rule with no automation
 // recorded. It carries no status, and cannot carry one derived from an issue —
 // the master holds automation issue URLs but not their open/closed state, and
-// the build may not ask GitHub (show-automation-status-per-rule R-02). Kind
-// ("question" or "rule") picks the sticky colour the item carries on its board.
+// the build may not ask GitHub
+// (livt://mapping/show-automation-status-per-rule/rule/R-02). Kind ("question"
+// or "rule") picks the sticky colour the item carries on its board.
 // StoryPath is empty when the story has no page (mirrors mappingView.StoryPath);
 // MappingPath deep-links to the item's own sticky.
 type taskItem struct {

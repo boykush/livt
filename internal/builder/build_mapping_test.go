@@ -196,8 +196,9 @@ func TestIssueLabelFallsBackToHost(t *testing.T) {
 	}
 }
 
-// overview-open-questions R-02 EX-02: a question sticky is linkable, so the home
-// page can send the reader to the exact red card, not just the board.
+// livt://mapping/overview-open-questions/rule/R-02/example/EX-02: a question
+// sticky is linkable, so the home page can send the reader to the exact red
+// card, not just the board.
 func TestRenderMappingQuestionCarriesIDAnchor(t *testing.T) {
 	em := &domain.ExampleMapping{
 		Questions: []domain.Question{{ID: "Q-01", Text: "解決した疑問はどう扱うか"}, {Text: "An unkeyed question"}},
@@ -217,9 +218,9 @@ func TestRenderMappingQuestionCarriesIDAnchor(t *testing.T) {
 	}
 }
 
-// overview-open-questions R-01 & overview-unautomated-rules R-01: a mapping
-// contributes its questions and only its un-automated rules; automated rules are
-// finished and stay off the list.
+// livt://mapping/overview-open-questions/rule/R-01 and its mirror in
+// overview-unautomated-rules: a mapping contributes its questions and only its
+// un-automated rules; automated rules are finished and stay off the list.
 func TestCollectTasksSplitsQuestionsFromUnautomatedRules(t *testing.T) {
 	em := &domain.ExampleMapping{
 		StoryKey: domain.StoryKey{Value: "overview-open-questions"},
@@ -240,13 +241,15 @@ func TestCollectTasksSplitsQuestionsFromUnautomatedRules(t *testing.T) {
 	}
 	for _, item := range append(out.Questions, out.UnautomatedRules...) {
 		if item.StoryName != "疑問を見渡す" {
-			t.Errorf("item %q lost the story it came from (R-02 EX-01)", item.Text)
+			t.Errorf("item %q lost the story it came from "+
+				"(livt://mapping/overview-open-questions/rule/R-02/example/EX-01 and its mirror)", item.Text)
 		}
 	}
 }
 
-// overview-open-questions R-02 EX-02 & overview-unautomated-rules R-02 EX-02:
-// each item deep-links to its own sticky, using that sticky's anchor scheme.
+// livt://mapping/overview-open-questions/rule/R-02/example/EX-02 and its mirror
+// in overview-unautomated-rules: each item deep-links to its own sticky, using
+// that sticky's anchor scheme.
 func TestCollectTasksLinksItemsToTheirStickies(t *testing.T) {
 	em := &domain.ExampleMapping{
 		StoryKey:  domain.StoryKey{Value: "checkout"},
