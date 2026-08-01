@@ -27,7 +27,7 @@ func TestBuildMappingsIndexRendersPreviewCards(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	out, err := os.ReadFile(filepath.Join(b.OutDir, "example-mappings.html"))
+	out, err := os.ReadFile(filepath.Join(b.OutDir, "index.html"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -39,7 +39,7 @@ func TestBuildMappingsIndexRendersPreviewCards(t *testing.T) {
 		`src="mapping/checkout.html"`, // iframe preview source
 	} {
 		if !strings.Contains(html, want) {
-			t.Fatalf("example-mappings.html missing %q", want)
+			t.Fatalf("index.html missing %q", want)
 		}
 	}
 }
@@ -50,7 +50,7 @@ func TestBuildMappingsIndexEmptyState(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	out, err := os.ReadFile(filepath.Join(b.OutDir, "example-mappings.html"))
+	out, err := os.ReadFile(filepath.Join(b.OutDir, "index.html"))
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -62,22 +62,22 @@ func TestBuildMappingsIndexEmptyState(t *testing.T) {
 // overview-open-questions R-01 EX-01 / R-02 EX-01 and overview-unautomated-rules
 // R-01 EX-01 / R-02 EX-01: the home page gathers both flanks in one place, each
 // item carrying the story it came from and a link to its sticky.
-func TestBuildHomeListsOpenQuestionsAndUnautomatedRules(t *testing.T) {
+func TestBuildTasksListsOpenQuestionsAndUnautomatedRules(t *testing.T) {
 	b := emptyDirsBuilder(t)
-	questions := []outstandingItem{{
+	questions := []taskItem{{
 		Kind: "question", ID: "Q-01", Text: "解決した疑問はどう扱うか",
 		StoryKey: "overview-open-questions", StoryName: "未解決の疑問を横断で見渡す",
 		StoryPath: "story/overview-open-questions.html", MappingPath: "mapping/overview-open-questions.html#question-Q-01",
 	}}
-	rules := []outstandingItem{{
+	rules := []taskItem{{
 		Kind: "rule", ID: "R-01", Text: "未自動化のルールは全実例マッピングを横断して一覧できる",
 		StoryKey: "overview-unautomated-rules", StoryName: "未自動化のルールを横断で見渡す",
 		StoryPath: "story/overview-unautomated-rules.html", MappingPath: "mapping/overview-unautomated-rules.html#rule-R-01",
 	}}
-	if err := b.buildHome(questions, rules, nil); err != nil {
+	if err := b.buildTasks(questions, rules, nil); err != nil {
 		t.Fatal(err)
 	}
-	html := readRendered(t, filepath.Join(b.OutDir, "index.html"))
+	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
 
 	for _, want := range []string{
 		"解決した疑問はどう扱うか",                // a question, gathered from its mapping
@@ -96,12 +96,12 @@ func TestBuildHomeListsOpenQuestionsAndUnautomatedRules(t *testing.T) {
 // overview-open-questions R-01 EX-03 and overview-unautomated-rules R-01 EX-03:
 // each list says so when there is nothing left in it — an empty questions list
 // and a fully automated master read differently.
-func TestBuildHomeEmptyStatesReadPerList(t *testing.T) {
+func TestBuildTasksEmptyStatesReadPerList(t *testing.T) {
 	b := emptyDirsBuilder(t)
-	if err := b.buildHome(nil, nil, nil); err != nil {
+	if err := b.buildTasks(nil, nil, nil); err != nil {
 		t.Fatal(err)
 	}
-	html := readRendered(t, filepath.Join(b.OutDir, "index.html"))
+	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
 
 	for _, want := range []string{"No open questions.", "Every rule is automated."} {
 		if !strings.Contains(html, want) {
@@ -112,15 +112,15 @@ func TestBuildHomeEmptyStatesReadPerList(t *testing.T) {
 
 // overview-open-questions R-03 and overview-unautomated-rules R-03: one filter
 // bar, one axis, driving every card on the page whichever list it sits in.
-func TestBuildHomeFilterCoversBothLists(t *testing.T) {
+func TestBuildTasksFilterCoversBothLists(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	opp := []opportunityRef{{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"}}
-	questions := []outstandingItem{{Kind: "question", Text: "A question", StoryName: "S", Opportunities: opp}}
-	rules := []outstandingItem{{Kind: "rule", Text: "A rule", StoryName: "S", Opportunities: opp}}
-	if err := b.buildHome(questions, rules, []string{"協働ディスカバリー"}); err != nil {
+	questions := []taskItem{{Kind: "question", Text: "A question", StoryName: "S", Opportunities: opp}}
+	rules := []taskItem{{Kind: "rule", Text: "A rule", StoryName: "S", Opportunities: opp}}
+	if err := b.buildTasks(questions, rules, []string{"協働ディスカバリー"}); err != nil {
 		t.Fatal(err)
 	}
-	html := readRendered(t, filepath.Join(b.OutDir, "index.html"))
+	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
 
 	// The attribute also appears in the script's selector, so match the element.
 	if got := strings.Count(html, "data-opportunity-filter>"); got != 1 {
@@ -142,13 +142,13 @@ func TestBuildHomeFilterCoversBothLists(t *testing.T) {
 }
 
 // An item whose story has no page still names its story; only the link drops.
-func TestBuildHomeItemWithoutStoryPageStillNamesItsStory(t *testing.T) {
+func TestBuildTasksItemWithoutStoryPageStillNamesItsStory(t *testing.T) {
 	b := emptyDirsBuilder(t)
-	questions := []outstandingItem{{Kind: "question", Text: "A question", StoryName: "orphan-story"}}
-	if err := b.buildHome(questions, nil, nil); err != nil {
+	questions := []taskItem{{Kind: "question", Text: "A question", StoryName: "orphan-story"}}
+	if err := b.buildTasks(questions, nil, nil); err != nil {
 		t.Fatal(err)
 	}
-	html := readRendered(t, filepath.Join(b.OutDir, "index.html"))
+	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
 
 	if !strings.Contains(html, "orphan-story") {
 		t.Fatal("expected the story name even with no page to link to")
@@ -357,7 +357,7 @@ func TestBuildMappingsIndexShowsOpportunityChipsAndFilter(t *testing.T) {
 	if err := b.buildMappingsIndex(tiles, []string{"複数プロジェクトで活用しても目的の成果に辿り着ける"}); err != nil {
 		t.Fatal(err)
 	}
-	html := readRendered(t, filepath.Join(b.OutDir, "example-mappings.html"))
+	html := readRendered(t, filepath.Join(b.OutDir, "index.html"))
 
 	if !strings.Contains(html, `data-opportunities="[&#34;複数プロジェクトで活用しても目的の成果に辿り着ける&#34;]"`) {
 		t.Fatal("expected the tile to carry its opportunity set as the filter hook")
@@ -377,7 +377,7 @@ func TestBuildMappingsIndexTileOnNoMapHasEmptyFilterData(t *testing.T) {
 	if err := b.buildMappingsIndex(tiles, nil); err != nil {
 		t.Fatal(err)
 	}
-	html := readRendered(t, filepath.Join(b.OutDir, "example-mappings.html"))
+	html := readRendered(t, filepath.Join(b.OutDir, "index.html"))
 	if !strings.Contains(html, `data-opportunities="[]"`) {
 		t.Fatal("expected an empty opportunity set on a mapping with no map")
 	}

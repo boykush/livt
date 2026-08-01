@@ -120,7 +120,7 @@ func TestRenderMappingQuestionCarriesIDAnchor(t *testing.T) {
 // overview-open-questions R-01 & overview-unautomated-rules R-01: a mapping
 // contributes its questions and only its un-automated rules; automated rules are
 // finished and stay off the list.
-func TestCollectOutstandingSplitsQuestionsFromUnautomatedRules(t *testing.T) {
+func TestCollectTasksSplitsQuestionsFromUnautomatedRules(t *testing.T) {
 	em := &domain.ExampleMapping{
 		StoryKey: domain.StoryKey{Value: "overview-open-questions"},
 		Rules: []domain.Rule{
@@ -130,7 +130,7 @@ func TestCollectOutstandingSplitsQuestionsFromUnautomatedRules(t *testing.T) {
 		Questions: []domain.Question{{ID: "Q-01", Text: "An open question"}},
 	}
 
-	out := collectOutstanding(em, "疑問を見渡す", "story/overview-open-questions.html")
+	out := collectTasks(em, "疑問を見渡す", "story/overview-open-questions.html")
 
 	if len(out.Questions) != 1 || out.Questions[0].Text != "An open question" {
 		t.Fatalf("questions = %+v, want the one open question", out.Questions)
@@ -147,14 +147,14 @@ func TestCollectOutstandingSplitsQuestionsFromUnautomatedRules(t *testing.T) {
 
 // overview-open-questions R-02 EX-02 & overview-unautomated-rules R-02 EX-02:
 // each item deep-links to its own sticky, using that sticky's anchor scheme.
-func TestCollectOutstandingLinksItemsToTheirStickies(t *testing.T) {
+func TestCollectTasksLinksItemsToTheirStickies(t *testing.T) {
 	em := &domain.ExampleMapping{
 		StoryKey:  domain.StoryKey{Value: "checkout"},
 		Rules:     []domain.Rule{{ID: "R-02", Name: "A rule"}, {Name: "A rule with no ID"}},
 		Questions: []domain.Question{{ID: "Q-01", Text: "A question"}},
 	}
 
-	out := collectOutstanding(em, "Checkout", "story/checkout.html")
+	out := collectTasks(em, "Checkout", "story/checkout.html")
 
 	if got := out.Questions[0].MappingPath; got != "mapping/checkout.html#question-Q-01" {
 		t.Errorf("question link = %q, want the question sticky's anchor", got)

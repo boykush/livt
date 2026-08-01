@@ -95,13 +95,13 @@ func distinctOpportunityNames(perCard [][]opportunityRef) []string {
 type Sidebar struct {
 	Prefix string
 	Active string
-	// Outstanding is what the home page lists: open questions plus rules with
-	// no automation recorded.
-	Outstanding int
-	Mappings    int
-	StoryMaps   int
-	Stories     int
-	Terms       int
+	// Tasks is what the Tasks page lists: open questions plus rules with no
+	// automation recorded.
+	Tasks     int
+	Mappings  int
+	StoryMaps int
+	Stories   int
+	Terms     int
 }
 
 type mappingTile struct {
@@ -177,13 +177,15 @@ type storiesIndexView struct {
 	FilterOpportunities []string
 }
 
-// outstandingItem is one thing the master says is not finished, lifted off its
-// example mapping onto the home page: an open question, or a rule with no
-// automation recorded. Kind ("question" or "rule") picks the sticky colour the
-// item carries on its board. StoryPath is empty when the story has no page
-// (mirrors mappingView.StoryPath); MappingPath deep-links to the item's own
-// sticky.
-type outstandingItem struct {
+// taskItem is one thing the master says is not finished, lifted off its example
+// mapping onto the Tasks page: an open question, or a rule with no automation
+// recorded. It carries no status, and cannot carry one derived from an issue —
+// the master holds automation issue URLs but not their open/closed state, and
+// the build may not ask GitHub (show-automation-status-per-rule R-02). Kind
+// ("question" or "rule") picks the sticky colour the item carries on its board.
+// StoryPath is empty when the story has no page (mirrors mappingView.StoryPath);
+// MappingPath deep-links to the item's own sticky.
+type taskItem struct {
 	Kind          string
 	ID            string
 	Text          string
@@ -194,14 +196,14 @@ type outstandingItem struct {
 	Opportunities []opportunityRef
 }
 
-// homeView is the master's two unfinished flanks either side of the example
+// tasksView is the master's two unfinished flanks either side of the example
 // mapping: questions close by a conversation, un-automated rules close by a
 // test. One FilterOpportunities set serves both lists, since a single filter bar
 // drives the page.
-type homeView struct {
+type tasksView struct {
 	Sidebar             Sidebar
-	Questions           []outstandingItem
-	UnautomatedRules    []outstandingItem
+	Questions           []taskItem
+	UnautomatedRules    []taskItem
 	FilterOpportunities []string
 }
 
@@ -238,12 +240,12 @@ type mappingView struct {
 	Ubiquitous []termCard
 }
 
-func renderHome(w io.Writer, view homeView) error {
-	return tmpl.ExecuteTemplate(w, "index.html", view)
+func renderTasks(w io.Writer, view tasksView) error {
+	return tmpl.ExecuteTemplate(w, "tasks.html", view)
 }
 
 func renderMappingsIndex(w io.Writer, view mappingsIndexView) error {
-	return tmpl.ExecuteTemplate(w, "example-mappings.html", view)
+	return tmpl.ExecuteTemplate(w, "index.html", view)
 }
 
 func renderStoryMapsIndex(w io.Writer, view storyMapsIndexView) error {

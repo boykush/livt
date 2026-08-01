@@ -27,11 +27,11 @@ project-root/
 
 ```
 dist/
-  index.html                              # Overview: open questions and un-automated rules (home)
-  example-mappings.html                   # Example mappings overview
+  index.html                              # Example mappings overview (home)
   story-maps.html                         # Story maps overview
   stories.html                            # Story list
   ubiquitous.html                         # Ubiquitous language table
+  tasks.html                              # Open questions and un-automated rules
   story/
     {story-key}.html                      # Story detail pages
   mapping/
@@ -40,13 +40,12 @@ dist/
     {map-name}.html                       # Story map boards
 ```
 
-Every page shares a left sidebar that links the home page (Overview) and the
-four resource types (Example Mappings, Story Maps, Stories, Ubiquitous
-Language). The example mapping and story map overviews render each board as a
-preview card.
+Every page shares a left sidebar that links the four resource types (Example
+Mappings, Story Maps, Stories, Ubiquitous Language) and, below them, Tasks. The
+overview pages render each example mapping and story map as a preview card.
 
-The home page gathers what the master leaves unfinished, so neither has to be
-hunted for board by board:
+`tasks.html` gathers what the master leaves unfinished, so neither kind has to
+be hunted for board by board:
 
 - **Open Questions** — every `questions` entry across the example mappings.
   These close by a conversation, so they feed the next discovery session.
@@ -57,3 +56,8 @@ Each item names the story it came from and links to its own sticky on that
 story's mapping board. Both lists are filtered together by opportunity, and the
 selection is mirrored in the `?opportunity=` query parameter so a filtered view
 is shareable.
+
+Items carry no status beyond being listed. A rule records its automation issue
+URLs but not their open/closed state, and the build never queries the issue
+tracker, so an item leaves this page by being resolved — a question becoming a
+rule, a rule becoming automated — rather than by moving through states.

@@ -18,11 +18,11 @@ type Builder struct {
 }
 
 type sidebarCounts struct {
-	outstanding int
-	mappings    int
-	storyMaps   int
-	stories     int
-	terms       int
+	tasks     int
+	mappings  int
+	storyMaps int
+	stories   int
+	terms     int
 }
 
 // computeCounts tallies every resource type so the shared sidebar can show
@@ -44,21 +44,21 @@ func (b *Builder) computeCounts() (sidebarCounts, error) {
 	if err != nil {
 		return sidebarCounts{}, err
 	}
-	outstanding := 0
+	tasks := 0
 	for _, em := range mappings {
-		outstanding += len(em.Questions)
+		tasks += len(em.Questions)
 		for _, r := range em.Rules {
 			if !r.Automated {
-				outstanding++
+				tasks++
 			}
 		}
 	}
 	return sidebarCounts{
-		outstanding: outstanding,
-		mappings:    len(mappings),
-		storyMaps:   len(maps),
-		stories:     len(stories),
-		terms:       len(terms),
+		tasks:     tasks,
+		mappings:  len(mappings),
+		storyMaps: len(maps),
+		stories:   len(stories),
+		terms:     len(terms),
 	}, nil
 }
 
@@ -70,13 +70,13 @@ func (b *Builder) sidebar(active, prefix string) (Sidebar, error) {
 		return Sidebar{}, err
 	}
 	return Sidebar{
-		Prefix:      prefix,
-		Active:      active,
-		Outstanding: c.outstanding,
-		Mappings:    c.mappings,
-		StoryMaps:   c.storyMaps,
-		Stories:     c.stories,
-		Terms:       c.terms,
+		Prefix:    prefix,
+		Active:    active,
+		Tasks:     c.tasks,
+		Mappings:  c.mappings,
+		StoryMaps: c.storyMaps,
+		Stories:   c.stories,
+		Terms:     c.terms,
 	}, nil
 }
 
@@ -143,9 +143,9 @@ func (b *Builder) Build() error {
 	}
 
 	// Unfinished items inherit their story's opportunities the same way, so the
-	// home page filters on that one axis across both of its lists.
+	// Tasks page filters on that one axis across both of its lists.
 	var openOpportunitySets [][]opportunityRef
-	for _, items := range [][]outstandingItem{open.Questions, open.UnautomatedRules} {
+	for _, items := range [][]taskItem{open.Questions, open.UnautomatedRules} {
 		for i := range items {
 			items[i].Opportunities = rootRelativeOpportunities(storyToMaps[items[i].StoryKey])
 			openOpportunitySets = append(openOpportunitySets, items[i].Opportunities)
@@ -156,16 +156,17 @@ func (b *Builder) Build() error {
 		return err
 	}
 
-	// Hub pages share the sidebar; index.html is the home page.
-	if err := b.buildHome(open.Questions, open.UnautomatedRules, distinctOpportunityNames(openOpportunitySets)); err != nil {
+	// Hub pages share the sidebar; index.html is the Example Mappings overview
+	// and the site's landing page.
+	if err := b.buildMappingsIndex(mappingTiles, distinctOpportunityNames(mappingOpportunitySets)); err != nil {
 		return err
 	}
 	fmt.Printf("  index.html\n")
 
-	if err := b.buildMappingsIndex(mappingTiles, distinctOpportunityNames(mappingOpportunitySets)); err != nil {
+	if err := b.buildTasks(open.Questions, open.UnautomatedRules, distinctOpportunityNames(openOpportunitySets)); err != nil {
 		return err
 	}
-	fmt.Printf("  example-mappings.html\n")
+	fmt.Printf("  tasks.html\n")
 
 	if err := b.buildStoryMapsIndex(storyMapTiles); err != nil {
 		return err

@@ -12,19 +12,19 @@ import (
 
 // buildMappings builds example mapping HTML pages and returns a preview tile per
 // mapping for the Example Mappings overview page, plus everything the mappings
-// leave unfinished — open questions and un-automated rules — for the home page.
-func (b *Builder) buildMappings() ([]mappingTile, outstanding, error) {
+// leave unfinished — open questions and un-automated rules — for the Tasks page.
+func (b *Builder) buildMappings() ([]mappingTile, taskSet, error) {
 	files, err := filepath.Glob(filepath.Join(b.MappingsDir, "*.yaml"))
 	if err != nil {
-		return nil, outstanding{}, err
+		return nil, taskSet{}, err
 	}
 
 	var tiles []mappingTile
-	var open outstanding
+	var open taskSet
 	for _, f := range files {
 		em, err := parser.ParseExampleMapping(f)
 		if err != nil {
-			return nil, outstanding{}, fmt.Errorf("parse %s: %w", f, err)
+			return nil, taskSet{}, fmt.Errorf("parse %s: %w", f, err)
 		}
 
 		storyName := b.resolveStoryName(em.StoryKey)
@@ -37,42 +37,42 @@ func (b *Builder) buildMappings() ([]mappingTile, outstanding, error) {
 
 		outPath := filepath.Join(b.OutDir, "mapping", em.StoryKey.Value+".html")
 		if err := b.buildMapping(outPath, em, storyName, storyPath, ubiquitous); err != nil {
-			return nil, outstanding{}, err
+			return nil, taskSet{}, err
 		}
 		fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))
 
 		tiles = append(tiles, mappingTile{Key: em.StoryKey.Value, StoryName: storyName})
-		// The home page renders at the output root, so its links resolve from
+		// The Tasks page renders at the output root, so its links resolve from
 		// there, not from the mapping/ directory.
-		open.add(collectOutstanding(em, storyName, strings.TrimPrefix(storyPath, "../")))
+		open.add(collectTasks(em, storyName, strings.TrimPrefix(storyPath, "../")))
 	}
 
 	return tiles, open, nil
 }
 
-// outstanding holds what the mappings leave unfinished, split by how it gets
-// closed: a question by a conversation, an un-automated rule by a test.
-type outstanding struct {
-	Questions        []outstandingItem
-	UnautomatedRules []outstandingItem
+// taskSet holds what the mappings leave unfinished, split by how it gets closed:
+// a question by a conversation, an un-automated rule by a test.
+type taskSet struct {
+	Questions        []taskItem
+	UnautomatedRules []taskItem
 }
 
-func (o *outstanding) add(other outstanding) {
+func (o *taskSet) add(other taskSet) {
 	o.Questions = append(o.Questions, other.Questions...)
 	o.UnautomatedRules = append(o.UnautomatedRules, other.UnautomatedRules...)
 }
 
-// collectOutstanding lifts one mapping's open questions and un-automated rules
-// onto the home page, each deep-linked to its own sticky on the board. An item
+// collectTasks lifts one mapping's open questions and un-automated rules onto
+// the Tasks page, each deep-linked to its own sticky on the board. An item
 // without an ID has no anchor to aim at (the board only renders one for keyed
 // stickies), so it links to the board itself.
-func collectOutstanding(em *domain.ExampleMapping, storyName, storyPath string) outstanding {
-	item := func(kind, id, text string) outstandingItem {
+func collectTasks(em *domain.ExampleMapping, storyName, storyPath string) taskSet {
+	item := func(kind, id, text string) taskItem {
 		mappingPath := "mapping/" + em.StoryKey.Value + ".html"
 		if id != "" {
 			mappingPath += "#" + kind + "-" + id
 		}
-		return outstandingItem{
+		return taskItem{
 			Kind:        kind,
 			ID:          id,
 			Text:        text,
@@ -83,7 +83,7 @@ func collectOutstanding(em *domain.ExampleMapping, storyName, storyPath string) 
 		}
 	}
 
-	var out outstanding
+	var out taskSet
 	for _, q := range em.Questions {
 		out.Questions = append(out.Questions, item("question", q.ID, q.Text))
 	}
