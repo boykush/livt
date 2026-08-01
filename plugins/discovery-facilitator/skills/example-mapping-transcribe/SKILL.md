@@ -69,9 +69,25 @@ questions:
     text: {unresolved question, as written on the board}
 ```
 
-- IDs are story-scoped (R-01, EX-01, Q-01).
-- Example IDs are rule-scoped (each rule starts from EX-01).
+- IDs follow the ID Contract below. A board transcribed for the first time simply numbers from 01 in each scope.
 - Keep `key:` identifiers in English; `name:`/`text:` follow the board's language.
+
+## ID Contract
+
+Canonical statement in `example-mapping-update`; these three bullets are verbatim from it. You mint every ID in the mapping, so they start with you.
+
+- **Numbering** — a new ID is one past the highest ever used in its scope, **retired IDs included**. Rules and questions are numbered within the story (`R-NN`, `Q-NN`), examples within their rule (each rule starts from `EX-01`). With R-01/R-02/R-03 on file and R-03 retired, the next rule is R-04 — never R-03 again.
+- **Immutability** — an ID, once used, keeps pointing at the same thing. Never renumber, never reuse, and never move an item to where its ID would change. This holds whether or not an automation issue was filed: the item's livt URI is quoted by MCP consumers, by the board's copy-link, in test comments, and in commit messages, and the master records none of those — there is no list of references to check before breaking one.
+- **Retire, don't delete** — an item that no longer holds gets `retired: true` and stays in the file, its ID taken and its text readable. Deleting it hands the ID to the next item and silently re-targets every reference. Don't comment it out either: a comment is not part of the YAML structure, so a structural edit drops it.
+
+## Re-transcribing an Existing Mapping
+
+When the team reworks a board that has already been transcribed, `discoveries/example-mappings/{story-key}.yaml` already holds IDs. Transcribe onto that file — never write a fresh one over it, which would re-mint every ID:
+
+- A card already on file keeps its ID, even where the board reworded it. Follow the board for the text; leave the ID alone.
+- A card that is new on the board takes the next ID.
+- A card that has left the board gets `retired: true` where it sits — gone from the spec, still in the file. A rule that has gone takes each of its examples with it: the flag does not cascade, so an unflagged example still resolves as live.
+- An example the board moved under a different rule cannot keep its ID, since example IDs are rule-scoped. Retire it under the old rule and add it under the new one with a fresh ID: the board's grouping is honoured, and the old URI still resolves to the same text.
 
 ## Commit Contract
 
@@ -85,3 +101,4 @@ Before committing, verify the transcription is complete — not whether the map 
 - Every green card sits under the same rule it sat under on the board.
 - Every red card is preserved as a Question — none were silently answered.
 - Wording matches the board; nothing was paraphrased away.
+- Re-transcription only: every ID that was already on file still names the same card, and nothing was deleted to make room.

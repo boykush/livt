@@ -40,9 +40,17 @@ Start from the committed baseline. Do not re-transcribe; build the diff on top o
 
 - **Rule clarity** — sharpen vague rule names into crisp business rules; keep the team's intent.
 - **Example naming** — make examples concrete and memorable ("the one where…"); keep the same scenario.
-- **Grouping** — re-file an example under the rule it actually illustrates if the board misfiled it.
+- **Grouping** — moving an example to the rule it actually illustrates changes its ID, because example IDs are rule-scoped. Move it only while nothing can be pointing at it: a just-transcribed baseline where no rule carries `issues:` or `automated:`. Otherwise — and whenever you are unsure — retire it where it sits and add it under the right rule with a fresh ID, so its old URI keeps resolving to the same text instead of silently naming a different example.
 - **Splitting** — if the map shows too many rules (story too large), recommend a split and note it; don't silently shard.
 - **Question phrasing** — make a Question precise without answering it.
+
+## ID Contract
+
+Canonical statement in `example-mapping-update`; these three bullets are verbatim from it. Regrouping is the refinement most likely to break them — a tidier numbering is never a reason to renumber.
+
+- **Numbering** — a new ID is one past the highest ever used in its scope, **retired IDs included**. Rules and questions are numbered within the story (`R-NN`, `Q-NN`), examples within their rule (each rule starts from `EX-01`). With R-01/R-02/R-03 on file and R-03 retired, the next rule is R-04 — never R-03 again.
+- **Immutability** — an ID, once used, keeps pointing at the same thing. Never renumber, never reuse, and never move an item to where its ID would change. This holds whether or not an automation issue was filed: the item's livt URI is quoted by MCP consumers, by the board's copy-link, in test comments, and in commit messages, and the master records none of those — there is no list of references to check before breaking one.
+- **Retire, don't delete** — an item that no longer holds gets `retired: true` and stays in the file, its ID taken and its text readable. Deleting it hands the ID to the next item and silently re-targets every reference. Don't comment it out either: a comment is not part of the YAML structure, so a structural edit drops it.
 
 ## What NOT to Touch
 
@@ -51,8 +59,8 @@ Start from the committed baseline. Do not re-transcribe; build the diff on top o
 - Don't resolve or delete open Questions.
 - Don't check the mapping against the implementation or design — that is the planner's job.
 - Don't write Gherkin — example mapping stays low-tech.
-- Don't change the `story` key or break example/rule ID scoping (R-01, EX-01, Q-01).
-- Don't renumber or reassign rule IDs, even where regrouping would make the numbering tidier. Once a rule is filed as an automation issue (`rule-issue-file`), its ID is a backpointer target — the rule's livt URI ends in it, and so does the living document's `#rule-{ID}` anchor. Shared policy with `example-mapping-update`.
+- Don't change the `story` key, and don't renumber or reassign any ID — see the ID Contract above.
+- Don't retire rules or questions. The regrouped example is the only retirement in your remit; retiring a rule takes an agreed business decision, which is `example-mapping-update`'s.
 
 ## Output
 
