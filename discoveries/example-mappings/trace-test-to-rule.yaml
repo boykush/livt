@@ -20,6 +20,7 @@ rules:
         name: livt URIからページ内アンカーへの導出規則は文書化され、SSGとCLIで同一
       - id: EX-03
         name: 人が共有するURLはボードから、成果物に残すlivt URIはCLIから取る
+    automated: true
   - id: R-03
     name: どの付箋も自分のIDを示し、そのリンクをコピーできる
     examples:
@@ -29,6 +30,7 @@ rules:
         name: クリックでコピーされるのはデプロイ済みURL
       - id: EX-03
         name: 表示はカード色に追従するモノクロで、絵文字は使わない
+    automated: true
   - id: R-04
     name: livt URIはCLIから解決できる
     examples:

@@ -8,9 +8,95 @@ import (
 	"github.com/boykush/livt/internal/domain"
 )
 
-func TestRenderMappingRuleCarriesIDAnchorAndBadge(t *testing.T) {
+// keyedBoard is a board holding one of every sticky kind that carries an ID.
+func keyedBoard() *domain.ExampleMapping {
+	return &domain.ExampleMapping{
+		Rules: []domain.Rule{{
+			ID:       "R-01",
+			Name:     "Activities and steps can be overviewed",
+			Examples: []domain.Example{{ID: "EX-01", Name: "An example"}},
+		}},
+		Questions: []domain.Question{{ID: "Q-01", Text: "An open question"}},
+	}
+}
+
+// livt://mapping/trace-test-to-rule/rule/R-03/example/EX-01 and
+// livt://mapping/trace-test-to-rule/rule/R-03/example/EX-02: rule, example and
+// question stickies alike show their own ID, and that badge is the trigger that
+// copies the sticky's own URL.
+func TestRenderMappingEveryStickyCarriesACopyableIDBadge(t *testing.T) {
+	var buf bytes.Buffer
+	if err := renderMapping(&buf, keyedBoard(), "Story", "", nil); err != nil {
+		t.Fatal(err)
+	}
+	html := buf.String()
+
+	for _, anchor := range []string{"rule-R-01", "rule-R-01-example-EX-01", "question-Q-01"} {
+		if !strings.Contains(html, `id="`+anchor+`"`) {
+			t.Errorf("expected a sticky anchored at %s", anchor)
+		}
+		if !strings.Contains(html, `href="#`+anchor+`" data-copy-link`) {
+			t.Errorf("expected a one-click copy-link trigger aimed at %s", anchor)
+		}
+	}
+	// The badge shows the ID as the master numbers it, so an example reads as the
+	// rule-local EX-01 even though the link behind it is qualified by the rule.
+	for _, label := range []string{">#R-01</a>", ">#EX-01</a>", ">#Q-01</a>"} {
+		if !strings.Contains(html, label) {
+			t.Errorf("expected a badge labelled %s", label)
+		}
+	}
+}
+
+// livt://mapping/trace-test-to-rule/rule/R-03/example/EX-03: the badge stays
+// monochrome and tinted to its own sticky, because a dense board carries 30-40
+// of them and an emoji renders full-colour whatever the card around it does.
+func TestRenderMappingIDBadgesAreTintedNotEmoji(t *testing.T) {
+	var buf bytes.Buffer
+	if err := renderMapping(&buf, keyedBoard(), "Story", "", nil); err != nil {
+		t.Fatal(err)
+	}
+	html := buf.String()
+
+	if strings.Contains(html, "🔗") {
+		t.Error("expected the ID badges to carry no emoji")
+	}
+	for _, tint := range []string{"text-blue-400/70", "text-green-400/70", "text-red-400/70"} {
+		if !strings.Contains(html, tint) {
+			t.Errorf("expected a badge tinted %s to follow its own sticky", tint)
+		}
+	}
+}
+
+// livt://mapping/trace-test-to-rule/rule/R-03/example/EX-01: an example sticky
+// is a link target like the other two, so arriving at one flashes the card
+// instead of leaving the reader to work out which one the URL meant.
+func TestRenderMappingFlashesEveryLinkableStickyKind(t *testing.T) {
+	var buf bytes.Buffer
+	if err := renderMapping(&buf, keyedBoard(), "Story", "", nil); err != nil {
+		t.Fatal(err)
+	}
+	html := buf.String()
+
+	for _, kind := range []string{"rule-card", "example-card", "question-card"} {
+		if !strings.Contains(html, "."+kind+":target") {
+			t.Errorf("expected a %s to flash when a deep link lands on it", kind)
+		}
+		if !strings.Contains(html, `class="`+kind+` relative`) {
+			t.Errorf("expected the %s markup to carry the class the flash keys on", kind)
+		}
+	}
+}
+
+// livt://mapping/trace-test-to-rule/rule/R-02/example/EX-02: EX-01 recurs under
+// every rule of a board, so an anchor keyed on the example ID alone would send
+// both links to whichever card happened to be rendered first.
+func TestRenderMappingExampleAnchorsCarryTheirRule(t *testing.T) {
 	em := &domain.ExampleMapping{
-		Rules: []domain.Rule{{ID: "R-01", Name: "Activities and steps can be overviewed"}},
+		Rules: []domain.Rule{
+			{ID: "R-01", Name: "First rule", Examples: []domain.Example{{ID: "EX-01", Name: "First rule's example"}}},
+			{ID: "R-02", Name: "Second rule", Examples: []domain.Example{{ID: "EX-01", Name: "Second rule's example"}}},
+		},
 	}
 
 	var buf bytes.Buffer
@@ -19,17 +105,31 @@ func TestRenderMappingRuleCarriesIDAnchorAndBadge(t *testing.T) {
 	}
 	html := buf.String()
 
-	if !strings.Contains(html, `id="rule-R-01"`) {
-		t.Fatal("expected rule sticky to carry an id anchor")
+	for _, anchor := range []string{"rule-R-01-example-EX-01", "rule-R-02-example-EX-01"} {
+		if !strings.Contains(html, `id="`+anchor+`"`) {
+			t.Errorf("expected the two EX-01s to be told apart by %s", anchor)
+		}
 	}
-	if !strings.Contains(html, `href="#rule-R-01" data-copy-link`) {
-		t.Fatal("expected a one-click copy-link trigger on the rule sticky")
+	if strings.Contains(html, `id="example-EX-01"`) {
+		t.Error("expected no rule-blind example anchor, which both EX-01s would answer to")
 	}
-	if !strings.Contains(html, "🔗") {
-		t.Fatal("expected a link emoji to signal the badge is copyable")
+}
+
+// An example under a rule with no ID has nothing to qualify its anchor with, so
+// it stays unlinkable rather than claiming an ambiguous one.
+func TestRenderMappingExampleUnderUnkeyedRuleOmitsAnchor(t *testing.T) {
+	em := &domain.ExampleMapping{
+		Rules: []domain.Rule{{Name: "A rule without an ID", Examples: []domain.Example{{ID: "EX-01", Name: "An example"}}}},
 	}
-	if !strings.Contains(html, "R-01</a>") {
-		t.Fatal("expected the rule ID to be displayed as a badge")
+
+	var buf bytes.Buffer
+	if err := renderMapping(&buf, em, "Story", "", nil); err != nil {
+		t.Fatal(err)
+	}
+	html := buf.String()
+
+	if strings.Contains(html, `id="rule--example-EX-01"`) || strings.Contains(html, `href="#rule--example`) {
+		t.Fatal("expected no example anchor when the enclosing rule has no ID")
 	}
 }
 

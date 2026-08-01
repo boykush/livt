@@ -7,6 +7,7 @@ import (
 	"strings"
 
 	"github.com/boykush/livt/internal/parser"
+	"github.com/boykush/livt/internal/uri"
 )
 
 // buildGlossary renders every ubiquitous language term as a row in the glossary
@@ -65,7 +66,7 @@ func (b *Builder) resolveTermCard(key string) termCard {
 	}
 	term, err := parser.ParseTerm(path)
 	if err != nil || term.Name == "" {
-		return termCard{Name: key, Href: "../ubiquitous.html#" + key}
+		return termCard{Name: key, Href: "../" + uri.TermPage(key)}
 	}
-	return termCard{Name: term.Name, Href: "../ubiquitous.html#" + key}
+	return termCard{Name: term.Name, Href: "../" + uri.TermPage(key)}
 }

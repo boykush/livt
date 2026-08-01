@@ -6,7 +6,7 @@ sits on a relative wrapper because an Opened card is itself an <a> and
 anchors cannot nest.
 */}}
 {{if .Key}}
-<div id="story-{{.Key}}" class="story-card relative scroll-mt-24">
+<div id="{{storyCardAnchor .Key}}" class="story-card relative scroll-mt-24">
   {{if .Opened}}
   <a href="../story/{{.Key}}.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 pb-6 rounded shadow text-sm text-gray-700 hover:bg-yellow-200 transition">
     <span>{{.Name}}</span><span>&rarr;</span>
@@ -16,8 +16,7 @@ anchors cannot nest.
     {{.Name}}
   </div>
   {{end}}
-  <a href="#story-{{.Key}}" data-copy-link title="Copy link"
-     class="absolute bottom-1 right-2 font-mono text-[10px] font-normal text-yellow-600/70 hover:text-yellow-700 cursor-pointer select-none">🔗 Copy link</a>
+  {{template "id-badge" storyBadge .Key}}
 </div>
 {{else}}
 <div class="block bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow text-sm text-gray-700">
