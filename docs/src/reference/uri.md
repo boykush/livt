@@ -81,3 +81,22 @@ was meant to carry. Keep the URI; let the URL be derived.
 Keeping the two apart is what stops the site from becoming a second source of
 identity. The board is for reading and sharing; the URI is what the master
 actually knows about itself.
+
+## Reading one back
+
+A URI left in a test comment is only worth as much as the ability to follow it,
+and that has to work for a reader who is not running an MCP client — CI, an
+editor, or someone with just a checkout. [`livt resolve`](./commands.md#livt-resolve)
+turns any of the shapes above back into the point it names:
+
+```bash
+$ livt resolve livt://mapping/trace-test-to-rule/rule/R-02
+{ "spec_version": "...", "rule": { "id": "R-02", ... } }
+
+$ livt resolve livt://mapping/trace-test-to-rule/rule/R-02 \
+    --format url --base-url https://boykush.github.io/livt
+https://boykush.github.io/livt/mapping/trace-test-to-rule.html#rule-R-02
+```
+
+The URL form is derived from the table above rather than restated, so a link the
+CLI hands out and the anchor the build writes cannot drift apart.

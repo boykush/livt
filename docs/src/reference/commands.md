@@ -123,6 +123,64 @@ body, a commit message, a PR description. A published living-document URL is a
 convenience link for humans, not the citation form: it depends on where the site
 is deployed, and the livt URI does not.
 
+A URI cited this way is read back with [`livt resolve`](#livt-resolve), which
+needs no MCP client -- so the citation stays followable for CI, an editor, or a
+reader who only has a checkout.
+
+## `livt resolve`
+
+Resolve a [livt URI](./uri.md) against the discovery master, without running an
+MCP client. A rule, example, or question cited in a test comment, an issue body,
+or a commit message can then be read back by whoever needs it — CI, an editor,
+or an agent that is not connected to livt over MCP.
+
+```bash
+livt resolve <uri> [flags]
+```
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--root` | `$LIVT_ROOT`, then `.` | Path to the livt project root holding the discovery master |
+| `--format` | `json` | Output form: `json` or `url` |
+| `--base-url` | — | Root of the deployed site; required by `--format url` |
+
+Every URI shape the MCP server exposes as a resource resolves here: mappings,
+rules, examples, questions, stories, story maps, and ubiquitous language terms.
+
+### Output forms
+
+**`--format json`** (the default) prints the same payload an MCP
+`resources/read` of that URI serves, `spec_version` included — the two surfaces
+resolve through one code path, so a consumer sees one shape whichever way it
+asked:
+
+```bash
+livt resolve livt://mapping/trace-test-to-rule/rule/R-04
+```
+
+**`--format url`** prints the item's page on the deployed site, using the same
+[URI-to-page derivation](./uri.md#uri-to-page) the site build anchors its
+stickies to:
+
+```bash
+$ livt resolve livt://mapping/trace-test-to-rule/rule/R-04 \
+    --format url --base-url https://boykush.github.io/livt
+https://boykush.github.io/livt/mapping/trace-test-to-rule.html#rule-R-04
+```
+
+The master is still read in this form, even though the page path derives from
+the URI alone: a link to a page that was never built is worse than an error.
+
+### When a URI does not resolve
+
+Both cases exit non-zero and explain themselves on stderr, because they need
+different fixes:
+
+| | |
+|---|---|
+| **Malformed URI** | The string is not a livt URI at all. The error lists every shape one can take. Fix the URI. |
+| **Nothing to resolve** | The URI is well formed but the master holds no such item, e.g. `rule "R-99" not found in story "trace-test-to-rule"`. Fix the reference, or add the item. |
+
 ## `livt version`
 
 Print the version of livt.
