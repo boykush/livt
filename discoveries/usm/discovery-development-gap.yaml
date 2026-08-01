@@ -7,6 +7,11 @@ activities:
   - key: fill-unautomated-gap
     name: 実装リポジトリでギャップを埋める
     steps:
+      - key: pick-next-gap
+        name: 次に埋めるギャップを選ぶ
+        stories:
+          - name: 未自動化のルールを横断で見渡す
+            key: overview-unautomated-rules
       - key: file-story-issues
         name: ストーリーごとにIssueを起票する
         stories:
@@ -46,6 +51,11 @@ activities:
           - name: ルール付箋から対応Issue・テストへ辿る
             key: trace-rule-to-tests
             release: reflect-status
+      - key: show-status-rollup
+        name: ストーリー・リリース単位で自動化の状況を映す
+        stories:
+          - name: 自動化カバレッジをストーリー・リリースで見渡す
+            key: show-automation-coverage-rollup
 releases:
   - id: read-spec
     name: 実装リポジトリが仕様を読める
