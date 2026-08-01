@@ -93,11 +93,11 @@ terms linked from mappings and story maps):
 | `livt://mapping/{story_key}/rule/{rule_id}` | A single rule and its examples, plus its recorded automation: `issues` (automation Issue URLs) and `automated` (whether the rule is automated by tests). Rules inside `livt://mapping/{story_key}` carry the same fields. |
 | `livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}` | A single example of a rule. Example ids are numbered within their rule, so the address carries `{rule_id}` — `EX-01` alone does not identify an example. |
 | `livt://mapping/{story_key}/question/{question_id}` | A single question. Questions hang off the mapping rather than off a rule, so the address stops at `{story_key}`. |
+| `livt://ubiquitous/{term_key}` | A ubiquitous language term's name and definition. |
 
 A retired rule, example, or question keeps resolving by its URI and carries
 `retired: true`, so a reference to it reads as retired rather than failing (or,
 worse, landing on whatever reused its id). Live items omit the field.
-| `livt://ubiquitous/{term_key}` | A ubiquitous language term's name and definition. |
 
 Read them with `resources/read`; all appear in `resources/templates/list`. The
 server advertises templates only — there is no concrete resource list and no
