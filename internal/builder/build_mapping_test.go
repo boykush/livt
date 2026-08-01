@@ -299,7 +299,8 @@ func TestRenderMappingOmitsRetiredStickies(t *testing.T) {
 	}
 	for _, retired := range []string{
 		"退役したルール", "退役した実例", "退役した疑問",
-		`id="rule-R-02"`, `id="question-Q-02"`, // nor their anchors
+		// Nor their anchors: an id with no sticky is a link that lands nowhere.
+		`id="rule-R-02"`, `id="rule-R-01-example-EX-02"`, `id="question-Q-02"`,
 	} {
 		if strings.Contains(html, retired) {
 			t.Errorf("board still shows retired %q", retired)
