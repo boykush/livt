@@ -1,0 +1,78 @@
+# livt URI
+
+A **livt URI** names one point in the discovery master — a rule, an example, a
+question, a story, a story map, or a ubiquitous language term. It is the form to
+reach for whenever a reference has to survive outside the master: a test comment,
+an issue body, a commit message.
+
+```
+livt://mapping/{story-key}/rule/{rule-id}
+```
+
+The MCP server addresses its resources by these URIs — see
+[Commands](./commands.md#resources) for what each one returns — and the
+generated site anchors its stickies to them. Neither depends on where the site
+is deployed.
+
+## Why not a bare ID
+
+`R-02` on its own is not a reference. IDs are numbered within the file that
+holds them, so every example mapping in this repository defines an `R-02`, and
+every rule that has examples defines an `EX-01`. Even `R-13 EX-01` narrows it to
+nothing — the reader still cannot tell which mapping was meant, and neither can
+a search. The story key is the part that makes it addressable:
+
+```
+livt://mapping/trace-test-to-rule/rule/R-02/example/EX-01
+```
+
+## URI to page
+
+`livt build` renders the master as a static site, and this is where each URI
+lands in it. Paths are relative to the output root.
+
+| livt URI | Page |
+|---|---|
+| `livt://mapping/{story-key}` | `mapping/{story-key}.html` |
+| `livt://mapping/{story-key}/rule/{rule-id}` | `mapping/{story-key}.html#rule-{rule-id}` |
+| `livt://mapping/{story-key}/rule/{rule-id}/example/{example-id}` | `mapping/{story-key}.html#rule-{rule-id}-example-{example-id}` |
+| `livt://mapping/{story-key}/question/{question-id}` | `mapping/{story-key}.html#question-{question-id}` |
+| `livt://story/{story-key}` | `story/{story-key}.html` |
+| `livt://story-map/{map-name}` | `story-map/{map-name}.html` |
+| `livt://ubiquitous/{term-key}` | `ubiquitous.html#{term-key}` |
+
+An example's anchor repeats its rule for the same reason its URI does: `EX-01`
+recurs under every rule of a board, so `#example-EX-01` would land on whichever
+one happened to be first. The sticky's own badge still shows the local `EX-01` —
+that is the ID the master numbers — while the link behind it carries the rule.
+
+## Store the URI, render the URL
+
+Nothing in the master records where the site is deployed. The deployment URL is
+prefixed onto the paths above only while a page is being rendered, which is why
+the same master can be served from a local `livt serve`, from GitHub Pages, and
+from an internal host at once:
+
+```
+livt://mapping/trace-test-to-rule/rule/R-02
+  -> mapping/trace-test-to-rule.html#rule-R-02
+  -> https://boykush.github.io/livt/demo/mapping/trace-test-to-rule.html#rule-R-02
+```
+
+A deployed URL is therefore a fine thing to paste into a chat and a poor thing to
+commit: it goes stale the moment the site moves, and it buries the identity it
+was meant to carry. Keep the URI; let the URL be derived.
+
+## Where each form comes from
+
+- **A URL, to send to a person** — take it from the board. Every sticky shows its
+  own ID in the bottom-right corner; clicking it copies the deployed URL of that
+  sticky, so what you paste already points at the exact card.
+- **A livt URI, to leave in an artifact** — take it from the tooling rather than
+  the board. Every rule, example, and question the MCP server returns carries
+  its own `uri`, so an agent writing a test can quote the point it is proving
+  without composing the URI by hand.
+
+Keeping the two apart is what stops the site from becoming a second source of
+identity. The board is for reading and sharing; the URI is what the master
+actually knows about itself.
