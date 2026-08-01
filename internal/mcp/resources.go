@@ -3,6 +3,7 @@ package mcp
 import (
 	"context"
 	"encoding/json"
+	"errors"
 
 	"github.com/boykush/livt/internal/uri"
 	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
@@ -67,104 +68,56 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 
 // readMapping serves livt://mapping/{story_key}.
 func (s *Server) readMapping(_ context.Context, req *mcpsdk.ReadResourceRequest) (*mcpsdk.ReadResourceResult, error) {
-	resURI := req.Params.URI
-	key, ok := uri.ParseMapping(resURI)
-	if !ok {
-		return nil, mcpsdk.ResourceNotFoundError(resURI)
-	}
-	em, err := s.cfg.exampleMapping(key)
-	if err != nil {
-		return nil, mcpsdk.ResourceNotFoundError(resURI)
-	}
-	return jsonResource(resURI, exampleMappingResult{versioned: s.versioned(), Mapping: s.cfg.toExampleMappingJSON(em)})
+	return s.read(req.Params.URI, uri.KindMapping)
 }
 
 // readRule serves livt://mapping/{story_key}/rule/{rule_id}.
 func (s *Server) readRule(_ context.Context, req *mcpsdk.ReadResourceRequest) (*mcpsdk.ReadResourceResult, error) {
-	resURI := req.Params.URI
-	key, ruleID, ok := uri.ParseRule(resURI)
-	if !ok {
-		return nil, mcpsdk.ResourceNotFoundError(resURI)
-	}
-	rule, err := s.cfg.rule(key, ruleID)
-	if err != nil {
-		return nil, mcpsdk.ResourceNotFoundError(resURI)
-	}
-	return jsonResource(resURI, ruleResult{versioned: s.versioned(), Rule: toRuleJSON(key, rule)})
+	return s.read(req.Params.URI, uri.KindRule)
 }
 
 // readExample serves livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}.
 func (s *Server) readExample(_ context.Context, req *mcpsdk.ReadResourceRequest) (*mcpsdk.ReadResourceResult, error) {
-	resURI := req.Params.URI
-	key, ruleID, exampleID, ok := uri.ParseExample(resURI)
-	if !ok {
-		return nil, mcpsdk.ResourceNotFoundError(resURI)
-	}
-	example, err := s.cfg.example(key, ruleID, exampleID)
-	if err != nil {
-		return nil, mcpsdk.ResourceNotFoundError(resURI)
-	}
-	return jsonResource(resURI, exampleResult{versioned: s.versioned(), Example: toExampleJSON(key, ruleID, example)})
+	return s.read(req.Params.URI, uri.KindExample)
 }
 
 // readQuestion serves livt://mapping/{story_key}/question/{question_id}.
 func (s *Server) readQuestion(_ context.Context, req *mcpsdk.ReadResourceRequest) (*mcpsdk.ReadResourceResult, error) {
-	resURI := req.Params.URI
-	key, questionID, ok := uri.ParseQuestion(resURI)
-	if !ok {
-		return nil, mcpsdk.ResourceNotFoundError(resURI)
-	}
-	question, err := s.cfg.question(key, questionID)
-	if err != nil {
-		return nil, mcpsdk.ResourceNotFoundError(resURI)
-	}
-	return jsonResource(resURI, questionResult{versioned: s.versioned(), Question: toQuestionJSON(key, question)})
+	return s.read(req.Params.URI, uri.KindQuestion)
 }
 
 // readStoryMap serves livt://story-map/{map_name}.
 func (s *Server) readStoryMap(_ context.Context, req *mcpsdk.ReadResourceRequest) (*mcpsdk.ReadResourceResult, error) {
-	resURI := req.Params.URI
-	name, ok := uri.ParseStoryMap(resURI)
-	if !ok {
-		return nil, mcpsdk.ResourceNotFoundError(resURI)
-	}
-	sm, err := s.cfg.storyMap(name)
-	if err != nil {
-		return nil, mcpsdk.ResourceNotFoundError(resURI)
-	}
-	return jsonResource(resURI, storyMapResult{versioned: s.versioned(), StoryMap: s.cfg.toStoryMapJSON(sm)})
+	return s.read(req.Params.URI, uri.KindStoryMap)
 }
 
 // readStory serves livt://story/{story_key}.
 func (s *Server) readStory(_ context.Context, req *mcpsdk.ReadResourceRequest) (*mcpsdk.ReadResourceResult, error) {
-	resURI := req.Params.URI
-	key, ok := uri.ParseStory(resURI)
-	if !ok {
-		return nil, mcpsdk.ResourceNotFoundError(resURI)
-	}
-	story, err := s.cfg.story(key)
-	if err != nil {
-		return nil, mcpsdk.ResourceNotFoundError(resURI)
-	}
-	out, err := s.cfg.toStoryJSON(story)
-	if err != nil {
-		return nil, err
-	}
-	return jsonResource(resURI, storyResult{versioned: s.versioned(), Story: out})
+	return s.read(req.Params.URI, uri.KindStory)
 }
 
 // readTerm serves livt://ubiquitous/{term_key}.
 func (s *Server) readTerm(_ context.Context, req *mcpsdk.ReadResourceRequest) (*mcpsdk.ReadResourceResult, error) {
-	resURI := req.Params.URI
-	key, ok := uri.ParseTerm(resURI)
-	if !ok {
+	return s.read(req.Params.URI, uri.KindTerm)
+}
+
+// read serves one resource. The URI has to parse as the shape its own template
+// advertises, so a handler never answers for a neighbouring shape. Resolving
+// goes through Resolve — the same entry the CLI uses, which is what keeps the
+// two surfaces on one JSON shape.
+func (s *Server) read(resURI string, want uri.Kind) (*mcpsdk.ReadResourceResult, error) {
+	p, ok := uri.Parse(resURI)
+	if !ok || p.Kind != want {
 		return nil, mcpsdk.ResourceNotFoundError(resURI)
 	}
-	term, err := s.cfg.term(key)
+	payload, err := s.Resolve(p)
+	if errors.Is(err, ErrNotFound) {
+		return nil, mcpsdk.ResourceNotFoundError(resURI)
+	}
 	if err != nil {
-		return nil, mcpsdk.ResourceNotFoundError(resURI)
+		return nil, err
 	}
-	return jsonResource(resURI, termResult{versioned: s.versioned(), Term: toTermJSON(term)})
+	return jsonResource(resURI, payload)
 }
 
 // jsonResource marshals v as the single application/json content of a resource.
