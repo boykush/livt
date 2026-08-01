@@ -39,7 +39,7 @@ rules:
       - id: EX-02
         name: 出力はMCPのリソース読み出しと同じJSON形状
       - id: EX-03
-        name: ファイルパス、デプロイ済みURLの形でも出せる
+        name: デプロイ済みURLの形でも出せる
   - id: R-05
     name: 退役した項目は削除せずretiredとして残り、livt URIは「退役」として解決する
     examples:
