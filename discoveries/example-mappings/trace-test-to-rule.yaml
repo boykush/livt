@@ -1,0 +1,74 @@
+rules:
+  - id: R-01
+    name: 仕様の一点はlivt URIで一意に指せる
+    examples:
+      - id: EX-01
+        name: ルールは livt://mapping/{story-key}/rule/{rule-id}
+      - id: EX-02
+        name: 実例は livt://mapping/{story-key}/rule/{rule-id}/example/{example-id}（実例IDはルール内採番のため、ルールを含める）
+      - id: EX-03
+        name: 疑問は livt://mapping/{story-key}/question/{question-id}
+      - id: EX-04
+        name: 裸のR-02は10個のマッピング全部に存在し、単体ではどのマッピングか復元できない
+  - id: R-02
+    name: livt URIはデプロイ先に依存しない
+    examples:
+      - id: EX-01
+        name: 保存するのはlivt URIで、デプロイ先URLは描画時にだけ前置される
+      - id: EX-02
+        name: livt URIからページ内アンカーへの導出規則は文書化され、SSGとCLIで同一
+      - id: EX-03
+        name: 人が共有するURLはボードから、成果物に残すlivt URIはCLIから取る
+  - id: R-03
+    name: どの付箋も自分のIDを示し、そのリンクをコピーできる
+    examples:
+      - id: EX-01
+        name: ルール・実例・疑問の各カード右下にIDが薄字で出る
+      - id: EX-02
+        name: クリックでコピーされるのはデプロイ済みURL
+      - id: EX-03
+        name: 表示はカード色に追従するモノクロで、絵文字は使わない
+  - id: R-04
+    name: livt URIはCLIから解決できる
+    examples:
+      - id: EX-01
+        name: ルール・実例・疑問・ストーリー・ストーリーマップ・用語のいずれも解決できる
+      - id: EX-02
+        name: 出力はMCPのリソース読み出しと同じJSON形状
+      - id: EX-03
+        name: ファイルパス、デプロイ済みURLの形でも出せる
+  - id: R-05
+    name: 退役した項目は削除せずretiredとして残り、livt URIは「退役」として解決する
+    examples:
+      - id: EX-01
+        name: 退役したルールのlivt URIは404ではなくretiredとして解決する
+      - id: EX-02
+        name: 退役した付箋はボードにもTasksページにも出ない
+      - id: EX-03
+        name: 本文を残すので、退役した内容が後から読める
+      - id: EX-04
+        name: YAMLのコメントアウトでは代用しない（構造的な編集でコメントは消えるため）
+  - id: R-06
+    name: 新しいIDはretiredを含めたmax + 1で採番する
+    examples:
+      - id: EX-01
+        name: R-01/R-02/R-03からR-03を退役させても、次のルールはR-04
+      - id: EX-02
+        name: ルール・実例・疑問のいずれも同じ規則
+  - id: R-07
+    name: 一度使われたIDは、指す対象を変えない
+    examples:
+      - id: EX-01
+        name: 実例を別のルールへ付け替えるとIDが変わるので、外部参照済みの実例は付け替えない
+      - id: EX-02
+        name: 再転記でも既存のIDを維持する
+      - id: EX-03
+        name: Issue起票の有無は関係ない（MCPのURI・ボードのリンク・テストのコメントも参照元）
+
+questions: []
+
+ubiquitous:
+  - livt-uri
+  - example-mapping
+  - story
+  - discovery
