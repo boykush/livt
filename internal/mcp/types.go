@@ -1,6 +1,9 @@
 package mcp
 
-import "github.com/boykush/livt/internal/domain"
+import (
+	"github.com/boykush/livt/internal/domain"
+	"github.com/boykush/livt/internal/uri"
+)
 
 // versioned is embedded in every tool and resource payload so each result
 // records the master version it reflects. Its json field is promoted to the top
@@ -68,6 +71,19 @@ type ruleResult struct {
 	Rule ruleJSON `json:"rule"`
 }
 
+// exampleResult is the body of the
+// livt://mapping/{story_key}/rule/{rule_id}/example/{example_id} resource.
+type exampleResult struct {
+	versioned
+	Example exampleJSON `json:"example"`
+}
+
+// questionResult is the body of the livt://mapping/{story_key}/question/{question_id} resource.
+type questionResult struct {
+	versioned
+	Question questionJSON `json:"question"`
+}
+
 // storyMapResult is the body of the livt://story-map/{map_name} resource.
 type storyMapResult struct {
 	versioned
@@ -90,7 +106,11 @@ type termResult struct {
 // StoryKey{Value} are flattened to plain fields) ---
 
 type exampleJSON struct {
-	ID   string `json:"id"`
+	ID string `json:"id"`
+	// URI is the example's own resource
+	// (livt://mapping/{story_key}/rule/{rule_id}/example/{id}). Example ids are
+	// numbered within their rule, so the address carries the rule.
+	URI  string `json:"uri"`
 	Name string `json:"name"`
 }
 
@@ -109,7 +129,10 @@ type ruleJSON struct {
 }
 
 type questionJSON struct {
-	ID   string `json:"id"`
+	ID string `json:"id"`
+	// URI is the question's own resource
+	// (livt://mapping/{story_key}/question/{id}).
+	URI  string `json:"uri"`
 	Text string `json:"text"`
 }
 
@@ -203,9 +226,17 @@ type opportunityRefJSON struct {
 func toRuleJSON(storyKey string, r domain.Rule) ruleJSON {
 	examples := make([]exampleJSON, 0, len(r.Examples))
 	for _, e := range r.Examples {
-		examples = append(examples, exampleJSON{ID: e.ID, Name: e.Name})
+		examples = append(examples, toExampleJSON(storyKey, r.ID, e))
 	}
-	return ruleJSON{ID: r.ID, URI: ruleURI(storyKey, r.ID), Name: r.Name, Examples: examples, Issues: r.Issues, Automated: r.Automated}
+	return ruleJSON{ID: r.ID, URI: uri.Rule(storyKey, r.ID), Name: r.Name, Examples: examples, Issues: r.Issues, Automated: r.Automated}
+}
+
+func toExampleJSON(storyKey, ruleID string, e domain.Example) exampleJSON {
+	return exampleJSON{ID: e.ID, URI: uri.Example(storyKey, ruleID, e.ID), Name: e.Name}
+}
+
+func toQuestionJSON(storyKey string, q domain.Question) questionJSON {
+	return questionJSON{ID: q.ID, URI: uri.Question(storyKey, q.ID), Text: q.Text}
 }
 
 // toExampleMappingJSON is a Config method because resolving the referenced
@@ -217,7 +248,7 @@ func (c Config) toExampleMappingJSON(em *domain.ExampleMapping) exampleMappingJS
 	}
 	questions := make([]questionJSON, 0, len(em.Questions))
 	for _, q := range em.Questions {
-		questions = append(questions, questionJSON{ID: q.ID, Text: q.Text})
+		questions = append(questions, toQuestionJSON(em.StoryKey.Value, q))
 	}
 	return exampleMappingJSON{
 		StoryKey:        em.StoryKey.Value,
@@ -237,7 +268,7 @@ func (c Config) toStoryMapJSON(sm *domain.StoryMap) storyMapJSON {
 			for _, sc := range st.Stories {
 				card := storyCardJSON{Key: sc.Key.Value, Name: sc.Name, Release: sc.Release}
 				if sc.HasKey() && c.hasStory(sc.Key.Value) {
-					card.URI = storyURI(sc.Key.Value)
+					card.URI = uri.Story(sc.Key.Value)
 				}
 				stories = append(stories, card)
 			}
@@ -269,7 +300,7 @@ func (c Config) toStoryJSON(story *domain.Story) (storyJSON, error) {
 	}
 	out := storyJSON{Key: story.Key.Value, Name: story.Name, Body: story.Body, Meta: meta}
 	if c.hasExampleMapping(story.Key.Value) {
-		out.ExampleMappingURI = mappingURI(story.Key.Value)
+		out.ExampleMappingURI = uri.Mapping(story.Key.Value)
 	}
 	index, err := c.storyOpportunities()
 	if err != nil {
@@ -292,7 +323,7 @@ func (c Config) toTermRefs(keys []string) []termRefJSON {
 		ref := termRefJSON{Key: key}
 		if term, err := c.term(key); err == nil {
 			ref.Name = term.Name
-			ref.URI = termURI(key)
+			ref.URI = uri.Term(key)
 		}
 		refs = append(refs, ref)
 	}

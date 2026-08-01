@@ -1,130 +1,120 @@
 package mcp
 
-import "testing"
+import (
+	"context"
+	"encoding/json"
+	"testing"
 
-func TestParseMappingURI(t *testing.T) {
-	cases := []struct {
-		uri string
-		key string
-		ok  bool
-	}{
-		{"livt://mapping/demo", "demo", true},
-		{"livt://mapping/automate-from-master-in-impl-repos", "automate-from-master-in-impl-repos", true},
-		{"livt://mapping/", "", false},               // empty key
-		{"livt://story/demo", "", false},             // wrong path
-		{"livt://mapping/demo/rule/R-01", "", false}, // a rule URI, not a mapping URI
-		{"livt://mapping/../secret", "", false},      // traversal
-		{"livt://mapping/a/b", "", false},            // nested path
+	"github.com/boykush/livt/internal/uri"
+	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
+)
+
+// readResource drives one resource handler the way the SDK does, returning the
+// decoded body. URI parsing and building live in internal/uri and are tested
+// there; what these tests cover is that each handler serves its own shape.
+func readResource[T any](t *testing.T, h func(context.Context, *mcpsdk.ReadResourceRequest) (*mcpsdk.ReadResourceResult, error), resURI string) T {
+	t.Helper()
+	res, err := h(context.Background(), &mcpsdk.ReadResourceRequest{Params: &mcpsdk.ReadResourceParams{URI: resURI}})
+	if err != nil {
+		t.Fatalf("read %q: %v", resURI, err)
 	}
-	for _, c := range cases {
-		key, ok := parseMappingURI(c.uri)
-		if ok != c.ok || key != c.key {
-			t.Errorf("parseMappingURI(%q) = (%q, %v), want (%q, %v)", c.uri, key, ok, c.key, c.ok)
+	var out T
+	if err := json.Unmarshal([]byte(resourceText(t, res)), &out); err != nil {
+		t.Fatalf("decode %q: %v", resURI, err)
+	}
+	return out
+}
+
+// livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02: an example resolves
+// through the rule that numbers it.
+func TestReadExampleReturnsSingleExample(t *testing.T) {
+	s := newTestServer(t)
+	resURI := uri.Example("demo", "R-01", "EX-01")
+
+	got := readResource[exampleResult](t, s.readExample, resURI).Example
+	if got.ID != "EX-01" || got.Name != "実例1" {
+		t.Errorf("example = %+v, want EX-01 実例1", got)
+	}
+	if got.URI != resURI {
+		t.Errorf("example uri = %q, want %q", got.URI, resURI)
+	}
+}
+
+// livt://mapping/trace-test-to-rule/rule/R-01/example/EX-03: a question resolves
+// off the mapping, without a rule in the address.
+func TestReadQuestionReturnsSingleQuestion(t *testing.T) {
+	s := newTestServer(t)
+	resURI := uri.Question("demo", "Q-01")
+
+	got := readResource[questionResult](t, s.readQuestion, resURI).Question
+	if got.ID != "Q-01" || got.Text != "質問1" {
+		t.Errorf("question = %+v, want Q-01 質問1", got)
+	}
+	if got.URI != resURI {
+		t.Errorf("question uri = %q, want %q", got.URI, resURI)
+	}
+}
+
+// livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02: a rule URI and an
+// example URI address different things, so neither handler answers for the
+// other's shape.
+func TestRuleAndExampleHandlersRejectEachOthersURIs(t *testing.T) {
+	s := newTestServer(t)
+
+	if _, err := s.readExample(context.Background(), readReq(uri.Rule("demo", "R-01"))); err == nil {
+		t.Error("readExample answered a rule URI")
+	}
+	if _, err := s.readRule(context.Background(), readReq(uri.Example("demo", "R-01", "EX-01"))); err == nil {
+		t.Error("readRule answered an example URI")
+	}
+	if _, err := s.readMapping(context.Background(), readReq(uri.Example("demo", "R-01", "EX-01"))); err == nil {
+		t.Error("readMapping answered an example URI")
+	}
+	if _, err := s.readMapping(context.Background(), readReq(uri.Question("demo", "Q-01"))); err == nil {
+		t.Error("readMapping answered a question URI")
+	}
+}
+
+func TestReadExampleAndQuestionNotFound(t *testing.T) {
+	s := newTestServer(t)
+	for _, resURI := range []string{
+		uri.Example("demo", "R-01", "EX-99"), // unknown example
+		uri.Example("demo", "R-99", "EX-01"), // unknown rule
+		uri.Example("nope", "R-01", "EX-01"), // unknown story
+		"livt://mapping/demo/rule/R-01/example/../secret",
+		"livt://mapping/demo/rule/R-01/example/",
+	} {
+		if _, err := s.readExample(context.Background(), readReq(resURI)); err == nil {
+			t.Errorf("expected error reading %q", resURI)
+		}
+	}
+	for _, resURI := range []string{
+		uri.Question("demo", "Q-99"), // unknown question
+		uri.Question("nope", "Q-01"), // unknown story
+		"livt://mapping/demo/question/../secret",
+		"livt://mapping/demo/question/",
+	} {
+		if _, err := s.readQuestion(context.Background(), readReq(resURI)); err == nil {
+			t.Errorf("expected error reading %q", resURI)
 		}
 	}
 }
 
-func TestParseRuleURI(t *testing.T) {
-	cases := []struct {
-		uri  string
-		key  string
-		rule string
-		ok   bool
-	}{
-		{"livt://mapping/demo/rule/R-01", "demo", "R-01", true},
-		{"livt://mapping/demo", "", "", false},           // mapping URI, no rule
-		{"livt://mapping/demo/rule/", "", "", false},     // empty rule id
-		{"livt://mapping//rule/R-01", "", "", false},     // empty key
-		{"livt://mapping/demo/rule/../x", "", "", false}, // traversal in rule id
+// livt://mapping/trace-test-to-rule/rule/R-01/example/EX-01 and EX-03: the
+// examples and questions listed inside a mapping carry the URIs that address
+// them on their own.
+func TestMappingLinksExamplesAndQuestions(t *testing.T) {
+	s := newTestServer(t)
+
+	em := readResource[exampleMappingResult](t, s.readMapping, uri.Mapping("demo")).Mapping
+	if got := em.Rules[0].Examples[0].URI; got != "livt://mapping/demo/rule/R-01/example/EX-01" {
+		t.Errorf("example uri = %q, want livt://mapping/demo/rule/R-01/example/EX-01", got)
 	}
-	for _, c := range cases {
-		key, rule, ok := parseRuleURI(c.uri)
-		if ok != c.ok || key != c.key || rule != c.rule {
-			t.Errorf("parseRuleURI(%q) = (%q, %q, %v), want (%q, %q, %v)", c.uri, key, rule, ok, c.key, c.rule, c.ok)
-		}
+	if got := em.Questions[0].URI; got != "livt://mapping/demo/question/Q-01" {
+		t.Errorf("question uri = %q, want livt://mapping/demo/question/Q-01", got)
 	}
 }
 
-func TestParseStoryMapURI(t *testing.T) {
-	cases := []struct {
-		uri  string
-		name string
-		ok   bool
-	}{
-		{"livt://story-map/plain-name", "plain-name", true},
-		// Display names travel percent-encoded and are decoded on read.
-		{"livt://story-map/%E3%83%87%E3%83%A2%E3%83%9E%E3%83%83%E3%83%97", "デモマップ", true},
-		{"livt://story-map/", "", false},    // empty name
-		{"livt://story/demo", "", false},    // a story URI, not a story map URI
-		{"livt://story-map/%zz", "", false}, // invalid percent-encoding
-	}
-	for _, c := range cases {
-		name, ok := parseStoryMapURI(c.uri)
-		if ok != c.ok || name != c.name {
-			t.Errorf("parseStoryMapURI(%q) = (%q, %v), want (%q, %v)", c.uri, name, ok, c.name, c.ok)
-		}
-	}
-}
-
-func TestParseStoryURI(t *testing.T) {
-	cases := []struct {
-		uri string
-		key string
-		ok  bool
-	}{
-		{"livt://story/demo", "demo", true},
-		{"livt://story/", "", false},          // empty key
-		{"livt://story-map/demo", "", false},  // a story map URI, not a story URI
-		{"livt://mapping/demo", "", false},    // wrong path
-		{"livt://story/../secret", "", false}, // traversal
-		{"livt://story/a/b", "", false},       // nested path
-	}
-	for _, c := range cases {
-		key, ok := parseStoryURI(c.uri)
-		if ok != c.ok || key != c.key {
-			t.Errorf("parseStoryURI(%q) = (%q, %v), want (%q, %v)", c.uri, key, ok, c.key, c.ok)
-		}
-	}
-}
-
-func TestParseTermURI(t *testing.T) {
-	cases := []struct {
-		uri string
-		key string
-		ok  bool
-	}{
-		{"livt://ubiquitous/story", "story", true},
-		{"livt://ubiquitous/", "", false},          // empty key
-		{"livt://story/story", "", false},          // wrong path
-		{"livt://ubiquitous/../secret", "", false}, // traversal
-	}
-	for _, c := range cases {
-		key, ok := parseTermURI(c.uri)
-		if ok != c.ok || key != c.key {
-			t.Errorf("parseTermURI(%q) = (%q, %v), want (%q, %v)", c.uri, key, ok, c.key, c.ok)
-		}
-	}
-}
-
-func TestURIsRoundTrip(t *testing.T) {
-	key, ok := parseMappingURI(mappingURI("demo"))
-	if !ok || key != "demo" {
-		t.Fatalf("mapping round trip = (%q, %v), want (demo, true)", key, ok)
-	}
-	k, id, ok := parseRuleURI(ruleURI("demo", "R-01"))
-	if !ok || k != "demo" || id != "R-01" {
-		t.Fatalf("rule round trip = (%q, %q, %v), want (demo, R-01, true)", k, id, ok)
-	}
-	name, ok := parseStoryMapURI(storyMapURI("デモマップ"))
-	if !ok || name != "デモマップ" {
-		t.Fatalf("story map round trip = (%q, %v), want (デモマップ, true)", name, ok)
-	}
-	sk, ok := parseStoryURI(storyURI("demo"))
-	if !ok || sk != "demo" {
-		t.Fatalf("story round trip = (%q, %v), want (demo, true)", sk, ok)
-	}
-	tk, ok := parseTermURI(termURI("story"))
-	if !ok || tk != "story" {
-		t.Fatalf("term round trip = (%q, %v), want (story, true)", tk, ok)
-	}
+func readReq(resURI string) *mcpsdk.ReadResourceRequest {
+	return &mcpsdk.ReadResourceRequest{Params: &mcpsdk.ReadResourceParams{URI: resURI}}
 }
