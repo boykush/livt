@@ -141,6 +141,56 @@ func TestBuildTasksFilterCoversBothLists(t *testing.T) {
 	}
 }
 
+// Filtering to an opportunity a section has nothing for must not leave its
+// heading claiming the unfiltered count over an empty gap. The section needs
+// three things for the shared filter to put that right, and the filter has to
+// actually use them — hooks nothing reads would render the same defect.
+func TestBuildTasksSectionsStayHonestWhenAFilterEmptiesThem(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	opp := []opportunityRef{{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"}}
+	questions := []taskItem{{Kind: "question", Text: "A question", StoryName: "S", Opportunities: opp}}
+	rules := []taskItem{{Kind: "rule", Text: "A rule", StoryName: "S", Opportunities: opp}}
+	if err := b.buildTasks(questions, rules, []string{"協働ディスカバリー"}); err != nil {
+		t.Fatal(err)
+	}
+	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
+
+	// Match the elements, not the bare attribute: the filter script mentions
+	// each name again in its own selectors, which the last assertion checks for.
+	for _, hook := range []string{
+		"<section data-filter-scope", // the countable group
+		"<span data-filter-count",    // the number to correct
+		"<p data-filter-empty",       // the line explaining the gap
+	} {
+		if got := strings.Count(html, hook); got != 2 {
+			t.Errorf("%s appears %d times, want one per section", hook, got)
+		}
+	}
+
+	// The filtered-empty line ships hidden, so an unfiltered page does not carry
+	// two empty states at once.
+	if !strings.Contains(html, `data-filter-empty style="display: none"`) {
+		t.Error("expected the filtered-empty line to start hidden")
+	}
+	// It has to say the filter emptied the section, not that the master is done —
+	// "Every rule is automated." would be a lie about the master.
+	for _, msg := range []string{
+		"No open questions for this opportunity.",
+		"Every rule for this opportunity is automated.",
+	} {
+		if !strings.Contains(html, msg) {
+			t.Errorf("missing filtered-empty line %q", msg)
+		}
+	}
+
+	// Without this the hooks are inert decoration and the count never moves.
+	for _, selector := range []string{"[data-filter-scope]", "[data-filter-count]", "[data-filter-empty]"} {
+		if !strings.Contains(html, selector) {
+			t.Errorf("filter script never reads %s, so the section cannot correct itself", selector)
+		}
+	}
+}
+
 // An item whose story has no page still names its story; only the link drops.
 func TestBuildTasksItemWithoutStoryPageStillNamesItsStory(t *testing.T) {
 	b := emptyDirsBuilder(t)
