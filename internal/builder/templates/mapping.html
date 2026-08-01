@@ -6,7 +6,7 @@
 <title>{{.StoryName}} - livt</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
-  .rule-card:target, .question-card:target {
+  .rule-card:target, .example-card:target, .question-card:target {
     box-shadow: 0 0 0 2px #fff, 0 0 0 5px #7c3aed;
     animation: ruleFlash 1.1s ease-out 1;
   }
@@ -49,7 +49,7 @@
 <div class="min-w-max flex flex-col gap-2">
 <div class="flex gap-4">
 {{range .Mapping.Rules}}
-  <div{{if .ID}} id="rule-{{.ID}}"{{end}} class="rule-card relative bg-blue-100 border-l-4 border-blue-400 px-3 pt-3 pb-6 rounded shadow font-semibold text-gray-800 w-[180px] scroll-mt-24">
+  <div{{if .ID}} id="{{ruleAnchor .ID}}"{{end}} class="rule-card relative bg-blue-100 border-l-4 border-blue-400 px-3 pt-3 pb-6 rounded shadow font-semibold text-gray-800 w-[180px] scroll-mt-24">
     {{.Name}}
     {{if .Automated}}
     <span title="Automated by tests" class="absolute -top-2 -right-2 rounded-full bg-blue-600 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ automated</span>
@@ -61,10 +61,7 @@
       {{end}}
     </div>
     {{end}}
-    {{if .ID}}
-    <a href="#rule-{{.ID}}" data-copy-link title="Copy link"
-       class="absolute bottom-1 right-2 font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 cursor-pointer select-none">🔗 {{.ID}}</a>
-    {{end}}
+    {{if .ID}}{{template "id-badge" ruleBadge .ID}}{{end}}
   </div>
 {{end}}
 {{if .Mapping.Questions}}
@@ -74,11 +71,17 @@
 {{end}}
 </div>
 <div class="flex gap-4 items-start">
-{{range .Mapping.Rules}}
+{{range $rule := .Mapping.Rules}}
   <div class="flex flex-col gap-2 w-[180px]">
-    {{range .Examples}}
-    <div class="bg-green-100 border-l-4 border-green-400 p-3 rounded shadow text-gray-700 text-sm">
+    {{range $rule.Examples}}
+    {{/*
+    Example ids are numbered within their rule, so the anchor carries the rule
+    to stay unique on the board while the badge keeps showing the local id. The
+    two reading differently costs nothing: what a click copies is the URL.
+    */}}
+    <div{{if and $rule.ID .ID}} id="{{exampleAnchor $rule.ID .ID}}"{{end}} class="example-card relative bg-green-100 border-l-4 border-green-400 px-3 pt-3 pb-6 rounded shadow text-gray-700 text-sm scroll-mt-24">
       {{.Name}}
+      {{if and $rule.ID .ID}}{{template "id-badge" exampleBadge $rule.ID .ID}}{{end}}
     </div>
     {{end}}
   </div>
@@ -87,8 +90,9 @@
   <div class="flex flex-col gap-2 w-[180px]">
     {{range .Mapping.Questions}}
     {{/* Keyed questions get an anchor so the Tasks page can link to the sticky. */}}
-    <div{{if .ID}} id="question-{{.ID}}"{{end}} class="question-card bg-red-100 border-l-4 border-red-400 p-3 rounded shadow text-gray-700 text-sm scroll-mt-24">
+    <div{{if .ID}} id="{{questionAnchor .ID}}"{{end}} class="question-card relative bg-red-100 border-l-4 border-red-400 px-3 pt-3 pb-6 rounded shadow text-gray-700 text-sm scroll-mt-24">
       {{.Text}}
+      {{if .ID}}{{template "id-badge" questionBadge .ID}}{{end}}
     </div>
     {{end}}
   </div>
@@ -112,18 +116,6 @@
 </div>
 {{end}}
 </main>
-<script>
-  document.querySelectorAll('a[data-copy-link]').forEach(function (a) {
-    a.addEventListener('click', function () {
-      if (!navigator.clipboard) return;
-      var url = location.href.split('#')[0] + a.getAttribute('href');
-      navigator.clipboard.writeText(url).then(function () {
-        var label = a.textContent;
-        a.textContent = '✓ Copied';
-        setTimeout(function () { a.textContent = label; }, 1200);
-      });
-    });
-  });
-</script>
+{{template "id-badge-script"}}
 </body>
 </html>

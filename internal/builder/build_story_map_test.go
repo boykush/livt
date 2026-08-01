@@ -252,8 +252,14 @@ func TestRenderStoryMapKeyedCardCarriesIDAnchorAndCopyLink(t *testing.T) {
 			t.Fatalf("expected a one-click copy-link trigger on story card %s", key)
 		}
 	}
-	if !strings.Contains(html, "🔗") {
-		t.Fatal("expected a link emoji to signal the trigger is copyable")
+	// livt://mapping/trace-test-to-rule/rule/R-03/example/EX-03: the same badge
+	// the mapping board carries, labelled with the card's story key, so one
+	// expression covers every sticky on every board.
+	if !strings.Contains(html, ">#detailed-card</a>") {
+		t.Fatal("expected the story card to show its key as the copyable badge")
+	}
+	if strings.Contains(html, "🔗") {
+		t.Fatal("expected the copy-link badge to carry no emoji")
 	}
 	if !strings.Contains(html, `class="story-card relative scroll-mt-24"`) {
 		t.Fatal("expected anchored story cards to keep a scroll margin so deep links land on the card")

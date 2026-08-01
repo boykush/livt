@@ -8,6 +8,7 @@ import (
 
 	"github.com/boykush/livt/internal/domain"
 	"github.com/boykush/livt/internal/parser"
+	"github.com/boykush/livt/internal/uri"
 )
 
 // buildMappings builds example mapping HTML pages and returns a preview tile per
@@ -30,7 +31,7 @@ func (b *Builder) buildMappings() ([]mappingTile, taskSet, error) {
 		storyName := b.resolveStoryName(em.StoryKey)
 		storyPath := ""
 		if b.hasStoryPage(em.StoryKey) {
-			storyPath = "../story/" + em.StoryKey.Value + ".html"
+			storyPath = "../" + uri.StoryPage(em.StoryKey.Value)
 		}
 
 		ubiquitous := b.resolveTermCards(em.Ubiquitous)
@@ -63,20 +64,24 @@ func (o *taskSet) add(other taskSet) {
 }
 
 // collectTasks lifts one mapping's open questions and un-automated rules onto
-// the Tasks page, each deep-linked to its own sticky on the board. An item
-// without an ID has no anchor to aim at (the board only renders one for keyed
-// stickies), so it links to the board itself.
+// the Tasks page, each deep-linked to its own sticky on the board through the
+// same derivation the board itself anchors by.
 func collectTasks(em *domain.ExampleMapping, storyName, storyPath string) taskSet {
-	item := func(kind, id, text string) taskItem {
-		mappingPath := "mapping/" + em.StoryKey.Value + ".html"
-		if id != "" {
-			mappingPath += "#" + kind + "-" + id
+	key := em.StoryKey.Value
+	// An item without an ID has no anchor to aim at (the board only renders one
+	// for keyed stickies), so it links to the board itself.
+	sticky := func(id string, locate func(string, string) string) string {
+		if id == "" {
+			return uri.MappingPage(key)
 		}
+		return locate(key, id)
+	}
+	item := func(kind, id, text, mappingPath string) taskItem {
 		return taskItem{
 			Kind:        kind,
 			ID:          id,
 			Text:        text,
-			StoryKey:    em.StoryKey.Value,
+			StoryKey:    key,
 			StoryName:   storyName,
 			StoryPath:   storyPath,
 			MappingPath: mappingPath,
@@ -85,13 +90,13 @@ func collectTasks(em *domain.ExampleMapping, storyName, storyPath string) taskSe
 
 	var out taskSet
 	for _, q := range em.Questions {
-		out.Questions = append(out.Questions, item("question", q.ID, q.Text))
+		out.Questions = append(out.Questions, item("question", q.ID, q.Text, sticky(q.ID, uri.QuestionPage)))
 	}
 	for _, r := range em.Rules {
 		if r.Automated {
 			continue
 		}
-		out.UnautomatedRules = append(out.UnautomatedRules, item("rule", r.ID, r.Name))
+		out.UnautomatedRules = append(out.UnautomatedRules, item("rule", r.ID, r.Name, sticky(r.ID, uri.RulePage)))
 	}
 	return out
 }
