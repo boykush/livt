@@ -24,6 +24,10 @@ func (s *Server) registerTools(srv *mcpsdk.Server) {
 		Name:        "list_story_maps",
 		Description: "List all story maps. Each entry hands out the uri of its story map resource (livt://story-map/{map_name}).",
 	}, s.listStoryMaps)
+	mcpsdk.AddTool(srv, &mcpsdk.Tool{
+		Name:        "list_terms",
+		Description: "List the ubiquitous language — the team's agreed vocabulary — as every term's key, display name, and the uri of its term resource (livt://ubiquitous/{term_key}) to read the definition from. Look a word up here before naming things in code and tests, so the implementation speaks the domain's language. A term scoped to one context also carries ctx; the same key can name one term across contexts and another inside one, so the pair identifies it.",
+	}, s.listTerms)
 }
 
 func (s *Server) listStories(_ context.Context, _ *mcpsdk.CallToolRequest, in listStoriesInput) (*mcpsdk.CallToolResult, listStoriesOutput, error) {
@@ -42,6 +46,14 @@ func (s *Server) listStoryMaps(_ context.Context, _ *mcpsdk.CallToolRequest, _ l
 	return nil, listStoryMapsOutput{versioned: s.versioned(), StoryMaps: maps}, nil
 }
 
+func (s *Server) listTerms(_ context.Context, _ *mcpsdk.CallToolRequest, _ listTermsInput) (*mcpsdk.CallToolResult, listTermsOutput, error) {
+	terms, err := s.cfg.terms()
+	if err != nil {
+		return nil, listTermsOutput{}, err
+	}
+	return nil, listTermsOutput{versioned: s.versioned(), Terms: terms}, nil
+}
+
 func (s *Server) versioned() versioned {
 	return versioned{SpecVersion: specVersion(s.cfg.Root)}
 }
@@ -52,7 +64,8 @@ func (s *Server) versioned() versioned {
 // keeps resolving by its URI and carries retired so the caller can tell. The
 // mapping keeps its retired entries too — it is the structural record their ids
 // are numbered from, and dropping them would make a taken id look free. The
-// list_* tools enumerate stories and story maps, which have no retired concept.
+// list_* tools enumerate stories, story maps, and terms, none of which have a
+// retired concept.
 
 // exampleMapping loads the example mapping for storyKey. It distinguishes a
 // missing mapping ("not found") from a malformed one (parse error). The key is
@@ -201,6 +214,24 @@ func (c Config) storyMaps() ([]storyMapSummaryJSON, error) {
 	out := make([]storyMapSummaryJSON, 0, len(all))
 	for _, sm := range all {
 		out = append(out, storyMapSummaryJSON{Name: sm.Name, URI: uri.StoryMap(sm.Name)})
+	}
+	return out, nil
+}
+
+// terms lists every ubiquitous language term with its resource URI, including
+// the ones no board references yet: the glossary is the livt repository's
+// vocabulary, not a projection of what the boards happen to cite. Terms come
+// out context-free first, then scoped, each group in filesystem order — the
+// order the glossary page renders. A missing ubiquitous directory yields an
+// empty list, not an error.
+func (c Config) terms() ([]termSummaryJSON, error) {
+	all, err := parser.ParseAllTerms(c.ubiquitousDir())
+	if err != nil {
+		return nil, err
+	}
+	out := make([]termSummaryJSON, 0, len(all))
+	for _, term := range all {
+		out = append(out, termSummaryJSON{Key: term.Key, Ctx: term.Ctx, Name: term.Name, URI: uri.Term(term.Ctx, term.Key)})
 	}
 	return out, nil
 }

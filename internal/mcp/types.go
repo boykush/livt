@@ -57,6 +57,30 @@ type storyMapSummaryJSON struct {
 	URI string `json:"uri"`
 }
 
+// --- list_terms tool ---
+
+type listTermsInput struct{}
+
+type listTermsOutput struct {
+	versioned
+	Terms []termSummaryJSON `json:"terms"`
+}
+
+// termSummaryJSON is one row of the glossary listing. It differs from
+// termRefJSON in what it promises: a ref is what a board authored and may name
+// a term nobody committed, while every entry here comes from a term file, so
+// Name and URI are always filled.
+type termSummaryJSON struct {
+	Key string `json:"key"`
+	// Ctx as on termJSON: the context the term belongs to, omitted when it holds
+	// across them. A caller citing a term composes its uri from the pair.
+	Ctx  string `json:"ctx,omitempty"`
+	Name string `json:"name"`
+	// URI is the term's own resource — livt://ubiquitous/{ctx}/{key} for a
+	// scoped term, livt://ubiquitous/{key} for one that holds across contexts.
+	URI string `json:"uri"`
+}
+
 // --- resource payloads ---
 
 // exampleMappingResult is the body of the livt://mapping/{story_key} resource.

@@ -44,8 +44,8 @@ func TestEndToEnd(t *testing.T) {
 	if err != nil {
 		t.Fatalf("list tools: %v", err)
 	}
-	if names := toolNames(tools.Tools); len(names) != 2 || !hasName(names, "list_stories") || !hasName(names, "list_story_maps") {
-		t.Fatalf("tools = %v, want [list_stories list_story_maps]", names)
+	if names := toolNames(tools.Tools); len(names) != 3 || !hasName(names, "list_stories") || !hasName(names, "list_story_maps") || !hasName(names, "list_terms") {
+		t.Fatalf("tools = %v, want [list_stories list_story_maps list_terms]", names)
 	}
 
 	res, err := cs.CallTool(ctx, &mcpsdk.CallToolParams{Name: "list_stories", Arguments: map[string]any{}})
@@ -228,8 +228,22 @@ func TestEndToEnd(t *testing.T) {
 		t.Errorf("story opportunities = %+v, want [%+v]", got, demoMapRef)
 	}
 
+	// Discover the glossary, then read a term through the URI the tool handed
+	// out — the path an agent takes when it knows the word but not the key.
+	res, err = cs.CallTool(ctx, &mcpsdk.CallToolParams{Name: "list_terms", Arguments: map[string]any{}})
+	if err != nil {
+		t.Fatalf("call list_terms: %v", err)
+	}
+	var termsList listTermsOutput
+	if err := json.Unmarshal([]byte(contentText(res)), &termsList); err != nil {
+		t.Fatalf("decode list_terms: %v", err)
+	}
+	if len(termsList.Terms) != 1 || termsList.Terms[0].Name != "ストーリー" || termsList.Terms[0].URI != "livt://ubiquitous/story" {
+		t.Fatalf("terms = %+v, want one ストーリー at livt://ubiquitous/story", termsList.Terms)
+	}
+
 	// Follow a resolved term ref to the ubiquitous term resource.
-	tr, err := cs.ReadResource(ctx, &mcpsdk.ReadResourceParams{URI: "livt://ubiquitous/story"})
+	tr, err := cs.ReadResource(ctx, &mcpsdk.ReadResourceParams{URI: termsList.Terms[0].URI})
 	if err != nil {
 		t.Fatalf("read term: %v", err)
 	}

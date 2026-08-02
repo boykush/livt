@@ -83,6 +83,7 @@ to localhost, not a public network.
 |------|-----------|---------|
 | `list_stories` | `opportunity` (optional) — an opportunity name, matched exactly against a story map display name; keeps only the stories on that map, and an unknown name yields an empty list | Every story with its key and name. Each entry links to its story resource (`uri`); stories that have an example mapping also include `example_mapping_uri`, and stories on a story map carry `opportunities` — one map name plus story map resource URI per map they sit on. |
 | `list_story_maps` | — | Every story map with its name and its story map resource URI (`uri`). |
+| `list_terms` | — | Every [ubiquitous language](../guides/ubiquitous-language.md) term with its key, display name, and term resource URI (`uri`) — including terms no board references. A term scoped to a context also carries `ctx`, which is part of what identifies it. |
 
 ### Resources
 
