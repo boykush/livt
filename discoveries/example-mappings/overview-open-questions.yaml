@@ -7,7 +7,7 @@ rules:
       - id: EX-02
         name: 疑問を持たない実例マッピングは一覧に現れない
       - id: EX-03
-        name: マスタ全体で疑問が1件もなければ、空状態のメッセージが表示される
+        name: livtリポジトリ全体で疑問が1件もなければ、空状態のメッセージが表示される
     automated: true
 
   - id: R-02
@@ -37,6 +37,7 @@ questions:
     text: 同じ集約をMCPにも出すか（実装リポジトリのエージェントが着手前に未解決の疑問を拾えるようにする）
 
 ubiquitous:
+  - livt-repository
   - example-mapping
   - story
   - opportunity

@@ -4,6 +4,7 @@ ubiquitous:
   - example-mapping
   - story
   - livt-uri
+  - livt-repository
 activities:
   - key: fill-unautomated-gap
     name: 実装リポジトリでギャップを埋める
@@ -28,7 +29,7 @@ activities:
       - key: automate-in-impl-repos
         name: 実装リポジトリ側で自動化する
         stories:
-          - name: 実装リポジトリがマスタを見てテスト駆動で自動化する
+          - name: 実装リポジトリがlivtリポジトリを見てテスト駆動で自動化する
             key: automate-from-master-in-impl-repos
             release: read-spec
   - key: reflect-automation-status
@@ -37,7 +38,7 @@ activities:
       - key: record-rule-automation
         name: ルールの自動化を記録する
         stories:
-          - name: ルールの自動化をマスタに記録する
+          - name: ルールの自動化をlivtリポジトリに記録する
             key: record-rule-automation
             release: coordinate-with-issues
       - key: show-status-per-rule

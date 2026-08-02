@@ -5,7 +5,7 @@ rules:
       - id: EX-01
         name: story-keyと対象リポジトリを指定すると、ストーリーの本文を含むIssueが1件起票される
       - id: EX-02
-        name: Issueの本文はマスタへのバックポインタ（story-key）と起票時点のspec_versionを運ぶ
+        name: Issueの本文はlivtリポジトリへのバックポインタ（story-key）と起票時点のspec_versionを運ぶ
   - id: R-02
     name: 起票したIssueのURLは、スキルがストーリーのfrontmatterのissuesに書き戻す
     examples:
@@ -16,7 +16,7 @@ rules:
       - id: EX-03
         name: 既存の任意メタissue（単数）はissuesとは別物で、移行せずそのまま残す
   - id: R-03
-    name: dedupeはマスタ側の記録で判定し、同じストーリー×対象リポジトリに二重起票しない
+    name: dedupeはlivtリポジトリ側の記録で判定し、同じストーリー×対象リポジトリに二重起票しない
     examples:
       - id: EX-01
         name: ストーリーに対象リポジトリのIssueが既に記録されていればスキップする
@@ -35,7 +35,7 @@ rules:
     name: 本ストーリーはAIスキルとして提供し、livtのCLIコマンドやMCPツールは追加しない
     examples:
       - id: EX-01
-        name: スキルはマスタを読み、gh CLI（既存の認証）で対象リポジトリへ起票する
+        name: スキルはlivtリポジトリを読み、gh CLI（既存の認証）で対象リポジトリへ起票する
       - id: EX-02
         name: 書き戻しはワーキングツリーの編集までとし、コミットやPRは通常のレビューフローに委ねる
       - id: EX-03
@@ -47,6 +47,7 @@ rules:
         name: 同じreposの宣言が、ストーリー単位のIssueとルールIssueの両方の起票先になる
 
 ubiquitous:
+  - livt-repository
   - example-mapping
   - story
   - discovery

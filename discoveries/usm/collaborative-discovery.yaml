@@ -9,6 +9,7 @@ ubiquitous:
   - planning
   - ubiquitous-language
   - context
+  - livt-repository
 activities:
   - key: story-mapping
     name: 全体ストーリーを発見する
@@ -84,12 +85,12 @@ activities:
             key: plan-example-mapping-against-implementation-and-design
           - name: 協働結果の漏れを調査する
   - key: maintain-living-master
-    name: マスタを生かし続ける
+    name: livtリポジトリを生かし続ける
     steps:
       - key: agree-on-rule-change
         name: ルールの変更・追加に合意する
       - key: reflect-in-master-mapping
-        name: 実例マッピングマスタに反映する
+        name: livtリポジトリの実例マッピングに反映する
         stories:
           - name: ルール単位の細かいPRで実例マッピングを更新する
             key: update-example-mapping-per-rule
