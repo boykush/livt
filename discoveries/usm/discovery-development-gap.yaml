@@ -26,6 +26,11 @@ activities:
           - name: livt経由で各実装リポジトリに自動化Issueを起票する
             key: file-automation-issues-to-impl-repos
             release: coordinate-with-issues
+      - key: declare-repository-location
+        name: livtリポジトリの所在を宣言する
+        stories:
+          - name: 実装リポジトリがlivtリポジトリの所在を宣言する
+            release: read-spec
       - key: automate-in-impl-repos
         name: 実装リポジトリ側で自動化する
         stories:
