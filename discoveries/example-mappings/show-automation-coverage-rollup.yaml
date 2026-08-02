@@ -1,0 +1,45 @@
+rules:
+  - id: R-01
+    name: ストーリー一覧は自動化カバレッジを映す
+    examples:
+      - id: EX-01
+        name: 各ストーリーに「自動化済みルール数/ルール総数」が出る
+      - id: EX-02
+        name: 実例マッピングを持たないストーリーはカバレッジを持たない
+      - id: EX-03
+        name: retiredなルールは分子にも分母にも入らず、ボードの見え方と一致する
+  - id: R-02
+    name: ストーリーマップのカードは自動化カバレッジを映す
+    examples:
+      - id: EX-01
+        name: コミット済みストーリーカードにカバレッジが付く
+      - id: EX-02
+        name: keyを持たない候補カードはカバレッジを持たない
+  - id: R-03
+    name: リリーススライス単位で自動化カバレッジを合計する
+    examples:
+      - id: EX-01
+        name: リリース区切りに、そのスライスに載るストーリーの合計が出る
+      - id: EX-02
+        name: どのリリースにも属さないカードはスライスの合計に入らない
+      - id: EX-03
+        name: 同じストーリーが複数ステップに現れても、合計では1回だけ数える
+  - id: R-04
+    name: 実装リポジトリはMCP経由で同じロールアップを取得できる
+    examples:
+      - id: EX-01
+        name: list_stories の各エントリがカバレッジを持つ
+      - id: EX-02
+        name: ストーリーリソースも同じ形でカバレッジを持つ
+
+questions:
+  - id: Q-01
+    text: 全ルールが自動化済みのストーリーと、ルール自体が0件のストーリーを見分けるか（現状はどちらも分母で表現する想定）
+
+ubiquitous:
+  - example-mapping
+  - story
+  - story-map
+  - release-slice
+  - implementation-repository
+  - livt-repository
