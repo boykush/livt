@@ -244,18 +244,21 @@ func (c Config) hasStory(storyKey string) bool {
 	return err == nil
 }
 
-// term loads a ubiquitous language term by key.
-func (c Config) term(termKey string) (*domain.Term, error) {
-	if !uri.ValidSegment(termKey) {
-		return nil, fmt.Errorf("term %q not found", termKey)
+// term loads a ubiquitous language term by reference — "{ctx}/{term-key}" for a
+// term scoped to one context, "{term-key}" for one that holds across them. The
+// two are distinct terms even when the key matches, so the reference is what is
+// looked up rather than the key alone.
+func (c Config) term(ref string) (*domain.Term, error) {
+	ctx, key, ok := uri.SplitTermRef(ref)
+	if !ok {
+		return nil, fmt.Errorf("term %q not found", ref)
 	}
-	path := filepath.Join(c.ubiquitousDir(), termKey+".md")
-	if _, err := os.Stat(path); err != nil {
-		return nil, fmt.Errorf("term %q not found", termKey)
+	if _, err := os.Stat(filepath.Join(c.ubiquitousDir(), ctx, key+".md")); err != nil {
+		return nil, fmt.Errorf("term %q not found", ref)
 	}
-	term, err := parser.ParseTerm(path)
+	term, err := parser.ParseTerm(c.ubiquitousDir(), ref)
 	if err != nil {
-		return nil, fmt.Errorf("parse term %q: %w", termKey, err)
+		return nil, fmt.Errorf("parse term %q: %w", ref, err)
 	}
 	return term, nil
 }

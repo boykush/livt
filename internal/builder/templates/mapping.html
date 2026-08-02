@@ -105,13 +105,7 @@
 <div class="mt-8">
   <div class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">Ubiquitous Language</div>
   <div class="flex flex-wrap gap-2">
-  {{range .Ubiquitous}}
-    {{if .Href}}
-    <a href="{{.Href}}" class="inline-flex items-center gap-2 bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-pink-200 transition"><span>{{.Name}}</span><span>&rarr;</span></a>
-    {{else}}
-    <div class="bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700">{{.Name}}</div>
-    {{end}}
-  {{end}}
+  {{range .Ubiquitous}}{{template "term-card" .}}{{end}}
   </div>
 </div>
 {{end}}

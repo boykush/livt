@@ -1,54 +1,57 @@
-{{define "opportunity-filter"}}
+{{define "filter"}}
 {{/*
-The opportunity filter bar, shared by the Stories and Example Mappings lists.
-Its dot (.) is the list's []FilterOpportunities. Each button carries the
-opportunity name in data-opportunity; the empty "All" button clears the filter.
-The pressed look is keyed on aria-pressed so it survives the client-side toggle
-without depending on Tailwind's runtime class scan.
+The filter bar, shared by every list that narrows on one axis: Stories and
+Example Mappings by opportunity, the glossary by context. Its dot (.) is a
+filterView. Each button carries its value in data-filter-value; the empty "All"
+button clears the filter. The pressed look is keyed on aria-pressed so it
+survives the client-side toggle without depending on Tailwind's runtime class
+scan.
 */}}
-{{if .}}
+{{if .Values}}
 <style>
-  .opp-chip { cursor: pointer; }
-  .opp-chip[aria-pressed="true"] { background-color: #7c3aed; border-color: #7c3aed; color: #fff; }
+  .filter-chip { cursor: pointer; }
+  .filter-chip[aria-pressed="true"] { background-color: #7c3aed; border-color: #7c3aed; color: #fff; }
 </style>
-<div class="mb-6 flex items-center gap-2 flex-wrap" data-opportunity-filter>
-  <span class="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">Opportunity</span>
-  <button type="button" data-opportunity="" aria-pressed="true"
-    class="opp-chip text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-3 py-1 hover:bg-purple-100 transition">All</button>
-  {{range .}}
-  <button type="button" data-opportunity="{{.}}" aria-pressed="false"
-    class="opp-chip text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-3 py-1 hover:bg-purple-100 transition">{{.}}</button>
+<div class="mb-6 flex items-center gap-2 flex-wrap" data-filter-bar data-filter-param="{{.Param}}">
+  <span class="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">{{.Label}}</span>
+  <button type="button" data-filter-value="" aria-pressed="true"
+    class="filter-chip text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-3 py-1 hover:bg-purple-100 transition">All</button>
+  {{range .Values}}
+  <button type="button" data-filter-value="{{.}}" aria-pressed="false"
+    class="filter-chip text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-3 py-1 hover:bg-purple-100 transition">{{.}}</button>
   {{end}}
 </div>
 {{end}}
 {{end}}
 
-{{define "opportunity-filter-script"}}
+{{define "filter-script"}}
 {{/*
-Client-side only (R-03): reads and writes the ?opportunity= query param and
-shows only the cards whose data-opportunities includes the selected name. No
-network — URLSearchParams handles encoding of non-ASCII opportunity names.
+Client-side only (livt://mapping/filter-lists-by-opportunity/rule/R-03): reads
+and writes the bar's own query param and shows only the cards whose
+data-filter-values includes the selected value. No network — URLSearchParams
+handles encoding of non-ASCII values. One bar per page, so the param is read off
+the bar rather than passed in a second time.
 */}}
 <script>
 (function () {
-  var bar = document.querySelector('[data-opportunity-filter]');
+  var bar = document.querySelector('[data-filter-bar]');
   if (!bar) return;
-  var cards = document.querySelectorAll('[data-opportunities]');
-  var chips = bar.querySelectorAll('[data-opportunity]');
-  var PARAM = 'opportunity';
+  var cards = document.querySelectorAll('[data-filter-values]');
+  var chips = bar.querySelectorAll('[data-filter-value]');
+  var PARAM = bar.getAttribute('data-filter-param') || 'filter';
 
-  function opportunitiesOf(card) {
-    try { return JSON.parse(card.getAttribute('data-opportunities') || '[]'); }
+  function valuesOf(card) {
+    try { return JSON.parse(card.getAttribute('data-filter-values') || '[]'); }
     catch (e) { return []; }
   }
 
   function apply(selected) {
     cards.forEach(function (card) {
-      var show = !selected || opportunitiesOf(card).indexOf(selected) !== -1;
+      var show = !selected || valuesOf(card).indexOf(selected) !== -1;
       card.style.display = show ? '' : 'none';
     });
     chips.forEach(function (chip) {
-      var on = (chip.getAttribute('data-opportunity') || '') === selected;
+      var on = (chip.getAttribute('data-filter-value') || '') === selected;
       chip.setAttribute('aria-pressed', on ? 'true' : 'false');
     });
     // A page that groups its cards marks each group data-filter-scope, so a
@@ -57,7 +60,7 @@ network — URLSearchParams handles encoding of non-ASCII opportunity names.
     // The message stays hidden for a group the master left empty: that case has
     // its own server-rendered line, which would otherwise be contradicted.
     document.querySelectorAll('[data-filter-scope]').forEach(function (scope) {
-      var scoped = scope.querySelectorAll('[data-opportunities]');
+      var scoped = scope.querySelectorAll('[data-filter-values]');
       var shown = 0;
       scoped.forEach(function (card) { if (card.style.display !== 'none') shown++; });
       var count = scope.querySelector('[data-filter-count]');
@@ -81,7 +84,7 @@ network — URLSearchParams handles encoding of non-ASCII opportunity names.
 
   chips.forEach(function (chip) {
     chip.addEventListener('click', function () {
-      var value = chip.getAttribute('data-opportunity') || '';
+      var value = chip.getAttribute('data-filter-value') || '';
       apply(value);
       toURL(value);
     });

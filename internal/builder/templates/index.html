@@ -20,15 +20,15 @@
     <h2 class="text-lg font-semibold text-gray-800">Example Mappings</h2>
   </header>
   <main class="px-8 py-8">
-  {{template "opportunity-filter" .FilterOpportunities}}
+  {{template "filter" (filter "opportunity" "Opportunity" .FilterOpportunities)}}
   <div class="space-y-6">
   {{range .Mappings}}
     {{/*
     A stretched overlay anchor keeps the whole tile linking to the mapping while
-    the opportunity chips stay independent links to the maps. data-opportunities
+    the opportunity chips stay independent links to the maps. data-filter-values
     is the filter hook (mapping → story → map).
     */}}
-    <div data-opportunities="{{opportunityNames .Opportunities}}" class="relative rounded-xl border border-green-200 bg-white shadow-sm overflow-hidden hover:shadow-md transition">
+    <div data-filter-values="{{opportunityValues .Opportunities}}" class="relative rounded-xl border border-green-200 bg-white shadow-sm overflow-hidden hover:shadow-md transition">
       <a href="mapping/{{.Key}}.html" class="absolute inset-0 z-10 rounded-xl" aria-label="{{.StoryName}}"></a>
       <div class="flex items-center gap-2 px-4 py-2.5 border-b border-green-100 bg-green-50">
         <span class="w-2.5 h-2.5 rounded-sm bg-green-400"></span>
@@ -47,6 +47,6 @@
   </main>
 </div>
 </div>
-{{template "opportunity-filter-script"}}
+{{template "filter-script"}}
 </body>
 </html>

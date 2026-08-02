@@ -208,17 +208,24 @@ type metaFieldJSON struct {
 }
 
 type termJSON struct {
-	Key  string `json:"key"`
+	Key string `json:"key"`
+	// Ctx is the context the term belongs to, omitted when it holds across them.
+	// Key alone does not identify a term once contexts are in play — the same key
+	// can sit at the root and under a context — so a consumer citing this term
+	// composes its uri from the pair.
+	Ctx  string `json:"ctx,omitempty"`
 	Name string `json:"name"`
 	Body string `json:"body"`
 }
 
-// termRefJSON points at a ubiquitous language term referenced by key from a
-// mapping or story map. Name and URI are filled when the term file exists; a
-// bare key means the term is not committed yet (mirroring how the site renders
+// termRefJSON points at a ubiquitous language term referenced from a mapping or
+// story map. Key and Ctx are the reference taken apart — Ctx empty for a term
+// that holds across contexts. Name and URI are filled when the term file exists;
+// a bare key means the term is not committed yet (mirroring how the site renders
 // unresolved term cards).
 type termRefJSON struct {
 	Key  string `json:"key"`
+	Ctx  string `json:"ctx,omitempty"`
 	Name string `json:"name,omitempty"`
 	URI  string `json:"uri,omitempty"`
 }
@@ -320,19 +327,24 @@ func (c Config) toStoryJSON(story *domain.Story) (storyJSON, error) {
 }
 
 func toTermJSON(term *domain.Term) termJSON {
-	return termJSON{Key: term.Key, Name: term.Name, Body: term.Body}
+	return termJSON{Key: term.Key, Ctx: term.Ctx, Name: term.Name, Body: term.Body}
 }
 
-// toTermRefs resolves referenced term keys against the ubiquitous directory: a
-// committed term gets its display name and resource URI, an unknown or
-// malformed one stays a bare key.
-func (c Config) toTermRefs(keys []string) []termRefJSON {
-	refs := make([]termRefJSON, 0, len(keys))
-	for _, key := range keys {
-		ref := termRefJSON{Key: key}
-		if term, err := c.term(key); err == nil {
-			ref.Name = term.Name
-			ref.URI = uri.Term(key)
+// toTermRefs resolves the references a board authors against the ubiquitous
+// directory: a committed term gets its display name and resource URI, an
+// unknown one keeps whatever the reference said. A reference that does not even
+// split — one nesting a context inside another, say — reports as a bare key, so
+// a malformed reference reads like an uncommitted one rather than vanishing.
+func (c Config) toTermRefs(rawRefs []string) []termRefJSON {
+	refs := make([]termRefJSON, 0, len(rawRefs))
+	for _, raw := range rawRefs {
+		ref := termRefJSON{Key: raw}
+		if ctx, key, ok := uri.SplitTermRef(raw); ok {
+			ref.Key, ref.Ctx = key, ctx
+			if term, err := c.term(raw); err == nil {
+				ref.Name = term.Name
+				ref.URI = uri.Term(ctx, key)
+			}
 		}
 		refs = append(refs, ref)
 	}

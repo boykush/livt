@@ -17,16 +17,18 @@ var templateFS embed.FS
 // All templates are parsed into a single set so pages can share the
 // {{define "sidebar"}} partial in _sidebar.html.
 var tmpl = template.Must(template.New("").Funcs(template.FuncMap{
-	"issueLabel":       issueLabel,
-	"opportunityNames": opportunityNamesJSON,
-	"ruleAnchor":       uri.RuleAnchor,
-	"exampleAnchor":    uri.ExampleAnchor,
-	"questionAnchor":   uri.QuestionAnchor,
-	"storyCardAnchor":  uri.StoryCardAnchor,
-	"ruleBadge":        ruleBadge,
-	"exampleBadge":     exampleBadge,
-	"questionBadge":    questionBadge,
-	"storyBadge":       storyBadge,
+	"issueLabel":        issueLabel,
+	"filter":            newFilterView,
+	"opportunityValues": opportunityValuesJSON,
+	"contextValues":     contextValuesJSON,
+	"ruleAnchor":        uri.RuleAnchor,
+	"exampleAnchor":     uri.ExampleAnchor,
+	"questionAnchor":    uri.QuestionAnchor,
+	"storyCardAnchor":   uri.StoryCardAnchor,
+	"ruleBadge":         ruleBadge,
+	"exampleBadge":      exampleBadge,
+	"questionBadge":     questionBadge,
+	"storyBadge":        storyBadge,
 }).ParseFS(templateFS, "templates/*.html"))
 
 // idBadge is a sticky's own ID rendered bottom-right by the id-badge partial.
@@ -84,19 +86,54 @@ type opportunityRef struct {
 	Path string
 }
 
-// opportunityNamesJSON encodes the opportunity names as a JSON array for a
-// card's data-opportunities attribute, the hook the client-side filter matches
-// against. A story on no map serializes to "[]" so it matches no filter axis.
-func opportunityNamesJSON(refs []opportunityRef) string {
-	names := make([]string, len(refs))
-	for i, r := range refs {
-		names[i] = r.Name
+// filterView drives the shared filter bar. Param is both the query parameter the
+// selection is mirrored in and the name of the axis, Label heads the chip row,
+// and Values are the axes a card can be narrowed to. One bar per page, so the
+// script finds its param on the bar rather than being told it twice.
+type filterView struct {
+	Param  string
+	Label  string
+	Values []string
+}
+
+func newFilterView(param, label string, values []string) filterView {
+	return filterView{Param: param, Label: label, Values: values}
+}
+
+// filterValuesJSON encodes a card's values on the filter axis as a JSON array
+// for its data-filter-values attribute, the hook the client-side filter matches
+// against. A card on no value serializes to "[]" so it matches no axis.
+func filterValuesJSON(values []string) string {
+	// A nil slice marshals to null, which the filter would fail to read as the
+	// empty list it means.
+	if values == nil {
+		values = []string{}
 	}
-	b, err := json.Marshal(names)
+	b, err := json.Marshal(values)
 	if err != nil {
 		return "[]"
 	}
 	return string(b)
+}
+
+// opportunityValuesJSON is the filter hook for a card carrying opportunity refs.
+// A story on no map matches no filter axis.
+func opportunityValuesJSON(refs []opportunityRef) string {
+	names := make([]string, len(refs))
+	for i, r := range refs {
+		names[i] = r.Name
+	}
+	return filterValuesJSON(names)
+}
+
+// contextValuesJSON is the filter hook for a glossary row. A term holds at most
+// one context, and a context-free one matches no axis: it belongs to all of
+// them, so narrowing to any single context would misreport it as scoped there.
+func contextValuesJSON(ctx string) string {
+	if ctx == "" {
+		return filterValuesJSON(nil)
+	}
+	return filterValuesJSON([]string{ctx})
 }
 
 // rootRelativeOpportunities rebases refs whose Path is relative to the story/
@@ -246,15 +283,25 @@ type tasksView struct {
 	FilterOpportunities []string
 }
 
+// glossaryCard is one row of the glossary table. Anchor is the row's id — the
+// term's reference, which carries its context — while Key stays the bare key the
+// file is named for, so two rows sharing a key still read as the same word meant
+// two ways rather than as two unrelated ones.
 type glossaryCard struct {
+	Anchor     string
+	Ctx        string
 	Key        string
 	Name       string
 	Definition string
 }
 
+// glossaryView is the whole ubiquitous language as one table. Contexts are the
+// axes it can be narrowed to, omitting the context-free terms — they have no
+// axis of their own.
 type glossaryView struct {
-	Sidebar Sidebar
-	Terms   []glossaryCard
+	Sidebar  Sidebar
+	Terms    []glossaryCard
+	Contexts []string
 }
 
 type storyView struct {
@@ -265,10 +312,13 @@ type storyView struct {
 }
 
 // termCard is a referenced ubiquitous language term rendered as a pink sticky on
-// a board. Href is the link to its glossary row, or empty when the term has no
-// matching ubiquitous/{key}.md file (then it renders as a plain card).
+// a board. Href is the link to its glossary row, or empty when the reference
+// resolves to no term file (then it renders as a plain card). Ctx is shown on
+// the sticky when the term has one: the display name alone would not say which
+// context's meaning a board is reaching for.
 type termCard struct {
 	Name string
+	Ctx  string
 	Href string
 }
 

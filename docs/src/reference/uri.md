@@ -40,11 +40,18 @@ lands in it. Paths are relative to the output root.
 | `livt://story/{story-key}` | `story/{story-key}.html` |
 | `livt://story-map/{map-name}` | `story-map/{map-name}.html` |
 | `livt://ubiquitous/{term-key}` | `ubiquitous.html#{term-key}` |
+| `livt://ubiquitous/{ctx}/{term-key}` | `ubiquitous.html#{ctx}/{term-key}` |
 
 An example's anchor repeats its rule for the same reason its URI does: `EX-01`
 recurs under every rule of a board, so `#example-EX-01` would land on whichever
 one happened to be first. The sticky's own badge still shows the local `EX-01` —
 that is the ID the master numbers — while the link behind it carries the rule.
+
+A term takes a [context](../guides/ubiquitous-language.md#contexts) the same
+way, and for the same reason: `invoice` can mean one thing in billing and
+another in shipping, so the context is part of the address rather than a label
+on it. The context is optional — a term whose meaning holds everywhere keeps the
+one-segment form — and the two shapes never resolve to each other.
 
 A [retired](../guides/example-mappings.md#retiring-an-item) item has no sticky,
 so its URI lands on the board with nothing to scroll to. The URI still resolves:

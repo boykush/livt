@@ -93,7 +93,8 @@ terms linked from mappings and story maps):
 | `livt://mapping/{story_key}/rule/{rule_id}` | A single rule and its examples, plus its recorded automation: `issues` (automation Issue URLs) and `automated` (whether the rule is automated by tests). Rules inside `livt://mapping/{story_key}` carry the same fields. |
 | `livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}` | A single example of a rule. Example ids are numbered within their rule, so the address carries `{rule_id}` — `EX-01` alone does not identify an example. |
 | `livt://mapping/{story_key}/question/{question_id}` | A single question. Questions hang off the mapping rather than off a rule, so the address stops at `{story_key}`. |
-| `livt://ubiquitous/{term_key}` | A ubiquitous language term's name and definition. |
+| `livt://ubiquitous/{term_key}` | A ubiquitous language term's name and definition. This shape addresses a term whose meaning holds across contexts. |
+| `livt://ubiquitous/{ctx}/{term_key}` | A term scoped to one [context](../guides/ubiquitous-language.md#contexts), carrying `ctx` alongside its key. A context is optional and part of the address, so the same `{term_key}` can name one term at the root and another inside a context; the two never resolve to each other. |
 
 A retired rule, example, or question keeps resolving by its URI and carries
 `retired: true`, so a reference to it reads as retired rather than failing (or,

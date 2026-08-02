@@ -71,7 +71,7 @@ func (s *Server) Resolve(p uri.Parsed) (any, error) {
 		}
 		return storyResult{versioned: s.versioned(), Story: out}, nil
 	case uri.KindTerm:
-		term, err := s.cfg.term(p.TermKey)
+		term, err := s.cfg.term(uri.TermRef(p.TermCtx, p.TermKey))
 		if err != nil {
 			return nil, notFound(err)
 		}
@@ -100,7 +100,7 @@ func (c Config) Verify(p uri.Parsed) error {
 	case uri.KindStory:
 		_, err = c.story(p.StoryKey)
 	case uri.KindTerm:
-		_, err = c.term(p.TermKey)
+		_, err = c.term(uri.TermRef(p.TermCtx, p.TermKey))
 	default:
 		return fmt.Errorf("cannot verify livt URI kind %q", p.Kind)
 	}

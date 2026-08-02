@@ -23,6 +23,7 @@ var Templates = []string{
 	StoryMapTemplate,
 	StoryTemplate,
 	TermTemplate,
+	ScopedTermTemplate,
 }
 
 // Parsed is a livt URI taken apart. Only the fields its Kind addresses are set.
@@ -34,6 +35,7 @@ type Parsed struct {
 	QuestionID string // question
 	MapName    string // story map, percent-decoded
 	TermKey    string // term
+	TermCtx    string // term, empty when the term holds across contexts
 }
 
 // Parse recognises any livt URI shape. A caller that already knows which shape
@@ -60,8 +62,8 @@ func Parse(s string) (Parsed, bool) {
 	if key, ok := ParseStory(s); ok {
 		return Parsed{Kind: KindStory, StoryKey: key}, true
 	}
-	if key, ok := ParseTerm(s); ok {
-		return Parsed{Kind: KindTerm, TermKey: key}, true
+	if ctx, key, ok := ParseTerm(s); ok {
+		return Parsed{Kind: KindTerm, TermKey: key, TermCtx: ctx}, true
 	}
 	return Parsed{}, false
 }
@@ -83,7 +85,7 @@ func (p Parsed) String() string {
 	case KindStory:
 		return Story(p.StoryKey)
 	case KindTerm:
-		return Term(p.TermKey)
+		return Term(p.TermCtx, p.TermKey)
 	}
 	return ""
 }
@@ -106,7 +108,7 @@ func (p Parsed) Page() string {
 	case KindStory:
 		return StoryPage(p.StoryKey)
 	case KindTerm:
-		return TermPage(p.TermKey)
+		return TermPage(p.TermCtx, p.TermKey)
 	}
 	return ""
 }

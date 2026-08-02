@@ -14,7 +14,14 @@
     <h2 class="text-lg font-semibold text-gray-800">Ubiquitous Language</h2>
   </header>
   <main class="px-8 py-8">
+  {{template "filter" (filter "context" "Context" .Contexts)}}
   {{if .Terms}}
+  {{/*
+  The filter hides whole rows, so data-filter-values sits on the <tr> — the same
+  hook the card lists use. A context-free term carries an empty list and drops
+  out of every narrowing: it holds across all contexts, so showing it under one
+  would claim it is scoped there.
+  */}}
   <div class="overflow-x-auto bg-white rounded-lg border border-gray-200">
   <table class="w-full text-left border-collapse">
     <thead>
@@ -26,9 +33,14 @@
     </thead>
     <tbody>
     {{range .Terms}}
-      <tr id="{{.Key}}" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
+      <tr id="{{.Anchor}}" data-filter-values="{{contextValues .Ctx}}" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
         <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">{{.Name}}</td>
-        <td class="px-5 py-3 text-xs font-mono text-pink-600">{{.Key}}</td>
+        <td class="px-5 py-3">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-xs font-mono text-pink-600">{{.Key}}</span>
+            {{if .Ctx}}<span class="text-[11px] text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-2 py-0.5">{{.Ctx}}</span>{{end}}
+          </div>
+        </td>
         <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{{.Definition}}</td>
       </tr>
     {{end}}
@@ -41,5 +53,6 @@
   </main>
 </div>
 </div>
+{{template "filter-script"}}
 </body>
 </html>

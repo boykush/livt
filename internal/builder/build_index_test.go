@@ -125,19 +125,19 @@ func TestBuildTasksFilterCoversBothLists(t *testing.T) {
 	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
 
 	// The attribute also appears in the script's selector, so match the element.
-	if got := strings.Count(html, "data-opportunity-filter>"); got != 1 {
+	if got := strings.Count(html, "data-filter-bar "); got != 1 {
 		t.Fatalf("filter bar rendered %d times, want one bar driving both lists", got)
 	}
-	if got := strings.Count(html, `data-opportunities="[&#34;協働ディスカバリー&#34;]"`); got != 2 {
+	if got := strings.Count(html, `data-filter-values="[&#34;協働ディスカバリー&#34;]"`); got != 2 {
 		t.Fatalf("filter hook on %d cards, want both the question and the rule", got)
 	}
-	if !strings.Contains(html, `data-opportunity="協働ディスカバリー"`) {
+	if !strings.Contains(html, `data-filter-value="協働ディスカバリー"`) {
 		t.Fatal("expected a filter button carrying the opportunity name")
 	}
 	// livt://mapping/overview-open-questions/rule/R-03/example/EX-03 and its
 	// mirror in overview-unautomated-rules: the selection rides in the query
 	// param, so a filtered Tasks page is shareable and restores on load.
-	for _, hook := range []string{"URLSearchParams", "'opportunity'", "history.replaceState"} {
+	for _, hook := range []string{"URLSearchParams", `data-filter-param="opportunity"`, "history.replaceState"} {
 		if !strings.Contains(html, hook) {
 			t.Fatalf("expected the filter to sync the URL, missing %q", hook)
 		}
@@ -350,7 +350,7 @@ func TestBuildStoriesIndexStoryOnNoMapHasNoChipAndMatchesNoFilter(t *testing.T) 
 	}
 	html := readRendered(t, filepath.Join(b.OutDir, "stories.html"))
 
-	if !strings.Contains(html, `data-opportunities="[]"`) {
+	if !strings.Contains(html, `data-filter-values="[]"`) {
 		t.Fatal("expected an empty opportunity set so the card matches no filter")
 	}
 	if strings.Contains(html, "story-map/") {
@@ -368,13 +368,13 @@ func TestBuildStoriesIndexRendersOpportunityFilterControls(t *testing.T) {
 	}
 	html := readRendered(t, filepath.Join(b.OutDir, "stories.html"))
 
-	if !strings.Contains(html, "data-opportunity-filter") {
+	if !strings.Contains(html, "data-filter-bar") {
 		t.Fatal("expected an opportunity filter bar")
 	}
-	if !strings.Contains(html, `data-opportunity="協働ディスカバリー"`) {
+	if !strings.Contains(html, `data-filter-value="協働ディスカバリー"`) {
 		t.Fatal("expected a filter button carrying the opportunity name")
 	}
-	if !strings.Contains(html, `data-opportunity=""`) || !strings.Contains(html, ">All<") {
+	if !strings.Contains(html, `data-filter-value=""`) || !strings.Contains(html, ">All<") {
 		t.Fatal("expected an All button that clears the filter")
 	}
 }
@@ -390,7 +390,7 @@ func TestBuildStoriesIndexFilterIsClientSideAndSyncsURL(t *testing.T) {
 	}
 	html := readRendered(t, filepath.Join(b.OutDir, "stories.html"))
 
-	for _, hook := range []string{"<script>", "URLSearchParams", "'opportunity'", "history.replaceState"} {
+	for _, hook := range []string{"<script>", "URLSearchParams", `data-filter-param="opportunity"`, "history.replaceState"} {
 		if !strings.Contains(html, hook) {
 			t.Fatalf("expected client-side filter hook %q", hook)
 		}
@@ -419,13 +419,13 @@ func TestBuildMappingsIndexShowsOpportunityChipsAndFilter(t *testing.T) {
 	}
 	html := readRendered(t, filepath.Join(b.OutDir, "index.html"))
 
-	if !strings.Contains(html, `data-opportunities="[&#34;協働ディスカバリー&#34;]"`) {
+	if !strings.Contains(html, `data-filter-values="[&#34;協働ディスカバリー&#34;]"`) {
 		t.Fatal("expected the tile to carry its opportunity set as the filter hook")
 	}
 	if !strings.Contains(html, `href="`+mapHref("story-map/", "協働ディスカバリー")+`"`) {
 		t.Fatal("expected the mapping tile's opportunity chip to link to the map board")
 	}
-	if !strings.Contains(html, "data-opportunity-filter") {
+	if !strings.Contains(html, "data-filter-bar") {
 		t.Fatal("expected an opportunity filter bar on the Example Mappings list")
 	}
 }
@@ -438,7 +438,7 @@ func TestBuildMappingsIndexTileOnNoMapHasEmptyFilterData(t *testing.T) {
 		t.Fatal(err)
 	}
 	html := readRendered(t, filepath.Join(b.OutDir, "index.html"))
-	if !strings.Contains(html, `data-opportunities="[]"`) {
+	if !strings.Contains(html, `data-filter-values="[]"`) {
 		t.Fatal("expected an empty opportunity set on a mapping with no map")
 	}
 }
