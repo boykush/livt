@@ -26,7 +26,7 @@ var (
 )
 
 func init() {
-	resolveCmd.Flags().StringVar(&resolveRootDir, "root", "", "path to the livt project root holding the discovery master (default: $LIVT_ROOT, then the current directory)")
+	resolveCmd.Flags().StringVar(&resolveRootDir, "root", "", "path to the root of the livt repository (default: $LIVT_ROOT, then the current directory)")
 	resolveCmd.Flags().StringVar(&resolveFormat, "format", formatJSON, "output form: json (the resource payload an MCP client reads) or url (its page on the deployed site)")
 	resolveCmd.Flags().StringVar(&resolveBaseURL, "base-url", "", "root of the deployed site, required by --format url (e.g. https://boykush.github.io/livt)")
 	rootCmd.AddCommand(resolveCmd)
@@ -34,7 +34,7 @@ func init() {
 
 var resolveCmd = &cobra.Command{
 	Use:   "resolve <uri>",
-	Short: "Resolve a livt URI against the discovery master",
+	Short: "Resolve a livt URI against the livt repository",
 	Long: `Resolve a livt URI -- the deployment-independent name for one point of the
 spec -- without running an MCP client.
 
@@ -42,12 +42,12 @@ A rule, example, or question cited in a test comment, an Issue, or a commit
 message can then be read back by whoever needs it: CI, an editor, or an agent
 that is not connected to livt over MCP.
 
-The master usually lives in a separate checkout from the consumer, so point at
+The livt repository usually lives in a separate checkout from the consumer, so point at
 it with --root or the LIVT_ROOT environment variable (the flag takes precedence;
 both default to the current directory).`,
 	Args: cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		// Past argument parsing, a failure is about the URI or the master, so
+		// Past argument parsing, a failure is about the URI or the livt repository, so
 		// usage would only bury the reason.
 		cmd.SilenceUsage = true
 		return resolveURI(cmd.OutOrStdout(), resolveRoot(resolveRootDir), args[0], resolveFormat, resolveBaseURL)
@@ -78,7 +78,7 @@ func resolveURI(out io.Writer, root, rawURI, format, baseURL string) error {
 		if baseURL == "" {
 			return fmt.Errorf("--format %s needs --base-url, the root of the deployed site (e.g. https://boykush.github.io/livt)", formatURL)
 		}
-		// The page path derives from the URI alone, so the master is consulted
+		// The page path derives from the URI alone, so the livt repository is consulted
 		// only to refuse a confident link to a page that is not there.
 		if err := (mcp.Config{Root: root}).Verify(p); err != nil {
 			return err
@@ -90,7 +90,7 @@ func resolveURI(out io.Writer, root, rawURI, format, baseURL string) error {
 }
 
 // malformedURIError separates a URI that is not a livt URI at all from one that
-// is well formed but names something the master does not hold -- the two need
+// is well formed but names something the livt repository does not hold -- the two need
 // different fixes, so they must not read alike.
 func malformedURIError(rawURI string) error {
 	var b strings.Builder

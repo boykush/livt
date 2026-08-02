@@ -1,6 +1,6 @@
 package uri
 
-// Kind names which of the master's items a livt URI addresses.
+// Kind names which of the livt repository's items a livt URI addresses.
 type Kind string
 
 const (
@@ -92,7 +92,7 @@ func (p Parsed) String() string {
 
 // Page is where the URI lands on the generated site, relative to the output
 // root. Deployment stays out of it: a deployed URL is this path with the site
-// root prefixed, which is what lets one master be served from several places.
+// root prefixed, which is what lets one livt repository be served from several places.
 func (p Parsed) Page() string {
 	switch p.Kind {
 	case KindMapping:

@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 )
 
-// buildTasks renders tasks.html: what the master leaves unfinished — open
+// buildTasks renders tasks.html: what the livt repository leaves unfinished — open
 // questions and un-automated rules. filterOpportunities are the opportunity axes
 // both lists can be filtered by.
 func (b *Builder) buildTasks(questions, unautomatedRules []taskItem, filterOpportunities []string) error {

@@ -3,7 +3,7 @@ package uri
 // Where each livt URI lands on the generated site: a path relative to the
 // output root, plus the in-page anchor for the points that live on a board.
 // The deployment URL is prefixed onto these only at render time, so neither the
-// master nor this package knows where the site is deployed. Deriving it here
+// livt repository nor this package knows where the site is deployed. Deriving it here
 // keeps the anchors the SSG writes and the URLs the CLI resolves in one piece.
 
 // MappingPage is where Mapping lands.

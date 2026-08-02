@@ -9,9 +9,9 @@ import (
 	"testing"
 )
 
-// newTestMaster writes a master small enough to assert against but holding one
+// newTestRepo writes a livt repository small enough to assert against but holding one
 // of every addressable kind.
-func newTestMaster(t *testing.T) string {
+func newTestRepo(t *testing.T) string {
 	t.Helper()
 	root := t.TempDir()
 
@@ -53,7 +53,7 @@ func newTestMaster(t *testing.T) string {
 // livt://mapping/trace-test-to-rule/rule/R-04/example/EX-01: a rule, example,
 // question, story, story map, or term all resolve from the command line.
 func TestResolveURIResolvesEveryKind(t *testing.T) {
-	root := newTestMaster(t)
+	root := newTestRepo(t)
 	cases := []struct {
 		uri   string
 		field string
@@ -82,7 +82,7 @@ func TestResolveURIResolvesEveryKind(t *testing.T) {
 			t.Errorf("%s produced %v, want a %q field", c.uri, keysOf(payload), c.field)
 		}
 		if _, ok := payload["spec_version"]; !ok {
-			t.Errorf("%s produced no spec_version, so a consumer cannot tell which master it read", c.uri)
+			t.Errorf("%s produced no spec_version, so a consumer cannot tell which livt repository it read", c.uri)
 		}
 	}
 }
@@ -92,7 +92,7 @@ func TestResolveURIResolvesEveryKind(t *testing.T) {
 // same derivation the site build anchors its stickies to, so a link resolved
 // here lands where the board says it does.
 func TestResolveURIWritesTheURLForm(t *testing.T) {
-	root := newTestMaster(t)
+	root := newTestRepo(t)
 	const base = "https://boykush.github.io/livt"
 	cases := []struct{ uri, want string }{
 		{"livt://mapping/demo", base + "/mapping/demo.html"},
@@ -126,10 +126,10 @@ func TestResolveURIWritesTheURLForm(t *testing.T) {
 }
 
 // A URL is derivable from the URI without reading anything, which is exactly
-// why the master still has to be checked: a link to a page that was never built
+// why the livt repository still has to be checked: a link to a page that was never built
 // is worse than an error.
 func TestResolveURIRefusesAURLItCannotBack(t *testing.T) {
-	root := newTestMaster(t)
+	root := newTestRepo(t)
 
 	err := resolveURI(&bytes.Buffer{}, root, "livt://mapping/demo/rule/R-99", formatURL, "https://example.com")
 	if err == nil || !strings.Contains(err.Error(), "not found") {
@@ -143,9 +143,9 @@ func TestResolveURIRefusesAURLItCannotBack(t *testing.T) {
 }
 
 // The two ways a URI fails need different fixes -- correct the URI, or add the
-// item to the master -- so they must not read alike.
+// item to the livt repository -- so they must not read alike.
 func TestResolveURIDistinguishesMalformedFromMissing(t *testing.T) {
-	root := newTestMaster(t)
+	root := newTestRepo(t)
 
 	for _, raw := range []string{"", "R-01", "livt://nope/x", "livt://mapping/demo/rule/",
 		"livt://ubiquitous/a/b/c", "livt://ubiquitous/billing/"} {
@@ -179,7 +179,7 @@ func TestResolveURIDistinguishesMalformedFromMissing(t *testing.T) {
 // reference filed against it outlives the decision to retire it.
 func TestResolveURIResolvesARetiredRule(t *testing.T) {
 	var out bytes.Buffer
-	if err := resolveURI(&out, newTestMaster(t), "livt://mapping/demo/rule/R-02", formatJSON, ""); err != nil {
+	if err := resolveURI(&out, newTestRepo(t), "livt://mapping/demo/rule/R-02", formatJSON, ""); err != nil {
 		t.Fatalf("resolving a retired rule failed: %v", err)
 	}
 
@@ -201,7 +201,7 @@ func TestResolveURIResolvesARetiredRule(t *testing.T) {
 }
 
 func TestResolveURIRejectsUnknownFormat(t *testing.T) {
-	err := resolveURI(&bytes.Buffer{}, newTestMaster(t), "livt://story/demo", "yaml", "")
+	err := resolveURI(&bytes.Buffer{}, newTestRepo(t), "livt://story/demo", "yaml", "")
 	if err == nil || !strings.Contains(err.Error(), "unknown --format") {
 		t.Errorf("unknown format error = %v, want it to name the flag", err)
 	}

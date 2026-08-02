@@ -4,7 +4,7 @@ import "testing"
 
 // livt://mapping/trace-test-to-rule/rule/R-04/example/EX-01: a rule, example,
 // question, story, story map, or term all resolve — so a URI arriving as free
-// text is recognised whichever point of the master it names.
+// text is recognised whichever point of the livt repository it names.
 func TestParseRecognisesEveryKind(t *testing.T) {
 	cases := []struct {
 		uri  string

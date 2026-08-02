@@ -11,7 +11,7 @@ import (
 )
 
 // TestEndToEnd drives the server through a real MCP session over in-memory
-// transports: the list tools for discovery, then reading the master as
+// transports: the list tools for discovery, then reading the livt repository as
 // resources by URI (story map -> story -> mapping -> rule, plus a ubiquitous
 // term), plus the not-found paths.
 func TestEndToEnd(t *testing.T) {
@@ -33,7 +33,7 @@ func TestEndToEnd(t *testing.T) {
 	defer cs.Close()
 
 	// livt://mapping/automate-from-master-in-impl-repos/rule/R-14/example/EX-01:
-	// the handshake instructs the consuming agent on how to cite the master. The
+	// the handshake instructs the consuming agent on how to cite the livt repository. The
 	// wording is free to change; that it arrives and names the uri is not.
 	if got := cs.InitializeResult().Instructions; got == "" || !strings.Contains(got, "uri") {
 		t.Errorf("instructions = %q, want non-empty and naming the uri", got)

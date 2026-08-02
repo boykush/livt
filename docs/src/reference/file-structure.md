@@ -48,7 +48,7 @@ Every page shares a left sidebar that links the four resource types (Example
 Mappings, Story Maps, Stories, Ubiquitous Language) and, below them, Tasks. The
 overview pages render each example mapping and story map as a preview card.
 
-`tasks.html` gathers what the master leaves unfinished, so neither kind has to
+`tasks.html` gathers what the livt repository leaves unfinished, so neither kind has to
 be hunted for board by board:
 
 - **Open Questions** — every `questions` entry across the example mappings.

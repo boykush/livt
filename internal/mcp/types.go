@@ -6,7 +6,7 @@ import (
 )
 
 // versioned is embedded in every tool and resource payload so each result
-// records the master version it reflects. Its json field is promoted to the top
+// records the livt repository version it reflects. Its json field is promoted to the top
 // level of the result.
 type versioned struct {
 	SpecVersion string `json:"spec_version"`
@@ -123,7 +123,7 @@ type ruleJSON struct {
 	URI      string        `json:"uri"`
 	Name     string        `json:"name"`
 	Examples []exampleJSON `json:"examples,omitempty"`
-	// Issues are the rule's automation Issue URLs as recorded on the master.
+	// Issues are the rule's automation Issue URLs as recorded on the livt repository.
 	Issues []string `json:"issues,omitempty"`
 	// Automated is always present: consumers read the recorded judgment
 	// without distinguishing absent from false.
@@ -255,7 +255,7 @@ func toQuestionJSON(storyKey string, q domain.Question) questionJSON {
 }
 
 // toExampleMappingJSON is a Config method because resolving the referenced
-// ubiquitous terms reads the master's ubiquitous directory. Retired rules and
+// ubiquitous terms reads the livt repository's ubiquitous directory. Retired rules and
 // questions stay in the projection, flagged — see the note in tools.go.
 func (c Config) toExampleMappingJSON(em *domain.ExampleMapping) exampleMappingJSON {
 	rules := make([]ruleJSON, 0, len(em.Rules))
@@ -306,7 +306,7 @@ func (c Config) toStoryMapJSON(sm *domain.StoryMap) storyMapJSON {
 }
 
 // toStoryJSON is a Config method because linking the example mapping and
-// resolving the story's opportunities read the master's mappings and usm
+// resolving the story's opportunities read the livt repository's mappings and usm
 // directories. Unlike term refs, a malformed story map is an error, not a bare
 // ref: silently dropping opportunities would misreport the story as unattached.
 func (c Config) toStoryJSON(story *domain.Story) (storyJSON, error) {

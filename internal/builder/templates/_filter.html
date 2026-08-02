@@ -56,8 +56,8 @@ the bar rather than passed in a second time.
     });
     // A page that groups its cards marks each group data-filter-scope, so a
     // filtered group reports what is actually showing instead of the number it
-    // was built with, and says that the filter — not the master — emptied it.
-    // The message stays hidden for a group the master left empty: that case has
+    // was built with, and says that the filter — not the livt repository — emptied it.
+    // The message stays hidden for a group the livt repository left empty: that case has
     // its own server-rendered line, which would otherwise be contradicted.
     document.querySelectorAll('[data-filter-scope]').forEach(function (scope) {
       var scoped = scope.querySelectorAll('[data-filter-values]');

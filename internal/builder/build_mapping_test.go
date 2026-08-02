@@ -39,7 +39,7 @@ func TestRenderMappingEveryStickyCarriesACopyableIDBadge(t *testing.T) {
 			t.Errorf("expected a one-click copy-link trigger aimed at %s", anchor)
 		}
 	}
-	// The badge shows the ID as the master numbers it, so an example reads as the
+	// The badge shows the ID as the livt repository numbers it, so an example reads as the
 	// rule-local EX-01 even though the link behind it is qualified by the rule.
 	for _, label := range []string{">#R-01</a>", ">#EX-01</a>", ">#Q-01</a>"} {
 		if !strings.Contains(html, label) {

@@ -54,10 +54,10 @@ func TestTermAnchorsSeparateTheSameKeyAcrossContexts(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-02/example/EX-01: what the master
+// livt://mapping/trace-test-to-rule/rule/R-02/example/EX-01: what the livt repository
 // stores is the livt URI, and the deployment URL is prefixed onto it only at
 // render time — so no page here may resolve to a host or an absolute path on
-// its own, or the master would be carrying a deployment it cannot know.
+// its own, or the livt repository would be carrying a deployment it cannot know.
 func TestPagesCarryNoDeployment(t *testing.T) {
 	for _, got := range []string{
 		MappingPage("checkout"),

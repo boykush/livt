@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-// newTestServer lays out a master under a temp root with one mapped story
+// newTestServer lays out a livt repository under a temp root with one mapped story
 // (demo, which has an example mapping) and one unmapped story (other), one
 // story map (デモマップ, holding a committed card and a bare candidate card),
 // and one committed ubiquitous term (story; missing-term stays uncommitted).
@@ -172,7 +172,7 @@ func TestListStoriesLinksExampleMapping(t *testing.T) {
 	}
 }
 
-// demoMapRef is the opportunity ref the test master's デモマップ resolves to:
+// demoMapRef is the opportunity ref the test repository's デモマップ resolves to:
 // the map name plus its story map resource URI (display name percent-encoded).
 var demoMapRef = opportunityRefJSON{Name: "デモマップ", URI: "livt://story-map/%E3%83%87%E3%83%A2%E3%83%9E%E3%83%83%E3%83%97"}
 

@@ -1,7 +1,7 @@
-// Package mcp serves the discovery master (story maps, stories, example
+// Package mcp serves the livt repository (story maps, stories, example
 // mappings, ubiquitous language) over the Model Context Protocol so
 // implementation repos can fetch the spec for a story or rule without reading
-// livt's source. The master usually lives in a separate checkout from the
+// livt's source. The livt repository usually lives in a separate checkout from the
 // consumer, so Config.Root locates it explicitly.
 package mcp
 
@@ -21,17 +21,17 @@ const httpPath = "/mcp"
 
 // instructions rides the MCP handshake, so it reaches the consuming agent on
 // every session. It carries the one practice the payloads cannot teach on their
-// own: how to cite the master in artifacts that outlive the connection.
-const instructions = `livt serves the discovery master: story maps, stories, example mappings, and ubiquitous language. It is the agreed spec, read-only.
+// own: how to cite the livt repository in artifacts that outlive the connection.
+const instructions = `livt serves the livt repository: story maps, stories, example mappings, and ubiquitous language. It is the agreed spec, read-only.
 
-Cite the master by livt URI. Whenever a rule, example, or question is referenced outside the master — a test comment, an issue body, a commit message, a PR description — copy the "uri" from the result verbatim, and never write a bare "id". Ids are unique only within one mapping file, so R-02 exists in every mapping and identifies nothing on its own.
+Cite the livt repository by livt URI. Whenever a rule, example, or question is referenced outside the livt repository — a test comment, an issue body, a commit message, a PR description — copy the "uri" from the result verbatim, and never write a bare "id". Ids are unique only within one mapping file, so R-02 exists in every mapping and identifies nothing on its own.
 
     good: // livt://mapping/place-order-with-saved-card/rule/R-13/example/EX-01
     bad:  // R-13 EX-01
 
 A published living-document URL is a convenience link for humans, not the citation form: it depends on where the site is deployed, and the livt URI does not.`
 
-// Config locates the discovery master. Root points at a livt project root; the
+// Config locates the livt repository. Root points at the repository's root; the
 // input subdirectories are derived from it the same way build/serve lay them out.
 type Config struct {
 	Root string
@@ -53,9 +53,9 @@ func (c Config) ubiquitousDir() string {
 	return filepath.Join(c.Root, "ubiquitous")
 }
 
-// Server exposes the master under Config over MCP. version is the livt build
+// Server exposes the livt repository under Config over MCP. version is the livt build
 // version, reported in the MCP handshake (distinct from the per-result
-// spec_version, which is the master's git revision).
+// spec_version, which is the livt repository's git revision).
 type Server struct {
 	cfg     Config
 	version string
@@ -71,8 +71,8 @@ func (s *Server) Run(ctx context.Context) error {
 	return s.mcpServer().Run(ctx, &mcpsdk.StdioTransport{})
 }
 
-// RunHTTP serves the master over Streamable HTTP at addr, blocking until ctx is
-// cancelled. The master is read-only and identical for every client, so the
+// RunHTTP serves the livt repository over Streamable HTTP at addr, blocking until ctx is
+// cancelled. The livt repository is read-only and identical for every client, so the
 // handler is stateless: each request is served from a temporary session with no
 // retained per-client state, which lets one local server back many repos.
 // Responses are plain JSON -- the spec server never pushes server-initiated

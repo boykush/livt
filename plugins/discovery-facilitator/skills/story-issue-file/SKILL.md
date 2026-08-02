@@ -1,6 +1,6 @@
 ---
 name: story-issue-file
-description: File a story-level issue from the story master to a declared implementation repository — carrying the story body and backpointers, deduped against the story frontmatter's own issues record, with the created URL written back there. Existing rule issues in the same repository are adopted as sub-issues. Use when a story's context should be handed to an implementation repo, with or without rule issues; per-rule automation issues route to rule-issue-file.
+description: File a story-level issue from the livt repository to a declared implementation repository — carrying the story body and backpointers, deduped against the story frontmatter's own issues record, with the created URL written back there. Existing rule issues in the same repository are adopted as sub-issues. Use when a story's context should be handed to an implementation repo, with or without rule issues; per-rule automation issues route to rule-issue-file.
 ---
 
 You are a story issue **filer**.
@@ -9,9 +9,9 @@ A story gives its rules their context — the persona, the goal, the benefit. Yo
 
 ## Language
 
-This skill is written in English for maintainability — English is not the language to answer in. Match the user: hold the conversation and write your report in the language they are using. Issue bodies already follow the master's language; `key:` identifiers, code, and `gh` commands stay English.
+This skill is written in English for maintainability — English is not the language to answer in. Match the user: hold the conversation and write your report in the language they are using. Issue bodies already follow the livt repository's language; `key:` identifiers, code, and `gh` commands stay English.
 
-## Master Is the Record
+## The livt Repository Is the Record
 
 The story file — not GitHub — holds the truth about what is filed where:
 
@@ -23,13 +23,13 @@ The story file — not GitHub — holds the truth about what is filed where:
 ## Inputs
 
 - **story-key** (required).
-- **Target repository** — from the story's frontmatter `repos:` (a list of `owner/repo`); with several declared, confirm which one(s) with the user. Ask if `repos:` is missing. The master's own repository is a valid target; nothing in the flow assumes the target is a different repository.
+- **Target repository** — from the story's frontmatter `repos:` (a list of `owner/repo`); with several declared, confirm which one(s) with the user. Ask if `repos:` is missing. The livt repository itself is a valid target; nothing in the flow assumes the target is a different repository.
 
 ## Filing Flow
 
 1. Read `stories/{story-key}.md` — frontmatter and body — and `discoveries/example-mappings/{story-key}.yaml` if it exists (you'll need its rules' `issues:` for adoption).
 2. Dedupe per **story × repository**: skip a repository when the frontmatter `issues:` already holds a URL there. A link to one repository never blocks filing to another.
-3. Record the spec rev of the master: `git rev-parse --short HEAD`.
+3. Record the spec rev of the livt repository: `git rev-parse --short HEAD`.
 4. Compose the issue (see Issue Content) and file it with existing `gh` auth — no checkout of the target, ever:
 
    ```
@@ -42,22 +42,22 @@ The story file — not GitHub — holds the truth about what is filed where:
 
 ## Issue Content
 
-The body carries the story verbatim — in the story's language — plus backpointers to the master:
+The body carries the story verbatim — in the story's language — plus backpointers to the livt repository:
 
 ```markdown
 {story body — the As a / I want / So that text, as written}
 
-## Master
+## livt repository
 
 - story: `livt://story/{story-key}`
 - spec_version: `{short rev}`
 ```
 
-The **livt URI** is the citation form the implementation repo carries onward; `spec_version` pins which revision of the master the issue was cut from. If you know the living document URL (where `livt build` output is published), add its story page — `{living-doc-url}/story/{story-key}.html` — below as a browsable convenience for humans. It depends on where the site is deployed, so it never replaces the URI; don't block filing on finding it.
+The **livt URI** is the citation form the implementation repo carries onward; `spec_version` pins which revision of the livt repository the issue was cut from. If you know the living document URL (where `livt build` output is published), add its story page — `{living-doc-url}/story/{story-key}.html` — below as a browsable convenience for humans. It depends on where the site is deployed, so it never replaces the URI; don't block filing on finding it.
 
 ## Sub-issue Linking
 
-Parenthood comes from the master's structure — story ⊃ rule — so the children are the rule issues recorded in the mapping for the same repository. Link via GitHub's sub-issues GraphQL API:
+Parenthood comes from the livt repository's structure — story ⊃ rule — so the children are the rule issues recorded in the mapping for the same repository. Link via GitHub's sub-issues GraphQL API:
 
 ```
 # node ID of an issue (run for the new story issue and each rule issue)
@@ -75,7 +75,7 @@ gh api graphql \
   }' -f parentId={story-issue-node-id} -f childId={rule-issue-node-id}
 ```
 
-The link is write-only sugar for GitHub's UI. Never read the sub-issue graph back to decide anything — dedupe and parenthood are always answered by the master.
+The link is write-only sugar for GitHub's UI. Never read the sub-issue graph back to decide anything — dedupe and parenthood are always answered by the livt repository.
 
 ## What NOT to Do
 
