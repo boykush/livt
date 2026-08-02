@@ -64,6 +64,7 @@ activities:
           - name: テストからルール・実例へ辿る
             key: trace-test-to-rule
             release: reflect-status
+          - name: 引用されたlivt URIをCIで検証する
       - key: show-status-rollup
         name: ストーリー・リリース単位で自動化の状況を映す
         stories:
