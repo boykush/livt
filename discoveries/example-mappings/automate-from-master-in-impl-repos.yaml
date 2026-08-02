@@ -155,6 +155,17 @@ rules:
         name: CIはlivtリポジトリをcheckoutし、そのパスをLIVT_ROOTに束縛する（宣言はworkflowにコミットされる）
       - id: EX-04
         name: 値は {{config_root}}/../ のような相対参照で書け、隣接checkoutの配置規約ごと機械非依存にコミットできる
+  - id: R-16
+    name: 実装リポジトリはユビキタス言語の用語の一覧を取得できる
+    examples:
+      - id: EX-01
+        name: list_terms で全用語のキーと表示名を取得する
+      - id: EX-02
+        name: 各エントリは自分のリソースURI（livt://ubiquitous/{term-ref}）を示す
+      - id: EX-03
+        name: 文脈を持つ用語はその文脈も示し、同じキーを持つ別の用語と見分けられる
+      - id: EX-04
+        name: どのボードからも参照されていない用語も一覧に現れる
 questions:
   - id: Q-05
     text: ネットワーク（非ローカル）公開する場合の認証・公開モデルをどうするか（現状はローカル利用前提で認証なし）
