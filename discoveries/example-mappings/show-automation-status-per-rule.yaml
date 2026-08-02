@@ -8,7 +8,7 @@ rules:
         name: 凡例が見分け方を説明する
     automated: true
   - id: R-02
-    name: 表示はマスタの記録だけから導出され、buildはネットワークに出ない
+    name: 表示はlivtリポジトリの記録だけから導出され、buildはネットワークに出ない
     examples:
       - id: EX-01
         name: SSGはruleのautomatedとissuesのみを読み、GitHubには問い合わせない
@@ -17,6 +17,7 @@ rules:
 questions: []
 
 ubiquitous:
+  - livt-repository
   - example-mapping
   - story
   - discovery

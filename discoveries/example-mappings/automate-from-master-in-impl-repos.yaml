@@ -1,6 +1,6 @@
 rules:
   - id: R-01
-    name: livtはマスタをMCPサーバーとして公開し、消費側はlivtのソースを読まずに仕様を取得する
+    name: livtはlivtリポジトリをMCPサーバーとして公開し、消費側はlivtのソースを読まずに仕様を取得する
     examples:
       - id: EX-01
         name: livt mcp コマンドでstdioのMCPサーバーが起動する
@@ -8,22 +8,22 @@ rules:
         name: 消費側エージェントはツール/リソース経由で実例マッピング・ルールを取得する
     automated: true
   - id: R-02
-    name: 実装リポジトリは別ディレクトリにあるマスタの場所を指定できる
+    name: 実装リポジトリは別ディレクトリにあるlivtリポジトリの場所を指定できる
     examples:
       - id: EX-01
-        name: 環境変数 LIVT_ROOT でマスタのルートディレクトリを指定する
+        name: 環境変数 LIVT_ROOT でlivtリポジトリのルートディレクトリを指定する
       - id: EX-02
         name: CLI引数 --root が環境変数より優先される
       - id: EX-03
         name: いずれも未指定ならカレントディレクトリをルートとする
     automated: true
   - id: R-03
-    name: 各レスポンス（ツール・リソース）はマスタのバージョン（gitリビジョン）を返し、仕様のズレを防ぐ
+    name: 各レスポンス（ツール・リソース）はlivtリポジトリのバージョン（gitリビジョン）を返し、仕様のズレを防ぐ
     examples:
       - id: EX-01
-        name: 出力に spec_version としてマスタのgit HEAD（rev-parse --short の短縮リビジョン）が含まれる
+        name: 出力に spec_version としてlivtリポジトリのgit HEAD（rev-parse --short の短縮リビジョン）が含まれる
       - id: EX-02
-        name: マスタがgitリポジトリでない場合 spec_version は空になる
+        name: livtリポジトリがgit管理でない場合 spec_version は空になる
     automated: true
   - id: R-04
     name: 実装リポジトリはストーリー単位で実例マッピングをリソースとして取得できる
@@ -57,7 +57,7 @@ rules:
       - id: EX-01
         name: クライアントが livt mcp をサブプロセスとして spawn し、標準入出力で接続する
       - id: EX-02
-        name: マスタの場所は --root / LIVT_ROOT で指す（消費側に別チェックアウトが要る）
+        name: livtリポジトリの場所は --root / LIVT_ROOT で指す（消費側に別チェックアウトが要る）
       - id: EX-03
         name: 1消費者につき1プロセスで、サーバーは共有しない
     automated: true
@@ -65,7 +65,7 @@ rules:
     name: 消費側は常駐する1つの livt mcp --http サーバーをURL参照で共有する
     examples:
       - id: EX-01
-        name: マスタ側で livt mcp --http localhost:5488 を常駐起動する
+        name: livtリポジトリ側で livt mcp --http localhost:5488 を常駐起動する
       - id: EX-02
         name: 複数リポジトリが http://localhost:5488/mcp を共有参照し、per-repo の LIVT_ROOT は不要
       - id: EX-03
@@ -115,7 +115,7 @@ rules:
       - id: EX-02
         name: resources/list への concrete resources 掲載や subscribe は提供せず、毎リクエスト読みのステートレスを保つ
       - id: EX-03
-        name: 消費側はマスタの更新を spec_version の変化で検知する
+        name: 消費側はlivtリポジトリの更新を spec_version の変化で検知する
 
     automated: true
   - id: R-13
@@ -133,7 +133,7 @@ rules:
       - https://github.com/boykush/livt/issues/82
     automated: true
   - id: R-14
-    name: マスタの参照を成果物に残すときは、IDではなくlivt URIで引用する
+    name: livtリポジトリの参照を成果物に残すときは、IDではなくlivt URIで引用する
     examples:
       - id: EX-01
         name: MCPサーバは接続時にこの引用作法を指示する
@@ -156,3 +156,4 @@ ubiquitous:
   - discovery
   - opportunity
   - livt-uri
+  - livt-repository

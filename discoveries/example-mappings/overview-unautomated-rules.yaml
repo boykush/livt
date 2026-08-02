@@ -7,7 +7,7 @@ rules:
       - id: EX-02
         name: 自動化済みのルールは一覧に現れない
       - id: EX-03
-        name: マスタ全体のルールが全て自動化済みなら、その旨が分かる
+        name: livtリポジトリ全体のルールが全て自動化済みなら、その旨が分かる
     automated: true
 
   - id: R-02
@@ -34,9 +34,10 @@ questions:
   - id: Q-01
     text: 並び順を何を軸に決めるか（TDDのテストリストとして「どこから書くか」に答えるなら順序が要るが、リリーススライスは3マップ中2マップに存在せず軸にならない）
   - id: Q-02
-    text: 自動化Issueが起票済みのルールを「着手済み」として区別するか（マスタはIssueのリンクだけを持ち、その開閉状態は持たない）
+    text: 自動化Issueが起票済みのルールを「着手済み」として区別するか（livtリポジトリはIssueのリンクだけを持ち、その開閉状態は持たない）
 
 ubiquitous:
+  - livt-repository
   - example-mapping
   - story
   - opportunity

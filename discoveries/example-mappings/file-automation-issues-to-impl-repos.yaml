@@ -1,6 +1,6 @@
 rules:
   - id: R-01
-    name: ルールメンテナーはマスタのルールを指定して、対象実装リポジトリへ自動化Issueを起票できる
+    name: ルールメンテナーはlivtリポジトリのルールを指定して、対象実装リポジトリへ自動化Issueを起票できる
     examples:
       - id: EX-01
         name: story-keyとrule-idを指定すると、そのルール1件分のIssueが起票される
@@ -12,23 +12,23 @@ rules:
       - id: EX-01
         name: 起票に成功すると、該当ruleのissuesにそのURLが追記される
       - id: EX-02
-        name: 書き戻しがそのままマスタへの記録（record-rule-automation）になり、手作業を要しない
+        name: 書き戻しがそのままlivtリポジトリへの記録（record-rule-automation）になり、手作業を要しない
   - id: R-03
-    name: dedupeはマスタ側の記録で判定し、同じルール×対象リポジトリを二重起票しない
+    name: dedupeはlivtリポジトリ側の記録で判定し、同じルール×対象リポジトリを二重起票しない
     examples:
       - id: EX-01
         name: ruleのissuesに対象リポジトリのIssueが既にあればスキップする
       - id: EX-02
         name: 別の実装リポジトリへの起票は、既存の紐づけがあっても妨げない
   - id: R-04
-    name: Issue本文はルール・実例の本文とマスタへのバックポインタを運ぶ
+    name: Issue本文はルール・実例の本文とlivtリポジトリへのバックポインタを運ぶ
     examples:
       - id: EX-01
         name: 本文にルール名と実例の一覧を含む
       - id: EX-02
         name: バックポインタとしてstory-key・rule-idと、リビングドキュメントのルールアンカー（#rule-{ID}）へのリンクを含む
       - id: EX-03
-        name: 起票時点のマスタのrevをspec_versionとして記す
+        name: 起票時点のlivtリポジトリのrevをspec_versionとして記す
       - id: EX-04
         name: バックポインタが指すルールIDは起票後も不変で、清書・更新のAIスキル共通ポリシーとして担保する
   - id: R-05
@@ -47,7 +47,7 @@ rules:
     name: 本ストーリーはAIスキルとして提供し、livtのCLIコマンドやMCPツールは追加しない
     examples:
       - id: EX-01
-        name: スキルはマスタを読み、gh CLI（既存の認証）で対象リポジトリへ起票する
+        name: スキルはlivtリポジトリを読み、gh CLI（既存の認証）で対象リポジトリへ起票する
       - id: EX-02
         name: 書き戻しはワーキングツリーの編集までとし、コミットやPRは通常のレビューフローに委ねる
   - id: R-08
@@ -61,10 +61,10 @@ rules:
         name: issuesのないruleは未紐づけとして扱われる
     automated: true
   - id: R-09
-    name: 紐づけの正はマスタが持ち、GitHub側の構造には依存しない
+    name: 紐づけの正はlivtリポジトリが持ち、GitHub側の構造には依存しない
     examples:
       - id: EX-01
-        name: 親子関係はstory⊃ruleというマスタの構造から把握し、GitHubのsub-issueグラフは読まない
+        name: 親子関係はstory⊃ruleというlivtリポジトリの構造から把握し、GitHubのsub-issueグラフは読まない
       - id: EX-02
         name: livt経由でないIssueも、URLをruleに貼れば同じ紐づけになる
   - id: R-10
@@ -75,7 +75,7 @@ rules:
       - id: EX-02
         name: ルールIssueの起票先は、所属ストーリーのreposを参照する
       - id: EX-03
-        name: マスタ自身のリポジトリもreposに宣言でき、自リポジトリへの起票も同じ手順で成立する
+        name: livtリポジトリ自身もreposに宣言でき、自リポジトリへの起票も同じ手順で成立する
   - id: R-11
     name: Issue本文の一次参照はlivt URIで、デプロイ済みURLは補助にとどめる
     examples:
@@ -89,6 +89,7 @@ rules:
 
 ubiquitous:
   - livt-uri
+  - livt-repository
   - example-mapping
   - story
   - discovery

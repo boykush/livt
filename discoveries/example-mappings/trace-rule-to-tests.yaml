@@ -12,7 +12,7 @@ rules:
         name: PR・テスト（真実）へはリンク先のIssueから辿る
     automated: true
   - id: R-02
-    name: リンクはマスタの記録をそのまま使い、buildはネットワークに出ない
+    name: リンクはlivtリポジトリの記録をそのまま使い、buildはネットワークに出ない
     examples:
       - id: EX-01
         name: SSGはissuesのURLをそのまま出力し、状態の問い合わせや解決はしない
@@ -21,6 +21,7 @@ rules:
 questions: []
 
 ubiquitous:
+  - livt-repository
   - example-mapping
   - story
   - discovery
