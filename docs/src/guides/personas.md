@@ -31,6 +31,32 @@ An AI agent that reads the livt repository over MCP and automates rules
 test-first in an implementation repository.
 ```
 
+## Listing personas on a story map
+
+A story map declares the actors whose journey it covers with a top-level
+`personas` list, the way it declares the terms it uses:
+
+```yaml
+name: Map Name
+
+personas:
+  - coding-agent
+
+ubiquitous:
+  - story-map
+```
+
+This is where a persona is settled. Framing the user journey comes before any
+story is committed, so the list is declared rather than derived from the map's
+story cards: a map names an actor it has no story for yet, and a key with no
+persona file behind it still renders — on the board the name comes before the
+file. Declared personas appear as orange stickies below the board, each linking
+to its row.
+
+An example mapping declares none. Whom the work is for is settled on the map and
+carried by each story; a rule is a detail of one story, and does not get to
+disagree with it about the actor.
+
 ## Naming a persona from a story
 
 A story declares its actor with a `persona` key in its frontmatter:
@@ -80,6 +106,7 @@ plain chip, so the link degrades gracefully.
 ## Reading personas from tooling
 
 The MCP server lists the cast with `list_personas` and serves each one at
-`livt://persona/{persona-key}`; a story resource carries its own `persona`
-resolved to that URI. See [Commands](../reference/commands.md#resources) and
+`livt://persona/{persona-key}`. A story resource carries its own `persona` and a
+story map its `personas`, both resolved to that URI. See
+[Commands](../reference/commands.md#resources) and
 [livt URI](../reference/uri.md).

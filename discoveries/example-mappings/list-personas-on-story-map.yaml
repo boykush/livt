@@ -10,6 +10,16 @@ rules:
         name: 各ペルソナはpersonas.html#{persona-key}のアンカーを持つ行になる
     automated: true
   - id: R-02
+    name: ストーリーマップは登場するペルソナを並べる
+    examples:
+      - id: EX-01
+        name: ストーリーマップのpersonasに並べたペルソナが、ボード上に付箋として出る
+      - id: EX-02
+        name: 未コミットのペルソナを並べても、キーのまま付箋として読める（ジャーニーを描く時点では、ファイルより先に名前が挙がる）
+      - id: EX-03
+        name: 実例マッピングはペルソナを持たない。誰のためかはストーリーマップとストーリーで決まり、ルールの粒度では決まらない
+    automated: true
+  - id: R-03
     name: ストーリーはfrontmatterでペルソナを1つ名指す
     examples:
       - id: EX-01
@@ -19,7 +29,7 @@ rules:
       - id: EX-03
         name: ペルソナを名指さないストーリーもそのまま読める
     automated: true
-  - id: R-03
+  - id: R-04
     name: ペルソナ一覧はそのペルソナのストーリーを映す
     examples:
       - id: EX-01
@@ -27,7 +37,7 @@ rules:
       - id: EX-02
         name: どのストーリーからも名指されていないペルソナは、行を保ったままストーリーが無いと示す
     automated: true
-  - id: R-04
+  - id: R-05
     name: ペルソナはlivt URIで指せる
     examples:
       - id: EX-01
@@ -36,16 +46,10 @@ rules:
         name: MCPのlist_personasが各ペルソナのキー・表示名・URIを配る
     automated: true
 
-questions:
-  - id: Q-01
-    text: ストーリーマップ・実例マッピングもボード単位でペルソナを宣言するか（現状はストーリーのfrontmatterだけが持つ）
-  - id: Q-02
-    text: ストーリー一覧をペルソナで絞り込めるようにするか（現状の絞り込み軸はオポチュニティのみで、1ページ1バー）
-  - id: Q-03
-    text: ペルソナが人間かAIエージェントかを構造として持つか（現状は説明の散文で述べ分ける）
+questions: []
 
 ubiquitous:
   - persona
+  - story-map
   - story
   - livt-uri
-  - livt-repository

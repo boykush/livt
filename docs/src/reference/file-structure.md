@@ -24,7 +24,7 @@ project-root/
 - The `stories/` directory is the committed story registry, and `stories/{story-key}.md` provides story key uniqueness
 - Example mapping filenames must match story keys to link them
 - Persona keys are derived from filenames, and `personas/` is flat: a persona takes no [context](../guides/ubiquitous-language.md#contexts), so a persona key is one segment
-- A story names its actor with a `persona` key in frontmatter, and is anchored to it as `personas.html#{persona-key}`
+- A story names its actor with a `persona` key in frontmatter, and a story map lists the actors whose journey it covers with a top-level `personas`; both anchor to `personas.html#{persona-key}`
 - Term keys are derived from filenames, and a term's [context](../guides/ubiquitous-language.md#contexts) from the directory holding it. The path is what makes a term unique, so the same key can sit at the root and under a context as two separate terms
 - A context is optional and one directory deep; terms nested deeper are not addressable and are left out of the glossary
 - A term is anchored as `ubiquitous.html#{term-key}`, or `ubiquitous.html#{ctx}/{term-key}` when it is scoped

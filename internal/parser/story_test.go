@@ -78,7 +78,7 @@ func TestParseStoryNoFrontmatter(t *testing.T) {
 	}
 }
 
-// livt://mapping/look-up-story-personas/rule/R-02/example/EX-01: persona is
+// livt://mapping/list-personas-on-story-map/rule/R-03/example/EX-01: persona is
 // reserved like name, so it addresses the actor rather than landing among the
 // free-form metadata rows.
 func TestParseStoryReadsPersonaAsAReservedField(t *testing.T) {
@@ -98,7 +98,7 @@ func TestParseStoryReadsPersonaAsAReservedField(t *testing.T) {
 	}
 }
 
-// livt://mapping/look-up-story-personas/rule/R-02/example/EX-03: naming an actor
+// livt://mapping/list-personas-on-story-map/rule/R-03/example/EX-03: naming an actor
 // stays optional, so a story written before the personas existed still parses.
 func TestParseStoryWithoutPersonaIsEmpty(t *testing.T) {
 	dir := t.TempDir()

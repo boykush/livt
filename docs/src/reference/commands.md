@@ -95,7 +95,7 @@ terms linked from mappings and story maps):
 
 | URI | Returns |
 |-----|---------|
-| `livt://story-map/{map_name}` | A story map: activities, steps, story cards, and releases. Committed story cards link to their story resource. `{map_name}` is the map's display name (percent-encoded) — the same identifier the build output uses for `story-map/{name}.html`. |
+| `livt://story-map/{map_name}` | A story map: activities, steps, story cards, releases, and `personas` — the actors whose journey it covers, resolved to persona resources in `persona_refs`. Committed story cards link to their story resource. `{map_name}` is the map's display name (percent-encoded) — the same identifier the build output uses for `story-map/{name}.html`. |
 | `livt://story/{story_key}` | The story's name, body, and frontmatter meta (e.g. `issue`), plus `persona` — the actor it is written for, resolved to a name and persona resource URI — `example_mapping_uri` when a mapping exists, and `opportunities` — the story maps the story sits on, as map name plus story map resource URI. |
 | `livt://mapping/{story_key}` | The story's example mapping (rules, examples, questions, ubiquitous terms). Each rule, example, and question carries its own `uri`, and `ubiquitous_terms` resolves each referenced term to its resource URI. [Retired](../guides/example-mappings.md#retiring-an-item) entries are listed too, flagged — the mapping is the structural record their ids are numbered from. |
 | `livt://mapping/{story_key}/rule/{rule_id}` | A single rule and its examples, plus its recorded automation: `issues` (automation Issue URLs) and `automated` (whether the rule is automated by tests). Rules inside `livt://mapping/{story_key}` carry the same fields. |

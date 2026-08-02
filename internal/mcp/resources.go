@@ -47,7 +47,7 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "story-map",
 		Title:       "Story map",
-		Description: "A user story map (activities, steps, story cards, releases, ubiquitous terms), addressed by its display name (percent-encoded).",
+		Description: "A user story map (activities, steps, story cards, releases, personas, ubiquitous terms), addressed by its display name (percent-encoded). personas are the actors whose journey the map covers; read them first, since a step only makes sense as somebody's step.",
 		MIMEType:    "application/json",
 		URITemplate: uri.StoryMapTemplate,
 	}, s.readStoryMap)

@@ -15,7 +15,7 @@ func writePersona(t *testing.T, dir, key, name string) {
 	}
 }
 
-// livt://mapping/look-up-story-personas/rule/R-01/example/EX-01
+// livt://mapping/list-personas-on-story-map/rule/R-01/example/EX-01
 func TestParsePersonaReadsNameAndBody(t *testing.T) {
 	dir := t.TempDir()
 	data := []byte("---\nname: コーディングエージェント\n---\n\nlivtリポジトリをMCP越しに読むAIエージェント。\n")
@@ -56,7 +56,7 @@ func TestParsePersonaRejectsKeysThatEscapeTheDirectory(t *testing.T) {
 	}
 }
 
-// livt://mapping/look-up-story-personas/rule/R-01/example/EX-02: the list is
+// livt://mapping/list-personas-on-story-map/rule/R-01/example/EX-02: the list is
 // every persona file, in the order the filesystem lays them out.
 func TestParseAllPersonasReturnsEveryFileInOrder(t *testing.T) {
 	dir := t.TempDir()

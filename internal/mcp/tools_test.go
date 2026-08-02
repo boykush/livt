@@ -2,8 +2,10 @@ package mcp
 
 import (
 	"context"
+	"encoding/json"
 	"os"
 	"path/filepath"
+	"strings"
 	"testing"
 )
 
@@ -39,6 +41,9 @@ func newTestServer(t *testing.T) *Server {
 	writeFile(t, filepath.Join(root, "stories", "other.md"), "---\nname: 別ストーリー\npersona: missing-persona\n---\n\n本文\n")
 	writeFile(t, filepath.Join(root, "discoveries", "usm", "demo-map.yaml"),
 		"name: デモマップ\n"+
+			"personas:\n"+
+			"  - reader\n"+
+			"  - missing-persona\n"+
 			"ubiquitous:\n"+
 			"  - story\n"+
 			"releases:\n"+
@@ -339,7 +344,7 @@ func TestListTermsOnMissingUbiquitousDirIsEmpty(t *testing.T) {
 	}
 }
 
-// livt://mapping/look-up-story-personas/rule/R-04/example/EX-02: the listing
+// livt://mapping/list-personas-on-story-map/rule/R-05/example/EX-02: the listing
 // enumerates the personas directory, so a consumer can read who the stories are
 // written for before reading any of them.
 func TestListPersonasEnumeratesTheCastWithResourceURIs(t *testing.T) {
@@ -404,7 +409,7 @@ func TestPersonaRejectsTraversalKey(t *testing.T) {
 	}
 }
 
-// livt://mapping/look-up-story-personas/rule/R-02/example/EX-02: a story hands
+// livt://mapping/list-personas-on-story-map/rule/R-03/example/EX-02: a story hands
 // out its persona resolved to a resource URI, so a consumer reads who it serves
 // without parsing the body's "as a ..." line. An uncommitted persona keeps its
 // bare key, mirroring how an unresolved term ref degrades.
@@ -439,6 +444,53 @@ func TestStoryHandsOutItsPersona(t *testing.T) {
 	}
 	if gotOther.Persona == nil || gotOther.Persona.Key != "missing-persona" || gotOther.Persona.URI != "" {
 		t.Fatalf("persona = %+v, want the bare key with no uri to a persona that is not committed", gotOther.Persona)
+	}
+}
+
+// livt://mapping/list-personas-on-story-map/rule/R-02/example/EX-01 and EX-02:
+// the map hands out the actors whose journey it covers, resolved to persona
+// resources; one that is not committed yet keeps its bare key.
+func TestStoryMapHandsOutItsPersonas(t *testing.T) {
+	cfg := newTestServer(t).cfg
+	sm, err := cfg.storyMap("デモマップ")
+	if err != nil {
+		t.Fatalf("storyMap: %v", err)
+	}
+
+	got := cfg.toStoryMapJSON(sm)
+	if len(got.Personas) != 2 || got.Personas[0] != "reader" {
+		t.Fatalf("personas = %+v, want the declared keys kept as authored", got.Personas)
+	}
+	if len(got.PersonaRefs) != 2 {
+		t.Fatalf("persona_refs = %+v, want one per declared key", got.PersonaRefs)
+	}
+	if r := got.PersonaRefs[0]; r.Name != "閲覧者" || r.URI != "livt://persona/reader" {
+		t.Errorf("committed ref = %+v, want 閲覧者 at livt://persona/reader", r)
+	}
+	if r := got.PersonaRefs[1]; r.Key != "missing-persona" || r.URI != "" {
+		t.Errorf("uncommitted ref = %+v, want the bare key with no uri", r)
+	}
+}
+
+// livt://mapping/list-personas-on-story-map/rule/R-02/example/EX-03: whom the
+// work is for is settled on the story map and on the story, so an example
+// mapping has no personas of its own — a personas key in one is not part of its
+// shape and stays out of the payload.
+func TestExampleMappingHasNoPersonas(t *testing.T) {
+	s := newTestServer(t)
+	writeFile(t, filepath.Join(s.cfg.Root, "discoveries", "example-mappings", "declares.yaml"),
+		"personas:\n  - reader\nrules:\n  - id: R-01\n    name: ルール1\n")
+
+	em, err := s.cfg.exampleMapping("declares")
+	if err != nil {
+		t.Fatalf("exampleMapping: %v", err)
+	}
+	body, err := json.Marshal(s.cfg.toExampleMappingJSON(em))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(string(body), "persona") {
+		t.Fatalf("mapping payload = %s, want no personas on an example mapping", body)
 	}
 }
 

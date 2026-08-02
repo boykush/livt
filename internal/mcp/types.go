@@ -209,6 +209,12 @@ type storyMapJSON struct {
 	Name       string         `json:"name"`
 	Activities []activityJSON `json:"activities,omitempty"`
 	Releases   []releaseJSON  `json:"releases,omitempty"`
+	// Personas keeps the raw keys the map declares; PersonaRefs carries the same
+	// keys resolved to persona resources. They are the actors whose journey this
+	// map covers — read them before the activities, since a step only makes sense
+	// as somebody's step.
+	Personas    []string         `json:"personas,omitempty"`
+	PersonaRefs []personaRefJSON `json:"persona_refs,omitempty"`
 	// Ubiquitous and UbiquitousTerms mirror the same pair on exampleMappingJSON.
 	Ubiquitous      []string      `json:"ubiquitous,omitempty"`
 	UbiquitousTerms []termRefJSON `json:"ubiquitous_terms,omitempty"`
@@ -371,6 +377,8 @@ func (c Config) toStoryMapJSON(sm *domain.StoryMap) storyMapJSON {
 		Name:            sm.Name,
 		Activities:      activities,
 		Releases:        releases,
+		Personas:        sm.Personas,
+		PersonaRefs:     c.toPersonaRefs(sm.Personas),
 		Ubiquitous:      sm.Ubiquitous,
 		UbiquitousTerms: c.toTermRefs(sm.Ubiquitous),
 	}
@@ -415,6 +423,18 @@ func (c Config) toPersonaRef(key string) *personaRefJSON {
 		ref.URI = uri.Persona(key)
 	}
 	return ref
+}
+
+// toPersonaRefs resolves the keys a story map declares, the way toTermRefs does
+// for the terms it references.
+func (c Config) toPersonaRefs(keys []string) []personaRefJSON {
+	refs := make([]personaRefJSON, 0, len(keys))
+	for _, key := range keys {
+		if ref := c.toPersonaRef(key); ref != nil {
+			refs = append(refs, *ref)
+		}
+	}
+	return refs
 }
 
 func toTermJSON(term *domain.Term) termJSON {

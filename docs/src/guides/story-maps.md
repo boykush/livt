@@ -23,9 +23,23 @@ releases:
   - id: release-id
     name: Release Name
 
+personas:
+  - persona-key
+
 ubiquitous:
   - term-key
 ```
+
+## Personas
+
+- `personas` is optional: each entry is a [persona](./personas.md) key
+- They are the actors whose journey the map covers, declared rather than derived
+  from its story cards — the cast is settled while the journey is being framed,
+  before any story is committed, so a map can name an actor it has no story for
+  yet
+- Declared personas render as orange stickies below the board, linking to
+  `personas.html#{persona-key}`
+- A key with no matching persona file renders as a plain orange card
 
 ## Ubiquitous Language
 

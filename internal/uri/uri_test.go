@@ -178,7 +178,7 @@ func TestParseStory(t *testing.T) {
 	}
 }
 
-// livt://mapping/look-up-story-personas/rule/R-04: a persona is addressed by key
+// livt://mapping/list-personas-on-story-map/rule/R-05: a persona is addressed by key
 // alone. It carries no context, so a second segment is malformed rather than a
 // scoping — which also keeps a persona URI from parsing as anything else.
 func TestParsePersona(t *testing.T) {

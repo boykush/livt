@@ -1,0 +1,15 @@
+{{define "persona-card"}}
+{{/*
+A persona a story map declares, as an orange sticky. A card with no Href names a
+persona the livt repository does not hold yet, and degrades to a plain sticky
+the same way a term card and a keyless story card do — the cast is framed on the
+board before the files exist.
+*/}}
+{{if .Href}}
+<a href="{{.Href}}" class="inline-flex items-center gap-2 bg-orange-100 border-l-4 border-orange-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-orange-200 transition">
+  <span>{{.Name}}</span><span>&rarr;</span>
+</a>
+{{else}}
+<div class="bg-orange-100 border-l-4 border-orange-400 px-3 py-2 rounded shadow text-sm text-gray-700">{{.Name}}</div>
+{{end}}
+{{end}}

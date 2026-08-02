@@ -32,7 +32,7 @@ func buildPersonasHTML(t *testing.T, personasDir string, storyIndex map[string][
 	return string(out)
 }
 
-// livt://mapping/look-up-story-personas/rule/R-01/example/EX-03: each persona is
+// livt://mapping/list-personas-on-story-map/rule/R-01/example/EX-03: each persona is
 // a row addressable by its key, carrying the name and the description.
 func TestBuildPersonasRendersPersonaAsAnchoredRow(t *testing.T) {
 	dir := t.TempDir()
@@ -48,7 +48,7 @@ func TestBuildPersonasRendersPersonaAsAnchoredRow(t *testing.T) {
 	}
 }
 
-// livt://mapping/look-up-story-personas/rule/R-03/example/EX-01: the row lists
+// livt://mapping/list-personas-on-story-map/rule/R-04/example/EX-01: the row lists
 // the stories written for the persona, which is the reverse of the link the
 // story's frontmatter holds.
 func TestBuildPersonasListsTheStoriesWrittenForEachPersona(t *testing.T) {
@@ -63,7 +63,7 @@ func TestBuildPersonasListsTheStoriesWrittenForEachPersona(t *testing.T) {
 	if !strings.Contains(html, `href="story/automate.html"`) || !strings.Contains(html, "仕様を見て自動化する") {
 		t.Fatal("expected the persona's story to be listed and linked")
 	}
-	// livt://mapping/look-up-story-personas/rule/R-03/example/EX-02
+	// livt://mapping/list-personas-on-story-map/rule/R-04/example/EX-02
 	if !strings.Contains(html, "No stories yet") {
 		t.Fatal("expected a persona no story names to say so rather than render blank")
 	}
@@ -76,7 +76,7 @@ func TestBuildPersonasWithoutPersonasRendersEmptyState(t *testing.T) {
 	}
 }
 
-// livt://mapping/look-up-story-personas/rule/R-02/example/EX-02: a committed
+// livt://mapping/list-personas-on-story-map/rule/R-03/example/EX-02: a committed
 // persona resolves to its display name and links to its row.
 func TestResolvePersonaCardLinksACommittedPersona(t *testing.T) {
 	dir := t.TempDir()
@@ -122,6 +122,60 @@ func TestResolvePersonaCardRejectsKeysThatEscapeTheDirectory(t *testing.T) {
 	}
 }
 
+// livt://mapping/list-personas-on-story-map/rule/R-02/example/EX-01 and EX-02:
+// the map's declared personas render as stickies on its board, and one naming a
+// persona the repository does not hold yet still reads — while the journey is
+// being framed the name comes before the file.
+func TestStoryMapViewResolvesDeclaredPersonas(t *testing.T) {
+	dir := t.TempDir()
+	writePersona(t, dir, "coding-agent", "コーディングエージェント")
+
+	b := Builder{PersonasDir: dir}
+	view := b.toStoryMapView(&domain.StoryMap{Name: "discovery", Personas: []string{"coding-agent", "not-committed"}})
+
+	if len(view.StoryMap.Personas) != 2 {
+		t.Fatalf("got %d persona cards, want 2", len(view.StoryMap.Personas))
+	}
+	if got := view.StoryMap.Personas[0]; got.Name != "コーディングエージェント" || got.Href != "../personas.html#coding-agent" {
+		t.Fatalf("resolved card = %+v, want the display name linking to its row", got)
+	}
+	if got := view.StoryMap.Personas[1]; got.Name != "not-committed" || got.Href != "" {
+		t.Fatalf("unresolved card = %+v, want the bare key with no link", got)
+	}
+}
+
+func TestRenderStoryMapShowsDeclaredPersonas(t *testing.T) {
+	dir := t.TempDir()
+	writePersona(t, dir, "coding-agent", "コーディングエージェント")
+
+	b := Builder{PersonasDir: dir}
+	var buf bytes.Buffer
+	if err := renderStoryMap(&buf, b.toStoryMapView(&domain.StoryMap{Name: "discovery", Personas: []string{"coding-agent"}})); err != nil {
+		t.Fatal(err)
+	}
+	html := buf.String()
+
+	if !strings.Contains(html, `href="../personas.html#coding-agent"`) {
+		t.Fatal("expected the persona sticky to link to its row")
+	}
+	if !strings.Contains(html, "コーディングエージェント") {
+		t.Fatal("expected the persona display name on the board")
+	}
+}
+
+// A map that declares no personas gains no block, the way it gains no ubiquitous
+// block: an empty heading would read as a section the board forgot to fill.
+func TestRenderStoryMapWithoutPersonasHasNoPersonaBlock(t *testing.T) {
+	b := Builder{PersonasDir: t.TempDir()}
+	var buf bytes.Buffer
+	if err := renderStoryMap(&buf, b.toStoryMapView(&domain.StoryMap{Name: "discovery"})); err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(buf.String(), "personas.html#") {
+		t.Fatal("expected no persona stickies on a map that declares none")
+	}
+}
+
 func TestResolvePersonaCardWithoutAPersonaIsNil(t *testing.T) {
 	b := Builder{PersonasDir: t.TempDir()}
 	if card := b.resolvePersonaCard("", ""); card != nil {
@@ -129,7 +183,7 @@ func TestResolvePersonaCardWithoutAPersonaIsNil(t *testing.T) {
 	}
 }
 
-// livt://mapping/look-up-story-personas/rule/R-02/example/EX-02: the story page
+// livt://mapping/list-personas-on-story-map/rule/R-03/example/EX-02: the story page
 // shows the actor beside the story key, linked to its row.
 func TestRenderStoryShowsThePersonaChip(t *testing.T) {
 	story := &domain.Story{Key: domain.StoryKey{Value: "automate"}, Name: "Automate", Persona: "coding-agent"}
