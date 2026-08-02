@@ -144,9 +144,22 @@ rules:
       - id: EX-04
         name: デプロイ済みサイトのURLを一次の引用形にしない
     automated: true
+  - id: R-15
+    name: livtリポジトリの所在は、消費側workspaceにコミットされる宣言で供給する
+    examples:
+      - id: EX-01
+        name: 束縛の契約は環境変数 LIVT_ROOT で、mise・direnv などコミットされるworkspace設定から供給する
+      - id: EX-02
+        name: MCPのspawnは mise exec -- livt mcp のようにランチャー経由にし、shell外の起動でも同じ宣言が効く
+      - id: EX-03
+        name: CIはlivtリポジトリをcheckoutし、そのパスをLIVT_ROOTに束縛する（宣言はworkflowにコミットされる）
+      - id: EX-04
+        name: 値は {{config_root}}/../ のような相対参照で書け、隣接checkoutの配置規約ごと機械非依存にコミットできる
 questions:
   - id: Q-05
     text: ネットワーク（非ローカル）公開する場合の認証・公開モデルをどうするか（現状はローカル利用前提で認証なし）
+  - id: Q-06
+    text: 同一性（どのlivtリポジトリか）と版方針を宣言するネイティブマニフェストを持つか（R-15のenv契約が供給するのは所在のみ。名前→所在のレジストリ、spec_versionのピン留めが論点）
 
 ubiquitous:
   - example-mapping

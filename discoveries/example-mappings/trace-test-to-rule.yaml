@@ -73,6 +73,7 @@ rules:
 questions:
   - id: Q-01
     text: 実装リポジトリからlivtリポジトリをどう引くか（R-04はCLIに解決機構があることまでで、どこから解決できるかは誰も引き受けていない。現状は--rootでlivtリポジトリのチェックアウトを指す必要があり、実装が別リポジトリにある本ストーリーのアクターは辿れない）
+    retired: true
 
 ubiquitous:
   - livt-uri
