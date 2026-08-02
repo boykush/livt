@@ -36,6 +36,7 @@ If you polish during transcription, the refine diff becomes meaningless. Keep th
    - **Activities** (top row) → `activities[]`
    - **Steps/Tasks** (second row, under each activity) → `steps[]`
    - **Story cards** (hanging below a step) → `stories[]` under that step, top-to-bottom as on the board
+   - **Release slices** (the horizontal dividers cutting across the whole board) → `releases[]`, top-to-bottom, and stamp every card sitting above a divider with that slice's `release:`
 3. Write to `discoveries/usm/{map-name}.yaml`.
 4. Read the YAML back against the board and confirm nothing was dropped, reordered, or altered.
 5. Commit the transcription as the **refinement-free baseline** (see Commit Contract).
@@ -64,11 +65,16 @@ activities:
           - name: {story card, as written on the board}
           - key: {story-key}
             name: {story card with a stable key}
+            release: {release-id}
+
+releases:
+  - id: {release-id}
+    name: {slice name, as written on the board}
 ```
 
-- `key:` identifiers stay in **English** (used as filenames `stories/{key}.md` and for `step` cross-references); `name:` follows the board's language.
+- `key:` and `id:` identifiers stay in **English** (story keys are used as filenames `stories/{key}.md`); `name:` follows the board's language.
 - A story card may be captured with only `name:` when it is still lightweight and has no stable key yet.
-- Story files in `stories/` reference backbone steps via the `step` frontmatter field.
+- `releases:` lists the slices top-to-bottom, matching the board. A card carries the `release:` of the divider it sits above; a card below every divider carries none. A card without a `key:` can still carry a `release:`.
 
 ## Commit Contract
 
@@ -81,4 +87,5 @@ Before committing, verify the transcription is complete — not whether the map 
 - Every backbone card and story card on the board appears in the YAML; none was dropped.
 - Backbone order (left to right) and story order (top to bottom) match the board.
 - Every story hangs under the same step it sat under on the board.
+- Every release slice on the board appears in `releases:`, in the board's top-to-bottom order, and every card above a divider carries its `release:`.
 - Wording matches the board; nothing was paraphrased away.
