@@ -23,6 +23,7 @@ var buildCmd = &cobra.Command{
 			MappingsDir:   filepath.Join("discoveries", "example-mappings"),
 			StoriesDir:    "stories",
 			USMDir:        filepath.Join("discoveries", "usm"),
+			PersonasDir:   "personas",
 			UbiquitousDir: "ubiquitous",
 			OutDir:        outDir,
 		}

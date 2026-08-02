@@ -8,12 +8,16 @@ The `stories/` directory is the committed story registry: once a story candidate
 ```markdown
 ---
 name: Story display name
+persona: persona-key
 ---
 
 Story body in Markdown.
 ```
 
-The `name` field in frontmatter is required. The **story key** is derived from the filename (without `.md`).
+The `name` field in frontmatter is required. The optional `persona` field names the
+actor the story is written for — see [Personas](./personas.md). Both are reserved;
+every other frontmatter key renders as a metadata row.
+The **story key** is derived from the filename (without `.md`).
 Story keys must be kebab-case, using lowercase letters, numbers, and hyphens.
 Key uniqueness is enforced by the filesystem: two committed stories cannot use the same `stories/{story-key}.md` path.
 
@@ -24,6 +28,7 @@ Key uniqueness is enforced by the filesystem: two committed stories cannot use t
 ```markdown
 ---
 name: Confirm story map
+persona: team-member
 ---
 
 As a team member

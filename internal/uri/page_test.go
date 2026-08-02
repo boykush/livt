@@ -21,6 +21,7 @@ func TestPagesFollowTheDocumentedScheme(t *testing.T) {
 		{Question("checkout", "Q-01"), QuestionPage("checkout", "Q-01"), "mapping/checkout.html#question-Q-01"},
 		{Story("checkout"), StoryPage("checkout"), "story/checkout.html"},
 		{StoryMap("discovery"), StoryMapPage("discovery"), "story-map/discovery.html"},
+		{Persona("coding-agent"), PersonaPage("coding-agent"), "personas.html#coding-agent"},
 		{Term("", "livt-uri"), TermPage("", "livt-uri"), "ubiquitous.html#livt-uri"},
 		{Term("billing", "invoice"), TermPage("billing", "invoice"), "ubiquitous.html#billing/invoice"},
 	}
@@ -66,6 +67,7 @@ func TestPagesCarryNoDeployment(t *testing.T) {
 		QuestionPage("checkout", "Q-01"),
 		StoryPage("checkout"),
 		StoryMapPage("discovery"),
+		PersonaPage("coding-agent"),
 		TermPage("", "livt-uri"),
 		TermPage("billing", "invoice"),
 	} {

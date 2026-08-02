@@ -16,6 +16,7 @@ func emptyDirsBuilder(t *testing.T) Builder {
 		MappingsDir:   t.TempDir(),
 		StoriesDir:    t.TempDir(),
 		USMDir:        t.TempDir(),
+		PersonasDir:   t.TempDir(),
 		UbiquitousDir: t.TempDir(),
 		OutDir:        t.TempDir(),
 	}

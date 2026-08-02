@@ -1,7 +1,7 @@
 # livt URI
 
 A **livt URI** names one point in the livt repository — a rule, an example, a
-question, a story, a story map, or a ubiquitous language term. It is the form to
+question, a story, a persona, a story map, or a ubiquitous language term. It is the form to
 reach for whenever a reference has to survive outside the livt repository: a test comment,
 an issue body, a commit message.
 
@@ -37,7 +37,7 @@ declaration (`--root` / `LIVT_ROOT`), so scope lives in the workspace, not
 in the name. That is what keeps a citation short, and what lets the same
 reference work in every checkout of the same repository.
 
-The first segment is drawn from a closed set — `mapping`, `story`,
+The first segment is drawn from a closed set — `mapping`, `story`, `persona`,
 `story-map`, `ubiquitous` — so a future form that names a repository in
 that position stays open without breaking any URI written today.
 
@@ -53,6 +53,7 @@ lands in it. Paths are relative to the output root.
 | `livt://mapping/{story-key}/rule/{rule-id}/example/{example-id}` | `mapping/{story-key}.html#rule-{rule-id}-example-{example-id}` |
 | `livt://mapping/{story-key}/question/{question-id}` | `mapping/{story-key}.html#question-{question-id}` |
 | `livt://story/{story-key}` | `story/{story-key}.html` |
+| `livt://persona/{persona-key}` | `personas.html#{persona-key}` |
 | `livt://story-map/{map-name}` | `story-map/{map-name}.html` |
 | `livt://ubiquitous/{term-key}` | `ubiquitous.html#{term-key}` |
 | `livt://ubiquitous/{ctx}/{term-key}` | `ubiquitous.html#{ctx}/{term-key}` |
@@ -67,6 +68,10 @@ way, and for the same reason: `invoice` can mean one thing in billing and
 another in shipping, so the context is part of the address rather than a label
 on it. The context is optional — a term whose meaning holds everywhere keeps the
 one-segment form — and the two shapes never resolve to each other.
+
+A [persona](../guides/personas.md) takes no context and so has one shape only:
+an actor named twice is the same actor, so a second segment is malformed rather
+than a scoping.
 
 A [retired](../guides/example-mappings.md#retiring-an-item) item has no sticky,
 so its URI lands on the board with nothing to scroll to. The URI still resolves:

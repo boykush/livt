@@ -5,7 +5,8 @@
 Build artifacts and start a local server.
 
 While the server is running, livt watches the input directories
-(`discoveries/example-mappings`, `stories`, `discoveries/usm`, and `ubiquitous`).
+(`discoveries/example-mappings`, `stories`, `discoveries/usm`, `personas`, and
+`ubiquitous`).
 When a file changes, livt rebuilds and reloads the page in the browser
 automatically, so you can preview refinements while editing.
 
@@ -33,9 +34,9 @@ livt build [flags]
 ## `livt mcp`
 
 Run an MCP ([Model Context Protocol](https://modelcontextprotocol.io)) server
-that exposes the livt repository (story maps, stories, example mappings, and
-the ubiquitous language). An implementation repo's coding agent can then fetch
-the spec for a story or rule without reading livt's source.
+that exposes the livt repository (story maps, stories, personas, example
+mappings, and the ubiquitous language). An implementation repo's coding agent
+can then fetch the spec for a story or rule without reading livt's source.
 
 The livt repository usually lives in a separate checkout from the consumer, so point at
 it with `--root` or the `LIVT_ROOT` environment variable. The flag takes
@@ -84,21 +85,23 @@ to localhost, not a public network.
 | `list_stories` | `opportunity` (optional) — an opportunity name, matched exactly against a story map display name; keeps only the stories on that map, and an unknown name yields an empty list | Every story with its key and name. Each entry links to its story resource (`uri`); stories that have an example mapping also include `example_mapping_uri`, and stories on a story map carry `opportunities` — one map name plus story map resource URI per map they sit on. |
 | `list_story_maps` | — | Every story map with its name and its story map resource URI (`uri`). |
 | `list_terms` | — | Every [ubiquitous language](../guides/ubiquitous-language.md) term with its key, display name, and term resource URI (`uri`) — including terms no board references. A term scoped to a context also carries `ctx`, which is part of what identifies it. |
+| `list_personas` | — | Every [persona](../guides/personas.md) with its key, display name, and persona resource URI (`uri`) — including personas no story names. |
 
 ### Resources
 
 The spec itself is exposed as resources, addressable by URI
-(story map → story → mapping → rule → example, with questions and ubiquitous
+(story map → story → mapping → rule → example, with questions, personas, and ubiquitous
 terms linked from mappings and story maps):
 
 | URI | Returns |
 |-----|---------|
 | `livt://story-map/{map_name}` | A story map: activities, steps, story cards, and releases. Committed story cards link to their story resource. `{map_name}` is the map's display name (percent-encoded) — the same identifier the build output uses for `story-map/{name}.html`. |
-| `livt://story/{story_key}` | The story's name, body, and frontmatter meta (e.g. `issue`), plus `example_mapping_uri` when a mapping exists and `opportunities` — the story maps the story sits on, as map name plus story map resource URI. |
+| `livt://story/{story_key}` | The story's name, body, and frontmatter meta (e.g. `issue`), plus `persona` — the actor it is written for, resolved to a name and persona resource URI — `example_mapping_uri` when a mapping exists, and `opportunities` — the story maps the story sits on, as map name plus story map resource URI. |
 | `livt://mapping/{story_key}` | The story's example mapping (rules, examples, questions, ubiquitous terms). Each rule, example, and question carries its own `uri`, and `ubiquitous_terms` resolves each referenced term to its resource URI. [Retired](../guides/example-mappings.md#retiring-an-item) entries are listed too, flagged — the mapping is the structural record their ids are numbered from. |
 | `livt://mapping/{story_key}/rule/{rule_id}` | A single rule and its examples, plus its recorded automation: `issues` (automation Issue URLs) and `automated` (whether the rule is automated by tests). Rules inside `livt://mapping/{story_key}` carry the same fields. |
 | `livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}` | A single example of a rule. Example ids are numbered within their rule, so the address carries `{rule_id}` — `EX-01` alone does not identify an example. |
 | `livt://mapping/{story_key}/question/{question_id}` | A single question. Questions hang off the mapping rather than off a rule, so the address stops at `{story_key}`. |
+| `livt://persona/{persona_key}` | A [persona](../guides/personas.md)'s name and description. A persona takes no context, so this is its only shape. |
 | `livt://ubiquitous/{term_key}` | A ubiquitous language term's name and definition. This shape addresses a term whose meaning holds across contexts. |
 | `livt://ubiquitous/{ctx}/{term_key}` | A term scoped to one [context](../guides/ubiquitous-language.md#contexts), carrying `ctx` alongside its key. A context is optional and part of the address, so the same `{term_key}` can name one term at the root and another inside a context; the two never resolve to each other. |
 
@@ -152,7 +155,8 @@ livt resolve <uri> [flags]
 | `--base-url` | — | Root of the deployed site; required by `--format url` |
 
 Every URI shape the MCP server exposes as a resource resolves here: mappings,
-rules, examples, questions, stories, story maps, and ubiquitous language terms.
+rules, examples, questions, stories, personas, story maps, and ubiquitous
+language terms.
 
 ### Output forms
 

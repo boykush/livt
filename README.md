@@ -24,6 +24,7 @@ Discovery outcomes are written as plain text files (YAML, Markdown) and visualiz
 - **Stories as Markdown** -- Write stories with YAML frontmatter, keep them alongside your code
 - **Story Maps** -- Visualize activities, steps, and stories with release slices on a board
 - **Example Mappings** -- Render rules, examples, and questions as color-coded sticky notes
+- **Personas** -- Name who each story is for, and browse every actor beside the stories that name it
 - **Ubiquitous Language** -- Keep shared terms as Markdown files and browse them as a glossary table
 - **Static HTML output** -- `livt build` generates a standalone site, no runtime required
 - **Local dev server** -- `livt serve` builds and serves with one command
@@ -66,7 +67,7 @@ go install github.com/boykush/livt@<version>
 
 ```bash
 # Create the directory structure
-mkdir -p stories discoveries/usm discoveries/example-mappings ubiquitous
+mkdir -p stories personas discoveries/usm discoveries/example-mappings ubiquitous
 
 # Create your first story
 cat <<'EOF' > stories/my-first-story.md

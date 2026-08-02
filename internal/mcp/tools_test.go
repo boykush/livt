@@ -10,7 +10,8 @@ import (
 // newTestServer lays out a livt repository under a temp root with one mapped story
 // (demo, which has an example mapping) and one unmapped story (other), one
 // story map (デモマップ, holding a committed card and a bare candidate card),
-// and one committed ubiquitous term (story; missing-term stays uncommitted).
+// one committed ubiquitous term (story; missing-term stays uncommitted), and one
+// committed persona (reader, named by demo; other names an uncommitted one).
 func newTestServer(t *testing.T) *Server {
 	t.Helper()
 	root := t.TempDir()
@@ -34,8 +35,8 @@ func newTestServer(t *testing.T) *Server {
 			"  - story\n"+
 			"  - missing-term\n")
 	writeFile(t, filepath.Join(root, "stories", "demo.md"),
-		"---\nname: デモストーリー\nissue: https://example.com/issues/1\n---\n\n本文\n")
-	writeFile(t, filepath.Join(root, "stories", "other.md"), "---\nname: 別ストーリー\n---\n\n本文\n")
+		"---\nname: デモストーリー\npersona: reader\nissue: https://example.com/issues/1\n---\n\n本文\n")
+	writeFile(t, filepath.Join(root, "stories", "other.md"), "---\nname: 別ストーリー\npersona: missing-persona\n---\n\n本文\n")
 	writeFile(t, filepath.Join(root, "discoveries", "usm", "demo-map.yaml"),
 		"name: デモマップ\n"+
 			"ubiquitous:\n"+
@@ -55,6 +56,7 @@ func newTestServer(t *testing.T) *Server {
 			"            release: mvp\n"+
 			"          - name: 候補ストーリー\n")
 	writeFile(t, filepath.Join(root, "ubiquitous", "story.md"), "---\nname: ストーリー\n---\n\nストーリーの定義\n")
+	writeFile(t, filepath.Join(root, "personas", "reader.md"), "---\nname: 閲覧者\n---\n\n閲覧者の説明\n")
 
 	return NewServer(Config{Root: root}, "test")
 }
@@ -334,6 +336,109 @@ func TestListTermsOnMissingUbiquitousDirIsEmpty(t *testing.T) {
 	}
 	if len(out.Terms) != 0 {
 		t.Errorf("terms = %+v, want empty", out.Terms)
+	}
+}
+
+// livt://mapping/look-up-story-personas/rule/R-04/example/EX-02: the listing
+// enumerates the personas directory, so a consumer can read who the stories are
+// written for before reading any of them.
+func TestListPersonasEnumeratesTheCastWithResourceURIs(t *testing.T) {
+	s := newTestServer(t)
+	// A persona no story names yet — the list is the livt repository's cast, not
+	// a projection of what the stories cite.
+	writeFile(t, filepath.Join(s.cfg.Root, "personas", "unreferenced.md"), "---\nname: 未参照のペルソナ\n---\n\n説明\n")
+
+	_, out, err := s.listPersonas(context.Background(), nil, listPersonasInput{})
+	if err != nil {
+		t.Fatalf("listPersonas: %v", err)
+	}
+
+	byURI := make(map[string]personaSummaryJSON, len(out.Personas))
+	for _, p := range out.Personas {
+		byURI[p.URI] = p
+	}
+	if len(out.Personas) != 2 || len(byURI) != 2 {
+		t.Fatalf("personas = %+v, want two distinct (reader, unreferenced)", out.Personas)
+	}
+	if got := byURI["livt://persona/reader"]; got.Key != "reader" || got.Name != "閲覧者" {
+		t.Errorf("persona = %+v, want key reader, name 閲覧者", got)
+	}
+	// missing-persona is named by the other story but has no file, so it is not
+	// a persona — the listing enumerates the cast, not the references.
+	if _, ok := byURI["livt://persona/missing-persona"]; ok {
+		t.Errorf("personas = %+v, want no entry for the uncommitted missing-persona", out.Personas)
+	}
+}
+
+func TestListPersonasOnMissingPersonasDirIsEmpty(t *testing.T) {
+	s := NewServer(Config{Root: t.TempDir()}, "test")
+
+	_, out, err := s.listPersonas(context.Background(), nil, listPersonasInput{})
+	if err != nil {
+		t.Fatalf("listPersonas: %v", err)
+	}
+	if len(out.Personas) != 0 {
+		t.Errorf("personas = %+v, want empty", out.Personas)
+	}
+}
+
+func TestPersonaReturnsNameAndBody(t *testing.T) {
+	persona, err := newTestServer(t).cfg.persona("reader")
+	if err != nil {
+		t.Fatalf("persona: %v", err)
+	}
+	if persona.Key != "reader" || persona.Name != "閲覧者" || persona.Body != "閲覧者の説明" {
+		t.Errorf("persona = %+v, want reader/閲覧者/閲覧者の説明", persona)
+	}
+}
+
+func TestPersonaUnknownKeyErrors(t *testing.T) {
+	if _, err := newTestServer(t).cfg.persona("nope"); err == nil {
+		t.Fatal("expected error for unknown persona key")
+	}
+}
+
+func TestPersonaRejectsTraversalKey(t *testing.T) {
+	if _, err := newTestServer(t).cfg.persona("../../etc/passwd"); err == nil {
+		t.Fatal("expected error for traversal key")
+	}
+}
+
+// livt://mapping/look-up-story-personas/rule/R-02/example/EX-02: a story hands
+// out its persona resolved to a resource URI, so a consumer reads who it serves
+// without parsing the body's "as a ..." line. An uncommitted persona keeps its
+// bare key, mirroring how an unresolved term ref degrades.
+func TestStoryHandsOutItsPersona(t *testing.T) {
+	cfg := newTestServer(t).cfg
+
+	story, err := cfg.story("demo")
+	if err != nil {
+		t.Fatalf("story: %v", err)
+	}
+	got, err := cfg.toStoryJSON(story)
+	if err != nil {
+		t.Fatalf("toStoryJSON: %v", err)
+	}
+	if got.Persona == nil || got.Persona.Key != "reader" || got.Persona.Name != "閲覧者" || got.Persona.URI != "livt://persona/reader" {
+		t.Fatalf("persona = %+v, want reader resolved to livt://persona/reader", got.Persona)
+	}
+	// persona is reserved, so it never doubles as a metadata row.
+	for _, m := range got.Meta {
+		if m.Key == "persona" {
+			t.Fatalf("meta = %+v, want persona kept out of it", got.Meta)
+		}
+	}
+
+	other, err := cfg.story("other")
+	if err != nil {
+		t.Fatalf("story other: %v", err)
+	}
+	gotOther, err := cfg.toStoryJSON(other)
+	if err != nil {
+		t.Fatalf("toStoryJSON other: %v", err)
+	}
+	if gotOther.Persona == nil || gotOther.Persona.Key != "missing-persona" || gotOther.Persona.URI != "" {
+		t.Fatalf("persona = %+v, want the bare key with no uri to a persona that is not committed", gotOther.Persona)
 	}
 }
 

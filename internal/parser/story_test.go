@@ -78,6 +78,41 @@ func TestParseStoryNoFrontmatter(t *testing.T) {
 	}
 }
 
+// livt://mapping/look-up-story-personas/rule/R-02/example/EX-01: persona is
+// reserved like name, so it addresses the actor rather than landing among the
+// free-form metadata rows.
+func TestParseStoryReadsPersonaAsAReservedField(t *testing.T) {
+	dir := t.TempDir()
+	path := writeStoryFile(t, dir, "automate.md",
+		"---\nname: Automate from the spec\npersona: coding-agent\nissue: https://example.com/1\n---\nbody\n")
+
+	story, err := ParseStory(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if story.Persona != "coding-agent" {
+		t.Fatalf("got persona %q, want coding-agent", story.Persona)
+	}
+	if len(story.Meta) != 1 || story.Meta[0].Key != "issue" {
+		t.Fatalf("got meta %+v, want persona kept out of it", story.Meta)
+	}
+}
+
+// livt://mapping/look-up-story-personas/rule/R-02/example/EX-03: naming an actor
+// stays optional, so a story written before the personas existed still parses.
+func TestParseStoryWithoutPersonaIsEmpty(t *testing.T) {
+	dir := t.TempDir()
+	path := writeStoryFile(t, dir, "n.md", "---\nname: Only\n---\nbody\n")
+
+	story, err := ParseStory(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if story.Persona != "" {
+		t.Fatalf("got persona %q, want empty", story.Persona)
+	}
+}
+
 func TestParseStoryNameOnlyHasNoMeta(t *testing.T) {
 	dir := t.TempDir()
 	path := writeStoryFile(t, dir, "n.md", "---\nname: Only\n---\nbody\n")

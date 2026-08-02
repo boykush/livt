@@ -26,6 +26,10 @@
       <span class="text-base font-medium text-gray-900">{{.Name}}</span>
       <div class="flex items-center gap-2 mt-2 flex-wrap">
         <span class="font-mono text-xs text-gray-400">{{.Key}}</span>
+        {{with .Persona}}
+        {{if .Href}}<a href="{{.Href}}" class="relative z-20 text-xs text-orange-800 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">{{.Name}}</a>
+        {{else}}<span class="text-xs text-orange-800 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5">{{.Name}}</span>{{end}}
+        {{end}}
         {{range .Opportunities}}<a href="{{.Path}}" class="relative z-20 text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-2 py-0.5 hover:bg-purple-100 transition">{{.Name}}</a>{{end}}
         {{if .MappingPath}}<span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">Example Mapping</span>{{end}}
         {{range .Links}}<span class="text-xs text-gray-600 bg-white border border-gray-200 rounded-full px-2 py-0.5">&#128279; {{.Key}}</span>{{end}}

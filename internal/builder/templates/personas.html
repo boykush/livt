@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Personas - livt</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="flex min-h-screen">
+{{template "sidebar" .Sidebar}}
+<div class="flex-1 min-w-0">
+  <header class="bg-white border-b border-gray-200 px-8 py-4">
+    <h2 class="text-lg font-semibold text-gray-800">Personas</h2>
+  </header>
+  <main class="px-8 py-8">
+  {{if .Personas}}
+  <div class="overflow-x-auto bg-white rounded-lg border border-gray-200">
+  <table class="w-full text-left border-collapse">
+    <thead>
+      <tr class="border-b border-gray-200 bg-gray-50 text-xs font-semibold uppercase tracking-wide text-gray-500">
+        <th class="px-5 py-3 w-1/6">Persona</th>
+        <th class="px-5 py-3 w-1/6">Key</th>
+        <th class="px-5 py-3">Description</th>
+        <th class="px-5 py-3 w-1/4">Stories</th>
+      </tr>
+    </thead>
+    <tbody>
+    {{range .Personas}}
+      <tr id="{{.Anchor}}" class="border-b border-gray-100 last:border-0 align-top target:bg-orange-50 hover:bg-gray-50">
+        <td class="px-5 py-3 border-l-4 border-orange-300 font-medium text-gray-900">{{.Name}}</td>
+        <td class="px-5 py-3"><span class="text-xs font-mono text-orange-600">{{.Key}}</span></td>
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{{.Description}}</td>
+        {{/*
+        The stories cell is the reverse of the frontmatter link. A persona no
+        story names yet still gets a row, so the cell says so rather than
+        rendering blank and reading like a build slip.
+        */}}
+        <td class="px-5 py-3">
+          {{if .Stories}}
+          <ul class="space-y-1">
+          {{range .Stories}}
+            <li><a href="{{.Path}}" class="text-sm text-yellow-800 hover:underline">{{.Name}}</a></li>
+          {{end}}
+          </ul>
+          {{else}}
+          <span class="text-xs text-gray-400">No stories yet</span>
+          {{end}}
+        </td>
+      </tr>
+    {{end}}
+    </tbody>
+  </table>
+  </div>
+  {{else}}
+  <p class="text-gray-400 text-sm">No personas found.</p>
+  {{end}}
+  </main>
+</div>
+</div>
+</body>
+</html>

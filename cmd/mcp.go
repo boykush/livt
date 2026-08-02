@@ -26,7 +26,7 @@ var mcpCmd = &cobra.Command{
 	Use:   "mcp",
 	Short: "Run an MCP server exposing the livt repository over stdio or HTTP",
 	Long: `Run a Model Context Protocol server that exposes the livt repository
-(story maps, stories, example mappings, and the ubiquitous language), so an
+(story maps, stories, personas, example mappings, and the ubiquitous language), so an
 implementation repo's agent can fetch the spec for a story or rule without
 reading livt's source.
 

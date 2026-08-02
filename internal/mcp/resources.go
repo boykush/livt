@@ -11,7 +11,8 @@ import (
 
 // registerResources exposes the livt repository as addressable resources, so a client
 // reads the spec by URI (story map -> story -> mapping -> rule -> example, with
-// questions and ubiquitous terms linked alongside) rather than calling a tool.
+// questions, personas, and ubiquitous terms linked alongside) rather than
+// calling a tool.
 // Only resource templates are advertised — no concrete resources and no
 // subscribe — keeping the server stateless with every read served fresh.
 func (s *Server) registerResources(srv *mcpsdk.Server) {
@@ -53,10 +54,17 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "story",
 		Title:       "Story",
-		Description: "A story's name, body, and frontmatter meta, addressed by story key, plus the uris of its example mapping and of the opportunities it sits on.",
+		Description: "A story's name, body, and frontmatter meta, addressed by story key, plus the persona it is written for and the uris of its example mapping and of the opportunities it sits on.",
 		MIMEType:    "application/json",
 		URITemplate: uri.StoryTemplate,
 	}, s.readStory)
+	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
+		Name:        "persona",
+		Title:       "Persona",
+		Description: "A persona's name and description, addressed by persona key. A persona is one actor the stories are written for; a story names at most one, and carries it as persona alongside its own uri.",
+		MIMEType:    "application/json",
+		URITemplate: uri.PersonaTemplate,
+	}, s.readPersona)
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "ubiquitous-term",
 		Title:       "Ubiquitous language term",
@@ -101,6 +109,11 @@ func (s *Server) readStoryMap(_ context.Context, req *mcpsdk.ReadResourceRequest
 // readStory serves livt://story/{story_key}.
 func (s *Server) readStory(_ context.Context, req *mcpsdk.ReadResourceRequest) (*mcpsdk.ReadResourceResult, error) {
 	return s.read(req.Params.URI, uri.KindStory)
+}
+
+// readPersona serves livt://persona/{persona_key}.
+func (s *Server) readPersona(_ context.Context, req *mcpsdk.ReadResourceRequest) (*mcpsdk.ReadResourceResult, error) {
+	return s.read(req.Params.URI, uri.KindPersona)
 }
 
 // readTerm serves both term shapes: livt://ubiquitous/{term_key} and

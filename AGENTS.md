@@ -1,6 +1,6 @@
 # AGENTS.md
 
-livt turns a livt repository — story maps, example mappings, ubiquitous language — into a living document (static site, CLI, MCP server). The repo dogfoods itself: `discoveries/`, `stories/`, and `ubiquitous/` hold a real livt repository describing livt, rendered by livt.
+livt turns a livt repository — story maps, example mappings, personas, ubiquitous language — into a living document (static site, CLI, MCP server). The repo dogfoods itself: `discoveries/`, `stories/`, `personas/`, and `ubiquitous/` hold a real livt repository describing livt, rendered by livt.
 
 Setup, checks, and the conventional-commit rule are in [CONTRIBUTING.md](CONTRIBUTING.md); this file adds only what is specific to working here. Run `mise run check` before pushing.
 
@@ -18,6 +18,7 @@ Two languages, split by what the text *is* — not by who wrote it.
 
 - `stories/*.md` — `name:` and the user-story body
 - `discoveries/**/*.yaml` — `name:` and `text:`
+- `personas/*.md` — `name:` and the description
 - `ubiquitous/*.md` — `name:` and the definition
 
 The livt repository's language is not a rule livt imposes. The skills say prose follows the language the user is speaking — see any `## Language` section under `plugins/discovery-facilitator/skills/`. *This* livt repository happens to be Japanese, and stays that way for consistency.
@@ -31,7 +32,7 @@ Two consequences worth stating:
 
 ## Commits and PRs
 
-- livt repository changes (`discoveries/`, `stories/`, `ubiquitous/`) ship as `docs:`. The branch prefix mirrors the type: `docs/…`, `feat/…`, `fix/…`.
+- livt repository changes (`discoveries/`, `stories/`, `personas/`, `ubiquitous/`) ship as `docs:`. The branch prefix mirrors the type: `docs/…`, `feat/…`, `fix/…`.
 - The body explains **why** the change is right — the diff already says what changed. Wrap at ~80 columns.
 - One rule-level change per PR, a branch each: `docs: add rule R-11 to file-automation-issues-to-impl-repos`. The ID and PR contracts live in [example-mapping-update/SKILL.md](plugins/discovery-facilitator/skills/example-mapping-update/SKILL.md) — a filed rule ID is immutable.
 - A commit automating a rule cites it by livt URI: `Automates livt://mapping/{story-key}/rule/{rule-id}.` A bare `R-02` exists in every mapping file and so identifies nothing.

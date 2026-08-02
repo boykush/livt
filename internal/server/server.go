@@ -48,7 +48,7 @@ func Serve(b *builder.Builder, port int) error {
 	}
 
 	lr := newLiveReload()
-	watchDirs := []string{b.MappingsDir, b.StoriesDir, b.USMDir, b.UbiquitousDir}
+	watchDirs := []string{b.MappingsDir, b.StoriesDir, b.USMDir, b.PersonasDir, b.UbiquitousDir}
 	go watch(watchDirs, watchInterval, func() {
 		fmt.Println("Change detected, rebuilding...")
 		if err := b.Build(); err != nil {

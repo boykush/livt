@@ -70,6 +70,12 @@ func (s *Server) Resolve(p uri.Parsed) (any, error) {
 			return nil, err
 		}
 		return storyResult{versioned: s.versioned(), Story: out}, nil
+	case uri.KindPersona:
+		persona, err := s.cfg.persona(p.PersonaKey)
+		if err != nil {
+			return nil, notFound(err)
+		}
+		return personaResult{versioned: s.versioned(), Persona: toPersonaJSON(persona)}, nil
 	case uri.KindTerm:
 		term, err := s.cfg.term(uri.TermRef(p.TermCtx, p.TermKey))
 		if err != nil {
@@ -99,6 +105,8 @@ func (c Config) Verify(p uri.Parsed) error {
 		_, err = c.storyMap(p.MapName)
 	case uri.KindStory:
 		_, err = c.story(p.StoryKey)
+	case uri.KindPersona:
+		_, err = c.persona(p.PersonaKey)
 	case uri.KindTerm:
 		_, err = c.term(uri.TermRef(p.TermCtx, p.TermKey))
 	default:

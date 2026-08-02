@@ -15,7 +15,7 @@ See [Installation](installation.md) for all methods and how release artifacts ar
 1. Create the required directories:
 
 ```bash
-mkdir -p stories discoveries/usm discoveries/example-mappings ubiquitous
+mkdir -p stories personas discoveries/usm discoveries/example-mappings ubiquitous
 ```
 
 2. Create your first story in `stories/my-first-story.md`:
@@ -37,7 +37,8 @@ livt serve
 ```
 
 4. Open <http://localhost:3000> in your browser. Every page has a sidebar to
-   switch between Example Mappings, Story Maps, Stories, and Ubiquitous Language.
+   switch between Example Mappings, Story Maps, Stories, Personas, and Ubiquitous
+   Language.
    Open **Stories** to find the story you just created:
 
 ![Stories list and sidebar navigation](images/stories-index.png)

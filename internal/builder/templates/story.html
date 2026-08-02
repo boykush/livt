@@ -18,7 +18,17 @@
 <main class="max-w-3xl mx-auto px-6 py-8">
   <div class="bg-yellow-100 border-l-4 border-yellow-400 rounded shadow px-5 py-4">
     <h1 class="text-2xl font-bold text-yellow-900 leading-snug">{{.Story.Name}}</h1>
-    <p class="font-mono text-xs text-yellow-700 mt-2">{{.Story.Key.Value}}</p>
+    <div class="flex items-center gap-2 mt-2 flex-wrap">
+      <span class="font-mono text-xs text-yellow-700">{{.Story.Key.Value}}</span>
+      {{/* The persona rides on the story card: whose story this is belongs with the title, not down in Metadata. */}}
+      {{with .Persona}}
+      {{if .Href}}
+      <a href="{{.Href}}" class="text-xs text-orange-800 bg-orange-100 border border-orange-300 rounded-full px-2 py-0.5 hover:bg-orange-200 transition">{{.Name}}</a>
+      {{else}}
+      <span class="text-xs text-orange-800 bg-orange-100 border border-orange-300 rounded-full px-2 py-0.5">{{.Name}}</span>
+      {{end}}
+      {{end}}
+    </div>
   </div>
 
   {{if .Meta}}

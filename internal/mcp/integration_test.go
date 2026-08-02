@@ -44,8 +44,8 @@ func TestEndToEnd(t *testing.T) {
 	if err != nil {
 		t.Fatalf("list tools: %v", err)
 	}
-	if names := toolNames(tools.Tools); len(names) != 3 || !hasName(names, "list_stories") || !hasName(names, "list_story_maps") || !hasName(names, "list_terms") {
-		t.Fatalf("tools = %v, want [list_stories list_story_maps list_terms]", names)
+	if names := toolNames(tools.Tools); len(names) != 4 || !hasName(names, "list_stories") || !hasName(names, "list_story_maps") || !hasName(names, "list_terms") || !hasName(names, "list_personas") {
+		t.Fatalf("tools = %v, want [list_personas list_stories list_story_maps list_terms]", names)
 	}
 
 	res, err := cs.CallTool(ctx, &mcpsdk.CallToolParams{Name: "list_stories", Arguments: map[string]any{}})
@@ -104,7 +104,7 @@ func TestEndToEnd(t *testing.T) {
 	}
 	for _, want := range []string{
 		uri.MappingTemplate, uri.RuleTemplate, uri.ExampleTemplate, uri.QuestionTemplate,
-		uri.StoryMapTemplate, uri.StoryTemplate, uri.TermTemplate,
+		uri.StoryMapTemplate, uri.StoryTemplate, uri.PersonaTemplate, uri.TermTemplate,
 	} {
 		if !hasTemplate(tmpls.ResourceTemplates, want) {
 			t.Errorf("resource template %q not advertised", want)
@@ -255,6 +255,32 @@ func TestEndToEnd(t *testing.T) {
 		t.Errorf("term = %+v, want ストーリー with its definition", term.Term)
 	}
 
+	// Discover the cast, then read a persona through the URI the tool handed
+	// out — the path an agent takes to learn who a story is written for.
+	res, err = cs.CallTool(ctx, &mcpsdk.CallToolParams{Name: "list_personas", Arguments: map[string]any{}})
+	if err != nil {
+		t.Fatalf("call list_personas: %v", err)
+	}
+	var personasList listPersonasOutput
+	if err := json.Unmarshal([]byte(contentText(res)), &personasList); err != nil {
+		t.Fatalf("decode list_personas: %v", err)
+	}
+	if len(personasList.Personas) != 1 || personasList.Personas[0].URI != "livt://persona/reader" {
+		t.Fatalf("personas = %+v, want one 閲覧者 at livt://persona/reader", personasList.Personas)
+	}
+
+	pr, err := cs.ReadResource(ctx, &mcpsdk.ReadResourceParams{URI: personasList.Personas[0].URI})
+	if err != nil {
+		t.Fatalf("read persona: %v", err)
+	}
+	var persona personaResult
+	if err := json.Unmarshal([]byte(resourceText(t, pr)), &persona); err != nil {
+		t.Fatalf("decode persona: %v", err)
+	}
+	if persona.Persona.Name != "閲覧者" || persona.Persona.Body != "閲覧者の説明" {
+		t.Errorf("persona = %+v, want 閲覧者 with its description", persona.Persona)
+	}
+
 	// Unknown URIs are resource errors.
 	for _, resURI := range []string{
 		"livt://mapping/nope",
@@ -263,6 +289,7 @@ func TestEndToEnd(t *testing.T) {
 		"livt://mapping/demo/question/Q-99",
 		uri.StoryMap("なし"),
 		"livt://story/nope",
+		"livt://persona/nope",
 		"livt://ubiquitous/nope",
 	} {
 		if _, err := cs.ReadResource(ctx, &mcpsdk.ReadResourceParams{URI: resURI}); err == nil {

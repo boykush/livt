@@ -42,6 +42,7 @@ func newTestRepo(t *testing.T) string {
 	write(filepath.Join("discoveries", "usm", "demo-map.yaml"),
 		"name: デモマップ\nactivities: []\n")
 	write(filepath.Join("ubiquitous", "story.md"), "---\nname: ストーリー\n---\n\n定義\n")
+	write(filepath.Join("personas", "reader.md"), "---\nname: 閲覧者\n---\n\n説明\n")
 	// The same key at the root and under a context: two terms, told apart by the
 	// directory holding them.
 	write(filepath.Join("ubiquitous", "invoice.md"), "---\nname: 共通の請求書\n---\n\n定義\n")
@@ -51,7 +52,7 @@ func newTestRepo(t *testing.T) string {
 }
 
 // livt://mapping/trace-test-to-rule/rule/R-04/example/EX-01: a rule, example,
-// question, story, story map, or term all resolve from the command line.
+// question, story, persona, story map, or term all resolve from the command line.
 func TestResolveURIResolvesEveryKind(t *testing.T) {
 	root := newTestRepo(t)
 	cases := []struct {
@@ -64,6 +65,7 @@ func TestResolveURIResolvesEveryKind(t *testing.T) {
 		{"livt://mapping/demo/question/Q-01", "question"},
 		{"livt://story-map/デモマップ", "story_map"},
 		{"livt://story/demo", "story"},
+		{"livt://persona/reader", "persona"},
 		{"livt://ubiquitous/story", "term"},
 		{"livt://ubiquitous/billing/invoice", "term"},
 	}
@@ -100,6 +102,7 @@ func TestResolveURIWritesTheURLForm(t *testing.T) {
 		{"livt://mapping/demo/rule/R-01/example/EX-01", base + "/mapping/demo.html#rule-R-01-example-EX-01"},
 		{"livt://mapping/demo/question/Q-01", base + "/mapping/demo.html#question-Q-01"},
 		{"livt://story/demo", base + "/story/demo.html"},
+		{"livt://persona/reader", base + "/personas.html#reader"},
 		{"livt://ubiquitous/story", base + "/ubiquitous.html#story"},
 		{"livt://ubiquitous/billing/invoice", base + "/ubiquitous.html#billing/invoice"},
 		{"livt://story-map/デモマップ", base + "/story-map/デモマップ.html"},

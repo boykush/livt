@@ -5,6 +5,7 @@
 - [Getting Started](./getting-started.md)
 - [Guides]()
   - [Stories](./guides/stories.md)
+  - [Personas](./guides/personas.md)
   - [Story Maps](./guides/story-maps.md)
   - [Example Mappings](./guides/example-mappings.md)
   - [Ubiquitous Language](./guides/ubiquitous-language.md)

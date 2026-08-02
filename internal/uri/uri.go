@@ -1,8 +1,8 @@
 // Package uri builds and parses livt URIs — the deployment-independent way to
-// address one point of the spec: a story map, a story, an example mapping, a
-// rule, an example, a question, or a ubiquitous language term. The MCP server,
-// the CLI, and the site build all have to agree on the form, so it lives here
-// rather than inside any one of them.
+// address one point of the spec: a story map, a story, a persona, an example
+// mapping, a rule, an example, a question, or a ubiquitous language term. The
+// MCP server, the CLI, and the site build all have to agree on the form, so it
+// lives here rather than inside any one of them.
 package uri
 
 import (
@@ -18,6 +18,7 @@ const (
 	QuestionTemplate = "livt://mapping/{story_key}/question/{question_id}"
 	StoryMapTemplate = "livt://story-map/{map_name}"
 	StoryTemplate    = "livt://story/{story_key}"
+	PersonaTemplate  = "livt://persona/{persona_key}"
 	TermTemplate     = "livt://ubiquitous/{term_key}"
 	// ScopedTermTemplate addresses a term that belongs to one context. The two
 	// term shapes both stand: a context is optional, so a term that holds across
@@ -29,6 +30,7 @@ const (
 	mappingPrefix  = "livt://mapping/"
 	storyMapPrefix = "livt://story-map/"
 	storyPrefix    = "livt://story/"
+	personaPrefix  = "livt://persona/"
 	termPrefix     = "livt://ubiquitous/"
 	ruleInfix      = "/rule/"
 	exampleInfix   = "/example/"
@@ -73,6 +75,11 @@ func StoryMap(name string) string {
 // Story builds the URI for a story's name, body, and meta.
 func Story(storyKey string) string {
 	return storyPrefix + storyKey
+}
+
+// Persona builds the URI for a persona — one actor stories are written for.
+func Persona(personaKey string) string {
+	return personaPrefix + personaKey
 }
 
 // Term builds the URI for a ubiquitous language term. An empty ctx addresses a
@@ -182,6 +189,15 @@ func ParseStoryMap(s string) (name string, ok bool) {
 // ParseStory extracts the story key from a story URI.
 func ParseStory(s string) (storyKey string, ok bool) {
 	key, found := strings.CutPrefix(s, storyPrefix)
+	if !found || !ValidSegment(key) {
+		return "", false
+	}
+	return key, true
+}
+
+// ParsePersona extracts the persona key from a persona URI.
+func ParsePersona(s string) (personaKey string, ok bool) {
+	key, found := strings.CutPrefix(s, personaPrefix)
 	if !found || !ValidSegment(key) {
 		return "", false
 	}

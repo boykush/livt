@@ -176,6 +176,7 @@ type Sidebar struct {
 	Mappings  int
 	StoryMaps int
 	Stories   int
+	Personas  int
 	Terms     int
 }
 
@@ -203,6 +204,7 @@ type storyMapsIndexView struct {
 type storyItem struct {
 	Key           string
 	Name          string
+	Persona       *personaCard
 	Opportunities []opportunityRef
 	MappingPath   string
 	Links         []metaFieldView
@@ -304,8 +306,41 @@ type glossaryView struct {
 	Contexts []string
 }
 
+// personaCard is the chip a story shows for the actor it is written for. Href
+// links to the persona's row, or is empty when the key resolves to no persona
+// file — then the chip renders plain, so a key committed before its persona is
+// still readable.
+type personaCard struct {
+	Name string
+	Href string
+}
+
+// personaStoryRef links a persona back to one story it is the actor of, relative
+// to the output root where the persona list renders.
+type personaStoryRef struct {
+	Name string
+	Path string
+}
+
+// personaRow is one row of the persona list: the actor, and the stories written
+// for it. A persona with no stories still gets a row — it is committed
+// vocabulary, not a projection of what the stories happen to cite.
+type personaRow struct {
+	Anchor      string
+	Key         string
+	Name        string
+	Description string
+	Stories     []personaStoryRef
+}
+
+type personasView struct {
+	Sidebar  Sidebar
+	Personas []personaRow
+}
+
 type storyView struct {
 	Story         *domain.Story
+	Persona       *personaCard
 	Meta          []metaFieldView
 	MappingPath   string
 	Opportunities []opportunityRef
@@ -345,9 +380,10 @@ func renderStoriesIndex(w io.Writer, view storiesIndexView) error {
 	return tmpl.ExecuteTemplate(w, "stories.html", view)
 }
 
-func renderStory(w io.Writer, story *domain.Story, mappingPath string, opportunities []opportunityRef) error {
+func renderStory(w io.Writer, story *domain.Story, persona *personaCard, mappingPath string, opportunities []opportunityRef) error {
 	return tmpl.ExecuteTemplate(w, "story.html", storyView{
 		Story:         story,
+		Persona:       persona,
 		Meta:          metaFieldViews(story.Meta),
 		MappingPath:   mappingPath,
 		Opportunities: opportunities,
@@ -363,6 +399,10 @@ func renderMapping(w io.Writer, em *domain.ExampleMapping, storyName, storyPath 
 
 func renderStoryMap(w io.Writer, view storyMapView) error {
 	return tmpl.ExecuteTemplate(w, "story_map.html", view)
+}
+
+func renderPersonas(w io.Writer, view personasView) error {
+	return tmpl.ExecuteTemplate(w, "personas.html", view)
 }
 
 func renderGlossary(w io.Writer, view glossaryView) error {

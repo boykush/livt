@@ -19,4 +19,4 @@ Collaborative outcomes evolve alongside the product as living text.
 
 ## Live Demo
 
-livt dogfoods itself: its own discovery artifacts — stories, story maps, example mappings, and ubiquitous language — are published with `livt build` as a [live demo](https://boykush.github.io/livt/demo/). It shows exactly what the guides below describe.
+livt dogfoods itself: its own discovery artifacts — stories, personas, story maps, example mappings, and ubiquitous language — are published with `livt build` as a [live demo](https://boykush.github.io/livt/demo/). It shows exactly what the guides below describe.

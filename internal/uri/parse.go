@@ -10,6 +10,7 @@ const (
 	KindQuestion Kind = "question"
 	KindStoryMap Kind = "story map"
 	KindStory    Kind = "story"
+	KindPersona  Kind = "persona"
 	KindTerm     Kind = "ubiquitous language term"
 )
 
@@ -22,6 +23,7 @@ var Templates = []string{
 	QuestionTemplate,
 	StoryMapTemplate,
 	StoryTemplate,
+	PersonaTemplate,
 	TermTemplate,
 	ScopedTermTemplate,
 }
@@ -34,6 +36,7 @@ type Parsed struct {
 	ExampleID  string // example
 	QuestionID string // question
 	MapName    string // story map, percent-decoded
+	PersonaKey string // persona
 	TermKey    string // term
 	TermCtx    string // term, empty when the term holds across contexts
 }
@@ -62,6 +65,9 @@ func Parse(s string) (Parsed, bool) {
 	if key, ok := ParseStory(s); ok {
 		return Parsed{Kind: KindStory, StoryKey: key}, true
 	}
+	if key, ok := ParsePersona(s); ok {
+		return Parsed{Kind: KindPersona, PersonaKey: key}, true
+	}
 	if ctx, key, ok := ParseTerm(s); ok {
 		return Parsed{Kind: KindTerm, TermKey: key, TermCtx: ctx}, true
 	}
@@ -84,6 +90,8 @@ func (p Parsed) String() string {
 		return StoryMap(p.MapName)
 	case KindStory:
 		return Story(p.StoryKey)
+	case KindPersona:
+		return Persona(p.PersonaKey)
 	case KindTerm:
 		return Term(p.TermCtx, p.TermKey)
 	}
@@ -107,6 +115,8 @@ func (p Parsed) Page() string {
 		return StoryMapPage(p.MapName)
 	case KindStory:
 		return StoryPage(p.StoryKey)
+	case KindPersona:
+		return PersonaPage(p.PersonaKey)
 	case KindTerm:
 		return TermPage(p.TermCtx, p.TermKey)
 	}

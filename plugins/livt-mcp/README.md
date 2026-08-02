@@ -1,6 +1,6 @@
 # livt MCP Plugin
 
-Connect an implementation repo's coding agent to a locally running livt MCP server, so it can fetch the discovery spec — story maps, stories, example mappings, rules, and the ubiquitous language — straight from the livt repository instead of reading livt's source or a stale copy.
+Connect an implementation repo's coding agent to a locally running livt MCP server, so it can fetch the discovery spec — story maps, stories, personas, example mappings, rules, and the ubiquitous language — straight from the livt repository instead of reading livt's source or a stale copy.
 
 ## Overview
 
@@ -32,7 +32,7 @@ One server backs every repo on your machine: no per-repo checkout of the livt re
    /plugin install livt-mcp@boykush/livt
    ```
 
-The agent can then call `list_stories` / `list_story_maps` / `list_terms` and read resources such as `livt://story-map/{map_name}`, `livt://story/{story_key}`, `livt://mapping/{story_key}`, and `livt://ubiquitous/{term_key}`. See the [`livt mcp` command reference](https://github.com/boykush/livt/blob/main/docs/src/reference/commands.md) for the full tool and resource list.
+The agent can then call `list_stories` / `list_story_maps` / `list_terms` / `list_personas` and read resources such as `livt://story-map/{map_name}`, `livt://story/{story_key}`, `livt://mapping/{story_key}`, `livt://persona/{persona_key}`, and `livt://ubiquitous/{term_key}`. See the [`livt mcp` command reference](https://github.com/boykush/livt/blob/main/docs/src/reference/commands.md) for the full tool and resource list.
 
 ## Configuration
 

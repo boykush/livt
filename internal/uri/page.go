@@ -38,6 +38,18 @@ func StoryMapPage(name string) string {
 	return "story-map/" + name + ".html"
 }
 
+// PersonaPage is where Persona lands. Every persona is one row of a single
+// table, so its anchor is enough to reach it.
+func PersonaPage(personaKey string) string {
+	return "personas.html#" + PersonaAnchor(personaKey)
+}
+
+// PersonaAnchor is the id of a persona's row. A persona has no context to fold
+// in, so the key stands alone.
+func PersonaAnchor(personaKey string) string {
+	return personaKey
+}
+
 // TermPage is where Term lands. The whole ubiquitous language is one table, so
 // a term's anchor is enough to reach it.
 func TermPage(ctx, termKey string) string {

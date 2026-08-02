@@ -20,6 +20,7 @@ var everyKind = []string{
 	"livt://mapping/demo/question/Q-01",
 	"livt://story-map/%E3%83%87%E3%83%A2%E3%83%9E%E3%83%83%E3%83%97",
 	"livt://story/demo",
+	"livt://persona/reader",
 	"livt://ubiquitous/story",
 }
 
@@ -99,6 +100,7 @@ func TestResolveReportsMissingItemsAsNotFound(t *testing.T) {
 		"livt://mapping/demo/question/Q-99",
 		"livt://story-map/%E5%AD%98%E5%9C%A8%E3%81%97%E3%81%AA%E3%81%84",
 		"livt://story/nope",
+		"livt://persona/nope",
 		"livt://ubiquitous/nope",
 	} {
 		p, ok := uri.Parse(raw)

@@ -29,6 +29,8 @@ type listStoriesOutput struct {
 type storySummaryJSON struct {
 	Key  string `json:"key"`
 	Name string `json:"name"`
+	// Persona is the actor the story is written for, absent when it names none.
+	Persona *personaRefJSON `json:"persona,omitempty"`
 	// URI is the story's own resource (livt://story/{key}): its name, body, and
 	// frontmatter meta. Always present, since listed stories come from files.
 	URI string `json:"uri"`
@@ -81,6 +83,25 @@ type termSummaryJSON struct {
 	URI string `json:"uri"`
 }
 
+// --- list_personas tool ---
+
+type listPersonasInput struct{}
+
+type listPersonasOutput struct {
+	versioned
+	Personas []personaSummaryJSON `json:"personas"`
+}
+
+// personaSummaryJSON is one row of the persona listing. As with termSummaryJSON,
+// every entry comes from a persona file, so Name and URI are always filled —
+// unlike personaRefJSON, which carries whatever key a story authored.
+type personaSummaryJSON struct {
+	Key  string `json:"key"`
+	Name string `json:"name"`
+	// URI is the persona's own resource (livt://persona/{key}).
+	URI string `json:"uri"`
+}
+
 // --- resource payloads ---
 
 // exampleMappingResult is the body of the livt://mapping/{story_key} resource.
@@ -118,6 +139,12 @@ type storyMapResult struct {
 type storyResult struct {
 	versioned
 	Story storyJSON `json:"story"`
+}
+
+// personaResult is the body of the livt://persona/{persona_key} resource.
+type personaResult struct {
+	versioned
+	Persona personaJSON `json:"persona"`
 }
 
 // termResult is the body of the livt://ubiquitous/{term_key} resource.
@@ -216,7 +243,11 @@ type releaseJSON struct {
 type storyJSON struct {
 	Key  string `json:"key"`
 	Name string `json:"name"`
-	Body string `json:"body"`
+	// Persona as on storySummaryJSON. It is the structural form of the body's
+	// "as a ..." line, so a consumer reads who the story serves without parsing
+	// prose.
+	Persona *personaRefJSON `json:"persona,omitempty"`
+	Body    string          `json:"body"`
 	// Meta carries the story's frontmatter fields beyond name (e.g. issue), in
 	// source order.
 	Meta []metaFieldJSON `json:"meta,omitempty"`
@@ -229,6 +260,22 @@ type storyJSON struct {
 type metaFieldJSON struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`
+}
+
+type personaJSON struct {
+	Key  string `json:"key"`
+	Name string `json:"name"`
+	Body string `json:"body"`
+}
+
+// personaRefJSON points at the persona a story is written for. Name and URI are
+// filled when the persona file exists; a bare key means the persona is not
+// committed yet, mirroring termRefJSON and how the site renders an unresolved
+// persona chip.
+type personaRefJSON struct {
+	Key  string `json:"key"`
+	Name string `json:"name,omitempty"`
+	URI  string `json:"uri,omitempty"`
 }
 
 type termJSON struct {
@@ -338,7 +385,7 @@ func (c Config) toStoryJSON(story *domain.Story) (storyJSON, error) {
 	for _, m := range story.Meta {
 		meta = append(meta, metaFieldJSON{Key: m.Key, Value: m.Value})
 	}
-	out := storyJSON{Key: story.Key.Value, Name: story.Name, Body: story.Body, Meta: meta}
+	out := storyJSON{Key: story.Key.Value, Name: story.Name, Persona: c.toPersonaRef(story.Persona), Body: story.Body, Meta: meta}
 	if c.hasExampleMapping(story.Key.Value) {
 		out.ExampleMappingURI = uri.Mapping(story.Key.Value)
 	}
@@ -348,6 +395,26 @@ func (c Config) toStoryJSON(story *domain.Story) (storyJSON, error) {
 	}
 	out.Opportunities = index[story.Key.Value]
 	return out, nil
+}
+
+func toPersonaJSON(persona *domain.Persona) personaJSON {
+	return personaJSON{Key: persona.Key, Name: persona.Name, Body: persona.Body}
+}
+
+// toPersonaRef resolves the key a story authored against the personas
+// directory: a committed persona gets its display name and resource URI, an
+// unknown one keeps the bare key. A story naming no persona gets no ref, which
+// is what keeps "no actor stated" apart from "actor not committed yet".
+func (c Config) toPersonaRef(key string) *personaRefJSON {
+	if key == "" {
+		return nil
+	}
+	ref := &personaRefJSON{Key: key}
+	if persona, err := c.persona(key); err == nil {
+		ref.Name = persona.Name
+		ref.URI = uri.Persona(key)
+	}
+	return ref
 }
 
 func toTermJSON(term *domain.Term) termJSON {

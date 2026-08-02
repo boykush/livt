@@ -178,6 +178,29 @@ func TestParseStory(t *testing.T) {
 	}
 }
 
+// livt://mapping/look-up-story-personas/rule/R-04: a persona is addressed by key
+// alone. It carries no context, so a second segment is malformed rather than a
+// scoping — which also keeps a persona URI from parsing as anything else.
+func TestParsePersona(t *testing.T) {
+	cases := []struct {
+		uri string
+		key string
+		ok  bool
+	}{
+		{"livt://persona/coding-agent", "coding-agent", true},
+		{"livt://persona/", "", false},                  // empty key
+		{"livt://story/coding-agent", "", false},        // wrong path
+		{"livt://persona/../secret", "", false},         // traversal
+		{"livt://persona/team/coding-agent", "", false}, // personas are flat
+	}
+	for _, c := range cases {
+		key, ok := ParsePersona(c.uri)
+		if ok != c.ok || key != c.key {
+			t.Errorf("ParsePersona(%q) = (%q, %v), want (%q, %v)", c.uri, key, ok, c.key, c.ok)
+		}
+	}
+}
+
 func TestParseTerm(t *testing.T) {
 	cases := []struct {
 		uri string
@@ -253,6 +276,10 @@ func TestURIsRoundTrip(t *testing.T) {
 	sk, ok := ParseStory(Story("demo"))
 	if !ok || sk != "demo" {
 		t.Fatalf("story round trip = (%q, %v), want (demo, true)", sk, ok)
+	}
+	pk, ok := ParsePersona(Persona("coding-agent"))
+	if !ok || pk != "coding-agent" {
+		t.Fatalf("persona round trip = (%q, %v), want (coding-agent, true)", pk, ok)
 	}
 	tc, tk, ok := ParseTerm(Term("", "story"))
 	if !ok || tc != "" || tk != "story" {

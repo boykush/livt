@@ -13,6 +13,7 @@ type Builder struct {
 	MappingsDir   string
 	StoriesDir    string
 	USMDir        string
+	PersonasDir   string
 	UbiquitousDir string
 	OutDir        string
 }
@@ -22,6 +23,7 @@ type sidebarCounts struct {
 	mappings  int
 	storyMaps int
 	stories   int
+	personas  int
 	terms     int
 }
 
@@ -37,6 +39,10 @@ func (b *Builder) computeCounts() (sidebarCounts, error) {
 		return sidebarCounts{}, err
 	}
 	mappings, err := parser.ParseAllExampleMappings(b.MappingsDir)
+	if err != nil {
+		return sidebarCounts{}, err
+	}
+	personas, err := parser.ParseAllPersonas(b.PersonasDir)
 	if err != nil {
 		return sidebarCounts{}, err
 	}
@@ -61,6 +67,7 @@ func (b *Builder) computeCounts() (sidebarCounts, error) {
 		mappings:  len(mappings),
 		storyMaps: len(maps),
 		stories:   len(stories),
+		personas:  len(personas),
 		terms:     len(terms),
 	}, nil
 }
@@ -79,6 +86,7 @@ func (b *Builder) sidebar(active, prefix string) (Sidebar, error) {
 		Mappings:  c.mappings,
 		StoryMaps: c.storyMaps,
 		Stories:   c.stories,
+		Personas:  c.personas,
 		Terms:     c.terms,
 	}, nil
 }
@@ -123,6 +131,9 @@ func (b *Builder) Build() error {
 
 	var storyItems []storyItem
 	var storyOpportunitySets [][]opportunityRef
+	// Which stories each persona is the actor of, in stories order — the reverse
+	// of the frontmatter link, which only points story → persona.
+	personaStories := make(map[string][]personaStoryRef)
 	for _, story := range stories {
 		mappingPath := ""
 		if b.hasExampleMapping(story.Key) {
@@ -133,7 +144,7 @@ func (b *Builder) Build() error {
 		opportunities := storyToMaps[story.Key.Value]
 
 		storyOutPath := filepath.Join(b.OutDir, "story", story.Key.Value+".html")
-		if err := b.buildStory(storyOutPath, story, mappingPath, opportunities); err != nil {
+		if err := b.buildStory(storyOutPath, story, b.resolvePersonaCard(story.Persona, "../"), mappingPath, opportunities); err != nil {
 			return err
 		}
 		fmt.Printf("  %s\n", strings.TrimPrefix(storyOutPath, b.OutDir+"/"))
@@ -148,10 +159,17 @@ func (b *Builder) Build() error {
 		storyItems = append(storyItems, storyItem{
 			Key:           story.Key.Value,
 			Name:          story.Name,
+			Persona:       b.resolvePersonaCard(story.Persona, ""),
 			Opportunities: listOpportunities,
 			MappingPath:   listMappingPath,
 			Links:         urlMetaFieldViews(story.Meta),
 		})
+		if story.Persona != "" {
+			personaStories[story.Persona] = append(personaStories[story.Persona], personaStoryRef{
+				Name: story.Name,
+				Path: "story/" + story.Key.Value + ".html",
+			})
+		}
 	}
 
 	mappingTiles, open, err := b.buildMappings()
@@ -174,6 +192,10 @@ func (b *Builder) Build() error {
 			items[i].Opportunities = rootRelativeOpportunities(storyToMaps[items[i].StoryKey])
 			openOpportunitySets = append(openOpportunitySets, items[i].Opportunities)
 		}
+	}
+
+	if err := b.buildPersonas(personaStories); err != nil {
+		return err
 	}
 
 	if err := b.buildGlossary(); err != nil {

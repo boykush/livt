@@ -14,46 +14,50 @@ func ParseStory(path string) (*domain.Story, error) {
 		return nil, err
 	}
 
-	name, meta, err := parseStoryFrontmatter(frontmatter)
+	name, persona, meta, err := parseStoryFrontmatter(frontmatter)
 	if err != nil {
 		return nil, err
 	}
 
 	return &domain.Story{
-		Key:  domain.StoryKey{Value: key},
-		Name: name,
-		Body: body,
-		Meta: meta,
+		Key:     domain.StoryKey{Value: key},
+		Name:    name,
+		Persona: persona,
+		Body:    body,
+		Meta:    meta,
 	}, nil
 }
 
-// parseStoryFrontmatter pulls out the reserved name field and keeps every other
-// key as an ordered MetaField. It decodes into a yaml.Node so the key order from
-// the source file is preserved — a map would lose it.
-func parseStoryFrontmatter(frontmatter string) (name string, meta []domain.MetaField, err error) {
+// parseStoryFrontmatter pulls out the reserved name and persona fields and keeps
+// every other key as an ordered MetaField. It decodes into a yaml.Node so the
+// key order from the source file is preserved — a map would lose it.
+func parseStoryFrontmatter(frontmatter string) (name, persona string, meta []domain.MetaField, err error) {
 	if strings.TrimSpace(frontmatter) == "" {
-		return "", nil, nil
+		return "", "", nil, nil
 	}
 
 	var doc yaml.Node
 	if err := yaml.Unmarshal([]byte(frontmatter), &doc); err != nil {
-		return "", nil, err
+		return "", "", nil, err
 	}
 	if len(doc.Content) == 0 || doc.Content[0].Kind != yaml.MappingNode {
-		return "", nil, nil
+		return "", "", nil, nil
 	}
 
 	root := doc.Content[0]
 	for i := 0; i+1 < len(root.Content); i += 2 {
 		key := root.Content[i].Value
 		value := root.Content[i+1]
-		if key == "name" {
+		switch key {
+		case "name":
 			name = value.Value
-			continue
+		case "persona":
+			persona = value.Value
+		default:
+			meta = append(meta, domain.MetaField{Key: key, Value: scalarOrJoin(value)})
 		}
-		meta = append(meta, domain.MetaField{Key: key, Value: scalarOrJoin(value)})
 	}
-	return name, meta, nil
+	return name, persona, meta, nil
 }
 
 // scalarOrJoin renders a frontmatter value as a display string: scalars pass
