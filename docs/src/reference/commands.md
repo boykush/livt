@@ -33,11 +33,11 @@ livt build [flags]
 ## `livt mcp`
 
 Run an MCP ([Model Context Protocol](https://modelcontextprotocol.io)) server
-that exposes the discovery master (story maps, stories, example mappings, and
+that exposes the livt repository (story maps, stories, example mappings, and
 the ubiquitous language). An implementation repo's coding agent can then fetch
 the spec for a story or rule without reading livt's source.
 
-The master usually lives in a separate checkout from the consumer, so point at
+The livt repository usually lives in a separate checkout from the consumer, so point at
 it with `--root` or the `LIVT_ROOT` environment variable. The flag takes
 precedence; both default to the current directory.
 
@@ -47,18 +47,18 @@ livt mcp [flags]
 
 | Flag | Default | Description |
 |------|---------|-------------|
-| `--root` | `$LIVT_ROOT`, then `.` | Path to the livt project root holding the discovery master |
+| `--root` | `$LIVT_ROOT`, then `.` | Path to the root of the livt repository |
 | `--http` | (off; stdio) | Serve over Streamable HTTP at this address (e.g. `localhost:5488`) instead of stdio; the MCP endpoint is `<addr>/mcp` |
 
 ### Transports
 
 By default the server runs over **stdio**, spawned per consumer — the client
-launches `livt mcp` as a subprocess. This suits a single repo with the master
+launches `livt mcp` as a subprocess. This suits a single repo with the livt repository
 checked out alongside it.
 
 Pass **`--http`** to instead serve over Streamable HTTP from one long-running
 process, so several repos on the same machine can share a single server without
-each holding a checkout of the master:
+each holding a checkout of the livt repository:
 
 ```bash
 livt mcp --http localhost:5488
@@ -105,13 +105,13 @@ server advertises templates only — there is no concrete resource list and no
 change notification (subscribe); every read is served fresh from disk.
 
 Every tool and resource payload also includes a `spec_version` field -- the
-short git revision of the master -- so consumers can tell which version of the
+short git revision of the livt repository -- so consumers can tell which version of the
 spec they are reading and detect drift.
 
-### Citing the master
+### Citing the livt repository
 
 The handshake carries `instructions`, so every session tells the consuming agent
-how to reference the master in what it produces: copy the `uri` from the result
+how to reference the livt repository in what it produces: copy the `uri` from the result
 verbatim, and never write a bare `id`. Ids are unique only within one mapping
 file, so `R-02` exists in every mapping and identifies nothing on its own.
 
@@ -119,7 +119,7 @@ file, so `R-02` exists in every mapping and identifies nothing on its own.
 // livt://mapping/place-order-with-saved-card/rule/R-13/example/EX-01
 ```
 
-That applies wherever a reference leaves the master -- a test comment, an issue
+That applies wherever a reference leaves the livt repository -- a test comment, an issue
 body, a commit message, a PR description. A published living-document URL is a
 convenience link for humans, not the citation form: it depends on where the site
 is deployed, and the livt URI does not.
@@ -130,7 +130,7 @@ reader who only has a checkout.
 
 ## `livt resolve`
 
-Resolve a [livt URI](./uri.md) against the discovery master, without running an
+Resolve a [livt URI](./uri.md) against the livt repository, without running an
 MCP client. A rule, example, or question cited in a test comment, an issue body,
 or a commit message can then be read back by whoever needs it — CI, an editor,
 or an agent that is not connected to livt over MCP.
@@ -141,7 +141,7 @@ livt resolve <uri> [flags]
 
 | Flag | Default | Description |
 |------|---------|-------------|
-| `--root` | `$LIVT_ROOT`, then `.` | Path to the livt project root holding the discovery master |
+| `--root` | `$LIVT_ROOT`, then `.` | Path to the root of the livt repository |
 | `--format` | `json` | Output form: `json` or `url` |
 | `--base-url` | — | Root of the deployed site; required by `--format url` |
 
@@ -169,7 +169,7 @@ $ livt resolve livt://mapping/trace-test-to-rule/rule/R-04 \
 https://boykush.github.io/livt/mapping/trace-test-to-rule.html#rule-R-04
 ```
 
-The master is still read in this form, even though the page path derives from
+The livt repository is still read in this form, even though the page path derives from
 the URI alone: a link to a page that was never built is worse than an error.
 
 ### When a URI does not resolve
@@ -180,7 +180,7 @@ different fixes:
 | | |
 |---|---|
 | **Malformed URI** | The string is not a livt URI at all. The error lists every shape one can take. Fix the URI. |
-| **Nothing to resolve** | The URI is well formed but the master holds no such item, e.g. `rule "R-99" not found in story "trace-test-to-rule"`. Fix the reference, or add the item. |
+| **Nothing to resolve** | The URI is well formed but the livt repository holds no such item, e.g. `rule "R-99" not found in story "trace-test-to-rule"`. Fix the reference, or add the item. |
 
 ## `livt version`
 

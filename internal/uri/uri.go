@@ -201,7 +201,7 @@ func ParseTerm(s string) (ctx, termKey string, ok bool) {
 }
 
 // ValidSegment guards externally-supplied URI/key segments so they resolve to a
-// file inside the master's directories and cannot traverse out of them. It is
+// file inside the livt repository's directories and cannot traverse out of them. It is
 // also what keeps the URI shapes apart: a segment can hold no "/", so a longer
 // shape never parses as a shorter one.
 func ValidSegment(s string) bool {

@@ -45,7 +45,7 @@ ubiquitous/
 
 A context is optional. Cut one when a word means different things to different
 parts of the domain — the DDD bounded context — and leave a term at the root
-when its meaning holds everywhere. Most masters start with every term at the
+when its meaning holds everywhere. Most livt repositories start with every term at the
 root and grow contexts only where the language actually diverges.
 
 The directory is what makes a term unique, so `invoice` above is three separate
@@ -64,7 +64,7 @@ with **Term**, **Key**, and **Definition** columns. A scoped term shows its
 context beneath its key. Each row carries an `id={term-ref}` anchor, so a term is
 linkable as `ubiquitous.html#{term-key}` or `ubiquitous.html#{ctx}/{term-key}`.
 
-When a master cuts at least one context, the page carries a filter bar above the
+When a livt repository cuts at least one context, the page carries a filter bar above the
 table. Selecting a context narrows the table to that context's terms, and the
 selection is mirrored in the `?context=` query parameter so a filtered view is
 shareable. Context-free terms are not part of any single context, so they drop

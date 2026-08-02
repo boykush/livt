@@ -117,7 +117,7 @@ func TestMappingLinksExamplesAndQuestions(t *testing.T) {
 	}
 }
 
-// newRetiredTestServer lays out a master whose demo mapping holds retired items
+// newRetiredTestServer lays out a livt repository whose demo mapping holds retired items
 // beside live ones: rule R-02, example EX-02 of the live R-01, and question Q-02
 // are retired, so their ids stay taken and their text stays on file.
 func newRetiredTestServer(t *testing.T) *Server {

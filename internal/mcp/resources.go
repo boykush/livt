@@ -9,7 +9,7 @@ import (
 	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
-// registerResources exposes the master as addressable resources, so a client
+// registerResources exposes the livt repository as addressable resources, so a client
 // reads the spec by URI (story map -> story -> mapping -> rule -> example, with
 // questions and ubiquitous terms linked alongside) rather than calling a tool.
 // Only resource templates are advertised — no concrete resources and no

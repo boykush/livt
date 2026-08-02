@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// specVersion returns the git revision (short HEAD) of the master at root, so
+// specVersion returns the git revision (short HEAD) of the livt repository at root, so
 // every tool result records which version of the spec it reflects and consumers
 // can detect drift. It returns an empty string when root is not a git repository
 // or git is unavailable.

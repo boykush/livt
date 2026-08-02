@@ -11,7 +11,7 @@ import (
 	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
-// everyKind is one URI of each shape the master can address, against the
+// everyKind is one URI of each shape the livt repository can address, against the
 // fixture newTestServer builds.
 var everyKind = []string{
 	"livt://mapping/demo",
@@ -72,7 +72,7 @@ func TestResolveMatchesTheMCPResourceRead(t *testing.T) {
 }
 
 // livt://mapping/trace-test-to-rule/rule/R-04/example/EX-01: every kind the
-// master holds resolves, not just the rules.
+// livt repository holds resolves, not just the rules.
 func TestResolveEveryKind(t *testing.T) {
 	s := newTestServer(t)
 	for _, raw := range everyKind {
@@ -88,7 +88,7 @@ func TestResolveEveryKind(t *testing.T) {
 }
 
 // A URI whose shape is fine but whose item is absent is not the same failure as
-// a master that will not read, so only the first is ErrNotFound.
+// a livt repository that will not read, so only the first is ErrNotFound.
 func TestResolveReportsMissingItemsAsNotFound(t *testing.T) {
 	s := newTestServer(t)
 	for _, raw := range []string{

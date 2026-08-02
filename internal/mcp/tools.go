@@ -122,7 +122,7 @@ func (c Config) question(storyKey, questionID string) (domain.Question, error) {
 // mapping resource when one exists, and to the opportunities (story maps) it
 // sits on. A non-empty opportunity keeps only the stories on the map with that
 // exact name; an unknown name yields an empty list, not an error — which
-// opportunities exist is the master's business, not the caller's. A missing
+// opportunities exist is the livt repository's business, not the caller's. A missing
 // stories directory yields an empty list, not an error.
 func (c Config) stories(opportunity string) ([]storySummaryJSON, error) {
 	all, err := parser.ParseAllStories(c.storiesDir())

@@ -1,8 +1,8 @@
 # livt URI
 
-A **livt URI** names one point in the discovery master — a rule, an example, a
+A **livt URI** names one point in the livt repository — a rule, an example, a
 question, a story, a story map, or a ubiquitous language term. It is the form to
-reach for whenever a reference has to survive outside the master: a test comment,
+reach for whenever a reference has to survive outside the livt repository: a test comment,
 an issue body, a commit message.
 
 ```
@@ -28,7 +28,7 @@ livt://mapping/trace-test-to-rule/rule/R-02/example/EX-01
 
 ## URI to page
 
-`livt build` renders the master as a static site, and this is where each URI
+`livt build` renders the livt repository as a static site, and this is where each URI
 lands in it. Paths are relative to the output root.
 
 | livt URI | Page |
@@ -45,7 +45,7 @@ lands in it. Paths are relative to the output root.
 An example's anchor repeats its rule for the same reason its URI does: `EX-01`
 recurs under every rule of a board, so `#example-EX-01` would land on whichever
 one happened to be first. The sticky's own badge still shows the local `EX-01` —
-that is the ID the master numbers — while the link behind it carries the rule.
+that is the ID the livt repository numbers — while the link behind it carries the rule.
 
 A term takes a [context](../guides/ubiquitous-language.md#contexts) the same
 way, and for the same reason: `invoice` can mean one thing in billing and
@@ -60,9 +60,9 @@ page is how a reference is *shown*, not how it is *resolved*.
 
 ## Store the URI, render the URL
 
-Nothing in the master records where the site is deployed. The deployment URL is
+Nothing in the livt repository records where the site is deployed. The deployment URL is
 prefixed onto the paths above only while a page is being rendered, which is why
-the same master can be served from a local `livt serve`, from GitHub Pages, and
+the same livt repository can be served from a local `livt serve`, from GitHub Pages, and
 from an internal host at once:
 
 ```
@@ -86,7 +86,7 @@ was meant to carry. Keep the URI; let the URL be derived.
   without composing the URI by hand.
 
 Keeping the two apart is what stops the site from becoming a second source of
-identity. The board is for reading and sharing; the URI is what the master
+identity. The board is for reading and sharing; the URI is what the livt repository
 actually knows about itself.
 
 ## Reading one back

@@ -96,7 +96,7 @@ func TestBuildTasksListsOpenQuestionsAndUnautomatedRules(t *testing.T) {
 
 // livt://mapping/overview-open-questions/rule/R-01/example/EX-03 and its mirror
 // in overview-unautomated-rules: each list says so when there is nothing left in
-// it — an empty questions list and a fully automated master read differently.
+// it — an empty questions list and a fully automated livt repository read differently.
 func TestBuildTasksEmptyStatesReadPerList(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	if err := b.buildTasks(nil, nil, nil); err != nil {
@@ -175,8 +175,8 @@ func TestBuildTasksSectionsStayHonestWhenAFilterEmptiesThem(t *testing.T) {
 	if !strings.Contains(html, `data-filter-empty style="display: none"`) {
 		t.Error("expected the filtered-empty line to start hidden")
 	}
-	// It has to say the filter emptied the section, not that the master is done —
-	// "Every rule is automated." would be a lie about the master.
+	// It has to say the filter emptied the section, not that the livt repository is done —
+	// "Every rule is automated." would be a lie about the livt repository.
 	for _, msg := range []string{
 		"No open questions for this opportunity.",
 		"Every rule for this opportunity is automated.",

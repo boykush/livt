@@ -126,7 +126,7 @@ func TestBuildGlossaryRendersContextFilterControls(t *testing.T) {
 	}
 }
 
-// A master that cuts no contexts gains no filter bar: every chip would be "All".
+// A livt repository that cuts no contexts gains no filter bar: every chip would be "All".
 func TestBuildGlossaryWithoutContextsRendersNoFilterBar(t *testing.T) {
 	dir := t.TempDir()
 	writeGlossaryTerm(t, dir, "", "story", "ストーリー")
@@ -135,7 +135,7 @@ func TestBuildGlossaryWithoutContextsRendersNoFilterBar(t *testing.T) {
 	// The bare attribute also appears in the script's selector, so match the
 	// element by the param only the bar itself carries.
 	if strings.Contains(html, `data-filter-param="context"`) {
-		t.Fatal("expected no filter bar when the master cuts no contexts")
+		t.Fatal("expected no filter bar when the livt repository cuts no contexts")
 	}
 }
 

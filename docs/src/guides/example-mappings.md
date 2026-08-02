@@ -31,7 +31,7 @@ ubiquitous:
 - `story` is optional (links to the corresponding story detail page)
 - IDs must be unique within their rule or question list
 - `ubiquitous` is optional: each entry is a [ubiquitous language](./ubiquitous-language.md) term key, rendered as a pink sticky linking to `ubiquitous.html#{term-key}`. A key with no matching term file renders as a plain pink card.
-- `issues` is optional: the rule's automation Issue URLs on implementation repos (Issue URLs only). The master records the links; their state lives at the URL target. A rule without `issues` is unlinked.
+- `issues` is optional: the rule's automation Issue URLs on implementation repos (Issue URLs only). The livt repository records the links; their state lives at the URL target. A rule without `issues` is unlinked.
 - `automated` is optional: records the judgment that the rule is actually automated by tests, which is independent of Issues being filed or closed. Absent means not automated. Set it when the rule's automation lands; unset it when the rule changes.
 - `retired` is optional and applies to a rule, an example, or a question: it records that the item is no longer part of the spec. Absent means live.
 

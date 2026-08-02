@@ -15,7 +15,7 @@ This skill is written in English for maintainability — English is not the lang
 
 ## Forward, Not Backward — and Not Outward
 
-Three jobs meet around the master mapping; keep them apart:
+Three jobs meet around the livt repository's mapping; keep them apart:
 
 - **Plan (you)** looks **forward** — from the mapping toward the work that will realize it. In scope: how each rule can be built against the current implementation and design (feasibility and the work), where the implementation or design **contradicts** a rule, and the deferred **Questions** your planning investigation can now settle.
 - **Sync (`example-mapping-update`)** looks **backward** — folding behaviour the code already has back into the mapping. Out of scope here; surfacing it only re-mixes planning with sync.

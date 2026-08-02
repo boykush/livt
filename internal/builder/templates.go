@@ -32,7 +32,7 @@ var tmpl = template.Must(template.New("").Funcs(template.FuncMap{
 }).ParseFS(templateFS, "templates/*.html"))
 
 // idBadge is a sticky's own ID rendered bottom-right by the id-badge partial.
-// Label is the ID as the master numbers it, which for an example is local to
+// Label is the ID as the livt repository numbers it, which for an example is local to
 // its rule and so shorter than Anchor. Tint follows the sticky's own
 // border-{colour}-400 so the badge recedes into the card it belongs to.
 type idBadge struct {
@@ -252,10 +252,10 @@ type storiesIndexView struct {
 	FilterOpportunities []string
 }
 
-// taskItem is one thing the master says is not finished, lifted off its example
+// taskItem is one thing the livt repository says is not finished, lifted off its example
 // mapping onto the Tasks page: an open question, or a rule with no automation
 // recorded. It carries no status, and cannot carry one derived from an issue —
-// the master holds automation issue URLs but not their open/closed state, and
+// the livt repository holds automation issue URLs but not their open/closed state, and
 // the build may not ask GitHub
 // (livt://mapping/show-automation-status-per-rule/rule/R-02). Kind ("question"
 // or "rule") picks the sticky colour the item carries on its board.
@@ -272,7 +272,7 @@ type taskItem struct {
 	Opportunities []opportunityRef
 }
 
-// tasksView is the master's two unfinished flanks either side of the example
+// tasksView is the livt repository's two unfinished flanks either side of the example
 // mapping: questions close by a conversation, un-automated rules close by a
 // test. One FilterOpportunities set serves both lists, since a single filter bar
 // drives the page.

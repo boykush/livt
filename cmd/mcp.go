@@ -17,15 +17,15 @@ var (
 )
 
 func init() {
-	mcpCmd.Flags().StringVar(&mcpRoot, "root", "", "path to the livt project root holding the discovery master (default: $LIVT_ROOT, then the current directory)")
+	mcpCmd.Flags().StringVar(&mcpRoot, "root", "", "path to the root of the livt repository (default: $LIVT_ROOT, then the current directory)")
 	mcpCmd.Flags().StringVar(&mcpHTTP, "http", "", "serve over Streamable HTTP at this address (e.g. localhost:5488) instead of stdio; the MCP endpoint is <addr>/mcp")
 	rootCmd.AddCommand(mcpCmd)
 }
 
 var mcpCmd = &cobra.Command{
 	Use:   "mcp",
-	Short: "Run an MCP server exposing the discovery master over stdio or HTTP",
-	Long: `Run a Model Context Protocol server that exposes the discovery master
+	Short: "Run an MCP server exposing the livt repository over stdio or HTTP",
+	Long: `Run a Model Context Protocol server that exposes the livt repository
 (story maps, stories, example mappings, and the ubiquitous language), so an
 implementation repo's agent can fetch the spec for a story or rule without
 reading livt's source.
@@ -33,9 +33,9 @@ reading livt's source.
 By default it serves over stdio, spawned per consumer. Pass --http to instead
 serve over Streamable HTTP from one long-running process, so several local repos
 can share a single server (each points its MCP client at <addr>/mcp) without a
-per-repo checkout of the master.
+per-repo checkout of the livt repository.
 
-The master usually lives in a separate checkout from the consumer, so point at
+The livt repository usually lives in a separate checkout from the consumer, so point at
 it with --root or the LIVT_ROOT environment variable (the flag takes precedence;
 both default to the current directory).`,
 	// A server failure shouldn't print CLI usage.
@@ -68,7 +68,7 @@ func isCleanShutdown(err error) bool {
 	return strings.Contains(msg, "EOF") || strings.Contains(msg, "server is closing")
 }
 
-// resolveRoot selects the master location: the --root flag wins, then the
+// resolveRoot selects the livt repository location: the --root flag wins, then the
 // LIVT_ROOT environment variable, then the current directory.
 func resolveRoot(flagRoot string) string {
 	if flagRoot != "" {

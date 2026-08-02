@@ -7,9 +7,9 @@ import (
 	"github.com/boykush/livt/internal/uri"
 )
 
-// ErrNotFound marks a well-formed livt URI naming an item the master does not
+// ErrNotFound marks a well-formed livt URI naming an item the livt repository does not
 // hold. Callers tell it apart from a malformed URI, which never reaches here,
-// and from a master that fails to read, which surfaces as itself.
+// and from a livt repository that fails to read, which surfaces as itself.
 //
 // A retired item is not one of these: it resolves like any other, carrying
 // retired, so a reference filed against it keeps working
@@ -80,7 +80,7 @@ func (s *Server) Resolve(p uri.Parsed) (any, error) {
 	return nil, fmt.Errorf("cannot resolve livt URI kind %q", p.Kind)
 }
 
-// Verify reports whether the master holds the item a URI names, without
+// Verify reports whether the livt repository holds the item a URI names, without
 // building its payload. The URL form needs this: a deployed link derives from
 // the URI alone, so nothing else would stop a mistyped reference resolving to a
 // confident link to a page that was never built.
