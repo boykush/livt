@@ -286,6 +286,57 @@ func TestListStoryMapsLinksStoryMapResource(t *testing.T) {
 	}
 }
 
+// Automates livt://mapping/automate-from-master-in-impl-repos/rule/R-16.
+func TestListTermsEnumeratesGlossaryWithResourceURIs(t *testing.T) {
+	s := newTestServer(t)
+	// A term under a context directory, and one no board references — the
+	// glossary is the livt repository's vocabulary, not what the boards cite.
+	writeFile(t, filepath.Join(s.cfg.Root, "ubiquitous", "unreferenced.md"), "---\nname: 未参照の用語\n---\n\n定義\n")
+	writeFile(t, filepath.Join(s.cfg.Root, "ubiquitous", "billing", "story.md"), "---\nname: ストーリー（請求）\n---\n\n請求文脈の定義\n")
+
+	_, out, err := s.listTerms(context.Background(), nil, listTermsInput{})
+	if err != nil {
+		t.Fatalf("listTerms: %v", err)
+	}
+
+	byURI := make(map[string]termSummaryJSON, len(out.Terms))
+	for _, term := range out.Terms {
+		byURI[term.URI] = term
+	}
+	if len(out.Terms) != 3 || len(byURI) != 3 {
+		t.Fatalf("terms = %+v, want three distinct (story, unreferenced, billing/story)", out.Terms)
+	}
+	if got := byURI["livt://ubiquitous/story"]; got.Key != "story" || got.Ctx != "" || got.Name != "ストーリー" {
+		t.Errorf("context-free term = %+v, want key story, no ctx, name ストーリー", got)
+	}
+	// The same key at the root and under a context are two terms, so the ctx
+	// has to come through — a listing carrying key alone shows two rows a
+	// consumer cannot tell apart.
+	if got := byURI["livt://ubiquitous/billing/story"]; got.Key != "story" || got.Ctx != "billing" || got.Name != "ストーリー（請求）" {
+		t.Errorf("scoped term = %+v, want key story, ctx billing, name ストーリー（請求）", got)
+	}
+	if _, ok := byURI["livt://ubiquitous/unreferenced"]; !ok {
+		t.Errorf("terms = %+v, want the unreferenced term listed too", out.Terms)
+	}
+	// missing-term is referenced by the demo mapping but has no file, so it is
+	// not a term — the listing enumerates the glossary, not the references.
+	if _, ok := byURI["livt://ubiquitous/missing-term"]; ok {
+		t.Errorf("terms = %+v, want no entry for the uncommitted missing-term", out.Terms)
+	}
+}
+
+func TestListTermsOnMissingUbiquitousDirIsEmpty(t *testing.T) {
+	s := NewServer(Config{Root: t.TempDir()}, "test")
+
+	_, out, err := s.listTerms(context.Background(), nil, listTermsInput{})
+	if err != nil {
+		t.Fatalf("listTerms: %v", err)
+	}
+	if len(out.Terms) != 0 {
+		t.Errorf("terms = %+v, want empty", out.Terms)
+	}
+}
+
 func TestStoryMapReturnsActivitiesStepsCardsReleases(t *testing.T) {
 	cfg := newTestServer(t).cfg
 	sm, err := cfg.storyMap("デモマップ")
