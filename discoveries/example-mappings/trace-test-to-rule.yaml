@@ -70,10 +70,22 @@ rules:
       - id: EX-03
         name: Issue起票の有無は関係ない（MCPのURI・ボードのリンク・テストのコメントも参照元）
 
+  - id: R-08
+    name: livt URIはlivtリポジトリ相対の名前で、どのリポジトリかは運ばない
+    examples:
+      - id: EX-01
+        name: 同じURIはどこでも「手元のlivtリポジトリの一点」と一様に解釈され、指す実体は手元のリポジトリに依る
+      - id: EX-02
+        name: どのlivtリポジトリへ解決するかは消費側workspaceの宣言が供給する（automate-from-master-in-impl-repos側のルール）
+      - id: EX-03
+        name: 第1セグメントは予約語（mapping・story・story-map・ubiquitous）で、将来エイリアスを第1セグメントに置く拡張の席を空けてある
+
 questions:
   - id: Q-01
     text: 実装リポジトリからlivtリポジトリをどう引くか（R-04はCLIに解決機構があることまでで、どこから解決できるかは誰も引き受けていない。現状は--rootでlivtリポジトリのチェックアウトを指す必要があり、実装が別リポジトリにある本ストーリーのアクターは辿れない）
     retired: true
+  - id: Q-02
+    text: 1つのworkspaceが複数のlivtリポジトリを消費するとき、裸のlivt URIのスコープを何が復元するか（default宣言＋エイリアス修飾のxmlns型が候補。現時点では考慮外とし、R-08 EX-03で拡張の席だけ確保している）
 
 ubiquitous:
   - livt-uri
