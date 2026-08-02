@@ -28,6 +28,22 @@ This is the whole shape of the skill, so settle it first.
 - A rule with no `issues:` has no trigger to reconcile from. That is a normal state, not a finding — the automation may have landed without an issue, and only a human knows.
 - You touch `automated:` and nothing else. Rule text, examples, questions, and `issues:` belong to `example-mapping-update` and `rule-issue-file`.
 
+## One Flag, Many Repositories
+
+A story declares `repos:`, and `rule-issue-file` files per **rule × repository** — so one rule's `issues:` routinely spans several repositories, and the livt repository is often not among them. `automated:` does not span anything: it is a single judgment about the rule.
+
+- Propose setting it only when **every** recorded issue is closed. A rule automated in one repository and untouched in another is not an automated rule; the flag is about the rule, not about a repository.
+- A rule closed in one repository and open in another is a **partial rollout** — report it, propose nothing. It is the most common mid-rollout shape and the easiest to misread as done.
+- Gather evidence per repository and name every one of them in the PR body. A reviewer setting one flag that covers three repositories needs all three in front of them.
+
+## When You Cannot Read a Repository
+
+`gh` answers with `Could not resolve to a Repository` whether the repository was deleted, renamed, or is simply invisible to the credentials you hold. Those are different worlds and you cannot tell them apart, so never resolve that error into a state.
+
+- An unreadable issue is **unverifiable** — never "still open", never "gone". Report the rule as unverifiable and name the URL.
+- A rule with even one unverifiable issue gets no proposal in either direction. You cannot establish that every issue is closed while you cannot read them all.
+- This is a normal condition, not a fault to route around. The livt repository is frequently checked out somewhere with narrower access than whoever filed the issues had — a CI runner, a different org member, a contributor's fork.
+
 ## Inputs
 
 - **story-key** (optional) — reconcile that one mapping. Without it, sweep every mapping in `discoveries/example-mappings/`.
@@ -36,16 +52,19 @@ This is the whole shape of the skill, so settle it first.
 ## Reconciliation Flow
 
 1. Read the mappings in scope. Skip rules marked `retired: true` — the spec no longer asks for them, so their record answers nothing.
-2. For each rule carrying `issues:`, read the state of every issue:
+2. For each rule carrying `issues:`, read the state of **every** issue on the list — they may sit in different repositories, and the full URL is what addresses one, so no repository has to be checked out or even be the current one:
 
    ```
    gh issue view {issue-url} --json number,state,stateReason,closedAt,closedByPullRequestsReferences
    ```
 
+   A read that fails makes the rule unverifiable — see When You Cannot Read a Repository.
+
 3. Sort each rule into one of the two drifts, or into no finding:
-   - **Missing flag** — every recorded issue is `CLOSED` and the rule has no `automated: true`. Gather evidence (step 4) and propose setting it.
+   - **Missing flag** — every recorded issue is `CLOSED`, across every repository, and the rule has no `automated: true`. Gather evidence (step 4) and propose setting it.
    - **Stale flag** — the rule carries `automated: true` and its text or examples changed *after* the flag was set. Establish that from the mapping's own history (step 5) and propose unsetting it.
-   - **No finding** — issues still open, or a flag that matches. Report it and move on; a rule you leave alone is a result, not a gap.
+   - **No finding** — issues still open (anywhere), a partial rollout, or a flag that matches. Report it and move on; a rule you leave alone is a result, not a gap.
+   - **Unverifiable** — at least one issue could not be read. Report it; propose nothing.
 4. For a missing flag, follow the closing PR from `closedByPullRequestsReferences` and look for what would make the rule true — the tests it added:
 
    ```
@@ -80,6 +99,8 @@ This is the whole shape of the skill, so settle it first.
 - Don't read implementation repositories' code — the issue and its closing PR are the whole window, the same limit the filing skills work under.
 - Don't edit rule text, examples, questions, or `issues:` — a rule whose meaning drifted is `example-mapping-update`'s business, and an unfiled rule is `rule-issue-file`'s.
 - Don't open issues, close issues, or comment on them. The record you maintain lives in the livt repository.
+- Don't read a repository you cannot resolve as an empty, open, or closed state — you cannot tell "deleted" from "invisible to you".
+- Don't propose a flag from one repository's issues when the rule records issues in others.
 - Don't silently skip a rule you could not verify. Unverifiable is a reportable outcome.
 
 ## Output
