@@ -42,6 +42,10 @@ func newTestMaster(t *testing.T) string {
 	write(filepath.Join("discoveries", "usm", "demo-map.yaml"),
 		"name: デモマップ\nactivities: []\n")
 	write(filepath.Join("ubiquitous", "story.md"), "---\nname: ストーリー\n---\n\n定義\n")
+	// The same key at the root and under a context: two terms, told apart by the
+	// directory holding them.
+	write(filepath.Join("ubiquitous", "invoice.md"), "---\nname: 共通の請求書\n---\n\n定義\n")
+	write(filepath.Join("ubiquitous", "billing", "invoice.md"), "---\nname: 請求の請求書\n---\n\n定義\n")
 
 	return root
 }
@@ -61,6 +65,7 @@ func TestResolveURIResolvesEveryKind(t *testing.T) {
 		{"livt://story-map/デモマップ", "story_map"},
 		{"livt://story/demo", "story"},
 		{"livt://ubiquitous/story", "term"},
+		{"livt://ubiquitous/billing/invoice", "term"},
 	}
 	for _, c := range cases {
 		var out bytes.Buffer
@@ -96,6 +101,7 @@ func TestResolveURIWritesTheURLForm(t *testing.T) {
 		{"livt://mapping/demo/question/Q-01", base + "/mapping/demo.html#question-Q-01"},
 		{"livt://story/demo", base + "/story/demo.html"},
 		{"livt://ubiquitous/story", base + "/ubiquitous.html#story"},
+		{"livt://ubiquitous/billing/invoice", base + "/ubiquitous.html#billing/invoice"},
 		{"livt://story-map/デモマップ", base + "/story-map/デモマップ.html"},
 	}
 	for _, c := range cases {
@@ -141,7 +147,8 @@ func TestResolveURIRefusesAURLItCannotBack(t *testing.T) {
 func TestResolveURIDistinguishesMalformedFromMissing(t *testing.T) {
 	root := newTestMaster(t)
 
-	for _, raw := range []string{"", "R-01", "livt://nope/x", "livt://mapping/demo/rule/"} {
+	for _, raw := range []string{"", "R-01", "livt://nope/x", "livt://mapping/demo/rule/",
+		"livt://ubiquitous/a/b/c", "livt://ubiquitous/billing/"} {
 		err := resolveURI(&bytes.Buffer{}, root, raw, formatJSON, "")
 		if err == nil {
 			t.Errorf("resolve %q succeeded, want a malformed-URI error", raw)
@@ -152,7 +159,10 @@ func TestResolveURIDistinguishesMalformedFromMissing(t *testing.T) {
 		}
 	}
 
-	for _, raw := range []string{"livt://mapping/demo/rule/R-99", "livt://story/nope"} {
+	// A term key that exists at the root is still missing under a context, and
+	// vice versa: the context is part of what identifies the term.
+	for _, raw := range []string{"livt://mapping/demo/rule/R-99", "livt://story/nope",
+		"livt://ubiquitous/shipping/invoice", "livt://ubiquitous/billing/story"} {
 		err := resolveURI(&bytes.Buffer{}, root, raw, formatJSON, "")
 		if err == nil {
 			t.Errorf("resolve %q succeeded, want a not-found error", raw)

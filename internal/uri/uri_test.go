@@ -181,19 +181,38 @@ func TestParseStory(t *testing.T) {
 func TestParseTerm(t *testing.T) {
 	cases := []struct {
 		uri string
+		ctx string
 		key string
 		ok  bool
 	}{
-		{"livt://ubiquitous/story", "story", true},
-		{"livt://ubiquitous/", "", false},          // empty key
-		{"livt://story/story", "", false},          // wrong path
-		{"livt://ubiquitous/../secret", "", false}, // traversal
+		{"livt://ubiquitous/story", "", "story", true},
+		{"livt://ubiquitous/billing/invoice", "billing", "invoice", true},
+		{"livt://ubiquitous/", "", "", false},                   // empty key
+		{"livt://story/story", "", "", false},                   // wrong path
+		{"livt://ubiquitous/../secret", "", "", false},          // traversal
+		{"livt://ubiquitous/billing/../secret", "", "", false},  // traversal past the context
+		{"livt://ubiquitous/../billing/invoice", "", "", false}, // traversal in the context
+		{"livt://ubiquitous/a/b/c", "", "", false},              // a context is one level deep
+		{"livt://ubiquitous/billing/", "", "", false},           // empty key under a context
+		{"livt://ubiquitous//invoice", "", "", false},           // empty context
 	}
 	for _, c := range cases {
-		key, ok := ParseTerm(c.uri)
-		if ok != c.ok || key != c.key {
-			t.Errorf("ParseTerm(%q) = (%q, %v), want (%q, %v)", c.uri, key, ok, c.key, c.ok)
+		ctx, key, ok := ParseTerm(c.uri)
+		if ok != c.ok || key != c.key || ctx != c.ctx {
+			t.Errorf("ParseTerm(%q) = (%q, %q, %v), want (%q, %q, %v)", c.uri, ctx, key, ok, c.ctx, c.key, c.ok)
 		}
+	}
+}
+
+// A context is optional, and that is the whole point: the same key names one
+// term across contexts and another inside one, and the two must never resolve
+// to each other.
+func TestScopedAndContextFreeTermsAreDistinct(t *testing.T) {
+	if Term("", "invoice") == Term("billing", "invoice") {
+		t.Fatal("a scoped term collapsed onto the context-free one of the same key")
+	}
+	if Term("billing", "invoice") == Term("shipping", "invoice") {
+		t.Fatal("the same key under two contexts collapsed onto one URI")
 	}
 }
 
@@ -235,8 +254,12 @@ func TestURIsRoundTrip(t *testing.T) {
 	if !ok || sk != "demo" {
 		t.Fatalf("story round trip = (%q, %v), want (demo, true)", sk, ok)
 	}
-	tk, ok := ParseTerm(Term("story"))
-	if !ok || tk != "story" {
-		t.Fatalf("term round trip = (%q, %v), want (story, true)", tk, ok)
+	tc, tk, ok := ParseTerm(Term("", "story"))
+	if !ok || tc != "" || tk != "story" {
+		t.Fatalf("term round trip = (%q, %q, %v), want (\"\", story, true)", tc, tk, ok)
+	}
+	sc, sk, ok := ParseTerm(Term("billing", "invoice"))
+	if !ok || sc != "billing" || sk != "invoice" {
+		t.Fatalf("scoped term round trip = (%q, %q, %v), want (billing, invoice, true)", sc, sk, ok)
 	}
 }

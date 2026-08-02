@@ -8,6 +8,7 @@ ubiquitous:
   - refine
   - planning
   - ubiquitous-language
+  - context
 activities:
   - key: story-mapping
     name: 全体ストーリーを発見する
@@ -59,6 +60,8 @@ activities:
         stories:
           - name: ユビキタス言語を用語集で引く
             key: look-up-terms-in-glossary
+          - name: 用語を文脈で切り分ける
+            key: scope-terms-by-context
   - key: refine-discovery
     name: ディスカバリーをブラッシュアップする
     steps:

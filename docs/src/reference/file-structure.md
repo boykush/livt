@@ -12,14 +12,18 @@ project-root/
     example-mappings/
       {story-key}.yaml                    # Example mapping files
   ubiquitous/
-    {term-key}.md                         # Ubiquitous language term files
+    {term-key}.md                         # Terms holding across contexts
+    {ctx}/
+      {term-key}.md                       # Terms scoped to one context
 ```
 
 - Story keys are derived from filenames (without extension)
 - Story keys must be kebab-case: lowercase letters, numbers, and hyphens
 - The `stories/` directory is the committed story registry, and `stories/{story-key}.md` provides story key uniqueness
 - Example mapping filenames must match story keys to link them
-- Term keys are derived from `ubiquitous/{term-key}.md` filenames and used as `ubiquitous.html#{term-key}` link anchors
+- Term keys are derived from filenames, and a term's [context](../guides/ubiquitous-language.md#contexts) from the directory holding it. The path is what makes a term unique, so the same key can sit at the root and under a context as two separate terms
+- A context is optional and one directory deep; terms nested deeper are not addressable and are left out of the glossary
+- A term is anchored as `ubiquitous.html#{term-key}`, or `ubiquitous.html#{ctx}/{term-key}` when it is scoped
 
 ## Output
 

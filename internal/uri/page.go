@@ -39,9 +39,17 @@ func StoryMapPage(name string) string {
 }
 
 // TermPage is where Term lands. The whole ubiquitous language is one table, so
-// a term's anchor is its key alone.
-func TermPage(termKey string) string {
-	return "ubiquitous.html#" + termKey
+// a term's anchor is enough to reach it.
+func TermPage(ctx, termKey string) string {
+	return "ubiquitous.html#" + TermAnchor(ctx, termKey)
+}
+
+// TermAnchor is the id of a term's row in the glossary table. It is the term's
+// reference verbatim, separator included: joining a context to a key with
+// anything kebab-case can hold would let a scoped term collide with a
+// context-free one whose key reads the same joined up.
+func TermAnchor(ctx, termKey string) string {
+	return TermRef(ctx, termKey)
 }
 
 // RuleAnchor is the id of a rule's sticky on its board.

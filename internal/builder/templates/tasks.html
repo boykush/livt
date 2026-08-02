@@ -19,7 +19,7 @@
   questions are what the team does not know yet and get closed by a
   conversation; un-automated rules are known behaviour not yet proven and get
   closed by a test. One filter bar drives both lists — the script picks up every
-  [data-opportunities] card on the page regardless of section.
+  [data-filter-values] card on the page regardless of section.
 
   There is no status on a card, and cannot be one that tracks an issue: a rule
   carries its automation issue URLs but not their open/closed state, and the
@@ -27,7 +27,7 @@
   item leaves this page by being resolved — a question becomes a rule, a rule
   becomes automated — rather than by moving through states.
   */}}
-  {{template "opportunity-filter" .FilterOpportunities}}
+  {{template "filter" (filter "opportunity" "Opportunity" .FilterOpportunities)}}
 
   {{/*
   data-filter-scope marks a group the filter should keep honest: it corrects the
@@ -68,7 +68,7 @@
   </main>
 </div>
 </div>
-{{template "opportunity-filter-script"}}
+{{template "filter-script"}}
 </body>
 </html>
 
@@ -79,7 +79,7 @@ whole card linking to its sticky on the mapping board while the story and
 opportunity chips stay their own links (anchors cannot nest). Accent is the
 sticky colour the item carries on that board.
 */}}
-<div data-opportunities="{{opportunityNames .Opportunities}}" class="relative bg-white rounded-lg border border-gray-200 border-l-4 {{if eq .Kind "question"}}border-l-red-400 hover:border-l-red-500{{else}}border-l-blue-400 hover:border-l-blue-500{{end}} px-5 py-4 mb-3 hover:shadow-sm transition">
+<div data-filter-values="{{opportunityValues .Opportunities}}" class="relative bg-white rounded-lg border border-gray-200 border-l-4 {{if eq .Kind "question"}}border-l-red-400 hover:border-l-red-500{{else}}border-l-blue-400 hover:border-l-blue-500{{end}} px-5 py-4 mb-3 hover:shadow-sm transition">
   <a href="{{.MappingPath}}" class="absolute inset-0 z-10 rounded-lg" aria-label="{{.Text}}"></a>
   <span class="text-base text-gray-900">{{.Text}}</span>
   <div class="flex items-center gap-2 mt-2 flex-wrap">

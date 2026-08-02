@@ -1,0 +1,19 @@
+{{define "term-card"}}
+{{/*
+A referenced ubiquitous language term as a pink sticky, shared by the example
+mapping and story map boards. Ctx rides above the name when the term is scoped
+to one context: two contexts can hold the same word for different things, so the
+display name alone would not say which meaning the board is reaching for.
+A card with no Href is a reference resolving to no term file, and degrades to a
+plain sticky the same way a keyless story card does.
+*/}}
+{{if .Href}}
+<a href="{{.Href}}" class="inline-flex items-center gap-2 bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-pink-200 transition">
+  <span class="flex flex-col items-start">{{if .Ctx}}<span class="text-[10px] font-mono text-pink-700/70">{{.Ctx}}</span>{{end}}<span>{{.Name}}</span></span><span>&rarr;</span>
+</a>
+{{else}}
+<div class="bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700">
+  {{if .Ctx}}<span class="block text-[10px] font-mono text-pink-700/70">{{.Ctx}}</span>{{end}}<span>{{.Name}}</span>
+</div>
+{{end}}
+{{end}}

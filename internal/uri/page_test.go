@@ -21,7 +21,8 @@ func TestPagesFollowTheDocumentedScheme(t *testing.T) {
 		{Question("checkout", "Q-01"), QuestionPage("checkout", "Q-01"), "mapping/checkout.html#question-Q-01"},
 		{Story("checkout"), StoryPage("checkout"), "story/checkout.html"},
 		{StoryMap("discovery"), StoryMapPage("discovery"), "story-map/discovery.html"},
-		{Term("livt-uri"), TermPage("livt-uri"), "ubiquitous.html#livt-uri"},
+		{Term("", "livt-uri"), TermPage("", "livt-uri"), "ubiquitous.html#livt-uri"},
+		{Term("billing", "invoice"), TermPage("billing", "invoice"), "ubiquitous.html#billing/invoice"},
 	}
 
 	for _, c := range cases {
@@ -40,6 +41,19 @@ func TestExampleAnchorsSeparateTheSameIDUnderDifferentRules(t *testing.T) {
 	}
 }
 
+// livt://mapping/scope-terms-by-context/rule/R-03/example/EX-03: the glossary is
+// one table, so two rows sharing a key have to be told apart by their anchors
+// alone. Joining a context to a key with anything a kebab-case key can hold
+// would let a scoped term land on a context-free one that reads the same.
+func TestTermAnchorsSeparateTheSameKeyAcrossContexts(t *testing.T) {
+	if TermAnchor("billing", "invoice") == TermAnchor("shipping", "invoice") {
+		t.Fatal("one key under two contexts collapsed onto a single anchor")
+	}
+	if TermAnchor("billing", "invoice") == TermAnchor("", "billing-invoice") {
+		t.Fatal("a scoped term collided with a context-free key reading the same joined up")
+	}
+}
+
 // livt://mapping/trace-test-to-rule/rule/R-02/example/EX-01: what the master
 // stores is the livt URI, and the deployment URL is prefixed onto it only at
 // render time — so no page here may resolve to a host or an absolute path on
@@ -52,7 +66,8 @@ func TestPagesCarryNoDeployment(t *testing.T) {
 		QuestionPage("checkout", "Q-01"),
 		StoryPage("checkout"),
 		StoryMapPage("discovery"),
-		TermPage("livt-uri"),
+		TermPage("", "livt-uri"),
+		TermPage("billing", "invoice"),
 	} {
 		if strings.Contains(got, "://") || strings.HasPrefix(got, "/") {
 			t.Errorf("%q resolves on its own; prefixing the deployment is the renderer's job", got)

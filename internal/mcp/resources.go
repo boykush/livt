@@ -60,9 +60,16 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "ubiquitous-term",
 		Title:       "Ubiquitous language term",
-		Description: "A ubiquitous language term's name and definition, addressed by term key.",
+		Description: "A ubiquitous language term's name and definition, addressed by term key. This shape addresses a term that holds across contexts; one scoped to a single context is addressed by ubiquitous-term-in-context instead.",
 		MIMEType:    "application/json",
 		URITemplate: uri.TermTemplate,
+	}, s.readTerm)
+	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
+		Name:        "ubiquitous-term-in-context",
+		Title:       "Ubiquitous language term in a context",
+		Description: "A ubiquitous language term scoped to one context, addressed by context and term key. A context is optional and bounds where the term's meaning holds, so the same term key can name one thing across contexts and another inside one — the ctx is part of what addresses this term, not a label on it.",
+		MIMEType:    "application/json",
+		URITemplate: uri.ScopedTermTemplate,
 	}, s.readTerm)
 }
 
@@ -96,7 +103,10 @@ func (s *Server) readStory(_ context.Context, req *mcpsdk.ReadResourceRequest) (
 	return s.read(req.Params.URI, uri.KindStory)
 }
 
-// readTerm serves livt://ubiquitous/{term_key}.
+// readTerm serves both term shapes: livt://ubiquitous/{term_key} and
+// livt://ubiquitous/{ctx}/{term_key}. They resolve the same way — the context is
+// part of the address, not a different kind of thing — so one handler answers
+// for the two templates.
 func (s *Server) readTerm(_ context.Context, req *mcpsdk.ReadResourceRequest) (*mcpsdk.ReadResourceResult, error) {
 	return s.read(req.Params.URI, uri.KindTerm)
 }

@@ -19,6 +19,10 @@ const (
 	StoryMapTemplate = "livt://story-map/{map_name}"
 	StoryTemplate    = "livt://story/{story_key}"
 	TermTemplate     = "livt://ubiquitous/{term_key}"
+	// ScopedTermTemplate addresses a term that belongs to one context. The two
+	// term shapes both stand: a context is optional, so a term that holds across
+	// contexts keeps the address it had before contexts existed.
+	ScopedTermTemplate = "livt://ubiquitous/{ctx}/{term_key}"
 )
 
 const (
@@ -29,6 +33,10 @@ const (
 	ruleInfix      = "/rule/"
 	exampleInfix   = "/example/"
 	questionInfix  = "/question/"
+	// termCtxSep joins a term's context to its key. It is the same separator the
+	// filesystem uses, so ubiquitous/{ctx}/{key}.md, livt://ubiquitous/{ctx}/{key}
+	// and the reference a board authors all read alike.
+	termCtxSep = "/"
 )
 
 // Mapping builds the URI for a story's example mapping.
@@ -67,9 +75,37 @@ func Story(storyKey string) string {
 	return storyPrefix + storyKey
 }
 
-// Term builds the URI for a ubiquitous language term.
-func Term(termKey string) string {
-	return termPrefix + termKey
+// Term builds the URI for a ubiquitous language term. An empty ctx addresses a
+// term that holds across contexts — the whole point of making the context
+// optional is that such a term is not forced into one.
+func Term(ctx, termKey string) string {
+	return termPrefix + TermRef(ctx, termKey)
+}
+
+// TermRef is how a term is named where a single string is wanted: the tail of
+// its URI, the reference a board's ubiquitous list authors, and its anchor in
+// the glossary table.
+func TermRef(ctx, termKey string) string {
+	if ctx == "" {
+		return termKey
+	}
+	return ctx + termCtxSep + termKey
+}
+
+// SplitTermRef takes a term reference apart. Both segments are guarded, so a
+// reference can neither escape the ubiquitous directory nor nest a context
+// inside another: contexts are one level deep, the same depth the URI carries.
+func SplitTermRef(ref string) (ctx, termKey string, ok bool) {
+	if c, key, found := strings.Cut(ref, termCtxSep); found {
+		if !ValidSegment(c) || !ValidSegment(key) {
+			return "", "", false
+		}
+		return c, key, true
+	}
+	if !ValidSegment(ref) {
+		return "", "", false
+	}
+	return "", ref, true
 }
 
 // ParseMapping extracts the story key from a mapping URI. It does not match
@@ -152,13 +188,16 @@ func ParseStory(s string) (storyKey string, ok bool) {
 	return key, true
 }
 
-// ParseTerm extracts the term key from a ubiquitous term URI.
-func ParseTerm(s string) (termKey string, ok bool) {
-	key, found := strings.CutPrefix(s, termPrefix)
-	if !found || !ValidSegment(key) {
-		return "", false
+// ParseTerm extracts the context and term key from a ubiquitous term URI. A
+// context-free term yields an empty ctx. Both term shapes live under one prefix
+// no other shape uses, so accepting two segments here cannot make a term URI
+// parse as anything else.
+func ParseTerm(s string) (ctx, termKey string, ok bool) {
+	ref, found := strings.CutPrefix(s, termPrefix)
+	if !found {
+		return "", "", false
 	}
-	return key, true
+	return SplitTermRef(ref)
 }
 
 // ValidSegment guards externally-supplied URI/key segments so they resolve to a
