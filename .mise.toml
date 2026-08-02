@@ -8,7 +8,7 @@ hk = "latest"
 pkl = "latest"
 golangci-lint = "2.12.2"
 goreleaser = "2.16.0"
-"aqua:rust-lang/mdBook" = "0.5.2"
+"aqua:rust-lang/mdBook" = "0.5.4"
 
 # Check commands shared by CI (.github/workflows/ci.yml) and the hk pre-commit
 # hooks (hk.pkl) — one definition, no drift. Run them all with `mise run check`.
