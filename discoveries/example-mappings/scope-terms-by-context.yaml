@@ -1,0 +1,50 @@
+rules:
+  - id: R-01
+    name: 用語は文脈ディレクトリで切れる
+    examples:
+      - id: EX-01
+        name: ubiquitous/{ctx}/{term-key}.md に置いた用語は、その文脈の用語として読まれる
+      - id: EX-02
+        name: ubiquitous/{term-key}.md に置いた用語は文脈を持たず、文脈を跨いで共通の意味を指す
+      - id: EX-03
+        name: 同じ term-key がルートと文脈配下に共存でき、別々の用語として扱われる
+  - id: R-02
+    name: 文脈は用語の識別子の一部になる
+    examples:
+      - id: EX-01
+        name: 文脈を持つ用語は livt://ubiquitous/{ctx}/{term-key} で指せる
+      - id: EX-02
+        name: 文脈を持たない用語は livt://ubiquitous/{term-key} のまま指せ、既存の参照は壊れない
+      - id: EX-03
+        name: ボードの ubiquitous リストは {ctx}/{term-key} と {term-key} を書き分けられる
+  - id: R-03
+    name: 用語集は各用語の文脈を映す
+    examples:
+      - id: EX-01
+        name: 用語集の行は所属文脈を示すチップを持つ
+      - id: EX-02
+        name: 文脈を持たない用語はチップを持たず、共通の用語として読める
+      - id: EX-03
+        name: 同じ term-key を持つ2行は、チップの有無と中身で見分けられる
+  - id: R-04
+    name: 用語集は文脈で絞り込める
+    examples:
+      - id: EX-01
+        name: 文脈を選ぶと、その文脈の用語だけが表示される
+      - id: EX-02
+        name: 絞り込みを解除すると全件表示に戻る
+      - id: EX-03
+        name: 絞り込み状態がURLに反映され、共有した相手にも同じ絞り込みが適用される
+
+questions:
+  - id: Q-01
+    text: ボードごとに既定の文脈を宣言し、bare keyをその文脈で解決するか（現状はボード側が参照ごとに文脈を書く）
+  - id: Q-02
+    text: 文脈そのものに表示名や説明を持たせるか（現状はディレクトリ名がそのまま文脈名を兼ねる）
+
+ubiquitous:
+  - context
+  - ubiquitous-language
+  - livt-uri
+  - story-map
+  - example-mapping
