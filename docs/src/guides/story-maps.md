@@ -32,7 +32,7 @@ ubiquitous:
 
 ## Personas
 
-- `personas` is optional: each entry is a [persona](./personas.md) key
+- `personas` is optional: each entry is a [persona](./personas.md) key, primary first — one map draws one persona's journey
 - They are the actors whose journey the map covers, declared rather than derived
   from its story cards — the cast is settled while the journey is being framed,
   before any story is committed, so a map can name an actor it has no story for

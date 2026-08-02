@@ -27,9 +27,27 @@ letters, numbers, and hyphens. The body describes who the actor is.
 name: Coding agent
 ---
 
-An AI agent that reads the livt repository over MCP and automates rules
-test-first in an implementation repository.
+An AI agent automating agreed rules test-first in an implementation
+repository. It reads every line of the code and none of the agreement
+behind it, and it was not in the conversation — it needs an address it
+can resolve, not a room it can ask in.
 ```
+
+## Write the person, not the role
+
+A persona is somebody the product faces, drawn by their situation and by
+what keeps going wrong for them. It is not a role: "mapping maintainer"
+names the files someone edits, exists only because the tool does, and gives
+the stories nobody to be checked against. Write who the person is without
+the tool, and what hurts — whether each story actually helps that person is
+then a question the map can answer.
+
+Direction matters as much as form. A persona is settled while the
+opportunity is framed and comes down from it — in livt a story map is one
+opportunity, so the cast starts as that opportunity's protagonist, and the
+other side of a handoff appears where the journeys touch. Deriving personas
+up from the stories afterwards yields one role per feature and calls it a
+cast.
 
 ## Listing personas on a story map
 
@@ -46,12 +64,15 @@ ubiquitous:
   - story-map
 ```
 
-This is where a persona is settled. Framing the user journey comes before any
-story is committed, so the list is declared rather than derived from the map's
-story cards: a map names an actor it has no story for yet, and a key with no
-persona file behind it still renders — on the board the name comes before the
-file. Declared personas appear as orange stickies below the board, each linking
-to its row.
+This is where a persona is settled. Framing the cast comes before any story is
+committed, so the list is declared rather than derived from the map's story
+cards: a map names an actor it has no story for yet, and a key with no persona
+file behind it still renders — on the board the name comes before the file.
+Declared personas appear as orange stickies below the board, each linking to
+its row.
+
+List the primary first: one map draws one persona's journey, and a long cast
+on one board usually means several journeys are sharing it.
 
 An example mapping declares none. Whom the work is for is settled on the map and
 carried by each story; a rule is a detail of one story, and does not get to
