@@ -53,12 +53,15 @@ livt mcp [flags]
 ### Transports
 
 By default the server runs over **stdio**, spawned per consumer — the client
-launches `livt mcp` as a subprocess. This suits a single repo with the livt repository
-checked out alongside it.
+launches `livt mcp` as a subprocess. stdio is the recommended form: the
+binding to the livt repository is read at spawn time from the consumer's own
+environment, so each workspace resolves against what it declares, and a
+session never outlives the declaration it was started with.
 
-Pass **`--http`** to instead serve over Streamable HTTP from one long-running
-process, so several repos on the same machine can share a single server without
-each holding a checkout of the livt repository:
+Reach for **`--http`** when reachability is the problem — a client that
+cannot spawn processes, or several repos sharing one machine-wide server
+without each holding a checkout of the livt repository. It serves Streamable
+HTTP from one long-running process:
 
 ```bash
 livt mcp --http localhost:5488
@@ -67,6 +70,8 @@ livt mcp --http localhost:5488
 Each consumer points its MCP client at `http://localhost:5488/mcp`. The server
 is stateless and read-only, so one process backs many clients; keep `git pull`
 current on its checkout and the served spec (and `spec_version`) updates live.
+The binding trades the other way from stdio: the server fixes its repository
+once, at start, for every client — not per workspace.
 For distributing this client configuration to implementation repos, see the
 [`livt-mcp` plugin](https://github.com/boykush/livt/tree/main/plugins/livt-mcp).
 This mode assumes local use with no authentication — the server is meant to bind
