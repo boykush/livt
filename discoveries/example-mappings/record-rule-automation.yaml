@@ -12,12 +12,19 @@ rules:
         name: 表示への反映はshow-automation-status-per-ruleのスコープ
     automated: true
   - id: R-02
-    name: automatedはルールの変化に合わせて、人の手順の中で更新される
+    name: automatedの更新はAIスキルが証跡付きで提案し、人が判断して確定する
     examples:
       - id: EX-01
         name: 自動化Issueがクローズされたら、ルールメンテナーがautomatedを立てる
+        retired: true
       - id: EX-02
         name: ルールを変更するPRでは、該当ruleのautomatedを外す（example-mapping-updateの手順に組み込む）
+      - id: EX-03
+        name: "クローズ済みIssueを持つ未automatedのルールは、スキルが証跡（クローズしたPR・テスト）を添えてautomated: trueを提案する"
+      - id: EX-04
+        name: "automated: true の後に本文が変わったルールは、スキルがマッピングの履歴を根拠にフラグ解除を提案する"
+      - id: EX-05
+        name: Issueのクローズは提案のトリガーであって証拠ではなく、automatedを立てるかは人が決める
 
 ubiquitous:
   - example-mapping
