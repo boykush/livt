@@ -1,8 +1,8 @@
 ---
 name: ブラウザで実例マッピングをプレビューする
-persona: example-mapping-maintainer
+persona: discovery-facilitator
 ---
 
-実例マッピングメンテナーとして
+ディスカバリーファシリテーターとして
 ブラウザで実例マッピングをプレビューしたい
 そうすれば、ブラッシュアップしたルール・実例・質問の構造を視覚的に確認できる

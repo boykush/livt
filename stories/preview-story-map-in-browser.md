@@ -1,10 +1,10 @@
 ---
 name: ブラウザでストーリーマップをプレビューする
-persona: story-map-maintainer
+persona: discovery-facilitator
 repos:
   - boykush/livt
 ---
 
-ストーリーマップメンテナーとして
+ディスカバリーファシリテーターとして
 ブラウザでストーリーマップをプレビューしたい
 そうすれば、ブラッシュアップしたストーリーマップの構造を視覚的に確認できる

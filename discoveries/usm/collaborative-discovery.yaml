@@ -1,10 +1,6 @@
 name: 協働ディスカバリー
 personas:
   - discovery-facilitator
-  - story-map-maintainer
-  - example-mapping-maintainer
-  - development-team
-  - living-document-reader
 ubiquitous:
   - story-map
   - example-mapping
@@ -21,11 +17,13 @@ activities:
   - key: story-mapping
     name: 全体ストーリーを発見する
     steps:
-      - key: frame-user-journey
-        name: ユーザージャーニーを描く
+      - key: frame-personas
+        name: ペルソナを立てる
         stories:
           - name: ストーリーマップに登場するペルソナを並べる
             key: list-personas-on-story-map
+      - key: frame-user-journey
+        name: ユーザージャーニーを描く
       - key: identify-story-candidates
         name: ストーリー候補を洗い出す
       - key: shape-release-slices

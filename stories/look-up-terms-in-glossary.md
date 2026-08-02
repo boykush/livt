@@ -1,8 +1,8 @@
 ---
 name: ユビキタス言語を用語集で引く
-persona: living-document-reader
+persona: discovery-facilitator
 ---
 
-リビングドキュメントの閲覧者として
+ディスカバリーファシリテーターとして
 ユビキタス言語を用語集で引きたい
 そうすれば協働の文脈にいなくても用語の意味を正しく掴める

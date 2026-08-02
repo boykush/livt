@@ -1,6 +1,6 @@
 rules:
   - id: R-01
-    name: 実例マッピングメンテナーはlivtリポジトリのルールを指定して、対象実装リポジトリへ自動化Issueを起票できる
+    name: ディスカバリーファシリテーターはlivtリポジトリのルールを指定して、対象実装リポジトリへ自動化Issueを起票できる
     examples:
       - id: EX-01
         name: story-keyとrule-idを指定すると、そのルール1件分のIssueが起票される

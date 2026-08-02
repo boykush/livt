@@ -1,11 +1,8 @@
 name: ディスカバリーと開発のギャップ
 personas:
   - impl-developer
+  - discovery-facilitator
   - coding-agent
-  - example-mapping-maintainer
-  - story-map-maintainer
-  - development-team
-  - living-document-reader
 ubiquitous:
   - persona
   - discovery

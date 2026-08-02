@@ -1,8 +1,8 @@
 ---
 name: 用語を文脈で切り分ける
-persona: living-document-reader
+persona: discovery-facilitator
 ---
 
-リビングドキュメントの閲覧者として
+ディスカバリーファシリテーターとして
 用語を文脈で切り分けたい
 そうすれば同じ言葉が文脈ごとに違う意味を持つlivtリポジトリでも、自分の文脈での意味を取り違えない
