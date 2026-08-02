@@ -26,6 +26,21 @@ a search. The story key is the part that makes it addressable:
 livt://mapping/trace-test-to-rule/rule/R-02/example/EX-01
 ```
 
+## Relative to a repository
+
+The widening stops there: a livt URI never says **which** livt repository
+it belongs to. Its interpretation is uniform — one point in the livt
+repository at hand — the same shape `http://localhost/` has, where every
+reader agrees on the meaning while the referent depends on where it is
+resolved. Which repository answers is supplied by the consumer's own
+declaration (`--root` / `LIVT_ROOT`), so scope lives in the workspace, not
+in the name. That is what keeps a citation short, and what lets the same
+reference work in every checkout of the same repository.
+
+The first segment is drawn from a closed set — `mapping`, `story`,
+`story-map`, `ubiquitous` — so a future form that names a repository in
+that position stays open without breaking any URI written today.
+
 ## URI to page
 
 `livt build` renders the livt repository as a static site, and this is where each URI
