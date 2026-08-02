@@ -37,9 +37,10 @@ If you polish during transcription, the refine diff becomes meaningless. Keep th
    - **Steps/Tasks** (second row, under each activity) → `steps[]`
    - **Story cards** (hanging below a step) → `stories[]` under that step, top-to-bottom as on the board
    - **Release slices** (the horizontal dividers cutting across the whole board) → `releases[]`, top-to-bottom, and stamp every card sitting above a divider with that slice's `release:`
-3. Write to `discoveries/usm/{map-name}.yaml`.
-4. Read the YAML back against the board and confirm nothing was dropped, reordered, or altered.
-5. Commit the transcription as the **refinement-free baseline** (see Commit Contract).
+3. Capture the pink stickies — the terms the room agreed on — as `ubiquitous:` term references (see Ubiquitous Language below).
+4. Write to `discoveries/usm/{map-name}.yaml`.
+5. Read the YAML back against the board and confirm nothing was dropped, reordered, or altered.
+6. Commit the transcription as the **refinement-free baseline** (see Commit Contract).
 
 ## Transcription Principles
 
@@ -70,11 +71,25 @@ activities:
 releases:
   - id: {release-id}
     name: {slice name, as written on the board}
+
+ubiquitous:
+  - {term-key}
+  - {ctx}/{term-key}
 ```
 
 - `key:` and `id:` identifiers stay in **English** (story keys are used as filenames `stories/{key}.md`); `name:` follows the board's language.
 - A story card may be captured with only `name:` when it is still lightweight and has no stable key yet.
 - `releases:` lists the slices top-to-bottom, matching the board. A card carries the `release:` of the divider it sits above; a card below every divider carries none. A card without a `key:` can still carry a `release:`.
+- `ubiquitous` lists the board's pink stickies as term references (see Ubiquitous Language below).
+
+## Ubiquitous Language
+
+Pink stickies are the words the room agreed on, and transcription is their only path off the board. A term that never reaches `ubiquitous/` can never be looked up. `example-mapping-transcribe` carries this section verbatim — a skill loads on its own, so both scribes have to hold it. Change one, change both.
+
+- Capture every pink sticky as an `ubiquitous:` entry. The list holds **term references**, not display names: kebab-case English, `{ctx}/{term-key}` when the board scopes the word to a context. Mint the key from the term, and ask the user when the wording gives no obvious one.
+- When the board carries the term's agreed **definition**, write `ubiquitous/{term-key}.md` with the board's word as `name:` and the definition as the body.
+- When it carries only the word, capture the reference and tell the user which terms are still undefined. An unknown key renders as a plain pink card, so a reference without a file is a safe and visible state — inventing a definition is not.
+- A term already in `ubiquitous/` keeps its definition. The board naming a word does not license rewriting what the glossary already says about it.
 
 ## Commit Contract
 
@@ -88,4 +103,5 @@ Before committing, verify the transcription is complete — not whether the map 
 - Backbone order (left to right) and story order (top to bottom) match the board.
 - Every story hangs under the same step it sat under on the board.
 - Every release slice on the board appears in `releases:`, in the board's top-to-bottom order, and every card above a divider carries its `release:`.
+- Every pink card appears in `ubiquitous:`, and every term whose definition the board carried has its `ubiquitous/{term-key}.md`.
 - Wording matches the board; nothing was paraphrased away.

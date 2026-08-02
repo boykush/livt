@@ -39,6 +39,7 @@ If you polish during transcription, the refine diff becomes meaningless. Keep th
    - Blue (Rule) → a `rules[]` entry
    - Green (Example) → an `examples[]` entry under its rule
    - Red (Question) → a `questions[]` entry
+   - Pink (Ubiquitous language) → an `ubiquitous[]` term reference (see Ubiquitous Language below)
 4. Write to `discoveries/example-mappings/{story-key}.yaml`.
 5. Read the YAML back against the board and confirm nothing was dropped or altered.
 6. Commit the transcription as the **refinement-free baseline** (see Commit Contract).
@@ -67,10 +68,15 @@ rules:
 questions:
   - id: Q-01
     text: {unresolved question, as written on the board}
+
+ubiquitous:
+  - {term-key}
+  - {ctx}/{term-key}
 ```
 
 - IDs follow the ID Contract below. A board transcribed for the first time simply numbers from 01 in each scope.
 - Keep `key:` identifiers in English; `name:`/`text:` follow the board's language.
+- `ubiquitous` lists the board's pink stickies as term references (see Ubiquitous Language below).
 
 ## ID Contract
 
@@ -79,6 +85,15 @@ Canonical statement in `example-mapping-update`; these three bullets are verbati
 - **Numbering** — a new ID is one past the highest ever used in its scope, **retired IDs included**. Rules and questions are numbered within the story (`R-NN`, `Q-NN`), examples within their rule (each rule starts from `EX-01`). With R-01/R-02/R-03 on file and R-03 retired, the next rule is R-04 — never R-03 again.
 - **Immutability** — an ID, once used, keeps pointing at the same thing. Never renumber, never reuse, and never move an item to where its ID would change. This holds whether or not an automation issue was filed: the item's livt URI is quoted by MCP consumers, by the board's copy-link, in test comments, and in commit messages, and the livt repository records none of those — there is no list of references to check before breaking one.
 - **Retire, don't delete** — an item that no longer holds gets `retired: true` and stays in the file, its ID taken and its text readable. Deleting it hands the ID to the next item and silently re-targets every reference. Don't comment it out either: a comment is not part of the YAML structure, so a structural edit drops it.
+
+## Ubiquitous Language
+
+Pink stickies are the words the room agreed on, and transcription is their only path off the board. A term that never reaches `ubiquitous/` can never be looked up. `usm-transcribe` carries this section verbatim — a skill loads on its own, so both scribes have to hold it. Change one, change both.
+
+- Capture every pink sticky as an `ubiquitous:` entry. The list holds **term references**, not display names: kebab-case English, `{ctx}/{term-key}` when the board scopes the word to a context. Mint the key from the term, and ask the user when the wording gives no obvious one.
+- When the board carries the term's agreed **definition**, write `ubiquitous/{term-key}.md` with the board's word as `name:` and the definition as the body.
+- When it carries only the word, capture the reference and tell the user which terms are still undefined. An unknown key renders as a plain pink card, so a reference without a file is a safe and visible state — inventing a definition is not.
+- A term already in `ubiquitous/` keeps its definition. The board naming a word does not license rewriting what the glossary already says about it.
 
 ## Re-transcribing an Existing Mapping
 
@@ -100,5 +115,6 @@ Before committing, verify the transcription is complete — not whether the map 
 - Every card on the board appears in the YAML; no card was dropped.
 - Every green card sits under the same rule it sat under on the board.
 - Every red card is preserved as a Question — none were silently answered.
+- Every pink card appears in `ubiquitous:`, and every term whose definition the board carried has its `ubiquitous/{term-key}.md`.
 - Wording matches the board; nothing was paraphrased away.
 - Re-transcription only: every ID that was already on file still names the same card, and nothing was deleted to make room.
