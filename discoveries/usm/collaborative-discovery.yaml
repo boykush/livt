@@ -9,6 +9,7 @@ ubiquitous:
   - planning
   - ubiquitous-language
   - context
+  - persona
   - livt-repository
 activities:
   - key: story-mapping
@@ -63,6 +64,8 @@ activities:
             key: look-up-terms-in-glossary
           - name: 用語を文脈で切り分ける
             key: scope-terms-by-context
+          - name: ストーリーのペルソナを引く
+            key: look-up-story-personas
   - key: refine-discovery
     name: ディスカバリーをブラッシュアップする
     steps:

@@ -1,0 +1,51 @@
+rules:
+  - id: R-01
+    name: ペルソナはpersonas/{persona-key}.mdで1件ずつ持つ
+    examples:
+      - id: EX-01
+        name: frontmatterのnameが表示名、本文が説明になる
+      - id: EX-02
+        name: ペルソナ一覧はpersonasディレクトリの全ファイルを並べる（どのストーリーも名指していないペルソナも載る）
+      - id: EX-03
+        name: 各ペルソナはpersonas.html#{persona-key}のアンカーを持つ行になる
+    automated: true
+  - id: R-02
+    name: ストーリーはfrontmatterでペルソナを1つ名指す
+    examples:
+      - id: EX-01
+        name: personaはnameと同じ予約フィールドで、メタデータ行には落ちない
+      - id: EX-02
+        name: ストーリーのページ・一覧・MCPの結果は、名指したペルソナを表示名とURIに解決して示す
+      - id: EX-03
+        name: ペルソナを名指さないストーリーもそのまま読める
+    automated: true
+  - id: R-03
+    name: ペルソナ一覧はそのペルソナのストーリーを映す
+    examples:
+      - id: EX-01
+        name: ペルソナの行に、そのペルソナを名指したストーリーが並ぶ
+      - id: EX-02
+        name: どのストーリーからも名指されていないペルソナは、行を保ったままストーリーが無いと示す
+    automated: true
+  - id: R-04
+    name: ペルソナはlivt URIで指せる
+    examples:
+      - id: EX-01
+        name: livt://persona/{persona-key} でペルソナ1件を指せる。ペルソナは文脈を持たないので2段目のセグメントは不正
+      - id: EX-02
+        name: MCPのlist_personasが各ペルソナのキー・表示名・URIを配る
+    automated: true
+
+questions:
+  - id: Q-01
+    text: ストーリーマップ・実例マッピングもボード単位でペルソナを宣言するか（現状はストーリーのfrontmatterだけが持つ）
+  - id: Q-02
+    text: ストーリー一覧をペルソナで絞り込めるようにするか（現状の絞り込み軸はオポチュニティのみで、1ページ1バー）
+  - id: Q-03
+    text: ペルソナが人間かAIエージェントかを構造として持つか（現状は説明の散文で述べ分ける）
+
+ubiquitous:
+  - persona
+  - story
+  - livt-uri
+  - livt-repository
