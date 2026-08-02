@@ -1,5 +1,6 @@
 ---
 name: livt経由でストーリー単位のIssueを起票する
+persona: story-map-maintainer
 repos:
   - boykush/livt
 issues:

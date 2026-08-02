@@ -1,5 +1,6 @@
 ---
 name: USMエキスパートに相談して清書PRを出す
+persona: story-map-maintainer
 ---
 
 ストーリーマップメンテナーとして

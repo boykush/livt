@@ -1,5 +1,6 @@
 ---
 name: テストからルール・実例へ辿る
+persona: impl-developer
 ---
 
 実装リポジトリの開発者として

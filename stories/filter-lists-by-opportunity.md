@@ -1,5 +1,6 @@
 ---
 name: 一覧をオポチュニティで絞り込む
+persona: living-document-reader
 repos:
   - boykush/livt
 issues:

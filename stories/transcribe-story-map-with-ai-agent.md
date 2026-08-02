@@ -1,5 +1,6 @@
 ---
 name: AIエージェントでストーリーマップYAMLを起こす
+persona: discovery-facilitator
 ---
 
 ディスカバリーファシリテーターとして

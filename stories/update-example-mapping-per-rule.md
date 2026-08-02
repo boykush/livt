@@ -1,5 +1,6 @@
 ---
 name: ルール単位の細かいPRで実例マッピングを更新する
+persona: example-mapping-maintainer
 ---
 
 実例マッピングメンテナーとして

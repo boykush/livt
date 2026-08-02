@@ -1,5 +1,6 @@
 ---
 name: サイト内をテキストで検索する
+persona: living-document-reader
 repos:
   - boykush/livt
 issues:

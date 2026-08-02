@@ -1,5 +1,6 @@
 ---
 name: 未解決の疑問を横断で見渡す
+persona: discovery-facilitator
 repos:
   - boykush/livt
 issues:

@@ -1,5 +1,6 @@
 ---
 name: 詳細ディスカバリー用にストーリー候補をコミットする
+persona: story-map-maintainer
 ---
 
 ストーリーマップメンテナーとして

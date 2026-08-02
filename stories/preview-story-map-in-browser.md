@@ -1,5 +1,6 @@
 ---
 name: ブラウザでストーリーマップをプレビューする
+persona: story-map-maintainer
 repos:
   - boykush/livt
 ---

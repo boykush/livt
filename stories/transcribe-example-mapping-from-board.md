@@ -1,5 +1,6 @@
 ---
 name: ボードから実例マッピングYAMLを素のまま転記する
+persona: discovery-facilitator
 ---
 
 ディスカバリーファシリテーターとして

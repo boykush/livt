@@ -1,5 +1,6 @@
 ---
 name: ユビキタス言語を用語集で引く
+persona: living-document-reader
 ---
 
 リビングドキュメントの閲覧者として

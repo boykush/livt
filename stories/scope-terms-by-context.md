@@ -1,5 +1,6 @@
 ---
 name: 用語を文脈で切り分ける
+persona: living-document-reader
 ---
 
 リビングドキュメントの閲覧者として

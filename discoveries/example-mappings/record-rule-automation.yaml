@@ -15,7 +15,7 @@ rules:
     name: automatedの更新はAIスキルが証跡付きで提案し、人が判断して確定する
     examples:
       - id: EX-01
-        name: 自動化Issueがクローズされたら、ルールメンテナーがautomatedを立てる
+        name: 自動化Issueがクローズされたら、実例マッピングメンテナーがautomatedを立てる
         retired: true
       - id: EX-02
         name: ルールを変更するPRでは、該当ruleのautomatedを外す（example-mapping-updateの手順に組み込む）

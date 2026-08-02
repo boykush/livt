@@ -1,5 +1,6 @@
 ---
 name: 実例マッピングを実装・デザインと突き合わせて計画する
+persona: development-team
 ---
 
 開発チームとして
