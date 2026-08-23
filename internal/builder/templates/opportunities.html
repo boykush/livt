@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>livt - Opportunities</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  /* iframe preview: crop the page header so only the canvas shows. The canvas is
+     a reading-width page, not a wide board, so it is scaled half as far as the
+     story map thumbs — at 4x it would sit as a stripe between two margins. */
+  .thumb { position: relative; overflow: hidden; background: #fff; }
+  .thumb iframe { position: absolute; left: 0; border: 0; pointer-events: none; transform-origin: top left;
+    width: 200%; height: 1400px; transform: scale(0.5); top: -34px; }
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="flex min-h-screen">
+{{template "sidebar" .Sidebar}}
+<div class="flex-1 min-w-0">
+  <header class="bg-white border-b border-gray-200 px-8 py-4">
+    <h2 class="text-lg font-semibold text-gray-800">Opportunities</h2>
+  </header>
+  <main class="px-8 py-8 space-y-6 max-w-4xl">
+  {{range .Opportunities}}
+    <div class="rounded-xl border border-orange-200 bg-white shadow-sm overflow-hidden">
+      <a href="opportunity/{{.Key}}.html" class="flex items-center gap-2 px-4 py-2.5 border-b border-orange-100 bg-orange-50 hover:bg-orange-100 transition">
+        <span class="w-2.5 h-2.5 rounded-sm bg-orange-400"></span>
+        <span class="text-sm font-semibold text-orange-900">{{.Name}}</span>
+        <span class="ml-auto text-orange-400 text-sm">&rarr;</span>
+      </a>
+      {{if .Statement}}
+      <p class="px-4 py-3 text-sm text-gray-700 whitespace-pre-line leading-relaxed">{{.Statement}}</p>
+      {{end}}
+      <div class="px-4 pb-3 flex items-center gap-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">{{.Key}}</span>
+        {{range .StoryMaps}}<a href="{{.Path}}" class="text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-2 py-0.5 hover:bg-purple-100 transition">{{.Name}}</a>{{end}}
+        {{range .Links}}<a href="{{.Href}}" class="text-xs text-gray-600 bg-white border border-gray-200 rounded-full px-2 py-0.5 hover:bg-gray-50 transition">&#128279; {{.Key}}</a>{{end}}
+      </div>
+      {{if .HasCanvas}}
+      <a href="opportunity-canvas/{{.Key}}.html" class="block border-t border-orange-100 hover:opacity-90 transition">
+        <div class="thumb" style="height: 370px;">
+          <iframe src="opportunity-canvas/{{.Key}}.html" scrolling="no" loading="lazy"></iframe>
+        </div>
+      </a>
+      {{else}}
+      <p class="px-4 pb-4 text-xs text-gray-400">No opportunity canvas yet.</p>
+      {{end}}
+    </div>
+  {{else}}
+    <p class="text-gray-400 text-sm">No opportunities yet.</p>
+  {{end}}
+  </main>
+</div>
+</div>
+</body>
+</html>

@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"strings"
 
 	"github.com/boykush/livt/internal/domain"
 	"gopkg.in/yaml.v3"
@@ -110,6 +111,7 @@ func ParseStoryMap(path string) (*domain.StoryMap, error) {
 	}
 
 	return &domain.StoryMap{
+		Key:        strings.TrimSuffix(filepath.Base(path), ".yaml"),
 		Name:       raw.Name,
 		Activities: activities,
 		Releases:   releases,

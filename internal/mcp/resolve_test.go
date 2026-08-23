@@ -21,6 +21,8 @@ var everyKind = []string{
 	"livt://story-map/%E3%83%87%E3%83%A2%E3%83%9E%E3%83%83%E3%83%97",
 	"livt://story/demo",
 	"livt://ubiquitous/story",
+	"livt://opportunity/demo-map",
+	"livt://opportunity-canvas/demo-map",
 }
 
 // livt://mapping/trace-test-to-rule/rule/R-04/example/EX-02: what the CLI

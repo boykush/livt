@@ -1,6 +1,7 @@
 // Package uri builds and parses livt URIs — the deployment-independent way to
-// address one point of the spec: a story map, a story, an example mapping, a
-// rule, an example, a question, or a ubiquitous language term. The MCP server,
+// address one point of the spec: an opportunity, its canvas, a story map, a
+// story, an example mapping, a rule, an example, a question, or a ubiquitous
+// language term. The MCP server,
 // the CLI, and the site build all have to agree on the form, so it lives here
 // rather than inside any one of them.
 package uri
@@ -12,13 +13,19 @@ import (
 
 // URI templates in RFC 6570 form, as the MCP server advertises them.
 const (
-	MappingTemplate  = "livt://mapping/{story_key}"
-	RuleTemplate     = "livt://mapping/{story_key}/rule/{rule_id}"
-	ExampleTemplate  = "livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}"
-	QuestionTemplate = "livt://mapping/{story_key}/question/{question_id}"
-	StoryMapTemplate = "livt://story-map/{map_name}"
-	StoryTemplate    = "livt://story/{story_key}"
-	TermTemplate     = "livt://ubiquitous/{term_key}"
+	MappingTemplate     = "livt://mapping/{story_key}"
+	RuleTemplate        = "livt://mapping/{story_key}/rule/{rule_id}"
+	ExampleTemplate     = "livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}"
+	QuestionTemplate    = "livt://mapping/{story_key}/question/{question_id}"
+	StoryMapTemplate    = "livt://story-map/{map_name}"
+	OpportunityTemplate = "livt://opportunity/{opportunity_key}"
+	// OpportunityCanvasTemplate addresses the canvas filled in for an
+	// opportunity. It sits beside the opportunity rather than under it, the way
+	// a mapping sits beside its story: the two are joined by key, and either can
+	// exist without the other.
+	OpportunityCanvasTemplate = "livt://opportunity-canvas/{opportunity_key}"
+	StoryTemplate             = "livt://story/{story_key}"
+	TermTemplate              = "livt://ubiquitous/{term_key}"
 	// ScopedTermTemplate addresses a term that belongs to one context. The two
 	// term shapes both stand: a context is optional, so a term that holds across
 	// contexts keeps the address it had before contexts existed.
@@ -26,13 +33,15 @@ const (
 )
 
 const (
-	mappingPrefix  = "livt://mapping/"
-	storyMapPrefix = "livt://story-map/"
-	storyPrefix    = "livt://story/"
-	termPrefix     = "livt://ubiquitous/"
-	ruleInfix      = "/rule/"
-	exampleInfix   = "/example/"
-	questionInfix  = "/question/"
+	mappingPrefix           = "livt://mapping/"
+	storyMapPrefix          = "livt://story-map/"
+	opportunityPrefix       = "livt://opportunity/"
+	opportunityCanvasPrefix = "livt://opportunity-canvas/"
+	storyPrefix             = "livt://story/"
+	termPrefix              = "livt://ubiquitous/"
+	ruleInfix               = "/rule/"
+	exampleInfix            = "/example/"
+	questionInfix           = "/question/"
 	// termCtxSep joins a term's context to its key. It is the same separator the
 	// filesystem uses, so ubiquitous/{ctx}/{key}.md, livt://ubiquitous/{ctx}/{key}
 	// and the reference a board authors all read alike.
@@ -68,6 +77,19 @@ func Question(storyKey, questionID string) string {
 // needs a single valid path segment.
 func StoryMap(name string) string {
 	return storyMapPrefix + url.PathEscape(name)
+}
+
+// Opportunity builds the URI for an opportunity's name, statement, and meta.
+// Unlike a story map, an opportunity is addressed by key rather than display
+// name: the key is what the filename and the canvas join on, so it is already
+// the identifier the livt repository carries.
+func Opportunity(opportunityKey string) string {
+	return opportunityPrefix + opportunityKey
+}
+
+// OpportunityCanvas builds the URI for an opportunity's canvas.
+func OpportunityCanvas(opportunityKey string) string {
+	return opportunityCanvasPrefix + opportunityKey
 }
 
 // Story builds the URI for a story's name, body, and meta.
@@ -177,6 +199,26 @@ func ParseStoryMap(s string) (name string, ok bool) {
 		return "", false
 	}
 	return name, true
+}
+
+// ParseOpportunity extracts the opportunity key from an opportunity URI. The
+// canvas prefix is a different string, not a longer one, so a canvas URI can
+// never be cut down to an opportunity URI here.
+func ParseOpportunity(s string) (opportunityKey string, ok bool) {
+	key, found := strings.CutPrefix(s, opportunityPrefix)
+	if !found || !ValidSegment(key) {
+		return "", false
+	}
+	return key, true
+}
+
+// ParseOpportunityCanvas extracts the opportunity key from a canvas URI.
+func ParseOpportunityCanvas(s string) (opportunityKey string, ok bool) {
+	key, found := strings.CutPrefix(s, opportunityCanvasPrefix)
+	if !found || !ValidSegment(key) {
+		return "", false
+	}
+	return key, true
 }
 
 // ParseStory extracts the story key from a story URI.

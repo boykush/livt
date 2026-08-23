@@ -10,15 +10,15 @@ scan.
 {{if .Values}}
 <style>
   .filter-chip { cursor: pointer; }
-  .filter-chip[aria-pressed="true"] { background-color: #7c3aed; border-color: #7c3aed; color: #fff; }
+  [data-filter-bar] .filter-chip[aria-pressed="true"] { background-color: {{.Pressed}}; border-color: {{.Pressed}}; color: #fff; }
 </style>
 <div class="mb-6 flex items-center gap-2 flex-wrap" data-filter-bar data-filter-param="{{.Param}}">
   <span class="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">{{.Label}}</span>
   <button type="button" data-filter-value="" aria-pressed="true"
-    class="filter-chip text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-3 py-1 hover:bg-purple-100 transition">All</button>
+    class="filter-chip text-xs {{.Chip}} rounded-full px-3 py-1 transition">All</button>
   {{range .Values}}
   <button type="button" data-filter-value="{{.}}" aria-pressed="false"
-    class="filter-chip text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-3 py-1 hover:bg-purple-100 transition">{{.}}</button>
+    class="filter-chip text-xs {{$.Chip}} rounded-full px-3 py-1 transition">{{.}}</button>
   {{end}}
 </div>
 {{end}}

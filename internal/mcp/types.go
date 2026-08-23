@@ -12,6 +12,31 @@ type versioned struct {
 	SpecVersion string `json:"spec_version"`
 }
 
+// --- list_opportunities tool ---
+
+type listOpportunitiesInput struct{}
+
+type listOpportunitiesOutput struct {
+	versioned
+	Opportunities []opportunitySummaryJSON `json:"opportunities"`
+}
+
+// opportunitySummaryJSON is one row of the opportunity listing. CanvasURI and
+// StoryMaps are what say how far the opportunity has been taken: a canvas means
+// it was thought through, a story map means it was taken on. Both are omitted
+// when absent, so the gap is legible rather than reported as an empty thing.
+type opportunitySummaryJSON struct {
+	Key  string `json:"key"`
+	Name string `json:"name"`
+	// URI is the opportunity's own resource (livt://opportunity/{key}).
+	URI       string `json:"uri"`
+	CanvasURI string `json:"canvas_uri,omitempty"`
+	// Statement is the opportunity's body: whose problem, and what the business
+	// gets from solving it.
+	Statement string                `json:"statement,omitempty"`
+	StoryMaps []storyMapSummaryJSON `json:"story_maps,omitempty"`
+}
+
 // --- list_stories tool ---
 
 type listStoriesInput struct {
@@ -106,6 +131,19 @@ type exampleResult struct {
 type questionResult struct {
 	versioned
 	Question questionJSON `json:"question"`
+}
+
+// opportunityResult is the body of the livt://opportunity/{opportunity_key} resource.
+type opportunityResult struct {
+	versioned
+	Opportunity opportunityJSON `json:"opportunity"`
+}
+
+// opportunityCanvasResult is the body of the
+// livt://opportunity-canvas/{opportunity_key} resource.
+type opportunityCanvasResult struct {
+	versioned
+	Canvas opportunityCanvasJSON `json:"opportunity_canvas"`
 }
 
 // storyMapResult is the body of the livt://story-map/{map_name} resource.
@@ -211,6 +249,40 @@ type storyCardJSON struct {
 type releaseJSON struct {
 	ID   string `json:"id"`
 	Name string `json:"name,omitempty"`
+}
+
+type opportunityJSON struct {
+	Key  string `json:"key"`
+	Name string `json:"name"`
+	// Statement is the opportunity's body — whose problem it is and what the
+	// business gets from solving it, the way a story's body carries its narrative.
+	Statement string `json:"statement"`
+	// Meta carries the opportunity's frontmatter fields beyond name, in source order.
+	Meta []metaFieldJSON `json:"meta,omitempty"`
+	// CanvasURI is present only when a canvas has been filled in.
+	CanvasURI string                `json:"canvas_uri,omitempty"`
+	StoryMaps []storyMapSummaryJSON `json:"story_maps,omitempty"`
+}
+
+// opportunityCanvasJSON projects the canvas as its ten boxes in the order they
+// read, empty ones included: a blank box is the record of a question the
+// opportunity has not answered, and dropping it would hide the gap.
+type opportunityCanvasJSON struct {
+	OpportunityKey string `json:"opportunity_key"`
+	// OpportunityURI is the opportunity this canvas fills in.
+	OpportunityURI  string          `json:"opportunity_uri"`
+	Boxes           []canvasBoxJSON `json:"boxes"`
+	Ubiquitous      []string        `json:"ubiquitous,omitempty"`
+	UbiquitousTerms []termRefJSON   `json:"ubiquitous_terms,omitempty"`
+}
+
+type canvasBoxJSON struct {
+	Key string `json:"key"`
+	// Name and Prompt are the box's heading and the question it asks, carried so
+	// a consumer reading the canvas cold knows what belongs in each box.
+	Name   string   `json:"name"`
+	Prompt string   `json:"prompt"`
+	Items  []string `json:"items"`
 }
 
 type storyJSON struct {
@@ -348,6 +420,44 @@ func (c Config) toStoryJSON(story *domain.Story) (storyJSON, error) {
 	}
 	out.Opportunities = index[story.Key.Value]
 	return out, nil
+}
+
+// toOpportunityJSON is a Config method because linking the canvas and the story
+// maps mapped for the opportunity reads the livt repository's other directories.
+func (c Config) toOpportunityJSON(o *domain.Opportunity) (opportunityJSON, error) {
+	meta := make([]metaFieldJSON, 0, len(o.Meta))
+	for _, m := range o.Meta {
+		meta = append(meta, metaFieldJSON{Key: m.Key, Value: m.Value})
+	}
+	out := opportunityJSON{Key: o.Key.Value, Name: o.Name, Statement: o.Body, Meta: meta}
+	if c.hasOpportunityCanvas(o.Key.Value) {
+		out.CanvasURI = uri.OpportunityCanvas(o.Key.Value)
+	}
+	maps, err := c.storyMapsForOpportunity(o.Key.Value)
+	if err != nil {
+		return opportunityJSON{}, err
+	}
+	out.StoryMaps = maps
+	return out, nil
+}
+
+func (c Config) toOpportunityCanvasJSON(canvas *domain.OpportunityCanvas) opportunityCanvasJSON {
+	key := canvas.OpportunityKey.Value
+	boxes := make([]canvasBoxJSON, 0, 10)
+	for _, b := range canvas.Boxes() {
+		items := b.Items
+		if items == nil {
+			items = []string{}
+		}
+		boxes = append(boxes, canvasBoxJSON{Key: b.Key, Name: b.Name, Prompt: b.Prompt, Items: items})
+	}
+	return opportunityCanvasJSON{
+		OpportunityKey:  key,
+		OpportunityURI:  uri.Opportunity(key),
+		Boxes:           boxes,
+		Ubiquitous:      canvas.Ubiquitous,
+		UbiquitousTerms: c.toTermRefs(canvas.Ubiquitous),
+	}
 }
 
 func toTermJSON(term *domain.Term) termJSON {

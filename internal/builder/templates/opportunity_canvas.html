@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{.OpportunityName}} - Opportunity Canvas - livt</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  /* One sheet, not a stack of cards: the three panels are equal-height columns
+     sharing their borders, and every box stretches to the panel it sits in, so
+     the canvas reads as the printed placemat it is modelled on. */
+  .canvas { display: grid; grid-template-columns: 1fr 1fr 1fr; }
+  .panel { display: flex; flex-direction: column; min-width: 0; }
+  .panel + .panel { border-left: 1px solid #e5e7eb; }
+  .box { flex: 1; padding: 0.75rem 0.9rem; min-width: 0; }
+  .box + .box { border-top: 1px solid #e5e7eb; }
+  /* The idea is the anchor the other nine boxes are argued around, so it takes
+     the room the budget line does not need. */
+  .box-lead { flex: 3; }
+  @media (max-width: 900px) {
+    .canvas { grid-template-columns: 1fr; }
+    .panel + .panel { border-left: 0; border-top: 1px solid #e5e7eb; }
+  }
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<header class="bg-white border-b border-gray-200">
+  <div class="max-w-full mx-auto px-6 py-4 flex items-center gap-3">
+    <a href="../opportunity/{{.OpportunityKey}}.html" class="text-sm text-gray-400 hover:text-gray-600">&larr; {{.OpportunityName}}</a>
+    <span class="text-gray-300">|</span>
+    <span class="text-xl font-bold text-gray-900 tracking-tight">livt</span>
+  </div>
+</header>
+
+<main class="max-w-[1500px] mx-auto px-6 py-6">
+<div class="flex items-baseline gap-4 flex-wrap mb-3">
+  <h1 class="text-lg font-bold text-gray-900">{{.OpportunityName}}</h1>
+  <span class="text-xs font-semibold uppercase tracking-wide text-orange-600">Opportunity Canvas</span>
+  <div class="ml-auto flex items-center gap-4 text-[11px] text-gray-500">
+    <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-rose-100 border border-rose-300 rounded-sm"></span>Verifiable facts</span>
+    <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-sky-100 border border-sky-300 rounded-sm"></span>Solution</span>
+    <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-emerald-100 border border-emerald-300 rounded-sm"></span>Assumptions about value</span>
+  </div>
+</div>
+
+{{/*
+Left to right the sheet walks back from the idea to the problem it solves, then
+forward to the value it would create — which is why the boxes are not in the
+order they are filled in.
+*/}}
+<div class="canvas bg-white border-2 border-orange-300 rounded-lg overflow-hidden shadow-sm">
+  <div class="panel bg-rose-50">
+    {{range .Panels.Facts}}{{template "canvas-box" .}}{{end}}
+  </div>
+  <div class="panel bg-sky-50">
+    {{range .Panels.Solution}}{{template "canvas-box" .}}{{end}}
+  </div>
+  <div class="panel bg-emerald-50">
+    {{range .Panels.Value}}{{template "canvas-box" .}}{{end}}
+  </div>
+</div>
+
+{{if .Ubiquitous}}
+<div class="mt-8">
+  <div class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">Ubiquitous Language</div>
+  <div class="flex flex-wrap gap-2">
+  {{range .Ubiquitous}}{{template "term-card" .}}{{end}}
+  </div>
+</div>
+{{end}}
+</main>
+</body>
+</html>

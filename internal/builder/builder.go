@@ -10,19 +10,22 @@ import (
 )
 
 type Builder struct {
-	MappingsDir   string
-	StoriesDir    string
-	USMDir        string
-	UbiquitousDir string
-	OutDir        string
+	OpportunitiesDir string
+	CanvasesDir      string
+	MappingsDir      string
+	StoriesDir       string
+	USMDir           string
+	UbiquitousDir    string
+	OutDir           string
 }
 
 type sidebarCounts struct {
-	tasks     int
-	mappings  int
-	storyMaps int
-	stories   int
-	terms     int
+	opportunities int
+	tasks         int
+	mappings      int
+	storyMaps     int
+	stories       int
+	terms         int
 }
 
 // computeCounts tallies every resource type so the shared sidebar can show
@@ -44,6 +47,10 @@ func (b *Builder) computeCounts() (sidebarCounts, error) {
 	if err != nil {
 		return sidebarCounts{}, err
 	}
+	opportunities, err := parser.ParseAllOpportunities(b.OpportunitiesDir)
+	if err != nil {
+		return sidebarCounts{}, err
+	}
 	tasks := 0
 	for _, em := range mappings {
 		// Counted off the active view, so the badge matches what the Tasks page
@@ -57,11 +64,12 @@ func (b *Builder) computeCounts() (sidebarCounts, error) {
 		}
 	}
 	return sidebarCounts{
-		tasks:     tasks,
-		mappings:  len(mappings),
-		storyMaps: len(maps),
-		stories:   len(stories),
-		terms:     len(terms),
+		opportunities: len(opportunities),
+		tasks:         tasks,
+		mappings:      len(mappings),
+		storyMaps:     len(maps),
+		stories:       len(stories),
+		terms:         len(terms),
 	}, nil
 }
 
@@ -73,19 +81,20 @@ func (b *Builder) sidebar(active, prefix string) (Sidebar, error) {
 		return Sidebar{}, err
 	}
 	return Sidebar{
-		Prefix:    prefix,
-		Active:    active,
-		Tasks:     c.tasks,
-		Mappings:  c.mappings,
-		StoryMaps: c.storyMaps,
-		Stories:   c.stories,
-		Terms:     c.terms,
+		Prefix:        prefix,
+		Active:        active,
+		Opportunities: c.opportunities,
+		Tasks:         c.tasks,
+		Mappings:      c.mappings,
+		StoryMaps:     c.storyMaps,
+		Stories:       c.stories,
+		Terms:         c.terms,
 	}, nil
 }
 
 // generatedDirs are the output subdirectories holding one page per resource.
 // Build owns their contents end to end, so it empties them on every run.
-var generatedDirs = []string{"story", "mapping", "story-map"}
+var generatedDirs = []string{"story", "mapping", "story-map", "opportunity", "opportunity-canvas"}
 
 // resetGeneratedDirs empties the per-resource output subdirectories, so a page
 // for a renamed or deleted resource cannot outlive its source and keep being
@@ -111,7 +120,18 @@ func (b *Builder) Build() error {
 		return err
 	}
 
-	storyToMaps, storyMapTiles, err := b.buildStoryMaps()
+	opportunities, err := b.opportunityIndex()
+	if err != nil {
+		return err
+	}
+
+	maps, err := b.buildStoryMaps(opportunities)
+	if err != nil {
+		return err
+	}
+	storyToMaps := maps.StoryOpportunities
+
+	opportunityTiles, err := b.buildOpportunities(maps.MapsByOpportunity)
 	if err != nil {
 		return err
 	}
@@ -192,10 +212,15 @@ func (b *Builder) Build() error {
 	}
 	fmt.Printf("  tasks.html\n")
 
-	if err := b.buildStoryMapsIndex(storyMapTiles); err != nil {
+	if err := b.buildStoryMapsIndex(maps.Tiles); err != nil {
 		return err
 	}
 	fmt.Printf("  story-maps.html\n")
+
+	if err := b.buildOpportunitiesIndex(opportunityTiles); err != nil {
+		return err
+	}
+	fmt.Printf("  opportunities.html\n")
 
 	if err := b.buildStoriesIndex(storyItems, distinctOpportunityNames(storyOpportunitySets)); err != nil {
 		return err

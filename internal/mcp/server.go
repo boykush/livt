@@ -1,5 +1,6 @@
-// Package mcp serves the livt repository (story maps, stories, example
-// mappings, ubiquitous language) over the Model Context Protocol so
+// Package mcp serves the livt repository (opportunities and their canvases,
+// story maps, stories, example mappings, ubiquitous language) over the Model
+// Context Protocol so
 // implementation repos can fetch the spec for a story or rule without reading
 // livt's source. The livt repository usually lives in a separate checkout from the
 // consumer, so Config.Root locates it explicitly.
@@ -22,7 +23,7 @@ const httpPath = "/mcp"
 // instructions rides the MCP handshake, so it reaches the consuming agent on
 // every session. It carries the one practice the payloads cannot teach on their
 // own: how to cite the livt repository in artifacts that outlive the connection.
-const instructions = `livt serves the livt repository: story maps, stories, example mappings, and ubiquitous language. It is the agreed spec, read-only.
+const instructions = `livt serves the livt repository: opportunities and their canvases, story maps, stories, example mappings, and ubiquitous language. It is the agreed spec, read-only.
 
 Cite the livt repository by livt URI. Whenever a rule, example, or question is referenced outside the livt repository — a test comment, an issue body, a commit message, a PR description — copy the "uri" from the result verbatim, and never write a bare "id". Ids are unique only within one mapping file, so R-02 exists in every mapping and identifies nothing on its own.
 
@@ -35,6 +36,14 @@ A published living-document URL is a convenience link for humans, not the citati
 // input subdirectories are derived from it the same way build/serve lay them out.
 type Config struct {
 	Root string
+}
+
+func (c Config) opportunitiesDir() string {
+	return filepath.Join(c.Root, "opportunities")
+}
+
+func (c Config) canvasesDir() string {
+	return filepath.Join(c.Root, "discoveries", "opportunity-canvases")
 }
 
 func (c Config) mappingsDir() string {

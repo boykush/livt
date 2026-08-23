@@ -109,7 +109,7 @@ func TestStoryMapViewResolvesReferencedTerms(t *testing.T) {
 	}
 
 	b := Builder{UbiquitousDir: dir}
-	view := b.toStoryMapView(&domain.StoryMap{Name: "discovery", Ubiquitous: []string{"story-map", "missing"}})
+	view := b.toStoryMapView(&domain.StoryMap{Name: "discovery", Ubiquitous: []string{"story-map", "missing"}}, nil)
 
 	if len(view.StoryMap.Ubiquitous) != 2 {
 		t.Fatalf("got %d term cards, want 2", len(view.StoryMap.Ubiquitous))

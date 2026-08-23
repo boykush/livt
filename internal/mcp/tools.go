@@ -17,6 +17,10 @@ import (
 // see registerResources; the tools only list what exists and hand out URIs.
 func (s *Server) registerTools(srv *mcpsdk.Server) {
 	mcpsdk.AddTool(srv, &mcpsdk.Tool{
+		Name:        "list_opportunities",
+		Description: "List the opportunities — what the product could take on, each a user problem together with the business benefit of solving it. Start here to see why a story map exists at all. Each entry hands out the uri of its opportunity resource (livt://opportunity/{key}), of its canvas (livt://opportunity-canvas/{key}) when one has been filled in, and of the story maps mapped for it. A missing canvas or story map is the record that the opportunity has not been taken that far, not an omission.",
+	}, s.listOpportunities)
+	mcpsdk.AddTool(srv, &mcpsdk.Tool{
 		Name:        "list_stories",
 		Description: "List all stories. Each entry hands out the uris to read next: its story resource (livt://story/{key}), its example mapping resource (livt://mapping/{key}) when one exists, and the opportunities (story maps, livt://story-map/{map_name}) it sits on. Pass opportunity to list only the stories on that map.",
 	}, s.listStories)
@@ -28,6 +32,14 @@ func (s *Server) registerTools(srv *mcpsdk.Server) {
 		Name:        "list_terms",
 		Description: "List the ubiquitous language — the team's agreed vocabulary — as every term's key, display name, and the uri of its term resource (livt://ubiquitous/{term_key}) to read the definition from. Look a word up here before naming things in code and tests, so the implementation speaks the domain's language. A term scoped to one context also carries ctx; the same key can name one term across contexts and another inside one, so the pair identifies it.",
 	}, s.listTerms)
+}
+
+func (s *Server) listOpportunities(_ context.Context, _ *mcpsdk.CallToolRequest, _ listOpportunitiesInput) (*mcpsdk.CallToolResult, listOpportunitiesOutput, error) {
+	opportunities, err := s.cfg.opportunities()
+	if err != nil {
+		return nil, listOpportunitiesOutput{}, err
+	}
+	return nil, listOpportunitiesOutput{versioned: s.versioned(), Opportunities: opportunities}, nil
 }
 
 func (s *Server) listStories(_ context.Context, _ *mcpsdk.CallToolRequest, in listStoriesInput) (*mcpsdk.CallToolResult, listStoriesOutput, error) {
@@ -202,6 +214,92 @@ func (c Config) storyOpportunities() (map[string][]opportunityRefJSON, error) {
 func (c Config) hasExampleMapping(storyKey string) bool {
 	_, err := os.Stat(filepath.Join(c.mappingsDir(), storyKey+".yaml"))
 	return err == nil
+}
+
+// opportunities lists every committed opportunity with its resource URI, the
+// uri of its canvas when one has been filled in, and the story maps mapped for
+// it. A missing opportunities directory yields an empty list, not an error.
+func (c Config) opportunities() ([]opportunitySummaryJSON, error) {
+	all, err := parser.ParseAllOpportunities(c.opportunitiesDir())
+	if err != nil {
+		return nil, err
+	}
+	out := make([]opportunitySummaryJSON, 0, len(all))
+	for _, o := range all {
+		summary := opportunitySummaryJSON{
+			Key:       o.Key.Value,
+			Name:      o.Name,
+			URI:       uri.Opportunity(o.Key.Value),
+			Statement: o.Body,
+		}
+		if c.hasOpportunityCanvas(o.Key.Value) {
+			summary.CanvasURI = uri.OpportunityCanvas(o.Key.Value)
+		}
+		maps, err := c.storyMapsForOpportunity(o.Key.Value)
+		if err != nil {
+			return nil, err
+		}
+		summary.StoryMaps = maps
+		out = append(out, summary)
+	}
+	return out, nil
+}
+
+// storyMapsForOpportunity names the maps whose file key is this opportunity's —
+// the same filename join the site build uses. A map is addressed by display
+// name, so the ref carries the name while the key does the matching.
+func (c Config) storyMapsForOpportunity(opportunityKey string) ([]storyMapSummaryJSON, error) {
+	all, err := parser.ParseAllStoryMaps(c.usmDir())
+	if err != nil {
+		return nil, err
+	}
+	var out []storyMapSummaryJSON
+	for _, sm := range all {
+		if sm.Key == opportunityKey {
+			out = append(out, storyMapSummaryJSON{Name: sm.Name, URI: uri.StoryMap(sm.Name)})
+		}
+	}
+	return out, nil
+}
+
+func (c Config) hasOpportunityCanvas(opportunityKey string) bool {
+	_, err := os.Stat(filepath.Join(c.canvasesDir(), opportunityKey+".yaml"))
+	return err == nil
+}
+
+// opportunity loads one opportunity by key. Like Config.story it reports a
+// missing file as not found rather than fabricating a placeholder.
+func (c Config) opportunity(opportunityKey string) (*domain.Opportunity, error) {
+	if !uri.ValidSegment(opportunityKey) {
+		return nil, fmt.Errorf("opportunity %q not found", opportunityKey)
+	}
+	path := filepath.Join(c.opportunitiesDir(), opportunityKey+".md")
+	if _, err := os.Stat(path); err != nil {
+		return nil, fmt.Errorf("opportunity %q not found", opportunityKey)
+	}
+	o, err := parser.ParseOpportunity(path)
+	if err != nil {
+		return nil, fmt.Errorf("parse opportunity %q: %w", opportunityKey, err)
+	}
+	return o, nil
+}
+
+// opportunityCanvas loads the canvas filled in for an opportunity. The canvas
+// stands on its own: it resolves whether or not the opportunity file exists,
+// the same way a mapping resolves for an uncommitted story.
+func (c Config) opportunityCanvas(opportunityKey string) (*domain.OpportunityCanvas, error) {
+	if !uri.ValidSegment(opportunityKey) {
+		return nil, fmt.Errorf("opportunity canvas for %q not found", opportunityKey)
+	}
+	path := filepath.Join(c.canvasesDir(), opportunityKey+".yaml")
+	if _, err := os.Stat(path); err != nil {
+		return nil, fmt.Errorf("opportunity canvas for %q not found", opportunityKey)
+	}
+	canvas, err := parser.ParseOpportunityCanvas(path)
+	if err != nil {
+		return nil, fmt.Errorf("parse opportunity canvas for %q: %w", opportunityKey, err)
+	}
+	return canvas, nil
 }
 
 // storyMaps lists every story map with its resource URI. A missing usm

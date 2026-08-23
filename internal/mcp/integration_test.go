@@ -44,8 +44,15 @@ func TestEndToEnd(t *testing.T) {
 	if err != nil {
 		t.Fatalf("list tools: %v", err)
 	}
-	if names := toolNames(tools.Tools); len(names) != 3 || !hasName(names, "list_stories") || !hasName(names, "list_story_maps") || !hasName(names, "list_terms") {
-		t.Fatalf("tools = %v, want [list_stories list_story_maps list_terms]", names)
+	want := []string{"list_opportunities", "list_stories", "list_story_maps", "list_terms"}
+	names := toolNames(tools.Tools)
+	if len(names) != len(want) {
+		t.Fatalf("tools = %v, want %v", names, want)
+	}
+	for _, w := range want {
+		if !hasName(names, w) {
+			t.Fatalf("tools = %v, want %v", names, want)
+		}
 	}
 
 	res, err := cs.CallTool(ctx, &mcpsdk.CallToolParams{Name: "list_stories", Arguments: map[string]any{}})

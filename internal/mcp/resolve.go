@@ -52,6 +52,24 @@ func (s *Server) Resolve(p uri.Parsed) (any, error) {
 			return nil, notFound(err)
 		}
 		return questionResult{versioned: s.versioned(), Question: toQuestionJSON(p.StoryKey, question)}, nil
+	case uri.KindOpportunity:
+		o, err := s.cfg.opportunity(p.OpportunityKey)
+		if err != nil {
+			return nil, notFound(err)
+		}
+		// A malformed story map is a read failure, not a missing opportunity:
+		// dropping the maps would misreport it as never taken on.
+		out, err := s.cfg.toOpportunityJSON(o)
+		if err != nil {
+			return nil, err
+		}
+		return opportunityResult{versioned: s.versioned(), Opportunity: out}, nil
+	case uri.KindOpportunityCanvas:
+		canvas, err := s.cfg.opportunityCanvas(p.OpportunityKey)
+		if err != nil {
+			return nil, notFound(err)
+		}
+		return opportunityCanvasResult{versioned: s.versioned(), Canvas: s.cfg.toOpportunityCanvasJSON(canvas)}, nil
 	case uri.KindStoryMap:
 		sm, err := s.cfg.storyMap(p.MapName)
 		if err != nil {
@@ -95,6 +113,10 @@ func (c Config) Verify(p uri.Parsed) error {
 		_, err = c.example(p.StoryKey, p.RuleID, p.ExampleID)
 	case uri.KindQuestion:
 		_, err = c.question(p.StoryKey, p.QuestionID)
+	case uri.KindOpportunity:
+		_, err = c.opportunity(p.OpportunityKey)
+	case uri.KindOpportunityCanvas:
+		_, err = c.opportunityCanvas(p.OpportunityKey)
 	case uri.KindStoryMap:
 		_, err = c.storyMap(p.MapName)
 	case uri.KindStory:

@@ -25,6 +25,7 @@
       <div class="flex items-center gap-2 px-4 py-2.5 border-b border-purple-100 bg-purple-50">
         <span class="w-2.5 h-2.5 rounded-sm bg-purple-400"></span>
         <span class="text-sm font-semibold text-purple-900">{{.Name}}</span>
+        {{with .Opportunity}}<span class="text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5">{{.Name}}</span>{{end}}
         <span class="ml-auto text-purple-400 text-sm">&rarr;</span>
       </div>
       <div class="thumb" style="height: 260px;">
