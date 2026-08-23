@@ -147,7 +147,7 @@ func (b *Builder) Build() error {
 		storyOpportunitySets = append(storyOpportunitySets, listOpportunities)
 		storyItems = append(storyItems, storyItem{
 			Key:           story.Key.Value,
-			Name:          story.Name,
+			Name:          story.DisplayName(),
 			Opportunities: listOpportunities,
 			MappingPath:   listMappingPath,
 			Links:         urlMetaFieldViews(story.Meta),
