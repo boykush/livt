@@ -23,7 +23,6 @@ var ja = Catalog{
 	"label.opportunity":     "オポチュニティ",
 	"label.activity":        "アクティビティ",
 	"label.step":            "ユーザータスク",
-	"label.term":            "用語",
 	"label.context":         "文脈",
 	"label.example-mapping": "実例マッピング",
 

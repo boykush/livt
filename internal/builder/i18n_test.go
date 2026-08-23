@@ -125,7 +125,7 @@ func TestBuildTranslatesTheChromeAndLeavesTheProseAlone(t *testing.T) {
 		"ubiquitous.html":                         {"用語", "キー", "定義", "文脈"},
 		"tasks.html":                              {"未解決の疑問", "会話で閉じる", "未自動化のルール", "テストで閉じる"},
 		filepath.Join("story", "checkout.html"):   {"メタデータ", "関連", "説明"},
-		filepath.Join("mapping", "checkout.html"): {"ルール", "具体例", "疑問点", "✓ 自動化済み", "用語", "ユビキタス言語"},
+		filepath.Join("mapping", "checkout.html"): {"ルール", "具体例", "疑問点", "✓ 自動化済み", "ユビキタス言語"},
 		filepath.Join("story-map", "買い物ジャーニー.html"): {"オポチュニティ", "アクティビティ", "ユーザータスク", "ストーリー"},
 		"opportunities.html":                                 {"オポチュニティ"},
 		filepath.Join("opportunity", "shopping.html"):        {"メタデータ", "オポチュニティ"},

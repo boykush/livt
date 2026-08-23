@@ -22,7 +22,6 @@ var en = Catalog{
 	"label.opportunity":     "Opportunity",
 	"label.activity":        "Activity",
 	"label.step":            "User Task",
-	"label.term":            "Term",
 	"label.context":         "Context",
 	"label.example-mapping": "Example Mapping",
 
