@@ -39,7 +39,7 @@ func filledBuilder(t *testing.T) Builder {
 			"ubiquitous:\n"+
 			"  - cart\n")
 	writeFile(t, filepath.Join(b.USMDir, "shopping.yaml"),
-		"name: 買い物体験\n"+
+		"name: 買い物ジャーニー\n"+
 			"ubiquitous:\n"+
 			"  - cart\n"+
 			"releases:\n"+
@@ -55,6 +55,8 @@ func filledBuilder(t *testing.T) Builder {
 			"          - key: checkout\n"+
 			"            name: カートの中身を確認して注文する\n"+
 			"            release: v1\n")
+	writeFile(t, filepath.Join(b.OpportunitiesDir, "shopping.md"), "---\nname: 買い物体験\nissue: https://github.com/boykush/livt/issues/3\n---\n\n買い物客が迷わず注文まで進めない。\n")
+	writeFile(t, filepath.Join(b.CanvasesDir, "shopping.yaml"), demoCanvasYAML)
 	writeFile(t, filepath.Join(b.UbiquitousDir, "cart.md"), "---\nname: カート\n---\n\n購入予定の商品を貯めておく入れ物。\n")
 	writeFile(t, filepath.Join(b.UbiquitousDir, "order", "cart.md"), "---\nname: 注文カート\n---\n\n注文の対象として確定したカート。\n")
 	return b
@@ -63,13 +65,16 @@ func filledBuilder(t *testing.T) Builder {
 // pages is every page a filled build produces.
 var pages = []string{
 	"index.html",
+	"opportunities.html",
 	"story-maps.html",
 	"stories.html",
 	"ubiquitous.html",
 	"tasks.html",
+	filepath.Join("opportunity", "shopping.html"),
+	filepath.Join("opportunity-canvas", "shopping.html"),
 	filepath.Join("story", "checkout.html"),
 	filepath.Join("mapping", "checkout.html"),
-	filepath.Join("story-map", "買い物体験.html"),
+	filepath.Join("story-map", "買い物ジャーニー.html"),
 }
 
 // This is what lets Catalog.T treat an unknown key as an error: every page is
@@ -121,7 +126,10 @@ func TestBuildTranslatesTheChromeAndLeavesTheProseAlone(t *testing.T) {
 		"tasks.html":                              {"未解決の疑問", "会話で閉じる", "未自動化のルール", "テストで閉じる"},
 		filepath.Join("story", "checkout.html"):   {"メタデータ", "関連", "説明"},
 		filepath.Join("mapping", "checkout.html"): {"ルール", "実例", "疑問", "✓ 自動化済み", "ユビキタス言語"},
-		filepath.Join("story-map", "買い物体験.html"): {"アクティビティ", "ステップ", "ストーリー"},
+		filepath.Join("story-map", "買い物ジャーニー.html"): {"オポチュニティ", "ストーリーマップ", "アクティビティ", "ステップ"},
+		"opportunities.html":                                 {"オポチュニティ"},
+		filepath.Join("opportunity", "shopping.html"):        {"メタデータ", "オポチュニティ"},
+		filepath.Join("opportunity-canvas", "shopping.html"): {"オポチュニティキャンバス", "確かめられる事実", "価値についての仮説", "解決策のアイデア", "未記入"},
 	} {
 		html := readPage(t, b, page)
 		for _, want := range wants {

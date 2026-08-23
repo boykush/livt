@@ -13,7 +13,7 @@
 
 ## What is livt?
 
-livt is a CLI tool that captures collaborative discovery outcomes as living text. It bridges the gap between synchronous discovery sessions (like [User Story Mapping](https://boykush.github.io/livt/guides/story-maps.html) and [Example Mapping](https://boykush.github.io/livt/guides/example-mappings.html)) and development artifacts.
+livt is a CLI tool that captures collaborative discovery outcomes as living text. It bridges the gap between synchronous discovery sessions (like [Opportunity Canvas](https://boykush.github.io/livt/guides/opportunities.html), [User Story Mapping](https://boykush.github.io/livt/guides/story-maps.html) and [Example Mapping](https://boykush.github.io/livt/guides/example-mappings.html)) and development artifacts.
 
 Discovery outcomes are written as plain text files (YAML, Markdown) and visualized as boards:
 
@@ -21,6 +21,7 @@ Discovery outcomes are written as plain text files (YAML, Markdown) and visualiz
 
 ## Features
 
+- **Opportunities** -- Say why the work is worth doing, and hold it on an Opportunity Canvas rendered as a single sheet
 - **Stories as Markdown** -- Write stories with YAML frontmatter, keep them alongside your code
 - **Story Maps** -- Visualize activities, steps, and stories with release slices on a board
 - **Example Mappings** -- Render rules, examples, and questions as color-coded sticky notes
@@ -67,7 +68,7 @@ go install github.com/boykush/livt@<version>
 
 ```bash
 # Create the directory structure
-mkdir -p stories discoveries/usm discoveries/example-mappings ubiquitous
+mkdir -p opportunities stories discoveries/opportunity-canvases discoveries/usm discoveries/example-mappings ubiquitous
 
 # Create your first story
 cat <<'EOF' > stories/my-first-story.md
@@ -91,11 +92,15 @@ See the [Getting Started guide](https://boykush.github.io/livt/getting-started.h
 ## File Structure
 
 ```
+opportunities/
+  {opportunity-key}.md               # Opportunity files
 stories/
   {story-key}.md                     # Story files
 discoveries/
+  opportunity-canvases/
+    {opportunity-key}.yaml           # Opportunity canvas files
   usm/
-    {map-name}.yaml                  # Story map files
+    {opportunity-key}.yaml           # Story map files
   example-mappings/
     {story-key}.yaml                 # Example mapping files
 ```

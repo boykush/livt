@@ -1,7 +1,7 @@
 {
   "name": "discovery-facilitator",
   "version": "0.8.0",
-  "description": "Post-collaboration discovery pipeline (transcribe → refine → plan), ongoing rule-change updates, issue filing to implementation repos, automation-record reconciliation, and expert skills for BDD Example Mapping and User Story Mapping",
+  "description": "Post-collaboration discovery pipeline (transcribe → refine → plan), ongoing rule-change updates, issue filing to implementation repos, automation-record reconciliation, and expert skills for the Opportunity Canvas, BDD Example Mapping, and User Story Mapping",
   "author": {
     "name": "boykush",
     "email": "boykush315@gmail.com"

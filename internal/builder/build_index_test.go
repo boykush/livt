@@ -13,11 +13,13 @@ import (
 func emptyDirsBuilder(t *testing.T) Builder {
 	t.Helper()
 	return Builder{
-		MappingsDir:   t.TempDir(),
-		StoriesDir:    t.TempDir(),
-		USMDir:        t.TempDir(),
-		UbiquitousDir: t.TempDir(),
-		OutDir:        t.TempDir(),
+		OpportunitiesDir: t.TempDir(),
+		CanvasesDir:      t.TempDir(),
+		MappingsDir:      t.TempDir(),
+		StoriesDir:       t.TempDir(),
+		USMDir:           t.TempDir(),
+		UbiquitousDir:    t.TempDir(),
+		OutDir:           t.TempDir(),
 	}
 }
 

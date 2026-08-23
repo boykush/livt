@@ -8,31 +8,51 @@ import (
 
 	"github.com/boykush/livt/internal/domain"
 	"github.com/boykush/livt/internal/parser"
+	"github.com/boykush/livt/internal/uri"
 )
 
-// buildStoryMaps builds story map HTML pages. It returns a map of story key to
-// the opportunities (story maps) it belongs to, with paths relative to the
-// story/ directory, plus a preview tile per map for the Story Maps overview.
-// A story can sit on several maps, so each key maps to a slice in map order.
-func (b *Builder) buildStoryMaps() (map[string][]opportunityRef, []storyMapTile, error) {
+// storyMapBuild is what building the story maps leaves for the rest of the
+// build: the opportunity refs a story's cards earn it, a preview tile per map,
+// and the maps mapped for each opportunity, by opportunity key.
+type storyMapBuild struct {
+	StoryOpportunities map[string][]opportunityRef
+	Tiles              []storyMapTile
+	MapsByOpportunity  map[string][]storyMapRef
+}
+
+// buildStoryMaps builds story map HTML pages. Paths in the returned refs are
+// relative to the story/ directory, the deepest page that renders one. A story
+// can sit on several maps, so each key maps to a slice in map order.
+func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (storyMapBuild, error) {
 	maps, err := parser.ParseAllStoryMaps(b.USMDir)
 	if err != nil {
-		return nil, nil, err
+		return storyMapBuild{}, err
 	}
 
-	storyToMaps := make(map[string][]opportunityRef)
-	var tiles []storyMapTile
+	out := storyMapBuild{
+		StoryOpportunities: make(map[string][]opportunityRef),
+		MapsByOpportunity:  make(map[string][]storyMapRef),
+	}
 	for _, sm := range maps {
-		view := b.toStoryMapView(sm)
-		outPath := filepath.Join(b.OutDir, "story-map", sm.Name+".html")
+		ref := mapOpportunity(sm, opportunities)
+		// The map page names its opportunity only when a file backs it; a map
+		// standing in as its own opportunity would just link to itself.
+		var own *opportunityRef
+		if _, ok := opportunities[sm.Key]; ok {
+			own = &ref
+			out.MapsByOpportunity[sm.Key] = append(out.MapsByOpportunity[sm.Key],
+				storyMapRef{Name: sm.Name, Path: "../" + uri.StoryMapPage(sm.Name)})
+		}
+
+		view := b.toStoryMapView(sm, own)
+		outPath := filepath.Join(b.OutDir, uri.StoryMapPage(sm.Name))
 		if err := b.buildStoryMap(outPath, view); err != nil {
-			return nil, nil, err
+			return storyMapBuild{}, err
 		}
 		fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))
 
-		tiles = append(tiles, storyMapTile{Name: sm.Name})
+		out.Tiles = append(out.Tiles, storyMapTile{Name: sm.Name, Opportunity: own})
 
-		ref := opportunityRef{Name: sm.Name, Path: "../story-map/" + sm.Name + ".html"}
 		// A key can recur across steps/releases within one map; add its chip once.
 		seen := make(map[string]bool)
 		for _, a := range sm.Activities {
@@ -42,13 +62,13 @@ func (b *Builder) buildStoryMaps() (map[string][]opportunityRef, []storyMapTile,
 						continue
 					}
 					seen[sc.Key.Value] = true
-					storyToMaps[sc.Key.Value] = append(storyToMaps[sc.Key.Value], ref)
+					out.StoryOpportunities[sc.Key.Value] = append(out.StoryOpportunities[sc.Key.Value], ref)
 				}
 			}
 		}
 	}
 
-	return storyToMaps, tiles, nil
+	return out, nil
 }
 
 type storyMapViewStory struct {
@@ -79,6 +99,7 @@ type storyMapViewReleaseRow struct {
 
 type storyMapViewData struct {
 	Name            string
+	Opportunity     *opportunityRef
 	Activities      []storyMapViewActivity
 	ReleaseRows     []storyMapViewReleaseRow
 	UnscopedStories *storyMapViewReleaseRow
@@ -89,7 +110,7 @@ type storyMapView struct {
 	StoryMap storyMapViewData
 }
 
-func (b *Builder) toStoryMapView(sm *domain.StoryMap) storyMapView {
+func (b *Builder) toStoryMapView(sm *domain.StoryMap, opportunity *opportunityRef) storyMapView {
 	releaseIndexByID := make(map[string]int)
 	for i, r := range sm.Releases {
 		releaseIndexByID[r.ID] = i
@@ -116,6 +137,7 @@ func (b *Builder) toStoryMapView(sm *domain.StoryMap) storyMapView {
 	return storyMapView{
 		StoryMap: storyMapViewData{
 			Name:            sm.Name,
+			Opportunity:     opportunity,
 			Activities:      activities,
 			ReleaseRows:     releaseRows,
 			UnscopedStories: unscopedStories,

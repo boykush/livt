@@ -5,11 +5,15 @@
 ```
 project-root/
   livt.yaml                               # Site config (optional)
+  opportunities/
+    {opportunity-key}.md                  # Opportunity files
   stories/
     {story-key}.md                        # Story files
   discoveries/
+    opportunity-canvases/
+      {opportunity-key}.yaml              # Opportunity canvas files
     usm/
-      {map-name}.yaml                     # Story map files
+      {opportunity-key}.yaml              # Story map files
     example-mappings/
       {story-key}.yaml                    # Example mapping files
   ubiquitous/
@@ -19,6 +23,9 @@ project-root/
 ```
 
 - `livt.yaml` configures the site build — see [Configuration](./configuration.md). Without it, every setting takes its default
+- Opportunity keys, like story keys, are derived from filenames (without extension) and must be kebab-case
+- An [opportunity canvas](../guides/opportunities.md#the-opportunity-canvas) filename must match an opportunity key to link them
+- A story map filename that matches an opportunity key marks the map as the journey mapped for that opportunity. A map whose key matches no opportunity stands in as its own, named by the map — which is how every livt repository behaved before opportunities were files
 - Story keys are derived from filenames (without extension)
 - Story keys must be kebab-case: lowercase letters, numbers, and hyphens
 - The `stories/` directory is the committed story registry, and `stories/{story-key}.md` provides story key uniqueness
@@ -34,10 +41,15 @@ project-root/
 ```
 dist/
   index.html                              # Example mappings overview (home)
+  opportunities.html                      # Opportunities overview
   story-maps.html                         # Story maps overview
   stories.html                            # Story list
   ubiquitous.html                         # Ubiquitous language table
   tasks.html                              # Open questions and un-automated rules
+  opportunity/
+    {opportunity-key}.html                # Opportunity detail pages
+  opportunity-canvas/
+    {opportunity-key}.html                # Opportunity canvas sheets
   story/
     {story-key}.html                      # Story detail pages
   mapping/
@@ -46,9 +58,10 @@ dist/
     {map-name}.html                       # Story map boards
 ```
 
-Every page shares a left sidebar that links the four resource types (Example
-Mappings, Story Maps, Stories, Ubiquitous Language) and, below them, Tasks. The
-overview pages render each example mapping and story map as a preview card.
+Every page shares a left sidebar that links the five resource types (Example
+Mappings, Opportunities, Story Maps, Stories, Ubiquitous Language) and, below
+them, Tasks. The overview pages render each example mapping, opportunity
+canvas, and story map as a preview card.
 
 `tasks.html` gathers what the livt repository leaves unfinished, so neither kind has to
 be hunted for board by board:

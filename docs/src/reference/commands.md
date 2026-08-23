@@ -84,18 +84,21 @@ to localhost, not a public network.
 
 | Tool | Arguments | Returns |
 |------|-----------|---------|
-| `list_stories` | `opportunity` (optional) — an opportunity name, matched exactly against a story map display name; keeps only the stories on that map, and an unknown name yields an empty list | Every story with its key and name. Each entry links to its story resource (`uri`); stories that have an example mapping also include `example_mapping_uri`, and stories on a story map carry `opportunities` — one map name plus story map resource URI per map they sit on. |
+| `list_opportunities` | — | Every [opportunity](../guides/opportunities.md) with its key, name, and statement. Each entry links to its opportunity resource (`uri`), to its canvas (`canvas_uri`) when one has been filled in, and to the story maps mapped for it. A missing canvas or story map is the record that the opportunity has not been taken that far. |
+| `list_stories` | `opportunity` (optional) — an opportunity name, matched exactly against the name a story's opportunity chip carries; keeps only the stories on that map, and an unknown name yields an empty list | Every story with its key and name. Each entry links to its story resource (`uri`); stories that have an example mapping also include `example_mapping_uri`, and stories on a story map carry `opportunities` — one map name plus story map resource URI per map they sit on. |
 | `list_story_maps` | — | Every story map with its name and its story map resource URI (`uri`). |
 | `list_terms` | — | Every [ubiquitous language](../guides/ubiquitous-language.md) term with its key, display name, and term resource URI (`uri`) — including terms no board references. A term scoped to a context also carries `ctx`, which is part of what identifies it. |
 
 ### Resources
 
 The spec itself is exposed as resources, addressable by URI
-(story map → story → mapping → rule → example, with questions and ubiquitous
-terms linked from mappings and story maps):
+(opportunity → story map → story → mapping → rule → example, with the canvas,
+questions, and ubiquitous terms linked alongside):
 
 | URI | Returns |
 |-----|---------|
+| `livt://opportunity/{opportunity_key}` | An opportunity: its name, its statement (whose problem, and what the business gets from solving it), and its frontmatter meta. Carries `canvas_uri` when a canvas has been filled in, and `story_maps` — the maps whose key matches, as map name plus story map resource URI. |
+| `livt://opportunity-canvas/{opportunity_key}` | The [Opportunity Canvas](../guides/opportunities.md#the-opportunity-canvas) filled in for an opportunity, as its ten `boxes` — each with its `key`, printed `number`, heading, the `prompt` it asks, and its `items`. Every box is returned, unanswered ones with an empty `items`: a blank box records a question the opportunity has not answered. |
 | `livt://story-map/{map_name}` | A story map: activities, steps, story cards, and releases. Committed story cards link to their story resource. `{map_name}` is the map's display name (percent-encoded) — the same identifier the build output uses for `story-map/{name}.html`. |
 | `livt://story/{story_key}` | The story's name, body, and frontmatter meta (e.g. `issue`), plus `example_mapping_uri` when a mapping exists and `opportunities` — the story maps the story sits on, as map name plus story map resource URI. |
 | `livt://mapping/{story_key}` | The story's example mapping (rules, examples, questions, ubiquitous terms). Each rule, example, and question carries its own `uri`, and `ubiquitous_terms` resolves each referenced term to its resource URI. [Retired](../guides/example-mappings.md#retiring-an-item) entries are listed too, flagged — the mapping is the structural record their ids are numbered from. |

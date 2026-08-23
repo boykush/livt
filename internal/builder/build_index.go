@@ -52,6 +52,22 @@ func (b *Builder) buildStoryMapsIndex(tiles []storyMapTile) error {
 	return renderStoryMapsIndex(f, b.Lang, storyMapsIndexView{Sidebar: sb, StoryMaps: tiles})
 }
 
+// buildOpportunitiesIndex renders opportunities.html: the Opportunities hub,
+// where each opportunity shows its statement and — once a canvas has been
+// filled in for it — a preview of that board.
+func (b *Builder) buildOpportunitiesIndex(tiles []opportunityTile) error {
+	sb, err := b.sidebar("opportunity", "")
+	if err != nil {
+		return err
+	}
+	f, err := os.Create(filepath.Join(b.OutDir, "opportunities.html"))
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	return renderOpportunitiesIndex(f, b.Lang, opportunitiesIndexView{Sidebar: sb, Opportunities: tiles})
+}
+
 // buildStoriesIndex renders stories.html: the Stories list. filterOpportunities
 // are the opportunity axes the list can be filtered by.
 func (b *Builder) buildStoriesIndex(items []storyItem, filterOpportunities []string) error {

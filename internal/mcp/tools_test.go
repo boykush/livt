@@ -55,6 +55,12 @@ func newTestServer(t *testing.T) *Server {
 			"            release: mvp\n"+
 			"          - name: 候補ストーリー\n")
 	writeFile(t, filepath.Join(root, "ubiquitous", "story.md"), "---\nname: ストーリー\n---\n\nストーリーの定義\n")
+	// Keyed demo-map so it joins the story map by filename, the way an example
+	// mapping joins its story.
+	writeFile(t, filepath.Join(root, "opportunities", "demo-map.md"),
+		"---\nname: デモ機会\nrepos:\n  - boykush/livt\n---\n\n誰かの課題を解くと、事業の便益が立つ\n")
+	writeFile(t, filepath.Join(root, "discoveries", "opportunity-canvases", "demo-map.yaml"),
+		"canvas:\n  problems:\n    - 課題\n  budget:\n    - 余暇\nubiquitous:\n  - story\n")
 
 	return NewServer(Config{Root: root}, "test")
 }

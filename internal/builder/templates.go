@@ -108,9 +108,10 @@ func issueLabel(url string) string {
 	return parts[0]
 }
 
-// opportunityRef links a card to one story map it belongs to. In livt a story
-// map is one opportunity, so Name is the opportunity name (= map name) and Path
-// links to that map's board, relative to the page doing the rendering.
+// opportunityRef links a card to one opportunity it belongs to. Path leads to
+// the opportunity's page, or — when no opportunity file claims the map's key —
+// to the story map standing in as its own opportunity. Both are relative to the
+// page doing the rendering.
 type opportunityRef struct {
 	Name string
 	Path string
@@ -124,10 +125,28 @@ type filterView struct {
 	Param  string
 	Label  string
 	Values []string
+	// Chip is the class set the bar's chips wear and Pressed the colour a
+	// selected one fills with. Both follow the resource the axis narrows on, so a
+	// chip in the bar reads as the same thing as the chip on a card below it.
+	Chip    string
+	Pressed string
 }
 
+// filterTints maps a filter axis to its resource's colour. An axis with no
+// entry falls back to the neutral one rather than borrowing another resource's.
+var filterTints = map[string][2]string{
+	"opportunity": {"text-orange-700 bg-orange-50 border border-orange-200 hover:bg-orange-100", "#ea580c"},
+	"context":     {"text-pink-700 bg-pink-50 border border-pink-200 hover:bg-pink-100", "#db2777"},
+}
+
+var neutralTint = [2]string{"text-gray-700 bg-gray-50 border border-gray-200 hover:bg-gray-100", "#4b5563"}
+
 func newFilterView(param, label string, values []string) filterView {
-	return filterView{Param: param, Label: label, Values: values}
+	tint, ok := filterTints[param]
+	if !ok {
+		tint = neutralTint
+	}
+	return filterView{Param: param, Label: label, Values: values, Chip: tint[0], Pressed: tint[1]}
 }
 
 // filterValuesJSON encodes a card's values on the filter axis as a JSON array
@@ -200,6 +219,9 @@ func distinctOpportunityNames(perCard [][]opportunityRef) []string {
 type Sidebar struct {
 	Prefix string
 	Active string
+	// Opportunities counts the committed opportunities, canvas or not: the
+	// opportunity is the unit, and a canvas is one thing that may be said of it.
+	Opportunities int
 	// Tasks is what the Tasks page lists: open questions plus rules with no
 	// automation recorded.
 	Tasks     int
@@ -223,6 +245,62 @@ type mappingsIndexView struct {
 
 type storyMapTile struct {
 	Name string
+	// Opportunity is the opportunity this map serves, empty when no opportunity
+	// file claims the map's key.
+	Opportunity *opportunityRef
+}
+
+// storyMapRef links an opportunity to one story map mapped for it, the reverse
+// of the join opportunityRef makes.
+type storyMapRef struct {
+	Name string
+	Path string
+}
+
+// rootRelativeMaps rebases refs written for a page under a subdirectory onto
+// the output root, where the hub lists render (mirrors rootRelativeOpportunities).
+func rootRelativeMaps(refs []storyMapRef) []storyMapRef {
+	out := make([]storyMapRef, len(refs))
+	for i, r := range refs {
+		out[i] = storyMapRef{Name: r.Name, Path: strings.TrimPrefix(r.Path, "../")}
+	}
+	return out
+}
+
+// opportunityTile is one card on the Opportunities hub. Statement is the
+// opportunity's own body — the one thing a reader scanning the list needs —
+// and HasCanvas drives the preview, since an opportunity may be committed
+// before any canvas session has been held for it.
+type opportunityTile struct {
+	Key       string
+	Name      string
+	Statement string
+	HasCanvas bool
+	StoryMaps []storyMapRef
+	Links     []metaFieldView
+}
+
+type opportunitiesIndexView struct {
+	Sidebar       Sidebar
+	Opportunities []opportunityTile
+}
+
+// opportunityView is one opportunity's own page. CanvasPath is empty when no
+// canvas has been filled in for it, the same way storyView.MappingPath is.
+type opportunityView struct {
+	Opportunity *domain.Opportunity
+	Meta        []metaFieldView
+	CanvasPath  string
+	StoryMaps   []storyMapRef
+}
+
+// opportunityCanvasView is the sheet. Panels are its three columns, since the
+// canvas is laid out by zone rather than by the order its boxes are filled in.
+type opportunityCanvasView struct {
+	OpportunityKey  string
+	OpportunityName string
+	Panels          domain.CanvasPanels
+	Ubiquitous      []termCard
 }
 
 type storyMapsIndexView struct {
@@ -365,6 +443,18 @@ func renderTasks(w io.Writer, lang i18n.Lang, view tasksView) error {
 
 func renderMappingsIndex(w io.Writer, lang i18n.Lang, view mappingsIndexView) error {
 	return templates(lang).ExecuteTemplate(w, "index.html", view)
+}
+
+func renderOpportunitiesIndex(w io.Writer, lang i18n.Lang, view opportunitiesIndexView) error {
+	return templates(lang).ExecuteTemplate(w, "opportunities.html", view)
+}
+
+func renderOpportunity(w io.Writer, lang i18n.Lang, view opportunityView) error {
+	return templates(lang).ExecuteTemplate(w, "opportunity.html", view)
+}
+
+func renderOpportunityCanvas(w io.Writer, lang i18n.Lang, view opportunityCanvasView) error {
+	return templates(lang).ExecuteTemplate(w, "opportunity_canvas.html", view)
 }
 
 func renderStoryMapsIndex(w io.Writer, lang i18n.Lang, view storyMapsIndexView) error {

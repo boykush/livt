@@ -1,6 +1,6 @@
 # Discovery Facilitator Plugin
 
-Pipeline and expert skills for turning collaborative discovery sessions — BDD Example Mapping and User Story Mapping — into refined, planned artifacts.
+Pipeline and expert skills for turning collaborative discovery sessions — Opportunity Canvas, User Story Mapping, BDD Example Mapping — into refined, planned artifacts.
 
 ## Overview
 
@@ -57,9 +57,13 @@ When a mapping is ready to drive implementation, the **File** skills carry it ou
 
 ## Expert skills
 
-The expert skills are the **knowledge backend** the refine skills consult; you can also invoke them standalone (`/usm-expert`, `/bdd-expert`) for ad-hoc consulting.
+The expert skills are the **knowledge backend** the refine skills consult; you can also invoke them standalone (`/opportunity-expert`, `/usm-expert`, `/bdd-expert`) for ad-hoc consulting.
 
 They are plain [Agent Skills](https://agentskills.io), so the consultation travels with the plugin's `skills/` and works in any conformant runtime — the refine skills reference them as peer skills, not as runtime-specific subagents.
+
+### `opportunity-expert`
+
+Expertise in Jeff Patton's Opportunity Canvas — framing an opportunity, keeping verifiable facts apart from assumptions about value, and supporting the decision of whether to take it on at all, including the decision not to.
 
 ### `usm-expert`
 

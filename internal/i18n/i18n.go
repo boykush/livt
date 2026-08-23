@@ -54,6 +54,16 @@ func (c Catalog) T(key string) (string, error) {
 	return "", fmt.Errorf("i18n: no message for %q", key)
 }
 
+// Msg is T for Go callers, where a key that does not resolve can only be a
+// mistake in the code rather than in a template. The key stands in for the
+// message so a payload built from one stays readable if that ever happens.
+func (c Catalog) Msg(key string) string {
+	if msg, ok := c[key]; ok {
+		return msg
+	}
+	return key
+}
+
 // Of returns the catalog for a language, falling back to the default for the
 // zero value — a Builder left unconfigured renders in English.
 func Of(l Lang) Catalog {

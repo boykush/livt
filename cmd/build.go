@@ -25,12 +25,14 @@ func newBuilder(outDir string) (*builder.Builder, error) {
 		return nil, err
 	}
 	return &builder.Builder{
-		MappingsDir:   filepath.Join("discoveries", "example-mappings"),
-		StoriesDir:    "stories",
-		USMDir:        filepath.Join("discoveries", "usm"),
-		UbiquitousDir: "ubiquitous",
-		OutDir:        outDir,
-		Lang:          cfg.Lang,
+		OpportunitiesDir: "opportunities",
+		CanvasesDir:      filepath.Join("discoveries", "opportunity-canvases"),
+		MappingsDir:      filepath.Join("discoveries", "example-mappings"),
+		StoriesDir:       "stories",
+		USMDir:           filepath.Join("discoveries", "usm"),
+		UbiquitousDir:    "ubiquitous",
+		OutDir:           outDir,
+		Lang:             cfg.Lang,
 	}, nil
 }
 
