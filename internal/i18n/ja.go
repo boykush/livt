@@ -1,8 +1,10 @@
 package i18n
 
 // ja mirrors en key for key, in the words the Japanese practice uses: 具体例
-// and 疑問点 for the stickies, and ユーザーストーリーマップ for the board —
-// マッピング names the practice, and what livt holds is what it produced.
+// and 疑問点 for the stickies, アクティビティ・ユーザータスク・ユーザーストーリー
+// for the map's three layers as Patton's book names them, and
+// ユーザーストーリーマップ for the board itself — マッピング names the
+// practice, and what livt holds is what it produced.
 // These are also this repository's ubiquitous language; the two are one
 // vocabulary and must not drift apart.
 var ja = Catalog{
@@ -21,7 +23,7 @@ var ja = Catalog{
 	"label.questions":       "疑問点",
 	"label.opportunity":     "オポチュニティ",
 	"label.activity":        "アクティビティ",
-	"label.step":            "ステップ",
+	"label.step":            "ユーザータスク",
 	"label.context":         "文脈",
 	"label.example-mapping": "実例マッピング",
 
