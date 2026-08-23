@@ -1,21 +1,21 @@
 package i18n
 
 // ja mirrors en key for key, in the words the Japanese practice uses: 具体例
-// and 疑問点 for the stickies, and アクティビティ・ユーザータスク・ユーザー
-// ストーリー for the map's three layers, as the Japanese edition of Patton's
-// ユーザーストーリーマッピング names them — which also calls the board itself
-// ストーリーマップ. These are this repository's ubiquitous language too; the
-// two are one vocabulary and must not drift apart.
+// and 疑問点 for the stickies. A term carries the ユーザー prefix only where
+// the bare word is ambiguous in the language — タスク is any task, while
+// アクティビティ and ストーリー are unmistakable beside ストーリーマップ.
+// These are this repository's ubiquitous language too; the two are one
+// vocabulary and must not drift apart.
 var ja = Catalog{
 	"lang.code": "ja",
 
 	"nav.example-mappings": "実例マッピング",
 	"nav.story-maps":       "ストーリーマップ",
-	"nav.stories":          "ユーザーストーリー",
+	"nav.stories":          "ストーリー",
 	"nav.ubiquitous":       "ユビキタス言語",
 	"nav.tasks":            "タスク",
 
-	"label.story":           "ユーザーストーリー",
+	"label.story":           "ストーリー",
 	"label.rule":            "ルール",
 	"label.example":         "具体例",
 	"label.question":        "疑問点",
@@ -33,7 +33,7 @@ var ja = Catalog{
 
 	"empty.example-mappings": "実例マッピングはまだありません。",
 	"empty.story-maps":       "ストーリーマップはまだありません。",
-	"empty.stories":          "ユーザーストーリーが見つかりません。",
+	"empty.stories":          "ストーリーが見つかりません。",
 	"empty.terms":            "用語が見つかりません。",
 
 	"tasks.questions":                "未解決の疑問点",
