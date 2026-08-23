@@ -2,6 +2,8 @@
 
 Story maps are YAML files stored in `discoveries/usm/`. They define the structure of a User Story Map with activities, steps, stories, and release slices.
 
+A map's **filename** names the [opportunity](./opportunities.md) it serves: a map whose key matches an `opportunities/{key}.md` is the journey mapped for that opportunity, and every story on it carries that opportunity's chip. A map whose key matches no opportunity stands in as its own, named by the map — see [Linking a story map](./opportunities.md#linking-a-story-map). The map's `name:` stays its own display name either way, and is what addresses it.
+
 ## Format
 
 ```yaml
