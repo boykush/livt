@@ -19,13 +19,14 @@ Two languages, split by what the text *is* — not by who wrote it.
 - `stories/*.md` — `name:` and the user-story body
 - `discoveries/**/*.yaml` — `name:` and `text:`
 - `ubiquitous/*.md` — `name:` and the definition
+- `internal/i18n/ja.go` — the Japanese chrome catalog. Go code holding Japanese by design; its keys, like every identifier, stay English
 
 The livt repository's language is not a rule livt imposes. The skills say prose follows the language the user is speaking — see any `## Language` section under `plugins/discovery-facilitator/skills/`. *This* livt repository happens to be Japanese, and stays that way for consistency.
 
 Two consequences worth stating:
 
 - Quoting the livt repository inside English text keeps the Japanese verbatim. A commit body naming a story map writes 協働ディスカバリー, not a translation of it.
-- What livt renders *of itself* — nav labels, headings, empty states — is English. The Japanese on a livt site belongs to the livt repository being rendered, not to the tool.
+- What livt renders *of itself* — nav labels, headings, empty states — is English here, set by `lang: en` in [livt.yaml](livt.yaml). That is this repository's choice, not a property of livt: the chrome has one catalog per language in `internal/i18n/`, and a message added to one is owed to all. The Japanese on a livt site belongs to the livt repository being rendered, not to the tool.
 
 [CONTRIBUTING.md](CONTRIBUTING.md) welcomes issues and pull requests "in English or Japanese". That is an invitation to human contributors, and it stands. The rules above govern agents working in this repo.
 

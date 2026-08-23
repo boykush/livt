@@ -15,6 +15,7 @@ import (
 	"time"
 
 	"github.com/boykush/livt/internal/builder"
+	"github.com/boykush/livt/internal/config"
 )
 
 const liveReloadPath = "/livereload"
@@ -40,17 +41,22 @@ const liveReloadScript = `<script>
 const watchInterval = 500 * time.Millisecond
 
 // Serve builds once, then serves OutDir while watching the builder's input
-// directories. A change rebuilds and reloads every connected browser.
-func Serve(b *builder.Builder, port int) error {
+// directories and the site config at configPath. A change rebuilds and reloads
+// every connected browser.
+func Serve(b *builder.Builder, port int, configPath string) error {
 	fmt.Printf("Building to %s/\n", b.OutDir)
 	if err := b.Build(); err != nil {
 		return err
 	}
 
 	lr := newLiveReload()
-	watchDirs := []string{b.MappingsDir, b.StoriesDir, b.USMDir, b.UbiquitousDir}
-	go watch(watchDirs, watchInterval, func() {
+	// The config is watched alongside the inputs because it decides what the
+	// pages say — switching the site language is an edit like any other, and a
+	// preview that ignored it would show a site nobody asked for.
+	watched := []string{b.MappingsDir, b.StoriesDir, b.USMDir, b.UbiquitousDir, configPath}
+	go watch(watched, watchInterval, func() {
 		fmt.Println("Change detected, rebuilding...")
+		applyConfig(b, configPath)
 		if err := b.Build(); err != nil {
 			fmt.Printf("  build failed: %v\n", err)
 			return
@@ -64,6 +70,19 @@ func Serve(b *builder.Builder, port int) error {
 
 	fmt.Printf("Serving on http://localhost:%d\n", port)
 	return http.ListenAndServe(fmt.Sprintf(":%d", port), mux)
+}
+
+// applyConfig re-reads the site config so an edit to it takes effect on the
+// next rebuild. A config that no longer loads leaves the session on the last
+// good one: the edit is likely half-typed, and dropping the server for it would
+// cost more than the stale language does.
+func applyConfig(b *builder.Builder, path string) {
+	cfg, err := config.Load(path)
+	if err != nil {
+		fmt.Printf("  config failed: %v\n", err)
+		return
+	}
+	b.Lang = cfg.Lang
 }
 
 // htmlInjector serves files from dir, injecting the live-reload script into

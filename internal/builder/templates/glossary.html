@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{t "lang.code"}}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ubiquitous Language - livt</title>
+<title>{{t "nav.ubiquitous"}} - livt</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -11,10 +11,10 @@
 {{template "sidebar" .Sidebar}}
 <div class="flex-1 min-w-0">
   <header class="bg-white border-b border-gray-200 px-8 py-4">
-    <h2 class="text-lg font-semibold text-gray-800">Ubiquitous Language</h2>
+    <h2 class="text-lg font-semibold text-gray-800">{{t "nav.ubiquitous"}}</h2>
   </header>
   <main class="px-8 py-8">
-  {{template "filter" (filter "context" "Context" .Contexts)}}
+  {{template "filter" (filter "context" (t "label.context") .Contexts)}}
   {{if .Terms}}
   {{/*
   The filter hides whole rows, so data-filter-values sits on the <tr> — the same
@@ -26,9 +26,9 @@
   <table class="w-full text-left border-collapse">
     <thead>
       <tr class="border-b border-gray-200 bg-gray-50 text-xs font-semibold uppercase tracking-wide text-gray-500">
-        <th class="px-5 py-3 w-1/5">Term</th>
-        <th class="px-5 py-3 w-1/5">Key</th>
-        <th class="px-5 py-3">Definition</th>
+        <th class="px-5 py-3 w-1/5">{{t "glossary.term"}}</th>
+        <th class="px-5 py-3 w-1/5">{{t "glossary.key"}}</th>
+        <th class="px-5 py-3">{{t "glossary.definition"}}</th>
       </tr>
     </thead>
     <tbody>
@@ -48,7 +48,7 @@
   </table>
   </div>
   {{else}}
-  <p class="text-gray-400 text-sm">No terms found.</p>
+  <p class="text-gray-400 text-sm">{{t "empty.terms"}}</p>
   {{end}}
   </main>
 </div>

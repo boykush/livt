@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{t "lang.code"}}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>livt - Tasks</title>
+<title>livt - {{t "nav.tasks"}}</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -11,7 +11,7 @@
 {{template "sidebar" .Sidebar}}
 <div class="flex-1 min-w-0">
   <header class="bg-white border-b border-gray-200 px-8 py-4">
-    <h2 class="text-lg font-semibold text-gray-800">Tasks</h2>
+    <h2 class="text-lg font-semibold text-gray-800">{{t "nav.tasks"}}</h2>
   </header>
   <main class="px-8 py-8 max-w-3xl">
   {{/*
@@ -27,7 +27,7 @@
   item leaves this page by being resolved — a question becomes a rule, a rule
   becomes automated — rather than by moving through states.
   */}}
-  {{template "filter" (filter "opportunity" "Opportunity" .FilterOpportunities)}}
+  {{template "filter" (filter "opportunity" (t "label.opportunity") .FilterOpportunities)}}
 
   {{/*
   data-filter-scope marks a group the filter should keep honest: it corrects the
@@ -39,31 +39,31 @@
   <section data-filter-scope class="mb-10">
     <div class="flex items-baseline gap-2 mb-3">
       <span class="w-2.5 h-2.5 rounded-sm bg-red-400"></span>
-      <h3 class="text-sm font-semibold text-gray-800">Open Questions</h3>
+      <h3 class="text-sm font-semibold text-gray-800">{{t "tasks.questions"}}</h3>
       <span data-filter-count class="text-xs text-gray-400">{{len .Questions}}</span>
-      <span class="text-xs text-gray-400 ml-1">&mdash; closed by a conversation</span>
+      <span class="text-xs text-gray-400 ml-1">&mdash; {{t "tasks.questions-hint"}}</span>
     </div>
     {{range .Questions}}
     {{template "task-card" .}}
     {{else}}
-    <p class="text-gray-400 text-sm">No open questions.</p>
+    <p class="text-gray-400 text-sm">{{t "tasks.questions-empty"}}</p>
     {{end}}
-    <p data-filter-empty style="display: none" class="text-gray-400 text-sm">No open questions for this opportunity.</p>
+    <p data-filter-empty style="display: none" class="text-gray-400 text-sm">{{t "tasks.questions-empty-filtered"}}</p>
   </section>
 
   <section data-filter-scope>
     <div class="flex items-baseline gap-2 mb-3">
       <span class="w-2.5 h-2.5 rounded-sm bg-blue-400"></span>
-      <h3 class="text-sm font-semibold text-gray-800">Un-automated Rules</h3>
+      <h3 class="text-sm font-semibold text-gray-800">{{t "tasks.rules"}}</h3>
       <span data-filter-count class="text-xs text-gray-400">{{len .UnautomatedRules}}</span>
-      <span class="text-xs text-gray-400 ml-1">&mdash; closed by a test</span>
+      <span class="text-xs text-gray-400 ml-1">&mdash; {{t "tasks.rules-hint"}}</span>
     </div>
     {{range .UnautomatedRules}}
     {{template "task-card" .}}
     {{else}}
-    <p class="text-gray-400 text-sm">Every rule is automated.</p>
+    <p class="text-gray-400 text-sm">{{t "tasks.rules-empty"}}</p>
     {{end}}
-    <p data-filter-empty style="display: none" class="text-gray-400 text-sm">Every rule for this opportunity is automated.</p>
+    <p data-filter-empty style="display: none" class="text-gray-400 text-sm">{{t "tasks.rules-empty-filtered"}}</p>
   </section>
   </main>
 </div>

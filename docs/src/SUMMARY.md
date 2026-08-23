@@ -10,5 +10,6 @@
   - [Ubiquitous Language](./guides/ubiquitous-language.md)
 - [Reference]()
   - [Commands](./reference/commands.md)
+  - [Configuration](./reference/configuration.md)
   - [File Structure](./reference/file-structure.md)
   - [livt URI](./reference/uri.md)

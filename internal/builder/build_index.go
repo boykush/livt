@@ -18,7 +18,7 @@ func (b *Builder) buildTasks(questions, unautomatedRules []taskItem, filterOppor
 		return err
 	}
 	defer f.Close()
-	return renderTasks(f, tasksView{Sidebar: sb, Questions: questions, UnautomatedRules: unautomatedRules, FilterOpportunities: filterOpportunities})
+	return renderTasks(f, b.Lang, tasksView{Sidebar: sb, Questions: questions, UnautomatedRules: unautomatedRules, FilterOpportunities: filterOpportunities})
 }
 
 // buildMappingsIndex renders index.html: the Example Mappings overview and the
@@ -34,7 +34,7 @@ func (b *Builder) buildMappingsIndex(tiles []mappingTile, filterOpportunities []
 		return err
 	}
 	defer f.Close()
-	return renderMappingsIndex(f, mappingsIndexView{Sidebar: sb, Mappings: tiles, FilterOpportunities: filterOpportunities})
+	return renderMappingsIndex(f, b.Lang, mappingsIndexView{Sidebar: sb, Mappings: tiles, FilterOpportunities: filterOpportunities})
 }
 
 // buildStoryMapsIndex renders story-maps.html: the Story Maps overview, where
@@ -49,7 +49,7 @@ func (b *Builder) buildStoryMapsIndex(tiles []storyMapTile) error {
 		return err
 	}
 	defer f.Close()
-	return renderStoryMapsIndex(f, storyMapsIndexView{Sidebar: sb, StoryMaps: tiles})
+	return renderStoryMapsIndex(f, b.Lang, storyMapsIndexView{Sidebar: sb, StoryMaps: tiles})
 }
 
 // buildStoriesIndex renders stories.html: the Stories list. filterOpportunities
@@ -64,5 +64,5 @@ func (b *Builder) buildStoriesIndex(items []storyItem, filterOpportunities []str
 		return err
 	}
 	defer f.Close()
-	return renderStoriesIndex(f, storiesIndexView{Sidebar: sb, Stories: items, FilterOpportunities: filterOpportunities})
+	return renderStoriesIndex(f, b.Lang, storiesIndexView{Sidebar: sb, Stories: items, FilterOpportunities: filterOpportunities})
 }

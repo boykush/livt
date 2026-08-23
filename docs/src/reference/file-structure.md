@@ -4,6 +4,7 @@
 
 ```
 project-root/
+  livt.yaml                               # Site config (optional)
   stories/
     {story-key}.md                        # Story files
   discoveries/
@@ -17,6 +18,7 @@ project-root/
       {term-key}.md                       # Terms scoped to one context
 ```
 
+- `livt.yaml` configures the site build — see [Configuration](./configuration.md). Without it, every setting takes its default
 - Story keys are derived from filenames (without extension)
 - Story keys must be kebab-case: lowercase letters, numbers, and hyphens
 - The `stories/` directory is the committed story registry, and `stories/{story-key}.md` provides story key uniqueness

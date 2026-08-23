@@ -1,0 +1,4 @@
+# Explicit rather than defaulted: this repository's prose is Japanese while the
+# chrome stays English, because what livt renders of itself belongs to the tool
+# rather than to the repository being rendered (AGENTS.md, "Language").
+lang: en

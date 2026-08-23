@@ -27,6 +27,7 @@ Discovery outcomes are written as plain text files (YAML, Markdown) and visualiz
 - **Ubiquitous Language** -- Keep shared terms as Markdown files and browse them as a glossary table
 - **Static HTML output** -- `livt build` generates a standalone site, no runtime required
 - **Local dev server** -- `livt serve` builds and serves with one command
+- **English or Japanese** -- pick the site's language in `livt.yaml`; your own prose is rendered as written
 
 ## Installation
 

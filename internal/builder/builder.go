@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/boykush/livt/internal/i18n"
 	"github.com/boykush/livt/internal/parser"
 )
 
@@ -15,6 +16,10 @@ type Builder struct {
 	USMDir        string
 	UbiquitousDir string
 	OutDir        string
+	// Lang is the language of the site chrome, from livt.yaml. The zero value
+	// renders in livt's default rather than failing, so a Builder built without
+	// a config still produces a site.
+	Lang i18n.Lang
 }
 
 type sidebarCounts struct {

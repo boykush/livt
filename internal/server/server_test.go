@@ -11,6 +11,10 @@ import (
 	"strings"
 	"testing"
 	"time"
+
+	"github.com/boykush/livt/internal/builder"
+	"github.com/boykush/livt/internal/config"
+	"github.com/boykush/livt/internal/i18n"
 )
 
 func TestInjectScriptInsertsBeforeBody(t *testing.T) {
@@ -279,5 +283,54 @@ func TestWatchReportsAChangeUnderAWatchedDir(t *testing.T) {
 			t.Fatal("watch did not report a change to a watched file")
 		case <-time.After(10 * time.Millisecond):
 		}
+	}
+}
+
+// The config is watched as a bare file, not a directory, so the fingerprint has
+// to cover one — a language switch is a single-file edit.
+func TestSnapshotFingerprintsAWatchedFile(t *testing.T) {
+	path := filepath.Join(t.TempDir(), config.Path)
+	if err := os.WriteFile(path, []byte("lang: en\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	before := snapshot([]string{path})
+	if len(before) != 1 {
+		t.Fatalf("got %d entries for a watched file, want 1", len(before))
+	}
+	if err := os.WriteFile(path, []byte("lang: ja\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	if sameSnapshot(before, snapshot([]string{path})) {
+		t.Fatal("expected the snapshot to change after editing the watched file")
+	}
+}
+
+func TestApplyConfigPicksUpALanguageSwitch(t *testing.T) {
+	path := filepath.Join(t.TempDir(), config.Path)
+	if err := os.WriteFile(path, []byte("lang: ja\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	b := &builder.Builder{}
+	applyConfig(b, path)
+	if b.Lang != i18n.Ja {
+		t.Fatalf("lang = %q, want %q", b.Lang, i18n.Ja)
+	}
+}
+
+// A half-typed config is the normal state of a file being edited, so the
+// running server keeps the language it last built with instead of tearing the
+// preview down over it.
+func TestApplyConfigKeepsTheLastGoodLanguage(t *testing.T) {
+	path := filepath.Join(t.TempDir(), config.Path)
+	if err := os.WriteFile(path, []byte("lang: [ja\n"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	b := &builder.Builder{Lang: i18n.Ja}
+	applyConfig(b, path)
+	if b.Lang != i18n.Ja {
+		t.Fatalf("lang = %q, want the last good %q", b.Lang, i18n.Ja)
 	}
 }
