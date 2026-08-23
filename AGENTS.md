@@ -26,7 +26,7 @@ The livt repository's language is not a rule livt imposes. The skills say prose 
 Two consequences worth stating:
 
 - Quoting the livt repository inside English text keeps the Japanese verbatim. A commit body naming a story map writes 協働ディスカバリー, not a translation of it.
-- What livt renders *of itself* — nav labels, headings, empty states — is English here, set by `lang: en` in [livt.yaml](livt.yaml). That is this repository's choice, not a property of livt: the chrome has one catalog per language in `internal/i18n/`, and a message added to one is owed to all. The Japanese on a livt site belongs to the livt repository being rendered, not to the tool.
+- What livt renders *of itself* — nav labels, headings, empty states — follows `lang:` in [livt.yaml](livt.yaml), which this repository sets to `ja`, matching the artifacts the site renders. That is a per-repository setting and not a property of livt, whose own default is `en`. So a string the site shows is never a literal in a template or in `internal/domain/`: it goes in `internal/i18n/en.go` and is owed a translation in `ja.go`, and the templates reach it with `{{t "…"}}`.
 
 [CONTRIBUTING.md](CONTRIBUTING.md) welcomes issues and pull requests "in English or Japanese". That is an invitation to human contributors, and it stands. The rules above govern agents working in this repo.
 

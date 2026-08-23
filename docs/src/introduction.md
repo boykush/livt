@@ -20,3 +20,5 @@ Collaborative outcomes evolve alongside the product as living text.
 ## Live Demo
 
 livt dogfoods itself: its own discovery artifacts — stories, story maps, example mappings, and ubiquitous language — are published with `livt build` as a [live demo](https://boykush.github.io/livt/demo/). It shows exactly what the guides below describe.
+
+The demo reads in Japanese, which is what `lang: ja` in its [livt.yaml](reference/configuration.md) does: this repository's artifacts are written in Japanese, so the site is framed to match them. livt itself defaults to English — the screenshots in these guides show that default.

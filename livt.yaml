@@ -1,4 +1,5 @@
-# Explicit rather than defaulted: this repository's prose is Japanese while the
-# chrome stays English, because what livt renders of itself belongs to the tool
-# rather than to the repository being rendered (AGENTS.md, "Language").
-lang: en
+# The site renders this repository, and this repository's artifacts are
+# Japanese — a reader of 実例マッピング boards should not have to read them
+# through English furniture. livt's default is en; this is a per-repository
+# choice, not a property of the tool (AGENTS.md, "Language").
+lang: ja
