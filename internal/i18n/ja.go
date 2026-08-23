@@ -1,24 +1,24 @@
 package i18n
 
-// ja mirrors en key for key. The wording follows this repository's own
-// ubiquitous language (実例マッピング, オポチュニティ, 疑問), so a Japanese
-// site reads in the same words the boards on it are written in.
+// ja mirrors en key for key, in the words the Japanese practice uses: 具体例
+// and 疑問点 for the stickies, and ユーザーストーリーマップ for the board —
+// マッピング names the practice, and what livt holds is what it produced.
+// These are also this repository's ubiquitous language; the two are one
+// vocabulary and must not drift apart.
 var ja = Catalog{
 	"lang.code": "ja",
 
 	"nav.example-mappings": "実例マッピング",
-	"nav.story-maps":       "ストーリーマップ",
-	"nav.stories":          "ストーリー",
+	"nav.story-maps":       "ユーザーストーリーマップ",
+	"nav.stories":          "ユーザーストーリー",
 	"nav.ubiquitous":       "ユビキタス言語",
 	"nav.tasks":            "タスク",
-	"nav.tagline-1":        "ボードで協働する。",
-	"nav.tagline-2":        "テキストで生かし続ける。",
 
-	"label.story":           "ストーリー",
+	"label.story":           "ユーザーストーリー",
 	"label.rule":            "ルール",
-	"label.example":         "実例",
-	"label.question":        "疑問",
-	"label.questions":       "疑問",
+	"label.example":         "具体例",
+	"label.question":        "疑問点",
+	"label.questions":       "疑問点",
 	"label.opportunity":     "オポチュニティ",
 	"label.activity":        "アクティビティ",
 	"label.step":            "ステップ",
@@ -31,14 +31,14 @@ var ja = Catalog{
 	"badge.copied":    "✓ コピーしました",
 
 	"empty.example-mappings": "実例マッピングはまだありません。",
-	"empty.story-maps":       "ストーリーマップはまだありません。",
-	"empty.stories":          "ストーリーが見つかりません。",
+	"empty.story-maps":       "ユーザーストーリーマップはまだありません。",
+	"empty.stories":          "ユーザーストーリーが見つかりません。",
 	"empty.terms":            "用語が見つかりません。",
 
-	"tasks.questions":                "未解決の疑問",
+	"tasks.questions":                "未解決の疑問点",
 	"tasks.questions-hint":           "会話で閉じる",
-	"tasks.questions-empty":          "未解決の疑問はありません。",
-	"tasks.questions-empty-filtered": "このオポチュニティに未解決の疑問はありません。",
+	"tasks.questions-empty":          "未解決の疑問点はありません。",
+	"tasks.questions-empty-filtered": "このオポチュニティに未解決の疑問点はありません。",
 	"tasks.rules":                    "未自動化のルール",
 	"tasks.rules-hint":               "テストで閉じる",
 	"tasks.rules-empty":              "すべてのルールが自動化されています。",
@@ -57,7 +57,7 @@ var ja = Catalog{
 	"mapping.automated-title":  "テストで自動化済み",
 	"nav.opportunities":        "オポチュニティ",
 
-	"label.story-map":          "ストーリーマップ",
+	"label.story-map":          "ユーザーストーリーマップ",
 	"label.opportunity-canvas": "オポチュニティキャンバス",
 
 	"empty.opportunities":      "オポチュニティはまだありません。",

@@ -11,8 +11,6 @@ var en = Catalog{
 	"nav.stories":          "Stories",
 	"nav.ubiquitous":       "Ubiquitous Language",
 	"nav.tasks":            "Tasks",
-	"nav.tagline-1":        "Collaborate on board.",
-	"nav.tagline-2":        "Make it living in text.",
 
 	// Sticky kinds, shared by the board legends, the filter bars and the
 	// chips — one word each, so the same key serves wherever it appears.
