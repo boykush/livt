@@ -21,10 +21,10 @@ rules:
       - id: EX-02
         name: 別の実装リポジトリへの起票は、既存の紐づけがあっても妨げない
   - id: R-04
-    name: Issue本文はルール・実例の本文とlivtリポジトリへのバックポインタを運ぶ
+    name: Issue本文はルール・具体例の本文とlivtリポジトリへのバックポインタを運ぶ
     examples:
       - id: EX-01
-        name: 本文にルール名と実例の一覧を含む
+        name: 本文にルール名と具体例の一覧を含む
       - id: EX-02
         name: バックポインタとしてstory-key・rule-idと、リビングドキュメントのルールアンカー（#rule-{ID}）へのリンクを含む
       - id: EX-03
@@ -80,7 +80,7 @@ rules:
     name: Issue本文の一次参照はlivt URIで、デプロイ済みURLは補助にとどめる
     examples:
       - id: EX-01
-        name: ルール・実例のlivt URIをIssue本文に載せる
+        name: ルール・具体例のlivt URIをIssue本文に載せる
       - id: EX-02
         name: 人が踏めるHTTPリンクは併記してよいが、一次はlivt URI
       - id: EX-03

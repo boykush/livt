@@ -5,9 +5,9 @@ rules:
       - id: EX-01
         name: ルールは livt://mapping/{story-key}/rule/{rule-id}
       - id: EX-02
-        name: 実例は livt://mapping/{story-key}/rule/{rule-id}/example/{example-id}（実例IDはルール内採番のため、ルールを含める）
+        name: 具体例は livt://mapping/{story-key}/rule/{rule-id}/example/{example-id}（具体例IDはルール内採番のため、ルールを含める）
       - id: EX-03
-        name: 疑問は livt://mapping/{story-key}/question/{question-id}
+        name: 疑問点は livt://mapping/{story-key}/question/{question-id}
       - id: EX-04
         name: 裸のR-02は10個のマッピング全部に存在し、単体ではどのマッピングか復元できない
     automated: true
@@ -25,7 +25,7 @@ rules:
     name: どの付箋も自分のIDを示し、そのリンクをコピーできる
     examples:
       - id: EX-01
-        name: ルール・実例・疑問の各カード右下にIDが薄字で出る
+        name: ルール・具体例・疑問点の各カード右下にIDが薄字で出る
       - id: EX-02
         name: クリックでコピーされるのはデプロイ済みURL
       - id: EX-03
@@ -35,7 +35,7 @@ rules:
     name: livt URIはCLIから解決できる
     examples:
       - id: EX-01
-        name: ルール・実例・疑問・ストーリー・ストーリーマップ・用語のいずれも解決できる
+        name: ルール・具体例・疑問点・ストーリー・ストーリーマップ・用語のいずれも解決できる
       - id: EX-02
         name: 出力はMCPのリソース読み出しと同じJSON形状
       - id: EX-03
@@ -59,12 +59,12 @@ rules:
       - id: EX-01
         name: R-01/R-02/R-03からR-03を退役させても、次のルールはR-04
       - id: EX-02
-        name: ルール・実例・疑問のいずれも同じ規則
+        name: ルール・具体例・疑問点のいずれも同じ規則
   - id: R-07
     name: 一度使われたIDは、指す対象を変えない
     examples:
       - id: EX-01
-        name: 実例を別のルールへ付け替えるとIDが変わるので、外部参照済みの実例は付け替えない
+        name: 具体例を別のルールへ付け替えるとIDが変わるので、外部参照済みの具体例は付け替えない
       - id: EX-02
         name: 再転記でも既存のIDを維持する
       - id: EX-03

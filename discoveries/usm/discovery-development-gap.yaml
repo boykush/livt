@@ -61,7 +61,7 @@ activities:
       - key: trace-test-to-rule
         name: テストからルールを辿る
         stories:
-          - name: テストからルール・実例へ辿る
+          - name: テストからルール・具体例へ辿る
             key: trace-test-to-rule
             release: reflect-status
       - key: show-status-rollup

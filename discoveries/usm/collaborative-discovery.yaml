@@ -53,9 +53,9 @@ activities:
       - key: discover-rules
         name: ルールを発見する
       - key: illustrate-examples
-        name: 実例で示す
+        name: 具体例で示す
       - key: capture-questions
-        name: 疑問を記録する
+        name: 疑問点を記録する
       - key: align-language
         name: 言葉を揃える
         stories:
@@ -95,7 +95,7 @@ activities:
           - name: ルール単位の細かいPRで実例マッピングを更新する
             key: update-example-mapping-per-rule
       - key: follow-up-open-questions
-        name: 未解決の疑問を追う
+        name: 未解決の疑問点を追う
         stories:
-          - name: 未解決の疑問を横断で見渡す
+          - name: 未解決の疑問点を横断で見渡す
             key: overview-open-questions
