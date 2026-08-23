@@ -38,7 +38,7 @@ func (b *Builder) opportunityIndex() (map[string]*domain.Opportunity, error) {
 // opportunity chip meant before opportunities became files of their own.
 func mapOpportunity(sm *domain.StoryMap, index map[string]*domain.Opportunity) opportunityRef {
 	if o, ok := index[sm.Key]; ok {
-		return opportunityRef{Name: o.Name, Path: "../" + uri.OpportunityPage(o.Key.Value)}
+		return opportunityRef{Name: o.DisplayName(), Path: "../" + uri.OpportunityPage(o.Key.Value)}
 	}
 	return opportunityRef{Name: sm.Name, Path: "../" + uri.StoryMapPage(sm.Name)}
 }
@@ -71,7 +71,7 @@ func (b *Builder) buildOpportunities(mapsByKey map[string][]storyMapRef) ([]oppo
 
 		tiles = append(tiles, opportunityTile{
 			Key:       o.Key.Value,
-			Name:      o.Name,
+			Name:      o.DisplayName(),
 			Statement: o.Body,
 			HasCanvas: canvasPath != "",
 			StoryMaps: rootRelativeMaps(mapsByKey[o.Key.Value]),
@@ -111,7 +111,7 @@ func (b *Builder) buildOpportunityCanvas(o *domain.Opportunity) error {
 	defer f.Close()
 	if err := renderOpportunityCanvas(f, opportunityCanvasView{
 		OpportunityKey:  o.Key.Value,
-		OpportunityName: o.Name,
+		OpportunityName: o.DisplayName(),
 		Panels:          canvas.Panels(),
 		Ubiquitous:      b.resolveTermCards(canvas.Ubiquitous),
 	}); err != nil {

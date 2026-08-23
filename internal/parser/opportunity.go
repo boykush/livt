@@ -25,18 +25,6 @@ func ParseOpportunity(path string) (*domain.Opportunity, error) {
 	}, nil
 }
 
-// FindOpportunityByKey falls back to a placeholder named after the key, the
-// same way FindStoryByKey does: a board referencing an opportunity that is not
-// committed yet should still render the reference rather than fail the build.
-func FindOpportunityByKey(opportunitiesDir string, key domain.OpportunityKey) (*domain.Opportunity, error) {
-	path := filepath.Join(opportunitiesDir, key.Value+".md")
-	opportunity, err := ParseOpportunity(path)
-	if err != nil {
-		return &domain.Opportunity{Key: key, Name: key.Value}, nil
-	}
-	return opportunity, nil
-}
-
 func ParseAllOpportunities(opportunitiesDir string) ([]*domain.Opportunity, error) {
 	files, err := filepath.Glob(filepath.Join(opportunitiesDir, "*.md"))
 	if err != nil {

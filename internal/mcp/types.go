@@ -429,7 +429,7 @@ func (c Config) toOpportunityJSON(o *domain.Opportunity) (opportunityJSON, error
 	for _, m := range o.Meta {
 		meta = append(meta, metaFieldJSON{Key: m.Key, Value: m.Value})
 	}
-	out := opportunityJSON{Key: o.Key.Value, Name: o.Name, Statement: o.Body, Meta: meta}
+	out := opportunityJSON{Key: o.Key.Value, Name: o.DisplayName(), Statement: o.Body, Meta: meta}
 	if c.hasOpportunityCanvas(o.Key.Value) {
 		out.CanvasURI = uri.OpportunityCanvas(o.Key.Value)
 	}

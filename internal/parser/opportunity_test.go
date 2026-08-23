@@ -4,8 +4,6 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
-
-	"github.com/boykush/livt/internal/domain"
 )
 
 func TestParseOpportunityReadsNameStatementAndMeta(t *testing.T) {
@@ -30,18 +28,6 @@ func TestParseOpportunityReadsNameStatementAndMeta(t *testing.T) {
 	}
 	if len(o.Meta) != 1 || o.Meta[0].Key != "repos" || o.Meta[0].Value != "boykush/livt" {
 		t.Fatalf("got meta %+v", o.Meta)
-	}
-}
-
-// An uncommitted opportunity degrades to a placeholder rather than failing the
-// build, mirroring FindStoryByKey.
-func TestFindOpportunityByKeyFallsBackToThePlaceholder(t *testing.T) {
-	o, err := FindOpportunityByKey(t.TempDir(), domain.OpportunityKey{Value: "missing"})
-	if err != nil {
-		t.Fatal(err)
-	}
-	if o.Name != "missing" || o.Body != "" {
-		t.Fatalf("got %+v, want a placeholder named after the key", o)
 	}
 }
 

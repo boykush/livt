@@ -11,3 +11,14 @@ type Opportunity struct {
 	Body string
 	Meta []MetaField
 }
+
+// DisplayName is what a page shows for the opportunity, falling back to the
+// key for the same reason Story.DisplayName does: every surface naming one is
+// a heading, a filter chip, or a link label, and a blank one leaves the reader
+// nothing to read and the filter an axis nobody can pick.
+func (o *Opportunity) DisplayName() string {
+	if o.Name != "" {
+		return o.Name
+	}
+	return o.Key.Value
+}

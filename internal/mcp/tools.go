@@ -228,7 +228,7 @@ func (c Config) opportunities() ([]opportunitySummaryJSON, error) {
 	for _, o := range all {
 		summary := opportunitySummaryJSON{
 			Key:       o.Key.Value,
-			Name:      o.Name,
+			Name:      o.DisplayName(),
 			URI:       uri.Opportunity(o.Key.Value),
 			Statement: o.Body,
 		}

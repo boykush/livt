@@ -183,6 +183,36 @@ func TestBuildDropsPagesForRemovedOpportunities(t *testing.T) {
 	}
 }
 
+// An opportunity file need not carry a name, and every surface naming one is a
+// heading, a filter chip, or a link label. It falls back to the key rather than
+// rendering blank — the same call Story.DisplayName makes.
+func TestNamelessOpportunityFallsBackToItsKey(t *testing.T) {
+	b := outDirsBuilder(t)
+	writeFile(t, filepath.Join(b.OpportunitiesDir, "demo.md"), "一文だけの本文\n")
+	writeFile(t, filepath.Join(b.USMDir, "demo.yaml"),
+		"name: デモマップ\nactivities:\n  - key: a\n    name: A\n    steps:\n      - key: s\n        name: S\n        stories:\n          - key: card\n            name: カード\n")
+
+	opportunities, err := b.opportunityIndex()
+	if err != nil {
+		t.Fatal(err)
+	}
+	built, err := b.buildStoryMaps(opportunities)
+	if err != nil {
+		t.Fatal(err)
+	}
+	// A blank chip would be an unpickable filter axis, not just an ugly one.
+	if refs := built.StoryOpportunities["card"]; len(refs) != 1 || refs[0].Name != "demo" {
+		t.Fatalf("chip = %+v, want it to fall back to the key", refs)
+	}
+
+	if _, err := b.buildOpportunities(built.MapsByOpportunity); err != nil {
+		t.Fatal(err)
+	}
+	if html := readFile(t, filepath.Join(b.OutDir, "opportunity", "demo.html")); !strings.Contains(html, ">demo</h1>") {
+		t.Error("the opportunity page heading is blank")
+	}
+}
+
 // outDirsBuilder is emptyDirsBuilder with the per-resource output directories
 // laid out, for a test that drives one build step rather than a whole Build.
 func outDirsBuilder(t *testing.T) Builder {
