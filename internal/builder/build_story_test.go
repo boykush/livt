@@ -6,6 +6,7 @@ import (
 	"testing"
 
 	"github.com/boykush/livt/internal/domain"
+	"github.com/boykush/livt/internal/i18n"
 )
 
 // livt://mapping/filter-lists-by-opportunity/rule/R-02 on the story page: the
@@ -20,7 +21,7 @@ func TestRenderStoryLinksEachOpportunityByName(t *testing.T) {
 	}
 
 	var buf bytes.Buffer
-	if err := renderStory(&buf, story, "", opportunities); err != nil {
+	if err := renderStory(&buf, i18n.En, story, "", opportunities); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()
@@ -43,7 +44,7 @@ func TestRenderStoryWithoutOpportunitiesShowsNoMapLink(t *testing.T) {
 	story := &domain.Story{Key: domain.StoryKey{Value: "orphan"}, Name: "Orphan"}
 
 	var buf bytes.Buffer
-	if err := renderStory(&buf, story, "", nil); err != nil {
+	if err := renderStory(&buf, i18n.En, story, "", nil); err != nil {
 		t.Fatal(err)
 	}
 	if strings.Contains(buf.String(), "../story-map/") {
@@ -57,7 +58,7 @@ func TestRenderStoryWithoutNameShowsTheKey(t *testing.T) {
 	story := &domain.Story{Key: domain.StoryKey{Value: "unnamed-story"}}
 
 	var buf bytes.Buffer
-	if err := renderStory(&buf, story, "", nil); err != nil {
+	if err := renderStory(&buf, i18n.En, story, "", nil); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()

@@ -25,5 +25,5 @@ func (b *Builder) buildStory(path string, story *domain.Story, mappingPath strin
 		return err
 	}
 	defer f.Close()
-	return renderStory(f, story, mappingPath, opportunities)
+	return renderStory(f, b.Lang, story, mappingPath, opportunities)
 }

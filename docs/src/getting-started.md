@@ -41,3 +41,15 @@ livt serve
    Open **Stories** to find the story you just created:
 
 ![Stories list and sidebar navigation](images/stories-index.png)
+
+The site is rendered in English by default. To read it in Japanese instead, add
+`livt.yaml` beside your `stories/` directory:
+
+```yaml
+lang: ja
+```
+
+`livt serve` watches the file, so the open page reloads in the new language.
+Only the labels livt renders change — your stories, rules and terms are shown as
+you wrote them. See [Configuration](reference/configuration.md).
+

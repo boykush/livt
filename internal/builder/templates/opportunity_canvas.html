@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{t "lang.code"}}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{.OpportunityName}} - Opportunity Canvas - livt</title>
+<title>{{.OpportunityName}} - {{t "label.opportunity-canvas"}} - livt</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   /* One sheet, not a stack of cards: the three panels are equal-height columns
@@ -35,11 +35,11 @@
 <main class="max-w-[1500px] mx-auto px-6 py-6">
 <div class="flex items-baseline gap-4 flex-wrap mb-3">
   <h1 class="text-lg font-bold text-gray-900">{{.OpportunityName}}</h1>
-  <span class="text-xs font-semibold uppercase tracking-wide text-orange-600">Opportunity Canvas</span>
+  <span class="text-xs font-semibold uppercase tracking-wide text-orange-600">{{t "label.opportunity-canvas"}}</span>
   <div class="ml-auto flex items-center gap-4 text-[11px] text-gray-500">
-    <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-rose-100 border border-rose-300 rounded-sm"></span>Verifiable facts</span>
-    <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-sky-100 border border-sky-300 rounded-sm"></span>Solution</span>
-    <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-emerald-100 border border-emerald-300 rounded-sm"></span>Assumptions about value</span>
+    <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-rose-100 border border-rose-300 rounded-sm"></span>{{t "canvas.zone.facts"}}</span>
+    <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-sky-100 border border-sky-300 rounded-sm"></span>{{t "canvas.zone.solution"}}</span>
+    <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-emerald-100 border border-emerald-300 rounded-sm"></span>{{t "canvas.zone.value"}}</span>
   </div>
 </div>
 
@@ -62,7 +62,7 @@ order they are filled in.
 
 {{if .Ubiquitous}}
 <div class="mt-8">
-  <div class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">Ubiquitous Language</div>
+  <div class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">{{t "nav.ubiquitous"}}</div>
   <div class="flex flex-wrap gap-2">
   {{range .Ubiquitous}}{{template "term-card" .}}{{end}}
   </div>

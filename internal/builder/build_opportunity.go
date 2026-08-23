@@ -88,7 +88,7 @@ func (b *Builder) renderOpportunityPage(path string, o *domain.Opportunity, canv
 		return err
 	}
 	defer f.Close()
-	return renderOpportunity(f, opportunityView{
+	return renderOpportunity(f, b.Lang, opportunityView{
 		Opportunity: o,
 		Meta:        metaFieldViews(o.Meta),
 		CanvasPath:  canvasPath,
@@ -109,7 +109,7 @@ func (b *Builder) buildOpportunityCanvas(o *domain.Opportunity) error {
 		return err
 	}
 	defer f.Close()
-	if err := renderOpportunityCanvas(f, opportunityCanvasView{
+	if err := renderOpportunityCanvas(f, b.Lang, opportunityCanvasView{
 		OpportunityKey:  o.Key.Value,
 		OpportunityName: o.DisplayName(),
 		Panels:          canvas.Panels(),

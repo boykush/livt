@@ -19,13 +19,15 @@ Two languages, split by what the text *is* — not by who wrote it.
 - `stories/*.md` — `name:` and the user-story body
 - `discoveries/**/*.yaml` — `name:` and `text:`
 - `ubiquitous/*.md` — `name:` and the definition
+- `internal/i18n/ja.go` — the Japanese chrome catalog. Go code holding Japanese by design; its keys, like every identifier, stay English
 
 The livt repository's language is not a rule livt imposes. The skills say prose follows the language the user is speaking — see any `## Language` section under `plugins/discovery-facilitator/skills/`. *This* livt repository happens to be Japanese, and stays that way for consistency.
 
 Two consequences worth stating:
 
 - Quoting the livt repository inside English text keeps the Japanese verbatim. A commit body naming a story map writes 協働ディスカバリー, not a translation of it.
-- What livt renders *of itself* — nav labels, headings, empty states — is English. The Japanese on a livt site belongs to the livt repository being rendered, not to the tool.
+- What livt renders *of itself* — nav labels, headings, empty states — follows `lang:` in [livt.yaml](livt.yaml), which this repository sets to `ja`, matching the artifacts the site renders. That is a per-repository setting and not a property of livt, whose own default is `en`. So a string the site shows is never a literal in a template or in `internal/domain/`: it goes in `internal/i18n/en.go` and is owed a translation in `ja.go`, and the templates reach it with `{{t "…"}}`. The one exception is the wordmark and its tagline — livt's own name and slogan, English wherever livt is named.
+- `ja.go` and `ubiquitous/` name the same things and must agree. A term renamed in one is renamed in the other, or a board ends up labelled 具体例 above a glossary that calls it 実例 — the drift ubiquitous language exists to prevent, on the site whose job is to show it.
 
 [CONTRIBUTING.md](CONTRIBUTING.md) welcomes issues and pull requests "in English or Japanese". That is an invitation to human contributors, and it stands. The rules above govern agents working in this repo.
 

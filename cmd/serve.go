@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"github.com/boykush/livt/internal/config"
 	"github.com/boykush/livt/internal/server"
 	"github.com/spf13/cobra"
 )
@@ -17,6 +18,10 @@ var serveCmd = &cobra.Command{
 	Use:   "serve",
 	Short: "Build and start a local server to view artifacts as sticky notes",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		return server.Serve(newBuilder(outDir), port)
+		b, err := newBuilder(outDir)
+		if err != nil {
+			return err
+		}
+		return server.Serve(b, port, config.Path)
 	},
 }

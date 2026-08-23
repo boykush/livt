@@ -5,9 +5,9 @@
 Build artifacts and start a local server.
 
 While the server is running, livt watches the input directories
-(`discoveries/example-mappings`, `stories`, `discoveries/usm`, and `ubiquitous`).
-When a file changes, livt rebuilds and reloads the page in the browser
-automatically, so you can preview refinements while editing.
+(`discoveries/example-mappings`, `stories`, `discoveries/usm`, and `ubiquitous`)
+along with `livt.yaml`. When a file changes, livt rebuilds and reloads the page
+in the browser automatically, so you can preview refinements while editing.
 
 ```bash
 livt serve [flags]
@@ -29,6 +29,9 @@ livt build [flags]
 | Flag | Short | Default | Description |
 |------|-------|---------|-------------|
 | `--out` | `-o` | `dist` | Output directory |
+
+Both commands read [`livt.yaml`](./configuration.md) from the directory they run
+in, which is where the site's language is set.
 
 ## `livt mcp`
 

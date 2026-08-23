@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{t "lang.code"}}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>livt - Opportunities</title>
+<title>livt - {{t "nav.opportunities"}}</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   /* iframe preview: crop the page header so only the canvas shows. The canvas is
@@ -19,7 +19,7 @@
 {{template "sidebar" .Sidebar}}
 <div class="flex-1 min-w-0">
   <header class="bg-white border-b border-gray-200 px-8 py-4">
-    <h2 class="text-lg font-semibold text-gray-800">Opportunities</h2>
+    <h2 class="text-lg font-semibold text-gray-800">{{t "nav.opportunities"}}</h2>
   </header>
   <main class="px-8 py-8 space-y-6 max-w-4xl">
   {{range .Opportunities}}
@@ -44,11 +44,11 @@
         </div>
       </a>
       {{else}}
-      <p class="px-4 pb-4 text-xs text-gray-400">No opportunity canvas yet.</p>
+      <p class="px-4 pb-4 text-xs text-gray-400">{{t "empty.opportunity-canvas"}}</p>
       {{end}}
     </div>
   {{else}}
-    <p class="text-gray-400 text-sm">No opportunities yet.</p>
+    <p class="text-gray-400 text-sm">{{t "empty.opportunities"}}</p>
   {{end}}
   </main>
 </div>

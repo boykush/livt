@@ -51,7 +51,7 @@ func (b *Builder) buildGlossary() error {
 	}
 	defer f.Close()
 
-	if err := renderGlossary(f, glossaryView{
+	if err := renderGlossary(f, b.Lang, glossaryView{
 		Sidebar:  sb,
 		Terms:    cards,
 		Contexts: contexts,

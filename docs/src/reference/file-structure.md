@@ -4,6 +4,7 @@
 
 ```
 project-root/
+  livt.yaml                               # Site config (optional)
   opportunities/
     {opportunity-key}.md                  # Opportunity files
   stories/
@@ -21,6 +22,7 @@ project-root/
       {term-key}.md                       # Terms scoped to one context
 ```
 
+- `livt.yaml` configures the site build — see [Configuration](./configuration.md). Without it, every setting takes its default
 - Opportunity keys, like story keys, are derived from filenames (without extension) and must be kebab-case
 - An [opportunity canvas](../guides/opportunities.md#the-opportunity-canvas) filename must match an opportunity key to link them
 - A story map filename that matches an opportunity key marks the map as the journey mapped for that opportunity. A map whose key matches no opportunity stands in as its own, named by the map — which is how every livt repository behaved before opportunities were files

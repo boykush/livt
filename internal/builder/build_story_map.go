@@ -233,5 +233,5 @@ func (b *Builder) buildStoryMap(path string, view storyMapView) error {
 		return err
 	}
 	defer f.Close()
-	return renderStoryMap(f, view)
+	return renderStoryMap(f, b.Lang, view)
 }

@@ -1,6 +1,7 @@
 package mcp
 
 import (
+	"strings"
 	"testing"
 
 	"github.com/boykush/livt/internal/uri"
@@ -57,6 +58,11 @@ func TestOpportunityCanvasResolvesEveryBoxWithItsPrompt(t *testing.T) {
 		if b.Name == "" || b.Prompt == "" {
 			t.Errorf("box %q is missing its name or prompt", b.Key)
 		}
+		// The text is looked up by key, and a lookup that misses stands the key
+		// in for it — which reads as a heading right up until someone reads it.
+		if b.Name == "canvas."+b.Key || b.Prompt == "canvas."+b.Key+".prompt" {
+			t.Errorf("box %q has no catalog entry; its key stood in for the text", b.Key)
+		}
 		// An unanswered box serializes as [] rather than null, so a consumer
 		// reads it as the empty box it is.
 		if b.Items == nil {
@@ -94,4 +100,29 @@ func TestOpportunityCanvasResolvesWithoutItsOpportunityFile(t *testing.T) {
 	if _, err := s.cfg.opportunity("orphan"); err == nil {
 		t.Fatal("expected the opportunity itself to be not found")
 	}
+}
+
+// The site is built in whatever language livt.yaml names; this payload is not.
+// Its headings are a contract read by agents, and a field that changed language
+// with a site setting would not be one.
+func TestOpportunityCanvasBoxesStayEnglish(t *testing.T) {
+	s := newTestServer(t)
+	canvas, err := s.cfg.opportunityCanvas("demo-map")
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for _, b := range s.cfg.toOpportunityCanvasJSON(canvas).Boxes {
+		if b.Key != "problems" {
+			continue
+		}
+		if b.Name != "Problems" {
+			t.Errorf("name = %q, want the English heading", b.Name)
+		}
+		if !strings.HasPrefix(b.Prompt, "What problems do prospective users") {
+			t.Errorf("prompt = %q, want the English question", b.Prompt)
+		}
+		return
+	}
+	t.Fatal(`the canvas has no "problems" box`)
 }

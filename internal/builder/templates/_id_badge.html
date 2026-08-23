@@ -6,7 +6,7 @@ a bare "R-01" is only a label, and a touch device never hovers. It stays
 monochrome and tinted to its sticky because a dense board carries 30-40 of
 these, and a full-colour mark on each would outshout the tints themselves.
 */}}
-<a href="#{{.Anchor}}" data-copy-link title="Copy link"
+<a href="#{{.Anchor}}" data-copy-link title="{{t "badge.copy-link"}}"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal {{.Tint}} hover:underline cursor-pointer select-none">#{{.Label}}</a>
 {{end}}
 
@@ -18,7 +18,7 @@ these, and a full-colour mark on each would outshout the tints themselves.
       var url = location.href.split('#')[0] + a.getAttribute('href');
       navigator.clipboard.writeText(url).then(function () {
         var label = a.textContent;
-        a.textContent = '✓ Copied';
+        a.textContent = {{t "badge.copied"}};
         setTimeout(function () { a.textContent = label; }, 1200);
       });
     });

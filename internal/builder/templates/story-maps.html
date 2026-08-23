@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{t "lang.code"}}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>livt - Story Maps</title>
+<title>livt - {{t "nav.story-maps"}}</title>
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   /* iframe preview: crop the page header so only the board shows */
@@ -17,7 +17,7 @@
 {{template "sidebar" .Sidebar}}
 <div class="flex-1 min-w-0">
   <header class="bg-white border-b border-gray-200 px-8 py-4">
-    <h2 class="text-lg font-semibold text-gray-800">Story Maps</h2>
+    <h2 class="text-lg font-semibold text-gray-800">{{t "nav.story-maps"}}</h2>
   </header>
   <main class="px-8 py-8 space-y-6">
   {{range .StoryMaps}}
@@ -33,7 +33,7 @@
       </div>
     </a>
   {{else}}
-    <p class="text-gray-400 text-sm">No story maps yet.</p>
+    <p class="text-gray-400 text-sm">{{t "empty.story-maps"}}</p>
   {{end}}
   </main>
 </div>

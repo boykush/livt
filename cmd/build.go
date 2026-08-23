@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/boykush/livt/internal/builder"
+	"github.com/boykush/livt/internal/config"
 	"github.com/spf13/cobra"
 )
 
@@ -15,9 +16,14 @@ func init() {
 	rootCmd.AddCommand(buildCmd)
 }
 
-// newBuilder lays out the livt repository's input directories. build and serve
-// share it so the two cannot drift into reading different places.
-func newBuilder(outDir string) *builder.Builder {
+// newBuilder lays out the livt repository's input directories and reads
+// livt.yaml beside them. build and serve share it so the two cannot drift into
+// reading different places, or into building the site in different languages.
+func newBuilder(outDir string) (*builder.Builder, error) {
+	cfg, err := config.Load(config.Path)
+	if err != nil {
+		return nil, err
+	}
 	return &builder.Builder{
 		OpportunitiesDir: "opportunities",
 		CanvasesDir:      filepath.Join("discoveries", "opportunity-canvases"),
@@ -26,14 +32,19 @@ func newBuilder(outDir string) *builder.Builder {
 		USMDir:           filepath.Join("discoveries", "usm"),
 		UbiquitousDir:    "ubiquitous",
 		OutDir:           outDir,
-	}
+		Lang:             cfg.Lang,
+	}, nil
 }
 
 var buildCmd = &cobra.Command{
 	Use:   "build",
 	Short: "Build static HTML from artifacts",
 	RunE: func(cmd *cobra.Command, args []string) error {
+		b, err := newBuilder(outDir)
+		if err != nil {
+			return err
+		}
 		fmt.Printf("Building to %s/\n", outDir)
-		return newBuilder(outDir).Build()
+		return b.Build()
 	},
 }

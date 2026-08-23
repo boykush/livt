@@ -1,12 +1,14 @@
 package builder
 
 import (
+	gohtml "html"
 	"os"
 	"path/filepath"
 	"strings"
 	"testing"
 
 	"github.com/boykush/livt/internal/domain"
+	"github.com/boykush/livt/internal/i18n"
 )
 
 const demoCanvasYAML = "canvas:\n" +
@@ -28,12 +30,16 @@ func TestRenderOpportunityCanvasLaysOutTheThreeZones(t *testing.T) {
 
 	// All ten boxes are on the sheet, unanswered ones included: a blank box is
 	// the record of a question the opportunity has not answered.
+	// Headings are compared escaped: one of them is Patton's "Customers &
+	// Users", and the template is right to render the ampersand as &amp;.
+	en := i18n.Of(i18n.En)
 	for _, box := range (&domain.OpportunityCanvas{}).Boxes() {
-		if !strings.Contains(html, box.Name) {
-			t.Errorf("box %q is missing from the canvas", box.Name)
+		name := en.Msg("canvas." + box.Key)
+		if !strings.Contains(html, gohtml.EscapeString(name)) {
+			t.Errorf("box %q is missing from the canvas", name)
 		}
 	}
-	if got := strings.Count(html, "Not filled in yet"); got != 7 {
+	if got := strings.Count(html, en.Msg("canvas.empty-box")); got != 7 {
 		t.Errorf("got %d unanswered boxes, want 7 (three of the ten are filled in)", got)
 	}
 	for _, panel := range []string{"bg-rose-50", "bg-sky-50", "bg-emerald-50"} {

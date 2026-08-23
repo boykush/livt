@@ -116,5 +116,5 @@ func (b *Builder) buildMapping(path string, em *domain.ExampleMapping, storyName
 		return err
 	}
 	defer f.Close()
-	return renderMapping(f, em, storyName, storyPath, ubiquitous)
+	return renderMapping(f, b.Lang, em, storyName, storyPath, ubiquitous)
 }

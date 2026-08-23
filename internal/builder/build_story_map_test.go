@@ -8,6 +8,7 @@ import (
 	"testing"
 
 	"github.com/boykush/livt/internal/domain"
+	"github.com/boykush/livt/internal/i18n"
 )
 
 func TestStoryMapViewRendersKeylessStoriesAsUnscopedPlainCards(t *testing.T) {
@@ -170,7 +171,7 @@ func TestStoryMapRendersActivitiesInARowWithStepsBeneath(t *testing.T) {
 	}, nil)
 
 	var buf bytes.Buffer
-	if err := renderStoryMap(&buf, view); err != nil {
+	if err := renderStoryMap(&buf, i18n.En, view); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()
@@ -236,7 +237,7 @@ func TestRenderStoryMapKeyedCardCarriesIDAnchorAndCopyLink(t *testing.T) {
 	}, nil)
 
 	var buf bytes.Buffer
-	if err := renderStoryMap(&buf, view); err != nil {
+	if err := renderStoryMap(&buf, i18n.En, view); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()
@@ -288,7 +289,7 @@ func TestRenderStoryMapKeylessCardHasNoCopyLink(t *testing.T) {
 	}, nil)
 
 	var buf bytes.Buffer
-	if err := renderStoryMap(&buf, view); err != nil {
+	if err := renderStoryMap(&buf, i18n.En, view); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()
@@ -315,7 +316,7 @@ func TestStoryMapHeaderLinksBackToStoryMapsIndex(t *testing.T) {
 	}, nil)
 
 	var buf bytes.Buffer
-	if err := renderStoryMap(&buf, view); err != nil {
+	if err := renderStoryMap(&buf, i18n.En, view); err != nil {
 		t.Fatal(err)
 	}
 	if !strings.Contains(buf.String(), `href="../story-maps.html"`) {

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="{{t "lang.code"}}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +9,7 @@
 <body class="bg-gray-50 min-h-screen">
 <header class="bg-white border-b border-gray-200">
   <div class="max-w-3xl mx-auto px-6 py-4 flex items-center gap-3">
-    <a href="../opportunities.html" class="text-sm text-gray-400 hover:text-gray-600">&larr; Opportunities</a>
+    <a href="../opportunities.html" class="text-sm text-gray-400 hover:text-gray-600">&larr; {{t "nav.opportunities"}}</a>
     <span class="text-gray-300">|</span>
     <span class="text-xl font-bold text-gray-900 tracking-tight">livt</span>
   </div>
@@ -23,7 +23,7 @@
 
   {{if .Meta}}
   <section class="mt-7">
-    <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">Metadata</h2>
+    <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">{{t "story.metadata"}}</h2>
     <dl class="space-y-2.5">
     {{range .Meta}}
       <div class="flex items-baseline gap-4">
@@ -48,11 +48,11 @@
   */}}
   {{if or .CanvasPath .StoryMaps}}
   <section class="mt-7">
-    <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">Related</h2>
+    <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">{{t "story.related"}}</h2>
     <div class="flex gap-3 flex-wrap">
     {{if .CanvasPath}}
       <a href="{{.CanvasPath}}" class="inline-flex items-center gap-1.5 bg-orange-50 text-orange-700 text-sm font-medium px-4 py-2 rounded-lg border border-orange-200 hover:bg-orange-100 transition">
-        Opportunity Canvas &rarr;
+        {{t "label.opportunity-canvas"}} &rarr;
       </a>
     {{end}}
     {{range .StoryMaps}}
@@ -66,7 +66,7 @@
 
   {{if .Opportunity.Body}}
   <section class="mt-7">
-    <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">Opportunity</h2>
+    <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">{{t "opportunity.opportunity"}}</h2>
     <div class="bg-white rounded-lg border border-gray-200 px-6 py-5">
       <p class="text-sm text-gray-700 whitespace-pre-line leading-loose">{{.Opportunity.Body}}</p>
     </div>

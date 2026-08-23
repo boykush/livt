@@ -2,6 +2,7 @@ package mcp
 
 import (
 	"github.com/boykush/livt/internal/domain"
+	"github.com/boykush/livt/internal/i18n"
 	"github.com/boykush/livt/internal/uri"
 )
 
@@ -444,12 +445,21 @@ func (c Config) toOpportunityJSON(o *domain.Opportunity) (opportunityJSON, error
 func (c Config) toOpportunityCanvasJSON(canvas *domain.OpportunityCanvas) opportunityCanvasJSON {
 	key := canvas.OpportunityKey.Value
 	boxes := make([]canvasBoxJSON, 0, 10)
+	// Headings and prompts come from the English catalog whatever language the
+	// site is built in: this payload is a contract read by agents, and a field
+	// that changed language with a site setting would not be one.
+	en := i18n.Of(i18n.En)
 	for _, b := range canvas.Boxes() {
 		items := b.Items
 		if items == nil {
 			items = []string{}
 		}
-		boxes = append(boxes, canvasBoxJSON{Key: b.Key, Name: b.Name, Prompt: b.Prompt, Items: items})
+		boxes = append(boxes, canvasBoxJSON{
+			Key:    b.Key,
+			Name:   en.Msg("canvas." + b.Key),
+			Prompt: en.Msg("canvas." + b.Key + ".prompt"),
+			Items:  items,
+		})
 	}
 	return opportunityCanvasJSON{
 		OpportunityKey:  key,

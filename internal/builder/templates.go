@@ -8,28 +8,58 @@ import (
 	"strings"
 
 	"github.com/boykush/livt/internal/domain"
+	"github.com/boykush/livt/internal/i18n"
 	"github.com/boykush/livt/internal/uri"
 )
 
 //go:embed templates/*.html
 var templateFS embed.FS
 
+// funcs are the template helpers bound to one language. Only "t" varies with
+// it; the rest are pure and shared by every set.
+func funcs(lang i18n.Lang) template.FuncMap {
+	return template.FuncMap{
+		"t":                 i18n.Of(lang).T,
+		"issueLabel":        issueLabel,
+		"filter":            newFilterView,
+		"opportunityValues": opportunityValuesJSON,
+		"contextValues":     contextValuesJSON,
+		"ruleAnchor":        uri.RuleAnchor,
+		"exampleAnchor":     uri.ExampleAnchor,
+		"questionAnchor":    uri.QuestionAnchor,
+		"storyCardAnchor":   uri.StoryCardAnchor,
+		"ruleBadge":         ruleBadge,
+		"exampleBadge":      exampleBadge,
+		"questionBadge":     questionBadge,
+		"storyBadge":        storyBadge,
+	}
+}
+
 // All templates are parsed into a single set so pages can share the
 // {{define "sidebar"}} partial in _sidebar.html.
-var tmpl = template.Must(template.New("").Funcs(template.FuncMap{
-	"issueLabel":        issueLabel,
-	"filter":            newFilterView,
-	"opportunityValues": opportunityValuesJSON,
-	"contextValues":     contextValuesJSON,
-	"ruleAnchor":        uri.RuleAnchor,
-	"exampleAnchor":     uri.ExampleAnchor,
-	"questionAnchor":    uri.QuestionAnchor,
-	"storyCardAnchor":   uri.StoryCardAnchor,
-	"ruleBadge":         ruleBadge,
-	"exampleBadge":      exampleBadge,
-	"questionBadge":     questionBadge,
-	"storyBadge":        storyBadge,
-}).ParseFS(templateFS, "templates/*.html"))
+var baseTmpl = template.Must(template.New("").Funcs(funcs(i18n.Default)).ParseFS(templateFS, "templates/*.html"))
+
+// localized holds one set per language. html/template locks a set the first
+// time it renders, so every language's "t" has to be bound into its own clone
+// up front — baseTmpl is only ever cloned from, never executed.
+var localized = localize()
+
+func localize() map[i18n.Lang]*template.Template {
+	sets := make(map[i18n.Lang]*template.Template, len(i18n.Langs))
+	for _, lang := range i18n.Langs {
+		sets[lang] = template.Must(baseTmpl.Clone()).Funcs(funcs(lang))
+	}
+	return sets
+}
+
+// templates picks the set for a language, falling back to the default for the
+// zero value so a Builder left unconfigured still renders.
+func templates(lang i18n.Lang) *template.Template {
+	if set, ok := localized[lang]; ok {
+		return set
+	}
+	return localized[i18n.Default]
+}
 
 // idBadge is a sticky's own ID rendered bottom-right by the id-badge partial.
 // Label is the ID as the livt repository numbers it, which for an example is local to
@@ -407,36 +437,36 @@ type mappingView struct {
 	Ubiquitous []termCard
 }
 
-func renderTasks(w io.Writer, view tasksView) error {
-	return tmpl.ExecuteTemplate(w, "tasks.html", view)
+func renderTasks(w io.Writer, lang i18n.Lang, view tasksView) error {
+	return templates(lang).ExecuteTemplate(w, "tasks.html", view)
 }
 
-func renderMappingsIndex(w io.Writer, view mappingsIndexView) error {
-	return tmpl.ExecuteTemplate(w, "index.html", view)
+func renderMappingsIndex(w io.Writer, lang i18n.Lang, view mappingsIndexView) error {
+	return templates(lang).ExecuteTemplate(w, "index.html", view)
 }
 
-func renderOpportunitiesIndex(w io.Writer, view opportunitiesIndexView) error {
-	return tmpl.ExecuteTemplate(w, "opportunities.html", view)
+func renderOpportunitiesIndex(w io.Writer, lang i18n.Lang, view opportunitiesIndexView) error {
+	return templates(lang).ExecuteTemplate(w, "opportunities.html", view)
 }
 
-func renderOpportunity(w io.Writer, view opportunityView) error {
-	return tmpl.ExecuteTemplate(w, "opportunity.html", view)
+func renderOpportunity(w io.Writer, lang i18n.Lang, view opportunityView) error {
+	return templates(lang).ExecuteTemplate(w, "opportunity.html", view)
 }
 
-func renderOpportunityCanvas(w io.Writer, view opportunityCanvasView) error {
-	return tmpl.ExecuteTemplate(w, "opportunity_canvas.html", view)
+func renderOpportunityCanvas(w io.Writer, lang i18n.Lang, view opportunityCanvasView) error {
+	return templates(lang).ExecuteTemplate(w, "opportunity_canvas.html", view)
 }
 
-func renderStoryMapsIndex(w io.Writer, view storyMapsIndexView) error {
-	return tmpl.ExecuteTemplate(w, "story-maps.html", view)
+func renderStoryMapsIndex(w io.Writer, lang i18n.Lang, view storyMapsIndexView) error {
+	return templates(lang).ExecuteTemplate(w, "story-maps.html", view)
 }
 
-func renderStoriesIndex(w io.Writer, view storiesIndexView) error {
-	return tmpl.ExecuteTemplate(w, "stories.html", view)
+func renderStoriesIndex(w io.Writer, lang i18n.Lang, view storiesIndexView) error {
+	return templates(lang).ExecuteTemplate(w, "stories.html", view)
 }
 
-func renderStory(w io.Writer, story *domain.Story, mappingPath string, opportunities []opportunityRef) error {
-	return tmpl.ExecuteTemplate(w, "story.html", storyView{
+func renderStory(w io.Writer, lang i18n.Lang, story *domain.Story, mappingPath string, opportunities []opportunityRef) error {
+	return templates(lang).ExecuteTemplate(w, "story.html", storyView{
 		Story:         story,
 		Meta:          metaFieldViews(story.Meta),
 		MappingPath:   mappingPath,
@@ -447,14 +477,14 @@ func renderStory(w io.Writer, story *domain.Story, mappingPath string, opportuni
 // renderMapping draws the board from the mapping's active view: a retired
 // sticky is off the wall, whichever kind it is, so the board shows what the
 // spec asks for today.
-func renderMapping(w io.Writer, em *domain.ExampleMapping, storyName, storyPath string, ubiquitous []termCard) error {
-	return tmpl.ExecuteTemplate(w, "mapping.html", mappingView{StoryName: storyName, StoryPath: storyPath, Mapping: em.Active(), Ubiquitous: ubiquitous})
+func renderMapping(w io.Writer, lang i18n.Lang, em *domain.ExampleMapping, storyName, storyPath string, ubiquitous []termCard) error {
+	return templates(lang).ExecuteTemplate(w, "mapping.html", mappingView{StoryName: storyName, StoryPath: storyPath, Mapping: em.Active(), Ubiquitous: ubiquitous})
 }
 
-func renderStoryMap(w io.Writer, view storyMapView) error {
-	return tmpl.ExecuteTemplate(w, "story_map.html", view)
+func renderStoryMap(w io.Writer, lang i18n.Lang, view storyMapView) error {
+	return templates(lang).ExecuteTemplate(w, "story_map.html", view)
 }
 
-func renderGlossary(w io.Writer, view glossaryView) error {
-	return tmpl.ExecuteTemplate(w, "glossary.html", view)
+func renderGlossary(w io.Writer, lang i18n.Lang, view glossaryView) error {
+	return templates(lang).ExecuteTemplate(w, "glossary.html", view)
 }
