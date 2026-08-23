@@ -107,11 +107,7 @@ func collectTasks(em *domain.ExampleMapping, storyName, storyPath string) taskSe
 }
 
 func (b *Builder) resolveStoryName(key domain.StoryKey) string {
-	story, err := parser.FindStoryByKey(b.StoriesDir, key)
-	if err != nil {
-		return key.Value
-	}
-	return story.Name
+	return parser.FindStoryByKey(b.StoriesDir, key).DisplayName()
 }
 
 func (b *Builder) buildMapping(path string, em *domain.ExampleMapping, storyName, storyPath string, ubiquitous []termCard) error {

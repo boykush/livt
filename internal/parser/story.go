@@ -70,13 +70,18 @@ func scalarOrJoin(n *yaml.Node) string {
 	return n.Value
 }
 
-func FindStoryByKey(storiesDir string, key domain.StoryKey) (*domain.Story, error) {
+// FindStoryByKey reads the story a mapping names, falling back to a bare keyed
+// story when there is none to read: a mapping's board stands on its own, so a
+// story page that is missing or unreadable must not stop it rendering. Telling
+// those two apart is a different job — mcp.Config.story does it, for a URI that
+// names the story itself.
+func FindStoryByKey(storiesDir string, key domain.StoryKey) *domain.Story {
 	path := filepath.Join(storiesDir, key.Value+".md")
 	story, err := ParseStory(path)
 	if err != nil {
-		return &domain.Story{Key: key, Name: key.Value}, nil
+		return &domain.Story{Key: key}
 	}
-	return story, nil
+	return story
 }
 
 func ParseAllStories(storiesDir string) ([]*domain.Story, error) {
