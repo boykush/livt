@@ -4,18 +4,22 @@ package uri
 type Kind string
 
 const (
-	KindMapping  Kind = "example mapping"
-	KindRule     Kind = "rule"
-	KindExample  Kind = "example"
-	KindQuestion Kind = "question"
-	KindStoryMap Kind = "story map"
-	KindStory    Kind = "story"
-	KindTerm     Kind = "ubiquitous language term"
+	KindMapping           Kind = "example mapping"
+	KindRule              Kind = "rule"
+	KindExample           Kind = "example"
+	KindQuestion          Kind = "question"
+	KindStoryMap          Kind = "story map"
+	KindOpportunity       Kind = "opportunity"
+	KindOpportunityCanvas Kind = "opportunity canvas"
+	KindStory             Kind = "story"
+	KindTerm              Kind = "ubiquitous language term"
 )
 
 // Templates lists every shape a livt URI can take, so a caller can show the
 // full set without restating it.
 var Templates = []string{
+	OpportunityTemplate,
+	OpportunityCanvasTemplate,
 	MappingTemplate,
 	RuleTemplate,
 	ExampleTemplate,
@@ -28,14 +32,15 @@ var Templates = []string{
 
 // Parsed is a livt URI taken apart. Only the fields its Kind addresses are set.
 type Parsed struct {
-	Kind       Kind
-	StoryKey   string // mapping, rule, example, question, story
-	RuleID     string // rule, example
-	ExampleID  string // example
-	QuestionID string // question
-	MapName    string // story map, percent-decoded
-	TermKey    string // term
-	TermCtx    string // term, empty when the term holds across contexts
+	Kind           Kind
+	StoryKey       string // mapping, rule, example, question, story
+	RuleID         string // rule, example
+	ExampleID      string // example
+	QuestionID     string // question
+	MapName        string // story map, percent-decoded
+	OpportunityKey string // opportunity, opportunity canvas
+	TermKey        string // term
+	TermCtx        string // term, empty when the term holds across contexts
 }
 
 // Parse recognises any livt URI shape. A caller that already knows which shape
@@ -55,6 +60,12 @@ func Parse(s string) (Parsed, bool) {
 	}
 	if key, ok := ParseMapping(s); ok {
 		return Parsed{Kind: KindMapping, StoryKey: key}, true
+	}
+	if key, ok := ParseOpportunityCanvas(s); ok {
+		return Parsed{Kind: KindOpportunityCanvas, OpportunityKey: key}, true
+	}
+	if key, ok := ParseOpportunity(s); ok {
+		return Parsed{Kind: KindOpportunity, OpportunityKey: key}, true
 	}
 	if name, ok := ParseStoryMap(s); ok {
 		return Parsed{Kind: KindStoryMap, MapName: name}, true
@@ -82,6 +93,10 @@ func (p Parsed) String() string {
 		return Question(p.StoryKey, p.QuestionID)
 	case KindStoryMap:
 		return StoryMap(p.MapName)
+	case KindOpportunity:
+		return Opportunity(p.OpportunityKey)
+	case KindOpportunityCanvas:
+		return OpportunityCanvas(p.OpportunityKey)
 	case KindStory:
 		return Story(p.StoryKey)
 	case KindTerm:
@@ -105,6 +120,10 @@ func (p Parsed) Page() string {
 		return QuestionPage(p.StoryKey, p.QuestionID)
 	case KindStoryMap:
 		return StoryMapPage(p.MapName)
+	case KindOpportunity:
+		return OpportunityPage(p.OpportunityKey)
+	case KindOpportunityCanvas:
+		return OpportunityCanvasPage(p.OpportunityKey)
 	case KindStory:
 		return StoryPage(p.StoryKey)
 	case KindTerm:

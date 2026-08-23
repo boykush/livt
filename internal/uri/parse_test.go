@@ -18,6 +18,8 @@ func TestParseRecognisesEveryKind(t *testing.T) {
 		},
 		{"livt://mapping/demo/question/Q-01", Parsed{Kind: KindQuestion, StoryKey: "demo", QuestionID: "Q-01"}},
 		{"livt://story/demo", Parsed{Kind: KindStory, StoryKey: "demo"}},
+		{"livt://opportunity/demo", Parsed{Kind: KindOpportunity, OpportunityKey: "demo"}},
+		{"livt://opportunity-canvas/demo", Parsed{Kind: KindOpportunityCanvas, OpportunityKey: "demo"}},
 		{"livt://story-map/デモマップ", Parsed{Kind: KindStoryMap, MapName: "デモマップ"}},
 		{"livt://story-map/%E3%83%87%E3%83%A2%E3%83%9E%E3%83%83%E3%83%97", Parsed{Kind: KindStoryMap, MapName: "デモマップ"}},
 		{"livt://ubiquitous/livt-uri", Parsed{Kind: KindTerm, TermKey: "livt-uri"}},

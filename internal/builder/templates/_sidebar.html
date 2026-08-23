@@ -8,6 +8,9 @@
     <a href="{{.Prefix}}index.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg {{if eq .Active "example-mapping"}}bg-green-50 text-green-900 font-medium{{else}}text-gray-600 hover:bg-gray-50{{end}}">
       <span class="w-2.5 h-2.5 rounded-sm bg-green-400"></span>Example Mappings<span class="ml-auto text-xs text-gray-400">{{.Mappings}}</span>
     </a>
+    <a href="{{.Prefix}}opportunities.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg {{if eq .Active "opportunity"}}bg-orange-50 text-orange-900 font-medium{{else}}text-gray-600 hover:bg-gray-50{{end}}">
+      <span class="w-2.5 h-2.5 rounded-sm bg-orange-400"></span>Opportunities<span class="ml-auto text-xs text-gray-400">{{.Opportunities}}</span>
+    </a>
     <a href="{{.Prefix}}story-maps.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg {{if eq .Active "story-map"}}bg-purple-50 text-purple-900 font-medium{{else}}text-gray-600 hover:bg-gray-50{{end}}">
       <span class="w-2.5 h-2.5 rounded-sm bg-purple-400"></span>Story Maps<span class="ml-auto text-xs text-gray-400">{{.StoryMaps}}</span>
     </a>

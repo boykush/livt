@@ -41,7 +41,7 @@ func TestStoryMapViewRendersKeylessStoriesAsUnscopedPlainCards(t *testing.T) {
 				Name: "First release",
 			},
 		},
-	})
+	}, nil)
 
 	releaseStories := view.StoryMap.ReleaseRows[0].Activities[0].StepStories[0]
 	if len(releaseStories) != 1 {
@@ -92,7 +92,7 @@ func TestStoryMapViewUsesStoryReleaseForReleaseRows(t *testing.T) {
 				Name: "First release",
 			},
 		},
-	})
+	}, nil)
 
 	releaseStories := view.StoryMap.ReleaseRows[0].Activities[0].StepStories[0]
 	if len(releaseStories) != 1 {
@@ -136,7 +136,7 @@ func TestStoryMapViewWithoutReleasesHasNoReleaseRows(t *testing.T) {
 				},
 			},
 		},
-	})
+	}, nil)
 
 	if len(view.StoryMap.ReleaseRows) != 0 {
 		t.Fatalf("got %d release rows, want 0", len(view.StoryMap.ReleaseRows))
@@ -167,7 +167,7 @@ func TestStoryMapRendersActivitiesInARowWithStepsBeneath(t *testing.T) {
 				},
 			},
 		},
-	})
+	}, nil)
 
 	var buf bytes.Buffer
 	if err := renderStoryMap(&buf, view); err != nil {
@@ -233,7 +233,7 @@ func TestRenderStoryMapKeyedCardCarriesIDAnchorAndCopyLink(t *testing.T) {
 				Name: "First release",
 			},
 		},
-	})
+	}, nil)
 
 	var buf bytes.Buffer
 	if err := renderStoryMap(&buf, view); err != nil {
@@ -285,7 +285,7 @@ func TestRenderStoryMapKeylessCardHasNoCopyLink(t *testing.T) {
 				},
 			},
 		},
-	})
+	}, nil)
 
 	var buf bytes.Buffer
 	if err := renderStoryMap(&buf, view); err != nil {
@@ -312,7 +312,7 @@ func TestStoryMapHeaderLinksBackToStoryMapsIndex(t *testing.T) {
 				Steps: []domain.Step{{Key: "step", Name: "Step"}},
 			},
 		},
-	})
+	}, nil)
 
 	var buf bytes.Buffer
 	if err := renderStoryMap(&buf, view); err != nil {
@@ -353,12 +353,12 @@ func TestBuildStoryMapsCollectsMultipleOpportunitiesPerStory(t *testing.T) {
 	}
 	b := Builder{USMDir: usmDir, OutDir: outDir}
 
-	storyToMaps, _, err := b.buildStoryMaps()
+	built, err := b.buildStoryMaps(nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	refs := storyToMaps["shared-story"]
+	refs := built.StoryOpportunities["shared-story"]
 	if len(refs) != 2 {
 		t.Fatalf("got %d opportunities for the shared story, want 2", len(refs))
 	}

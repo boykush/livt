@@ -4,6 +4,7 @@
 - [Installation](./installation.md)
 - [Getting Started](./getting-started.md)
 - [Guides]()
+  - [Opportunities](./guides/opportunities.md)
   - [Stories](./guides/stories.md)
   - [Story Maps](./guides/story-maps.md)
   - [Example Mappings](./guides/example-mappings.md)

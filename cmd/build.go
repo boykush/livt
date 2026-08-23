@@ -15,18 +15,25 @@ func init() {
 	rootCmd.AddCommand(buildCmd)
 }
 
+// newBuilder lays out the livt repository's input directories. build and serve
+// share it so the two cannot drift into reading different places.
+func newBuilder(outDir string) *builder.Builder {
+	return &builder.Builder{
+		OpportunitiesDir: "opportunities",
+		CanvasesDir:      filepath.Join("discoveries", "opportunity-canvases"),
+		MappingsDir:      filepath.Join("discoveries", "example-mappings"),
+		StoriesDir:       "stories",
+		USMDir:           filepath.Join("discoveries", "usm"),
+		UbiquitousDir:    "ubiquitous",
+		OutDir:           outDir,
+	}
+}
+
 var buildCmd = &cobra.Command{
 	Use:   "build",
 	Short: "Build static HTML from artifacts",
 	RunE: func(cmd *cobra.Command, args []string) error {
-		b := &builder.Builder{
-			MappingsDir:   filepath.Join("discoveries", "example-mappings"),
-			StoriesDir:    "stories",
-			USMDir:        filepath.Join("discoveries", "usm"),
-			UbiquitousDir: "ubiquitous",
-			OutDir:        outDir,
-		}
 		fmt.Printf("Building to %s/\n", outDir)
-		return b.Build()
+		return newBuilder(outDir).Build()
 	},
 }

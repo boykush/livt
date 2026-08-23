@@ -1,0 +1,21 @@
+{{define "canvas-box"}}
+{{/*
+One box of the canvas: its printed number, its heading, the question it asks,
+and the stickies that sat in it. An empty box keeps its place — it is the
+visible record of a question the opportunity has not answered yet.
+*/}}
+<section class="box{{if eq .Number 1}} box-lead{{end}}">
+  <div class="flex items-baseline gap-1.5">
+    <span class="font-mono text-[10px] text-gray-400 tabular-nums">{{.Number}}</span>
+    <h2 class="text-[13px] font-semibold text-gray-800 leading-tight">{{.Name}}</h2>
+  </div>
+  <p class="text-[10px] text-gray-400 mt-0.5 leading-snug">{{.Prompt}}</p>
+  <div class="mt-2 flex flex-col gap-1.5">
+  {{range .Items}}
+    <div class="bg-white border border-gray-200 rounded px-2.5 py-1.5 text-[12px] text-gray-700 leading-relaxed whitespace-pre-line shadow-sm">{{.}}</div>
+  {{else}}
+    <div class="border border-dashed border-gray-200 rounded px-2.5 py-1.5 text-[10px] text-gray-300">Not filled in yet</div>
+  {{end}}
+  </div>
+</section>
+{{end}}

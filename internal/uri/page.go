@@ -26,6 +26,19 @@ func QuestionPage(storyKey, questionID string) string {
 	return MappingPage(storyKey) + "#" + QuestionAnchor(questionID)
 }
 
+// OpportunityPage is where Opportunity lands.
+func OpportunityPage(opportunityKey string) string {
+	return "opportunity/" + opportunityKey + ".html"
+}
+
+// OpportunityCanvasPage is where OpportunityCanvas lands. The canvas gets a
+// page of its own rather than a section on the opportunity's, so it can be
+// linked, previewed, and read as the board it is — the same split the story
+// and its example mapping already make.
+func OpportunityCanvasPage(opportunityKey string) string {
+	return "opportunity-canvas/" + opportunityKey + ".html"
+}
+
 // StoryPage is where Story lands.
 func StoryPage(storyKey string) string {
 	return "story/" + storyKey + ".html"
