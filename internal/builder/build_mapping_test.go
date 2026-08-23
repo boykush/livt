@@ -2,6 +2,7 @@ package builder
 
 import (
 	"bytes"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -372,5 +373,28 @@ func TestRenderMappingRuleWithoutIDOmitsAnchor(t *testing.T) {
 	}
 	if strings.Contains(html, `id="rule-"`) {
 		t.Fatal("expected no empty rule anchor when a rule has no ID")
+	}
+}
+
+// A story file that carries no name: frontmatter must not leave the surfaces
+// naming it blank. The mapping page's title, breadcrumb and heading show only
+// this string, as does the Tasks page's story chip, so an empty one renders a
+// heading with no text and a link with no label — a worse page than the
+// missing-story case, which already falls back to the key.
+func TestResolveStoryNameFallsBackToTheKey(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	writeFile(t, filepath.Join(b.StoriesDir, "named.md"), "---\nname: 名前あり\n---\n\n本文\n")
+	writeFile(t, filepath.Join(b.StoriesDir, "unnamed.md"), "本文だけ\n")
+
+	for _, tc := range []struct {
+		key, want string
+	}{
+		{"named", "名前あり"},
+		{"unnamed", "unnamed"}, // a story file with no name: frontmatter
+		{"missing", "missing"}, // no story file at all
+	} {
+		if got := b.resolveStoryName(domain.StoryKey{Value: tc.key}); got != tc.want {
+			t.Errorf("resolveStoryName(%q) = %q, want %q", tc.key, got, tc.want)
+		}
 	}
 }

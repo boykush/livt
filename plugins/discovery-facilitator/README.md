@@ -51,6 +51,10 @@ When a mapping is ready to drive implementation, the **File** skills carry it ou
 - **`/story-issue-file`** — file a story-level issue to a declared implementation repository (story frontmatter `repos:`), carrying the story body and backpointers to the livt repository. Rule issues already filed in that repository are adopted as sub-issues; the created URL is written back to the story's frontmatter `issues:` as a working-tree edit.
 - **`/rule-issue-file`** — file automation issues for business rules, one per rule × declared repository, deduped by the mapping's own record. Each issue carries the rule, its examples, and backpointers (story-key, rule-id, the living document's `#rule-{ID}` anchor, spec rev); the created URL is written back to the rule's `issues:` as a working-tree edit. Filed under the story issue as a sub-issue when one exists in that repository.
 
+### Sync
+
+- **`/rule-automation-sync`** — the return path of the filing skills: hold each rule's `automated:` against what actually happened in the implementation repositories, reading the state of the issues the rule already records and the mapping's own git history. Proposes setting the flag where automation landed and unsetting it where a rule moved on afterwards, one rule's record per PR with the evidence attached. A closed issue is a trigger to propose, never proof — the review decides.
+
 ## Expert skills
 
 The expert skills are the **knowledge backend** the refine skills consult; you can also invoke them standalone (`/usm-expert`, `/bdd-expert`) for ad-hoc consulting.

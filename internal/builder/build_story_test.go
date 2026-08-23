@@ -50,3 +50,22 @@ func TestRenderStoryWithoutOpportunitiesShowsNoMapLink(t *testing.T) {
 		t.Fatal("expected no opportunity link for a story on no map")
 	}
 }
+
+// The story page shows the story's name as its title and its heading, so a
+// story with no name: frontmatter would render both blank. The key stands in.
+func TestRenderStoryWithoutNameShowsTheKey(t *testing.T) {
+	story := &domain.Story{Key: domain.StoryKey{Value: "unnamed-story"}}
+
+	var buf bytes.Buffer
+	if err := renderStory(&buf, story, nil, "", nil); err != nil {
+		t.Fatal(err)
+	}
+	html := buf.String()
+
+	if strings.Contains(html, "<title> - livt</title>") {
+		t.Error("expected the page title to name the story rather than be blank")
+	}
+	if !strings.Contains(html, ">unnamed-story</h1>") {
+		t.Error("expected the heading to fall back to the story key")
+	}
+}

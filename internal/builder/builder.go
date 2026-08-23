@@ -158,7 +158,7 @@ func (b *Builder) Build() error {
 		storyOpportunitySets = append(storyOpportunitySets, listOpportunities)
 		storyItems = append(storyItems, storyItem{
 			Key:           story.Key.Value,
-			Name:          story.Name,
+			Name:          story.DisplayName(),
 			Persona:       b.resolvePersonaCard(story.Persona, ""),
 			Opportunities: listOpportunities,
 			MappingPath:   listMappingPath,
@@ -166,7 +166,7 @@ func (b *Builder) Build() error {
 		})
 		if story.Persona != "" {
 			personaStories[story.Persona] = append(personaStories[story.Persona], personaStoryRef{
-				Name: story.Name,
+				Name: story.DisplayName(),
 				Path: "story/" + story.Key.Value + ".html",
 			})
 		}
