@@ -1,17 +1,16 @@
 package i18n
 
 // ja mirrors en key for key, in the words the Japanese practice uses: 具体例
-// and 疑問点 for the stickies, アクティビティ・ユーザータスク・ユーザーストーリー
-// for the map's three layers as Patton's book names them, and
-// ユーザーストーリーマップ for the board itself — マッピング names the
-// practice, and what livt holds is what it produced.
-// These are also this repository's ubiquitous language; the two are one
-// vocabulary and must not drift apart.
+// and 疑問点 for the stickies, and アクティビティ・ユーザータスク・ユーザー
+// ストーリー for the map's three layers, as the Japanese edition of Patton's
+// ユーザーストーリーマッピング names them — which also calls the board itself
+// ストーリーマップ. These are this repository's ubiquitous language too; the
+// two are one vocabulary and must not drift apart.
 var ja = Catalog{
 	"lang.code": "ja",
 
 	"nav.example-mappings": "実例マッピング",
-	"nav.story-maps":       "ユーザーストーリーマップ",
+	"nav.story-maps":       "ストーリーマップ",
 	"nav.stories":          "ユーザーストーリー",
 	"nav.ubiquitous":       "ユビキタス言語",
 	"nav.tasks":            "タスク",
@@ -33,7 +32,7 @@ var ja = Catalog{
 	"badge.copied":    "✓ コピーしました",
 
 	"empty.example-mappings": "実例マッピングはまだありません。",
-	"empty.story-maps":       "ユーザーストーリーマップはまだありません。",
+	"empty.story-maps":       "ストーリーマップはまだありません。",
 	"empty.stories":          "ユーザーストーリーが見つかりません。",
 	"empty.terms":            "用語が見つかりません。",
 
@@ -59,7 +58,7 @@ var ja = Catalog{
 	"mapping.automated-title":  "テストで自動化済み",
 	"nav.opportunities":        "オポチュニティ",
 
-	"label.story-map":          "ユーザーストーリーマップ",
+	"label.story-map":          "ストーリーマップ",
 	"label.opportunity-canvas": "オポチュニティキャンバス",
 
 	"empty.opportunities":      "オポチュニティはまだありません。",
