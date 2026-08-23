@@ -1,0 +1,41 @@
+canvas:
+  solution-ideas:
+    - 仕様の一点をlivt URIで名指しし、テスト・Issue・コミットから引けるようにする
+    - 実装リポジトリのエージェントがMCP経由で仕様を読む
+  problems:
+    - 合意した仕様がディスカバリー側に留まり、実装側から読まれない
+    - テストを見てもどのルールを満たしているのか分からない
+    - ルールが自動化済みかどうかが、どこにも記録されていない
+  users-and-customers:
+    - 実装リポジトリの開発者
+    - 実装リポジトリで動くAIエージェント
+    - 自動化の進み具合を見たいファシリテーター
+  solutions-today:
+    - 仕様を都度Slackで訊く
+    - チケットに仕様を転記し、そこから先は同期しない
+    - コードコメントにルール番号だけ書くが、番号は他のマッピングにも存在する
+  business-challenges:
+    - 仕様と実装の乖離が、時間とともに静かに広がる
+    - 何が未実装かを人手で数え直している
+  user-value:
+    - テストコメントのlivt URIから、ルールと実例へ戻る
+    - ルール単位でIssueを起票し、実装リポジトリで自動化する
+    - 未自動化のルールを横断で見渡して、次に埋めるギャップを選ぶ
+  user-metrics:
+    - livt URIを引用しているテスト・Issueの数
+    - Tasksページの未自動化ルール件数の推移
+  adoption-strategy:
+    - 実装リポジトリ向けのMCPプラグインとして配る
+    - 起票スキルが、backpointerを最初から本文に埋める
+  business-impact:
+    - 自動化済みルールの比率
+    - 仕様の取り違えに由来する手戻り件数
+  budget:
+    - OSSとして個人の余暇で開発、外部コストは持たない
+
+ubiquitous:
+  - discovery
+  - example-mapping
+  - livt-uri
+  - livt-repository
+  - implementation-repository
