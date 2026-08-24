@@ -1,9 +1,9 @@
 rules:
   - id: R-01
-    name: アクティビティとステップを俯瞰できる
+    name: アクティビティとユーザータスクを俯瞰できる
     examples:
       - id: EX-01
-        name: アクティビティが横並びで、その下にステップが並ぶ
+        name: アクティビティが横並びで、その下にユーザータスクが並ぶ
     issues:
       - https://github.com/boykush/livt/issues/63
     automated: true

@@ -31,7 +31,7 @@ rules:
       - id: EX-01
         name: resources/templates/list に livt://mapping/{story_key} が現れる
       - id: EX-02
-        name: resources/read livt://mapping/{story_key} でルール・実例・質問を取得する
+        name: resources/read livt://mapping/{story_key} でルール・具体例・疑問点を取得する
       - id: EX-03
         name: 各ルールは自分のリソースURI（livt://mapping/{story_key}/rule/{rule_id}）を持つ
     automated: true
@@ -39,7 +39,7 @@ rules:
     name: 実装リポジトリはルール単位で仕様をリソースとして取得できる
     examples:
       - id: EX-01
-        name: resources/read livt://mapping/{story_key}/rule/{rule_id} で単一ルールと実例を取得する
+        name: resources/read livt://mapping/{story_key}/rule/{rule_id} で単一ルールと具体例を取得する
       - id: EX-02
         name: 存在しないキーやルールIDのURIは not found を返す
     automated: true
@@ -77,7 +77,7 @@ rules:
       - id: EX-01
         name: list_story_maps で全ストーリーマップの名前とリソースURI（livt://story-map/{map_name}）を取得する
       - id: EX-02
-        name: resources/read livt://story-map/{map_name} でアクティビティ・ステップ・ストーリーカード・リリースを取得する
+        name: resources/read livt://story-map/{map_name} でアクティビティ・ユーザータスク・ストーリーカード・リリースを取得する
       - id: EX-03
         name: マップ名はビルド出力（story-map/{name}.html）と同じ表示名で、URI上はパーセントエンコードして表す
       - id: EX-04
