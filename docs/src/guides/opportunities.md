@@ -25,12 +25,18 @@ whose problem it is and what solving it is worth. This is the same split a
 [story](./stories.md) makes between its name and its narrative, and it is there
 for the same reason — a label fits on a card, a statement does not.
 
-Name the **opportunity**, not the subject area it sits in. "Collaborative
-discovery" names a topic; "stale discovery" names something you could decide to
-fix. The topic already has a home — it is what the
+Name the **solution idea you are weighing**, the way Patton fills his canvas —
+"starting with the solution idea I've been asked for and working backwards"
+([Opportunity Canvas](https://jpattonassociates.com/opportunity-canvas/)).
+"Collaborative discovery" still fails as a name: it names a topic, and a topic
+cannot be declined. "Living fair copy" names an idea, and an idea is something
+you can weigh — build it, or decide against it. The problem the idea answers is
+not lost; it is the body's opening sentence, and the canvas's left zone holds it
+as verifiable fact. The topic already has a home — it is what the
 [story map](./story-maps.md) is called, and a map and its opportunity are free to
 carry different names precisely because they answer different questions: the map
-says which journey was drawn, the opportunity says why anyone drew it.
+says which journey was drawn, the opportunity names the idea that made it worth
+drawing.
 
 The **opportunity key** is derived from the filename (without `.md`), and must
 be kebab-case. Key uniqueness is enforced by the filesystem.
@@ -41,7 +47,7 @@ be kebab-case. Key uniqueness is enforced by the filesystem.
 
 ```markdown
 ---
-name: Stale discovery
+name: Living fair copy
 repos:
   - boykush/livt
 ---
