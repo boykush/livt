@@ -80,11 +80,12 @@ ubiquitous:
 
 ## ID Contract
 
-Canonical statement in `example-mapping-update`; these three bullets are verbatim from it. You mint every ID in the mapping, so they start with you.
+Canonical statement in `example-mapping-update`; these bullets are verbatim from it. You mint every ID in the mapping, so they start with you.
 
 - **Numbering** — a new ID is one past the highest ever used in its scope, **retired IDs included**. Rules and questions are numbered within the story (`R-NN`, `Q-NN`), examples within their rule (each rule starts from `EX-01`). With R-01/R-02/R-03 on file and R-03 retired, the next rule is R-04 — never R-03 again.
 - **Immutability** — an ID, once used, keeps pointing at the same thing. Never renumber, never reuse, and never move an item to where its ID would change. This holds whether or not an automation issue was filed: the item's livt URI is quoted by MCP consumers, by the board's copy-link, in test comments, and in commit messages, and the livt repository records none of those — there is no list of references to check before breaking one.
 - **Retire, don't delete** — an item that no longer holds gets `retired: true` and stays in the file, its ID taken and its text readable. Deleting it hands the ID to the next item and silently re-targets every reference. Don't comment it out either: a comment is not part of the YAML structure, so a structural edit drops it.
+- **Say where the spec went** — when something took the retired item's place, add `superseded_by:` beside `retired:`, listing the successors as **livt URIs** so a reference landing on the retired item reads on instead of stopping. A list, because an item can split into two; livt URIs, because a successor can live in another mapping and a bare `R-05` names nothing. Leave the field off when nothing replaced it. Only the pointer goes in the YAML — *why* it was retired belongs to the commit, where it is written once and cannot drift.
 
 ## Ubiquitous Language
 
@@ -102,7 +103,7 @@ When the team reworks a board that has already been transcribed, `discoveries/ex
 - A card already on file keeps its ID, even where the board reworded it. Follow the board for the text; leave the ID alone.
 - A card that is new on the board takes the next ID.
 - A card that has left the board gets `retired: true` where it sits — gone from the spec, still in the file. A rule that has gone takes each of its examples with it: the flag does not cascade, so an unflagged example still resolves as live.
-- An example the board moved under a different rule cannot keep its ID, since example IDs are rule-scoped. Retire it under the old rule and add it under the new one with a fresh ID: the board's grouping is honoured, and the old URI still resolves to the same text.
+- An example the board moved under a different rule cannot keep its ID, since example IDs are rule-scoped. Retire it under the old rule and add it under the new one with a fresh ID, with `superseded_by:` on the retired one naming the new URI: the board's grouping is honoured, the old URI still resolves to the same text, and it says where the example went.
 
 ## Commit Contract
 

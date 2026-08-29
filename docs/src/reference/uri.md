@@ -79,8 +79,10 @@ joined by key, and either can exist without the other.
 
 A [retired](../guides/example-mappings.md#retiring-an-item) item has no sticky,
 so its URI lands on the board with nothing to scroll to. The URI still resolves:
-ask the tooling, which answers with the item and `retired: true`. Deriving a
-page is how a reference is *shown*, not how it is *resolved*.
+ask the tooling, which answers with the item and `retired: true` — plus
+`superseded_by`, the URIs of whatever took its place, when the retirement
+recorded any. Deriving a page is how a reference is *shown*, not how it is
+*resolved*.
 
 ## Store the URI, render the URL
 

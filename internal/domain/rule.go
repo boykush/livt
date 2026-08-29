@@ -16,4 +16,10 @@ type Rule struct {
 	// rule — references to it keep resolving, as retired, instead of quietly
 	// pointing at whatever took the id. Absent means live.
 	Retired bool
+	// SupersededBy names what took a retired rule's place, as livt URIs, so a
+	// reference landing on it can go forward. Only the pointer is structured:
+	// why the rule was retired belongs to the commit that retired it, and a
+	// copy of that reasoning here would drift from it. Absent means nothing
+	// replaced it.
+	SupersededBy []string
 }
