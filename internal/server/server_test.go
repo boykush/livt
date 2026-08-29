@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -36,9 +37,11 @@ func TestInjectScriptAppendsWhenNoBody(t *testing.T) {
 	}
 }
 
-// Index pages embed each mapping and story map as an iframe preview. The
-// injected script must bail out inside frames so previews don't each open an
-// SSE connection and exhaust the browser's per-origin connection limit.
+// livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-04/example/EX-02: an embedded
+// preview reflects through its host's reload, not its own connection. Index
+// pages embed every mapping and story map as an iframe, so without the guard a
+// handful of previews exhausts the browser's per-origin connection limit and
+// the page deadlocks instead of reloading.
 func TestLiveReloadScriptSkipsIframes(t *testing.T) {
 	guard := "if (window.self !== window.top) return;"
 	idx := strings.Index(liveReloadScript, guard)
@@ -50,6 +53,8 @@ func TestLiveReloadScriptSkipsIframes(t *testing.T) {
 	}
 }
 
+// livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-01/example/EX-02: a file
+// added is an edit.
 func TestSnapshotDetectsAddedFile(t *testing.T) {
 	dir := t.TempDir()
 	if err := os.WriteFile(filepath.Join(dir, "a.md"), []byte("a"), 0o644); err != nil {
@@ -67,6 +72,8 @@ func TestSnapshotDetectsAddedFile(t *testing.T) {
 	}
 }
 
+// livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-01/example/EX-02: a file
+// changed is an edit.
 func TestSnapshotDetectsModifiedContent(t *testing.T) {
 	dir := t.TempDir()
 	path := filepath.Join(dir, "a.md")
@@ -85,6 +92,26 @@ func TestSnapshotDetectsModifiedContent(t *testing.T) {
 	}
 }
 
+// livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-01/example/EX-02: a file
+// removed is an edit too — the entry has to leave the fingerprint, or a
+// deleted artifact keeps being served from a page nothing rebuilds.
+func TestSnapshotDetectsRemovedFile(t *testing.T) {
+	dir := t.TempDir()
+	path := filepath.Join(dir, "a.md")
+	if err := os.WriteFile(path, []byte("a"), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	before := snapshot([]string{dir})
+	if err := os.Remove(path); err != nil {
+		t.Fatal(err)
+	}
+
+	if sameSnapshot(before, snapshot([]string{dir})) {
+		t.Fatal("expected snapshot to change after removing a file")
+	}
+}
+
 func TestSnapshotIgnoresMissingDir(t *testing.T) {
 	state := snapshot([]string{filepath.Join(t.TempDir(), "does-not-exist")})
 	if len(state) != 0 {
@@ -92,6 +119,8 @@ func TestSnapshotIgnoresMissingDir(t *testing.T) {
 	}
 }
 
+// livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-04/example/EX-01: the page
+// reloads itself, so it has to be served carrying the script that does it.
 func TestHTMLInjectorInjectsIntoServedHTML(t *testing.T) {
 	dir := t.TempDir()
 	if err := os.WriteFile(filepath.Join(dir, "index.html"), []byte("<html><body>hi</body></html>"), 0o644); err != nil {
@@ -145,6 +174,8 @@ func TestHTMLInjectorKeeps404ForMissingHTML(t *testing.T) {
 	}
 }
 
+// livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-04/example/EX-01: every open
+// page is told, not just the one that happened to be focused.
 func TestBroadcastReachesEverySubscriber(t *testing.T) {
 	lr := newLiveReload()
 	a, b := lr.subscribe(), lr.subscribe()
@@ -196,6 +227,8 @@ func TestUnsubscribeStopsDelivery(t *testing.T) {
 	}
 }
 
+// livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-04/example/EX-01: the rebuild
+// reaches the browser as a reload event over the open connection.
 func TestHandleSSEStreamsReloadsAndReleasesTheClient(t *testing.T) {
 	lr := newLiveReload()
 	srv := httptest.NewServer(http.HandlerFunc(lr.handleSSE))
@@ -253,9 +286,11 @@ func eventually(cond func() bool) bool {
 	return cond()
 }
 
-// watch polls, so the test keeps writing until it reports the change rather than
-// timing one write against the tick. The goroutine has no stop signal and
-// outlives the test, which is why its callback only ever does a buffered send.
+// livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-01: editing a watched file
+// is what sets the rebuild going. watch polls, so the test keeps writing until
+// it reports the change rather than timing one write against the tick. The
+// goroutine has no stop signal and outlives the test, which is why its callback
+// only ever does a buffered send.
 func TestWatchReportsAChangeUnderAWatchedDir(t *testing.T) {
 	dir := t.TempDir()
 	path := filepath.Join(dir, "story.md")
@@ -286,8 +321,9 @@ func TestWatchReportsAChangeUnderAWatchedDir(t *testing.T) {
 	}
 }
 
-// The config is watched as a bare file, not a directory, so the fingerprint has
-// to cover one — a language switch is a single-file edit.
+// livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-03: the config is watched as a
+// bare file, not a directory, so the fingerprint has to cover one — a language
+// switch is a single-file edit.
 func TestSnapshotFingerprintsAWatchedFile(t *testing.T) {
 	path := filepath.Join(t.TempDir(), config.Path)
 	if err := os.WriteFile(path, []byte("lang: en\n"), 0o644); err != nil {
@@ -306,6 +342,8 @@ func TestSnapshotFingerprintsAWatchedFile(t *testing.T) {
 	}
 }
 
+// livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-03/example/EX-01: switching
+// the language redraws the preview in it.
 func TestApplyConfigPicksUpALanguageSwitch(t *testing.T) {
 	path := filepath.Join(t.TempDir(), config.Path)
 	if err := os.WriteFile(path, []byte("lang: ja\n"), 0o644); err != nil {
@@ -319,9 +357,9 @@ func TestApplyConfigPicksUpALanguageSwitch(t *testing.T) {
 	}
 }
 
-// A half-typed config is the normal state of a file being edited, so the
-// running server keeps the language it last built with instead of tearing the
-// preview down over it.
+// livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-03/example/EX-02: a half-typed
+// config is the normal state of a file being edited, so the running server
+// keeps the language it last built with instead of tearing the preview down.
 func TestApplyConfigKeepsTheLastGoodLanguage(t *testing.T) {
 	path := filepath.Join(t.TempDir(), config.Path)
 	if err := os.WriteFile(path, []byte("lang: [ja\n"), 0o644); err != nil {
@@ -332,5 +370,46 @@ func TestApplyConfigKeepsTheLastGoodLanguage(t *testing.T) {
 	applyConfig(b, path)
 	if b.Lang != i18n.Ja {
 		t.Fatalf("lang = %q, want the last good %q", b.Lang, i18n.Ja)
+	}
+}
+
+// livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-02: every input the build reads
+// has to be watched, or an edit to it changes the site without the preview
+// ever saying so. Opportunities and their canvases were exactly that gap:
+// built into every page's sidebar counts and the Opportunities hub, yet
+// absent from the watch list.
+func TestWatchTargetsCoverEveryBuildInput(t *testing.T) {
+	b := &builder.Builder{
+		OpportunitiesDir: "opportunities",
+		CanvasesDir:      filepath.Join("discoveries", "opportunity-canvases"),
+		MappingsDir:      filepath.Join("discoveries", "example-mappings"),
+		StoriesDir:       "stories",
+		USMDir:           filepath.Join("discoveries", "usm"),
+		UbiquitousDir:    "ubiquitous",
+		OutDir:           "dist",
+	}
+
+	targets := watchTargets(b, config.Path)
+
+	for _, want := range append(b.InputDirs(), config.Path) {
+		if !slices.Contains(targets, want) {
+			t.Errorf("watch targets omit %q", want)
+		}
+	}
+	if slices.Contains(targets, b.OutDir) {
+		t.Error("watch targets include OutDir; a rebuild would retrigger itself")
+	}
+}
+
+// watchTargets appends to what the builder hands back, so it must not be able
+// to write into a slice the builder still owns.
+func TestWatchTargetsLeavesInputDirsIntact(t *testing.T) {
+	b := &builder.Builder{OpportunitiesDir: "opportunities", UbiquitousDir: "ubiquitous"}
+	before := b.InputDirs()
+
+	watchTargets(b, config.Path)
+
+	if !slices.Equal(before, b.InputDirs()) {
+		t.Errorf("InputDirs = %v after watchTargets, want %v", b.InputDirs(), before)
 	}
 }

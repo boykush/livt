@@ -50,11 +50,7 @@ func Serve(b *builder.Builder, port int, configPath string) error {
 	}
 
 	lr := newLiveReload()
-	// The config is watched alongside the inputs because it decides what the
-	// pages say — switching the site language is an edit like any other, and a
-	// preview that ignored it would show a site nobody asked for.
-	watched := []string{b.MappingsDir, b.StoriesDir, b.USMDir, b.UbiquitousDir, configPath}
-	go watch(watched, watchInterval, func() {
+	go watch(watchTargets(b, configPath), watchInterval, func() {
 		fmt.Println("Change detected, rebuilding...")
 		applyConfig(b, configPath)
 		if err := b.Build(); err != nil {
@@ -70,6 +66,15 @@ func Serve(b *builder.Builder, port int, configPath string) error {
 
 	fmt.Printf("Serving on http://localhost:%d\n", port)
 	return http.ListenAndServe(fmt.Sprintf(":%d", port), mux)
+}
+
+// watchTargets is everything an edit reaches the site through: every directory
+// the build reads, plus the config. The config is watched alongside the inputs
+// because it decides what the pages say — switching the site language is an
+// edit like any other, and a preview that ignored it would show a site nobody
+// asked for.
+func watchTargets(b *builder.Builder, configPath string) []string {
+	return append(b.InputDirs(), configPath)
 }
 
 // applyConfig re-reads the site config so an edit to it takes effect on the

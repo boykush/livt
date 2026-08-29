@@ -4,8 +4,9 @@
 
 Build artifacts and start a local server.
 
-While the server is running, livt watches the input directories
-(`discoveries/example-mappings`, `stories`, `discoveries/usm`, and `ubiquitous`)
+While the server is running, livt watches every directory the build reads
+(`opportunities`, `discoveries/opportunity-canvases`,
+`discoveries/example-mappings`, `stories`, `discoveries/usm`, and `ubiquitous`)
 along with `livt.yaml`. When a file changes, livt rebuilds and reloads the page
 in the browser automatically, so you can preview refinements while editing.
 

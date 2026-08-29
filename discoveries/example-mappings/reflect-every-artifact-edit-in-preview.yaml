@@ -1,0 +1,51 @@
+rules:
+  - id: R-01
+    name: どの成果物を編集してもプレビューは作り直される
+    examples:
+      - id: EX-01
+        name: ストーリー・実例マッピング・ストーリーマップ・オポチュニティ・オポチュニティキャンバス・ユビキタス言語のいずれを編集しても反映される
+      - id: EX-02
+        name: ファイルの追加・変更・削除のいずれも編集として扱われる
+    automated: true
+  - id: R-02
+    name: 反映対象はビルドが読む入力から導かれ、成果物の種類が増えても取り残されない
+    examples:
+      - id: EX-01
+        name: ビルドが新しい入力を読むようになったら、反映対象にもそのまま加わる
+      - id: EX-02
+        name: 出力先は反映対象に含めない（再ビルドが自分自身を呼び続けるため）
+    automated: true
+  - id: R-03
+    name: サイトの設定も成果物と同じ入力として反映される
+    examples:
+      - id: EX-01
+        name: livt.yamlの言語を切り替えると、プレビューがその言語で描き直される
+      - id: EX-02
+        name: 設定が書きかけで読めないうちは、最後に読めた設定のままプレビューを保つ
+    automated: true
+  - id: R-04
+    name: 反映されたことは閲覧中のブラウザ側で自動的に見える
+    examples:
+      - id: EX-01
+        name: 作り直しが終わると、開いているページが自分でリロードされる
+      - id: EX-02
+        name: 一覧ページに埋め込まれたプレビューは、埋め込み先のリロードに連れて反映される
+    automated: true
+  - id: R-05
+    name: どの成果物の一覧も、現在の内容を映したプレビュー付きのタイルで並ぶ
+    examples:
+      - id: EX-01
+        name: 実例マッピング・ストーリーマップ・オポチュニティのどの一覧も、プレビュー付きのタイルで並び各ボードへ辿れる
+      - id: EX-02
+        name: どのボードもヘッダーに戻り先を持つ（一覧、オポチュニティキャンバスなら属するオポチュニティ）
+
+questions: []
+
+ubiquitous:
+  - livt-repository
+  - story
+  - example-mapping
+  - story-map
+  - opportunity
+  - opportunity-canvas
+  - ubiquitous-language
