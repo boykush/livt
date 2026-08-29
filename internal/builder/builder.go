@@ -234,3 +234,18 @@ func (b *Builder) Build() error {
 
 	return nil
 }
+
+// InputDirs is every directory Build reads, in the order the site is composed
+// from them. `livt serve` watches this rather than a list of its own, so an
+// input the build gained cannot end up unwatched — an edit that changes a page
+// and does not reload it is indistinguishable from livt ignoring the edit.
+func (b *Builder) InputDirs() []string {
+	return []string{
+		b.OpportunitiesDir,
+		b.CanvasesDir,
+		b.MappingsDir,
+		b.StoriesDir,
+		b.USMDir,
+		b.UbiquitousDir,
+	}
+}

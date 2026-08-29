@@ -8,6 +8,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"testing"
 	"time"
@@ -332,5 +333,45 @@ func TestApplyConfigKeepsTheLastGoodLanguage(t *testing.T) {
 	applyConfig(b, path)
 	if b.Lang != i18n.Ja {
 		t.Fatalf("lang = %q, want the last good %q", b.Lang, i18n.Ja)
+	}
+}
+
+// Every input the build reads has to be watched, or an edit to it changes the
+// site without the preview ever saying so. Opportunities and their canvases
+// were exactly that gap: built into every page's sidebar counts and the
+// Opportunities hub, yet absent from the watch list.
+func TestWatchTargetsCoverEveryBuildInput(t *testing.T) {
+	b := &builder.Builder{
+		OpportunitiesDir: "opportunities",
+		CanvasesDir:      filepath.Join("discoveries", "opportunity-canvases"),
+		MappingsDir:      filepath.Join("discoveries", "example-mappings"),
+		StoriesDir:       "stories",
+		USMDir:           filepath.Join("discoveries", "usm"),
+		UbiquitousDir:    "ubiquitous",
+		OutDir:           "dist",
+	}
+
+	targets := watchTargets(b, config.Path)
+
+	for _, want := range append(b.InputDirs(), config.Path) {
+		if !slices.Contains(targets, want) {
+			t.Errorf("watch targets omit %q", want)
+		}
+	}
+	if slices.Contains(targets, b.OutDir) {
+		t.Error("watch targets include OutDir; a rebuild would retrigger itself")
+	}
+}
+
+// watchTargets appends to what the builder hands back, so it must not be able
+// to write into a slice the builder still owns.
+func TestWatchTargetsLeavesInputDirsIntact(t *testing.T) {
+	b := &builder.Builder{OpportunitiesDir: "opportunities", UbiquitousDir: "ubiquitous"}
+	before := b.InputDirs()
+
+	watchTargets(b, config.Path)
+
+	if !slices.Equal(before, b.InputDirs()) {
+		t.Errorf("InputDirs = %v after watchTargets, want %v", b.InputDirs(), before)
 	}
 }

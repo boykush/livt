@@ -3,6 +3,9 @@ package builder
 import (
 	"os"
 	"path/filepath"
+	"reflect"
+	"slices"
+	"strings"
 	"testing"
 )
 
@@ -102,5 +105,43 @@ func writeFile(t *testing.T, path, content string) {
 	}
 	if err := os.WriteFile(path, []byte(content), 0o644); err != nil {
 		t.Fatal(err)
+	}
+}
+
+// TestInputDirsCoversEveryInputDirectory is what keeps `livt serve` honest.
+// The watch list is derived from InputDirs, so an input directory added to
+// Builder and left out of it would be built from but never watched — the site
+// would go stale under an edit with no sign anything was missed. Fields are
+// read by reflection rather than listed here so a new one fails this test
+// instead of quietly slipping past it.
+func TestInputDirsCoversEveryInputDirectory(t *testing.T) {
+	b := emptyDirsBuilder(t)
+
+	watched := make(map[string]bool)
+	for _, dir := range b.InputDirs() {
+		watched[dir] = true
+	}
+
+	typ := reflect.TypeOf(b)
+	val := reflect.ValueOf(b)
+	for i := range typ.NumField() {
+		name := typ.Field(i).Name
+		// OutDir is written, not read: watching it would rebuild on the output
+		// of the rebuild that just ran.
+		if !strings.HasSuffix(name, "Dir") || name == "OutDir" {
+			continue
+		}
+		if !watched[val.Field(i).String()] {
+			t.Errorf("%s is an input directory that InputDirs does not return", name)
+		}
+	}
+}
+
+// The output directory lives inside the repository in the default layout, so
+// watching it would make every rebuild trigger the next one.
+func TestInputDirsExcludesOutDir(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	if slices.Contains(b.InputDirs(), b.OutDir) {
+		t.Error("InputDirs returned OutDir; a rebuild would retrigger itself")
 	}
 }
