@@ -25,18 +25,24 @@ type ruleYAML struct {
 	// of the YAML cannot drop it, and so the id stays visible to whoever numbers
 	// the next one. Omitted means live.
 	Retired bool `yaml:"retired"`
+	// SupersededBy carries the retirement's other half: where the spec went.
+	// It is livt URIs rather than bare ids so a successor in another mapping is
+	// sayable, and it is a list so a rule that split into two can name both.
+	SupersededBy []string `yaml:"superseded_by"`
 }
 
 type exampleYAML struct {
-	ID      string `yaml:"id"`
-	Name    string `yaml:"name"`
-	Retired bool   `yaml:"retired"`
+	ID           string   `yaml:"id"`
+	Name         string   `yaml:"name"`
+	Retired      bool     `yaml:"retired"`
+	SupersededBy []string `yaml:"superseded_by"`
 }
 
 type questionYAML struct {
-	ID      string `yaml:"id"`
-	Text    string `yaml:"text"`
-	Retired bool   `yaml:"retired"`
+	ID           string   `yaml:"id"`
+	Text         string   `yaml:"text"`
+	Retired      bool     `yaml:"retired"`
+	SupersededBy []string `yaml:"superseded_by"`
 }
 
 func ParseExampleMapping(path string) (*domain.ExampleMapping, error) {
@@ -56,14 +62,14 @@ func ParseExampleMapping(path string) (*domain.ExampleMapping, error) {
 	for _, r := range raw.Rules {
 		var examples []domain.Example
 		for _, ex := range r.Examples {
-			examples = append(examples, domain.Example{ID: ex.ID, Name: ex.Name, Retired: ex.Retired})
+			examples = append(examples, domain.Example{ID: ex.ID, Name: ex.Name, Retired: ex.Retired, SupersededBy: ex.SupersededBy})
 		}
-		rules = append(rules, domain.Rule{ID: r.ID, Name: r.Name, Examples: examples, Issues: r.Issues, Automated: r.Automated, Retired: r.Retired})
+		rules = append(rules, domain.Rule{ID: r.ID, Name: r.Name, Examples: examples, Issues: r.Issues, Automated: r.Automated, Retired: r.Retired, SupersededBy: r.SupersededBy})
 	}
 
 	var questions []domain.Question
 	for _, q := range raw.Questions {
-		questions = append(questions, domain.Question{ID: q.ID, Text: q.Text, Retired: q.Retired})
+		questions = append(questions, domain.Question{ID: q.ID, Text: q.Text, Retired: q.Retired, SupersededBy: q.SupersededBy})
 	}
 
 	return &domain.ExampleMapping{

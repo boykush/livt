@@ -40,17 +40,18 @@ Start from the committed baseline. Do not re-transcribe; build the diff on top o
 
 - **Rule clarity** — sharpen vague rule names into crisp business rules; keep the team's intent.
 - **Example naming** — make examples concrete and memorable ("the one where…"); keep the same scenario.
-- **Grouping** — example IDs are rule-scoped, so moving an example to the rule it actually illustrates always changes its ID. Move it only while nothing can be pointing at it: a just-transcribed baseline where no rule carries `issues:` or `automated:`. Otherwise — and whenever you are unsure — retire it where it sits and add it under the right rule with a fresh ID, so its old URI keeps resolving to the same text.
+- **Grouping** — example IDs are rule-scoped, so moving an example to the rule it actually illustrates always changes its ID. Move it only while nothing can be pointing at it: a just-transcribed baseline where no rule carries `issues:` or `automated:`. Otherwise — and whenever you are unsure — retire it where it sits and add it under the right rule with a fresh ID, with `superseded_by:` on the retired one naming the new URI, so its old URI keeps resolving to the same text and says where the example went.
 - **Splitting** — if the map shows too many rules (story too large), recommend a split and note it; don't silently shard.
 - **Question phrasing** — make a Question precise without answering it.
 
 ## ID Contract
 
-Canonical statement in `example-mapping-update`; these three bullets are verbatim from it. A tidier numbering is never a reason to renumber — that temptation is yours alone, since regrouping is what puts you near these IDs in the first place.
+Canonical statement in `example-mapping-update`; these bullets are verbatim from it. A tidier numbering is never a reason to renumber — that temptation is yours alone, since regrouping is what puts you near these IDs in the first place.
 
 - **Numbering** — a new ID is one past the highest ever used in its scope, **retired IDs included**. Rules and questions are numbered within the story (`R-NN`, `Q-NN`), examples within their rule (each rule starts from `EX-01`). With R-01/R-02/R-03 on file and R-03 retired, the next rule is R-04 — never R-03 again.
 - **Immutability** — an ID, once used, keeps pointing at the same thing. Never renumber, never reuse, and never move an item to where its ID would change. This holds whether or not an automation issue was filed: the item's livt URI is quoted by MCP consumers, by the board's copy-link, in test comments, and in commit messages, and the livt repository records none of those — there is no list of references to check before breaking one.
 - **Retire, don't delete** — an item that no longer holds gets `retired: true` and stays in the file, its ID taken and its text readable. Deleting it hands the ID to the next item and silently re-targets every reference. Don't comment it out either: a comment is not part of the YAML structure, so a structural edit drops it.
+- **Say where the spec went** — when something took the retired item's place, add `superseded_by:` beside `retired:`, listing the successors as **livt URIs** so a reference landing on the retired item reads on instead of stopping. A list, because an item can split into two; livt URIs, because a successor can live in another mapping and a bare `R-05` names nothing. Leave the field off when nothing replaced it. Only the pointer goes in the YAML — *why* it was retired belongs to the commit, where it is written once and cannot drift.
 
 ## What NOT to Touch
 

@@ -102,3 +102,55 @@ func TestParseExampleMappingReadsReferencedTerms(t *testing.T) {
 		t.Fatalf("got ubiquitous %v, want [story-map story]", em.Ubiquitous)
 	}
 }
+
+// livt://mapping/trace-test-to-rule/rule/R-09/example/EX-01 and EX-03: a
+// retired rule, example, or question names where the spec went, as a list so an
+// item that split into two can name both successors.
+func TestParseExampleMappingReadsSupersededBy(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "story.yaml")
+	data := []byte("rules:\n" +
+		"  - id: R-01\n" +
+		"    name: 分割されて退役したルール\n" +
+		"    retired: true\n" +
+		"    superseded_by:\n" +
+		"      - livt://mapping/story/rule/R-02\n" +
+		"      - livt://mapping/other-story/rule/R-07\n" +
+		"  - id: R-02\n" +
+		"    name: 現役のルール\n" +
+		"    examples:\n" +
+		"      - id: EX-01\n" +
+		"        name: 差し替えられた実例\n" +
+		"        retired: true\n" +
+		"        superseded_by:\n" +
+		"          - livt://mapping/story/rule/R-02/example/EX-02\n" +
+		"      - id: EX-02\n" +
+		"        name: 現役の実例\n" +
+		"questions:\n" +
+		"  - id: Q-01\n" +
+		"    text: ルール化されて閉じた疑問\n" +
+		"    retired: true\n" +
+		"    superseded_by:\n" +
+		"      - livt://mapping/story/rule/R-02\n")
+	if err := os.WriteFile(path, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	em, err := ParseExampleMapping(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	split := em.Rules[0].SupersededBy
+	if len(split) != 2 || split[0] != "livt://mapping/story/rule/R-02" || split[1] != "livt://mapping/other-story/rule/R-07" {
+		t.Errorf("rule superseded_by = %v, want both successors, the second in another mapping", split)
+	}
+	if got := em.Rules[1].Examples[0].SupersededBy; len(got) != 1 || got[0] != "livt://mapping/story/rule/R-02/example/EX-02" {
+		t.Errorf("example superseded_by = %v, want the example that replaced it", got)
+	}
+	if got := em.Questions[0].SupersededBy; len(got) != 1 || got[0] != "livt://mapping/story/rule/R-02" {
+		t.Errorf("question superseded_by = %v, want the rule that settled it", got)
+	}
+	if len(em.Rules[1].SupersededBy) != 0 || len(em.Rules[1].Examples[1].SupersededBy) != 0 {
+		t.Error("items without the field should carry no successor")
+	}
+}

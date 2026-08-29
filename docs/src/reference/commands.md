@@ -111,7 +111,10 @@ questions, and ubiquitous terms linked alongside):
 
 A retired rule, example, or question keeps resolving by its URI and carries
 `retired: true`, so a reference to it reads as retired rather than failing (or,
-worse, landing on whatever reused its id). Live items omit the field.
+worse, landing on whatever reused its id). Live items omit the field. When
+something took the item's place, `superseded_by` lists it as livt URIs, so the
+reference reads on instead of stopping; a retirement that replaced nothing omits
+that field too.
 
 Read them with `resources/read`; all appear in `resources/templates/list`. The
 server advertises templates only — there is no concrete resource list and no

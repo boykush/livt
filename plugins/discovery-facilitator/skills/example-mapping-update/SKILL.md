@@ -33,20 +33,21 @@ When there is no fresh transcription baseline and the ask is "this rule changed 
 2. Capture the agreed change from the user: which rule, what changed, and why. Don't invent or extrapolate.
 3. Apply the minimal rule-level edit (IDs throughout follow the ID Contract):
    - **Added rule** — append it with the next rule ID, with the examples agreed alongside it.
-   - **Changed rule** — update its `name`, and bring its examples in line with the new meaning in the same PR (an example illustrating the old rule is now wrong). Retire the ones that no longer illustrate it and add the replacements as new examples; don't rewrite an example into a different one under the same ID. If the rule carries `automated:`, remove the flag in the same PR — the recorded automation covered the old meaning (`record-rule-automation`), and it is set again once the implementation catches up.
-   - **Retired rule** — mark it `retired: true`, and every one of its examples too: the flag does not cascade, so an unflagged example under a retired rule still resolves as live. Nothing is deleted.
-   - New open questions raised by the change take the next question ID; a question this change settles is retired, with the settled meaning landing as a rule — not as an answer scribbled onto the Question.
+   - **Changed rule** — update its `name`, and bring its examples in line with the new meaning in the same PR (an example illustrating the old rule is now wrong). Retire the ones that no longer illustrate it and add the replacements as new examples, pointing each retired one at its replacement with `superseded_by:`; don't rewrite an example into a different one under the same ID. If the rule carries `automated:`, remove the flag in the same PR — the recorded automation covered the old meaning (`record-rule-automation`), and it is set again once the implementation catches up.
+   - **Retired rule** — mark it `retired: true`, and every one of its examples too: the flag does not cascade, so an unflagged example under a retired rule still resolves as live. Nothing is deleted. Where another rule took over, add `superseded_by:`; where the business simply stopped asking, leave it off.
+   - New open questions raised by the change take the next question ID; a question this change settles is retired, with the settled meaning landing as a rule — not as an answer scribbled onto the Question. Point the retired question at that rule with `superseded_by:`: the rule is where its answer lives.
 4. Re-read the diff: it must contain exactly the one agreed change, nothing structural elsewhere.
 5. Ship it as its own PR (see PR Contract).
 6. More than one rule changed? Repeat the flow — one PR each.
 
 ## ID Contract
 
-This is the canonical statement. `example-mapping-transcribe`, `example-mapping-refine`, and `rule-issue-file` repeat these three bullets verbatim — a skill loads on its own, so every skill that can mint or move an ID has to carry them. Change one, change all four.
+This is the canonical statement. `example-mapping-transcribe` and `example-mapping-refine` repeat these bullets verbatim — a skill loads on its own, so every skill that can mint or move an ID has to carry them. Change one, change all three.
 
 - **Numbering** — a new ID is one past the highest ever used in its scope, **retired IDs included**. Rules and questions are numbered within the story (`R-NN`, `Q-NN`), examples within their rule (each rule starts from `EX-01`). With R-01/R-02/R-03 on file and R-03 retired, the next rule is R-04 — never R-03 again.
 - **Immutability** — an ID, once used, keeps pointing at the same thing. Never renumber, never reuse, and never move an item to where its ID would change. This holds whether or not an automation issue was filed: the item's livt URI is quoted by MCP consumers, by the board's copy-link, in test comments, and in commit messages, and the livt repository records none of those — there is no list of references to check before breaking one.
 - **Retire, don't delete** — an item that no longer holds gets `retired: true` and stays in the file, its ID taken and its text readable. Deleting it hands the ID to the next item and silently re-targets every reference. Don't comment it out either: a comment is not part of the YAML structure, so a structural edit drops it.
+- **Say where the spec went** — when something took the retired item's place, add `superseded_by:` beside `retired:`, listing the successors as **livt URIs** so a reference landing on the retired item reads on instead of stopping. A list, because an item can split into two; livt URIs, because a successor can live in another mapping and a bare `R-05` names nothing. Leave the field off when nothing replaced it. Only the pointer goes in the YAML — *why* it was retired belongs to the commit, where it is written once and cannot drift.
 
 ## PR Contract
 

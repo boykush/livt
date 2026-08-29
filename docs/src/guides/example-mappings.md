@@ -19,6 +19,8 @@ rules:
   - id: R-02
     name: Rule the spec no longer asks for
     retired: true
+    superseded_by:
+      - livt://mapping/story-key/rule/R-03
 
 questions:
   - id: Q-01
@@ -34,6 +36,7 @@ ubiquitous:
 - `issues` is optional: the rule's automation Issue URLs on implementation repos (Issue URLs only). The livt repository records the links; their state lives at the URL target. A rule without `issues` is unlinked.
 - `automated` is optional: records the judgment that the rule is actually automated by tests, which is independent of Issues being filed or closed. Absent means not automated. Set it when the rule's automation lands; unset it when the rule changes.
 - `retired` is optional and applies to a rule, an example, or a question: it records that the item is no longer part of the spec. Absent means live.
+- `superseded_by` is optional and goes with `retired`: the [livt URIs](../reference/uri.md) of whatever took the item's place. Absent means nothing did.
 
 ## Retiring an item
 
@@ -43,6 +46,34 @@ An item that no longer holds is marked `retired: true` — never deleted, and ne
 - **Commenting out loses the record.** A comment is not part of the YAML structure, so any tool that rewrites the file drops it. `retired: true` is a field and survives.
 
 A retired item stays readable in the file and still resolves by its livt URI, carrying `retired: true` so the reader can tell. It leaves the board and the [Tasks page](../reference/file-structure.md): a retired question is not an open question, and a retired rule is not waiting for a test.
+
+### Saying where the spec went
+
+Retirement alone tells a reference it has stopped, not where to go. `superseded_by` adds that half — the livt URIs of whatever took the item's place:
+
+```yaml
+rules:
+  - id: R-02
+    name: Rule the spec no longer asks for
+    retired: true
+    superseded_by:
+      - livt://mapping/story-key/rule/R-05
+      - livt://mapping/another-story/rule/R-01
+
+questions:
+  - id: Q-01
+    text: Question that turned into a rule
+    retired: true
+    superseded_by:
+      - livt://mapping/story-key/rule/R-05
+```
+
+- **It is a list**, so a rule that split into two names both.
+- **It holds livt URIs, not bare ids.** A successor can live in another mapping — the rule moved to the story that actually owns it — and `R-05` on its own names nothing, since ids restart in every mapping.
+- **A settled question points at the rule that settled it.** The answer lands as a rule; the Question card never carries one.
+- **Nothing replaced it?** Leave `superseded_by` off. Plenty of retirements are just the business no longer asking.
+
+Only the pointer is structured. *Why* the item was retired belongs to the commit that retired it, where it is written once and cannot drift — a second copy in the YAML would. Tooling reads the pointer back as URIs and stops there: the successor is one read away for whoever needs it, and inlining its text would spend a consumer's context on a hop most of them never take.
 
 ## Visual Layout
 

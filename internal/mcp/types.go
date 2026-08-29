@@ -177,6 +177,8 @@ type exampleJSON struct {
 	Name string `json:"name"`
 	// Retired as on ruleJSON.
 	Retired bool `json:"retired,omitempty"`
+	// SupersededBy as on ruleJSON.
+	SupersededBy []string `json:"superseded_by,omitempty"`
 }
 
 type ruleJSON struct {
@@ -195,6 +197,12 @@ type ruleJSON struct {
 	// is omitted when false: it marks the exception, and every live rule
 	// carrying "retired": false would drown the flag in noise.
 	Retired bool `json:"retired,omitempty"`
+	// SupersededBy is where the spec went, as livt URIs, so a stale reference
+	// leads forward instead of stopping. It stays a URI: the successor is one
+	// read away for a caller who needs it, and inlining its text would spend
+	// context on a hop most callers never take. Omitted like Retired, and for
+	// the same reason.
+	SupersededBy []string `json:"superseded_by,omitempty"`
 }
 
 type questionJSON struct {
@@ -205,6 +213,9 @@ type questionJSON struct {
 	Text string `json:"text"`
 	// Retired as on ruleJSON; a retired question is no longer open.
 	Retired bool `json:"retired,omitempty"`
+	// SupersededBy as on ruleJSON; for a settled question it is the rule that
+	// settled it.
+	SupersededBy []string `json:"superseded_by,omitempty"`
 }
 
 type exampleMappingJSON struct {
@@ -340,15 +351,15 @@ func toRuleJSON(storyKey string, r domain.Rule) ruleJSON {
 	for _, e := range r.Examples {
 		examples = append(examples, toExampleJSON(storyKey, r.ID, e))
 	}
-	return ruleJSON{ID: r.ID, URI: uri.Rule(storyKey, r.ID), Name: r.Name, Examples: examples, Issues: r.Issues, Automated: r.Automated, Retired: r.Retired}
+	return ruleJSON{ID: r.ID, URI: uri.Rule(storyKey, r.ID), Name: r.Name, Examples: examples, Issues: r.Issues, Automated: r.Automated, Retired: r.Retired, SupersededBy: r.SupersededBy}
 }
 
 func toExampleJSON(storyKey, ruleID string, e domain.Example) exampleJSON {
-	return exampleJSON{ID: e.ID, URI: uri.Example(storyKey, ruleID, e.ID), Name: e.Name, Retired: e.Retired}
+	return exampleJSON{ID: e.ID, URI: uri.Example(storyKey, ruleID, e.ID), Name: e.Name, Retired: e.Retired, SupersededBy: e.SupersededBy}
 }
 
 func toQuestionJSON(storyKey string, q domain.Question) questionJSON {
-	return questionJSON{ID: q.ID, URI: uri.Question(storyKey, q.ID), Text: q.Text, Retired: q.Retired}
+	return questionJSON{ID: q.ID, URI: uri.Question(storyKey, q.ID), Text: q.Text, Retired: q.Retired, SupersededBy: q.SupersededBy}
 }
 
 // toExampleMappingJSON is a Config method because resolving the referenced

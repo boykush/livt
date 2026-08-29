@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"path/filepath"
+	"slices"
 	"strings"
 	"testing"
 
@@ -215,4 +216,93 @@ func TestLiveItemsOmitRetiredFromJSON(t *testing.T) {
 
 func readReq(resURI string) *mcpsdk.ReadResourceRequest {
 	return &mcpsdk.ReadResourceRequest{Params: &mcpsdk.ReadResourceParams{URI: resURI}}
+}
+
+// newSupersededTestServer lays out a livt repository whose retired items name where the
+// spec went: R-01 split into R-02 here and a rule in another mapping, EX-01 was
+// replaced by EX-02 under the same rule, and Q-01 was settled by R-02.
+func newSupersededTestServer(t *testing.T) *Server {
+	t.Helper()
+	root := t.TempDir()
+	writeFile(t, filepath.Join(root, "discoveries", "example-mappings", "demo.yaml"),
+		"rules:\n"+
+			"  - id: R-01\n"+
+			"    name: 分割されて退役したルール\n"+
+			"    retired: true\n"+
+			"    superseded_by:\n"+
+			"      - livt://mapping/demo/rule/R-02\n"+
+			"      - livt://mapping/other/rule/R-07\n"+
+			"  - id: R-02\n"+
+			"    name: 現役のルール\n"+
+			"    examples:\n"+
+			"      - id: EX-01\n"+
+			"        name: 差し替えられた実例\n"+
+			"        retired: true\n"+
+			"        superseded_by:\n"+
+			"          - livt://mapping/demo/rule/R-02/example/EX-02\n"+
+			"      - id: EX-02\n"+
+			"        name: 現役の実例\n"+
+			"questions:\n"+
+			"  - id: Q-01\n"+
+			"    text: ルール化されて閉じた疑問\n"+
+			"    retired: true\n"+
+			"    superseded_by:\n"+
+			"      - livt://mapping/demo/rule/R-02\n")
+	return NewServer(Config{Root: root}, "test")
+}
+
+// livt://mapping/trace-test-to-rule/rule/R-09/example/EX-01, EX-02 and EX-03: a
+// reference that lands on a retired item reads on to its successors, which are
+// livt URIs — so one of them can live in another mapping, and a split can name
+// both.
+func TestReadRetiredItemsCarrySuccessors(t *testing.T) {
+	s := newSupersededTestServer(t)
+
+	rule := readResource[ruleResult](t, s.readRule, uri.Rule("demo", "R-01")).Rule
+	want := []string{"livt://mapping/demo/rule/R-02", "livt://mapping/other/rule/R-07"}
+	if !slices.Equal(rule.SupersededBy, want) {
+		t.Errorf("rule superseded_by = %v, want %v", rule.SupersededBy, want)
+	}
+	example := readResource[exampleResult](t, s.readExample, uri.Example("demo", "R-02", "EX-01")).Example
+	if !slices.Equal(example.SupersededBy, []string{"livt://mapping/demo/rule/R-02/example/EX-02"}) {
+		t.Errorf("example superseded_by = %v, want the example that replaced it", example.SupersededBy)
+	}
+	question := readResource[questionResult](t, s.readQuestion, uri.Question("demo", "Q-01")).Question
+	if !slices.Equal(question.SupersededBy, []string{"livt://mapping/demo/rule/R-02"}) {
+		t.Errorf("question superseded_by = %v, want the rule that settled it", question.SupersededBy)
+	}
+}
+
+// livt://mapping/trace-test-to-rule/rule/R-09/example/EX-06: the successor
+// travels as a URI and nothing more. Inlining what it says would spend the
+// caller's context on a hop most of them never take.
+func TestSuccessorsTravelAsURIsNotText(t *testing.T) {
+	s := newSupersededTestServer(t)
+
+	res, err := s.readRule(context.Background(), readReq(uri.Rule("demo", "R-01")))
+	if err != nil {
+		t.Fatalf("read retired rule: %v", err)
+	}
+	if body := resourceText(t, res); strings.Contains(body, "現役のルール") {
+		t.Errorf("payload inlines the successor's text: %s", body)
+	}
+}
+
+// livt://mapping/trace-test-to-rule/rule/R-09/example/EX-04: a rule the spec
+// simply stopped asking for is retired with nothing to point at, so the field
+// is absent rather than empty.
+func TestRetiredWithoutSuccessorOmitsSupersededBy(t *testing.T) {
+	s := newRetiredTestServer(t)
+
+	res, err := s.readRule(context.Background(), readReq(uri.Rule("demo", "R-02")))
+	if err != nil {
+		t.Fatalf("read retired rule: %v", err)
+	}
+	body := resourceText(t, res)
+	if !strings.Contains(body, "retired") {
+		t.Fatalf("payload should still be flagged retired: %s", body)
+	}
+	if strings.Contains(body, "superseded_by") {
+		t.Errorf("payload mentions superseded_by with no successor: %s", body)
+	}
 }

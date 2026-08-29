@@ -26,21 +26,21 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "rule",
 		Title:       "Rule",
-		Description: "A single rule, its examples, and its automation record (issues, automated) from a story's example mapping. Rule ids restart in every mapping, so the whole uri — story key included — is what addresses this rule. A retired rule resolves too, carrying retired: true.",
+		Description: "A single rule, its examples, and its automation record (issues, automated) from a story's example mapping. Rule ids restart in every mapping, so the whole uri — story key included — is what addresses this rule. A retired rule resolves too, carrying retired: true and, when something took its place, superseded_by: the uris to read next.",
 		MIMEType:    "application/json",
 		URITemplate: uri.RuleTemplate,
 	}, s.readRule)
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "example",
 		Title:       "Example",
-		Description: "A single example of a rule. Example ids are numbered within their rule, so the address carries the rule id: EX-01 names nothing on its own.",
+		Description: "A single example of a rule. Example ids are numbered within their rule, so the address carries the rule id: EX-01 names nothing on its own. A retired example resolves too, carrying retired: true and any superseded_by uris.",
 		MIMEType:    "application/json",
 		URITemplate: uri.ExampleTemplate,
 	}, s.readExample)
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "question",
 		Title:       "Question",
-		Description: "A single question from a story's example mapping. Questions hang off the mapping rather than off a rule, so the address stops at the story key. A retired question resolves too, carrying retired: true.",
+		Description: "A single question from a story's example mapping. Questions hang off the mapping rather than off a rule, so the address stops at the story key. A retired question resolves too, carrying retired: true; a question settled into a rule carries that rule in superseded_by, which is where its answer landed.",
 		MIMEType:    "application/json",
 		URITemplate: uri.QuestionTemplate,
 	}, s.readQuestion)
