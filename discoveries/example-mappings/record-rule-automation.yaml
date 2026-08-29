@@ -17,6 +17,9 @@ rules:
       - id: EX-01
         name: 自動化Issueがクローズされたら、ルールメンテナーがautomatedを立てる
         retired: true
+        superseded_by:
+          - livt://mapping/record-rule-automation/rule/R-02/example/EX-03
+          - livt://mapping/record-rule-automation/rule/R-02/example/EX-05
       - id: EX-02
         name: ルールを変更するPRでは、該当ruleのautomatedを外す（example-mapping-updateの手順に組み込む）
       - id: EX-03

@@ -95,11 +95,14 @@ rules:
         name: 退役の経緯はYAMLに書かず、コミット・PR本文に残す（構造にするのは代替先だけ）
       - id: EX-06
         name: MCPは代替先をURIのまま返し、その本文までは展開しない（辿るかどうかは消費側が決める）
+    automated: true
 
 questions:
   - id: Q-01
     text: 実装リポジトリからlivtリポジトリをどう引くか（R-04はCLIに解決機構があることまでで、どこから解決できるかは誰も引き受けていない。現状は--rootでlivtリポジトリのチェックアウトを指す必要があり、実装が別リポジトリにある本ストーリーのアクターは辿れない）
     retired: true
+    superseded_by:
+      - livt://mapping/automate-from-master-in-impl-repos/rule/R-15
   - id: Q-02
     text: 1つのworkspaceが複数のlivtリポジトリを消費するとき、裸のlivt URIのスコープを何が復元するか（default宣言＋エイリアス修飾のxmlns型が候補。現時点では考慮外とし、R-08 EX-03で拡張の席だけ確保している）
   - id: Q-03
