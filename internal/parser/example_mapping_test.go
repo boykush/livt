@@ -40,6 +40,37 @@ func TestParseExampleMappingReadsRuleIssuesAndAutomated(t *testing.T) {
 	}
 }
 
+// livt://mapping/trace-question-to-resolutions/rule/R-02/example/EX-01: a
+// question's resolutions take Issue and PR URLs alike, in the recorded order,
+// and a question with none parses to an unlinked one.
+func TestParseExampleMappingReadsQuestionResolutions(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "story.yaml")
+	data := []byte("questions:\n" +
+		"  - id: Q-01\n" +
+		"    text: 動いている疑問点\n" +
+		"    resolutions:\n" +
+		"      - https://github.com/boykush/livt/issues/157\n" +
+		"      - https://github.com/boykush/livt/pull/160\n" +
+		"  - id: Q-02\n" +
+		"    text: 手つかずの疑問点\n")
+	if err := os.WriteFile(path, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	em, err := ParseExampleMapping(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	got := em.Questions[0].Resolutions
+	if len(got) != 2 || got[0] != "https://github.com/boykush/livt/issues/157" || got[1] != "https://github.com/boykush/livt/pull/160" {
+		t.Fatalf("got resolutions %v, want the Issue then the PR", got)
+	}
+	if len(em.Questions[1].Resolutions) != 0 {
+		t.Fatalf("bare question should be unlinked, got %v", em.Questions[1].Resolutions)
+	}
+}
+
 // livt://mapping/trace-test-to-rule/rule/R-05/example/EX-04: retirement is a
 // field on the item, so a structural edit of the YAML cannot lose it the way it
 // would lose a commented-out block — and the retired body stays readable (EX-03).

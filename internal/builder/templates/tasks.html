@@ -91,5 +91,16 @@ sticky colour the item carries on that board.
     {{end}}
     {{range .Opportunities}}<a href="{{.Path}}" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">{{.Name}}</a>{{end}}
   </div>
+  {{if .Resolutions}}
+  {{/*
+  A question already being worked out somewhere, on the page where the reader is
+  deciding what to pick up next. Still no status: the link says work exists, not
+  that it landed — reading that would mean asking GitHub at build time.
+  z-20 keeps these above the card's stretched anchor, as the chips above do.
+  */}}
+  <div class="flex flex-wrap gap-x-3 gap-y-0.5 mt-2 font-mono text-[10px]">
+    {{range .Resolutions}}<a href="{{.}}" target="_blank" rel="noopener" class="relative z-20 text-red-600 hover:underline">&#8599; {{linkLabel .}}</a>{{end}}
+  </div>
+  {{end}}
 </div>
 {{end}}

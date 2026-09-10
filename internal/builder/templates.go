@@ -20,7 +20,7 @@ var templateFS embed.FS
 func funcs(lang i18n.Lang) template.FuncMap {
 	return template.FuncMap{
 		"t":                 i18n.Of(lang).T,
-		"issueLabel":        issueLabel,
+		"linkLabel":         linkLabel,
 		"filter":            newFilterView,
 		"opportunityValues": opportunityValuesJSON,
 		"contextValues":     contextValuesJSON,
@@ -90,10 +90,12 @@ func storyBadge(storyKey string) idBadge {
 	return idBadge{Anchor: uri.StoryCardAnchor(storyKey), Label: storyKey, Tint: "text-yellow-600/70 hover:text-yellow-700"}
 }
 
-// issueLabel shortens an automation Issue URL to a sticky-sized link label:
-// https://github.com/{owner}/{repo}/issues/{n} becomes "{repo}#{n}". Anything
-// else falls back to its host so foreign trackers still read as a chip.
-func issueLabel(url string) string {
+// linkLabel shortens an outbound GitHub URL to a sticky-sized chip label:
+// .../{repo}/issues/{n} and .../{repo}/pull/{n} both become "{repo}#{n}". A
+// question reads the same whether it was settled in an Issue or in a PR — the
+// medium is not what the reader scans for. Anything else falls back to its host
+// so foreign trackers still read as a chip.
+func linkLabel(url string) string {
 	rest, ok := strings.CutPrefix(url, "https://")
 	if !ok {
 		rest, ok = strings.CutPrefix(url, "http://")
@@ -102,7 +104,7 @@ func issueLabel(url string) string {
 		return url
 	}
 	parts := strings.Split(rest, "/")
-	if len(parts) >= 5 && parts[0] == "github.com" && parts[3] == "issues" {
+	if len(parts) >= 5 && parts[0] == "github.com" && (parts[3] == "issues" || parts[3] == "pull") {
 		return parts[2] + "#" + parts[4]
 	}
 	return parts[0]
@@ -378,6 +380,10 @@ type taskItem struct {
 	StoryPath     string
 	MappingPath   string
 	Opportunities []opportunityRef
+	// Resolutions are a question's recorded resolution links, carried so the
+	// list says which questions already have work moving on them without
+	// opening each board. Only a question ever has them.
+	Resolutions []string
 }
 
 // tasksView is the livt repository's two unfinished flanks either side of the example
