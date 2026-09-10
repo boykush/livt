@@ -99,3 +99,5 @@ activities:
         stories:
           - name: 未解決の疑問点を横断で見渡す
             key: overview-open-questions
+          - name: 疑問点付箋から解消先へ辿る
+            key: trace-question-to-resolutions
