@@ -1,0 +1,67 @@
+rules:
+  - id: R-01
+    name: 疑問点付箋から、記録された解消先へ辿れる
+    examples:
+      - id: EX-01
+        name: resolutionsのあるquestionの付箋には、各解消先への外部リンクが記録順で付く
+      - id: EX-02
+        name: リンクのラベルはリポジトリ名と番号（例 livt#157）に短縮される
+      - id: EX-03
+        name: resolutionsのないquestionにはリンクが付かない
+      - id: EX-04
+        name: GitHub以外のURLはホスト名をラベルにして、そのままリンクになる
+    automated: true
+
+  - id: R-02
+    name: 解消先は媒体を問わず、Issue・PRのどちらでも同じように記録できる
+    examples:
+      - id: EX-01
+        name: Issueが立たないままPRだけで決着した疑問点も、そのPRを解消先として記録できる
+      - id: EX-02
+        name: IssueのURLもPRのURLも同じ repo#番号 の形にラベルされ、見た目で区別されない
+      - id: EX-03
+        name: ルールのissuesはIssueのみを記録する（解消先とは別のフィールド）
+    automated: true
+
+  - id: R-03
+    name: 未解決の疑問点一覧からも、ボードと同じ解消先へ辿れる
+    examples:
+      - id: EX-01
+        name: Tasksページの疑問点カードに、ボードと同じ解消先リンクが同じ順で付く
+      - id: EX-02
+        name: 解消先のない疑問点のカードにはリンクが付かない
+      - id: EX-03
+        name: 未自動化ルールのカードには解消先リンクが付かない（解消先は疑問点だけが持つ）
+    automated: true
+
+  - id: R-04
+    name: MCPの疑問点リソースも解消先を返す
+    examples:
+      - id: EX-01
+        name: livt://mapping/{story_key}/question/{id} の応答に resolutions が含まれる
+      - id: EX-02
+        name: 解消先のない疑問点では resolutions を省く
+      - id: EX-03
+        name: retiredな疑問点は resolutions と superseded_by を同時に返す
+    automated: true
+
+  - id: R-05
+    name: リンクはlivtリポジトリの記録をそのまま使い、buildはネットワークに出ない
+    examples:
+      - id: EX-01
+        name: SSGはresolutionsのURLをそのまま出力し、Issue・PRの開閉状態は問い合わせない
+    automated: true
+
+questions:
+  - id: Q-01
+    text: ルールのissuesも解消先と同じく媒体を問わない形に寄せるか（現状はtrace-rule-to-testsのR-01で「PRはIssueから辿る」と決めており、非対称は意図的）
+    resolutions:
+      - https://github.com/boykush/livt/pull/157
+  - id: Q-02
+    text: 解消先の開閉状態をサイトに映すか（buildがネットワークに出ない制約と両立する道があるか）
+
+ubiquitous:
+  - livt-repository
+  - example-mapping
+  - story
+  - discovery

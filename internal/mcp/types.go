@@ -211,6 +211,11 @@ type questionJSON struct {
 	// (livt://mapping/{story_key}/question/{id}).
 	URI  string `json:"uri"`
 	Text string `json:"text"`
+	// Resolutions are the Issue or PR URLs where the question is being settled,
+	// as recorded on the livt repository. Unlike ruleJSON.Issues it is not
+	// Issue-only: an agent reading a question ahead of picking it up wants the
+	// venue, whichever medium it is.
+	Resolutions []string `json:"resolutions,omitempty"`
 	// Retired as on ruleJSON; a retired question is no longer open.
 	Retired bool `json:"retired,omitempty"`
 	// SupersededBy as on ruleJSON; for a settled question it is the rule that
@@ -359,7 +364,7 @@ func toExampleJSON(storyKey, ruleID string, e domain.Example) exampleJSON {
 }
 
 func toQuestionJSON(storyKey string, q domain.Question) questionJSON {
-	return questionJSON{ID: q.ID, URI: uri.Question(storyKey, q.ID), Text: q.Text, Retired: q.Retired, SupersededBy: q.SupersededBy}
+	return questionJSON{ID: q.ID, URI: uri.Question(storyKey, q.ID), Text: q.Text, Resolutions: q.Resolutions, Retired: q.Retired, SupersededBy: q.SupersededBy}
 }
 
 // toExampleMappingJSON is a Config method because resolving the referenced

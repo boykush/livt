@@ -95,7 +95,9 @@ func collectTasks(em *domain.ExampleMapping, storyName, storyPath string) taskSe
 
 	var out taskSet
 	for _, q := range active.Questions {
-		out.Questions = append(out.Questions, item("question", q.ID, q.Text, sticky(q.ID, uri.QuestionPage)))
+		task := item("question", q.ID, q.Text, sticky(q.ID, uri.QuestionPage))
+		task.Resolutions = q.Resolutions
+		out.Questions = append(out.Questions, task)
 	}
 	for _, r := range active.Rules {
 		if r.Automated {

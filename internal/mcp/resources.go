@@ -40,7 +40,7 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "question",
 		Title:       "Question",
-		Description: "A single question from a story's example mapping. Questions hang off the mapping rather than off a rule, so the address stops at the story key. A retired question resolves too, carrying retired: true; a question settled into a rule carries that rule in superseded_by, which is where its answer landed.",
+		Description: "A single question from a story's example mapping. Questions hang off the mapping rather than off a rule, so the address stops at the story key. A question already being worked out carries resolutions: the Issue or PR urls where it is being settled — read them before picking the question up. A retired question resolves too, carrying retired: true; a question settled into a rule carries that rule in superseded_by, which is where its answer landed.",
 		MIMEType:    "application/json",
 		URITemplate: uri.QuestionTemplate,
 	}, s.readQuestion)
