@@ -55,6 +55,8 @@ rules:
 questions:
   - id: Q-01
     text: ルールのissuesも解消先と同じく媒体を問わない形に寄せるか（現状はtrace-rule-to-testsのR-01で「PRはIssueから辿る」と決めており、非対称は意図的）
+    resolutions:
+      - https://github.com/boykush/livt/pull/157
   - id: Q-02
     text: 解消先の開閉状態をサイトに映すか（buildがネットワークに出ない制約と両立する道があるか）
 
