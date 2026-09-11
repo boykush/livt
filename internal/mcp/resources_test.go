@@ -118,51 +118,6 @@ func TestMappingLinksExamplesAndQuestions(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-question-to-resolutions/rule/R-04/example/EX-01,
-// example/EX-02 and example/EX-03: an agent reading a question before picking it
-// up gets its resolution venues — omitted entirely when there are none, and
-// carried alongside retired/superseded_by when the question is already settled,
-// since the two answer different halves of "where did this go".
-func TestReadQuestionCarriesResolutions(t *testing.T) {
-	root := t.TempDir()
-	writeFile(t, filepath.Join(root, "discoveries", "example-mappings", "demo.yaml"),
-		"questions:\n"+
-			"  - id: Q-01\n"+
-			"    text: 動いている疑問\n"+
-			"    resolutions:\n"+
-			"      - https://github.com/boykush/livt/issues/157\n"+
-			"      - https://github.com/boykush/livt/pull/160\n"+
-			"  - id: Q-02\n"+
-			"    text: 手つかずの疑問\n"+
-			"  - id: Q-03\n"+
-			"    text: 決着した疑問\n"+
-			"    resolutions:\n"+
-			"      - https://github.com/boykush/livt/pull/144\n"+
-			"    retired: true\n"+
-			"    superseded_by:\n"+
-			"      - livt://mapping/demo/rule/R-01\n")
-	s := NewServer(Config{Root: root}, "test")
-
-	inFlight := readResource[questionResult](t, s.readQuestion, uri.Question("demo", "Q-01")).Question
-	want := []string{"https://github.com/boykush/livt/issues/157", "https://github.com/boykush/livt/pull/160"}
-	if !slices.Equal(inFlight.Resolutions, want) {
-		t.Errorf("resolutions = %v, want %v", inFlight.Resolutions, want)
-	}
-
-	res, err := s.readQuestion(context.Background(), readReq(uri.Question("demo", "Q-02")))
-	if err != nil {
-		t.Fatal(err)
-	}
-	if body := resourceText(t, res); strings.Contains(body, "resolutions") {
-		t.Errorf("a question with no resolutions should omit the field, got %s", body)
-	}
-
-	settled := readResource[questionResult](t, s.readQuestion, uri.Question("demo", "Q-03")).Question
-	if !settled.Retired || len(settled.Resolutions) != 1 || len(settled.SupersededBy) != 1 {
-		t.Errorf("question = %+v, want the PR it was settled in and the rule it became", settled)
-	}
-}
-
 // newRetiredTestServer lays out a livt repository whose demo mapping holds retired items
 // beside live ones: rule R-02, example EX-02 of the live R-01, and question Q-02
 // are retired, so their ids stay taken and their text stays on file.

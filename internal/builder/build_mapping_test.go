@@ -185,94 +185,16 @@ func TestRenderMappingLinksRuleIssues(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-question-to-resolutions/rule/R-02/example/EX-02: an Issue
-// and a PR label identically, so a reader scanning a board cannot tell the two
-// media apart — which is the point, since only the venue matters.
-// livt://mapping/trace-question-to-resolutions/rule/R-01/example/EX-04: anything
-// else keeps its host, so a foreign tracker still reads as a chip.
-func TestLinkLabelShortensIssuesAndPullsAlike(t *testing.T) {
+func TestIssueLabelFallsBackToHost(t *testing.T) {
 	cases := map[string]string{
 		"https://github.com/boykush/livt/issues/25": "livt#25",
-		"https://github.com/boykush/livt/pull/160":  "livt#160",
 		"https://tracker.example.com/tickets/9":     "tracker.example.com",
 		"not-a-url":                                 "not-a-url",
 	}
 	for url, want := range cases {
-		if got := linkLabel(url); got != want {
-			t.Errorf("linkLabel(%q) = %q, want %q", url, got, want)
+		if got := issueLabel(url); got != want {
+			t.Errorf("issueLabel(%q) = %q, want %q", url, got, want)
 		}
-	}
-}
-
-// livt://mapping/trace-question-to-resolutions/rule/R-01/example/EX-01,
-// example/EX-02 and example/EX-03: a question carrying resolutions links out to
-// each in the recorded order under a shortened label, and one carrying none
-// stays a plain sticky.
-// livt://mapping/trace-question-to-resolutions/rule/R-02/example/EX-01: a
-// question settled in a PR with no Issue behind it records that PR.
-// livt://mapping/trace-question-to-resolutions/rule/R-05/example/EX-01: the href
-// is the recorded URL verbatim — the build never asks whether it is closed.
-func TestRenderMappingLinksQuestionResolutions(t *testing.T) {
-	em := &domain.ExampleMapping{
-		Questions: []domain.Question{
-			{ID: "Q-01", Text: "A question being worked out", Resolutions: []string{
-				"https://github.com/boykush/livt/issues/157",
-				"https://github.com/boykush/livt/pull/160",
-			}},
-			{ID: "Q-02", Text: "A question nobody has picked up"},
-		},
-	}
-
-	var buf bytes.Buffer
-	if err := renderMapping(&buf, i18n.En, em, "Story", "", nil); err != nil {
-		t.Fatal(err)
-	}
-	html := buf.String()
-
-	for _, url := range []string{
-		"https://github.com/boykush/livt/issues/157",
-		"https://github.com/boykush/livt/pull/160",
-	} {
-		if !strings.Contains(html, `href="`+url+`"`) {
-			t.Fatalf("expected the question sticky to link out to %s unchanged", url)
-		}
-	}
-	if !strings.Contains(html, "livt#157") || !strings.Contains(html, "livt#160") {
-		t.Fatal("expected resolution links labelled as repo#number")
-	}
-	if got := strings.Index(html, "livt#157"); got > strings.Index(html, "livt#160") {
-		t.Fatal("expected resolutions in the order the livt repository records them")
-	}
-	if got := strings.Count(html, `target="_blank"`); got != 2 {
-		t.Fatalf("outbound links rendered %d times, want 2 (only on the linked question)", got)
-	}
-}
-
-// livt://mapping/trace-question-to-resolutions/rule/R-03/example/EX-02 and
-// example/EX-03: the Tasks page carries a question's resolutions off its board,
-// and nothing else on the page grows them.
-// livt://mapping/trace-question-to-resolutions/rule/R-02/example/EX-03: a rule's
-// links stay its issues — the two fields never feed each other.
-func TestCollectTasksCarriesQuestionResolutions(t *testing.T) {
-	em := &domain.ExampleMapping{
-		StoryKey: domain.StoryKey{Value: "checkout"},
-		Rules:    []domain.Rule{{ID: "R-01", Name: "An unproven rule", Issues: []string{"https://github.com/boykush/livt/issues/25"}}},
-		Questions: []domain.Question{
-			{ID: "Q-01", Text: "A question in flight", Resolutions: []string{"https://github.com/boykush/livt/pull/160"}},
-			{ID: "Q-02", Text: "A question nobody has picked up"},
-		},
-	}
-
-	out := collectTasks(em, "Checkout", "story/checkout.html")
-
-	if got := out.Questions[0].Resolutions; len(got) != 1 || got[0] != "https://github.com/boykush/livt/pull/160" {
-		t.Errorf("question resolutions = %v, want the one recorded PR", got)
-	}
-	if got := out.Questions[1].Resolutions; len(got) != 0 {
-		t.Errorf("unlinked question resolutions = %v, want none", got)
-	}
-	if got := out.UnautomatedRules[0].Resolutions; len(got) != 0 {
-		t.Errorf("rule resolutions = %v, want none — a rule records issues, not a resolution venue", got)
 	}
 }
 

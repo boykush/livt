@@ -67,10 +67,7 @@ canvas, and story map as a preview card.
 be hunted for board by board:
 
 - **Open Questions** — every `questions` entry across the example mappings.
-  These close by a conversation, so they feed the next discovery session. A
-  question that records
-  [`resolutions`](../guides/example-mappings.md) links out to the Issues or PRs
-  where that conversation is happening.
+  These close by a conversation, so they feed the next discovery session.
 - **Un-automated Rules** — every rule with no `automated: true` recorded. These
   close by a test, so they read as the list of behaviour still to build.
 
@@ -84,8 +81,6 @@ selection is mirrored in the `?opportunity=` query parameter so a filtered view
 is shareable.
 
 Items carry no status beyond being listed. A rule records its automation issue
-URLs and a question its resolution links, but neither records their open/closed
-state, and the build never queries the issue tracker. A resolution link says
-work exists, not that it landed: an item leaves this page by being resolved — a
-question becoming a rule, a rule becoming automated — rather than by moving
-through states.
+URLs but not their open/closed state, and the build never queries the issue
+tracker, so an item leaves this page by being resolved — a question becoming a
+rule, a rule becoming automated — rather than by moving through states.
