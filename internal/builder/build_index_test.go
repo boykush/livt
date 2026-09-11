@@ -96,42 +96,6 @@ func TestBuildTasksListsOpenQuestionsAndUnautomatedRules(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-question-to-resolutions/rule/R-03/example/EX-01: the
-// resolutions a question carries on its board reach the page where the reader
-// picks what to take on next, in the same order and behind the same labels.
-func TestBuildTasksLinksQuestionResolutions(t *testing.T) {
-	b := emptyDirsBuilder(t)
-	questions := []taskItem{{
-		Kind: "question", ID: "Q-01", Text: "解消先を持つ疑問点",
-		StoryKey: "trace-question-to-resolutions", StoryName: "疑問点付箋から解消先へ辿る",
-		MappingPath: "mapping/trace-question-to-resolutions.html#question-Q-01",
-		Resolutions: []string{
-			"https://github.com/boykush/livt/issues/157",
-			"https://github.com/boykush/livt/pull/160",
-		},
-	}}
-	if err := b.buildTasks(questions, nil, nil); err != nil {
-		t.Fatal(err)
-	}
-	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
-
-	for _, want := range []string{
-		`href="https://github.com/boykush/livt/issues/157"`,
-		`href="https://github.com/boykush/livt/pull/160"`,
-		"livt#157",
-		"livt#160",
-	} {
-		if !strings.Contains(html, want) {
-			t.Fatalf("tasks.html missing %q", want)
-		}
-	}
-	// The card's stretched anchor covers everything below it, so a resolution
-	// link has to sit above it or the click lands on the board instead.
-	if !strings.Contains(html, `class="relative z-20 text-red-600 hover:underline"`) {
-		t.Fatal("expected resolution links to sit above the card's stretched anchor")
-	}
-}
-
 // livt://mapping/overview-open-questions/rule/R-01/example/EX-03 and its mirror
 // in overview-unautomated-rules: each list says so when there is nothing left in
 // it — an empty questions list and a fully automated livt repository read differently.

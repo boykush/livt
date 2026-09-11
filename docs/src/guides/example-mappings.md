@@ -25,9 +25,6 @@ rules:
 questions:
   - id: Q-01
     text: Question text
-    resolutions:
-      - https://github.com/owner/repo/issues/1
-      - https://github.com/owner/repo/pull/2
 
 ubiquitous:
   - term-key
@@ -37,7 +34,6 @@ ubiquitous:
 - IDs must be unique within their rule or question list
 - `ubiquitous` is optional: each entry is a [ubiquitous language](./ubiquitous-language.md) term key, rendered as a pink sticky linking to `ubiquitous.html#{term-key}`. A key with no matching term file renders as a plain pink card.
 - `issues` is optional: the rule's automation Issue URLs on implementation repos (Issue URLs only). The livt repository records the links; their state lives at the URL target. A rule without `issues` is unlinked.
-- `resolutions` is optional and belongs to a question: the Issue or PR URLs where the question is being settled. Unlike a rule's `issues` it is not restricted to Issues — a question is often settled in a PR, or in another tracker entirely, and what the reader wants is the venue rather than the medium. Both kinds of GitHub URL shorten to the same `{repo}#{n}` chip. livt records the links only; whether they are closed lives at the URL target. A question without `resolutions` is unlinked.
 - `automated` is optional: records the judgment that the rule is actually automated by tests, which is independent of Issues being filed or closed. Absent means not automated. Set it when the rule's automation lands; unset it when the rule changes.
 - `retired` is optional and applies to a rule, an example, or a question: it records that the item is no longer part of the spec. Absent means live.
 - `superseded_by` is optional and goes with `retired`: the [livt URIs](../reference/uri.md) of whatever took the item's place. Absent means nothing did.
@@ -74,7 +70,7 @@ questions:
 
 - **It is a list**, so a rule that split into two names both.
 - **It holds livt URIs, not bare ids.** A successor can live in another mapping — the rule moved to the story that actually owns it — and `R-05` on its own names nothing, since ids restart in every mapping.
-- **A settled question points at the rule that settled it.** The answer lands as a rule; the Question card never carries one. `superseded_by` and `resolutions` answer different halves of *where did this question go*, so a settled question often keeps both: the rule the answer landed as, and the Issue or PR the conversation happened in.
+- **A settled question points at the rule that settled it.** The answer lands as a rule; the Question card never carries one.
 - **Nothing replaced it?** Leave `superseded_by` off. Plenty of retirements are just the business no longer asking.
 
 Only the pointer is structured. *Why* the item was retired belongs to the commit that retired it, where it is written once and cannot drift — a second copy in the YAML would. Tooling reads the pointer back as URIs and stops there: the successor is one read away for whoever needs it, and inlining its text would spend a consumer's context on a hop most of them never take.
@@ -86,7 +82,7 @@ The board renders cards in the [Example Mapping](https://cucumber.io/blog/bdd/ex
 - **Yellow** card: Story (top)
 - **Blue** cards: Rules (row below story)
 - **Green** cards: Examples (stacked under their rule)
-- **Red** cards: Questions (separate column), each linking out to its `resolutions`
+- **Red** cards: Questions (separate column)
 - **Pink** cards: Ubiquitous language terms (referenced via `ubiquitous`, below the board)
 
 ## Example

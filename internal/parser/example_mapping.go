@@ -39,12 +39,8 @@ type exampleYAML struct {
 }
 
 type questionYAML struct {
-	ID          string   `yaml:"id"`
-	Text        string   `yaml:"text"`
-	Resolutions []string `yaml:"resolutions"`
-	// Retired and SupersededBy are the other half of a settled question, and
-	// stay independent of Resolutions: one says where the answer landed in the
-	// spec, the other where the work happened outside it.
+	ID           string   `yaml:"id"`
+	Text         string   `yaml:"text"`
 	Retired      bool     `yaml:"retired"`
 	SupersededBy []string `yaml:"superseded_by"`
 }
@@ -73,7 +69,7 @@ func ParseExampleMapping(path string) (*domain.ExampleMapping, error) {
 
 	var questions []domain.Question
 	for _, q := range raw.Questions {
-		questions = append(questions, domain.Question{ID: q.ID, Text: q.Text, Resolutions: q.Resolutions, Retired: q.Retired, SupersededBy: q.SupersededBy})
+		questions = append(questions, domain.Question{ID: q.ID, Text: q.Text, Retired: q.Retired, SupersededBy: q.SupersededBy})
 	}
 
 	return &domain.ExampleMapping{
