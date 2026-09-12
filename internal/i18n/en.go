@@ -16,7 +16,9 @@ var en = Catalog{
 	// chips — one word each, so the same key serves wherever it appears.
 	"label.story":           "Story",
 	"label.rule":            "Rule",
+	"label.rules":           "Rules",
 	"label.example":         "Example",
+	"label.examples":        "Examples",
 	"label.question":        "Question",
 	"label.questions":       "Questions",
 	"label.opportunity":     "Opportunity",
@@ -62,6 +64,11 @@ var en = Catalog{
 	"mapping.proposed-legend":  "Proposed rule",
 	"mapping.proposed-badge":   "proposed",
 	"mapping.proposed-title":   "A proposal not yet agreed",
+	"mapping.view":             "View",
+	"mapping.view-board":       "Board",
+	"mapping.view-list":        "List",
+	"mapping.expand-all":       "Expand all",
+	"mapping.collapse-all":     "Collapse all",
 	"nav.opportunities":        "Opportunities",
 
 	"label.story-map":          "Story Map",

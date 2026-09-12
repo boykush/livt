@@ -24,7 +24,7 @@ Discovery outcomes are written as plain text files (YAML, Markdown) and visualiz
 - **Opportunities** -- Say why the work is worth doing, and hold it on an Opportunity Canvas rendered as a single sheet
 - **Stories as Markdown** -- Write stories with YAML frontmatter, keep them alongside your code
 - **Story Maps** -- Visualize activities, user tasks, and stories with release slices on a board
-- **Example Mappings** -- Render rules, examples, and questions as color-coded sticky notes
+- **Example Mappings** -- Render rules, examples, and questions as color-coded sticky notes, or read them back as a list with each rule's examples folded under it
 - **Ubiquitous Language** -- Keep shared terms as Markdown files and browse them as a glossary table
 - **Static HTML output** -- `livt build` generates a standalone site, no runtime required
 - **Local dev server** -- `livt serve` builds and serves with one command

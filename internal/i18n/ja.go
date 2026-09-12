@@ -17,7 +17,9 @@ var ja = Catalog{
 
 	"label.story":           "ストーリー",
 	"label.rule":            "ルール",
+	"label.rules":           "ルール",
 	"label.example":         "具体例",
+	"label.examples":        "具体例",
 	"label.question":        "疑問点",
 	"label.questions":       "疑問点",
 	"label.opportunity":     "オポチュニティ",
@@ -63,6 +65,11 @@ var ja = Catalog{
 	"mapping.proposed-legend":  "提案中のルール",
 	"mapping.proposed-badge":   "提案中",
 	"mapping.proposed-title":   "まだ合意されていない提案",
+	"mapping.view":             "表示",
+	"mapping.view-board":       "ボード",
+	"mapping.view-list":        "リスト",
+	"mapping.expand-all":       "すべて開く",
+	"mapping.collapse-all":     "すべて閉じる",
 	"nav.opportunities":        "オポチュニティ",
 
 	"label.story-map":          "ストーリーマップ",
