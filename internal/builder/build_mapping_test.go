@@ -480,6 +480,116 @@ func TestRenderMappingRuleWithoutIDOmitsAnchor(t *testing.T) {
 	}
 }
 
+// foldedBoard holds each shape a row takes in the list: a rule with examples to
+// fold, a rule with none, and a question.
+func foldedBoard() *domain.ExampleMapping {
+	return &domain.ExampleMapping{
+		Rules: []domain.Rule{
+			{
+				ID:        "R-01",
+				Name:      "A rule with examples",
+				Examples:  []domain.Example{{ID: "EX-01", Name: "First example"}, {ID: "EX-02", Name: "Second example"}},
+				Issues:    []string{"https://github.com/boykush/livt/issues/25"},
+				Automated: true,
+			},
+			{ID: "R-02", Name: "A rule without examples"},
+		},
+		Questions: []domain.Question{{ID: "Q-01", Text: "An open question"}},
+	}
+}
+
+func renderFoldedBoard(t *testing.T) string {
+	t.Helper()
+	var buf bytes.Buffer
+	if err := renderMapping(&buf, i18n.En, foldedBoard(), "Story", "", nil); err != nil {
+		t.Fatal(err)
+	}
+	return buf.String()
+}
+
+// livt://mapping/review-example-mapping-as-list/rule/R-01/example/EX-01: a
+// mapping opens on the board, with the list one press away.
+func TestRenderMappingOpensOnTheBoardWithAListToSwitchTo(t *testing.T) {
+	html := renderFoldedBoard(t)
+
+	if !strings.Contains(html, `<html lang="en">`) {
+		t.Fatal("expected the page served with no view chosen, which is the board")
+	}
+	for _, want := range []string{
+		`data-view-toggle="board" aria-pressed="true"`,
+		`data-view-toggle="list" aria-pressed="false"`,
+	} {
+		if !strings.Contains(html, want) {
+			t.Errorf("expected the view switch to carry %s", want)
+		}
+	}
+}
+
+// livt://mapping/review-example-mapping-as-list/rule/R-02/example/EX-01 and
+// EX-02: what the list shows on a rule's one row is all on the rule's own card,
+// ahead of the examples folded under it.
+func TestRenderMappingRuleRowCarriesItsWholeLine(t *testing.T) {
+	html := renderFoldedBoard(t)
+
+	start := strings.Index(html, `id="rule-R-01"`)
+	end := strings.Index(html, `id="examples-0"`)
+	if start < 0 || end < start {
+		t.Fatalf("expected R-01's card ahead of its examples (card at %d, examples at %d)", start, end)
+	}
+	row := html[start:end]
+	for _, want := range []string{">#R-01</a>", "A rule with examples", "✓ automated", "livt#25", "Examples</span>2</span>"} {
+		if !strings.Contains(row, want) {
+			t.Errorf("expected R-01's row to carry %q", want)
+		}
+	}
+}
+
+// livt://mapping/review-example-mapping-as-list/rule/R-02/example/EX-03:
+// questions come after every rule, one row each.
+func TestRenderMappingListsQuestionsAfterTheRules(t *testing.T) {
+	html := renderFoldedBoard(t)
+
+	if strings.Index(html, `id="question-Q-01"`) < strings.Index(html, `id="rule-R-02"`) {
+		t.Fatal("expected the question after the last rule")
+	}
+}
+
+// livt://mapping/review-example-mapping-as-list/rule/R-03/example/EX-01 and
+// EX-03: a rule's examples sit inside the block its fold controls, which starts
+// closed; a rule with no examples has nothing to fold.
+func TestRenderMappingFoldsExamplesUnderTheirRule(t *testing.T) {
+	html := renderFoldedBoard(t)
+
+	if got := strings.Count(html, "data-fold aria-expanded="); got != 1 {
+		t.Fatalf("rendered %d folds, want one: R-02 has no examples to fold", got)
+	}
+	if !strings.Contains(html, `data-fold aria-expanded="false" aria-controls="examples-0"`) {
+		t.Fatal("expected R-01's fold to start closed, over its own examples")
+	}
+	order := []string{`id="examples-0"`, `id="rule-R-01-example-EX-01"`, `id="rule-R-01-example-EX-02"`, `id="rule-R-02"`}
+	for i := 1; i < len(order); i++ {
+		if strings.Index(html, order[i-1]) > strings.Index(html, order[i]) {
+			t.Errorf("expected %s before %s, so the fold holds exactly its rule's examples", order[i-1], order[i])
+		}
+	}
+}
+
+// livt://mapping/review-example-mapping-as-list/rule/R-04/example/EX-02: the
+// list re-lays the board's stickies rather than repeating them, so each anchor,
+// and the copy-link aimed at it, exists once whichever view is showing.
+func TestRenderMappingKeepsOneStickyPerAnchorAcrossViews(t *testing.T) {
+	html := renderFoldedBoard(t)
+
+	for _, anchor := range []string{"rule-R-01", "rule-R-01-example-EX-01", "rule-R-01-example-EX-02", "rule-R-02", "question-Q-01"} {
+		if got := strings.Count(html, `id="`+anchor+`"`); got != 1 {
+			t.Errorf("anchor %s rendered %d times, want once", anchor, got)
+		}
+		if got := strings.Count(html, `href="#`+anchor+`" data-copy-link`); got != 1 {
+			t.Errorf("copy-link to %s rendered %d times, want once", anchor, got)
+		}
+	}
+}
+
 // A story file that carries no name: frontmatter must not leave the surfaces
 // naming it blank. The mapping page's title, breadcrumb and heading show only
 // this string, as does the Tasks page's story chip, so an empty one renders a
@@ -499,6 +609,19 @@ func TestResolveStoryNameFallsBackToTheKey(t *testing.T) {
 	} {
 		if got := b.resolveStoryName(domain.StoryKey{Value: tc.key}); got != tc.want {
 			t.Errorf("resolveStoryName(%q) = %q, want %q", tc.key, got, tc.want)
+		}
+	}
+}
+
+// livt://mapping/review-example-mapping-as-list/rule/R-02/example/EX-03: the
+// list heads its rules and its questions the way the Tasks page heads the two
+// lists it makes of the same items.
+func TestRenderMappingHeadsTheListsSections(t *testing.T) {
+	html := renderFoldedBoard(t)
+
+	for _, want := range []string{">Rules</h2>", ">Questions</h2>"} {
+		if !strings.Contains(html, want) {
+			t.Errorf("expected a section head %q", want)
 		}
 	}
 }

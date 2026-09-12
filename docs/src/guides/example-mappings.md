@@ -109,6 +109,16 @@ The board renders cards in the [Example Mapping](https://cucumber.io/blog/bdd/ex
 - **Red** cards: Questions (separate column)
 - **Pink** cards: Ubiquitous language terms (referenced via `ubiquitous`, below the board)
 
+### Reading it back as a list
+
+The board keeps the layout the session left on the wall. To read a mapping back later, switch it to **List** with the toggle above it:
+
+- Each rule is one row: its ID, name, automated mark, and issue links, with the number of examples folded under it
+- Examples fold under their rule. Click a row to open it, or use **Expand all** / **Collapse all**
+- Questions follow the rules, one row each
+
+The choice is remembered in the browser, so the next mapping you open is shown the same way; the previews on the overview page stay boards. A link to a sticky lands on it in either view — a link to a folded example opens its rule first.
+
 ## Example
 
 `discoveries/example-mappings/confirm-discovery-outcomes.yaml`:

@@ -5,6 +5,18 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{.StoryName}} - livt</title>
 <script src="https://cdn.tailwindcss.com"></script>
+{{/*
+Settled before the body is parsed, so a reader who chose the list never sees
+the board flash first. A framed page is an overview tile, which previews the
+board whatever the reader chose.
+*/}}
+<script>
+  try {
+    if (window.self === window.top && localStorage.getItem("livt.mapping-view") === "list") {
+      document.documentElement.setAttribute("data-view", "list");
+    }
+  } catch (e) {}
+</script>
 <style>
   .rule-card:target, .example-card:target, .question-card:target {
     box-shadow: 0 0 0 2px #fff, 0 0 0 5px #7c3aed;
@@ -15,6 +27,53 @@
     30%, 65% { box-shadow: 0 0 0 2px #fff, 0 0 0 9px rgba(124, 58, 237, 0.9); }
     100%     { box-shadow: 0 0 0 2px #fff, 0 0 0 5px #7c3aed; }
   }
+
+  .mapping { display: grid; grid-auto-flow: column; grid-auto-columns: 180px; gap: 0.5rem 1rem; min-width: max-content; }
+  .rule-group, .question-group { display: contents; }
+  .rule-card, .question-head { grid-row: 1; }
+  .example-stack, .question-stack { grid-row: 2; align-self: start; display: flex; flex-direction: column; gap: 0.5rem; }
+  .rule-fold, .example-count, .fold-all, .list-head { display: none; }
+  .rule-fold .chevron { display: inline-block; transition: transform 0.15s; }
+  .rule-fold[aria-expanded="true"] .chevron { transform: rotate(90deg); }
+  html:not([data-view="list"]) [data-view-toggle="board"],
+  html[data-view="list"] [data-view-toggle="list"] { background-color: #4b5563; border-color: #4b5563; color: #fff; }
+
+  {{/*
+  The list wears the Tasks page's card, because both are lists of the same
+  rules and questions: white, a gray hairline, the sticky's colour kept as the
+  left accent. The saturated fill belongs to the board, which is a wall.
+  */}}
+  [data-view="list"] .mapping { display: flex; flex-direction: column; gap: 0.75rem; min-width: 0; max-width: 48rem; }
+  [data-view="list"] .rule-group, [data-view="list"] .question-group { display: block; }
+  [data-view="list"] .list-head { display: flex; }
+  [data-view="list"] .question-group .list-head { margin-top: 1.5rem; }
+  [data-view="list"] .question-head { display: none; }
+  [data-view="list"] :is(.rule-card, .example-card, .question-card) {
+    display: flex; align-items: baseline; gap: 0.5rem; padding: 1rem 1.25rem;
+    background-color: #fff; border-width: 1px 1px 1px 4px; border-radius: 0.5rem;
+    border-top-color: #e5e7eb; border-right-color: #e5e7eb; border-bottom-color: #e5e7eb;
+  }
+  [data-view="list"] :is(.rule-card, .example-card, .question-card):not(:target) { box-shadow: none; }
+  [data-view="list"] [data-foldable] > .rule-card:hover { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+  {{/* A proposal keeps its dashed edge here, on the accent the row has room for. */}}
+  [data-view="list"] .proposed { border-style: solid solid solid dashed; }
+  [data-view="list"] :is(.rule-card, .question-card):not(.proposed) { color: #111827; }
+  [data-view="list"] .question-card { font-size: 1rem; }
+  [data-view="list"] .example-card { padding: 0.625rem 1.25rem; }
+  [data-view="list"] .mapping [data-copy-link],
+  [data-view="list"] .automated-badge,
+  [data-view="list"] .proposed-badge { position: static; flex-shrink: 0; box-shadow: none; }
+  [data-view="list"] .mapping [data-copy-link], [data-view="list"] .rule-issues { font-size: 0.75rem; }
+  [data-view="list"] .automated-badge { background-color: #eff6ff; border: 1px solid #bfdbfe; color: #1d4ed8; font-size: 0.75rem; padding: 0.125rem 0.5rem; }
+  [data-view="list"] .proposed-badge { font-size: 0.75rem; padding: 0.125rem 0.5rem; }
+  [data-view="list"] .rule-name { flex: 1; min-width: 0; }
+  [data-view="list"] .rule-issues { margin-top: 0; }
+  [data-view="list"] .rule-fold, [data-view="list"] .example-count { display: inline-flex; }
+  [data-view="list"] .fold-all { display: flex; }
+  [data-view="list"] [data-foldable] > .rule-card { cursor: pointer; }
+  [data-view="list"] .example-stack { display: none; margin: 0.5rem 0 0 1.75rem; gap: 0.5rem; }
+  [data-view="list"] [data-open] > .example-stack { display: flex; }
+  [data-view="list"] .question-stack { margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.75rem; }
 </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -27,7 +86,7 @@
 </header>
 
 <main class="max-w-full mx-auto px-6 py-8">
-<div class="flex items-center gap-4 text-xs text-gray-500 mb-4">
+<div class="flex flex-wrap items-center gap-4 text-xs text-gray-500 mb-4">
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-yellow-100 border-l-2 border-yellow-400 rounded-sm"></span>{{t "label.story"}}</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-blue-100 border-l-2 border-blue-400 rounded-sm"></span>{{t "label.rule"}}</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-blue-50 border border-dashed border-blue-400 rounded-sm"></span>{{t "mapping.proposed-legend"}}</span>
@@ -35,6 +94,21 @@
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm"></span>{{t "label.example"}}</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-red-100 border-l-2 border-red-400 rounded-sm"></span>{{t "label.question"}}</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-pink-100 border-l-2 border-pink-400 rounded-sm"></span>{{t "nav.ubiquitous"}}</span>
+  {{/*
+  The switch is the filter bar's chip row, the control this site already uses
+  to pick one of a few — same shape, same pressed fill.
+  */}}
+  <div class="ml-auto flex items-center gap-3">
+    <div class="fold-all items-center gap-1">
+      <button type="button" data-fold-all="open" class="text-xs text-gray-700 bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-full px-3 py-1 transition">{{t "mapping.expand-all"}}</button>
+      <button type="button" data-fold-all="close" class="text-xs text-gray-700 bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-full px-3 py-1 transition">{{t "mapping.collapse-all"}}</button>
+    </div>
+    <div role="group" aria-labelledby="view-label" class="flex items-center gap-1">
+      <span id="view-label" class="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">{{t "mapping.view"}}</span>
+      <button type="button" data-view-toggle="board" aria-pressed="true" class="text-xs text-gray-700 bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-full px-3 py-1 transition">{{t "mapping.view-board"}}</button>
+      <button type="button" data-view-toggle="list" aria-pressed="false" class="text-xs text-gray-700 bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-full px-3 py-1 transition">{{t "mapping.view-list"}}</button>
+    </div>
+  </div>
 </div>
 {{if .StoryPath}}
 <a href="{{.StoryPath}}" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow font-bold text-gray-800 w-[180px] mb-6 hover:bg-yellow-200 transition">
@@ -47,63 +121,87 @@
 {{end}}
 
 <div class="overflow-x-auto pt-3 px-3 pb-4">
-<div class="min-w-max flex flex-col gap-2">
-<div class="flex gap-4">
-{{range .Mapping.Rules}}
-  {{/* A proposed rule is drawn pale, dashed and unpinned, and stamped as well,
-  so telling it from an agreed one never rests on colour alone. */}}
-  <div{{if .ID}} id="{{ruleAnchor .ID}}"{{end}} class="rule-card relative {{if .Proposed}}bg-blue-50 border-blue-300 border-dashed text-gray-500{{else}}bg-blue-100 border-blue-400 shadow text-gray-800{{end}} border-l-4 px-3 pt-3 pb-6 rounded font-semibold w-[180px] scroll-mt-24">
-    {{.Name}}
-    {{if .Proposed}}
-    <span title="{{t "mapping.proposed-title"}}" class="absolute -top-2 left-2 rounded-full border border-dashed border-blue-400 bg-white text-blue-500 text-[10px] font-semibold px-1.5 py-0.5 select-none">{{t "mapping.proposed-badge"}}</span>
-    {{end}}
-    {{if .Automated}}
-    <span title="{{t "mapping.automated-title"}}" class="absolute -top-2 -right-2 rounded-full bg-blue-600 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">{{t "mapping.automated-badge"}}</span>
-    {{end}}
-    {{if .Issues}}
-    <div class="mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
-      {{range .Issues}}
-      <a href="{{.}}" target="_blank" rel="noopener" class="text-blue-600 hover:underline">&#8599; {{issueLabel .}}</a>
+{{/*
+The list re-lays the board's own stickies instead of repeating them, so every
+anchor stays unique and a link lands on its sticky in either view. That is why
+a rule nests its examples here, and the board's grid is what lines the rules
+back up into one row.
+*/}}
+<div class="mapping">
+{{if .Mapping.Rules}}
+<div class="list-head items-baseline gap-2">
+  <span class="w-2.5 h-2.5 rounded-sm bg-blue-400"></span>
+  <h2 class="text-sm font-semibold text-gray-800">{{t "label.rules"}}</h2>
+  <span class="text-xs text-gray-400">{{len .Mapping.Rules}}</span>
+</div>
+{{end}}
+{{range $i, $rule := .Mapping.Rules}}
+  <div class="rule-group" data-rule-group{{if $rule.Examples}} data-foldable{{end}}>
+    {{/* A proposed rule is drawn pale, dashed and unpinned, and stamped as well,
+    so telling it from an agreed one never rests on colour alone. */}}
+    <div{{if $rule.ID}} id="{{ruleAnchor $rule.ID}}"{{end}} class="rule-card relative {{if $rule.Proposed}}proposed bg-blue-50 border-blue-300 border-dashed text-gray-500{{else}}bg-blue-100 border-blue-400 shadow text-gray-800{{end}} border-l-4 px-3 pt-3 pb-6 rounded font-semibold scroll-mt-24">
+      {{if $rule.Examples}}
+      <button type="button" data-fold aria-expanded="false" aria-controls="examples-{{$i}}" aria-label="{{t "label.examples"}}" class="rule-fold w-4 shrink-0 justify-center text-gray-400"><span class="chevron" aria-hidden="true">&#9656;</span></button>
+      {{else}}
+      <span class="rule-fold w-4 shrink-0" aria-hidden="true"></span>
+      {{end}}
+      {{if $rule.ID}}{{template "id-badge" ruleBadge $rule.ID}}{{end}}
+      <span class="rule-name">{{$rule.Name}}</span>
+      {{if $rule.Proposed}}
+      <span title="{{t "mapping.proposed-title"}}" class="proposed-badge absolute -top-2 left-2 rounded-full border border-dashed border-blue-400 bg-white text-blue-500 text-[10px] font-semibold px-1.5 py-0.5 select-none">{{t "mapping.proposed-badge"}}</span>
+      {{end}}
+      {{if $rule.Automated}}
+      <span title="{{t "mapping.automated-title"}}" class="automated-badge absolute -top-2 -right-2 rounded-full bg-blue-600 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">{{t "mapping.automated-badge"}}</span>
+      {{end}}
+      {{if $rule.Issues}}
+      <div class="rule-issues mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+        {{range $rule.Issues}}
+        <a href="{{.}}" target="_blank" rel="noopener" class="text-blue-600 hover:underline">&#8599; {{issueLabel .}}</a>
+        {{end}}
+      </div>
+      {{end}}
+      {{if $rule.Examples}}
+      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">{{t "label.examples"}}</span>{{len $rule.Examples}}</span>
       {{end}}
     </div>
-    {{end}}
-    {{if .ID}}{{template "id-badge" ruleBadge .ID}}{{end}}
-  </div>
-{{end}}
-{{if .Mapping.Questions}}
-  <div class="bg-red-50 border-l-4 border-red-300 p-3 rounded text-xs font-semibold text-red-400 uppercase tracking-wide w-[180px]">
-    {{t "label.questions"}}
-  </div>
-{{end}}
-</div>
-<div class="flex gap-4 items-start">
-{{range $rule := .Mapping.Rules}}
-  <div class="flex flex-col gap-2 w-[180px]">
+    {{if $rule.Examples}}
+    <div id="examples-{{$i}}" class="example-stack">
     {{range $rule.Examples}}
     {{/*
     Example ids are numbered within their rule, so the anchor carries the rule
     to stay unique on the board while the badge keeps showing the local id. The
     two reading differently costs nothing: what a click copies is the URL.
     */}}
-    <div{{if and $rule.ID .ID}} id="{{exampleAnchor $rule.ID .ID}}"{{end}} class="example-card relative {{if $rule.Proposed}}bg-green-50 border-green-300 border-dashed text-gray-500{{else}}bg-green-100 border-green-400 shadow text-gray-700{{end}} border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
-      {{.Name}}
+    <div{{if and $rule.ID .ID}} id="{{exampleAnchor $rule.ID .ID}}"{{end}} class="example-card relative {{if $rule.Proposed}}proposed bg-green-50 border-green-300 border-dashed text-gray-500{{else}}bg-green-100 border-green-400 shadow text-gray-700{{end}} border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
       {{if and $rule.ID .ID}}{{template "id-badge" exampleBadge $rule.ID .ID}}{{end}}
+      <span>{{.Name}}</span>
+    </div>
+    {{end}}
     </div>
     {{end}}
   </div>
 {{end}}
 {{if .Mapping.Questions}}
-  <div class="flex flex-col gap-2 w-[180px]">
+  <div class="question-group">
+    <div class="list-head items-baseline gap-2">
+      <span class="w-2.5 h-2.5 rounded-sm bg-red-400"></span>
+      <h2 class="text-sm font-semibold text-gray-800">{{t "label.questions"}}</h2>
+      <span class="text-xs text-gray-400">{{len .Mapping.Questions}}</span>
+    </div>
+    <div class="question-head bg-red-50 border-l-4 border-red-300 p-3 rounded text-xs font-semibold text-red-400 uppercase tracking-wide">
+      {{t "label.questions"}}
+    </div>
+    <div class="question-stack">
     {{range .Mapping.Questions}}
     {{/* Keyed questions get an anchor so the Tasks page can link to the sticky. */}}
     <div{{if .ID}} id="{{questionAnchor .ID}}"{{end}} class="question-card relative bg-red-100 border-l-4 border-red-400 px-3 pt-3 pb-6 rounded shadow text-gray-700 text-sm scroll-mt-24">
-      {{.Text}}
       {{if .ID}}{{template "id-badge" questionBadge .ID}}{{end}}
+      <span>{{.Text}}</span>
     </div>
     {{end}}
+    </div>
   </div>
 {{end}}
-</div>
 </div>
 </div>
 
@@ -117,5 +215,73 @@
 {{end}}
 </main>
 {{template "id-badge-script"}}
+{{/*
+Which view shows is the reader's preference, not the mapping's, so it is kept
+in their browser and follows them to the next mapping. Folding is per visit.
+*/}}
+<script>
+(function () {
+  var root = document.documentElement;
+  var foldable = document.querySelectorAll("[data-foldable]");
+
+  function listing() {
+    return root.getAttribute("data-view") === "list";
+  }
+
+  function show(view) {
+    if (view === "list") root.setAttribute("data-view", "list");
+    else root.removeAttribute("data-view");
+    document.querySelectorAll("[data-view-toggle]").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-view-toggle") === view));
+    });
+  }
+
+  function fold(group, open) {
+    if (open) group.setAttribute("data-open", "");
+    else group.removeAttribute("data-open");
+    group.querySelector("[data-fold]").setAttribute("aria-expanded", String(open));
+  }
+
+  // The browser cannot scroll to an example folded out of sight, so a link
+  // aimed at one opens its rule before landing.
+  function reveal() {
+    var id = location.hash.slice(1);
+    try { id = decodeURIComponent(id); } catch (e) {}
+    var target = id && document.getElementById(id);
+    var group = target && target.closest(".example-stack") && target.closest("[data-foldable]");
+    if (!group || group.hasAttribute("data-open")) return;
+    fold(group, true);
+    target.scrollIntoView();
+  }
+
+  document.querySelectorAll("[data-view-toggle]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var view = b.getAttribute("data-view-toggle");
+      show(view);
+      try { localStorage.setItem("livt.mapping-view", view); } catch (e) {}
+    });
+  });
+
+  document.querySelectorAll("[data-fold-all]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var open = b.getAttribute("data-fold-all") === "open";
+      foldable.forEach(function (group) { fold(group, open); });
+    });
+  });
+
+  // The whole row folds, as a summary line would, except for a click on one of
+  // its links or the mouse-up that ends selecting its text.
+  foldable.forEach(function (group) {
+    group.querySelector(".rule-card").addEventListener("click", function (e) {
+      if (!listing() || e.target.closest("a") || String(window.getSelection())) return;
+      fold(group, !group.hasAttribute("data-open"));
+    });
+  });
+
+  window.addEventListener("hashchange", reveal);
+  show(listing() ? "list" : "board");
+  reveal();
+})();
+</script>
 </body>
 </html>
