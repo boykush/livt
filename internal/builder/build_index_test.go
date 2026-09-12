@@ -77,7 +77,7 @@ func TestBuildTasksListsOpenQuestionsAndUnautomatedRules(t *testing.T) {
 		StoryKey: "overview-unautomated-rules", StoryName: "未自動化のルールを横断で見渡す",
 		StoryPath: "story/overview-unautomated-rules.html", MappingPath: "mapping/overview-unautomated-rules.html#rule-R-01",
 	}}
-	if err := b.buildTasks(questions, rules, nil); err != nil {
+	if err := b.buildTasks(taskSet{Questions: questions, UnautomatedRules: rules}, nil); err != nil {
 		t.Fatal(err)
 	}
 	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
@@ -101,37 +101,45 @@ func TestBuildTasksListsOpenQuestionsAndUnautomatedRules(t *testing.T) {
 // it — an empty questions list and a fully automated livt repository read differently.
 func TestBuildTasksEmptyStatesReadPerList(t *testing.T) {
 	b := emptyDirsBuilder(t)
-	if err := b.buildTasks(nil, nil, nil); err != nil {
+	if err := b.buildTasks(taskSet{}, nil); err != nil {
 		t.Fatal(err)
 	}
 	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
 
-	for _, want := range []string{"No open questions.", "Every rule is automated."} {
+	for _, want := range []string{"No open questions.", "No proposed rules.", "Every accepted rule is automated."} {
 		if !strings.Contains(html, want) {
 			t.Fatalf("tasks.html missing empty state %q", want)
 		}
 	}
 }
 
+// oneOfEachTask is a Tasks page holding one item per list, all on the same
+// opportunity, so a filter test exercises every section.
+func oneOfEachTask(opp []opportunityRef) taskSet {
+	return taskSet{
+		Questions:        []taskItem{{Kind: "question", Text: "A question", StoryName: "S", Opportunities: opp}},
+		ProposedRules:    []taskItem{{Kind: "proposed-rule", Text: "A proposal", StoryName: "S", Opportunities: opp}},
+		UnautomatedRules: []taskItem{{Kind: "rule", Text: "A rule", StoryName: "S", Opportunities: opp}},
+	}
+}
+
 // livt://mapping/overview-open-questions/rule/R-03 and its mirror in
 // overview-unautomated-rules: one filter bar, one axis, driving every card on
 // the page whichever list it sits in.
-func TestBuildTasksFilterCoversBothLists(t *testing.T) {
+func TestBuildTasksFilterCoversEveryList(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	opp := []opportunityRef{{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"}}
-	questions := []taskItem{{Kind: "question", Text: "A question", StoryName: "S", Opportunities: opp}}
-	rules := []taskItem{{Kind: "rule", Text: "A rule", StoryName: "S", Opportunities: opp}}
-	if err := b.buildTasks(questions, rules, []string{"協働ディスカバリー"}); err != nil {
+	if err := b.buildTasks(oneOfEachTask(opp), []string{"協働ディスカバリー"}); err != nil {
 		t.Fatal(err)
 	}
 	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
 
 	// The attribute also appears in the script's selector, so match the element.
 	if got := strings.Count(html, "data-filter-bar "); got != 1 {
-		t.Fatalf("filter bar rendered %d times, want one bar driving both lists", got)
+		t.Fatalf("filter bar rendered %d times, want one bar driving every list", got)
 	}
-	if got := strings.Count(html, `data-filter-values="[&#34;協働ディスカバリー&#34;]"`); got != 2 {
-		t.Fatalf("filter hook on %d cards, want both the question and the rule", got)
+	if got := strings.Count(html, `data-filter-values="[&#34;協働ディスカバリー&#34;]"`); got != 3 {
+		t.Fatalf("filter hook on %d cards, want the question, the proposal and the rule", got)
 	}
 	if !strings.Contains(html, `data-filter-value="協働ディスカバリー"`) {
 		t.Fatal("expected a filter button carrying the opportunity name")
@@ -153,9 +161,7 @@ func TestBuildTasksFilterCoversBothLists(t *testing.T) {
 func TestBuildTasksSectionsStayHonestWhenAFilterEmptiesThem(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	opp := []opportunityRef{{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"}}
-	questions := []taskItem{{Kind: "question", Text: "A question", StoryName: "S", Opportunities: opp}}
-	rules := []taskItem{{Kind: "rule", Text: "A rule", StoryName: "S", Opportunities: opp}}
-	if err := b.buildTasks(questions, rules, []string{"協働ディスカバリー"}); err != nil {
+	if err := b.buildTasks(oneOfEachTask(opp), []string{"協働ディスカバリー"}); err != nil {
 		t.Fatal(err)
 	}
 	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
@@ -167,7 +173,7 @@ func TestBuildTasksSectionsStayHonestWhenAFilterEmptiesThem(t *testing.T) {
 		"<span data-filter-count",    // the number to correct
 		"<p data-filter-empty",       // the line explaining the gap
 	} {
-		if got := strings.Count(html, hook); got != 2 {
+		if got := strings.Count(html, hook); got != 3 {
 			t.Errorf("%s appears %d times, want one per section", hook, got)
 		}
 	}
@@ -178,10 +184,11 @@ func TestBuildTasksSectionsStayHonestWhenAFilterEmptiesThem(t *testing.T) {
 		t.Error("expected the filtered-empty line to start hidden")
 	}
 	// It has to say the filter emptied the section, not that the livt repository is done —
-	// "Every rule is automated." would be a lie about the livt repository.
+	// "Every accepted rule is automated." would be a lie about the livt repository.
 	for _, msg := range []string{
 		"No open questions for this opportunity.",
-		"Every rule for this opportunity is automated.",
+		"No proposed rules for this opportunity.",
+		"Every accepted rule for this opportunity is automated.",
 	} {
 		if !strings.Contains(html, msg) {
 			t.Errorf("missing filtered-empty line %q", msg)
@@ -200,7 +207,7 @@ func TestBuildTasksSectionsStayHonestWhenAFilterEmptiesThem(t *testing.T) {
 func TestBuildTasksItemWithoutStoryPageStillNamesItsStory(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	questions := []taskItem{{Kind: "question", Text: "A question", StoryName: "orphan-story"}}
-	if err := b.buildTasks(questions, nil, nil); err != nil {
+	if err := b.buildTasks(taskSet{Questions: questions}, nil); err != nil {
 		t.Fatal(err)
 	}
 	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
@@ -442,5 +449,34 @@ func TestBuildMappingsIndexTileOnNoMapHasEmptyFilterData(t *testing.T) {
 	html := readRendered(t, filepath.Join(b.OutDir, "index.html"))
 	if !strings.Contains(html, `data-filter-values="[]"`) {
 		t.Fatal("expected an empty opportunity set on a mapping with no map")
+	}
+}
+
+// livt://mapping/propose-rule-before-agreement/rule/R-03: proposed rules get a
+// list of their own, closed by agreement rather than by a test.
+func TestBuildTasksListsProposedRulesApart(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	proposed := []taskItem{{
+		Kind: "proposed-rule", ID: "R-02", Text: "提案中のルール",
+		StoryKey: "checkout", StoryName: "Checkout", MappingPath: "mapping/checkout.html#rule-R-02",
+	}}
+	if err := b.buildTasks(taskSet{ProposedRules: proposed}, nil); err != nil {
+		t.Fatal(err)
+	}
+	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
+
+	for _, want := range []string{
+		"Proposed Rules",
+		"closed by agreement",
+		"提案中のルール",
+		`href="mapping/checkout.html#rule-R-02"`,
+		// livt://mapping/propose-rule-before-agreement/rule/R-03/example/EX-03:
+		// with only a proposal on file, the un-automated list's empty line must
+		// not claim every rule is automated.
+		"Every accepted rule is automated.",
+	} {
+		if !strings.Contains(html, want) {
+			t.Errorf("tasks.html missing %q", want)
+		}
 	}
 }

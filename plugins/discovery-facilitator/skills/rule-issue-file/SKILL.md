@@ -29,7 +29,7 @@ The mapping YAML — not GitHub — holds the truth about what is filed where:
 ## Filing Flow
 
 1. Read `discoveries/example-mappings/{story-key}.yaml` and `stories/{story-key}.md`. Resolve the target repositories from the story's `repos:`.
-2. Select the rules to file (rule-id → that one; story-key only → all), skipping any rule marked `retired: true` — the spec no longer asks for it, so there is nothing to automate. Then dedupe each **rule × repository** pair: skip it when the rule's `issues:` already holds a URL in that repository. A link to one repository never blocks filing to another.
+2. Select the rules to file (rule-id → that one; story-key only → all), skipping any rule marked `retired: true` — the spec no longer asks for it, so there is nothing to automate — and any rule with `status: proposed`, which the spec does not ask for yet. Then dedupe each **rule × repository** pair: skip it when the rule's `issues:` already holds a URL in that repository. A link to one repository never blocks filing to another.
 3. Record the spec rev of the livt repository: `git rev-parse --short HEAD`.
 4. Compose each issue (see Issue Content) and file it with existing `gh` auth — no checkout of the target, ever:
 

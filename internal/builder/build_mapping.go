@@ -13,7 +13,8 @@ import (
 
 // buildMappings builds example mapping HTML pages and returns a preview tile per
 // mapping for the Example Mappings overview page, plus everything the mappings
-// leave unfinished — open questions and un-automated rules — for the Tasks page.
+// leave unfinished — open questions, proposed rules, and un-automated rules —
+// for the Tasks page.
 func (b *Builder) buildMappings() ([]mappingTile, taskSet, error) {
 	files, err := filepath.Glob(filepath.Join(b.MappingsDir, "*.yaml"))
 	if err != nil {
@@ -52,20 +53,23 @@ func (b *Builder) buildMappings() ([]mappingTile, taskSet, error) {
 }
 
 // taskSet holds what the mappings leave unfinished, split by how it gets closed:
-// a question by a conversation, an un-automated rule by a test.
+// a question by a conversation, a proposed rule by agreement, an un-automated
+// rule by a test.
 type taskSet struct {
 	Questions        []taskItem
+	ProposedRules    []taskItem
 	UnautomatedRules []taskItem
 }
 
 func (o *taskSet) add(other taskSet) {
 	o.Questions = append(o.Questions, other.Questions...)
+	o.ProposedRules = append(o.ProposedRules, other.ProposedRules...)
 	o.UnautomatedRules = append(o.UnautomatedRules, other.UnautomatedRules...)
 }
 
-// collectTasks lifts one mapping's open questions and un-automated rules onto
-// the Tasks page, each deep-linked to its own sticky on the board through the
-// same derivation the board itself anchors by.
+// collectTasks lifts one mapping's open questions, proposed rules, and
+// un-automated rules onto the Tasks page, each deep-linked to its own sticky on
+// the board through the same derivation the board itself anchors by.
 func collectTasks(em *domain.ExampleMapping, storyName, storyPath string) taskSet {
 	// Retired items are not unfinished work: a retired question is not open, and
 	// a retired rule is not waiting for a test. Left in, they would sit on this
@@ -98,10 +102,14 @@ func collectTasks(em *domain.ExampleMapping, storyName, storyPath string) taskSe
 		out.Questions = append(out.Questions, item("question", q.ID, q.Text, sticky(q.ID, uri.QuestionPage)))
 	}
 	for _, r := range active.Rules {
-		if r.Automated {
-			continue
+		// Agreement is what closes a proposed rule, so it waits for one even when
+		// a test already covers it.
+		switch {
+		case r.Proposed():
+			out.ProposedRules = append(out.ProposedRules, item("proposed-rule", r.ID, r.Name, sticky(r.ID, uri.RulePage)))
+		case !r.Automated:
+			out.UnautomatedRules = append(out.UnautomatedRules, item("rule", r.ID, r.Name, sticky(r.ID, uri.RulePage)))
 		}
-		out.UnautomatedRules = append(out.UnautomatedRules, item("rule", r.ID, r.Name, sticky(r.ID, uri.RulePage)))
 	}
 	return out
 }

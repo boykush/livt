@@ -4,6 +4,10 @@ type Rule struct {
 	ID       string
 	Name     string
 	Examples []Example
+	// Status is where the rule stands in being agreed, the way an ADR carries
+	// one. The zero value is accepted, as every rule written before the field
+	// was; Proposed is what the surfaces branch on.
+	Status RuleStatus
 	// Issues are the rule's automation Issue URLs on implementation repos.
 	// The livt repository records the links; their state lives at the URL target.
 	Issues []string
@@ -22,4 +26,10 @@ type Rule struct {
 	// copy of that reasoning here would drift from it. Absent means nothing
 	// replaced it.
 	SupersededBy []string
+}
+
+// Proposed reports whether the rule is still waiting to be agreed — the one
+// standing the board, the Tasks page and the sidebar counts all branch on.
+func (r Rule) Proposed() bool {
+	return r.Status.OrDefault() == RuleProposed
 }

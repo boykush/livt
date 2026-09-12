@@ -63,7 +63,8 @@ func (b *Builder) computeCounts() (sidebarCounts, error) {
 		active := em.Active()
 		tasks += len(active.Questions)
 		for _, r := range active.Rules {
-			if !r.Automated {
+			// A proposed rule is listed until it is agreed, automated or not.
+			if r.Proposed() || !r.Automated {
 				tasks++
 			}
 		}
@@ -192,9 +193,9 @@ func (b *Builder) Build() error {
 	}
 
 	// Unfinished items inherit their story's opportunities the same way, so the
-	// Tasks page filters on that one axis across both of its lists.
+	// Tasks page filters on that one axis across all of its lists.
 	var openOpportunitySets [][]opportunityRef
-	for _, items := range [][]taskItem{open.Questions, open.UnautomatedRules} {
+	for _, items := range [][]taskItem{open.Questions, open.ProposedRules, open.UnautomatedRules} {
 		for i := range items {
 			items[i].Opportunities = rootRelativeOpportunities(storyToMaps[items[i].StoryKey])
 			openOpportunitySets = append(openOpportunitySets, items[i].Opportunities)
@@ -212,7 +213,7 @@ func (b *Builder) Build() error {
 	}
 	fmt.Printf("  index.html\n")
 
-	if err := b.buildTasks(open.Questions, open.UnautomatedRules, distinctOpportunityNames(openOpportunitySets)); err != nil {
+	if err := b.buildTasks(open, distinctOpportunityNames(openOpportunitySets)); err != nil {
 		return err
 	}
 	fmt.Printf("  tasks.html\n")

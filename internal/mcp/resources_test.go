@@ -218,6 +218,35 @@ func readReq(resURI string) *mcpsdk.ReadResourceRequest {
 	return &mcpsdk.ReadResourceRequest{Params: &mcpsdk.ReadResourceParams{URI: resURI}}
 }
 
+// livt://mapping/propose-rule-before-agreement/rule/R-04/example/EX-01 and
+// EX-02: every rule carries its status, one written without it included, so an
+// agent choosing what to automate can pass over a proposal without knowing the
+// default.
+func TestRulesAlwaysCarryTheirStatus(t *testing.T) {
+	root := t.TempDir()
+	writeFile(t, filepath.Join(root, "discoveries", "example-mappings", "demo.yaml"),
+		"rules:\n"+
+			"  - id: R-01\n"+
+			"    name: 提案中のルール\n"+
+			"    status: proposed\n"+
+			"  - id: R-02\n"+
+			"    name: 合意済みのルール\n"+
+			"    status: accepted\n"+
+			"  - id: R-03\n"+
+			"    name: statusのないルール\n")
+	s := NewServer(Config{Root: root}, "test")
+
+	for id, want := range map[string]string{"R-01": "proposed", "R-02": "accepted", "R-03": "accepted"} {
+		res, err := s.readRule(context.Background(), readReq(uri.Rule("demo", id)))
+		if err != nil {
+			t.Fatalf("read %s: %v", id, err)
+		}
+		if body := resourceText(t, res); !strings.Contains(body, `"status":"`+want+`"`) {
+			t.Errorf("%s payload = %s, want status %q", id, body, want)
+		}
+	}
+}
+
 // newSupersededTestServer lays out a livt repository whose retired items name where the
 // spec went: R-01 split into R-02 here and a rule in another mapping, EX-01 was
 // replaced by EX-02 under the same rule, and Q-01 was settled by R-02.

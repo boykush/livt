@@ -62,6 +62,7 @@ Canonical statement in `example-mapping-update`; these bullets are verbatim from
 - Don't write Gherkin — example mapping stays low-tech.
 - Don't change the `story` key.
 - Don't retire rules or questions. The regrouped example is the only retirement in your remit; retiring a rule takes an agreed business decision, which is `example-mapping-update`'s.
+- Don't change a rule's `status:`. Accepting or turning down a proposal is a business decision too, and `example-mapping-update`'s.
 
 ## Output
 
