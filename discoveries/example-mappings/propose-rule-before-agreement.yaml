@@ -8,6 +8,7 @@ rules:
         name: statusのないルールは合意済みとして読まれ、既存の実例マッピングはそのまま読める
       - id: EX-03
         name: proposed・accepted以外の値はビルドを失敗させる（打ち間違いが黙って合意済みに化けない）
+    automated: true
   - id: R-02
     name: 提案中のルールは、ボード上で合意済みのルールと一目で見分けられる
     examples:
@@ -19,6 +20,7 @@ rules:
         name: 提案中のルールの具体例も、ルールと一緒に淡く描かれる
       - id: EX-04
         name: 凡例が見分け方を説明する
+    automated: true
   - id: R-03
     name: 提案中のルールは、テストではなく合意で閉じる仕事としてTasksページに並ぶ
     status: proposed
@@ -29,6 +31,7 @@ rules:
         name: 先にテストが書かれていても、合意されるまでは提案中のルールに並ぶ
       - id: EX-03
         name: 提案中のルールだけが残っているとき、未自動化の一覧は「合意済みのルールはすべて自動化されています」と言う
+    automated: true
   - id: R-04
     name: MCPとCLIは、どのルールにもstatusを付けて返す
     status: proposed
@@ -37,6 +40,7 @@ rules:
         name: statusのないルールもacceptedとして返り、消費側は既定値を知らなくてよい
       - id: EX-02
         name: 実装リポジトリのエージェントは、提案中のルールを自動化の対象から外せる
+    automated: true
   - id: R-05
     name: 提案はADRと同じ流れで閉じる — 合意されればaccepted、却下されればretired
     status: proposed
