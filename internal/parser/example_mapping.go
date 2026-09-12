@@ -1,6 +1,7 @@
 package parser
 
 import (
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -21,6 +22,9 @@ type ruleYAML struct {
 	Examples  []exampleYAML `yaml:"examples"`
 	Issues    []string      `yaml:"issues"`
 	Automated bool          `yaml:"automated"`
+	// Status reads as an ADR's does: proposed while the rule awaits agreement,
+	// accepted once it has it. Omitted means accepted.
+	Status string `yaml:"status"`
 	// Retired is a field rather than a commented-out block so a structural edit
 	// of the YAML cannot drop it, and so the id stays visible to whoever numbers
 	// the next one. Omitted means live.
@@ -29,6 +33,20 @@ type ruleYAML struct {
 	// It is livt URIs rather than bare ids so a successor in another mapping is
 	// sayable, and it is a list so a rule that split into two can name both.
 	SupersededBy []string `yaml:"superseded_by"`
+}
+
+// status reads the rule's status, defaulting an omitted one. An unknown
+// value fails the parse: read as the default, a mistyped "proposed" would put
+// an unagreed rule on the board as spec, with nothing there to say so.
+func (r ruleYAML) status() (domain.RuleStatus, error) {
+	if r.Status == "" {
+		return domain.RuleStatusDefault, nil
+	}
+	status := domain.RuleStatus(r.Status)
+	if !status.Valid() {
+		return "", fmt.Errorf("rule %q: unknown status %q (supported: %s)", r.ID, r.Status, domain.RuleStatusList())
+	}
+	return status, nil
 }
 
 type exampleYAML struct {
@@ -60,11 +78,15 @@ func ParseExampleMapping(path string) (*domain.ExampleMapping, error) {
 
 	var rules []domain.Rule
 	for _, r := range raw.Rules {
+		status, err := r.status()
+		if err != nil {
+			return nil, err
+		}
 		var examples []domain.Example
 		for _, ex := range r.Examples {
 			examples = append(examples, domain.Example{ID: ex.ID, Name: ex.Name, Retired: ex.Retired, SupersededBy: ex.SupersededBy})
 		}
-		rules = append(rules, domain.Rule{ID: r.ID, Name: r.Name, Examples: examples, Issues: r.Issues, Automated: r.Automated, Retired: r.Retired, SupersededBy: r.SupersededBy})
+		rules = append(rules, domain.Rule{ID: r.ID, Name: r.Name, Examples: examples, Status: status, Issues: r.Issues, Automated: r.Automated, Retired: r.Retired, SupersededBy: r.SupersededBy})
 	}
 
 	var questions []domain.Question

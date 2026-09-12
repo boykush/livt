@@ -26,7 +26,7 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "rule",
 		Title:       "Rule",
-		Description: "A single rule, its examples, and its automation record (issues, automated) from a story's example mapping. Rule ids restart in every mapping, so the whole uri — story key included — is what addresses this rule. A retired rule resolves too, carrying retired: true and, when something took its place, superseded_by: the uris to read next.",
+		Description: "A single rule, its status, its examples, and its automation record (issues, automated) from a story's example mapping. status is proposed while the rule is put forward but not yet agreed — a candidate to discuss, not spec to automate — and accepted once it is. Rule ids restart in every mapping, so the whole uri — story key included — is what addresses this rule. A retired rule resolves too, carrying retired: true and, when something took its place, superseded_by: the uris to read next.",
 		MIMEType:    "application/json",
 		URITemplate: uri.RuleTemplate,
 	}, s.readRule)

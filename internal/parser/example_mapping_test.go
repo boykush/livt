@@ -86,6 +86,61 @@ func TestParseExampleMappingReadsRetired(t *testing.T) {
 	}
 }
 
+// livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-01 and
+// EX-02: a rule carries its status, and one written without it is accepted, as
+// every rule was before the field existed.
+func TestParseExampleMappingReadsStatus(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "story.yaml")
+	data := []byte("rules:\n" +
+		"  - id: R-01\n" +
+		"    name: 提案中のルール\n" +
+		"    status: proposed\n" +
+		"  - id: R-02\n" +
+		"    name: 合意済みのルール\n" +
+		"    status: accepted\n" +
+		"  - id: R-03\n" +
+		"    name: statusのないルール\n")
+	if err := os.WriteFile(path, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	em, err := ParseExampleMapping(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if !em.Rules[0].Proposed() {
+		t.Errorf("rule = %+v, want R-01 proposed", em.Rules[0])
+	}
+	for _, r := range em.Rules[1:] {
+		if r.Proposed() {
+			t.Errorf("rule = %+v, want %s accepted", r, r.ID)
+		}
+	}
+}
+
+// livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-03: a status
+// livt does not know fails the parse. Read as accepted, a mistyped "proposed"
+// would put an unagreed rule on the board as spec.
+func TestParseExampleMappingRejectsAnUnknownStatus(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "story.yaml")
+	data := []byte("rules:\n" +
+		"  - id: R-01\n" +
+		"    name: 打ち間違えたルール\n" +
+		"    status: propsed\n")
+	if err := os.WriteFile(path, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	_, err := ParseExampleMapping(path)
+	if err == nil {
+		t.Fatal("expected an unknown status to fail the parse")
+	}
+	if want := `rule "R-01": unknown status "propsed" (supported: proposed, accepted)`; err.Error() != want {
+		t.Errorf("error = %q, want %q", err, want)
+	}
+}
+
 func TestParseExampleMappingReadsReferencedTerms(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "story.yaml")
 	data := []byte("rules: []\nubiquitous:\n  - story-map\n  - story\n")

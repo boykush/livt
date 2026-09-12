@@ -222,8 +222,8 @@ type Sidebar struct {
 	// Opportunities counts the committed opportunities, canvas or not: the
 	// opportunity is the unit, and a canvas is one thing that may be said of it.
 	Opportunities int
-	// Tasks is what the Tasks page lists: open questions plus rules with no
-	// automation recorded.
+	// Tasks is what the Tasks page lists: open questions, proposed rules, and
+	// accepted rules with no automation recorded.
 	Tasks     int
 	Mappings  int
 	StoryMaps int
@@ -360,15 +360,11 @@ type storiesIndexView struct {
 	FilterOpportunities []string
 }
 
-// taskItem is one thing the livt repository says is not finished, lifted off its example
-// mapping onto the Tasks page: an open question, or a rule with no automation
-// recorded. It carries no status, and cannot carry one derived from an issue —
-// the livt repository holds automation issue URLs but not their open/closed state, and
-// the build may not ask GitHub
-// (livt://mapping/show-automation-status-per-rule/rule/R-02). Kind ("question"
-// or "rule") picks the sticky colour the item carries on its board.
-// StoryPath is empty when the story has no page (mirrors mappingView.StoryPath);
-// MappingPath deep-links to the item's own sticky.
+// taskItem is one unfinished thing lifted off its example mapping onto the Tasks
+// page. It carries no status derived from an issue: the build may not ask GitHub
+// (livt://mapping/show-automation-status-per-rule/rule/R-02). Kind ("question",
+// "proposed-rule" or "rule") picks the sticky colour it wears on its board;
+// MappingPath deep-links to that sticky, and StoryPath is empty with no page.
 type taskItem struct {
 	Kind          string
 	ID            string
@@ -380,13 +376,14 @@ type taskItem struct {
 	Opportunities []opportunityRef
 }
 
-// tasksView is the livt repository's two unfinished flanks either side of the example
-// mapping: questions close by a conversation, un-automated rules close by a
-// test. One FilterOpportunities set serves both lists, since a single filter bar
-// drives the page.
+// tasksView is what the livt repository leaves unfinished, one list per way of
+// closing it: questions by a conversation, proposed rules by agreement,
+// un-automated rules by a test. One FilterOpportunities set serves every list,
+// since a single filter bar drives the page.
 type tasksView struct {
 	Sidebar             Sidebar
 	Questions           []taskItem
+	ProposedRules       []taskItem
 	UnautomatedRules    []taskItem
 	FilterOpportunities []string
 }

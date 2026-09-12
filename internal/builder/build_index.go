@@ -5,10 +5,10 @@ import (
 	"path/filepath"
 )
 
-// buildTasks renders tasks.html: what the livt repository leaves unfinished — open
-// questions and un-automated rules. filterOpportunities are the opportunity axes
-// both lists can be filtered by.
-func (b *Builder) buildTasks(questions, unautomatedRules []taskItem, filterOpportunities []string) error {
+// buildTasks renders tasks.html: what the livt repository leaves unfinished —
+// open questions, proposed rules, and un-automated rules. filterOpportunities
+// are the opportunity axes every list can be filtered by.
+func (b *Builder) buildTasks(open taskSet, filterOpportunities []string) error {
 	sb, err := b.sidebar("task", "")
 	if err != nil {
 		return err
@@ -18,7 +18,13 @@ func (b *Builder) buildTasks(questions, unautomatedRules []taskItem, filterOppor
 		return err
 	}
 	defer f.Close()
-	return renderTasks(f, b.Lang, tasksView{Sidebar: sb, Questions: questions, UnautomatedRules: unautomatedRules, FilterOpportunities: filterOpportunities})
+	return renderTasks(f, b.Lang, tasksView{
+		Sidebar:             sb,
+		Questions:           open.Questions,
+		ProposedRules:       open.ProposedRules,
+		UnautomatedRules:    open.UnautomatedRules,
+		FilterOpportunities: filterOpportunities,
+	})
 }
 
 // buildMappingsIndex renders index.html: the Example Mappings overview and the

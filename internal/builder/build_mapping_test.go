@@ -358,6 +358,109 @@ func TestCollectTasksSkipsRetiredItems(t *testing.T) {
 	}
 }
 
+// stickyClass returns the class attribute of the sticky anchored at id.
+func stickyClass(t *testing.T, html, id string) string {
+	t.Helper()
+	_, rest, ok := strings.Cut(html, `id="`+id+`" class="`)
+	if !ok {
+		t.Fatalf("no sticky anchored at %s", id)
+	}
+	class, _, _ := strings.Cut(rest, `"`)
+	return class
+}
+
+// livt://mapping/propose-rule-before-agreement/rule/R-02: a proposed rule and
+// its examples are drawn pale beside an agreed pair, and the rule is stamped so
+// telling them apart never rests on colour alone. The legend explains the look.
+func TestRenderMappingSetsProposedRulesApart(t *testing.T) {
+	em := &domain.ExampleMapping{
+		Rules: []domain.Rule{
+			{ID: "R-01", Name: "合意済みのルール", Examples: []domain.Example{{ID: "EX-01", Name: "合意済みの具体例"}}},
+			{ID: "R-02", Name: "提案中のルール", Status: domain.RuleProposed, Examples: []domain.Example{{ID: "EX-01", Name: "提案中の具体例"}}},
+		},
+	}
+
+	var buf bytes.Buffer
+	if err := renderMapping(&buf, i18n.En, em, "Story", "", nil); err != nil {
+		t.Fatal(err)
+	}
+	html := buf.String()
+
+	for _, id := range []string{"rule-R-02", "rule-R-02-example-EX-01"} {
+		if class := stickyClass(t, html, id); !strings.Contains(class, "border-dashed") || strings.Contains(class, "shadow") {
+			t.Errorf("%s class = %q, want the pale, unpinned look of a proposal", id, class)
+		}
+	}
+	for _, id := range []string{"rule-R-01", "rule-R-01-example-EX-01"} {
+		if class := stickyClass(t, html, id); strings.Contains(class, "border-dashed") {
+			t.Errorf("%s class = %q, want the pinned look of an agreed sticky", id, class)
+		}
+	}
+	if got := strings.Count(html, ">proposed</span>"); got != 1 {
+		t.Errorf("proposed stamp rendered %d times, want once (only on the proposed rule)", got)
+	}
+	if !strings.Contains(html, "Proposed rule") {
+		t.Error("expected the legend to explain the proposed look")
+	}
+}
+
+// livt://mapping/propose-rule-before-agreement/rule/R-03/example/EX-01 and
+// EX-02: agreement is what closes a proposal, so it is listed apart from the
+// un-automated rules even once a test covers it. A rejected one is retired and
+// off the page (livt://mapping/propose-rule-before-agreement/rule/R-05).
+func TestCollectTasksListsProposedRulesApart(t *testing.T) {
+	em := &domain.ExampleMapping{
+		StoryKey: domain.StoryKey{Value: "checkout"},
+		Rules: []domain.Rule{
+			{ID: "R-01", Name: "未自動化のルール"},
+			{ID: "R-02", Name: "提案中のルール", Status: domain.RuleProposed},
+			{ID: "R-03", Name: "テストが先に書かれた提案", Status: domain.RuleProposed, Automated: true},
+			{ID: "R-04", Name: "却下された提案", Status: domain.RuleProposed, Retired: true},
+		},
+	}
+
+	out := collectTasks(em, "Checkout", "story/checkout.html")
+
+	if len(out.UnautomatedRules) != 1 || out.UnautomatedRules[0].ID != "R-01" {
+		t.Errorf("un-automated rules = %+v, want only the accepted R-01", out.UnautomatedRules)
+	}
+	var ids []string
+	for _, item := range out.ProposedRules {
+		ids = append(ids, item.ID)
+		if item.Kind != "proposed-rule" || item.MappingPath != "mapping/checkout.html#rule-"+item.ID {
+			t.Errorf("proposed item = %+v, want a proposed-rule linked to its own sticky", item)
+		}
+	}
+	if got := strings.Join(ids, ","); got != "R-02,R-03" {
+		t.Errorf("proposed rules = %s, want R-02,R-03 with the retired R-04 left off", got)
+	}
+}
+
+// The sidebar's Tasks count is what the Tasks page lists, so a proposed rule
+// counts while it waits for agreement, automated or not.
+func TestTasksCountIncludesProposedRules(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	writeFile(t, filepath.Join(b.MappingsDir, "checkout.yaml"),
+		"rules:\n"+
+			"  - id: R-01\n"+
+			"    name: 自動化済みのルール\n"+
+			"    automated: true\n"+
+			"  - id: R-02\n"+
+			"    name: テストが先に書かれた提案\n"+
+			"    status: proposed\n"+
+			"    automated: true\n"+
+			"  - id: R-03\n"+
+			"    name: 未自動化のルール\n")
+
+	c, err := b.computeCounts()
+	if err != nil {
+		t.Fatal(err)
+	}
+	if c.tasks != 2 {
+		t.Errorf("tasks = %d, want 2: the proposed R-02 and the un-automated R-03", c.tasks)
+	}
+}
+
 func TestRenderMappingRuleWithoutIDOmitsAnchor(t *testing.T) {
 	em := &domain.ExampleMapping{
 		Rules: []domain.Rule{{Name: "A rule without an ID"}},

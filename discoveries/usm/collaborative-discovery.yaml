@@ -89,6 +89,9 @@ activities:
     steps:
       - key: agree-on-rule-change
         name: ルールの変更・追加に合意する
+        stories:
+          - name: 合意前のルールを提案中として実例マッピングに載せる
+            key: propose-rule-before-agreement
       - key: reflect-in-master-mapping
         name: livtリポジトリの実例マッピングに反映する
         stories:

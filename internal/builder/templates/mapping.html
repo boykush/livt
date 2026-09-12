@@ -30,6 +30,7 @@
 <div class="flex items-center gap-4 text-xs text-gray-500 mb-4">
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-yellow-100 border-l-2 border-yellow-400 rounded-sm"></span>{{t "label.story"}}</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-blue-100 border-l-2 border-blue-400 rounded-sm"></span>{{t "label.rule"}}</span>
+  <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-blue-50 border border-dashed border-blue-400 rounded-sm"></span>{{t "mapping.proposed-legend"}}</span>
   <span class="flex items-center gap-1"><span class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-blue-600 text-white text-[9px] font-semibold leading-none">✓</span>{{t "mapping.automated-legend"}}</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm"></span>{{t "label.example"}}</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-red-100 border-l-2 border-red-400 rounded-sm"></span>{{t "label.question"}}</span>
@@ -49,8 +50,13 @@
 <div class="min-w-max flex flex-col gap-2">
 <div class="flex gap-4">
 {{range .Mapping.Rules}}
-  <div{{if .ID}} id="{{ruleAnchor .ID}}"{{end}} class="rule-card relative bg-blue-100 border-l-4 border-blue-400 px-3 pt-3 pb-6 rounded shadow font-semibold text-gray-800 w-[180px] scroll-mt-24">
+  {{/* A proposed rule is drawn pale, dashed and unpinned, and stamped as well,
+  so telling it from an agreed one never rests on colour alone. */}}
+  <div{{if .ID}} id="{{ruleAnchor .ID}}"{{end}} class="rule-card relative {{if .Proposed}}bg-blue-50 border-blue-300 border-dashed text-gray-500{{else}}bg-blue-100 border-blue-400 shadow text-gray-800{{end}} border-l-4 px-3 pt-3 pb-6 rounded font-semibold w-[180px] scroll-mt-24">
     {{.Name}}
+    {{if .Proposed}}
+    <span title="{{t "mapping.proposed-title"}}" class="absolute -top-2 left-2 rounded-full border border-dashed border-blue-400 bg-white text-blue-500 text-[10px] font-semibold px-1.5 py-0.5 select-none">{{t "mapping.proposed-badge"}}</span>
+    {{end}}
     {{if .Automated}}
     <span title="{{t "mapping.automated-title"}}" class="absolute -top-2 -right-2 rounded-full bg-blue-600 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">{{t "mapping.automated-badge"}}</span>
     {{end}}
@@ -79,7 +85,7 @@
     to stay unique on the board while the badge keeps showing the local id. The
     two reading differently costs nothing: what a click copies is the URL.
     */}}
-    <div{{if and $rule.ID .ID}} id="{{exampleAnchor $rule.ID .ID}}"{{end}} class="example-card relative bg-green-100 border-l-4 border-green-400 px-3 pt-3 pb-6 rounded shadow text-gray-700 text-sm scroll-mt-24">
+    <div{{if and $rule.ID .ID}} id="{{exampleAnchor $rule.ID .ID}}"{{end}} class="example-card relative {{if $rule.Proposed}}bg-green-50 border-green-300 border-dashed text-gray-500{{else}}bg-green-100 border-green-400 shadow text-gray-700{{end}} border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
       {{.Name}}
       {{if and $rule.ID .ID}}{{template "id-badge" exampleBadge $rule.ID .ID}}{{end}}
     </div>

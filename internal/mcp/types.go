@@ -185,8 +185,12 @@ type ruleJSON struct {
 	ID string `json:"id"`
 	// URI is the rule's own resource (livt://mapping/{story_key}/rule/{id}), so a
 	// rule listed inside a mapping links to its addressable form.
-	URI      string        `json:"uri"`
-	Name     string        `json:"name"`
+	URI  string `json:"uri"`
+	Name string `json:"name"`
+	// Status is proposed or accepted. Like Automated it is always present, so an
+	// agent choosing what to automate reads it without knowing that a rule
+	// written with no status is accepted.
+	Status   string        `json:"status"`
 	Examples []exampleJSON `json:"examples,omitempty"`
 	// Issues are the rule's automation Issue URLs as recorded on the livt repository.
 	Issues []string `json:"issues,omitempty"`
@@ -351,7 +355,7 @@ func toRuleJSON(storyKey string, r domain.Rule) ruleJSON {
 	for _, e := range r.Examples {
 		examples = append(examples, toExampleJSON(storyKey, r.ID, e))
 	}
-	return ruleJSON{ID: r.ID, URI: uri.Rule(storyKey, r.ID), Name: r.Name, Examples: examples, Issues: r.Issues, Automated: r.Automated, Retired: r.Retired, SupersededBy: r.SupersededBy}
+	return ruleJSON{ID: r.ID, URI: uri.Rule(storyKey, r.ID), Name: r.Name, Status: string(r.Status.OrDefault()), Examples: examples, Issues: r.Issues, Automated: r.Automated, Retired: r.Retired, SupersededBy: r.SupersededBy}
 }
 
 func toExampleJSON(storyKey, ruleID string, e domain.Example) exampleJSON {

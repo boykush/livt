@@ -18,7 +18,7 @@ Transcribe ──▶ Refine ──▶ Plan
 
 Between the map and per-story discovery sits a bridge: when a story candidate on a refined User Story Map is ready for detailed discovery, the **Commit** skill promotes it into the `stories/` registry — creating its story file and stamping the key back onto the map — so its Example Mapping can begin.
 
-The pipeline runs once per session, but the mapping keeps living afterwards: when a business rule is changed or added in ongoing work, the **Update** skill folds that change in as a fine-grained PR — one rule-level change per PR — instead of re-running the refine.
+The pipeline runs once per session, but the mapping keeps living afterwards: when a business rule is proposed, changed, or added in ongoing work, the **Update** skill folds that change in as a fine-grained PR — one rule-level change per PR — instead of re-running the refine.
 
 When a mapping is ready to drive implementation, the **File** skills carry it outward as GitHub issues to the story's declared implementation repositories — the livt repository, not GitHub, keeps the record of what is filed where.
 
@@ -44,7 +44,7 @@ When a mapping is ready to drive implementation, the **File** skills carry it ou
 
 ### Update
 
-- **`/example-mapping-update`** — fold a rule change or addition from ongoing work into an existing example mapping and ship it as a fine-grained PR, one rule-level change per PR. The right skill when "a rule changed" or "a rule was added" — the refiner never changes agreed meaning.
+- **`/example-mapping-update`** — fold a rule change, addition, or proposal from ongoing work into an existing example mapping and ship it as a fine-grained PR, one rule-level change per PR. The right skill when "a rule changed", "a rule was added", or a rule is put forward for agreement (`status: proposed`) — the refiner never changes agreed meaning.
 
 ### File
 
