@@ -21,7 +21,7 @@ Two languages, split by what the text *is* — not by who wrote it.
 - `ubiquitous/*.md` — `name:` and the definition
 - `internal/i18n/ja.go` — the Japanese chrome catalog. Go code holding Japanese by design; its keys, like every identifier, stay English
 
-The livt repository's language is not a rule livt imposes. The skills say prose follows the language the user is speaking — see any `## Language` section under `plugins/discovery-facilitator/skills/`. *This* livt repository happens to be Japanese, and stays that way for consistency.
+The livt repository's language is not a rule livt imposes. The skills say prose follows the language the user is speaking — see any `## Language` section under `plugins/livt-discovery/skills/`. *This* livt repository happens to be Japanese, and stays that way for consistency.
 
 Two consequences worth stating:
 
@@ -35,5 +35,5 @@ Two consequences worth stating:
 
 - livt repository changes (`discoveries/`, `stories/`, `ubiquitous/`) ship as `docs:`. The branch prefix mirrors the type: `docs/…`, `feat/…`, `fix/…`.
 - The body explains **why** the change is right — the diff already says what changed. Wrap at ~80 columns.
-- One rule-level change per PR, a branch each: `docs: add rule R-11 to file-automation-issues-to-impl-repos`. The ID and PR contracts live in [example-mapping-update/SKILL.md](plugins/discovery-facilitator/skills/example-mapping-update/SKILL.md) — a filed rule ID is immutable.
+- One rule-level change per PR, a branch each: `docs: add rule R-11 to file-automation-issues-to-impl-repos`. The ID and PR contracts live in [change-rule/SKILL.md](plugins/livt-discovery/skills/change-rule/SKILL.md) — a filed rule ID is immutable.
 - A commit automating a rule cites it by livt URI: `Automates livt://mapping/{story-key}/rule/{rule-id}.` A bare `R-02` exists in every mapping file and so identifies nothing.

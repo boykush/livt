@@ -5,17 +5,21 @@
     "email": "boykush315@gmail.com"
   },
   "metadata": {
-    "description": "Claude Code plugins for livt - author the discovery master (transcribe, refine, plan, update) with discovery-facilitator, and consume it from implementation repos over MCP with livt-mcp",
-    "version": "0.8.0"
+    "description": "Claude Code plugins for livt, one per ring: livt-discovery records what the conversations decide, livt-delivery carries the agreed record to the implementation and brings the result back, and livt-automation lets an implementation repo's agent read and cite the spec over MCP",
+    "version": "1.0.0"
   },
   "plugins": [
     {
-      "name": "discovery-facilitator",
-      "source": "./plugins/discovery-facilitator"
+      "name": "livt-discovery",
+      "source": "./plugins/livt-discovery"
     },
     {
-      "name": "livt-mcp",
-      "source": "./plugins/livt-mcp"
+      "name": "livt-delivery",
+      "source": "./plugins/livt-delivery"
+    },
+    {
+      "name": "livt-automation",
+      "source": "./plugins/livt-automation"
     }
   ]
 }
