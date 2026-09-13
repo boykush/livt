@@ -8,7 +8,7 @@ rules:
       - https://github.com/boykush/livt/issues/63
     automated: true
   - id: R-02
-    name: コミット済みストーリーは詳細ページにリンクする
+    name: ストーリーファイルを持つストーリーは詳細ページにリンクする
     examples:
       - id: EX-01
         name: ストーリーファイルがあるカードは矢印付きのリンクになる

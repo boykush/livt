@@ -77,7 +77,7 @@ current on its checkout and the served spec (and `spec_version`) updates live.
 The binding trades the other way from stdio: the server fixes its repository
 once, at start, for every client — not per workspace.
 For distributing this client configuration to implementation repos, see the
-[`livt-mcp` plugin](https://github.com/boykush/livt/tree/main/plugins/livt-mcp).
+[`livt-automation` plugin](https://github.com/boykush/livt/tree/main/plugins/livt-automation).
 This mode assumes local use with no authentication — the server is meant to bind
 to localhost, not a public network.
 
@@ -100,7 +100,7 @@ questions, and ubiquitous terms linked alongside):
 |-----|---------|
 | `livt://opportunity/{opportunity_key}` | An opportunity: its name, its statement (whose problem, and what the business gets from solving it), and its frontmatter meta. Carries `canvas_uri` when a canvas has been filled in, and `story_maps` — the maps whose key matches, as map name plus story map resource URI. |
 | `livt://opportunity-canvas/{opportunity_key}` | The [Opportunity Canvas](../guides/opportunities.md#the-opportunity-canvas) filled in for an opportunity, as its ten `boxes` — each with its `key`, printed `number`, heading, the `prompt` it asks, and its `items`. Every box is returned, unanswered ones with an empty `items`: a blank box records a question the opportunity has not answered. |
-| `livt://story-map/{map_name}` | A story map: activities, steps, story cards, and releases. Committed story cards link to their story resource. `{map_name}` is the map's display name (percent-encoded) — the same identifier the build output uses for `story-map/{name}.html`. |
+| `livt://story-map/{map_name}` | A story map: activities, steps, story cards, and releases. Story cards that have a story file link to their story resource. `{map_name}` is the map's display name (percent-encoded) — the same identifier the build output uses for `story-map/{name}.html`. |
 | `livt://story/{story_key}` | The story's name, body, and frontmatter meta (e.g. `issue`), plus `example_mapping_uri` when a mapping exists and `opportunities` — the story maps the story sits on, as map name plus story map resource URI. |
 | `livt://mapping/{story_key}` | The story's example mapping (rules, examples, questions, ubiquitous terms). Each rule, example, and question carries its own `uri`, and `ubiquitous_terms` resolves each referenced term to its resource URI. [Retired](../guides/example-mappings.md#retiring-an-item) entries are listed too, flagged — the mapping is the structural record their ids are numbered from. |
 | `livt://mapping/{story_key}/rule/{rule_id}` | A single rule and its examples, its `status` — `proposed` while it awaits agreement, `accepted` once agreed, and present on every rule — plus its recorded automation: `issues` (automation Issue URLs) and `automated` (whether the rule is automated by tests). Rules inside `livt://mapping/{story_key}` carry the same fields. |

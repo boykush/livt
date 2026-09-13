@@ -47,9 +47,9 @@ repos:
 ---
 
 Discovery outcomes sit in the board tool and go stale. The raw record is rough, and
-nothing versions it or checks it for consistency. Transcribing it, refining it into a
-fair copy, and keeping it updated as rules change saves re-running the same argument
-and lets the outcome stand as the specification.
+nothing versions it or checks it for consistency. Recording it, and keeping it
+updated as rules change, saves re-running the same argument and lets the outcome
+stand as the specification.
 ```
 
 Any frontmatter field beyond `name` is kept and shown as metadata, and a field

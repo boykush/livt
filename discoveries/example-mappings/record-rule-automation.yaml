@@ -21,7 +21,7 @@ rules:
           - livt://mapping/record-rule-automation/rule/R-02/example/EX-03
           - livt://mapping/record-rule-automation/rule/R-02/example/EX-05
       - id: EX-02
-        name: ルールを変更するPRでは、該当ruleのautomatedを外す（example-mapping-updateの手順に組み込む）
+        name: ルールを変更するPRでは、該当ruleのautomatedを外す（change-ruleの手順に組み込む）
       - id: EX-03
         name: "クローズ済みIssueを持つ未automatedのルールは、スキルが証跡（クローズしたPR・テスト）を添えてautomated: trueを提案する"
       - id: EX-04
