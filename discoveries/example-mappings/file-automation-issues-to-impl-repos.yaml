@@ -30,7 +30,7 @@ rules:
       - id: EX-03
         name: 起票時点のlivtリポジトリのrevをspec_versionとして記す
       - id: EX-04
-        name: バックポインタが指すルールIDは起票後も不変で、清書・更新のAIスキル共通ポリシーとして担保する
+        name: バックポインタが指すルールIDは起票後も不変で、記録・ルール変更のAIスキル共通ポリシーとして担保する
   - id: R-05
     name: ストーリーにUS Issueが紐づいていれば、ルールIssueはそのsub-issueとして起票する
     examples:
