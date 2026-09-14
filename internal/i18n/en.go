@@ -67,8 +67,6 @@ var en = Catalog{
 	"mapping.view":             "View",
 	"mapping.view-board":       "Board",
 	"mapping.view-list":        "List",
-	"mapping.expand-all":       "Expand all",
-	"mapping.collapse-all":     "Collapse all",
 	"nav.opportunities":        "Opportunities",
 
 	"label.story-map":          "Story Map",
