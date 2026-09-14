@@ -1,6 +1,6 @@
 ---
 name: inspect-automation
-description: Inspect each rule's automation record (`automated:`) against what actually happened in the implementation repositories, by reading the state of the issues the rule already records and the mapping's own git history, and propose each correction as its own fine-grained PR with evidence. Never decides on its own. Use when automation has landed, or a rule has moved on, and the board may be showing a stale grade. Filing new issues routes to file-rule-issues.
+description: Inspect each rule's automation record (`automated:`) against what actually happened in the implementation repositories, by reading the state of the issues the rule already records and the mapping's own git history, and propose each correction as its own fine-grained PR with evidence. Never decides on its own. The judgment and the evidence it needs are livt's; the tracker the issues live in, and the tool that reads it, are the team's. Use when automation has landed, or a rule has moved on, and the board may be showing a stale grade. Filing new issues routes to file-rule-issues.
 ---
 
 You **inspect** the automation record — the inspect station of the delivery ring.
@@ -19,14 +19,22 @@ This is the whole shape of the skill, so settle it first.
 
 - **A closed issue is a trigger, not proof.** `automated:` records the judgment that the rule is *actually automated by tests*, which is independent of any issue's state. An issue closes as won't-fix, closes with a partial implementation, or closes because someone tidied the backlog. None of those automate a rule.
 - **You never set or unset a flag on your own authority.** You gather evidence, state what it does and does not show, and ship a proposal. A human weighs it at review — that judgment is the point of the record, not an obstacle to it.
-- **Say what you could not verify.** "The closing PR touches no test file" is a finding worth surfacing, not a reason to stay quiet or to guess. An honest uncertain proposal is useful; a confident wrong one poisons the record.
+- **Say what you could not verify.** "The closing change touches no test file" is a finding worth surfacing, not a reason to stay quiet or to guess. An honest uncertain proposal is useful; a confident wrong one poisons the record.
 
-## The livt Repository Is the Record
+## The Record Contract
 
-- Each rule in `discoveries/example-mappings/{story-key}.yaml` may carry `issues:` (automation issue URLs) and `automated:` (the judgment). Both live in the livt repository; nothing about them is stored in any tracker.
-- You read issue **state** from the tracker with the tool at hand — `gh issue view` for a GitHub repository, a tracker's MCP server or CLI elsewhere — exactly as the filing skills write with it. livt itself never reads the implementation repositories. Reading state is not the same as trusting it: see above.
-- A rule with no `issues:` has no trigger to inspect from. That is a normal state, not a finding — the automation may have landed without an issue, and only a human knows.
-- You touch `automated:` and nothing else. Rule text, examples, questions, and `issues:` belong to `change-rule` and `file-rule-issues`.
+Verbatim from the canonical statement in `file-rule-issues` — the bullets this station depends on. A skill loads on its own, so it carries them rather than pointing at them. Change one, change all.
+
+- **The record lives in the livt repository.** A rule's `issues:` and a story's frontmatter `issues:` hold the automation issues filed for them; a rule's `automated:` holds the judgment that tests automate it. Neither is stored in a tracker, and neither is derived from one.
+- **`automated:` is a separate judgment.** Filing an issue, or closing it, does not make a rule automated; only evidence and a human do. Setting and unsetting it is `inspect-automation`'s station.
+
+That station is you, and the flag is all you touch: rule text, examples, questions, and `issues:` belong to `change-rule` and `file-rule-issues`. A rule with no `issues:` has no trigger to inspect from — a normal state, not a finding, since automation may have landed without an issue and only a human knows.
+
+## Yours and the Team's
+
+Yours is the judgment and the evidence that supports it: which issues a rule records, what the mapping's own history says about when the flag and the rule text last moved, and what all of that does and does not establish. The livt repository answers every one of those, and `git log` over the mapping is yours to read directly.
+
+The tracker is the team's, and so is the tool that reads it — a tracker's CLI or MCP server. Reading issue state is the one thing you go outside for, and it is also the one thing you must not trust on its own: see above, and see When You Cannot Read an Issue. livt itself never reads the implementation repositories.
 
 ## One Flag, Many Repositories
 
@@ -52,27 +60,14 @@ A tracker answers the same way whether an issue was deleted, moved, or is simply
 ## Inspection Flow
 
 1. Read the mappings in scope, keeping only rules with `status: accepted`: a `rejected` or `retired` rule's record answers nothing, and a `proposed` one is not something a test can close.
-2. For each rule carrying `issues:`, read the state of **every** issue on the list — they may sit in different repositories, and the full URL is what addresses one, so no repository has to be checked out or even be the current one. For a GitHub issue with `gh` authenticated:
-
-   ```
-   gh issue view {issue-url} --json number,state,stateReason,closedAt,closedByPullRequestsReferences
-   ```
-
-   For another tracker, use the tool the user side provides. A read that fails, or a tracker with no tool, makes the rule unverifiable — see When You Cannot Read an Issue.
-
+2. For each rule carrying `issues:`, read the state of **every** issue on the list with the team's tool — they may sit in different repositories, and the full URL is what addresses one, so no repository has to be checked out or even be the current one. A read that fails, or a tracker with no tool, makes the rule unverifiable — see When You Cannot Read an Issue.
 3. Sort each rule into one of the two drifts, or into no finding:
    - **Missing flag** — every recorded issue is closed, across every repository, and the rule has no `automated: true`. Gather evidence (step 4) and propose setting it.
    - **Stale flag** — the rule carries `automated: true` and its text or examples changed *after* the flag was set. Establish that from the mapping's own history (step 5) and propose unsetting it.
    - **No finding** — issues still open (anywhere), a partial rollout, or a flag that matches. Report it and move on; a rule you leave alone is a result, not a gap.
    - **Unverifiable** — at least one issue could not be read. Report it; propose nothing.
-4. For a missing flag, follow the closing change and look for what would make the rule true — the tests it added. On GitHub, from `closedByPullRequestsReferences`:
-
-   ```
-   gh pr view {pr-url} --json title,url,mergedAt,files
-   ```
-
-   Name the test files in the proposal. A closing change with no test among its files is the finding that matters most: report it as evidence *against* setting the flag, and let the review decide whether the automation is real.
-5. For a stale flag, read the mapping's history and find the two commits that matter — the one that set `automated: true` for this rule, and the last one that changed the rule's `name` or examples:
+4. For a missing flag, follow each issue to the change that closed it and look for what would make the rule true — the tests it added. Name those test files in the proposal. A closing change with no test among its files is the finding that matters most: report it as evidence *against* setting the flag, and let the review decide whether the automation is real. Where the tracker cannot tell you what closed an issue, that half is unverifiable and the proposal says so.
+5. For a stale flag, read the mapping's history — the livt repository is yours, so read it directly — and find the two commits that matter: the one that set `automated: true` for this rule, and the last one that changed the rule's `name` or examples.
 
    ```
    git log --follow -p -- discoveries/example-mappings/{story-key}.yaml
