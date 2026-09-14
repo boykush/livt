@@ -1,14 +1,17 @@
 rules:
   - id: R-01
-    name: ルールはstatusとして提案中（proposed）か合意済み（accepted）かを持てる
+    name: ルールのstatusは、合意の段階と閉じ方を1つの軸で持つ（proposed・accepted・rejected・retired）
     examples:
       - id: EX-01
         name: "status: proposed のルールは提案中として読まれる"
       - id: EX-02
         name: statusのないルールは合意済みとして読まれ、既存の実例マッピングはそのまま読める
       - id: EX-03
-        name: proposed・accepted以外の値はビルドを失敗させる（打ち間違いが黙って合意済みに化けない）
-    automated: true
+        name: 4つ以外の値はビルドを失敗させる（打ち間違いが黙って合意済みに化けない）
+      - id: EX-04
+        name: rejectedとretiredのルールは、ボードにもTasksページにも出ない
+      - id: EX-05
+        name: "旧来のretired: trueは当面statusへ畳んで読まれる（proposedならrejected、それ以外はretired）"
   - id: R-02
     name: 提案中のルールは、ボード上で合意済みのルールと一目で見分けられる
     examples:
