@@ -48,7 +48,7 @@ The destination, the tool that files, the template, labels, and fields are the t
    ```
 
    For another tracker, use the tool the user side provides (an MCP server, a CLI). With no tool, hand the composed body to the user to file, and take the created URL back — the record treats that URL exactly as one you filed.
-5. If the story's frontmatter `issues:` records a story issue **in the same destination**, and the tracker supports a parent/child link, attach the new issue as its child (see Parent Linking). No story issue, or no such link → the rule issue stands alone; that is a supported state, not an error.
+5. If the story's frontmatter `issues:` records a story issue, attach the new issue as its child where the tracker supports the link (see Parent Linking): the story issue in this destination when there is one, otherwise the one recorded elsewhere — with several elsewhere and none here, ask which is the parent. No story issue, no such link, or a link the tracker refuses → the rule issue stands alone; that is a supported state, not an error.
 6. Write the created URL back to the rule's `issues:` in the mapping YAML — append to the list, creating it if absent. Touch nothing else in the file. **Working-tree edit only**: no commit, no PR — the write-back rides the normal review flow.
 7. Report filed and skipped pairs per rule × destination, and remind the user the write-back is uncommitted.
 
@@ -78,10 +78,10 @@ List only the rule's live examples; a retired one no longer illustrates it. Ever
 
 ## Parent Linking
 
-Parenthood comes from the livt repository's structure — story ⊃ rule — so the parent is the story issue recorded in the story's frontmatter `issues:` for the same destination. The link is write-only sugar for the tracker's UI; on GitHub it is the sub-issues GraphQL API:
+Parenthood comes from the livt repository's structure — story ⊃ rule — so the parent is the story issue recorded in the story's frontmatter `issues:`, whichever destination it lives in. Whether a parent and a child in different repositories can be linked is the tracker's answer, not yours to assume ahead of it — GitHub takes a sub-issue from another repository, another tracker may refuse; attempt the link and report what came back. The link is write-only sugar for the tracker's UI; on GitHub it is the sub-issues GraphQL API:
 
 ```
-# node ID of an issue (run for the parent and the new issue)
+# node ID of an issue (run for the parent and the new issue, each in its own {owner}/{repo})
 gh api graphql \
   -f query='query($owner: String!, $name: String!, $number: Int!) {
     repository(owner: $owner, name: $name) { issue(number: $number) { id } }
@@ -115,8 +115,9 @@ The half you rely on, verbatim from the canonical statement in `change-rule`:
 - Don't cite the rule or its examples by bare id, and don't let the living-document URL stand in for the livt URI.
 - Don't consult the tracker (search or its link graph) to decide what is already filed — the mapping's record is the only dedupe source.
 - Don't re-file a rule × destination pair that is already linked, and don't let an existing link stop you filing the same rule to a *different* declared destination.
+- Don't rule a parent/child link out because the story issue sits in another repository — that is the tracker's call, and GitHub allows it.
 - Don't assume a tracker. A destination your tools cannot reach is filed by hand and recorded the same way.
 
 ## Output
 
-One automation issue per unfiled rule × destination, each linked under the story issue where one exists there and the tracker supports it, and the mapping YAML in the working tree with every created URL appended to its rule's `issues:`. A closing report of what was filed, what was skipped and why, and the uncommitted write-back.
+One automation issue per unfiled rule × destination, each linked under the story issue where one is recorded and the tracker supports it, and the mapping YAML in the working tree with every created URL appended to its rule's `issues:`. A closing report of what was filed, what was skipped and why, and the uncommitted write-back.
