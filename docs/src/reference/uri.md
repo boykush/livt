@@ -77,7 +77,7 @@ identifier the livt repository carries. The canvas sits beside the opportunity
 rather than under it, the way a mapping sits beside its story — the two are
 joined by key, and either can exist without the other.
 
-A [retired](../guides/example-mappings.md#retiring-an-item) item has no sticky,
+A [closed](../guides/example-mappings.md#retiring-an-item) item has no sticky,
 so its URI lands on the board with nothing to scroll to. The URI still resolves:
 ask the tooling, which answers with the item and `retired: true` — plus
 `superseded_by`, the URIs of whatever took its place, when the retirement

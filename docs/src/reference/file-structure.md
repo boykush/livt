@@ -70,16 +70,16 @@ has to be hunted for board by board:
   These close by a conversation, so they feed the next discovery session.
 - **Proposed Rules** — every rule marked
   [`status: proposed`](../guides/example-mappings.md#proposing-a-rule). These
-  close by agreement — accepted, or retired when turned down — so they are the
+  close by agreement — accepted, or rejected when turned down — so they are the
   decisions still open.
 - **Un-automated Rules** — every accepted rule with no `automated: true`
   recorded. These close by a test, so they read as the list of behaviour still
   to build. A proposed rule is never here, even once a test covers it: a test
   cannot close what is not agreed yet.
 
-[Retired](../guides/example-mappings.md#retiring-an-item) items are on none of
-the lists, and off the boards as well: nothing can close them, so they would sit
-here forever.
+[Closed](../guides/example-mappings.md#retiring-an-item) rules and retired
+examples and questions are on none of the lists, and off the boards as well:
+nothing can close them again, so they would sit here forever.
 
 Each item names the story it came from and links to its own sticky on that
 story's mapping board. All three lists are filtered together by opportunity, and

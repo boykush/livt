@@ -7,14 +7,14 @@ type ExampleMapping struct {
 	Ubiquitous []string
 }
 
-// Active returns the mapping without its retired rules, examples, and
-// questions — what the spec still asks for. Retired items stay in the livt repository so
+// Active returns the mapping without its closed rules and its retired examples
+// and questions — what the spec still asks for. They stay in the livt repository so
 // their ids stay taken and their text stays readable, but they are no longer on
 // a board and no longer anything the livt repository calls unfinished.
 func (em *ExampleMapping) Active() *ExampleMapping {
 	out := &ExampleMapping{StoryKey: em.StoryKey, Ubiquitous: em.Ubiquitous}
 	for _, r := range em.Rules {
-		if r.Retired {
+		if !r.Status.Active() {
 			continue
 		}
 		var examples []Example

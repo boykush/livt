@@ -35,7 +35,7 @@ rules:
     automated: true
   - id: R-05
     name: ストーリーマップの一覧から各マップへ辿れる
-    retired: true
+    status: retired
     examples:
       - id: EX-01
         name: 一覧ページに全ストーリーマップがプレビュー付きのタイルで並び、各マップのボードへリンクする

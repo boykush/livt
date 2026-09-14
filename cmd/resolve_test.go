@@ -34,7 +34,7 @@ func newTestRepo(t *testing.T) string {
 			"        name: 実例1\n"+
 			"  - id: R-02\n"+
 			"    name: 退役したルール\n"+
-			"    retired: true\n"+
+			"    status: retired\n"+
 			"questions:\n"+
 			"  - id: Q-01\n"+
 			"    text: 質問1\n")

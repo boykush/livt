@@ -187,9 +187,9 @@ type ruleJSON struct {
 	// rule listed inside a mapping links to its addressable form.
 	URI  string `json:"uri"`
 	Name string `json:"name"`
-	// Status is proposed or accepted. Like Automated it is always present, so an
-	// agent choosing what to automate reads it without knowing that a rule
-	// written with no status is accepted.
+	// Status is proposed, accepted, rejected or retired. Like Automated it is
+	// always present, so an agent choosing what to automate reads it without
+	// knowing that a rule written with no status is accepted.
 	Status   string        `json:"status"`
 	Examples []exampleJSON `json:"examples,omitempty"`
 	// Issues are the rule's automation Issue URLs as recorded on the livt repository.
@@ -197,9 +197,11 @@ type ruleJSON struct {
 	// Automated is always present: consumers read the recorded judgment
 	// without distinguishing absent from false.
 	Automated bool `json:"automated"`
-	// Retired says the rule is no longer part of the spec. Unlike Automated it
-	// is omitted when false: it marks the exception, and every live rule
-	// carrying "retired": false would drown the flag in noise.
+	// Retired says the rule is no longer part of the spec, which Status now says
+	// too. It is kept, derived, so a caller branching on it keeps working, and
+	// it goes away once they read Status instead. Omitted when false: it marks
+	// the exception, and every live rule carrying "retired": false would drown
+	// the flag in noise.
 	Retired bool `json:"retired,omitempty"`
 	// SupersededBy is where the spec went, as livt URIs, so a stale reference
 	// leads forward instead of stopping. It stays a URI: the successor is one
@@ -355,7 +357,7 @@ func toRuleJSON(storyKey string, r domain.Rule) ruleJSON {
 	for _, e := range r.Examples {
 		examples = append(examples, toExampleJSON(storyKey, r.ID, e))
 	}
-	return ruleJSON{ID: r.ID, URI: uri.Rule(storyKey, r.ID), Name: r.Name, Status: string(r.Status.OrDefault()), Examples: examples, Issues: r.Issues, Automated: r.Automated, Retired: r.Retired, SupersededBy: r.SupersededBy}
+	return ruleJSON{ID: r.ID, URI: uri.Rule(storyKey, r.ID), Name: r.Name, Status: string(r.Status.OrDefault()), Examples: examples, Issues: r.Issues, Automated: r.Automated, Retired: !r.Status.Active(), SupersededBy: r.SupersededBy}
 }
 
 func toExampleJSON(storyKey, ruleID string, e domain.Example) exampleJSON {
