@@ -12,6 +12,7 @@ rules:
         name: rejectedとretiredのルールは、ボードにもTasksページにも出ない
       - id: EX-05
         name: "旧来のretired: trueは当面statusへ畳んで読まれる（proposedならrejected、それ以外はretired）"
+    automated: true
   - id: R-02
     name: 提案中のルールは、ボード上で合意済みのルールと一目で見分けられる
     examples:
