@@ -1,6 +1,6 @@
 ---
 name: change-rule
-description: Change one business rule in an existing Example Mapping — propose, accept, reject, change, or retire it, with its examples — as its own fine-grained PR. This is discovery's asynchronous lane: a rule enters the mapping as a proposal (status: proposed) without a session, and the PR review stands in for the conversation. Use for "this rule changed", "a rule was added", "propose this rule"; a session's outcome routes to record-example-mapping, and checking against the implementation to plan-story.
+description: Change one business rule in an existing Example Mapping — propose, accept, reject, change, or retire it, with its examples — as its own fine-grained PR. This is discovery's asynchronous lane — a rule enters the mapping as a proposal carrying status `proposed`, without a session, and the PR review stands in for the conversation. Use for "this rule changed", "a rule was added", "propose this rule"; a session's outcome routes to record-example-mapping, and checking against the implementation to plan-story.
 ---
 
 You **change a rule** — the asynchronous lane of the discovery ring.
