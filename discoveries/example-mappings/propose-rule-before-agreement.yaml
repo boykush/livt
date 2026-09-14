@@ -45,13 +45,12 @@ rules:
         name: 実装リポジトリのエージェントは、提案中のルールを自動化の対象から外せる
     automated: true
   - id: R-05
-    name: 提案はADRと同じ流れで閉じる — 合意されればaccepted、却下されればretired
-    status: proposed
+    name: 提案はADRと同じ流れで閉じる — 合意されればaccepted、却下されればrejected
     examples:
       - id: EX-01
         name: 提案を採用するPRは、statusの1行だけを変える
       - id: EX-02
-        name: 却下された提案は削除せずretiredにし、statusはproposedのまま残す（合意に至らなかった提案として読める）
+        name: 却下された提案は削除せずrejectedにする（合意に至らなかった提案として読め、後から退役したルールと区別が付く）
       - id: EX-03
         name: 提案中のルールには自動化Issueを起票しない
       - id: EX-04
