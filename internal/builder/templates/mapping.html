@@ -32,7 +32,7 @@ board whatever the reader chose.
   .rule-group, .question-group { display: contents; }
   .rule-card, .question-head { grid-row: 1; }
   .example-stack, .question-stack { grid-row: 2; align-self: start; display: flex; flex-direction: column; gap: 0.5rem; }
-  .rule-fold, .example-count, .fold-all, .list-head { display: none; }
+  .rule-fold, .example-count, .list-head { display: none; }
   .rule-fold .chevron { display: inline-block; transition: transform 0.15s; }
   .rule-fold[aria-expanded="true"] .chevron { transform: rotate(90deg); }
   html:not([data-view="list"]) [data-view-toggle="board"],
@@ -69,7 +69,6 @@ board whatever the reader chose.
   [data-view="list"] .rule-name { flex: 1; min-width: 0; }
   [data-view="list"] .rule-issues { margin-top: 0; }
   [data-view="list"] .rule-fold, [data-view="list"] .example-count { display: inline-flex; }
-  [data-view="list"] .fold-all { display: flex; }
   [data-view="list"] [data-foldable] > .rule-card { cursor: pointer; }
   [data-view="list"] .example-stack { display: none; margin: 0.5rem 0 0 1.75rem; gap: 0.5rem; }
   [data-view="list"] [data-open] > .example-stack { display: flex; }
@@ -98,16 +97,10 @@ board whatever the reader chose.
   The switch is the filter bar's chip row, the control this site already uses
   to pick one of a few — same shape, same pressed fill.
   */}}
-  <div class="ml-auto flex items-center gap-3">
-    <div class="fold-all items-center gap-1">
-      <button type="button" data-fold-all="open" class="text-xs text-gray-700 bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-full px-3 py-1 transition">{{t "mapping.expand-all"}}</button>
-      <button type="button" data-fold-all="close" class="text-xs text-gray-700 bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-full px-3 py-1 transition">{{t "mapping.collapse-all"}}</button>
-    </div>
-    <div role="group" aria-labelledby="view-label" class="flex items-center gap-1">
-      <span id="view-label" class="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">{{t "mapping.view"}}</span>
-      <button type="button" data-view-toggle="board" aria-pressed="true" class="text-xs text-gray-700 bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-full px-3 py-1 transition">{{t "mapping.view-board"}}</button>
-      <button type="button" data-view-toggle="list" aria-pressed="false" class="text-xs text-gray-700 bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-full px-3 py-1 transition">{{t "mapping.view-list"}}</button>
-    </div>
+  <div role="group" aria-labelledby="view-label" class="ml-auto flex items-center gap-1">
+    <span id="view-label" class="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">{{t "mapping.view"}}</span>
+    <button type="button" data-view-toggle="board" aria-pressed="true" class="text-xs text-gray-700 bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-full px-3 py-1 transition">{{t "mapping.view-board"}}</button>
+    <button type="button" data-view-toggle="list" aria-pressed="false" class="text-xs text-gray-700 bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-full px-3 py-1 transition">{{t "mapping.view-list"}}</button>
   </div>
 </div>
 {{if .StoryPath}}
@@ -259,13 +252,6 @@ in their browser and follows them to the next mapping. Folding is per visit.
       var view = b.getAttribute("data-view-toggle");
       show(view);
       try { localStorage.setItem("livt.mapping-view", view); } catch (e) {}
-    });
-  });
-
-  document.querySelectorAll("[data-fold-all]").forEach(function (b) {
-    b.addEventListener("click", function () {
-      var open = b.getAttribute("data-fold-all") === "open";
-      foldable.forEach(function (group) { fold(group, open); });
     });
   });
 

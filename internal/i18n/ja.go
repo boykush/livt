@@ -68,8 +68,6 @@ var ja = Catalog{
 	"mapping.view":             "表示",
 	"mapping.view-board":       "ボード",
 	"mapping.view-list":        "リスト",
-	"mapping.expand-all":       "すべて開く",
-	"mapping.collapse-all":     "すべて閉じる",
 	"nav.opportunities":        "オポチュニティ",
 
 	"label.story-map":          "ストーリーマップ",
