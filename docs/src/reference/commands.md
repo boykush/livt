@@ -109,9 +109,10 @@ questions, and ubiquitous terms linked alongside):
 | `livt://ubiquitous/{term_key}` | A ubiquitous language term's name and definition. This shape addresses a term whose meaning holds across contexts. |
 | `livt://ubiquitous/{ctx}/{term_key}` | A term scoped to one [context](../guides/ubiquitous-language.md#contexts), carrying `ctx` alongside its key. A context is optional and part of the address, so the same `{term_key}` can name one term at the root and another inside a context; the two never resolve to each other. |
 
-A retired rule, example, or question keeps resolving by its URI and carries
-`retired: true`, so a reference to it reads as retired rather than failing (or,
-worse, landing on whatever reused its id). Live items omit the field. When
+A closed rule and a retired example or question keep resolving by their URI and
+carry `retired: true`, so a reference to one reads as retired rather than
+failing (or, worse, landing on whatever reused its id). A rule also carries the
+`status` saying which way it closed. Live items omit the field. When
 something took the item's place, `superseded_by` lists it as livt URIs, so the
 reference reads on instead of stopping; a retirement that replaced nothing omits
 that field too.

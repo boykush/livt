@@ -4,6 +4,8 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/boykush/livt/internal/domain"
 )
 
 func TestParseExampleMappingReadsRuleIssuesAndAutomated(t *testing.T) {
@@ -56,7 +58,7 @@ func TestParseExampleMappingReadsRetired(t *testing.T) {
 		"        retired: true\n" +
 		"  - id: R-02\n" +
 		"    name: 退役したルール\n" +
-		"    retired: true\n" +
+		"    status: retired\n" +
 		"questions:\n" +
 		"  - id: Q-01\n" +
 		"    text: 現役の疑問\n" +
@@ -72,10 +74,10 @@ func TestParseExampleMappingReadsRetired(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if em.Rules[0].Retired || em.Rules[0].Examples[0].Retired || em.Questions[0].Retired {
+	if !em.Rules[0].Status.Active() || em.Rules[0].Examples[0].Retired || em.Questions[0].Retired {
 		t.Error("items without the field should default to live")
 	}
-	if !em.Rules[1].Retired || em.Rules[1].Name != "退役したルール" {
+	if em.Rules[1].Status != domain.RuleRetired || em.Rules[1].Name != "退役したルール" {
 		t.Errorf("rule = %+v, want R-02 retired with its text kept", em.Rules[1])
 	}
 	if !em.Rules[0].Examples[1].Retired {
@@ -86,9 +88,9 @@ func TestParseExampleMappingReadsRetired(t *testing.T) {
 	}
 }
 
-// livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-01 and
-// EX-02: a rule carries its status, and one written without it is accepted, as
-// every rule was before the field existed.
+// livt://mapping/propose-rule-before-agreement/rule/R-01: the one axis carries
+// all four, and a rule written without it is accepted, as every rule was before
+// the field existed (EX-01, EX-02).
 func TestParseExampleMappingReadsStatus(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "story.yaml")
 	data := []byte("rules:\n" +
@@ -99,7 +101,13 @@ func TestParseExampleMappingReadsStatus(t *testing.T) {
 		"    name: 合意済みのルール\n" +
 		"    status: accepted\n" +
 		"  - id: R-03\n" +
-		"    name: statusのないルール\n")
+		"    name: statusのないルール\n" +
+		"  - id: R-04\n" +
+		"    name: 却下された提案\n" +
+		"    status: rejected\n" +
+		"  - id: R-05\n" +
+		"    name: 退役したルール\n" +
+		"    status: retired\n")
 	if err := os.WriteFile(path, data, 0o644); err != nil {
 		t.Fatal(err)
 	}
@@ -112,10 +120,47 @@ func TestParseExampleMappingReadsStatus(t *testing.T) {
 	if !em.Rules[0].Proposed() {
 		t.Errorf("rule = %+v, want R-01 proposed", em.Rules[0])
 	}
-	for _, r := range em.Rules[1:] {
+	for _, r := range em.Rules[1:3] {
 		if r.Proposed() {
 			t.Errorf("rule = %+v, want %s accepted", r, r.ID)
 		}
+	}
+	for i, want := range map[int]domain.RuleStatus{3: domain.RuleRejected, 4: domain.RuleRetired} {
+		if got := em.Rules[i].Status; got != want {
+			t.Errorf("rule %s status = %q, want %q", em.Rules[i].ID, got, want)
+		}
+	}
+}
+
+// livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-05: a livt
+// repository written before the statuses absorbed retirement keeps building.
+// Which closed status it folds to is the distinction the two lines carried
+// together — a proposal closed that way was turned down, anything else was spec
+// that stopped holding.
+func TestParseExampleMappingFoldsRetiredOntoStatus(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "story.yaml")
+	data := []byte("rules:\n" +
+		"  - id: R-01\n" +
+		"    name: 退役したルール\n" +
+		"    retired: true\n" +
+		"  - id: R-02\n" +
+		"    name: 却下された提案\n" +
+		"    status: proposed\n" +
+		"    retired: true\n")
+	if err := os.WriteFile(path, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	em, err := ParseExampleMapping(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if got := em.Rules[0].Status; got != domain.RuleRetired {
+		t.Errorf("rule R-01 status = %q, want %q", got, domain.RuleRetired)
+	}
+	if got := em.Rules[1].Status; got != domain.RuleRejected {
+		t.Errorf("rule R-02 status = %q, want %q", got, domain.RuleRejected)
 	}
 }
 
@@ -136,7 +181,7 @@ func TestParseExampleMappingRejectsAnUnknownStatus(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected an unknown status to fail the parse")
 	}
-	if want := `rule "R-01": unknown status "propsed" (supported: proposed, accepted)`; err.Error() != want {
+	if want := `rule "R-01": unknown status "propsed" (supported: proposed, accepted, rejected, retired)`; err.Error() != want {
 		t.Errorf("error = %q, want %q", err, want)
 	}
 }

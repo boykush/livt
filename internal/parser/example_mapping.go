@@ -23,11 +23,12 @@ type ruleYAML struct {
 	Issues    []string      `yaml:"issues"`
 	Automated bool          `yaml:"automated"`
 	// Status reads as an ADR's does: proposed while the rule awaits agreement,
-	// accepted once it has it. Omitted means accepted.
+	// accepted once it has it, rejected or retired once it has closed. Omitted
+	// means accepted.
 	Status string `yaml:"status"`
-	// Retired is a field rather than a commented-out block so a structural edit
-	// of the YAML cannot drop it, and so the id stays visible to whoever numbers
-	// the next one. Omitted means live.
+	// Retired is the superseded spelling of the two closed statuses, still read
+	// so a livt repository written against it keeps building. It is folded onto
+	// Status at parse time and will stop being accepted.
 	Retired bool `yaml:"retired"`
 	// SupersededBy carries the retirement's other half: where the spec went.
 	// It is livt URIs rather than bare ids so a successor in another mapping is
@@ -39,14 +40,32 @@ type ruleYAML struct {
 // value fails the parse: read as the default, a mistyped "proposed" would put
 // an unagreed rule on the board as spec, with nothing there to say so.
 func (r ruleYAML) status() (domain.RuleStatus, error) {
-	if r.Status == "" {
-		return domain.RuleStatusDefault, nil
+	status := domain.RuleStatusDefault
+	if r.Status != "" {
+		status = domain.RuleStatus(r.Status)
+		if !status.Valid() {
+			return "", fmt.Errorf("rule %q: unknown status %q (supported: %s)", r.ID, r.Status, domain.RuleStatusList())
+		}
 	}
-	status := domain.RuleStatus(r.Status)
-	if !status.Valid() {
-		return "", fmt.Errorf("rule %q: unknown status %q (supported: %s)", r.ID, r.Status, domain.RuleStatusList())
+	if r.Retired {
+		return closed(status), nil
 	}
 	return status, nil
+}
+
+// closed folds the superseded retired: flag onto the status it was written
+// beside. A proposal closed that way was turned down; anything else was spec
+// that stopped holding — the distinction the flag left to whoever read both
+// lines together.
+func closed(status domain.RuleStatus) domain.RuleStatus {
+	switch status {
+	case domain.RuleProposed:
+		return domain.RuleRejected
+	case domain.RuleRejected, domain.RuleRetired:
+		return status
+	default:
+		return domain.RuleRetired
+	}
 }
 
 type exampleYAML struct {
@@ -86,7 +105,7 @@ func ParseExampleMapping(path string) (*domain.ExampleMapping, error) {
 		for _, ex := range r.Examples {
 			examples = append(examples, domain.Example{ID: ex.ID, Name: ex.Name, Retired: ex.Retired, SupersededBy: ex.SupersededBy})
 		}
-		rules = append(rules, domain.Rule{ID: r.ID, Name: r.Name, Examples: examples, Status: status, Issues: r.Issues, Automated: r.Automated, Retired: r.Retired, SupersededBy: r.SupersededBy})
+		rules = append(rules, domain.Rule{ID: r.ID, Name: r.Name, Examples: examples, Status: status, Issues: r.Issues, Automated: r.Automated, SupersededBy: r.SupersededBy})
 	}
 
 	var questions []domain.Question

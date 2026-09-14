@@ -35,7 +35,7 @@ This is a distributable skill — it has no built-in knowledge of any project's 
 
 ## Planning Flow
 
-1. Read the agreed mapping `discoveries/example-mappings/{story-key}.yaml` and the story `stories/{story-key}.md`, including any design URL in its frontmatter. Skip rules marked `retired: true`; treat rules with `status: proposed` as not yet asked for — note them, plan the accepted ones.
+1. Read the agreed mapping `discoveries/example-mappings/{story-key}.yaml` and the story `stories/{story-key}.md`, including any design URL in its frontmatter. Plan only the rules with `status: accepted`: note a `proposed` one as not yet asked for, and pass over a `rejected` or `retired` one, which the spec no longer asks for.
 2. Confirm where the implementation and design live (see above). Plan only within that scope.
 3. Go rule by rule. For each rule and example, work out **how it would be realized** in the current implementation and design — what to build, whether the design supports it, what it depends on. Mark `feasible`, `needs-decision`, `contradicts`, or `unverifiable`.
 4. Work through **every** open Question (red card) — the session's deferred investigation, and this is the moment to do it. The code or design often settles it; capture the **answer and its evidence** and let it shape the plan. A Question that still needs a call is `needs-decision`, not a guess.

@@ -136,7 +136,7 @@ func newRetiredTestServer(t *testing.T) *Server {
 			"        retired: true\n"+
 			"  - id: R-02\n"+
 			"    name: 退役したルール\n"+
-			"    retired: true\n"+
+			"    status: retired\n"+
 			"questions:\n"+
 			"  - id: Q-01\n"+
 			"    text: 現役の疑問\n"+

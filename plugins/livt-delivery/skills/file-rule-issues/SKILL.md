@@ -39,7 +39,7 @@ The destination, the tool that files, the template, labels, and fields are the t
 ## Filing Flow
 
 1. Read `discoveries/example-mappings/{story-key}.yaml` and `stories/{story-key}.md`. Resolve the destination(s) from the story's `repos:`, or from what the user named.
-2. Select the rules to file (rule-id → that one; story-key only → all), skipping any rule marked `retired: true` — the spec no longer asks for it, so there is nothing to automate — and any rule with `status: proposed`, which the spec does not ask for yet. Then dedupe each **rule × destination** pair: skip it when the rule's `issues:` already holds a URL in that destination. A link to one destination never blocks filing to another.
+2. Select the rules to file (rule-id → that one; story-key only → all), keeping only rules with `status: accepted`: a `proposed` rule is not asked for yet, and a `rejected` or `retired` one is not asked for any more, so neither has anything to automate. Then dedupe each **rule × destination** pair: skip it when the rule's `issues:` already holds a URL in that destination. A link to one destination never blocks filing to another.
 3. Record the spec rev of the livt repository: `git rev-parse --short HEAD`.
 4. Compose each issue (see Issue Content) and file it with the tool at hand — no checkout of the target, ever. For a GitHub repository with `gh` authenticated:
 

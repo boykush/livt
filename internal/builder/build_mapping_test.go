@@ -273,9 +273,10 @@ func TestCollectTasksLinksItemsToTheirStickies(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02: retired stickies are
-// off the board, whichever kind they are — a retired rule, a retired example
-// under a live rule, and a retired question alike.
+// livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02 and
+// livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-04: closed
+// stickies are off the board, whichever kind they are — a retired rule, a
+// retired example under a live rule, and a retired question alike.
 func TestRenderMappingOmitsRetiredStickies(t *testing.T) {
 	em := &domain.ExampleMapping{
 		Rules: []domain.Rule{
@@ -283,7 +284,7 @@ func TestRenderMappingOmitsRetiredStickies(t *testing.T) {
 				{ID: "EX-01", Name: "現役の実例"},
 				{ID: "EX-02", Name: "退役した実例", Retired: true},
 			}},
-			{ID: "R-02", Name: "退役したルール", Retired: true},
+			{ID: "R-02", Name: "退役したルール", Status: domain.RuleRetired},
 		},
 		Questions: []domain.Question{
 			{ID: "Q-01", Text: "現役の疑問"},
@@ -332,15 +333,16 @@ func TestRenderMappingDropsQuestionsColumnWhenEveryQuestionIsRetired(t *testing.
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02: retired items are
-// not unfinished work. A retired question left in "open questions" could never
-// be closed by a conversation, nor a retired rule by a test.
+// livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02 and
+// livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-04: closed
+// items are not unfinished work. A retired question left in "open questions"
+// could never be closed by a conversation, nor a retired rule by a test.
 func TestCollectTasksSkipsRetiredItems(t *testing.T) {
 	em := &domain.ExampleMapping{
 		StoryKey: domain.StoryKey{Value: "trace-test-to-rule"},
 		Rules: []domain.Rule{
 			{ID: "R-01", Name: "現役の未自動化ルール"},
-			{ID: "R-02", Name: "退役したルール", Retired: true},
+			{ID: "R-02", Name: "退役したルール", Status: domain.RuleRetired},
 		},
 		Questions: []domain.Question{
 			{ID: "Q-01", Text: "現役の疑問"},
@@ -406,8 +408,9 @@ func TestRenderMappingSetsProposedRulesApart(t *testing.T) {
 
 // livt://mapping/propose-rule-before-agreement/rule/R-03/example/EX-01 and
 // EX-02: agreement is what closes a proposal, so it is listed apart from the
-// un-automated rules even once a test covers it. A rejected one is retired and
-// off the page (livt://mapping/propose-rule-before-agreement/rule/R-05).
+// un-automated rules even once a test covers it. A rejected one has closed on
+// the same axis and is off the page
+// (livt://mapping/propose-rule-before-agreement/rule/R-05).
 func TestCollectTasksListsProposedRulesApart(t *testing.T) {
 	em := &domain.ExampleMapping{
 		StoryKey: domain.StoryKey{Value: "checkout"},
@@ -415,7 +418,7 @@ func TestCollectTasksListsProposedRulesApart(t *testing.T) {
 			{ID: "R-01", Name: "未自動化のルール"},
 			{ID: "R-02", Name: "提案中のルール", Status: domain.RuleProposed},
 			{ID: "R-03", Name: "テストが先に書かれた提案", Status: domain.RuleProposed, Automated: true},
-			{ID: "R-04", Name: "却下された提案", Status: domain.RuleProposed, Retired: true},
+			{ID: "R-04", Name: "却下された提案", Status: domain.RuleRejected},
 		},
 	}
 

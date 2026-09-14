@@ -51,7 +51,7 @@ A tracker answers the same way whether an issue was deleted, moved, or is simply
 
 ## Inspection Flow
 
-1. Read the mappings in scope. Skip rules marked `retired: true` — the spec no longer asks for them, so their record answers nothing — and rules with `status: proposed`, which a test cannot close.
+1. Read the mappings in scope, keeping only rules with `status: accepted`: a `rejected` or `retired` rule's record answers nothing, and a `proposed` one is not something a test can close.
 2. For each rule carrying `issues:`, read the state of **every** issue on the list — they may sit in different repositories, and the full URL is what addresses one, so no repository has to be checked out or even be the current one. For a GitHub issue with `gh` authenticated:
 
    ```
