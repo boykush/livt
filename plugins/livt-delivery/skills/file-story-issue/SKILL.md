@@ -5,7 +5,7 @@ description: File a story-level issue from the livt repository to where the stor
 
 You **file a story issue** — the file station of the delivery ring, at the story level.
 
-A story gives its rules their context — the persona, the goal, the benefit. Your job is to hand that context to the team's tracker as one **story-level issue**, which then acts as the parent bundling the story's rule-level automation issues filed in the same place. The story issue also stands entirely on its own: a story with no rule issues is a supported state, not a missing half.
+A story gives its rules their context — the persona, the goal, the benefit. Your job is to hand that context to the team's tracker as one **story-level issue**, which then acts as the parent bundling the story's rule-level automation issues, wherever they were filed. The story issue also stands entirely on its own: a story with no rule issues is a supported state, not a missing half.
 
 ## Language
 
@@ -47,7 +47,7 @@ The destination, the tool that files, the template, labels, and fields are the t
    ```
 
    For another tracker, use the tool the user side provides (an MCP server, a CLI). With no tool, hand the composed body to the user to file, and take the created URL back — the record treats that URL exactly as one you filed.
-5. **Adopt existing rule issues** where the tracker supports a parent/child link (see Parent Linking): every issue URL in the mapping's rules' `issues:` that lives in the same destination becomes a child of the new story issue. Parenthood does not depend on filing order — rule issues filed earlier are adopted now; rule issues filed later attach themselves (`file-rule-issues`'s job). A tracker without such links skips this step; the record needs none of it.
+5. **Adopt existing rule issues** where the tracker supports a parent/child link (see Parent Linking): every issue URL in the mapping's rules' `issues:` becomes a child of the new story issue, save those whose own destination already records a story issue — that nearer story issue is their parent. Parenthood does not depend on filing order — rule issues filed earlier are adopted now; rule issues filed later attach themselves (`file-rule-issues`'s job). A tracker without such links, or one that refuses this one, skips the step; the record needs none of it.
 6. Write the created URL back to the story's frontmatter `issues:` — append to the list, creating it if absent. Touch nothing else in the file. **Working-tree edit only**: no commit, no PR — the write-back rides the normal review flow.
 7. Report what was filed, which rule issues were adopted, what was skipped, and remind the user the write-back is uncommitted.
 
@@ -68,10 +68,10 @@ The **livt URI** is the citation form the implementation repository carries onwa
 
 ## Parent Linking
 
-Parenthood comes from the livt repository's structure — story ⊃ rule — so the children are the rule issues recorded in the mapping for the same destination. The link is write-only sugar for the tracker's UI; on GitHub it is the sub-issues GraphQL API:
+Parenthood comes from the livt repository's structure — story ⊃ rule — so the children are the rule issues recorded in the mapping, whichever destination each was filed to. Whether a parent and a child in different repositories can be linked is the tracker's answer, not yours to assume ahead of it — GitHub takes a sub-issue from another repository, another tracker may refuse; attempt the link and report what came back. The link is write-only sugar for the tracker's UI; on GitHub it is the sub-issues GraphQL API:
 
 ```
-# node ID of an issue (run for the new story issue and each rule issue)
+# node ID of an issue (run for the new story issue and each rule issue, each in its own {owner}/{repo})
 gh api graphql \
   -f query='query($owner: String!, $name: String!, $number: Int!) {
     repository(owner: $owner, name: $name) { issue(number: $number) { id } }
@@ -96,8 +96,9 @@ Never read a tracker's parent/child graph back to decide anything — dedupe and
 - Don't touch the singular `issue:` frontmatter field, and don't use it for dedupe — only `issues:` records filings.
 - Don't consult the tracker (search or its link graph) to decide what is already filed — the story's record is the only dedupe source.
 - Don't re-file a story × destination pair that is already linked, and don't let an existing link stop you filing the same story to a *different* declared destination.
+- Don't rule a parent/child link out because the two issues sit in different repositories — that is the tracker's call, and GitHub allows it.
 - Don't assume a tracker. A destination your tools cannot reach is filed by hand and recorded the same way.
 
 ## Output
 
-One story-level issue in the chosen destination, carrying the story body and backpointers, with same-destination rule issues adopted as children where the tracker supports it, and `stories/{story-key}.md` in the working tree with the created URL appended to frontmatter `issues:`. A closing report of what was filed, what was adopted, what was skipped and why, and the uncommitted write-back.
+One story-level issue in the chosen destination, carrying the story body and backpointers, with the mapping's rule issues adopted as children where the tracker supports it, and `stories/{story-key}.md` in the working tree with the created URL appended to frontmatter `issues:`. A closing report of what was filed, what was adopted, what was skipped and why, and the uncommitted write-back.

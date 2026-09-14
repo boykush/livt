@@ -30,7 +30,7 @@ The livt repository records **links, not ticket state**: a rule's `issues:` and 
 ## Skills
 
 - **`/plan-story`** — plan a story's implementation from its agreed example mapping, rule by rule, against the implementation and design the user (or the story's frontmatter) points at: `feasible`, `needs-decision`, `contradicts`, `resolved-question`, or `unverifiable`, each citing where it looked. A written plan for a human decision — never an edit of the mapping, never an audit of what is built.
-- **`/file-story-issue`** — file a story-level issue carrying the story body and backpointers, deduped against the story frontmatter's `issues:`, with the created URL written back. Adopts same-destination rule issues as children where the tracker supports it.
+- **`/file-story-issue`** — file a story-level issue carrying the story body and backpointers, deduped against the story frontmatter's `issues:`, with the created URL written back. Adopts the mapping's rule issues as children where the tracker supports it.
 - **`/file-rule-issues`** — file automation issues for a story's rules, one per rule × destination, deduped by the mapping's own record, each carrying the rule, its examples, and backpointers; the created URL is written back to the rule's `issues:`. Proposed and retired rules are skipped.
 - **`/inspect-automation`** — propose setting `automated:` where every recorded issue closed with tests behind it, and unsetting it where a rule changed after the flag was set — one rule's record per PR, evidence attached, unverifiable reported as such.
 
