@@ -63,4 +63,12 @@ For a single repository without running a server, connect over stdio: the client
 
 stdio needs the livt repository's path per repository (`LIVT_ROOT`, or `--root`), so — unlike the shared HTTP URL — it can't ship as a turnkey plugin config. Hence it's documented here rather than bundled as a plugin.
 
-Coming from `livt-mcp` 0.x: the configuration is unchanged; only the name moved from the mechanism to the station it serves.
+## What this plugin teaches, and what it leaves to you
+
+Nothing and everything, respectively — and that is the clearest statement of the line the other two plugins draw in prose. livt ships the **read surface**: the tools, the resources, the `spec_version` on every payload, and the livt URI that addresses each rule, example, and question. How your agent builds against what it reads — the test framework, where a citation goes in a test comment, what counts as done — is your repository's, and belongs in its own `AGENTS.md` or a skill you write. A livt URI in a test comment is the whole contract between the two.
+
+## Coming from 1.x
+
+The configuration is unchanged. [livt-delivery](../livt-delivery/README.md) 2.0 is where the change landed, and it is worth reading if this repository's agent also files or inspects issues.
+
+Coming from `livt-mcp` 0.x: the configuration is unchanged there too; only the name moved from the mechanism to the station it serves.

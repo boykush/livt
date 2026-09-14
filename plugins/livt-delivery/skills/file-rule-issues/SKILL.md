@@ -1,6 +1,6 @@
 ---
 name: file-rule-issues
-description: File automation issues for business rules from an example mapping to where the story's work is tracked — one issue per rule × destination, deduped against the mapping's own issues record, with the created URL written back to the rule. The tracker and its format are the team's; the backpointers and the write-back are the contract. Use when agreed rules are ready to hand to implementation repositories for test-driven automation; give a story-key to file all unfiled rules, or add a rule-id for one. Story-level issues route to file-story-issue.
+description: File automation issues for the business rules of an agreed example mapping to where the story's work is tracked — one issue per rule × destination, deduped against the mapping's own record, with the created URL written back to the rule. Holds the canonical statement of livt's record contract. The backpointers, the write-back, and the dedupe are livt's; the tracker, the template, and the tool that files are the team's. Use when agreed rules are ready to hand to implementation repositories for test-driven automation; give a story-key to file all unfiled rules, or add a rule-id for one. Story-level issues route to file-story-issue.
 ---
 
 You **file rule issues** — the file station of the delivery ring, at the rule level.
@@ -11,24 +11,27 @@ After a story's example mapping is agreed, its business rules wait to be automat
 
 This skill is written in English for maintainability — English is not the language to answer in. Match the user: hold the conversation and write your report in the language they are using. Issue bodies already follow the livt repository's language; `key:` identifiers, code, and tool commands stay English.
 
-## The livt Repository Is the Record
+## The Record Contract
 
-The mapping YAML — not the tracker — holds the truth about what is filed where:
+This is the canonical statement. `file-story-issue` and `inspect-automation` repeat the bullets they need, verbatim — a skill loads on its own, so every skill that reads or writes the record has to carry them. Change one, change all.
 
-- Each rule in `discoveries/example-mappings/{story-key}.yaml` may carry `issues:` — a list of **issue URLs** and nothing else (no PR or test links).
-- A rule with no issue URL in a destination is **unfiled** there. That record is the dedupe test — never a tracker search, never a tracker's parent/child graph (you may write links into it, you never read them back).
-- Writing the URL back after filing **is** the record; an issue URL pasted onto a rule by hand counts exactly the same as one you filed.
-- `automated:` is not yours to touch. It records that the rule's automation actually exists — filing (or even closing) an issue does not make that true.
+- **The record lives in the livt repository.** A rule's `issues:` and a story's frontmatter `issues:` hold the automation issues filed for them; a rule's `automated:` holds the judgment that tests automate it. Neither is stored in a tracker, and neither is derived from one.
+- **`issues:` holds issue URLs and nothing else** — no PR links, no test links. A URL pasted in by hand counts exactly as one a skill filed.
+- **Dedupe reads the record, never the tracker.** An item is unfiled in a destination when its `issues:` holds no URL there. Never a tracker search, never a tracker's parent/child graph: links are written into a tracker, never read back out of it.
+- **The write-back is the filing.** An issue created and not recorded did not happen, so the created URL lands in `issues:` before you are done — a **working-tree edit only**, no commit and no PR, riding the team's normal review flow.
+- **`automated:` is a separate judgment.** Filing an issue, or closing it, does not make a rule automated; only evidence and a human do. Setting and unsetting it is `inspect-automation`'s station.
 
-## What Is Yours and What Is the Team's
+## Yours and the Team's
 
-livt records links, not ticket state, so it does not care which tracker a URL points at. Three things are yours; everything else follows the team:
+Three things are yours — the contract above, applied:
 
 - **Backpointers** — the livt URIs of the rule and its examples, and the `spec_version`, go in the body, so the issue can be followed back to the exact points in the spec it was cut from.
 - **Write-back** — the created URL lands in the rule's `issues:`.
 - **Dedupe** — against that record, and nothing else.
 
-The destination, the tool that files, the template, labels, and fields are the team's. The story's frontmatter `repos:` declares its implementation repositories (`owner/repo`), and their tracker is the default destination; when the team tracks work elsewhere — a separate repository, a project board, another tracker — the user names it and you file there instead. Where the tracker has its own issue template, fill it and keep the backpointers; the body below is the shape when nothing else is prescribed.
+Everything else is the team's: the destination, the tool that files, the template, the labels, the fields, and whether the tracker can link a parent to a child at all. livt records links, not ticket state, so it does not care which tracker a URL points at. The story's frontmatter `repos:` declares its implementation repositories (`owner/repo`), and their tracker is the default destination; when the team tracks work elsewhere — a separate repository, a project board, another tracker — the user names it and you file there instead. Where the tracker has its own issue template, fill it and keep the backpointers.
+
+This skill ships no tracker knowledge on purpose: one team's answer shipped as everyone's is what makes a skill need forking. Use the tool the user side provides, and where a team has wrapped this station in a skill of its own, that skill owns the shape of the issue — you own what the record says about it.
 
 ## Inputs
 
@@ -39,64 +42,36 @@ The destination, the tool that files, the template, labels, and fields are the t
 ## Filing Flow
 
 1. Read `discoveries/example-mappings/{story-key}.yaml` and `stories/{story-key}.md`. Resolve the destination(s) from the story's `repos:`, or from what the user named.
-2. Select the rules to file (rule-id → that one; story-key only → all), keeping only rules with `status: accepted`: a `proposed` rule is not asked for yet, and a `rejected` or `retired` one is not asked for any more, so neither has anything to automate. Then dedupe each **rule × destination** pair: skip it when the rule's `issues:` already holds a URL in that destination. A link to one destination never blocks filing to another.
+2. Select the rules to file (rule-id → that one; story-key only → all), keeping only rules with `status: accepted`: a `proposed` rule is not asked for yet, and a `rejected` or `retired` one is not asked for any more, so neither has anything to automate. Then dedupe each **rule × destination** pair against the record. A link to one destination never blocks filing to another.
 3. Record the spec rev of the livt repository: `git rev-parse --short HEAD`.
-4. Compose each issue (see Issue Content) and file it with the tool at hand — no checkout of the target, ever. For a GitHub repository with `gh` authenticated:
-
-   ```
-   gh issue create --repo {owner}/{repo} --title "Automate {rule-id}: {rule name}" --body-file {body-file}
-   ```
-
-   For another tracker, use the tool the user side provides (an MCP server, a CLI). With no tool, hand the composed body to the user to file, and take the created URL back — the record treats that URL exactly as one you filed.
-5. If the story's frontmatter `issues:` records a story issue, attach the new issue as its child where the tracker supports the link (see Parent Linking): the story issue in this destination when there is one, otherwise the one recorded elsewhere — with several elsewhere and none here, ask which is the parent. No story issue, no such link, or a link the tracker refuses → the rule issue stands alone; that is a supported state, not an error.
-6. Write the created URL back to the rule's `issues:` in the mapping YAML — append to the list, creating it if absent. Touch nothing else in the file. **Working-tree edit only**: no commit, no PR — the write-back rides the normal review flow.
+4. Compose each issue (see Issue Content) and file it with the tool the team uses — a tracker's CLI or MCP server. Never check out the target repository. With no tool that reaches the destination, hand the composed body to the user and take the created URL back; the record treats it exactly as one you filed.
+5. Where the story records a story issue and the tracker supports parent/child links, attach the new issue under it (see Parent Linking).
+6. Write the created URL back to the rule's `issues:` — append to the list, creating it if absent. Touch nothing else in the file.
 7. Report filed and skipped pairs per rule × destination, and remind the user the write-back is uncommitted.
 
 ## Issue Content
 
-The body carries the rule, its examples, and backpointers to the livt repository — quote rule and example names verbatim, in the mapping's language:
+The body carries the rule and its live examples — quoted verbatim, in the mapping's language, a retired example left out because it no longer illustrates the rule — and then the backpointers, which are exact:
 
 ```markdown
-## Rule
-
-**{rule-id}** — {rule name}
-
-### Examples
-
-- `livt://mapping/{story-key}/rule/{rule-id}/example/{example-id}` — {example name}
-- …
-
 ## livt repository
 
 - rule: `livt://mapping/{story-key}/rule/{rule-id}`
+- examples: `livt://mapping/{story-key}/rule/{rule-id}/example/{example-id}`, …
 - story: `livt://story/{story-key}`
 - spec_version: `{short rev}`
 - living document: {living-doc-url}/mapping/{story-key}.html#rule-{rule-id}
 ```
 
-List only the rule's live examples; a retired one no longer illustrates it. Every reference is a **livt URI** — the citation form the implementation repository carries onward into test comments. A bare `{rule-id}` names nothing on its own: rule and example ids restart in every mapping. `spec_version` pins which revision of the livt repository the issue was cut from. The living document anchor is a convenience link for humans in a browser; it depends on where the site is deployed, and an issue in someone else's tracker is not yours to edit later, so it never replaces the URI. No site published? Drop that line — the URIs stand alone.
+Every reference is a **livt URI** — the citation form the implementation repository carries onward into test comments. A bare `{rule-id}` names nothing on its own: rule and example ids restart in every mapping, so each example is quoted by its own URI and a test can cite the one it covers. `spec_version` pins which revision of the livt repository the issue was cut from. The living document anchor is a convenience for humans in a browser; it depends on where the site is deployed, and an issue in someone else's tracker is not yours to edit later, so it never replaces the URI. No site published? Drop that line.
+
+Above that block the shape is the team's — their issue template, or a plain heading naming the rule and a list of its examples when nothing is prescribed.
 
 ## Parent Linking
 
-Parenthood comes from the livt repository's structure — story ⊃ rule — so the parent is the story issue recorded in the story's frontmatter `issues:`, whichever destination it lives in. Whether a parent and a child in different repositories can be linked is the tracker's answer, not yours to assume ahead of it — GitHub takes a sub-issue from another repository, another tracker may refuse; attempt the link and report what came back. The link is write-only sugar for the tracker's UI; on GitHub it is the sub-issues GraphQL API:
+Parenthood comes from the livt repository's structure — story ⊃ rule — so the parent is the story issue recorded in the story's frontmatter `issues:`, whichever destination it lives in: the one in this destination when there is one, otherwise the one recorded elsewhere; with several elsewhere and none here, ask which. No story issue, no such link, or a link the tracker refuses → the rule issue stands alone. That is a supported state, not an error.
 
-```
-# node ID of an issue (run for the parent and the new issue, each in its own {owner}/{repo})
-gh api graphql \
-  -f query='query($owner: String!, $name: String!, $number: Int!) {
-    repository(owner: $owner, name: $name) { issue(number: $number) { id } }
-  }' -f owner={owner} -f name={repo} -F number={issue-number}
-
-# attach the new issue as a sub-issue of the story issue
-gh api graphql \
-  -f query='mutation($parentId: ID!, $childId: ID!) {
-    addSubIssue(input: { issueId: $parentId, subIssueId: $childId }) {
-      issue { number }
-    }
-  }' -f parentId={parent-node-id} -f childId={child-node-id}
-```
-
-Never read a tracker's parent/child graph back to decide anything — dedupe and parenthood are always answered by the livt repository.
+Whether a tracker takes a child from another repository is its answer, not yours to assume ahead of it — attempt the link and report what came back. GitHub takes one, through the `addSubIssue` GraphQL mutation. The link is write-only sugar for the tracker's UI: never read a parent/child graph back to decide anything.
 
 ## IDs Are Forever
 
@@ -109,14 +84,12 @@ The half you rely on, verbatim from the canonical statement in `change-rule`:
 ## What NOT to Do
 
 - Don't check out or read the implementation repositories — the issue is a pointer, not a synchronized copy.
-- Don't commit or open a PR for the write-back; leave the working tree for the user's normal review flow.
-- Don't file story-level issues — that is `file-story-issue`'s job. Missing story issue? Suggest running it; don't improvise one.
+- Don't consult the tracker to decide what is already filed, and don't re-file a rule × destination pair the record already holds — but don't let an existing link stop you filing the same rule to a *different* declared destination.
 - Don't put PR or test links in `issues:`, and don't set or unset `automated:`.
 - Don't cite the rule or its examples by bare id, and don't let the living-document URL stand in for the livt URI.
-- Don't consult the tracker (search or its link graph) to decide what is already filed — the mapping's record is the only dedupe source.
-- Don't re-file a rule × destination pair that is already linked, and don't let an existing link stop you filing the same rule to a *different* declared destination.
-- Don't rule a parent/child link out because the story issue sits in another repository — that is the tracker's call, and GitHub allows it.
-- Don't assume a tracker. A destination your tools cannot reach is filed by hand and recorded the same way.
+- Don't commit or open a PR for the write-back.
+- Don't file story-level issues — that is `file-story-issue`'s job. Missing story issue? Suggest running it; don't improvise one.
+- Don't assume a tracker, and don't rule a parent/child link out because the two issues sit in different repositories — both are the tracker's answer, not yours.
 
 ## Output
 
