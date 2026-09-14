@@ -26,8 +26,13 @@ rules:
         name: リストに切り替えた直後は、どのルールも折りたたまれている
       - id: EX-02
         name: ルールの行ごとに開閉でき、すべて開く・すべて閉じるもできる
+        retired: true
+        superseded_by:
+          - livt://mapping/review-example-mapping-as-list/rule/R-03/example/EX-04
       - id: EX-03
         name: 具体例のないルールの行には開閉がない
+      - id: EX-04
+        name: ルールの行ごとに開閉できる
   - id: R-04
     name: 付箋へのリンクは、どちらの表示でもその付箋に着地する
     examples:
