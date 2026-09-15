@@ -100,7 +100,7 @@ func (b *Builder) sidebar(active, prefix string) (Sidebar, error) {
 
 // generatedDirs are the output subdirectories holding one page per resource.
 // Build owns their contents end to end, so it empties them on every run.
-var generatedDirs = []string{"story", "mapping", "story-map", "opportunity", "opportunity-canvas"}
+var generatedDirs = []string{"story", "mapping", "story-map", "opportunity", "opportunity-canvas", "opportunity-progress"}
 
 // resetGeneratedDirs empties the per-resource output subdirectories, so a page
 // for a renamed or deleted resource cannot outlive its source and keep being

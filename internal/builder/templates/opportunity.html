@@ -26,52 +26,22 @@
   below it is the same prose it was when the opportunity was framed. The two
   gauges stay separate: rules fully held by tests over a third of the stories is
   not an opportunity anywhere near done, and one combined figure would say it
-  was. Each figure links to the page that already renders the items it counts,
-  narrowed to this opportunity, so the reading is a way in rather than a second
-  place the same list is kept.
+  was. The reading story by story has a page of its own, the same split the
+  canvas makes; this is the way in, and each gauge is also a way into the list
+  that already renders what it counts, narrowed to this opportunity.
   */}}
   <section class="mt-7">
     <div class="flex items-baseline gap-3 mb-3">
       <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400">{{t "opportunity.progress"}}</h2>
       <p class="text-xs text-gray-400">{{t "opportunity.progress-hint"}}</p>
+      {{if .ProgressPath}}
+      <a href="{{.ProgressPath}}" class="ml-auto text-xs text-orange-700 hover:text-orange-900 hover:underline">{{t "opportunity.by-story"}} &rarr;</a>
+      {{end}}
     </div>
     {{if .Progress.Stories}}
     <div class="grid gap-3 sm:grid-cols-2">
       {{template "opportunity-gauge" gauge (t "opportunity.mapped-stories") .Progress.MappedStories (len .Progress.Stories) "bg-yellow-400" .Progress.StoriesPath}}
       {{template "opportunity-gauge" gauge (t "opportunity.automated-rules") .Progress.Automated .Progress.Rules "bg-blue-500" .Progress.TasksPath}}
-    </div>
-
-    {{/* Each chip is one way this opportunity is unfinished, and the Tasks page
-    already keeps one list per way — so the chip narrows that page rather than
-    repeating it here. */}}
-    <div class="flex flex-wrap gap-2 mt-3">
-      {{if .Progress.Questions}}
-      <a href="{{.Progress.TasksPath}}" class="text-xs text-red-700 bg-red-50 border border-red-200 rounded-full px-3 py-1 hover:bg-red-100 transition">{{t "opportunity.open-questions"}} {{.Progress.Questions}}</a>
-      {{end}}
-      {{if .Progress.Proposed}}
-      <a href="{{.Progress.TasksPath}}" class="text-xs text-blue-700 bg-blue-50 border border-dashed border-blue-300 rounded-full px-3 py-1 hover:bg-blue-100 transition">{{t "opportunity.proposed-rules"}} {{.Progress.Proposed}}</a>
-      {{end}}
-      {{if gt .Progress.Rules .Progress.Automated}}
-      <a href="{{.Progress.TasksPath}}" class="text-xs text-gray-600 bg-white border border-gray-200 rounded-full px-3 py-1 hover:bg-gray-50 transition">{{t "opportunity.unautomated-rules"}} {{sub .Progress.Rules .Progress.Automated}}</a>
-      {{end}}
-    </div>
-
-    {{/* One row per story, in the order the maps hang them under the backbone.
-    A row leads to the mapping once the story has one and to its card until
-    then, which is where the reader can act on it either way. */}}
-    <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mt-6 mb-2">{{t "opportunity.stories"}}</h3>
-    <div class="space-y-2">
-    {{range .Progress.Stories}}
-      {{if .Path}}
-      <a href="{{.Path}}" class="flex items-baseline gap-3 bg-white rounded-lg border border-gray-200 border-l-4 {{if .Mapped}}border-l-yellow-400 hover:border-l-yellow-500{{else}}border-l-gray-300 hover:border-l-gray-400{{end}} px-4 py-3 hover:shadow-sm transition">
-        {{template "opportunity-story-row" .}}
-      </a>
-      {{else}}
-      <div class="flex items-baseline gap-3 bg-white rounded-lg border border-gray-200 border-l-4 border-l-gray-300 px-4 py-3">
-        {{template "opportunity-story-row" .}}
-      </div>
-      {{end}}
-    {{end}}
     </div>
     {{else}}
     <p class="text-gray-400 text-sm">{{t "opportunity.no-stories"}}</p>

@@ -329,12 +329,24 @@ type opportunityView struct {
 	Opportunity *domain.Opportunity
 	Meta        []metaFieldView
 	CanvasPath  string
-	StoryMaps   []storyMapRef
-	Progress    opportunityProgress
+	// ProgressPath is empty when the opportunity has taken on no story, the
+	// same way CanvasPath is empty when no canvas has been filled in.
+	ProgressPath string
+	StoryMaps    []storyMapRef
+	Progress     opportunityProgress
 }
 
 // opportunityCanvasView is the sheet. Panels are its three columns, since the
 // canvas is laid out by zone rather than by the order its boxes are filled in.
+// opportunityProgressView is one opportunity's progress on a page of its own.
+// The opportunity's page carries the two gauges and leads here for the reading
+// story by story.
+type opportunityProgressView struct {
+	OpportunityKey  string
+	OpportunityName string
+	Progress        opportunityProgress
+}
+
 type opportunityCanvasView struct {
 	OpportunityKey  string
 	OpportunityName string
@@ -487,6 +499,10 @@ func renderOpportunitiesIndex(w io.Writer, lang i18n.Lang, view opportunitiesInd
 
 func renderOpportunity(w io.Writer, lang i18n.Lang, view opportunityView) error {
 	return templates(lang).ExecuteTemplate(w, "opportunity.html", view)
+}
+
+func renderOpportunityProgress(w io.Writer, lang i18n.Lang, view opportunityProgressView) error {
+	return templates(lang).ExecuteTemplate(w, "opportunity_progress.html", view)
 }
 
 func renderOpportunityCanvas(w io.Writer, lang i18n.Lang, view opportunityCanvasView) error {

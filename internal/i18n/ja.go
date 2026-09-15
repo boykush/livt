@@ -70,8 +70,9 @@ var ja = Catalog{
 	"mapping.view-list":        "リスト",
 	"nav.opportunities":        "オポチュニティ",
 
-	"label.story-map":          "ストーリーマップ",
-	"label.opportunity-canvas": "オポチュニティキャンバス",
+	"label.story-map":            "ストーリーマップ",
+	"label.opportunity-canvas":   "オポチュニティキャンバス",
+	"label.opportunity-progress": "現況",
 
 	"empty.opportunities":      "オポチュニティはまだありません。",
 	"empty.opportunity-canvas": "オポチュニティキャンバスはまだありません。",
@@ -79,6 +80,8 @@ var ja = Catalog{
 	"opportunity.opportunity": "オポチュニティ",
 
 	"opportunity.progress":          "現況",
+	"opportunity.by-story":          "ストーリーごとに見る",
+	"opportunity.coverage":          "ルールの自動化",
 	"opportunity.progress-hint":     "このオポチュニティがどこまで進んでいるか",
 	"opportunity.mapped-stories":    "実例マッピング済みのストーリー",
 	"opportunity.automated-rules":   "テストで押さえられているルール",

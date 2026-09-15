@@ -69,8 +69,9 @@ var en = Catalog{
 	"mapping.view-list":        "List",
 	"nav.opportunities":        "Opportunities",
 
-	"label.story-map":          "Story Map",
-	"label.opportunity-canvas": "Opportunity Canvas",
+	"label.story-map":            "Story Map",
+	"label.opportunity-canvas":   "Opportunity Canvas",
+	"label.opportunity-progress": "Opportunity Progress",
 
 	"empty.opportunities":      "No opportunities yet.",
 	"empty.opportunity-canvas": "No opportunity canvas yet.",
@@ -81,6 +82,8 @@ var en = Catalog{
 	// because they are separate axes: rules can be fully automated over a third
 	// of the stories, and one combined figure would read as nearly done.
 	"opportunity.progress":          "Progress",
+	"opportunity.by-story":          "Story by story",
+	"opportunity.coverage":          "Rules automated",
 	"opportunity.progress-hint":     "how far this opportunity has been taken",
 	"opportunity.mapped-stories":    "Stories through an example mapping",
 	"opportunity.automated-rules":   "Rules held by tests",

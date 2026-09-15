@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="{{t "lang.code"}}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{.OpportunityName}} - {{t "label.opportunity-progress"}} - livt</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<header class="bg-white border-b border-gray-200">
+  <div class="max-w-3xl mx-auto px-6 py-4 flex items-center gap-3">
+    <a href="../opportunity/{{.OpportunityKey}}.html" class="text-sm text-gray-400 hover:text-gray-600">&larr; {{.OpportunityName}}</a>
+    <span class="text-gray-300">|</span>
+    <span class="text-xl font-bold text-gray-900 tracking-tight">livt</span>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-6 py-8">
+<div class="flex items-baseline gap-4 flex-wrap mb-6">
+  <h1 class="text-lg font-bold text-gray-900">{{.OpportunityName}}</h1>
+  <span class="text-xs font-semibold uppercase tracking-wide text-orange-600">{{t "label.opportunity-progress"}}</span>
+</div>
+
+{{/*
+The two gauges lead here as they do on the opportunity's page, so the reading
+stands on its own for anyone who arrived by link rather than through it.
+*/}}
+<div class="grid gap-3 sm:grid-cols-2">
+  {{template "opportunity-gauge" gauge (t "opportunity.mapped-stories") .Progress.MappedStories (len .Progress.Stories) "bg-yellow-400" .Progress.StoriesPath}}
+  {{template "opportunity-gauge" gauge (t "opportunity.automated-rules") .Progress.Automated .Progress.Rules "bg-blue-500" .Progress.TasksPath}}
+</div>
+
+{{/*
+Each chip is one way this opportunity is unfinished, and each carries the whole
+it is part of: "2" says nothing about whether a board is nearly agreed, and
+"2/20" does. The Tasks page already keeps one list per way of closing these, so
+a chip narrows that page rather than repeating it here.
+*/}}
+<div class="flex flex-wrap gap-2 mt-3">
+  {{if .Progress.QuestionsAsked}}
+  <a href="{{.Progress.TasksPath}}" class="text-xs text-red-700 bg-red-50 border border-red-200 rounded-full px-3 py-1 hover:bg-red-100 transition">
+    {{t "opportunity.open-questions"}} <span class="font-mono">{{.Progress.Questions}}<span class="text-red-400">/{{.Progress.QuestionsAsked}}</span></span>
+  </a>
+  {{end}}
+  {{if .Progress.Proposed}}
+  <a href="{{.Progress.TasksPath}}" class="text-xs text-blue-700 bg-blue-50 border border-dashed border-blue-300 rounded-full px-3 py-1 hover:bg-blue-100 transition">
+    {{t "opportunity.proposed-rules"}} <span class="font-mono">{{.Progress.Proposed}}<span class="text-blue-400">/{{.Progress.Rules}}</span></span>
+  </a>
+  {{end}}
+  {{if gt .Progress.Rules .Progress.Automated}}
+  <a href="{{.Progress.TasksPath}}" class="text-xs text-gray-600 bg-white border border-gray-200 rounded-full px-3 py-1 hover:bg-gray-50 transition">
+    {{t "opportunity.unautomated-rules"}} <span class="font-mono">{{sub .Progress.Rules .Progress.Automated}}<span class="text-gray-400">/{{.Progress.Rules}}</span></span>
+  </a>
+  {{end}}
+</div>
+
+{{/*
+One row per story, in the order the maps hang them under the backbone. The
+column is headed once rather than labelling fifteen rows, and each row draws its
+own bar: the fraction alone does not say that 4/5 and 19/20 are the same
+measure the gauge above takes, and the bar does.
+*/}}
+<div class="flex items-baseline gap-3 mt-8 mb-2">
+  <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400">{{t "opportunity.stories"}}</h2>
+  <span class="ml-auto text-xs font-semibold uppercase tracking-wide text-gray-400">{{t "opportunity.coverage"}}</span>
+</div>
+<div class="space-y-2">
+{{range .Progress.Stories}}
+  {{if .Path}}
+  <a href="{{.Path}}" class="flex items-center gap-3 bg-white rounded-lg border border-gray-200 border-l-4 {{if .Mapped}}border-l-yellow-400 hover:border-l-yellow-500{{else}}border-l-gray-300 hover:border-l-gray-400{{end}} px-4 py-3 hover:shadow-sm transition">
+    {{template "opportunity-story-row" .}}
+  </a>
+  {{else}}
+  <div class="flex items-center gap-3 bg-white rounded-lg border border-gray-200 border-l-4 border-l-gray-300 px-4 py-3">
+    {{template "opportunity-story-row" .}}
+  </div>
+  {{end}}
+{{end}}
+</div>
+</main>
+</body>
+</html>

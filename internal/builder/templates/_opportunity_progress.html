@@ -17,12 +17,20 @@ not, and the bar is what makes two gauges comparable at a glance.
 
 {{define "opportunity-story-row"}}
 {{/*
-A story's standing in one line. A story with no mapping shows that in words
-rather than as 0/0, which would read as a mapping that found no rules.
+A story's standing in one line. The bar is what says the fraction is the same
+coverage the rules gauge takes over the whole opportunity — 4/5 and 19/20 are
+not comparable as numbers at a glance, and two bars are. A story with no mapping
+says so in words rather than showing 0/0, which would read as a mapping that
+found no rules.
 */}}
 <span class="text-sm text-gray-900 min-w-0">{{.Name}}</span>
 {{if .Mapped}}
-<span class="ml-auto font-mono text-xs text-gray-500 whitespace-nowrap">{{.Automated}}<span class="text-gray-400">/{{.Rules}}</span></span>
+<span class="ml-auto flex items-center gap-2.5 shrink-0">
+  <span class="block w-16 h-1.5 rounded-sm bg-gray-100 overflow-hidden" aria-hidden="true">
+    <span class="block h-full bg-blue-500" style="width: {{percent .Automated .Rules}}%"></span>
+  </span>
+  <span class="font-mono text-xs text-gray-500 whitespace-nowrap">{{.Automated}}<span class="text-gray-400">/{{.Rules}}</span></span>
+</span>
 {{else}}
 <span class="ml-auto text-xs text-gray-400 whitespace-nowrap">{{t "opportunity.unmapped"}}</span>
 {{end}}

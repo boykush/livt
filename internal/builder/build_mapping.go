@@ -21,6 +21,11 @@ type mappingTally struct {
 	Automated int
 	Proposed  int
 	Questions int
+	// QuestionsAsked counts the retired ones too — the whole an open question
+	// is a part of. Without it the count of what is open has no size: five open
+	// questions reads differently on a board that has settled ten than on one
+	// that has settled none.
+	QuestionsAsked int
 }
 
 // buildMappings builds example mapping HTML pages and returns a preview tile per
@@ -70,7 +75,11 @@ func (b *Builder) buildMappings() ([]mappingTile, taskSet, map[string]mappingTal
 // opportunity reports on.
 func tally(em *domain.ExampleMapping) mappingTally {
 	active := em.Active()
-	t := mappingTally{Rules: len(active.Rules), Questions: len(active.Questions)}
+	t := mappingTally{
+		Rules:          len(active.Rules),
+		Questions:      len(active.Questions),
+		QuestionsAsked: len(em.Questions),
+	}
 	for _, r := range active.Rules {
 		if r.Proposed() {
 			t.Proposed++

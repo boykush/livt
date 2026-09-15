@@ -173,21 +173,46 @@ read as nearly done, when two thirds of it has never been discussed. The same
 pair appears on each tile of the Opportunities list, so the hub says which
 opportunity is moving without being opened.
 
-Below the gauges, **one row per story**, in the order the maps hang them. A row
-carries how many of that story's rules are automated, or says the story has no
-example mapping yet, and links to its board — to the mapping once there is one,
-to the story's card until then.
+### The reading story by story
+
+The gauges are the way in; the breakdown has a **page of its own**:
+
+```
+opportunity/collaborative-discovery.md.html            # what the opportunity is
+opportunity-progress/collaborative-discovery.html      # how far it has got
+```
+
+This is the same split the canvas makes, for the same reason: what an
+opportunity *is* reads the same on every visit, and the progress is the part
+that changes. An opportunity with no story map gets no progress page, the way
+one with no canvas links to none.
+
+The page carries one row per story, in the order the maps hang them. Each row
+draws its own coverage bar beside the fraction, under a column headed **Rules
+automated** — the fraction alone does not say that 4/5 and 19/20 are the same
+measure the gauge above takes, and two bars do. A story with no example mapping
+says so in words rather than showing `0/0`, which would read as a conversation
+that found no rules.
+
+Three chips say how the opportunity is unfinished, and **each carries the whole
+it is part of**: open questions against every question its boards have asked,
+proposed and un-automated rules against its live rules. A bare `2` does not say
+whether a board is nearly agreed; `2/20` does.
+
+### What the figures link to
 
 Every figure is a way into the page that already renders what it counts: the
-story gauge opens the Stories list, and the open questions, proposed rules and
-un-automated rules open the [Tasks page](../reference/file-structure.md) — both
-narrowed to this opportunity through the same filter the lists already carry.
-Nothing here is a second copy of those lists.
+story gauge opens the Stories list, the chips open the
+[Tasks page](../reference/file-structure.md), and a row opens its example
+mapping — or the story's card until there is one. The lists arrive narrowed to
+this opportunity through the same filter they already carry, so nothing here is
+a second copy of them.
 
 Retired rules are counted in neither gauge, the same way the Tasks page and the
 sidebar badge leave them out: a rule the board has closed is not spec anyone is
-waiting on. And an opportunity with no story map reports no stories rather than
-`0/0` — it has not been taken on, which the absence already says.
+waiting on. A retired question is counted only in the *whole* an open question is
+measured against — a question that has been settled is part of the record of how
+much the boards have worked through.
 
 ## Where opportunities sit
 

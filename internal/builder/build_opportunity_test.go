@@ -65,7 +65,7 @@ func TestRenderOpportunityLinksItsCanvasAndStoryMap(t *testing.T) {
 	maps := []storyMapRef{{Name: "デモマップ", Path: "../story-map/デモマップ.html"}}
 
 	out := filepath.Join(b.OutDir, "opportunity", "demo.html")
-	if err := b.renderOpportunityPage(out, o, "../opportunity-canvas/demo.html", maps, opportunityProgress{}); err != nil {
+	if err := b.renderOpportunityPage(out, o, "../opportunity-canvas/demo.html", "", maps, opportunityProgress{}); err != nil {
 		t.Fatal(err)
 	}
 	html := readFile(t, out)
@@ -84,7 +84,7 @@ func TestRenderOpportunityWithoutCanvasLinksNone(t *testing.T) {
 	o := &domain.Opportunity{Key: domain.OpportunityKey{Value: "demo"}, Name: "デモ"}
 
 	out := filepath.Join(b.OutDir, "opportunity", "demo.html")
-	if err := b.renderOpportunityPage(out, o, "", nil, opportunityProgress{}); err != nil {
+	if err := b.renderOpportunityPage(out, o, "", "", nil, opportunityProgress{}); err != nil {
 		t.Fatal(err)
 	}
 	if html := readFile(t, out); strings.Contains(html, "opportunity-canvas/") {
@@ -272,7 +272,9 @@ func progressBuilder(t *testing.T) Builder {
 		"rules:\n"+
 			"  - id: R-01\n    name: まだのルール\n"+
 			"  - id: R-02\n    name: 提案中のルール\n    status: proposed\n"+
-			"questions:\n  - id: Q-01\n    text: 開いている疑問\n")
+			"questions:\n"+
+			"  - id: Q-01\n    text: 開いている疑問\n"+
+			"  - id: Q-02\n    text: 片付いた疑問\n    retired: true\n")
 	return b
 }
 
@@ -357,11 +359,10 @@ func TestOpportunityWithNoStoryMapReportsNoStories(t *testing.T) {
 	}
 }
 
-// Discovery and automation are separate axes, so the page carries both gauges
-// and one story row per story the opportunity took on.
+// Discovery and automation are separate axes, so the opportunity's page carries
+// both gauges — and leads to the reading story by story rather than holding it.
 // livt://mapping/show-opportunity-progress/rule/R-01
-// livt://mapping/show-opportunity-progress/rule/R-02
-func TestOpportunityPageCarriesBothGaugesAndEveryStory(t *testing.T) {
+func TestOpportunityPageCarriesBothGaugesAndLeadsToTheBreakdown(t *testing.T) {
 	b := progressBuilder(t)
 	if err := b.Build(); err != nil {
 		t.Fatal(err)
@@ -374,15 +375,67 @@ func TestOpportunityPageCarriesBothGaugesAndEveryStory(t *testing.T) {
 			t.Errorf("%s gauge is missing", label)
 		}
 	}
+	if !strings.Contains(html, "opportunity-progress/demo.html") {
+		t.Error("the opportunity page is the way in, and does not lead to the progress page")
+	}
+	if strings.Contains(html, en.Msg("opportunity.unmapped")) {
+		t.Error("the story rows belong to the progress page, not the way in")
+	}
+}
+
+// The breakdown is one row per story the opportunity took on, and every figure
+// on it carries the whole it is part of.
+// livt://mapping/show-opportunity-progress/rule/R-02
+func TestOpportunityProgressPageBreaksDownByStory(t *testing.T) {
+	b := progressBuilder(t)
+	if err := b.Build(); err != nil {
+		t.Fatal(err)
+	}
+
+	html := readFile(t, filepath.Join(b.OutDir, "opportunity-progress", "demo.html"))
+	en := i18n.Of(i18n.En)
 	for _, name := range []string{"押さえたストーリー", "途中のストーリー", "まだのストーリー"} {
 		if !strings.Contains(html, name) {
 			t.Errorf("story %q is missing from the breakdown", name)
 		}
 	}
+	// The column is headed once rather than labelling every row, and that
+	// heading is what says the fraction is coverage.
+	if !strings.Contains(html, en.Msg("opportunity.coverage")) {
+		t.Error("nothing on the page says the per-story fraction is rule coverage")
+	}
 	// A story with no mapping says so in words; 0/0 would read as a mapping
 	// that found no rules.
 	if got := strings.Count(html, en.Msg("opportunity.unmapped")); got != 1 {
 		t.Errorf("got %d un-mapped rows, want 1", got)
+	}
+}
+
+// A bare count does not say whether a board is nearly agreed. Each chip carries
+// the whole it is a part of: the rules for the two rule standings, and every
+// question ever asked for the open ones.
+// livt://mapping/show-opportunity-progress/rule/R-02
+func TestOpportunityProgressChipsCarryTheirWhole(t *testing.T) {
+	b := progressBuilder(t)
+	_, _, tallies, err := b.buildMappings()
+	if err != nil {
+		t.Fatal(err)
+	}
+	o := &domain.Opportunity{Key: domain.OpportunityKey{Value: "demo"}, Name: "デモ機会"}
+	if p := b.progressOf(o, []string{"held-story", "half-story"}, tallies); p.QuestionsAsked != 2 {
+		t.Errorf("questions asked = %d, want 2 (one open, one settled)", p.QuestionsAsked)
+	}
+
+	if err := b.Build(); err != nil {
+		t.Fatal(err)
+	}
+	html := readFile(t, filepath.Join(b.OutDir, "opportunity-progress", "demo.html"))
+	// One question open of the two the boards asked, one proposal and two
+	// un-automated rules of the three live ones.
+	for _, want := range []string{">1<span class=\"text-red-400\">/2<", ">1<span class=\"text-blue-400\">/3<", ">2<span class=\"text-gray-400\">/3<"} {
+		if !strings.Contains(html, want) {
+			t.Errorf("a chip is missing its whole: expected %q", want)
+		}
 	}
 }
 

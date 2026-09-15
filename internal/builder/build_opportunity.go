@@ -66,9 +66,19 @@ func (b *Builder) buildOpportunities(mapsByKey map[string][]storyMapRef, stories
 		}
 
 		progress := b.progressOf(o, storiesByKey[o.Key.Value], tallies)
+		progressPath := ""
+		// An opportunity nobody has mapped a journey for has no progress to
+		// read, so it gets no page — the same way one with no canvas links to
+		// none, and for the same reason: the absence is the record.
+		if len(progress.Stories) > 0 {
+			progressPath = "../" + uri.OpportunityProgressPage(o.Key.Value)
+			if err := b.buildOpportunityProgress(o, progress); err != nil {
+				return nil, err
+			}
+		}
 
 		outPath := filepath.Join(b.OutDir, uri.OpportunityPage(o.Key.Value))
-		if err := b.renderOpportunityPage(outPath, o, canvasPath, mapsByKey[o.Key.Value], progress); err != nil {
+		if err := b.renderOpportunityPage(outPath, o, canvasPath, progressPath, mapsByKey[o.Key.Value], progress); err != nil {
 			return nil, err
 		}
 		fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))
@@ -87,19 +97,42 @@ func (b *Builder) buildOpportunities(mapsByKey map[string][]storyMapRef, stories
 	return tiles, nil
 }
 
-func (b *Builder) renderOpportunityPage(path string, o *domain.Opportunity, canvasPath string, maps []storyMapRef, progress opportunityProgress) error {
+func (b *Builder) renderOpportunityPage(path string, o *domain.Opportunity, canvasPath, progressPath string, maps []storyMapRef, progress opportunityProgress) error {
 	f, err := os.Create(path)
 	if err != nil {
 		return err
 	}
 	defer f.Close()
 	return renderOpportunity(f, b.Lang, opportunityView{
-		Opportunity: o,
-		Meta:        metaFieldViews(o.Meta),
-		CanvasPath:  canvasPath,
-		StoryMaps:   maps,
-		Progress:    progress,
+		Opportunity:  o,
+		Meta:         metaFieldViews(o.Meta),
+		CanvasPath:   canvasPath,
+		ProgressPath: progressPath,
+		StoryMaps:    maps,
+		Progress:     progress,
 	})
+}
+
+// buildOpportunityProgress renders the story-by-story reading of how far an
+// opportunity has been taken. The opportunity's own page carries the two gauges
+// and leads here: what an opportunity *is* does not change between two visits,
+// and this is the part that does.
+func (b *Builder) buildOpportunityProgress(o *domain.Opportunity, progress opportunityProgress) error {
+	outPath := filepath.Join(b.OutDir, uri.OpportunityProgressPage(o.Key.Value))
+	f, err := os.Create(outPath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	if err := renderOpportunityProgress(f, b.Lang, opportunityProgressView{
+		OpportunityKey:  o.Key.Value,
+		OpportunityName: o.DisplayName(),
+		Progress:        progress,
+	}); err != nil {
+		return err
+	}
+	fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))
+	return nil
 }
 
 // opportunityProgress is how far an opportunity has been taken, on the two axes
@@ -108,12 +141,13 @@ func (b *Builder) renderOpportunityPage(path string, o *domain.Opportunity, canv
 // tests. Folding the two into one number would let a high automation ratio over
 // a third of the stories read as nearly done.
 type opportunityProgress struct {
-	Stories       []opportunityStoryRow
-	MappedStories int
-	Rules         int
-	Automated     int
-	Proposed      int
-	Questions     int
+	Stories        []opportunityStoryRow
+	MappedStories  int
+	Rules          int
+	Automated      int
+	Proposed       int
+	Questions      int
+	QuestionsAsked int
 	// StoriesPath and TasksPath narrow the lists that already render these
 	// items down to this opportunity, through the filter bar's own query
 	// parameter — so a figure here is a way into the page that owns it rather
@@ -160,6 +194,7 @@ func (b *Builder) progressOf(o *domain.Opportunity, storyKeys []string, tallies 
 			p.Automated += t.Automated
 			p.Proposed += t.Proposed
 			p.Questions += t.Questions
+			p.QuestionsAsked += t.QuestionsAsked
 		case b.hasStoryPage(storyKey):
 			row.Path = "../" + uri.StoryPage(key)
 		}
