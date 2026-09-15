@@ -416,10 +416,10 @@ func TestOpportunityProgressPageBreaksDownByStory(t *testing.T) {
 	}
 }
 
-// A bare count does not say whether a board is nearly agreed, so every count on
-// the dashboard is drawn as a share of the whole it belongs to. The rules meter
-// takes three segments, because a rule that is not automated is waiting on one
-// of two different things: a test, or an agreement it has not had yet.
+// A bare count does not say whether a board is nearly agreed, so every figure on
+// the dashboard is drawn as a share of the whole it belongs to — and every
+// figure gets a meter of its own, because what closes each of them differs and a
+// segment inside another's bar is not a thing anyone can go and do.
 // livt://mapping/show-opportunity-progress/rule/R-02
 func TestOpportunityDashboardMetersCarryTheirWhole(t *testing.T) {
 	b := progressBuilder(t)
@@ -437,31 +437,24 @@ func TestOpportunityDashboardMetersCarryTheirWhole(t *testing.T) {
 	}
 	html := readFile(t, filepath.Join(b.OutDir, "opportunity-progress", "demo.html"))
 
-	// Two of three stories mapped, one of three rules automated, one of the two
-	// questions the boards asked still open.
-	for _, want := range []string{
-		`>2<span class="font-normal text-gray-400">/3<`,
-		`>1<span class="font-normal text-gray-400">/3<`,
-		`>1<span class="font-normal text-gray-400">/2<`,
-	} {
-		if !strings.Contains(html, want) {
-			t.Errorf("a meter is missing its whole: expected %q", want)
-		}
-	}
-
-	// The proposed rule is its own segment, so it is not also counted as one
-	// waiting for a test: three live rules, one automated, one proposed, one
-	// un-automated.
 	en := i18n.Of(i18n.En)
-	for label, count := range map[string]string{
-		"opportunity.unautomated-rules": "1",
-		"opportunity.proposed-rules":    "1",
-		"opportunity.legend-automated":  "1",
-		"opportunity.legend-settled":    "1",
+	// Two of three stories mapped; of three live rules one is automated, one is
+	// proposed and one is left waiting for a test — the proposal is not counted
+	// as waiting for one; one of the two questions the boards asked is open.
+	for label, want := range map[string]string{
+		"opportunity.mapped-stories":    `>2<span class="font-normal text-gray-400">/3<`,
+		"opportunity.automated-rules":   `>1<span class="font-normal text-gray-400">/3<`,
+		"opportunity.unautomated-rules": `>1<span class="font-normal text-gray-400">/3<`,
+		"opportunity.proposed-rules":    `>1<span class="font-normal text-gray-400">/3<`,
+		"opportunity.open-questions":    `>1<span class="font-normal text-gray-400">/2<`,
 	} {
-		want := en.Msg(label) + ` <span class="font-mono text-gray-700">` + count + `</span>`
-		if !strings.Contains(html, want) {
-			t.Errorf("legend is missing %q", want)
+		msg := en.Msg(label)
+		if !strings.Contains(html, msg) {
+			t.Errorf("%s has no meter of its own", msg)
+			continue
+		}
+		if !strings.Contains(html[strings.Index(html, msg):], want) {
+			t.Errorf("the %s meter is missing its whole: expected %q", msg, want)
 		}
 	}
 }

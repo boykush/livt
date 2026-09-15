@@ -34,8 +34,7 @@ func funcs(lang i18n.Lang) template.FuncMap {
 		"storyBadge":        storyBadge,
 		"percent":           percent,
 		"sub":               func(a, b int) int { return a - b },
-		"legend":            newLegendItem,
-		"meterLink":         newMeterLink,
+		"meter":             newMeterView,
 		"tasksAnchors":      tasksAnchors,
 	}
 }
@@ -75,27 +74,24 @@ func percent(part, total int) int {
 	return part * 100 / total
 }
 
-// legendItem names one segment of a meter on the opportunity dashboard. Fill is
-// the segment's own class, so the legend is read off the bar.
-type legendItem struct {
+// meterView is one figure on the opportunity dashboard: a count drawn as its
+// share of the whole it belongs to, and the page that count can be acted on.
+// Every figure gets its own meter rather than becoming a segment of another's,
+// because what closes each of them differs — a test, an agreement, a
+// conversation — and a segment inside someone else's bar is not a thing you can
+// go and do.
+type meterView struct {
 	Label string
-	Count int
+	Part  int
+	Total int
 	Fill  string
+	// LinkLabel names the page the count is acted on; empty draws no footer.
+	LinkLabel string
+	LinkPath  string
 }
 
-func newLegendItem(label string, count int, fill string) legendItem {
-	return legendItem{Label: label, Count: count, Fill: fill}
-}
-
-// meterLink is a meter's footer: the list its count can be acted on in, named
-// by page and list so the destination is read before the click.
-type meterLink struct {
-	Label string
-	Path  string
-}
-
-func newMeterLink(label, path string) meterLink {
-	return meterLink{Label: label, Path: path}
+func newMeterView(label string, part, total int, fill, linkLabel, linkPath string) meterView {
+	return meterView{Label: label, Part: part, Total: total, Fill: fill, LinkLabel: linkLabel, LinkPath: linkPath}
 }
 
 // idBadge is a sticky's own ID rendered bottom-right by the id-badge partial.

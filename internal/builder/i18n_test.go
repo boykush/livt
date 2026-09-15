@@ -137,7 +137,7 @@ func TestBuildTranslatesTheChromeAndLeavesTheProseAlone(t *testing.T) {
 		"opportunities.html":                                   {"オポチュニティ"},
 		filepath.Join("opportunity", "shopping.html"):          {"メタデータ", "オポチュニティ"},
 		filepath.Join("opportunity-canvas", "shopping.html"):   {"オポチュニティキャンバス", "確かめられる事実", "価値についての仮説", "解決策のアイデア", "未記入"},
-		filepath.Join("opportunity-progress", "shopping.html"): {"ダッシュボード", "実例マッピング済みのストーリー", "テストで押さえられているルール", "ルールの自動化", "自動化済み", "解決済み"},
+		filepath.Join("opportunity-progress", "shopping.html"): {"ダッシュボード", "実例マッピング済みのストーリー", "自動化済みのルール", "未自動化のルール", "提案中のルール", "未解決の疑問点", "ルールの自動化"},
 	} {
 		html := readPage(t, b, page)
 		for _, want := range wants {
