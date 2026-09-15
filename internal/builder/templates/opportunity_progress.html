@@ -16,67 +16,92 @@
 </header>
 
 <main class="max-w-3xl mx-auto px-6 py-8">
-<div class="flex items-baseline gap-4 flex-wrap mb-6">
+<div class="flex items-baseline gap-4 flex-wrap mb-1">
   <h1 class="text-lg font-bold text-gray-900">{{.OpportunityName}}</h1>
   <span class="text-xs font-semibold uppercase tracking-wide text-orange-600">{{t "label.opportunity-progress"}}</span>
 </div>
+<p class="text-xs text-gray-400 mb-6">{{t "opportunity.progress-hint"}}</p>
 
 {{/*
-The two gauges lead here as they do on the opportunity's page, so the reading
-stands on its own for anyone who arrived by link rather than through it.
+Discovery and automation stay two gauges: rules fully held by tests over a third
+of the stories is not an opportunity anywhere near done, and one combined figure
+would say it was.
 */}}
 <div class="grid gap-3 sm:grid-cols-2">
-  {{template "opportunity-gauge" gauge (t "opportunity.mapped-stories") .Progress.MappedStories (len .Progress.Stories) "bg-yellow-400" .Progress.StoriesPath}}
-  {{template "opportunity-gauge" gauge (t "opportunity.automated-rules") .Progress.Automated .Progress.Rules "bg-blue-500" .Progress.TasksPath}}
+  {{template "opportunity-gauge" gauge (t "opportunity.mapped-stories") .Progress.MappedStories .Progress.TotalStories "bg-yellow-400" .Progress.StoriesPath}}
+  {{template "opportunity-gauge" gauge (t "opportunity.automated-rules") .Progress.Automated .Progress.Rules "bg-blue-500" .Progress.UnautomatedPath}}
 </div>
 
 {{/*
 Each chip is one way this opportunity is unfinished, and each carries the whole
 it is part of: "2" says nothing about whether a board is nearly agreed, and
-"2/20" does. The Tasks page already keeps one list per way of closing these, so
-a chip narrows that page rather than repeating it here.
+"2/20" does. The Tasks page keeps one list per way of closing these, so a chip
+lands on the list it counted rather than at the top of all three.
 */}}
 <div class="flex flex-wrap gap-2 mt-3">
   {{if .Progress.QuestionsAsked}}
-  <a href="{{.Progress.TasksPath}}" class="text-xs text-red-700 bg-red-50 border border-red-200 rounded-full px-3 py-1 hover:bg-red-100 transition">
+  <a href="{{.Progress.QuestionsPath}}" class="text-xs text-red-700 bg-red-50 border border-red-200 rounded-full px-3 py-1 hover:bg-red-100 transition">
     {{t "opportunity.open-questions"}} <span class="font-mono">{{.Progress.Questions}}<span class="text-red-400">/{{.Progress.QuestionsAsked}}</span></span>
   </a>
   {{end}}
   {{if .Progress.Proposed}}
-  <a href="{{.Progress.TasksPath}}" class="text-xs text-blue-700 bg-blue-50 border border-dashed border-blue-300 rounded-full px-3 py-1 hover:bg-blue-100 transition">
+  <a href="{{.Progress.ProposedPath}}" class="text-xs text-blue-700 bg-blue-50 border border-dashed border-blue-300 rounded-full px-3 py-1 hover:bg-blue-100 transition">
     {{t "opportunity.proposed-rules"}} <span class="font-mono">{{.Progress.Proposed}}<span class="text-blue-400">/{{.Progress.Rules}}</span></span>
   </a>
   {{end}}
   {{if gt .Progress.Rules .Progress.Automated}}
-  <a href="{{.Progress.TasksPath}}" class="text-xs text-gray-600 bg-white border border-gray-200 rounded-full px-3 py-1 hover:bg-gray-50 transition">
+  <a href="{{.Progress.UnautomatedPath}}" class="text-xs text-gray-600 bg-white border border-gray-200 rounded-full px-3 py-1 hover:bg-gray-50 transition">
     {{t "opportunity.unautomated-rules"}} <span class="font-mono">{{sub .Progress.Rules .Progress.Automated}}<span class="text-gray-400">/{{.Progress.Rules}}</span></span>
   </a>
   {{end}}
 </div>
 
 {{/*
-One row per story, in the order the maps hang them under the backbone. The
-column is headed once rather than labelling fifteen rows, and each row draws its
-own bar: the fraction alone does not say that 4/5 and 19/20 are the same
-measure the gauge above takes, and the bar does.
+The stories in their maps' own release slices, which is the order a team heading
+for a release reads them in — and each slice carries its own coverage, because
+that is the number the next release turns on, not the opportunity's.
+
+A map that declares no release leaves one unnamed slice holding every story: it
+gets no heading, since a lone "no release" row would name a distinction the map
+never drew.
 */}}
 <div class="flex items-baseline gap-3 mt-8 mb-2">
   <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400">{{t "opportunity.stories"}}</h2>
   <span class="ml-auto text-xs font-semibold uppercase tracking-wide text-gray-400">{{t "opportunity.coverage"}}</span>
 </div>
-<div class="space-y-2">
-{{range .Progress.Stories}}
-  {{if .Path}}
-  <a href="{{.Path}}" class="flex items-center gap-3 bg-white rounded-lg border border-gray-200 border-l-4 {{if .Mapped}}border-l-yellow-400 hover:border-l-yellow-500{{else}}border-l-gray-300 hover:border-l-gray-400{{end}} px-4 py-3 hover:shadow-sm transition">
-    {{template "opportunity-story-row" .}}
-  </a>
-  {{else}}
-  <div class="flex items-center gap-3 bg-white rounded-lg border border-gray-200 border-l-4 border-l-gray-300 px-4 py-3">
-    {{template "opportunity-story-row" .}}
+
+{{$named := gt (len .Progress.Releases) 1}}
+{{range .Progress.Releases}}
+<section class="mb-6 last:mb-0">
+  {{if $named}}
+  <div class="flex items-baseline gap-3 mb-2 pb-1.5 border-b border-gray-200">
+    <h3 class="text-sm font-semibold {{if .Unscoped}}text-gray-400{{else}}text-purple-800{{end}}">
+      {{if .Unscoped}}{{t "opportunity.unscoped-release"}}{{else}}{{.Name}}{{end}}
+    </h3>
+    {{if not .Unscoped}}<span class="font-mono text-[11px] text-gray-400">{{.ID}}</span>{{end}}
+    <span class="ml-auto flex items-center gap-2.5 shrink-0">
+      <span class="block w-16 h-1.5 rounded-sm bg-gray-100 overflow-hidden" aria-hidden="true">
+        <span class="block h-full bg-blue-500" style="width: {{percent .Automated .Rules}}%"></span>
+      </span>
+      <span class="font-mono text-xs text-gray-500 whitespace-nowrap">{{.Automated}}<span class="text-gray-400">/{{.Rules}}</span></span>
+    </span>
   </div>
   {{end}}
+  <div class="space-y-2">
+  {{range .Stories}}
+    {{if .Path}}
+    <a href="{{.Path}}" class="flex items-center gap-3 bg-white rounded-lg border border-gray-200 border-l-4 {{if .Mapped}}border-l-yellow-400 hover:border-l-yellow-500{{else}}border-l-gray-300 hover:border-l-gray-400{{end}} px-4 py-3 hover:shadow-sm transition">
+      {{template "opportunity-story-row" .}}
+    </a>
+    {{else}}
+    <div class="flex items-center gap-3 bg-white rounded-lg border border-gray-200 border-l-4 border-l-gray-300 px-4 py-3">
+      {{template "opportunity-story-row" .}}
+    </div>
+    {{end}}
+  {{end}}
+  </div>
+</section>
 {{end}}
-</div>
 </main>
 </body>
 </html>

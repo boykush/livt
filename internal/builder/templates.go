@@ -35,6 +35,7 @@ func funcs(lang i18n.Lang) template.FuncMap {
 		"percent":           percent,
 		"sub":               func(a, b int) int { return a - b },
 		"gauge":             newGaugeView,
+		"tasksAnchors":      tasksAnchors,
 	}
 }
 
@@ -174,6 +175,25 @@ var neutralTint = [2]string{"text-gray-700 bg-gray-50 border border-gray-200 hov
 // have to agree: a link written against a different name lands on the unfiltered
 // list and silently shows every opportunity's items as this one's.
 const opportunityFilterParam = "opportunity"
+
+// The Tasks page keeps one list per way an item gets closed, and pages that
+// count those items link straight at the list they counted — landing on the
+// first of three leaves the reader to find the other two. Named here so the
+// anchors the template writes and the links other pages aim cannot drift.
+const (
+	tasksQuestionsAnchor = "open-questions"
+	tasksProposedAnchor  = "proposed-rules"
+	tasksRulesAnchor     = "unautomated-rules"
+)
+
+// tasksAnchors is what the Tasks template writes onto its three sections.
+func tasksAnchors() map[string]string {
+	return map[string]string{
+		"questions": tasksQuestionsAnchor,
+		"proposed":  tasksProposedAnchor,
+		"rules":     tasksRulesAnchor,
+	}
+}
 
 func newFilterView(param, label string, values []string) filterView {
 	tint, ok := filterTints[param]

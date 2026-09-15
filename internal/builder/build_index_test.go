@@ -169,9 +169,9 @@ func TestBuildTasksSectionsStayHonestWhenAFilterEmptiesThem(t *testing.T) {
 	// Match the elements, not the bare attribute: the filter script mentions
 	// each name again in its own selectors, which the last assertion checks for.
 	for _, hook := range []string{
-		"<section data-filter-scope", // the countable group
-		"<span data-filter-count",    // the number to correct
-		"<p data-filter-empty",       // the line explaining the gap
+		"data-filter-scope class=", // the countable group
+		"<span data-filter-count",  // the number to correct
+		"<p data-filter-empty",     // the line explaining the gap
 	} {
 		if got := strings.Count(html, hook); got != 3 {
 			t.Errorf("%s appears %d times, want one per section", hook, got)

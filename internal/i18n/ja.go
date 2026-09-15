@@ -79,9 +79,8 @@ var ja = Catalog{
 
 	"opportunity.opportunity": "オポチュニティ",
 
-	"opportunity.progress":          "現況",
-	"opportunity.by-story":          "ストーリーごとに見る",
 	"opportunity.coverage":          "ルールの自動化",
+	"opportunity.unscoped-release":  "リリース未指定",
 	"opportunity.progress-hint":     "このオポチュニティがどこまで進んでいるか",
 	"opportunity.mapped-stories":    "実例マッピング済みのストーリー",
 	"opportunity.automated-rules":   "テストで押さえられているルール",
@@ -90,7 +89,6 @@ var ja = Catalog{
 	"opportunity.open-questions":    "未解決の疑問点",
 	"opportunity.proposed-rules":    "提案中のルール",
 	"opportunity.unautomated-rules": "未自動化のルール",
-	"opportunity.no-stories":        "このオポチュニティが取り上げたストーリーはまだありません。",
 
 	"canvas.zone.facts":    "確かめられる事実",
 	"canvas.zone.solution": "解決策",

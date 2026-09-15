@@ -14,6 +14,7 @@
     <h2 class="text-lg font-semibold text-gray-800">{{t "nav.tasks"}}</h2>
   </header>
   <main class="px-8 py-8 max-w-3xl">
+  {{$anchors := tasksAnchors}}
   {{/*
   What the livt repository leaves unfinished, one list per way of closing it: a
   question by a conversation, a proposed rule by agreement, an un-automated rule
@@ -28,7 +29,7 @@
   the section empty. The {{else}} line below covers the other case — the livt repository
   itself has nothing here — and the two must not claim each other's meaning.
   */}}
-  <section data-filter-scope class="mb-10">
+  <section id="{{index $anchors "questions"}}" data-filter-scope class="scroll-mt-6 mb-10">
     <div class="flex items-baseline gap-2 mb-3">
       <span class="w-2.5 h-2.5 rounded-sm bg-red-400"></span>
       <h3 class="text-sm font-semibold text-gray-800">{{t "tasks.questions"}}</h3>
@@ -43,7 +44,7 @@
     <p data-filter-empty style="display: none" class="text-gray-400 text-sm">{{t "tasks.questions-empty-filtered"}}</p>
   </section>
 
-  <section data-filter-scope class="mb-10">
+  <section id="{{index $anchors "proposed"}}" data-filter-scope class="scroll-mt-6 mb-10">
     <div class="flex items-baseline gap-2 mb-3">
       <span class="w-2.5 h-2.5 rounded-sm bg-blue-100 border border-dashed border-blue-400"></span>
       <h3 class="text-sm font-semibold text-gray-800">{{t "tasks.proposed"}}</h3>
@@ -58,7 +59,7 @@
     <p data-filter-empty style="display: none" class="text-gray-400 text-sm">{{t "tasks.proposed-empty-filtered"}}</p>
   </section>
 
-  <section data-filter-scope>
+  <section id="{{index $anchors "rules"}}" data-filter-scope class="scroll-mt-6">
     <div class="flex items-baseline gap-2 mb-3">
       <span class="w-2.5 h-2.5 rounded-sm bg-blue-400"></span>
       <h3 class="text-sm font-semibold text-gray-800">{{t "tasks.rules"}}</h3>

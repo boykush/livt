@@ -81,9 +81,8 @@ var en = Catalog{
 	// The opportunity's progress. Discovery and automation are named separately
 	// because they are separate axes: rules can be fully automated over a third
 	// of the stories, and one combined figure would read as nearly done.
-	"opportunity.progress":          "Progress",
-	"opportunity.by-story":          "Story by story",
 	"opportunity.coverage":          "Rules automated",
+	"opportunity.unscoped-release":  "No release",
 	"opportunity.progress-hint":     "how far this opportunity has been taken",
 	"opportunity.mapped-stories":    "Stories through an example mapping",
 	"opportunity.automated-rules":   "Rules held by tests",
@@ -92,7 +91,6 @@ var en = Catalog{
 	"opportunity.open-questions":    "Open questions",
 	"opportunity.proposed-rules":    "Proposed rules",
 	"opportunity.unautomated-rules": "Un-automated rules",
-	"opportunity.no-stories":        "No story has been taken on for this opportunity yet.",
 
 	// The canvas's three zones, and the ten boxes keyed by domain.CanvasBox.Key.
 	// A prompt is the question the box asks: the heading alone does not say what

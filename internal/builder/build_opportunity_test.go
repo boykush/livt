@@ -290,10 +290,10 @@ func TestOpportunityProgressCountsStoriesAndLiveRules(t *testing.T) {
 	}
 
 	o := &domain.Opportunity{Key: domain.OpportunityKey{Value: "demo"}, Name: "デモ機会"}
-	p := b.progressOf(o, []string{"held-story", "half-story", "unmapped-story"}, tallies)
+	p := b.progressOf(o, oneSlice("held-story", "half-story", "unmapped-story"), tallies)
 
-	if len(p.Stories) != 3 || p.MappedStories != 2 {
-		t.Errorf("mapped stories = %d/%d, want 2/3", p.MappedStories, len(p.Stories))
+	if p.TotalStories != 3 || p.MappedStories != 2 {
+		t.Errorf("mapped stories = %d/%d, want 2/3", p.MappedStories, p.TotalStories)
 	}
 	// held-story contributes its one live rule, half-story both of its; the
 	// retired rule is in neither total.
@@ -316,18 +316,19 @@ func TestOpportunityProgressRowsLinkToMappingOrStory(t *testing.T) {
 	}
 
 	o := &domain.Opportunity{Key: domain.OpportunityKey{Value: "demo"}, Name: "デモ機会"}
-	p := b.progressOf(o, []string{"held-story", "unmapped-story"}, tallies)
+	p := b.progressOf(o, oneSlice("held-story", "unmapped-story"), tallies)
 
-	if got, want := p.Stories[0].Path, "../mapping/held-story.html"; got != want {
+	rows := p.Releases[0].Stories
+	if got, want := rows[0].Path, "../mapping/held-story.html"; got != want {
 		t.Errorf("mapped row links to %q, want %q", got, want)
 	}
-	if got, want := p.Stories[1].Path, "../story/unmapped-story.html"; got != want {
+	if got, want := rows[1].Path, "../story/unmapped-story.html"; got != want {
 		t.Errorf("un-mapped row links to %q, want %q", got, want)
 	}
 	// The figures lead into the lists that already render these items, narrowed
 	// through the filter bar's own parameter — a link on any other name lands on
 	// the unfiltered list and shows every opportunity's items as this one's.
-	for _, path := range []string{p.StoriesPath, p.TasksPath} {
+	for _, path := range []string{p.StoriesPath, p.QuestionsPath, p.ProposedPath, p.UnautomatedPath} {
 		if !strings.Contains(path, "?"+opportunityFilterParam+"=") {
 			t.Errorf("%q does not narrow on the filter bar's parameter", path)
 		}
@@ -335,12 +336,20 @@ func TestOpportunityProgressRowsLinkToMappingOrStory(t *testing.T) {
 			t.Errorf("%q does not narrow to this opportunity", path)
 		}
 	}
+	// The Tasks page keeps three lists; a chip lands on the one it counted
+	// rather than at the top of all three.
+	for _, want := range []string{tasksQuestionsAnchor, tasksProposedAnchor, tasksRulesAnchor} {
+		if !strings.Contains(p.QuestionsPath+p.ProposedPath+p.UnautomatedPath, "#"+want) {
+			t.Errorf("no chip lands on #%s", want)
+		}
+	}
 }
 
-// An opportunity nobody has mapped a journey for reports nothing rather than
-// dividing by zero, and says so in words: the absence is the record.
+// An opportunity nobody has mapped a journey for has no progress to read, so it
+// gets no page and its own page links to none — the absence is the record, the
+// same way it is for a canvas that was never filled in.
 // livt://mapping/show-opportunity-progress/rule/R-01
-func TestOpportunityWithNoStoryMapReportsNoStories(t *testing.T) {
+func TestOpportunityWithNoStoryMapGetsNoProgressPage(t *testing.T) {
 	b := progressBuilder(t)
 	if err := os.Remove(filepath.Join(b.USMDir, "demo.yaml")); err != nil {
 		t.Fatal(err)
@@ -349,37 +358,33 @@ func TestOpportunityWithNoStoryMapReportsNoStories(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	html := readFile(t, filepath.Join(b.OutDir, "opportunity", "demo.html"))
-	en := i18n.Of(i18n.En)
-	if !strings.Contains(html, en.Msg("opportunity.no-stories")) {
-		t.Error("an opportunity with no map should say it has taken on no story")
+	if _, err := os.Stat(filepath.Join(b.OutDir, "opportunity-progress", "demo.html")); !os.IsNotExist(err) {
+		t.Error("an opportunity with no map should get no progress page")
 	}
-	if strings.Contains(html, en.Msg("opportunity.mapped-stories")) {
-		t.Error("no gauge should be drawn when there is nothing to divide")
+	if html := readFile(t, filepath.Join(b.OutDir, "opportunity", "demo.html")); strings.Contains(html, "opportunity-progress/") {
+		t.Error("the opportunity page should link to no progress page")
 	}
 }
 
-// Discovery and automation are separate axes, so the opportunity's page carries
-// both gauges — and leads to the reading story by story rather than holding it.
+// The opportunity's page is the way in and nothing more: what an opportunity is
+// reads the same on every visit, and the reading that changes lives on its own
+// page rather than being previewed beside the statement.
 // livt://mapping/show-opportunity-progress/rule/R-01
-func TestOpportunityPageCarriesBothGaugesAndLeadsToTheBreakdown(t *testing.T) {
+func TestOpportunityPageOnlyLeadsToTheProgress(t *testing.T) {
 	b := progressBuilder(t)
 	if err := b.Build(); err != nil {
 		t.Fatal(err)
 	}
 
 	html := readFile(t, filepath.Join(b.OutDir, "opportunity", "demo.html"))
-	en := i18n.Of(i18n.En)
-	for _, label := range []string{"opportunity.mapped-stories", "opportunity.automated-rules"} {
-		if !strings.Contains(html, en.Msg(label)) {
-			t.Errorf("%s gauge is missing", label)
-		}
-	}
 	if !strings.Contains(html, "opportunity-progress/demo.html") {
-		t.Error("the opportunity page is the way in, and does not lead to the progress page")
+		t.Error("the opportunity page does not lead to the progress page")
 	}
-	if strings.Contains(html, en.Msg("opportunity.unmapped")) {
-		t.Error("the story rows belong to the progress page, not the way in")
+	en := i18n.Of(i18n.En)
+	for _, moved := range []string{"opportunity.mapped-stories", "opportunity.automated-rules", "opportunity.unmapped"} {
+		if strings.Contains(html, en.Msg(moved)) {
+			t.Errorf("%s belongs to the progress page, not the way in", moved)
+		}
 	}
 }
 
@@ -422,7 +427,7 @@ func TestOpportunityProgressChipsCarryTheirWhole(t *testing.T) {
 		t.Fatal(err)
 	}
 	o := &domain.Opportunity{Key: domain.OpportunityKey{Value: "demo"}, Name: "デモ機会"}
-	if p := b.progressOf(o, []string{"held-story", "half-story"}, tallies); p.QuestionsAsked != 2 {
+	if p := b.progressOf(o, oneSlice("held-story", "half-story"), tallies); p.QuestionsAsked != 2 {
 		t.Errorf("questions asked = %d, want 2 (one open, one settled)", p.QuestionsAsked)
 	}
 
@@ -460,4 +465,10 @@ func TestOpportunitiesHubCarriesTheSameFigures(t *testing.T) {
 			t.Errorf("tile does not carry %q", fraction)
 		}
 	}
+}
+
+// oneSlice is an opportunity whose map declares no release: every story lands
+// in the single unscoped slice, which is the common case.
+func oneSlice(keys ...string) []opportunityReleaseStories {
+	return []opportunityReleaseStories{{Keys: keys}}
 }

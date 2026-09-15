@@ -49,7 +49,7 @@ func mapOpportunity(sm *domain.StoryMap, index map[string]*domain.Opportunity) o
 // that share an opportunity's key, so the opportunity links the journey mapped
 // for it; storiesByKey and tallies are what its progress is summed from, which
 // is why this runs after the mappings rather than beside the maps.
-func (b *Builder) buildOpportunities(mapsByKey map[string][]storyMapRef, storiesByKey map[string][]string, tallies map[string]mappingTally) ([]opportunityTile, error) {
+func (b *Builder) buildOpportunities(mapsByKey map[string][]storyMapRef, storiesByKey map[string][]opportunityReleaseStories, tallies map[string]mappingTally) ([]opportunityTile, error) {
 	opportunities, err := parser.ParseAllOpportunities(b.OpportunitiesDir)
 	if err != nil {
 		return nil, err
@@ -70,7 +70,7 @@ func (b *Builder) buildOpportunities(mapsByKey map[string][]storyMapRef, stories
 		// An opportunity nobody has mapped a journey for has no progress to
 		// read, so it gets no page — the same way one with no canvas links to
 		// none, and for the same reason: the absence is the record.
-		if len(progress.Stories) > 0 {
+		if progress.TotalStories > 0 {
 			progressPath = "../" + uri.OpportunityProgressPage(o.Key.Value)
 			if err := b.buildOpportunityProgress(o, progress); err != nil {
 				return nil, err
@@ -141,7 +141,11 @@ func (b *Builder) buildOpportunityProgress(o *domain.Opportunity, progress oppor
 // tests. Folding the two into one number would let a high automation ratio over
 // a third of the stories read as nearly done.
 type opportunityProgress struct {
-	Stories        []opportunityStoryRow
+	// Releases are the opportunity's stories in its maps' own release slices,
+	// which is the order a team heading for a release reads them in. A map that
+	// declares no release leaves one unnamed slice holding every story.
+	Releases       []opportunityReleaseRow
+	TotalStories   int
 	MappedStories  int
 	Rules          int
 	Automated      int
@@ -151,10 +155,30 @@ type opportunityProgress struct {
 	// StoriesPath and TasksPath narrow the lists that already render these
 	// items down to this opportunity, through the filter bar's own query
 	// parameter — so a figure here is a way into the page that owns it rather
-	// than a second place the same list is kept.
-	StoriesPath string
-	TasksPath   string
+	// than a second place the same list is kept. Each Tasks link carries the
+	// anchor of the list it counts, since that page keeps three and landing on
+	// the first leaves the reader to find the other two.
+	StoriesPath     string
+	QuestionsPath   string
+	ProposedPath    string
+	UnautomatedPath string
 }
+
+// opportunityReleaseRow is one release slice on the progress page, carrying its
+// own coverage: a team heading for a release wants that slice's number, not the
+// opportunity's.
+type opportunityReleaseRow struct {
+	ID            string
+	Name          string
+	Stories       []opportunityStoryRow
+	MappedStories int
+	Rules         int
+	Automated     int
+}
+
+// Unscoped reports whether this is the remainder rather than a stage of the
+// plan. The page names it only when there is a named slice to tell it from.
+func (r opportunityReleaseRow) Unscoped() bool { return r.ID == "" }
 
 // opportunityStoryRow is one story the opportunity took on. Path is the story's
 // example mapping once it has one and its story page until then, because that
@@ -171,34 +195,45 @@ type opportunityStoryRow struct {
 // keyed stories in map order, and tallies holds the counts of every mapping the
 // build read; a key missing from it is a story whose conversation has not been
 // held yet, which is the measurement rather than an absence of data.
-func (b *Builder) progressOf(o *domain.Opportunity, storyKeys []string, tallies map[string]mappingTally) opportunityProgress {
+func (b *Builder) progressOf(o *domain.Opportunity, slices []opportunityReleaseStories, tallies map[string]mappingTally) opportunityProgress {
 	narrow := "?" + opportunityFilterParam + "=" + url.QueryEscape(o.DisplayName())
+	tasks := "../tasks.html" + narrow + "#"
 	p := opportunityProgress{
-		StoriesPath: "../stories.html" + narrow,
-		TasksPath:   "../tasks.html" + narrow,
+		StoriesPath:     "../stories.html" + narrow,
+		QuestionsPath:   tasks + tasksQuestionsAnchor,
+		ProposedPath:    tasks + tasksProposedAnchor,
+		UnautomatedPath: tasks + tasksRulesAnchor,
 	}
-	for _, key := range storyKeys {
-		storyKey := domain.StoryKey{Value: key}
-		t, mapped := tallies[key]
-		row := opportunityStoryRow{
-			Name:      b.resolveStoryName(storyKey),
-			Mapped:    mapped,
-			Rules:     t.Rules,
-			Automated: t.Automated,
+	for _, slice := range slices {
+		row := opportunityReleaseRow{ID: slice.ID, Name: slice.Name}
+		for _, key := range slice.Keys {
+			storyKey := domain.StoryKey{Value: key}
+			t, mapped := tallies[key]
+			story := opportunityStoryRow{
+				Name:      b.resolveStoryName(storyKey),
+				Mapped:    mapped,
+				Rules:     t.Rules,
+				Automated: t.Automated,
+			}
+			switch {
+			case mapped:
+				story.Path = "../" + uri.MappingPage(key)
+				row.MappedStories++
+				row.Rules += t.Rules
+				row.Automated += t.Automated
+				p.Proposed += t.Proposed
+				p.Questions += t.Questions
+				p.QuestionsAsked += t.QuestionsAsked
+			case b.hasStoryPage(storyKey):
+				story.Path = "../" + uri.StoryPage(key)
+			}
+			row.Stories = append(row.Stories, story)
 		}
-		switch {
-		case mapped:
-			row.Path = "../" + uri.MappingPage(key)
-			p.MappedStories++
-			p.Rules += t.Rules
-			p.Automated += t.Automated
-			p.Proposed += t.Proposed
-			p.Questions += t.Questions
-			p.QuestionsAsked += t.QuestionsAsked
-		case b.hasStoryPage(storyKey):
-			row.Path = "../" + uri.StoryPage(key)
-		}
-		p.Stories = append(p.Stories, row)
+		p.TotalStories += len(row.Stories)
+		p.MappedStories += row.MappedStories
+		p.Rules += row.Rules
+		p.Automated += row.Automated
+		p.Releases = append(p.Releases, row)
 	}
 	return p
 }

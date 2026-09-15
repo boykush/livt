@@ -21,33 +21,6 @@
     <p class="font-mono text-xs text-orange-700 mt-2">{{.Opportunity.Key.Value}}</p>
   </div>
 
-  {{/*
-  Progress leads, because it is what changes between two visits — the statement
-  below it is the same prose it was when the opportunity was framed. The two
-  gauges stay separate: rules fully held by tests over a third of the stories is
-  not an opportunity anywhere near done, and one combined figure would say it
-  was. The reading story by story has a page of its own, the same split the
-  canvas makes; this is the way in, and each gauge is also a way into the list
-  that already renders what it counts, narrowed to this opportunity.
-  */}}
-  <section class="mt-7">
-    <div class="flex items-baseline gap-3 mb-3">
-      <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400">{{t "opportunity.progress"}}</h2>
-      <p class="text-xs text-gray-400">{{t "opportunity.progress-hint"}}</p>
-      {{if .ProgressPath}}
-      <a href="{{.ProgressPath}}" class="ml-auto text-xs text-orange-700 hover:text-orange-900 hover:underline">{{t "opportunity.by-story"}} &rarr;</a>
-      {{end}}
-    </div>
-    {{if .Progress.Stories}}
-    <div class="grid gap-3 sm:grid-cols-2">
-      {{template "opportunity-gauge" gauge (t "opportunity.mapped-stories") .Progress.MappedStories (len .Progress.Stories) "bg-yellow-400" .Progress.StoriesPath}}
-      {{template "opportunity-gauge" gauge (t "opportunity.automated-rules") .Progress.Automated .Progress.Rules "bg-blue-500" .Progress.TasksPath}}
-    </div>
-    {{else}}
-    <p class="text-gray-400 text-sm">{{t "opportunity.no-stories"}}</p>
-    {{end}}
-  </section>
-
   {{if .Meta}}
   <section class="mt-7">
     <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">{{t "story.metadata"}}</h2>
@@ -70,16 +43,28 @@
 
   {{/*
   Related says how far this opportunity has been taken: a canvas means it was
-  thought through, a story map means it was taken on. Neither link appears
-  before that has happened, so the absence is the record.
+  thought through, a story map means it was taken on, and a progress page means
+  there are stories to report on. None of the three appears before that has
+  happened, so the absence is the record.
+
+  The progress reading lives entirely on its own page rather than being
+  previewed here. What an opportunity *is* reads the same on every visit; how
+  far it has got is the part that changes, and mixing the two would put a
+  figure that moves weekly above a statement that has not moved since the
+  opportunity was framed.
   */}}
-  {{if or .CanvasPath .StoryMaps}}
+  {{if or .CanvasPath .ProgressPath .StoryMaps}}
   <section class="mt-7">
     <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">{{t "story.related"}}</h2>
     <div class="flex gap-3 flex-wrap">
     {{if .CanvasPath}}
       <a href="{{.CanvasPath}}" class="inline-flex items-center gap-1.5 bg-orange-50 text-orange-700 text-sm font-medium px-4 py-2 rounded-lg border border-orange-200 hover:bg-orange-100 transition">
         {{t "label.opportunity-canvas"}} &rarr;
+      </a>
+    {{end}}
+    {{if .ProgressPath}}
+      <a href="{{.ProgressPath}}" class="inline-flex items-center gap-1.5 bg-orange-50 text-orange-700 text-sm font-medium px-4 py-2 rounded-lg border border-orange-200 hover:bg-orange-100 transition">
+        {{t "label.opportunity-progress"}} &rarr;
       </a>
     {{end}}
     {{range .StoryMaps}}
