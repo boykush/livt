@@ -11,22 +11,35 @@ import (
 	"github.com/boykush/livt/internal/uri"
 )
 
+// mappingTally is one mapping's live counts, keyed by story so an opportunity
+// can sum the stories it took on. Taken off the active view, like the Tasks
+// page and the sidebar badge: a retired rule is not spec anyone is still
+// waiting on, so counting it would make an opportunity read as less finished
+// than it is.
+type mappingTally struct {
+	Rules     int
+	Automated int
+	Proposed  int
+	Questions int
+}
+
 // buildMappings builds example mapping HTML pages and returns a preview tile per
-// mapping for the Example Mappings overview page, plus everything the mappings
-// leave unfinished — open questions, proposed rules, and un-automated rules —
-// for the Tasks page.
-func (b *Builder) buildMappings() ([]mappingTile, taskSet, error) {
+// mapping for the Example Mappings overview page, everything the mappings leave
+// unfinished — open questions, proposed rules, and un-automated rules — for the
+// Tasks page, and a tally per story for the opportunity pages.
+func (b *Builder) buildMappings() ([]mappingTile, taskSet, map[string]mappingTally, error) {
 	files, err := filepath.Glob(filepath.Join(b.MappingsDir, "*.yaml"))
 	if err != nil {
-		return nil, taskSet{}, err
+		return nil, taskSet{}, nil, err
 	}
 
 	var tiles []mappingTile
 	var open taskSet
+	tallies := make(map[string]mappingTally, len(files))
 	for _, f := range files {
 		em, err := parser.ParseExampleMapping(f)
 		if err != nil {
-			return nil, taskSet{}, fmt.Errorf("parse %s: %w", f, err)
+			return nil, taskSet{}, nil, fmt.Errorf("parse %s: %w", f, err)
 		}
 
 		storyName := b.resolveStoryName(em.StoryKey)
@@ -39,7 +52,7 @@ func (b *Builder) buildMappings() ([]mappingTile, taskSet, error) {
 
 		outPath := filepath.Join(b.OutDir, "mapping", em.StoryKey.Value+".html")
 		if err := b.buildMapping(outPath, em, storyName, storyPath, ubiquitous); err != nil {
-			return nil, taskSet{}, err
+			return nil, taskSet{}, nil, err
 		}
 		fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))
 
@@ -47,9 +60,26 @@ func (b *Builder) buildMappings() ([]mappingTile, taskSet, error) {
 		// The Tasks page renders at the output root, so its links resolve from
 		// there, not from the mapping/ directory.
 		open.add(collectTasks(em, storyName, strings.TrimPrefix(storyPath, "../")))
+		tallies[em.StoryKey.Value] = tally(em)
 	}
 
-	return tiles, open, nil
+	return tiles, open, tallies, nil
+}
+
+// tally counts one mapping's live rules, questions, and the two standings an
+// opportunity reports on.
+func tally(em *domain.ExampleMapping) mappingTally {
+	active := em.Active()
+	t := mappingTally{Rules: len(active.Rules), Questions: len(active.Questions)}
+	for _, r := range active.Rules {
+		if r.Proposed() {
+			t.Proposed++
+		}
+		if r.Automated {
+			t.Automated++
+		}
+	}
+	return t
 }
 
 // taskSet holds what the mappings leave unfinished, split by how it gets closed:

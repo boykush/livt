@@ -1,0 +1,29 @@
+{{define "opportunity-gauge"}}
+{{/*
+One axis of an opportunity's progress. The fraction is spelled out rather than
+given as a percentage alone: 5/15 says how much work is left in a way 33% does
+not, and the bar is what makes two gauges comparable at a glance.
+*/}}
+<a href="{{.Path}}" class="block bg-white rounded-lg border border-gray-200 px-4 py-3 hover:border-gray-300 hover:shadow-sm transition">
+  <div class="flex items-baseline gap-2">
+    <span class="text-xs text-gray-600">{{.Label}}</span>
+    <span class="ml-auto font-mono text-sm font-semibold text-gray-900">{{.Part}}<span class="font-normal text-gray-400">/{{.Total}}</span></span>
+  </div>
+  <div class="mt-2 h-2 rounded-sm bg-gray-100 overflow-hidden">
+    <div class="h-full {{.Fill}}" style="width: {{percent .Part .Total}}%"></div>
+  </div>
+</a>
+{{end}}
+
+{{define "opportunity-story-row"}}
+{{/*
+A story's standing in one line. A story with no mapping shows that in words
+rather than as 0/0, which would read as a mapping that found no rules.
+*/}}
+<span class="text-sm text-gray-900 min-w-0">{{.Name}}</span>
+{{if .Mapped}}
+<span class="ml-auto font-mono text-xs text-gray-500 whitespace-nowrap">{{.Automated}}<span class="text-gray-400">/{{.Rules}}</span></span>
+{{else}}
+<span class="ml-auto text-xs text-gray-400 whitespace-nowrap">{{t "opportunity.unmapped"}}</span>
+{{end}}
+{{end}}

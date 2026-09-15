@@ -27,7 +27,27 @@
       <a href="opportunity/{{.Key}}.html" class="flex items-center gap-2 px-4 py-2.5 border-b border-orange-100 bg-orange-50 hover:bg-orange-100 transition">
         <span class="w-2.5 h-2.5 rounded-sm bg-orange-400"></span>
         <span class="text-sm font-semibold text-orange-900">{{.Name}}</span>
+        {{/*
+        The same two figures the opportunity's own page leads with, so the hub
+        says which opportunity is moving without being opened. Each wears its
+        resource's sticky colour, which is what tells the two fractions apart
+        at this size.
+        */}}
+        {{if .Progress.Stories}}
+        <span class="ml-auto flex items-center gap-3 font-mono text-xs">
+          <span class="flex items-center gap-1.5 text-gray-600" title="{{t "opportunity.mapped-stories"}}">
+            <span class="w-2 h-2 rounded-sm bg-yellow-400" aria-hidden="true"></span>
+            <span class="sr-only">{{t "opportunity.mapped-stories"}}</span>{{.Progress.MappedStories}}<span class="text-gray-400">/{{len .Progress.Stories}}</span>
+          </span>
+          <span class="flex items-center gap-1.5 text-gray-600" title="{{t "opportunity.automated-rules"}}">
+            <span class="w-2 h-2 rounded-sm bg-blue-500" aria-hidden="true"></span>
+            <span class="sr-only">{{t "opportunity.automated-rules"}}</span>{{.Progress.Automated}}<span class="text-gray-400">/{{.Progress.Rules}}</span>
+          </span>
+        </span>
+        <span class="text-orange-400 text-sm">&rarr;</span>
+        {{else}}
         <span class="ml-auto text-orange-400 text-sm">&rarr;</span>
+        {{end}}
       </a>
       {{if .Statement}}
       <p class="px-4 py-3 text-sm text-gray-700 whitespace-pre-line leading-relaxed">{{.Statement}}</p>

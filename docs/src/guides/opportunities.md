@@ -158,6 +158,37 @@ A story map whose key names no opportunity file keeps working exactly as it did
 before opportunities were files of their own: the map stands in as its own
 opportunity, named by the map. Nothing has to be migrated.
 
+## Reading an opportunity's progress
+
+An opportunity's page leads with how far it has been taken, on **two gauges**:
+
+- **Stories through an example mapping** — of the stories its maps hang under
+  the backbone, how many have had their conversation
+- **Rules held by tests** — of the rules those conversations produced, how many
+  are marked [`automated`](./example-mappings.md)
+
+They stay two figures because they move independently. An opportunity can have
+every rule automated across a third of its stories: one combined number would
+read as nearly done, when two thirds of it has never been discussed. The same
+pair appears on each tile of the Opportunities list, so the hub says which
+opportunity is moving without being opened.
+
+Below the gauges, **one row per story**, in the order the maps hang them. A row
+carries how many of that story's rules are automated, or says the story has no
+example mapping yet, and links to its board — to the mapping once there is one,
+to the story's card until then.
+
+Every figure is a way into the page that already renders what it counts: the
+story gauge opens the Stories list, and the open questions, proposed rules and
+un-automated rules open the [Tasks page](../reference/file-structure.md) — both
+narrowed to this opportunity through the same filter the lists already carry.
+Nothing here is a second copy of those lists.
+
+Retired rules are counted in neither gauge, the same way the Tasks page and the
+sidebar badge leave them out: a rule the board has closed is not spec anyone is
+waiting on. And an opportunity with no story map reports no stories rather than
+`0/0` — it has not been taken on, which the absence already says.
+
 ## Where opportunities sit
 
 ```

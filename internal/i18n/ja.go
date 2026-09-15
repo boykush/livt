@@ -78,6 +78,17 @@ var ja = Catalog{
 
 	"opportunity.opportunity": "オポチュニティ",
 
+	"opportunity.progress":          "現況",
+	"opportunity.progress-hint":     "このオポチュニティがどこまで進んでいるか",
+	"opportunity.mapped-stories":    "実例マッピング済みのストーリー",
+	"opportunity.automated-rules":   "テストで押さえられているルール",
+	"opportunity.stories":           "ストーリー",
+	"opportunity.unmapped":          "実例マッピング未着手",
+	"opportunity.open-questions":    "未解決の疑問点",
+	"opportunity.proposed-rules":    "提案中のルール",
+	"opportunity.unautomated-rules": "未自動化のルール",
+	"opportunity.no-stories":        "このオポチュニティが取り上げたストーリーはまだありません。",
+
 	"canvas.zone.facts":    "確かめられる事実",
 	"canvas.zone.solution": "解決策",
 	"canvas.zone.value":    "価値についての仮説",

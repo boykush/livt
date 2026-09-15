@@ -32,6 +32,9 @@ func funcs(lang i18n.Lang) template.FuncMap {
 		"exampleBadge":      exampleBadge,
 		"questionBadge":     questionBadge,
 		"storyBadge":        storyBadge,
+		"percent":           percent,
+		"sub":               func(a, b int) int { return a - b },
+		"gauge":             newGaugeView,
 	}
 }
 
@@ -59,6 +62,30 @@ func templates(lang i18n.Lang) *template.Template {
 		return set
 	}
 	return localized[i18n.Default]
+}
+
+// percent is a progress bar's width. A zero total reads as 0 rather than
+// dividing: an opportunity that has taken on no story has not finished one.
+func percent(part, total int) int {
+	if total <= 0 {
+		return 0
+	}
+	return part * 100 / total
+}
+
+// gaugeView is one axis of an opportunity's progress, as the
+// opportunity-gauge partial draws it. Path is the list this figure is counted
+// from, narrowed to the opportunity.
+type gaugeView struct {
+	Label string
+	Part  int
+	Total int
+	Fill  string
+	Path  string
+}
+
+func newGaugeView(label string, part, total int, fill, path string) gaugeView {
+	return gaugeView{Label: label, Part: part, Total: total, Fill: fill, Path: path}
 }
 
 // idBadge is a sticky's own ID rendered bottom-right by the id-badge partial.
@@ -140,6 +167,13 @@ var filterTints = map[string][2]string{
 }
 
 var neutralTint = [2]string{"text-gray-700 bg-gray-50 border border-gray-200 hover:bg-gray-100", "#4b5563"}
+
+// opportunityFilterParam is the query parameter the opportunity filter bar
+// mirrors its selection in, and the name the templates pass to `filter`. An
+// opportunity's page links into those lists pre-narrowed through it, so the two
+// have to agree: a link written against a different name lands on the unfiltered
+// list and silently shows every opportunity's items as this one's.
+const opportunityFilterParam = "opportunity"
 
 func newFilterView(param, label string, values []string) filterView {
 	tint, ok := filterTints[param]
@@ -278,6 +312,10 @@ type opportunityTile struct {
 	HasCanvas bool
 	StoryMaps []storyMapRef
 	Links     []metaFieldView
+	// Progress is the same reading the opportunity's own page leads with, so a
+	// reader scanning the hub sees which opportunity is moving without opening
+	// each one. Its paths are written for that page and are not followed here.
+	Progress opportunityProgress
 }
 
 type opportunitiesIndexView struct {
@@ -292,6 +330,7 @@ type opportunityView struct {
 	Meta        []metaFieldView
 	CanvasPath  string
 	StoryMaps   []storyMapRef
+	Progress    opportunityProgress
 }
 
 // opportunityCanvasView is the sheet. Panels are its three columns, since the

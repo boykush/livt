@@ -137,11 +137,6 @@ func (b *Builder) Build() error {
 	}
 	storyToMaps := maps.StoryOpportunities
 
-	opportunityTiles, err := b.buildOpportunities(maps.MapsByOpportunity)
-	if err != nil {
-		return err
-	}
-
 	stories, err := parser.ParseAllStories(b.StoriesDir)
 	if err != nil {
 		return err
@@ -180,7 +175,15 @@ func (b *Builder) Build() error {
 		})
 	}
 
-	mappingTiles, open, err := b.buildMappings()
+	mappingTiles, open, tallies, err := b.buildMappings()
+	if err != nil {
+		return err
+	}
+
+	// An opportunity's progress is summed from the mappings its stories have,
+	// so its pages are built here rather than beside the maps that named those
+	// stories.
+	opportunityTiles, err := b.buildOpportunities(maps.MapsByOpportunity, maps.StoriesByOpportunity, tallies)
 	if err != nil {
 		return err
 	}

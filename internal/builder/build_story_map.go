@@ -18,6 +18,12 @@ type storyMapBuild struct {
 	StoryOpportunities map[string][]opportunityRef
 	Tiles              []storyMapTile
 	MapsByOpportunity  map[string][]storyMapRef
+	// StoriesByOpportunity is the reverse of StoryOpportunities: the keyed
+	// stories an opportunity took on, in map order. Only keyed cards are in it,
+	// because a candidate with no card cannot have been through an example
+	// mapping — counting it would make every opportunity look less discovered
+	// than it is by the only measure the livt repository can take.
+	StoriesByOpportunity map[string][]string
 }
 
 // buildStoryMaps builds story map HTML pages. Paths in the returned refs are
@@ -30,9 +36,11 @@ func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (
 	}
 
 	out := storyMapBuild{
-		StoryOpportunities: make(map[string][]opportunityRef),
-		MapsByOpportunity:  make(map[string][]storyMapRef),
+		StoryOpportunities:   make(map[string][]opportunityRef),
+		MapsByOpportunity:    make(map[string][]storyMapRef),
+		StoriesByOpportunity: make(map[string][]string),
 	}
+	seenByOpportunity := make(map[string]map[string]bool)
 	for _, sm := range maps {
 		ref := mapOpportunity(sm, opportunities)
 		// The map page names its opportunity only when a file backs it; a map
@@ -42,6 +50,9 @@ func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (
 			own = &ref
 			out.MapsByOpportunity[sm.Key] = append(out.MapsByOpportunity[sm.Key],
 				storyMapRef{Name: sm.Name, Path: "../" + uri.StoryMapPage(sm.Name)})
+			if seenByOpportunity[sm.Key] == nil {
+				seenByOpportunity[sm.Key] = make(map[string]bool)
+			}
 		}
 
 		view := b.toStoryMapView(sm, own)
@@ -63,6 +74,13 @@ func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (
 					}
 					seen[sc.Key.Value] = true
 					out.StoryOpportunities[sc.Key.Value] = append(out.StoryOpportunities[sc.Key.Value], ref)
+					// Deduped across the opportunity, not the map: two maps for
+					// one opportunity can hold the same story, and it is one
+					// story to the opportunity either way.
+					if own != nil && !seenByOpportunity[sm.Key][sc.Key.Value] {
+						seenByOpportunity[sm.Key][sc.Key.Value] = true
+						out.StoriesByOpportunity[sm.Key] = append(out.StoriesByOpportunity[sm.Key], sc.Key.Value)
+					}
 				}
 			}
 		}
