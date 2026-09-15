@@ -32,6 +32,10 @@ func funcs(lang i18n.Lang) template.FuncMap {
 		"exampleBadge":      exampleBadge,
 		"questionBadge":     questionBadge,
 		"storyBadge":        storyBadge,
+		"percent":           percent,
+		"sub":               func(a, b int) int { return a - b },
+		"meter":             newMeterView,
+		"tasksAnchors":      tasksAnchors,
 	}
 }
 
@@ -59,6 +63,35 @@ func templates(lang i18n.Lang) *template.Template {
 		return set
 	}
 	return localized[i18n.Default]
+}
+
+// percent is a progress bar's width. A zero total reads as 0 rather than
+// dividing: an opportunity that has taken on no story has not finished one.
+func percent(part, total int) int {
+	if total <= 0 {
+		return 0
+	}
+	return part * 100 / total
+}
+
+// meterView is one figure on the opportunity dashboard: a count drawn as its
+// share of the whole it belongs to, and the page that count can be acted on.
+// Every figure gets its own meter rather than becoming a segment of another's,
+// because what closes each of them differs — a test, an agreement, a
+// conversation — and a segment inside someone else's bar is not a thing you can
+// go and do.
+type meterView struct {
+	Label string
+	Part  int
+	Total int
+	Fill  string
+	// LinkLabel names the page the count is acted on; empty draws no footer.
+	LinkLabel string
+	LinkPath  string
+}
+
+func newMeterView(label string, part, total int, fill, linkLabel, linkPath string) meterView {
+	return meterView{Label: label, Part: part, Total: total, Fill: fill, LinkLabel: linkLabel, LinkPath: linkPath}
 }
 
 // idBadge is a sticky's own ID rendered bottom-right by the id-badge partial.
@@ -140,6 +173,32 @@ var filterTints = map[string][2]string{
 }
 
 var neutralTint = [2]string{"text-gray-700 bg-gray-50 border border-gray-200 hover:bg-gray-100", "#4b5563"}
+
+// opportunityFilterParam is the query parameter the opportunity filter bar
+// mirrors its selection in, and the name the templates pass to `filter`. An
+// opportunity's page links into those lists pre-narrowed through it, so the two
+// have to agree: a link written against a different name lands on the unfiltered
+// list and silently shows every opportunity's items as this one's.
+const opportunityFilterParam = "opportunity"
+
+// The Tasks page keeps one list per way an item gets closed, and pages that
+// count those items link straight at the list they counted — landing on the
+// first of three leaves the reader to find the other two. Named here so the
+// anchors the template writes and the links other pages aim cannot drift.
+const (
+	tasksQuestionsAnchor = "open-questions"
+	tasksProposedAnchor  = "proposed-rules"
+	tasksRulesAnchor     = "unautomated-rules"
+)
+
+// tasksAnchors is what the Tasks template writes onto its three sections.
+func tasksAnchors() map[string]string {
+	return map[string]string{
+		"questions": tasksQuestionsAnchor,
+		"proposed":  tasksProposedAnchor,
+		"rules":     tasksRulesAnchor,
+	}
+}
 
 func newFilterView(param, label string, values []string) filterView {
 	tint, ok := filterTints[param]
@@ -278,6 +337,10 @@ type opportunityTile struct {
 	HasCanvas bool
 	StoryMaps []storyMapRef
 	Links     []metaFieldView
+	// Progress is the same reading the opportunity's own page leads with, so a
+	// reader scanning the hub sees which opportunity is moving without opening
+	// each one. Its paths are written for that page and are not followed here.
+	Progress opportunityProgress
 }
 
 type opportunitiesIndexView struct {
@@ -291,11 +354,24 @@ type opportunityView struct {
 	Opportunity *domain.Opportunity
 	Meta        []metaFieldView
 	CanvasPath  string
-	StoryMaps   []storyMapRef
+	// ProgressPath is empty when the opportunity has taken on no story, the
+	// same way CanvasPath is empty when no canvas has been filled in.
+	ProgressPath string
+	StoryMaps    []storyMapRef
+	Progress     opportunityProgress
 }
 
 // opportunityCanvasView is the sheet. Panels are its three columns, since the
 // canvas is laid out by zone rather than by the order its boxes are filled in.
+// opportunityProgressView is one opportunity's progress on a page of its own.
+// The opportunity's page carries the two gauges and leads here for the reading
+// story by story.
+type opportunityProgressView struct {
+	OpportunityKey  string
+	OpportunityName string
+	Progress        opportunityProgress
+}
+
 type opportunityCanvasView struct {
 	OpportunityKey  string
 	OpportunityName string
@@ -448,6 +524,10 @@ func renderOpportunitiesIndex(w io.Writer, lang i18n.Lang, view opportunitiesInd
 
 func renderOpportunity(w io.Writer, lang i18n.Lang, view opportunityView) error {
 	return templates(lang).ExecuteTemplate(w, "opportunity.html", view)
+}
+
+func renderOpportunityProgress(w io.Writer, lang i18n.Lang, view opportunityProgressView) error {
+	return templates(lang).ExecuteTemplate(w, "opportunity_progress.html", view)
 }
 
 func renderOpportunityCanvas(w io.Writer, lang i18n.Lang, view opportunityCanvasView) error {

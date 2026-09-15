@@ -3,8 +3,8 @@
   "configurations": [
     {
       "name": "livt-serve",
-      "runtimeExecutable": "go",
-      "runtimeArgs": ["run", ".", "serve"],
+      "runtimeExecutable": "zsh",
+      "runtimeArgs": ["-lc", "go run . serve"],
       "port": 3000
     }
   ]

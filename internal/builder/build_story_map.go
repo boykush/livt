@@ -18,6 +18,12 @@ type storyMapBuild struct {
 	StoryOpportunities map[string][]opportunityRef
 	Tiles              []storyMapTile
 	MapsByOpportunity  map[string][]storyMapRef
+	// StoriesByOpportunity is the reverse of StoryOpportunities: the keyed
+	// stories an opportunity took on, in its maps' own release slices. Only
+	// keyed cards are in it, because a candidate with no card cannot have been
+	// through an example mapping — counting it would make every opportunity look
+	// less discovered than it is by the only measure the livt repository can take.
+	StoriesByOpportunity map[string][]opportunityReleaseStories
 }
 
 // buildStoryMaps builds story map HTML pages. Paths in the returned refs are
@@ -30,9 +36,12 @@ func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (
 	}
 
 	out := storyMapBuild{
-		StoryOpportunities: make(map[string][]opportunityRef),
-		MapsByOpportunity:  make(map[string][]storyMapRef),
+		StoryOpportunities:   make(map[string][]opportunityRef),
+		MapsByOpportunity:    make(map[string][]storyMapRef),
+		StoriesByOpportunity: make(map[string][]opportunityReleaseStories),
 	}
+	slices := make(map[string]*releaseSlices)
+	seenByOpportunity := make(map[string]map[string]bool)
 	for _, sm := range maps {
 		ref := mapOpportunity(sm, opportunities)
 		// The map page names its opportunity only when a file backs it; a map
@@ -42,6 +51,16 @@ func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (
 			own = &ref
 			out.MapsByOpportunity[sm.Key] = append(out.MapsByOpportunity[sm.Key],
 				storyMapRef{Name: sm.Name, Path: "../" + uri.StoryMapPage(sm.Name)})
+			if seenByOpportunity[sm.Key] == nil {
+				seenByOpportunity[sm.Key] = make(map[string]bool)
+				slices[sm.Key] = newReleaseSlices()
+			}
+			// Declared first and in the map's own order, so the slices read the
+			// way the map draws them rather than the order stories happen to be
+			// hung under the backbone.
+			for i, r := range sm.Releases {
+				slices[sm.Key].declare(r.ID, r.DisplayName(i))
+			}
 		}
 
 		view := b.toStoryMapView(sm, own)
@@ -63,12 +82,83 @@ func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (
 					}
 					seen[sc.Key.Value] = true
 					out.StoryOpportunities[sc.Key.Value] = append(out.StoryOpportunities[sc.Key.Value], ref)
+					// Deduped across the opportunity, not the map: two maps for
+					// one opportunity can hold the same story, and it is one
+					// story to the opportunity either way.
+					if own != nil && !seenByOpportunity[sm.Key][sc.Key.Value] {
+						seenByOpportunity[sm.Key][sc.Key.Value] = true
+						slices[sm.Key].add(sc.Release, sc.Key.Value)
+					}
 				}
 			}
 		}
 	}
 
+	for key, s := range slices {
+		out.StoriesByOpportunity[key] = s.rows()
+	}
 	return out, nil
+}
+
+// opportunityReleaseStories is one release slice of an opportunity's stories.
+// ID is empty for the stories its maps left unscoped — which is every story on
+// a map that declares no release at all, the common case.
+type opportunityReleaseStories struct {
+	ID   string
+	Name string
+	Keys []string
+}
+
+// releaseSlices buckets an opportunity's stories by the release its maps put
+// them in, keeping the maps' declared order. A slice nobody has hung a story
+// under is dropped rather than drawn empty: the map is where the plan is read,
+// and an empty row here would say a slice exists without saying anything about
+// it.
+type releaseSlices struct {
+	order []string
+	byID  map[string]*opportunityReleaseStories
+}
+
+func newReleaseSlices() *releaseSlices {
+	return &releaseSlices{byID: make(map[string]*opportunityReleaseStories)}
+}
+
+func (s *releaseSlices) declare(id, name string) {
+	if id == "" || s.byID[id] != nil {
+		return
+	}
+	s.byID[id] = &opportunityReleaseStories{ID: id, Name: name}
+	s.order = append(s.order, id)
+}
+
+// add files a story under its release. A story naming a release the map never
+// declared is filed under it anyway, named by its own id — the story map is
+// what reports an unknown release, and dropping the story here would lose it
+// from a page that is counting.
+func (s *releaseSlices) add(releaseID, storyKey string) {
+	if s.byID[releaseID] == nil {
+		s.byID[releaseID] = &opportunityReleaseStories{ID: releaseID, Name: releaseID}
+		s.order = append(s.order, releaseID)
+	}
+	s.byID[releaseID].Keys = append(s.byID[releaseID].Keys, storyKey)
+}
+
+// rows returns the non-empty slices in declared order, with the unscoped one
+// last: it is the remainder, not a stage of the plan.
+func (s *releaseSlices) rows() []opportunityReleaseStories {
+	var out []opportunityReleaseStories
+	for _, id := range s.order {
+		if id == "" {
+			continue // the remainder is emitted last, below
+		}
+		if slice := s.byID[id]; len(slice.Keys) > 0 {
+			out = append(out, *slice)
+		}
+	}
+	if unscoped := s.byID[""]; unscoped != nil && len(unscoped.Keys) > 0 {
+		out = append(out, *unscoped)
+	}
+	return out
 }
 
 type storyMapViewStory struct {

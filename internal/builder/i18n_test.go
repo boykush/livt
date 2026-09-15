@@ -78,6 +78,7 @@ var pages = []string{
 	"tasks.html",
 	filepath.Join("opportunity", "shopping.html"),
 	filepath.Join("opportunity-canvas", "shopping.html"),
+	filepath.Join("opportunity-progress", "shopping.html"),
 	filepath.Join("story", "checkout.html"),
 	filepath.Join("mapping", "checkout.html"),
 	filepath.Join("story-map", "買い物ジャーニー.html"),
@@ -133,9 +134,10 @@ func TestBuildTranslatesTheChromeAndLeavesTheProseAlone(t *testing.T) {
 		filepath.Join("story", "checkout.html"):   {"メタデータ", "関連", "説明"},
 		filepath.Join("mapping", "checkout.html"): {"ルール", "具体例", "疑問点", "✓ 自動化済み", "提案中のルール", "まだ合意されていない提案", "ユビキタス言語", "ボード", "リスト"},
 		filepath.Join("story-map", "買い物ジャーニー.html"): {"オポチュニティ", "アクティビティ", "ユーザータスク", "ストーリー"},
-		"opportunities.html":                                 {"オポチュニティ"},
-		filepath.Join("opportunity", "shopping.html"):        {"メタデータ", "オポチュニティ"},
-		filepath.Join("opportunity-canvas", "shopping.html"): {"オポチュニティキャンバス", "確かめられる事実", "価値についての仮説", "解決策のアイデア", "未記入"},
+		"opportunities.html":                                   {"オポチュニティ"},
+		filepath.Join("opportunity", "shopping.html"):          {"メタデータ", "オポチュニティ"},
+		filepath.Join("opportunity-canvas", "shopping.html"):   {"オポチュニティキャンバス", "確かめられる事実", "価値についての仮説", "解決策のアイデア", "未記入"},
+		filepath.Join("opportunity-progress", "shopping.html"): {"ダッシュボード", "実例マッピング済みのストーリー", "未自動化のルール", "提案中のルール", "未解決の疑問点", "ルールの自動化"},
 	} {
 		html := readPage(t, b, page)
 		for _, want := range wants {

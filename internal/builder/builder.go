@@ -100,7 +100,7 @@ func (b *Builder) sidebar(active, prefix string) (Sidebar, error) {
 
 // generatedDirs are the output subdirectories holding one page per resource.
 // Build owns their contents end to end, so it empties them on every run.
-var generatedDirs = []string{"story", "mapping", "story-map", "opportunity", "opportunity-canvas"}
+var generatedDirs = []string{"story", "mapping", "story-map", "opportunity", "opportunity-canvas", "opportunity-progress"}
 
 // resetGeneratedDirs empties the per-resource output subdirectories, so a page
 // for a renamed or deleted resource cannot outlive its source and keep being
@@ -136,11 +136,6 @@ func (b *Builder) Build() error {
 		return err
 	}
 	storyToMaps := maps.StoryOpportunities
-
-	opportunityTiles, err := b.buildOpportunities(maps.MapsByOpportunity)
-	if err != nil {
-		return err
-	}
 
 	stories, err := parser.ParseAllStories(b.StoriesDir)
 	if err != nil {
@@ -180,7 +175,15 @@ func (b *Builder) Build() error {
 		})
 	}
 
-	mappingTiles, open, err := b.buildMappings()
+	mappingTiles, open, tallies, err := b.buildMappings()
+	if err != nil {
+		return err
+	}
+
+	// An opportunity's progress is summed from the mappings its stories have,
+	// so its pages are built here rather than beside the maps that named those
+	// stories.
+	opportunityTiles, err := b.buildOpportunities(maps.MapsByOpportunity, maps.StoriesByOpportunity, tallies)
 	if err != nil {
 		return err
 	}

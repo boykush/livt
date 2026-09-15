@@ -1,0 +1,48 @@
+{{define "opportunity-story-row"}}
+{{/*
+A story's standing in one line. The bar is what says the fraction is the same
+coverage the meter above takes over the whole opportunity — 4/5 and 19/20 are
+not comparable as numbers at a glance, and two bars are. A story with no mapping
+says so in words rather than showing 0/0, which would read as a mapping that
+found no rules.
+*/}}
+<span class="text-sm text-gray-900 min-w-0">{{.Name}}</span>
+{{if .Mapped}}
+<span class="ml-auto flex items-center gap-2.5 shrink-0">
+  <span class="block w-16 h-1.5 rounded-sm bg-gray-200 overflow-hidden" aria-hidden="true">
+    <span class="block h-full bg-blue-500" style="width: {{percent .Automated .Rules}}%"></span>
+  </span>
+  <span class="font-mono text-xs text-gray-500 whitespace-nowrap">{{.Automated}}<span class="text-gray-400">/{{.Rules}}</span></span>
+</span>
+{{else}}
+<span class="ml-auto text-xs text-gray-400 whitespace-nowrap">{{t "opportunity.unmapped"}}</span>
+{{end}}
+{{end}}
+
+{{define "opportunity-meter"}}
+{{/*
+One figure on the dashboard: the count, the whole it is a share of, the bar that
+makes two meters comparable at a glance, and one link naming where the count is
+acted on. Five of these read as one instrument panel only if they are the same
+shape, so the shape lives here rather than five times over.
+
+The link sits below a hairline in the site's link colour with an arrow. It is
+the only thing on the card that navigates — a figure that looks like it leads
+somewhere and a link that does not look like one is the pair a dashboard cannot
+afford.
+*/}}
+<div class="bg-white rounded-lg border border-gray-200 px-4 py-3 flex flex-col">
+  <div class="flex items-baseline gap-2">
+    <span class="text-xs text-gray-600">{{.Label}}</span>
+    <span class="ml-auto font-mono text-sm font-semibold text-gray-900">{{.Part}}<span class="font-normal text-gray-400">/{{.Total}}</span></span>
+  </div>
+  <div class="mt-2 h-2 rounded-sm bg-gray-200 overflow-hidden" aria-hidden="true">
+    <div class="h-full {{.Fill}}" style="width: {{percent .Part .Total}}%"></div>
+  </div>
+  {{if .LinkPath}}
+  <a href="{{.LinkPath}}" class="mt-2.5 pt-2 border-t border-gray-100 inline-flex items-baseline gap-1 text-[11px] text-blue-600 hover:text-blue-800 hover:underline">
+    {{.LinkLabel}} <span aria-hidden="true">&rarr;</span>
+  </a>
+  {{end}}
+</div>
+{{end}}

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="{{t "lang.code"}}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{.OpportunityName}} - {{t "label.opportunity-progress"}} - livt</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<header class="bg-white border-b border-gray-200">
+  <div class="max-w-3xl mx-auto px-6 py-4 flex items-center gap-3">
+    <a href="../opportunity/{{.OpportunityKey}}.html" class="text-sm text-gray-400 hover:text-gray-600">&larr; {{.OpportunityName}}</a>
+    <span class="text-gray-300">|</span>
+    <span class="text-xl font-bold text-gray-900 tracking-tight">livt</span>
+  </div>
+</header>
+
+<main class="max-w-3xl mx-auto px-6 py-8">
+<div class="flex items-baseline gap-4 flex-wrap mb-1">
+  <h1 class="text-lg font-bold text-gray-900">{{.OpportunityName}}</h1>
+  <span class="text-xs font-semibold uppercase tracking-wide text-orange-600">{{t "label.opportunity-progress"}}</span>
+</div>
+{{/*
+The opportunity's own boards, at page level rather than under a meter: someone
+who came to read the mappings is not answering a figure, and hanging this off
+one would turn it into a claim about that count.
+*/}}
+<div class="flex items-baseline gap-4 flex-wrap mb-6">
+  <p class="text-xs text-gray-400">{{t "opportunity.progress-hint"}}</p>
+  <a href="{{.Progress.MappingsPath}}" class="ml-auto inline-flex items-baseline gap-1 text-xs text-blue-600 hover:text-blue-800 hover:underline">
+    {{t "nav.example-mappings"}} <span aria-hidden="true">&rarr;</span>
+  </a>
+</div>
+
+{{/*
+One meter per figure, because what closes each of them differs: a story by a
+conversation on its board, an un-automated rule by a test, a proposal by an
+agreement, a question by a conversation. Folding the three rule figures into one
+stacked bar said their arithmetic — they share a denominator — at the cost of
+saying what anyone should do about them, and the counts that move are the ones a
+team following a release comes here for.
+
+What is automated has no meter: the breakdown below already says it, slice by
+slice and story by story, and says where. A figure up here that only restates
+what the section under it shows costs the reader a glance and settles nothing —
+and it was the one meter with nowhere to lead, since the site lists no automated
+rules anywhere.
+
+The two rule counts that remain are split the way the Tasks page splits them, so
+a proposal is never also counted as something waiting for a test.
+*/}}
+<div class="grid gap-3 sm:grid-cols-2">
+  {{template "opportunity-meter" meter (t "opportunity.mapped-stories") .Progress.MappedStories .Progress.TotalStories "bg-yellow-400" (t "nav.stories") .Progress.StoriesPath}}
+  {{template "opportunity-meter" meter (t "opportunity.unautomated-rules") (sub (sub .Progress.Rules .Progress.Automated) .Progress.Proposed) .Progress.Rules "bg-gray-500" (t "nav.tasks") .Progress.UnautomatedPath}}
+  {{template "opportunity-meter" meter (t "opportunity.proposed-rules") .Progress.Proposed .Progress.Rules "bg-blue-300" (t "nav.tasks") .Progress.ProposedPath}}
+  {{template "opportunity-meter" meter (t "opportunity.open-questions") .Progress.Questions .Progress.QuestionsAsked "bg-red-400" (t "nav.tasks") .Progress.QuestionsPath}}
+</div>
+
+{{/*
+The stories in their maps' own release slices, which is the order a team heading
+for a release reads them in — and each slice carries its own coverage, because
+that is the number the next release turns on, not the opportunity's.
+
+A map that declares no release leaves one unnamed slice holding every story: it
+gets no heading, since a lone "no release" row would name a distinction the map
+never drew.
+*/}}
+{{/*
+The column is named once, and named with the bars' own colour beside it: a
+label in the corner says what the section is, but a swatch is what tells a
+reader that the blue bar three rows down is the thing being named. Set at the
+weight of the headings below it rather than as small caps in the margin, since
+without it a row reads as a name and two numbers with no unit.
+*/}}
+<div class="flex items-baseline gap-3 mt-8 mb-3 pb-2 border-b-2 border-gray-300">
+  <h2 class="text-sm font-semibold text-gray-800">{{t "opportunity.stories"}}</h2>
+  <span class="font-mono text-xs text-gray-400">{{.Progress.TotalStories}}</span>
+  <span class="ml-auto flex items-center gap-1.5 text-xs font-medium text-gray-600">
+    <span class="w-2.5 h-2.5 rounded-sm bg-blue-500" aria-hidden="true"></span>{{t "opportunity.coverage"}}
+  </span>
+</div>
+
+{{$named := gt (len .Progress.Releases) 1}}
+{{range .Progress.Releases}}
+<section class="mb-6 last:mb-0">
+  {{if $named}}
+  <div class="flex items-baseline gap-3 mb-2 pb-1.5 border-b border-gray-200">
+    <h3 class="text-sm font-semibold {{if .Unscoped}}text-gray-400{{else}}text-purple-800{{end}}">
+      {{if .Unscoped}}{{t "opportunity.unscoped-release"}}{{else}}{{.Name}}{{end}}
+    </h3>
+    {{if not .Unscoped}}<span class="font-mono text-[11px] text-gray-400">{{.ID}}</span>{{end}}
+    <span class="ml-auto flex items-center gap-2.5 shrink-0">
+      <span class="block w-16 h-1.5 rounded-sm bg-gray-200 overflow-hidden" aria-hidden="true">
+        <span class="block h-full bg-blue-500" style="width: {{percent .Automated .Rules}}%"></span>
+      </span>
+      <span class="font-mono text-xs text-gray-500 whitespace-nowrap">{{.Automated}}<span class="text-gray-400">/{{.Rules}}</span></span>
+    </span>
+  </div>
+  {{end}}
+  <div class="space-y-2">
+  {{range .Stories}}
+    {{if .Path}}
+    <a href="{{.Path}}" class="flex items-center gap-3 bg-white rounded-lg border border-gray-200 border-l-4 {{if .Mapped}}border-l-yellow-400 hover:border-l-yellow-500{{else}}border-l-gray-300 hover:border-l-gray-400{{end}} px-4 py-3 hover:shadow-sm transition">
+      {{template "opportunity-story-row" .}}
+    </a>
+    {{else}}
+    <div class="flex items-center gap-3 bg-white rounded-lg border border-gray-200 border-l-4 border-l-gray-300 px-4 py-3">
+      {{template "opportunity-story-row" .}}
+    </div>
+    {{end}}
+  {{end}}
+  </div>
+</section>
+{{end}}
+</main>
+</body>
+</html>

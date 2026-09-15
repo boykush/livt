@@ -31,6 +31,15 @@ func OpportunityPage(opportunityKey string) string {
 	return "opportunity/" + opportunityKey + ".html"
 }
 
+// OpportunityProgressPage is where an opportunity's progress lands. It gets a
+// page of its own rather than a section on the opportunity's, the same split
+// the canvas makes and for the same reason: the opportunity's page states what
+// the opportunity is, which does not change between two visits, and the
+// progress is the part that does. The opportunity's page is the way in.
+func OpportunityProgressPage(opportunityKey string) string {
+	return "opportunity-progress/" + opportunityKey + ".html"
+}
+
 // OpportunityCanvasPage is where OpportunityCanvas lands. The canvas gets a
 // page of its own rather than a section on the opportunity's, so it can be
 // linked, previewed, and read as the board it is — the same split the story

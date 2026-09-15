@@ -158,6 +158,92 @@ A story map whose key names no opportunity file keeps working exactly as it did
 before opportunities were files of their own: the map stands in as its own
 opportunity, named by the map. Nothing has to be migrated.
 
+## The opportunity dashboard
+
+How far an opportunity has been taken is a **page of its own**, linked from the
+opportunity under Related:
+
+```
+opportunity/collaborative-discovery.html               # what the opportunity is
+opportunity-progress/collaborative-discovery.html      # how far it has got
+```
+
+This is the same split the canvas makes, for the same reason: what an
+opportunity *is* reads the same on every visit, and the progress is the part
+that changes. Mixing them would put a figure that moves weekly above a statement
+that has not moved since the opportunity was framed. An opportunity with no
+story map has no progress to read, so it gets no page and links to none.
+
+### Four meters
+
+The page leads with four, each drawn as a share of the whole it belongs to — a
+bare `2` does not say whether a board is nearly agreed, and a filled bar does:
+
+- **Stories through an example mapping** — of the stories its maps hang under
+  the backbone, how many have had their conversation
+- **Un-automated rules** — how many of its rules are waiting for a test
+- **Proposed rules** — how many are waiting for an agreement
+- **Open questions** — against every question its boards have asked, settled
+  ones included
+
+Each gets a meter of its own rather than becoming a segment of another's. The
+rule figures do share a denominator, and one stacked bar would say that
+arithmetic — but what *closes* each of them differs (a test, an agreement, a
+conversation), and a segment inside someone else's bar is not a thing anyone can
+go and do. They are counted the way the [Tasks page](../reference/file-structure.md)
+splits them, so a proposal is never also counted as something waiting for a test.
+
+**What is automated has no meter.** The breakdown below already says it, slice by
+slice and story by story, and says *where* — a figure at the top that only
+restates the section under it costs a glance and settles nothing. It was also the
+one meter with nowhere to lead, since no page on the site lists automated rules.
+The tiles on the Opportunities list do carry it, because a tile has no room for a
+breakdown and one number is all it can offer.
+
+### Stories, in their release slices
+
+Below the gauges the stories are grouped by the **release slice** their map puts
+them in, in the map's declared order, with the stories it left unscoped last.
+Each slice carries its own coverage, because that is the number the next release
+turns on rather than the opportunity's. A map that declares no release leaves
+one unnamed group holding every story, and that group gets no heading — a lone
+"no release" row would name a distinction the map never drew.
+
+Each row draws its own coverage bar beside the fraction — the fraction alone does
+not say that 4/5 and 19/20 are the same measure the meters take, and bars do. The
+column is named once, at the head of the section, **with the bars' own colour
+beside the name**: a label in the corner says what the section is, but the swatch
+is what tells a reader that the blue bar three rows down is the thing being
+named. A story with no example mapping says so in words rather than showing
+`0/0`, which would read as a conversation that found no rules.
+
+### What the figures link to
+
+One link sits at page level, beside the subtitle: the opportunity's own **Example
+Mappings**, narrowed to it. It hangs off no meter, because a reader who came to
+read the boards is not answering a figure, and hanging it under one would turn it
+into a claim about that count.
+
+Each meter then carries **one link, in its footer**, set below a hairline in the site's
+link colour and naming the page it leads to. It is the only thing on the card
+that navigates: a figure that looks like it leads somewhere, paired with a link
+that does not look like one, is what a dashboard cannot afford. A story row opens
+its example mapping, or the story's card until there is one.
+
+
+
+Every destination is a page that already renders what the meter counted, and it
+arrives **at the list it counted** — the Tasks page keeps three, and landing on
+the first leaves the reader to find the other two — narrowed to this opportunity
+through the same filter those lists already carry. Nothing here is a second copy
+of them.
+
+Retired rules are counted in neither gauge, the same way the Tasks page and the
+sidebar badge leave them out: a rule the board has closed is not spec anyone is
+waiting on. A retired question is counted only in the *whole* an open question is
+measured against — a question that has been settled is part of the record of how
+much the boards have worked through.
+
 ## Where opportunities sit
 
 ```

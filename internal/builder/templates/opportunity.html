@@ -43,16 +43,28 @@
 
   {{/*
   Related says how far this opportunity has been taken: a canvas means it was
-  thought through, a story map means it was taken on. Neither link appears
-  before that has happened, so the absence is the record.
+  thought through, a story map means it was taken on, and a progress page means
+  there are stories to report on. None of the three appears before that has
+  happened, so the absence is the record.
+
+  The progress reading lives entirely on its own page rather than being
+  previewed here. What an opportunity *is* reads the same on every visit; how
+  far it has got is the part that changes, and mixing the two would put a
+  figure that moves weekly above a statement that has not moved since the
+  opportunity was framed.
   */}}
-  {{if or .CanvasPath .StoryMaps}}
+  {{if or .CanvasPath .ProgressPath .StoryMaps}}
   <section class="mt-7">
     <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">{{t "story.related"}}</h2>
     <div class="flex gap-3 flex-wrap">
     {{if .CanvasPath}}
       <a href="{{.CanvasPath}}" class="inline-flex items-center gap-1.5 bg-orange-50 text-orange-700 text-sm font-medium px-4 py-2 rounded-lg border border-orange-200 hover:bg-orange-100 transition">
         {{t "label.opportunity-canvas"}} &rarr;
+      </a>
+    {{end}}
+    {{if .ProgressPath}}
+      <a href="{{.ProgressPath}}" class="inline-flex items-center gap-1.5 bg-orange-50 text-orange-700 text-sm font-medium px-4 py-2 rounded-lg border border-orange-200 hover:bg-orange-100 transition">
+        {{t "label.opportunity-progress"}} &rarr;
       </a>
     {{end}}
     {{range .StoryMaps}}

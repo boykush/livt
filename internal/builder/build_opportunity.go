@@ -2,6 +2,7 @@ package builder
 
 import (
 	"fmt"
+	"net/url"
 	"os"
 	"path/filepath"
 	"strings"
@@ -46,8 +47,9 @@ func mapOpportunity(sm *domain.StoryMap, index map[string]*domain.Opportunity) o
 // buildOpportunities builds a page per opportunity and per canvas, and returns a
 // preview tile for each on the Opportunities hub. mapsByKey names the story maps
 // that share an opportunity's key, so the opportunity links the journey mapped
-// for it.
-func (b *Builder) buildOpportunities(mapsByKey map[string][]storyMapRef) ([]opportunityTile, error) {
+// for it; storiesByKey and tallies are what its progress is summed from, which
+// is why this runs after the mappings rather than beside the maps.
+func (b *Builder) buildOpportunities(mapsByKey map[string][]storyMapRef, storiesByKey map[string][]opportunityReleaseStories, tallies map[string]mappingTally) ([]opportunityTile, error) {
 	opportunities, err := parser.ParseAllOpportunities(b.OpportunitiesDir)
 	if err != nil {
 		return nil, err
@@ -63,8 +65,20 @@ func (b *Builder) buildOpportunities(mapsByKey map[string][]storyMapRef) ([]oppo
 			}
 		}
 
+		progress := b.progressOf(o, storiesByKey[o.Key.Value], tallies)
+		progressPath := ""
+		// An opportunity nobody has mapped a journey for has no progress to
+		// read, so it gets no page — the same way one with no canvas links to
+		// none, and for the same reason: the absence is the record.
+		if progress.TotalStories > 0 {
+			progressPath = "../" + uri.OpportunityProgressPage(o.Key.Value)
+			if err := b.buildOpportunityProgress(o, progress); err != nil {
+				return nil, err
+			}
+		}
+
 		outPath := filepath.Join(b.OutDir, uri.OpportunityPage(o.Key.Value))
-		if err := b.renderOpportunityPage(outPath, o, canvasPath, mapsByKey[o.Key.Value]); err != nil {
+		if err := b.renderOpportunityPage(outPath, o, canvasPath, progressPath, mapsByKey[o.Key.Value], progress); err != nil {
 			return nil, err
 		}
 		fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))
@@ -76,24 +90,157 @@ func (b *Builder) buildOpportunities(mapsByKey map[string][]storyMapRef) ([]oppo
 			HasCanvas: canvasPath != "",
 			StoryMaps: rootRelativeMaps(mapsByKey[o.Key.Value]),
 			Links:     urlMetaFieldViews(o.Meta),
+			Progress:  progress,
 		})
 	}
 
 	return tiles, nil
 }
 
-func (b *Builder) renderOpportunityPage(path string, o *domain.Opportunity, canvasPath string, maps []storyMapRef) error {
+func (b *Builder) renderOpportunityPage(path string, o *domain.Opportunity, canvasPath, progressPath string, maps []storyMapRef, progress opportunityProgress) error {
 	f, err := os.Create(path)
 	if err != nil {
 		return err
 	}
 	defer f.Close()
 	return renderOpportunity(f, b.Lang, opportunityView{
-		Opportunity: o,
-		Meta:        metaFieldViews(o.Meta),
-		CanvasPath:  canvasPath,
-		StoryMaps:   maps,
+		Opportunity:  o,
+		Meta:         metaFieldViews(o.Meta),
+		CanvasPath:   canvasPath,
+		ProgressPath: progressPath,
+		StoryMaps:    maps,
+		Progress:     progress,
 	})
+}
+
+// buildOpportunityProgress renders the story-by-story reading of how far an
+// opportunity has been taken. The opportunity's own page carries the two gauges
+// and leads here: what an opportunity *is* does not change between two visits,
+// and this is the part that does.
+func (b *Builder) buildOpportunityProgress(o *domain.Opportunity, progress opportunityProgress) error {
+	outPath := filepath.Join(b.OutDir, uri.OpportunityProgressPage(o.Key.Value))
+	f, err := os.Create(outPath)
+	if err != nil {
+		return err
+	}
+	defer f.Close()
+	if err := renderOpportunityProgress(f, b.Lang, opportunityProgressView{
+		OpportunityKey:  o.Key.Value,
+		OpportunityName: o.DisplayName(),
+		Progress:        progress,
+	}); err != nil {
+		return err
+	}
+	fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))
+	return nil
+}
+
+// opportunityProgress is how far an opportunity has been taken, on the two axes
+// that move independently: how many of the stories it took on have been through
+// an example mapping, and how many of the rules that produced are held by
+// tests. Folding the two into one number would let a high automation ratio over
+// a third of the stories read as nearly done.
+type opportunityProgress struct {
+	// Releases are the opportunity's stories in its maps' own release slices,
+	// which is the order a team heading for a release reads them in. A map that
+	// declares no release leaves one unnamed slice holding every story.
+	Releases       []opportunityReleaseRow
+	TotalStories   int
+	MappedStories  int
+	Rules          int
+	Automated      int
+	Proposed       int
+	Questions      int
+	QuestionsAsked int
+	// StoriesPath and TasksPath narrow the lists that already render these
+	// items down to this opportunity, through the filter bar's own query
+	// parameter — so a figure here is a way into the page that owns it rather
+	// than a second place the same list is kept. Each Tasks link carries the
+	// anchor of the list it counts, since that page keeps three and landing on
+	// the first leaves the reader to find the other two.
+	StoriesPath string
+	// MappingsPath is the opportunity's boards, and belongs to no meter: a
+	// reader who came to look at the mappings themselves is not answering a
+	// figure, and hanging it off one would make it a claim about that count.
+	MappingsPath    string
+	QuestionsPath   string
+	ProposedPath    string
+	UnautomatedPath string
+}
+
+// opportunityReleaseRow is one release slice on the progress page, carrying its
+// own coverage: a team heading for a release wants that slice's number, not the
+// opportunity's.
+type opportunityReleaseRow struct {
+	ID            string
+	Name          string
+	Stories       []opportunityStoryRow
+	MappedStories int
+	Rules         int
+	Automated     int
+}
+
+// Unscoped reports whether this is the remainder rather than a stage of the
+// plan. The page names it only when there is a named slice to tell it from.
+func (r opportunityReleaseRow) Unscoped() bool { return r.ID == "" }
+
+// opportunityStoryRow is one story the opportunity took on. Path is the story's
+// example mapping once it has one and its story page until then, because that
+// is where a reader can act on the row in either state.
+type opportunityStoryRow struct {
+	Name      string
+	Path      string
+	Mapped    bool
+	Rules     int
+	Automated int
+}
+
+// progressOf sums one opportunity's stories. storyKeys is the opportunity's own
+// keyed stories in map order, and tallies holds the counts of every mapping the
+// build read; a key missing from it is a story whose conversation has not been
+// held yet, which is the measurement rather than an absence of data.
+func (b *Builder) progressOf(o *domain.Opportunity, slices []opportunityReleaseStories, tallies map[string]mappingTally) opportunityProgress {
+	narrow := "?" + opportunityFilterParam + "=" + url.QueryEscape(o.DisplayName())
+	tasks := "../tasks.html" + narrow + "#"
+	p := opportunityProgress{
+		StoriesPath:     "../stories.html" + narrow,
+		MappingsPath:    "../index.html" + narrow,
+		QuestionsPath:   tasks + tasksQuestionsAnchor,
+		ProposedPath:    tasks + tasksProposedAnchor,
+		UnautomatedPath: tasks + tasksRulesAnchor,
+	}
+	for _, slice := range slices {
+		row := opportunityReleaseRow{ID: slice.ID, Name: slice.Name}
+		for _, key := range slice.Keys {
+			storyKey := domain.StoryKey{Value: key}
+			t, mapped := tallies[key]
+			story := opportunityStoryRow{
+				Name:      b.resolveStoryName(storyKey),
+				Mapped:    mapped,
+				Rules:     t.Rules,
+				Automated: t.Automated,
+			}
+			switch {
+			case mapped:
+				story.Path = "../" + uri.MappingPage(key)
+				row.MappedStories++
+				row.Rules += t.Rules
+				row.Automated += t.Automated
+				p.Proposed += t.Proposed
+				p.Questions += t.Questions
+				p.QuestionsAsked += t.QuestionsAsked
+			case b.hasStoryPage(storyKey):
+				story.Path = "../" + uri.StoryPage(key)
+			}
+			row.Stories = append(row.Stories, story)
+		}
+		p.TotalStories += len(row.Stories)
+		p.MappedStories += row.MappedStories
+		p.Rules += row.Rules
+		p.Automated += row.Automated
+		p.Releases = append(p.Releases, row)
+	}
+	return p
 }
 
 // buildOpportunityCanvas renders the ten-box board for one opportunity.
