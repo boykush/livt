@@ -30,17 +30,17 @@ stacked bar said their arithmetic — they share a denominator — at the cost o
 saying what anyone should do about them, and the counts that move are the ones a
 team following a release comes here for.
 
-Automated, proposed and un-automated are counted the way the Tasks page splits
-them, so they sum to the live rules rather than double-counting a proposal as
-something waiting for a test.
+What is automated has no meter: the breakdown below already says it, slice by
+slice and story by story, and says where. A figure up here that only restates
+what the section under it shows costs the reader a glance and settles nothing —
+and it was the one meter with nowhere to lead, since the site lists no automated
+rules anywhere.
+
+The two rule counts that remain are split the way the Tasks page splits them, so
+a proposal is never also counted as something waiting for a test.
 */}}
-<div class="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+<div class="grid gap-3 sm:grid-cols-2">
   {{template "opportunity-meter" meter (t "opportunity.mapped-stories") .Progress.MappedStories .Progress.TotalStories "bg-yellow-400" (t "nav.stories") .Progress.StoriesPath}}
-  {{/* No link: nothing on the site lists automated rules. The Tasks page keeps
-  what is unfinished by design, and the Example Mappings list renders boards
-  rather than rules — sending a reader there would promise what every other
-  meter's link delivers and hand them something else. */}}
-  {{template "opportunity-meter" meter (t "opportunity.automated-rules") .Progress.Automated .Progress.Rules "bg-blue-500" "" ""}}
   {{template "opportunity-meter" meter (t "opportunity.unautomated-rules") (sub (sub .Progress.Rules .Progress.Automated) .Progress.Proposed) .Progress.Rules "bg-gray-500" (t "nav.tasks") .Progress.UnautomatedPath}}
   {{template "opportunity-meter" meter (t "opportunity.proposed-rules") .Progress.Proposed .Progress.Rules "bg-blue-300" (t "nav.tasks") .Progress.ProposedPath}}
   {{template "opportunity-meter" meter (t "opportunity.open-questions") .Progress.Questions .Progress.QuestionsAsked "bg-red-400" (t "nav.tasks") .Progress.QuestionsPath}}

@@ -85,11 +85,11 @@ var en = Catalog{
 	"opportunity.unscoped-release":  "No release",
 	"opportunity.progress-hint":     "how far this opportunity has been taken",
 	"opportunity.mapped-stories":    "Stories through an example mapping",
-	"opportunity.automated-rules":   "Automated rules",
 	"opportunity.stories":           "Stories",
 	"opportunity.unmapped":          "No example mapping yet",
 	"opportunity.open-questions":    "Open questions",
 	"opportunity.proposed-rules":    "Proposed rules",
+	"opportunity.automated-rules":   "Automated rules",
 	"opportunity.unautomated-rules": "Un-automated rules",
 
 	// The canvas's three zones, and the ten boxes keyed by domain.CanvasBox.Key.

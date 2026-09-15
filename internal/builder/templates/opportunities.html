@@ -28,10 +28,12 @@
         <span class="w-2.5 h-2.5 rounded-sm bg-orange-400"></span>
         <span class="text-sm font-semibold text-orange-900">{{.Name}}</span>
         {{/*
-        The same two figures the opportunity's own page leads with, so the hub
-        says which opportunity is moving without being opened. Each wears its
-        resource's sticky colour, which is what tells the two fractions apart
-        at this size.
+        How far along, without opening the opportunity. Automation is the figure
+        here even though the dashboard has no meter for it: there the breakdown
+        below says it slice by slice, and a tile has no room for a breakdown —
+        one number is all it can offer, and that is the one. Each wears its
+        resource's sticky colour, which is what tells the two fractions apart at
+        this size.
         */}}
         {{if .Progress.TotalStories}}
         <span class="ml-auto flex items-center gap-3 font-mono text-xs">

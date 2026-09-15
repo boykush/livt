@@ -174,33 +174,31 @@ that changes. Mixing them would put a figure that moves weekly above a statement
 that has not moved since the opportunity was framed. An opportunity with no
 story map has no progress to read, so it gets no page and links to none.
 
-### Five meters
+### Four meters
 
-The page leads with five, each drawn as a share of the whole it belongs to — a
+The page leads with four, each drawn as a share of the whole it belongs to — a
 bare `2` does not say whether a board is nearly agreed, and a filled bar does:
 
 - **Stories through an example mapping** — of the stories its maps hang under
   the backbone, how many have had their conversation
-- **Automated rules** — of the rules those conversations produced, how many are
-  marked [`automated`](./example-mappings.md)
-- **Un-automated rules** — how many are waiting for a test
+- **Un-automated rules** — how many of its rules are waiting for a test
 - **Proposed rules** — how many are waiting for an agreement
 - **Open questions** — against every question its boards have asked, settled
   ones included
 
 Each gets a meter of its own rather than becoming a segment of another's. The
-three rule figures do share a denominator, and one stacked bar would say that
+rule figures do share a denominator, and one stacked bar would say that
 arithmetic — but what *closes* each of them differs (a test, an agreement, a
 conversation), and a segment inside someone else's bar is not a thing anyone can
 go and do. They are counted the way the [Tasks page](../reference/file-structure.md)
-splits them, so they sum to the live rules instead of counting a proposal as
-something waiting for a test.
+splits them, so a proposal is never also counted as something waiting for a test.
 
-Stories and rules stay separate figures for the same reason they are separate
-axes: an opportunity can have every rule automated across a third of its
-stories, and one combined number would read as nearly done when two thirds of it
-has never been discussed. The first two appear on each tile of the Opportunities
-list, so the hub says which opportunity is moving without being opened.
+**What is automated has no meter.** The breakdown below already says it, slice by
+slice and story by story, and says *where* — a figure at the top that only
+restates the section under it costs a glance and settles nothing. It was also the
+one meter with nowhere to lead, since no page on the site lists automated rules.
+The tiles on the Opportunities list do carry it, because a tile has no room for a
+breakdown and one number is all it can offer.
 
 ### Stories, in their release slices
 
@@ -227,10 +225,7 @@ that navigates: a figure that looks like it leads somewhere, paired with a link
 that does not look like one, is what a dashboard cannot afford. A story row opens
 its example mapping, or the story's card until there is one.
 
-Automated rules carry **no link**, because nothing on the site lists them. The
-Tasks page keeps what is unfinished by design, and the Example Mappings list
-renders boards rather than rules — a link there would promise what every other
-meter's link delivers and hand the reader something else.
+
 
 Every destination is a page that already renders what the meter counted, and it
 arrives **at the list it counted** — the Tasks page keeps three, and landing on

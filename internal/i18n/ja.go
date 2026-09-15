@@ -83,11 +83,11 @@ var ja = Catalog{
 	"opportunity.unscoped-release":  "リリース未指定",
 	"opportunity.progress-hint":     "このオポチュニティがどこまで進んでいるか",
 	"opportunity.mapped-stories":    "実例マッピング済みのストーリー",
-	"opportunity.automated-rules":   "自動化済みのルール",
 	"opportunity.stories":           "ストーリー",
 	"opportunity.unmapped":          "実例マッピング未着手",
 	"opportunity.open-questions":    "未解決の疑問点",
 	"opportunity.proposed-rules":    "提案中のルール",
+	"opportunity.automated-rules":   "自動化済みのルール",
 	"opportunity.unautomated-rules": "未自動化のルール",
 
 	"canvas.zone.facts":    "確かめられる事実",

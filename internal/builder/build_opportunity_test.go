@@ -443,7 +443,6 @@ func TestOpportunityDashboardMetersCarryTheirWhole(t *testing.T) {
 	// as waiting for one; one of the two questions the boards asked is open.
 	for label, want := range map[string]string{
 		"opportunity.mapped-stories":    `>2<span class="font-normal text-gray-400">/3<`,
-		"opportunity.automated-rules":   `>1<span class="font-normal text-gray-400">/3<`,
 		"opportunity.unautomated-rules": `>1<span class="font-normal text-gray-400">/3<`,
 		"opportunity.proposed-rules":    `>1<span class="font-normal text-gray-400">/3<`,
 		"opportunity.open-questions":    `>1<span class="font-normal text-gray-400">/2<`,
