@@ -178,7 +178,7 @@ opportunity is moving without being opened.
 The gauges are the way in; the breakdown has a **page of its own**:
 
 ```
-opportunity/collaborative-discovery.md.html            # what the opportunity is
+opportunity/collaborative-discovery.html               # what the opportunity is
 opportunity-progress/collaborative-discovery.html      # how far it has got
 ```
 
