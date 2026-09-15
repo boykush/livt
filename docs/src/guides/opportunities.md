@@ -221,11 +221,16 @@ named. A story with no example mapping says so in words rather than showing
 
 ### What the figures link to
 
-Each meter carries **one link, in its footer**, set below a hairline in the
-site's link colour and naming the page it leads to. It is the only thing on the
-card that navigates: a figure that looks like it leads somewhere, paired with a
-link that does not look like one, is what a dashboard cannot afford. A story row
-opens its example mapping, or the story's card until there is one.
+A meter carries **one link, in its footer**, set below a hairline in the site's
+link colour and naming the page it leads to. It is the only thing on the card
+that navigates: a figure that looks like it leads somewhere, paired with a link
+that does not look like one, is what a dashboard cannot afford. A story row opens
+its example mapping, or the story's card until there is one.
+
+Automated rules carry **no link**, because nothing on the site lists them. The
+Tasks page keeps what is unfinished by design, and the Example Mappings list
+renders boards rather than rules — a link there would promise what every other
+meter's link delivers and hand the reader something else.
 
 Every destination is a page that already renders what the meter counted, and it
 arrives **at the list it counted** — the Tasks page keeps three, and landing on
