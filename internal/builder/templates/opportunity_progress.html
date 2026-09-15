@@ -51,9 +51,19 @@ A map that declares no release leaves one unnamed slice holding every story: it
 gets no heading, since a lone "no release" row would name a distinction the map
 never drew.
 */}}
-<div class="flex items-baseline gap-3 mt-8 mb-2">
-  <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400">{{t "opportunity.stories"}}</h2>
-  <span class="ml-auto text-xs font-semibold uppercase tracking-wide text-gray-400">{{t "opportunity.coverage"}}</span>
+{{/*
+The column is named once, and named with the bars' own colour beside it: a
+label in the corner says what the section is, but a swatch is what tells a
+reader that the blue bar three rows down is the thing being named. Set at the
+weight of the headings below it rather than as small caps in the margin, since
+without it a row reads as a name and two numbers with no unit.
+*/}}
+<div class="flex items-baseline gap-3 mt-8 mb-3 pb-2 border-b-2 border-gray-300">
+  <h2 class="text-sm font-semibold text-gray-800">{{t "opportunity.stories"}}</h2>
+  <span class="font-mono text-xs text-gray-400">{{.Progress.TotalStories}}</span>
+  <span class="ml-auto flex items-center gap-1.5 text-xs font-medium text-gray-600">
+    <span class="w-2.5 h-2.5 rounded-sm bg-blue-500" aria-hidden="true"></span>{{t "opportunity.coverage"}}
+  </span>
 </div>
 
 {{$named := gt (len .Progress.Releases) 1}}

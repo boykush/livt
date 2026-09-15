@@ -211,11 +211,13 @@ turns on rather than the opportunity's. A map that declares no release leaves
 one unnamed group holding every story, and that group gets no heading — a lone
 "no release" row would name a distinction the map never drew.
 
-Each row draws its own coverage bar beside the fraction, under a column headed
-**Rules automated** — the fraction alone does not say that 4/5 and 19/20 are the
-same measure the gauges take, and bars do. A story with no example mapping says
-so in words rather than showing `0/0`, which would read as a conversation that
-found no rules.
+Each row draws its own coverage bar beside the fraction — the fraction alone does
+not say that 4/5 and 19/20 are the same measure the meters take, and bars do. The
+column is named once, at the head of the section, **with the bars' own colour
+beside the name**: a label in the corner says what the section is, but the swatch
+is what tells a reader that the blue bar three rows down is the thing being
+named. A story with no example mapping says so in words rather than showing
+`0/0`, which would read as a conversation that found no rules.
 
 ### What the figures link to
 
