@@ -35,6 +35,7 @@ func funcs(lang i18n.Lang) template.FuncMap {
 		"percent":           percent,
 		"sub":               func(a, b int) int { return a - b },
 		"meter":             newMeterView,
+		"burndown":          newBurndownView,
 		"tasksAnchors":      tasksAnchors,
 	}
 }
@@ -85,13 +86,35 @@ type meterView struct {
 	Part  int
 	Total int
 	Fill  string
+	// Rest is what the rest of the bar means, and it is not the same question
+	// for every meter here. A coverage meter counts toward its whole, so its
+	// remainder is ground not yet covered and stays an empty track. A meter
+	// counting what is left over counts toward zero, so its remainder is work
+	// already dealt with and is drawn solid — otherwise the best reading it can
+	// report, nothing left, renders as an empty bar and reads as nothing done.
+	Rest string
 	// LinkLabel names the page the count is acted on; empty draws no footer.
 	LinkLabel string
 	LinkPath  string
 }
 
+const (
+	meterUncovered = "bg-gray-200" // ground the count has not reached
+	meterSettled   = "bg-gray-400" // work the count no longer has to reach
+)
+
+// meter counts toward its whole: more of it is better, and what is left of the
+// bar is ground still to cover.
 func newMeterView(label string, part, total int, fill, linkLabel, linkPath string) meterView {
-	return meterView{Label: label, Part: part, Total: total, Fill: fill, LinkLabel: linkLabel, LinkPath: linkPath}
+	return meterView{Label: label, Part: part, Total: total, Fill: fill, Rest: meterUncovered, LinkLabel: linkLabel, LinkPath: linkPath}
+}
+
+// burndown counts toward zero: less of it is better, and what is left of the
+// bar is what has already been settled.
+func newBurndownView(label string, part, total int, fill, linkLabel, linkPath string) meterView {
+	v := newMeterView(label, part, total, fill, linkLabel, linkPath)
+	v.Rest = meterSettled
+	return v
 }
 
 // idBadge is a sticky's own ID rendered bottom-right by the id-badge partial.
