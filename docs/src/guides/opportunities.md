@@ -174,31 +174,35 @@ that changes. Mixing them would put a figure that moves weekly above a statement
 that has not moved since the opportunity was framed. An opportunity with no
 story map has no progress to read, so it gets no page and links to none.
 
-### Four meters
+### Three meters
 
-The page leads with four, each drawn as a share of the whole it belongs to — a
+The page leads with three, each drawn as a share of the whole it belongs to — a
 bare `2` does not say whether a board is nearly agreed, and a filled bar does:
 
 - **Stories through an example mapping** — of the stories its maps hang under
   the backbone, how many have had their conversation
-- **Un-automated rules** — how many of its rules are waiting for a test
-- **Proposed rules** — how many are waiting for an agreement
+- **Proposed rules** — how many of its rules are waiting for an agreement
 - **Open questions** — against every question its boards have asked, settled
   ones included
 
-Each gets a meter of its own rather than becoming a segment of another's. The
-rule figures do share a denominator, and one stacked bar would say that
-arithmetic — but what *closes* each of them differs (a test, an agreement, a
-conversation), and a segment inside someone else's bar is not a thing anyone can
-go and do. They are counted the way the [Tasks page](../reference/file-structure.md)
-splits them, so a proposal is never also counted as something waiting for a test.
+Each gets a meter of its own rather than becoming a segment of another's. What
+*closes* each of them differs — a conversation, an agreement, an answer — and a
+segment inside someone else's bar is not a thing anyone can go and do.
 
-**What is automated has no meter.** The breakdown below already says it, slice by
-slice and story by story, and says *where* — a figure at the top that only
-restates the section under it costs a glance and settles nothing. It was also the
-one meter with nowhere to lead, since no page on the site lists automated rules.
-The tiles on the Opportunities list do carry it, because a tile has no room for a
-breakdown and one number is all it can offer.
+They are not all the same kind of measure, and the bars say which is which. The
+stories meter **counts toward its whole**: more is better, and what is left of
+the bar is ground still to cover, so it stays an empty track. The other two
+**count toward zero**: less is better, and what is left of the bar is work
+already settled, so it is drawn solid. Left as an empty track, the best reading
+those meters can give — nothing waiting — rendered as an empty bar, which reads
+as nothing done.
+
+**Automation carries no meter, either way round.** As coverage it only restates
+the breakdown below, which says the same thing slice by slice and story by story
+and says *where*. As a count of what is left it is the remainder of a coverage
+figure, and a bar that empties toward the goal reads backwards beside two that
+fill toward it. The tiles on the Opportunities list do carry it, because a tile
+has no room for a breakdown and one number is all it can offer.
 
 ### Stories, in their release slices
 
@@ -219,10 +223,11 @@ named. A story with no example mapping says so in words rather than showing
 
 ### What the figures link to
 
-One link sits at page level, beside the subtitle: the opportunity's own **Example
-Mappings**, narrowed to it. It hangs off no meter, because a reader who came to
-read the boards is not answering a figure, and hanging it under one would turn it
-into a claim about that count.
+Two links sit at page level, beside the subtitle: the opportunity's own **Example
+Mappings**, and the **rules still waiting for a test**. Neither hangs off a
+meter — a reader who came to read the boards is not answering a figure, and how
+many rules are left is the remainder of a coverage the breakdown already draws.
+Both are destinations rather than counts, so they are written as destinations.
 
 Each meter then carries **one link, in its footer**, set below a hairline in the site's
 link colour and naming the page it leads to. It is the only thing on the card

@@ -438,23 +438,38 @@ func TestOpportunityDashboardMetersCarryTheirWhole(t *testing.T) {
 	html := readFile(t, filepath.Join(b.OutDir, "opportunity-progress", "demo.html"))
 
 	en := i18n.Of(i18n.En)
-	// Two of three stories mapped; of three live rules one is automated, one is
-	// proposed and one is left waiting for a test — the proposal is not counted
-	// as waiting for one; one of the two questions the boards asked is open.
+	// Two of three stories mapped, one of three live rules proposed, one of the
+	// two questions the boards asked still open. Each is a meter, and each meter
+	// is followed by its own whole.
 	for label, want := range map[string]string{
-		"opportunity.mapped-stories":    `>2<span class="font-normal text-gray-400">/3<`,
-		"opportunity.unautomated-rules": `>1<span class="font-normal text-gray-400">/3<`,
-		"opportunity.proposed-rules":    `>1<span class="font-normal text-gray-400">/3<`,
-		"opportunity.open-questions":    `>1<span class="font-normal text-gray-400">/2<`,
+		"opportunity.mapped-stories": `>2<span class="font-normal text-gray-400">/3<`,
+		"opportunity.proposed-rules": `>1<span class="font-normal text-gray-400">/3<`,
+		"opportunity.open-questions": `>1<span class="font-normal text-gray-400">/2<`,
 	} {
 		msg := en.Msg(label)
-		if !strings.Contains(html, msg) {
+		i := strings.Index(html, msg)
+		if i < 0 {
 			t.Errorf("%s has no meter of its own", msg)
 			continue
 		}
-		if !strings.Contains(html[strings.Index(html, msg):], want) {
+		// Bounded to the card the label heads, so a fraction further down the
+		// page cannot stand in for the one this meter should carry.
+		card := html[i:min(i+400, len(html))]
+		if !strings.Contains(card, want) {
 			t.Errorf("the %s meter is missing its whole: expected %q", msg, want)
 		}
+	}
+
+	// Automation carries no meter either way round: as coverage it restates the
+	// breakdown below, and as a count of what is left it empties toward the goal
+	// beside two meters that fill toward it. What is left of it is a place to
+	// go, so it keeps a link and loses its figure.
+	unautomated := en.Msg("opportunity.unautomated-rules")
+	if strings.Contains(html, unautomated+`</span>`) {
+		t.Error("automation should carry no meter on the dashboard")
+	}
+	if !strings.Contains(html, unautomated+` <span aria-hidden="true">&rarr;</span>`) {
+		t.Error("the rules still waiting for a test should stay reachable as a link")
 	}
 }
 

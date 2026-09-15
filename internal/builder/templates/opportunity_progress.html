@@ -27,9 +27,17 @@ one would turn it into a claim about that count.
 */}}
 <div class="flex items-baseline gap-4 flex-wrap mb-6">
   <p class="text-xs text-gray-400">{{t "opportunity.progress-hint"}}</p>
-  <a href="{{.Progress.MappingsPath}}" class="ml-auto inline-flex items-baseline gap-1 text-xs text-blue-600 hover:text-blue-800 hover:underline">
-    {{t "nav.example-mappings"}} <span aria-hidden="true">&rarr;</span>
-  </a>
+  <span class="ml-auto flex items-baseline gap-4 flex-wrap">
+    <a href="{{.Progress.MappingsPath}}" class="inline-flex items-baseline gap-1 text-xs text-blue-600 hover:text-blue-800 hover:underline">
+      {{t "nav.example-mappings"}} <span aria-hidden="true">&rarr;</span>
+    </a>
+    {{/* A destination rather than a figure: the rules still waiting for a test
+    are worth reaching from here, but how many there are is the remainder of a
+    coverage the breakdown below already draws. */}}
+    <a href="{{.Progress.UnautomatedPath}}" class="inline-flex items-baseline gap-1 text-xs text-blue-600 hover:text-blue-800 hover:underline">
+      {{t "nav.tasks"}} / {{t "opportunity.unautomated-rules"}} <span aria-hidden="true">&rarr;</span>
+    </a>
+  </span>
 </div>
 
 {{/*
@@ -40,20 +48,26 @@ stacked bar said their arithmetic — they share a denominator — at the cost o
 saying what anyone should do about them, and the counts that move are the ones a
 team following a release comes here for.
 
-What is automated has no meter: the breakdown below already says it, slice by
-slice and story by story, and says where. A figure up here that only restates
-what the section under it shows costs the reader a glance and settles nothing —
-and it was the one meter with nowhere to lead, since the site lists no automated
-rules anywhere.
+Three of the four count toward zero rather than toward their whole, so the rest
+of their bar is work already settled and is drawn solid. Left as an empty track
+it said the opposite of what it meant: no proposals waiting — the best reading
+the meter can give — rendered as an empty bar, which reads as nothing done.
 
-The two rule counts that remain are split the way the Tasks page splits them, so
-a proposal is never also counted as something waiting for a test.
+Automation has no meter either way round. As coverage it only restates the
+breakdown below, which says the same thing slice by slice and story by story and
+says where; as a count of what is left it is the remainder of a coverage figure,
+and a bar that empties toward the goal reads backwards beside two that fill
+toward it. Its one useful offer was the way to the list of rules still waiting
+for a test, and that is a destination rather than a figure, so it moved up to the
+link row with the boards.
+
+Proposals are counted the way the Tasks page counts them — a rule put forward is
+never also counted as one waiting for a test.
 */}}
-<div class="grid gap-3 sm:grid-cols-2">
+<div class="grid gap-3 sm:grid-cols-3">
   {{template "opportunity-meter" meter (t "opportunity.mapped-stories") .Progress.MappedStories .Progress.TotalStories "bg-yellow-400" (t "nav.stories") .Progress.StoriesPath}}
-  {{template "opportunity-meter" meter (t "opportunity.unautomated-rules") (sub (sub .Progress.Rules .Progress.Automated) .Progress.Proposed) .Progress.Rules "bg-gray-500" (t "nav.tasks") .Progress.UnautomatedPath}}
-  {{template "opportunity-meter" meter (t "opportunity.proposed-rules") .Progress.Proposed .Progress.Rules "bg-blue-300" (t "nav.tasks") .Progress.ProposedPath}}
-  {{template "opportunity-meter" meter (t "opportunity.open-questions") .Progress.Questions .Progress.QuestionsAsked "bg-red-400" (t "nav.tasks") .Progress.QuestionsPath}}
+  {{template "opportunity-meter" burndown (t "opportunity.proposed-rules") .Progress.Proposed .Progress.Rules "bg-blue-300" (t "nav.tasks") .Progress.ProposedPath}}
+  {{template "opportunity-meter" burndown (t "opportunity.open-questions") .Progress.Questions .Progress.QuestionsAsked "bg-red-400" (t "nav.tasks") .Progress.QuestionsPath}}
 </div>
 
 {{/*
