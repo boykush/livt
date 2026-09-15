@@ -35,6 +35,7 @@ func funcs(lang i18n.Lang) template.FuncMap {
 		"percent":           percent,
 		"sub":               func(a, b int) int { return a - b },
 		"legend":            newLegendItem,
+		"meterLink":         newMeterLink,
 		"tasksAnchors":      tasksAnchors,
 	}
 }
@@ -75,17 +76,26 @@ func percent(part, total int) int {
 }
 
 // legendItem names one segment of a meter on the opportunity dashboard. Fill is
-// the segment's own class, so the legend is read off the bar; Path is the list
-// holding those items, and is empty for a segment with nowhere to go.
+// the segment's own class, so the legend is read off the bar.
 type legendItem struct {
 	Label string
 	Count int
 	Fill  string
+}
+
+func newLegendItem(label string, count int, fill string) legendItem {
+	return legendItem{Label: label, Count: count, Fill: fill}
+}
+
+// meterLink is a meter's footer: the list its count can be acted on in, named
+// by page and list so the destination is read before the click.
+type meterLink struct {
+	Label string
 	Path  string
 }
 
-func newLegendItem(label string, count int, fill, path string) legendItem {
-	return legendItem{Label: label, Count: count, Fill: fill, Path: path}
+func newMeterLink(label, path string) meterLink {
+	return meterLink{Label: label, Path: path}
 }
 
 // idBadge is a sticky's own ID rendered bottom-right by the id-badge partial.

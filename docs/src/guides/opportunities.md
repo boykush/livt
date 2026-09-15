@@ -217,13 +217,17 @@ found no rules.
 
 ### What the figures link to
 
-Every figure is a way into the page that already renders what it counts: the
-story gauge opens the Stories list, each chip opens the
-[Tasks page](../reference/file-structure.md) **at the list it counted** — that
-page keeps three, and landing on the first leaves the reader to find the other
-two — and a row opens its example mapping, or the story's card until there is
-one. The lists arrive narrowed to this opportunity through the same filter they
-already carry, so nothing here is a second copy of them.
+Each meter carries **one link, in its footer**, naming the page and the list it
+leads to — `Tasks / Un-automated rules`. The legend above it only ever labels: a
+legend item that navigated looked exactly like one that did not, which is a
+worse offer than never making one. A story row opens its example mapping, or the
+story's card until there is one.
+
+Every destination is a page that already renders what the meter counted, and it
+arrives **at the list it counted** — the Tasks page keeps three, and landing on
+the first leaves the reader to find the other two — narrowed to this opportunity
+through the same filter those lists already carry. Nothing here is a second copy
+of them.
 
 Retired rules are counted in neither gauge, the same way the Tasks page and the
 sidebar badge leave them out: a rule the board has closed is not spec anyone is

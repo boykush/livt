@@ -22,19 +22,24 @@ found no rules.
 {{define "opportunity-legend-item"}}
 {{/*
 One segment of a meter, named and counted, wearing the segment's own fill so the
-legend is read off the bar rather than beside it. A segment with somewhere to go
-links there; the rest are plain, because a legend item that looks clickable and
-is not is worse than one that never offered.
+legend is read off the bar rather than beside it. Never a link: a legend that
+navigated looked exactly like one that did not, which is worse than a legend
+that only ever labels. Where to go is said once, plainly, in the card's footer.
 */}}
-{{if .Path}}
-<a href="{{.Path}}" class="flex items-center gap-1.5 hover:text-gray-900 transition">
-  <span class="w-2 h-2 rounded-sm {{.Fill}} shrink-0" aria-hidden="true"></span>
-  {{.Label}} <span class="font-mono text-gray-700">{{.Count}}</span>
-</a>
-{{else}}
 <span class="flex items-center gap-1.5">
   <span class="w-2 h-2 rounded-sm {{.Fill}} shrink-0" aria-hidden="true"></span>
   {{.Label}} <span class="font-mono text-gray-700">{{.Count}}</span>
 </span>
 {{end}}
+
+{{define "opportunity-meter-link"}}
+{{/*
+Where a meter's count can be acted on, named by the page it lives on and the
+list within it. Set apart below a rule and in the site's link colour, because
+the one thing the dashboard cannot afford is a figure that looks like it leads
+somewhere and a link that does not look like one.
+*/}}
+<a href="{{.Path}}" class="inline-flex items-baseline gap-1 text-[11px] text-blue-600 hover:text-blue-800 hover:underline">
+  {{.Label}} <span aria-hidden="true">&rarr;</span>
+</a>
 {{end}}
