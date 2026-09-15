@@ -219,7 +219,12 @@ named. A story with no example mapping says so in words rather than showing
 
 ### What the figures link to
 
-A meter carries **one link, in its footer**, set below a hairline in the site's
+One link sits at page level, beside the subtitle: the opportunity's own **Example
+Mappings**, narrowed to it. It hangs off no meter, because a reader who came to
+read the boards is not answering a figure, and hanging it under one would turn it
+into a claim about that count.
+
+Each meter then carries **one link, in its footer**, set below a hairline in the site's
 link colour and naming the page it leads to. It is the only thing on the card
 that navigates: a figure that looks like it leads somewhere, paired with a link
 that does not look like one, is what a dashboard cannot afford. A story row opens

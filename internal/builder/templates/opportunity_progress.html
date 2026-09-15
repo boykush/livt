@@ -20,7 +20,17 @@
   <h1 class="text-lg font-bold text-gray-900">{{.OpportunityName}}</h1>
   <span class="text-xs font-semibold uppercase tracking-wide text-orange-600">{{t "label.opportunity-progress"}}</span>
 </div>
-<p class="text-xs text-gray-400 mb-6">{{t "opportunity.progress-hint"}}</p>
+{{/*
+The opportunity's own boards, at page level rather than under a meter: someone
+who came to read the mappings is not answering a figure, and hanging this off
+one would turn it into a claim about that count.
+*/}}
+<div class="flex items-baseline gap-4 flex-wrap mb-6">
+  <p class="text-xs text-gray-400">{{t "opportunity.progress-hint"}}</p>
+  <a href="{{.Progress.MappingsPath}}" class="ml-auto inline-flex items-baseline gap-1 text-xs text-blue-600 hover:text-blue-800 hover:underline">
+    {{t "nav.example-mappings"}} <span aria-hidden="true">&rarr;</span>
+  </a>
+</div>
 
 {{/*
 One meter per figure, because what closes each of them differs: a story by a

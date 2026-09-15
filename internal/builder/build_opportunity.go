@@ -158,7 +158,11 @@ type opportunityProgress struct {
 	// than a second place the same list is kept. Each Tasks link carries the
 	// anchor of the list it counts, since that page keeps three and landing on
 	// the first leaves the reader to find the other two.
-	StoriesPath     string
+	StoriesPath string
+	// MappingsPath is the opportunity's boards, and belongs to no meter: a
+	// reader who came to look at the mappings themselves is not answering a
+	// figure, and hanging it off one would make it a claim about that count.
+	MappingsPath    string
 	QuestionsPath   string
 	ProposedPath    string
 	UnautomatedPath string
@@ -200,6 +204,7 @@ func (b *Builder) progressOf(o *domain.Opportunity, slices []opportunityReleaseS
 	tasks := "../tasks.html" + narrow + "#"
 	p := opportunityProgress{
 		StoriesPath:     "../stories.html" + narrow,
+		MappingsPath:    "../index.html" + narrow,
 		QuestionsPath:   tasks + tasksQuestionsAnchor,
 		ProposedPath:    tasks + tasksProposedAnchor,
 		UnautomatedPath: tasks + tasksRulesAnchor,
