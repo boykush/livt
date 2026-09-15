@@ -72,7 +72,7 @@ var ja = Catalog{
 
 	"label.story-map":            "ストーリーマップ",
 	"label.opportunity-canvas":   "オポチュニティキャンバス",
-	"label.opportunity-progress": "現況",
+	"label.opportunity-progress": "ダッシュボード",
 
 	"empty.opportunities":      "オポチュニティはまだありません。",
 	"empty.opportunity-canvas": "オポチュニティキャンバスはまだありません。",
@@ -82,6 +82,10 @@ var ja = Catalog{
 	"opportunity.coverage":          "ルールの自動化",
 	"opportunity.unscoped-release":  "リリース未指定",
 	"opportunity.progress-hint":     "このオポチュニティがどこまで進んでいるか",
+	"opportunity.legend-mapped":     "マッピング済み",
+	"opportunity.legend-unmapped":   "未着手",
+	"opportunity.legend-automated":  "自動化済み",
+	"opportunity.legend-settled":    "解決済み",
 	"opportunity.mapped-stories":    "実例マッピング済みのストーリー",
 	"opportunity.automated-rules":   "テストで押さえられているルール",
 	"opportunity.stories":           "ストーリー",

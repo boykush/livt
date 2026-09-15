@@ -71,7 +71,7 @@ var en = Catalog{
 
 	"label.story-map":            "Story Map",
 	"label.opportunity-canvas":   "Opportunity Canvas",
-	"label.opportunity-progress": "Opportunity Progress",
+	"label.opportunity-progress": "Dashboard",
 
 	"empty.opportunities":      "No opportunities yet.",
 	"empty.opportunity-canvas": "No opportunity canvas yet.",
@@ -84,6 +84,10 @@ var en = Catalog{
 	"opportunity.coverage":          "Rules automated",
 	"opportunity.unscoped-release":  "No release",
 	"opportunity.progress-hint":     "how far this opportunity has been taken",
+	"opportunity.legend-mapped":     "Mapped",
+	"opportunity.legend-unmapped":   "Not mapped",
+	"opportunity.legend-automated":  "Automated",
+	"opportunity.legend-settled":    "Settled",
 	"opportunity.mapped-stories":    "Stories through an example mapping",
 	"opportunity.automated-rules":   "Rules held by tests",
 	"opportunity.stories":           "Stories",

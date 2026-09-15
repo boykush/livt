@@ -34,7 +34,7 @@ func funcs(lang i18n.Lang) template.FuncMap {
 		"storyBadge":        storyBadge,
 		"percent":           percent,
 		"sub":               func(a, b int) int { return a - b },
-		"gauge":             newGaugeView,
+		"legend":            newLegendItem,
 		"tasksAnchors":      tasksAnchors,
 	}
 }
@@ -74,19 +74,18 @@ func percent(part, total int) int {
 	return part * 100 / total
 }
 
-// gaugeView is one axis of an opportunity's progress, as the
-// opportunity-gauge partial draws it. Path is the list this figure is counted
-// from, narrowed to the opportunity.
-type gaugeView struct {
+// legendItem names one segment of a meter on the opportunity dashboard. Fill is
+// the segment's own class, so the legend is read off the bar; Path is the list
+// holding those items, and is empty for a segment with nowhere to go.
+type legendItem struct {
 	Label string
-	Part  int
-	Total int
+	Count int
 	Fill  string
 	Path  string
 }
 
-func newGaugeView(label string, part, total int, fill, path string) gaugeView {
-	return gaugeView{Label: label, Part: part, Total: total, Fill: fill, Path: path}
+func newLegendItem(label string, count int, fill, path string) legendItem {
+	return legendItem{Label: label, Count: count, Fill: fill, Path: path}
 }
 
 // idBadge is a sticky's own ID rendered bottom-right by the id-badge partial.

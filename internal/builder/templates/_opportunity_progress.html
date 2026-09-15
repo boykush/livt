@@ -1,24 +1,7 @@
-{{define "opportunity-gauge"}}
-{{/*
-One axis of an opportunity's progress. The fraction is spelled out rather than
-given as a percentage alone: 5/15 says how much work is left in a way 33% does
-not, and the bar is what makes two gauges comparable at a glance.
-*/}}
-<a href="{{.Path}}" class="block bg-white rounded-lg border border-gray-200 px-4 py-3 hover:border-gray-300 hover:shadow-sm transition">
-  <div class="flex items-baseline gap-2">
-    <span class="text-xs text-gray-600">{{.Label}}</span>
-    <span class="ml-auto font-mono text-sm font-semibold text-gray-900">{{.Part}}<span class="font-normal text-gray-400">/{{.Total}}</span></span>
-  </div>
-  <div class="mt-2 h-2 rounded-sm bg-gray-100 overflow-hidden">
-    <div class="h-full {{.Fill}}" style="width: {{percent .Part .Total}}%"></div>
-  </div>
-</a>
-{{end}}
-
 {{define "opportunity-story-row"}}
 {{/*
 A story's standing in one line. The bar is what says the fraction is the same
-coverage the rules gauge takes over the whole opportunity — 4/5 and 19/20 are
+coverage the meter above takes over the whole opportunity — 4/5 and 19/20 are
 not comparable as numbers at a glance, and two bars are. A story with no mapping
 says so in words rather than showing 0/0, which would read as a mapping that
 found no rules.
@@ -26,12 +9,32 @@ found no rules.
 <span class="text-sm text-gray-900 min-w-0">{{.Name}}</span>
 {{if .Mapped}}
 <span class="ml-auto flex items-center gap-2.5 shrink-0">
-  <span class="block w-16 h-1.5 rounded-sm bg-gray-100 overflow-hidden" aria-hidden="true">
+  <span class="block w-16 h-1.5 rounded-sm bg-gray-200 overflow-hidden" aria-hidden="true">
     <span class="block h-full bg-blue-500" style="width: {{percent .Automated .Rules}}%"></span>
   </span>
   <span class="font-mono text-xs text-gray-500 whitespace-nowrap">{{.Automated}}<span class="text-gray-400">/{{.Rules}}</span></span>
 </span>
 {{else}}
 <span class="ml-auto text-xs text-gray-400 whitespace-nowrap">{{t "opportunity.unmapped"}}</span>
+{{end}}
+{{end}}
+
+{{define "opportunity-legend-item"}}
+{{/*
+One segment of a meter, named and counted, wearing the segment's own fill so the
+legend is read off the bar rather than beside it. A segment with somewhere to go
+links there; the rest are plain, because a legend item that looks clickable and
+is not is worse than one that never offered.
+*/}}
+{{if .Path}}
+<a href="{{.Path}}" class="flex items-center gap-1.5 hover:text-gray-900 transition">
+  <span class="w-2 h-2 rounded-sm {{.Fill}} shrink-0" aria-hidden="true"></span>
+  {{.Label}} <span class="font-mono text-gray-700">{{.Count}}</span>
+</a>
+{{else}}
+<span class="flex items-center gap-1.5">
+  <span class="w-2 h-2 rounded-sm {{.Fill}} shrink-0" aria-hidden="true"></span>
+  {{.Label}} <span class="font-mono text-gray-700">{{.Count}}</span>
+</span>
 {{end}}
 {{end}}

@@ -416,11 +416,12 @@ func TestOpportunityProgressPageBreaksDownByStory(t *testing.T) {
 	}
 }
 
-// A bare count does not say whether a board is nearly agreed. Each chip carries
-// the whole it is a part of: the rules for the two rule standings, and every
-// question ever asked for the open ones.
+// A bare count does not say whether a board is nearly agreed, so every count on
+// the dashboard is drawn as a share of the whole it belongs to. The rules meter
+// takes three segments, because a rule that is not automated is waiting on one
+// of two different things: a test, or an agreement it has not had yet.
 // livt://mapping/show-opportunity-progress/rule/R-02
-func TestOpportunityProgressChipsCarryTheirWhole(t *testing.T) {
+func TestOpportunityDashboardMetersCarryTheirWhole(t *testing.T) {
 	b := progressBuilder(t)
 	_, _, tallies, err := b.buildMappings()
 	if err != nil {
@@ -435,11 +436,32 @@ func TestOpportunityProgressChipsCarryTheirWhole(t *testing.T) {
 		t.Fatal(err)
 	}
 	html := readFile(t, filepath.Join(b.OutDir, "opportunity-progress", "demo.html"))
-	// One question open of the two the boards asked, one proposal and two
-	// un-automated rules of the three live ones.
-	for _, want := range []string{">1<span class=\"text-red-400\">/2<", ">1<span class=\"text-blue-400\">/3<", ">2<span class=\"text-gray-400\">/3<"} {
+
+	// Two of three stories mapped, one of three rules automated, one of the two
+	// questions the boards asked still open.
+	for _, want := range []string{
+		`>2<span class="font-normal text-gray-400">/3<`,
+		`>1<span class="font-normal text-gray-400">/3<`,
+		`>1<span class="font-normal text-gray-400">/2<`,
+	} {
 		if !strings.Contains(html, want) {
-			t.Errorf("a chip is missing its whole: expected %q", want)
+			t.Errorf("a meter is missing its whole: expected %q", want)
+		}
+	}
+
+	// The proposed rule is its own segment, so it is not also counted as one
+	// waiting for a test: three live rules, one automated, one proposed, one
+	// un-automated.
+	en := i18n.Of(i18n.En)
+	for label, count := range map[string]string{
+		"opportunity.unautomated-rules": "1",
+		"opportunity.proposed-rules":    "1",
+		"opportunity.legend-automated":  "1",
+		"opportunity.legend-settled":    "1",
+	} {
+		want := en.Msg(label) + ` <span class="font-mono text-gray-700">` + count + `</span>`
+		if !strings.Contains(html, want) {
+			t.Errorf("legend is missing %q", want)
 		}
 	}
 }

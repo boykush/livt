@@ -23,37 +23,65 @@
 <p class="text-xs text-gray-400 mb-6">{{t "opportunity.progress-hint"}}</p>
 
 {{/*
-Discovery and automation stay two gauges: rules fully held by tests over a third
-of the stories is not an opportunity anywhere near done, and one combined figure
-would say it was.
-*/}}
-<div class="grid gap-3 sm:grid-cols-2">
-  {{template "opportunity-gauge" gauge (t "opportunity.mapped-stories") .Progress.MappedStories .Progress.TotalStories "bg-yellow-400" .Progress.StoriesPath}}
-  {{template "opportunity-gauge" gauge (t "opportunity.automated-rules") .Progress.Automated .Progress.Rules "bg-blue-500" .Progress.UnautomatedPath}}
-</div>
+Three meters, one instrument: every count on this page is drawn as a share of
+the whole it belongs to, because a bare "2" says nothing about whether a board
+is nearly agreed and a filled bar does. Each meter's track is the remainder, so
+what is left always has a width — and its legend names the segments and links to
+the list that holds them.
 
-{{/*
-Each chip is one way this opportunity is unfinished, and each carries the whole
-it is part of: "2" says nothing about whether a board is nearly agreed, and
-"2/20" does. The Tasks page keeps one list per way of closing these, so a chip
-lands on the list it counted rather than at the top of all three.
+The stories and rules meters fill toward done. The questions meter fills toward
+what is still open, because that is the direction a question moves a board in;
+red never means finished anywhere on this site, so the polarity reads off the
+colour rather than needing to be declared.
 */}}
-<div class="flex flex-wrap gap-2 mt-3">
-  {{if .Progress.QuestionsAsked}}
-  <a href="{{.Progress.QuestionsPath}}" class="text-xs text-red-700 bg-red-50 border border-red-200 rounded-full px-3 py-1 hover:bg-red-100 transition">
-    {{t "opportunity.open-questions"}} <span class="font-mono">{{.Progress.Questions}}<span class="text-red-400">/{{.Progress.QuestionsAsked}}</span></span>
-  </a>
-  {{end}}
-  {{if .Progress.Proposed}}
-  <a href="{{.Progress.ProposedPath}}" class="text-xs text-blue-700 bg-blue-50 border border-dashed border-blue-300 rounded-full px-3 py-1 hover:bg-blue-100 transition">
-    {{t "opportunity.proposed-rules"}} <span class="font-mono">{{.Progress.Proposed}}<span class="text-blue-400">/{{.Progress.Rules}}</span></span>
-  </a>
-  {{end}}
-  {{if gt .Progress.Rules .Progress.Automated}}
-  <a href="{{.Progress.UnautomatedPath}}" class="text-xs text-gray-600 bg-white border border-gray-200 rounded-full px-3 py-1 hover:bg-gray-50 transition">
-    {{t "opportunity.unautomated-rules"}} <span class="font-mono">{{sub .Progress.Rules .Progress.Automated}}<span class="text-gray-400">/{{.Progress.Rules}}</span></span>
-  </a>
-  {{end}}
+<div class="grid gap-3 sm:grid-cols-3">
+
+  <div class="bg-white rounded-lg border border-gray-200 px-4 py-3">
+    <a href="{{.Progress.StoriesPath}}" class="flex items-baseline gap-2 group">
+      <span class="text-xs text-gray-600 group-hover:text-gray-900">{{t "opportunity.mapped-stories"}}</span>
+      <span class="ml-auto font-mono text-sm font-semibold text-gray-900">{{.Progress.MappedStories}}<span class="font-normal text-gray-400">/{{.Progress.TotalStories}}</span></span>
+    </a>
+    <div class="mt-2 flex h-2 rounded-sm bg-gray-200 overflow-hidden" aria-hidden="true">
+      <span class="h-full bg-yellow-400" style="width: {{percent .Progress.MappedStories .Progress.TotalStories}}%"></span>
+    </div>
+    <div class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-gray-500">
+      {{template "opportunity-legend-item" legend (t "opportunity.legend-mapped") .Progress.MappedStories "bg-yellow-400" ""}}
+      {{template "opportunity-legend-item" legend (t "opportunity.legend-unmapped") (sub .Progress.TotalStories .Progress.MappedStories) "bg-gray-200" ""}}
+    </div>
+  </div>
+
+  {{/* Three segments, because a rule that is not automated is waiting on one of
+  two different things: a test, or the agreement a proposal has not had yet. */}}
+  <div class="bg-white rounded-lg border border-gray-200 px-4 py-3">
+    <a href="{{.Progress.UnautomatedPath}}" class="flex items-baseline gap-2 group">
+      <span class="text-xs text-gray-600 group-hover:text-gray-900">{{t "opportunity.automated-rules"}}</span>
+      <span class="ml-auto font-mono text-sm font-semibold text-gray-900">{{.Progress.Automated}}<span class="font-normal text-gray-400">/{{.Progress.Rules}}</span></span>
+    </a>
+    <div class="mt-2 flex h-2 rounded-sm bg-gray-200 overflow-hidden" aria-hidden="true">
+      <span class="h-full bg-blue-500" style="width: {{percent .Progress.Automated .Progress.Rules}}%"></span>
+      <span class="h-full bg-blue-200" style="width: {{percent .Progress.Proposed .Progress.Rules}}%"></span>
+    </div>
+    <div class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-gray-500">
+      {{template "opportunity-legend-item" legend (t "opportunity.legend-automated") .Progress.Automated "bg-blue-500" ""}}
+      {{if .Progress.Proposed}}{{template "opportunity-legend-item" legend (t "opportunity.proposed-rules") .Progress.Proposed "bg-blue-200" .Progress.ProposedPath}}{{end}}
+      {{template "opportunity-legend-item" legend (t "opportunity.unautomated-rules") (sub (sub .Progress.Rules .Progress.Automated) .Progress.Proposed) "bg-gray-200" .Progress.UnautomatedPath}}
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg border border-gray-200 px-4 py-3">
+    <a href="{{.Progress.QuestionsPath}}" class="flex items-baseline gap-2 group">
+      <span class="text-xs text-gray-600 group-hover:text-gray-900">{{t "opportunity.open-questions"}}</span>
+      <span class="ml-auto font-mono text-sm font-semibold text-gray-900">{{.Progress.Questions}}<span class="font-normal text-gray-400">/{{.Progress.QuestionsAsked}}</span></span>
+    </a>
+    <div class="mt-2 flex h-2 rounded-sm bg-gray-200 overflow-hidden" aria-hidden="true">
+      <span class="h-full bg-red-400" style="width: {{percent .Progress.Questions .Progress.QuestionsAsked}}%"></span>
+    </div>
+    <div class="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-gray-500">
+      {{template "opportunity-legend-item" legend (t "opportunity.open-questions") .Progress.Questions "bg-red-400" .Progress.QuestionsPath}}
+      {{template "opportunity-legend-item" legend (t "opportunity.legend-settled") (sub .Progress.QuestionsAsked .Progress.Questions) "bg-gray-200" ""}}
+    </div>
+  </div>
+
 </div>
 
 {{/*
@@ -80,7 +108,7 @@ never drew.
     </h3>
     {{if not .Unscoped}}<span class="font-mono text-[11px] text-gray-400">{{.ID}}</span>{{end}}
     <span class="ml-auto flex items-center gap-2.5 shrink-0">
-      <span class="block w-16 h-1.5 rounded-sm bg-gray-100 overflow-hidden" aria-hidden="true">
+      <span class="block w-16 h-1.5 rounded-sm bg-gray-200 overflow-hidden" aria-hidden="true">
         <span class="block h-full bg-blue-500" style="width: {{percent .Automated .Rules}}%"></span>
       </span>
       <span class="font-mono text-xs text-gray-500 whitespace-nowrap">{{.Automated}}<span class="text-gray-400">/{{.Rules}}</span></span>

@@ -158,7 +158,7 @@ A story map whose key names no opportunity file keeps working exactly as it did
 before opportunities were files of their own: the map stands in as its own
 opportunity, named by the map. Nothing has to be migrated.
 
-## Reading an opportunity's progress
+## The opportunity dashboard
 
 How far an opportunity has been taken is a **page of its own**, linked from the
 opportunity under Related:
@@ -174,25 +174,31 @@ that changes. Mixing them would put a figure that moves weekly above a statement
 that has not moved since the opportunity was framed. An opportunity with no
 story map has no progress to read, so it gets no page and links to none.
 
-### Two gauges
+### Three meters
 
-The page leads with two figures:
+The page leads with three, each drawn as a share of the whole it belongs to —
+a bare `2` does not say whether a board is nearly agreed, and a filled bar does.
+Each track is the remainder, so what is left always has a width, and each legend
+names the segments and links to the list holding them.
 
 - **Stories through an example mapping** — of the stories its maps hang under
   the backbone, how many have had their conversation
 - **Rules held by tests** — of the rules those conversations produced, how many
-  are marked [`automated`](./example-mappings.md)
+  are marked [`automated`](./example-mappings.md). This one takes **three
+  segments**, because a rule that is not automated is waiting on one of two
+  different things: a test, or an agreement a `proposed` rule has not had yet
+- **Open questions** — against every question its boards have asked, settled
+  ones included
 
-They stay two because they move independently. An opportunity can have every
-rule automated across a third of its stories: one combined number would read as
-nearly done, when two thirds of it has never been discussed. The same pair
-appears on each tile of the Opportunities list, so the hub says which
-opportunity is moving without being opened.
+Stories and rules stay separate because they move independently: an opportunity
+can have every rule automated across a third of its stories, and one combined
+number would read as nearly done when two thirds of it has never been discussed.
+The same pair appears on each tile of the Opportunities list, so the hub says
+which opportunity is moving without being opened.
 
-Three chips say how the opportunity is unfinished, and **each carries the whole
-it is part of**: open questions against every question its boards have asked,
-proposed and un-automated rules against its live rules. A bare `2` does not say
-whether a board is nearly agreed; `2/20` does.
+The first two meters fill toward done; the questions meter fills toward what is
+still open, because that is the direction a question moves a board in. Red never
+means finished anywhere on the site, so the polarity reads off the colour.
 
 ### Stories, in their release slices
 
