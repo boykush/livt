@@ -32,7 +32,7 @@ activities:
       - key: refine-story-map-structure
         name: ストーリーマップの構造をブラッシュアップする
         stories:
-          - name: USMエキスパートに相談して構造を整えるPRを出す
+          - name: USMエキスパートに相談して構造を整えるコミットを重ねる
             key: refine-story-map-with-usm-expert
       - key: prepare-stories-for-detailed-discovery
         name: 詳細ディスカバリーに向けてストーリーを準備する
@@ -75,7 +75,7 @@ activities:
       - key: refine-example-mapping-structure
         name: 実例マッピングの構造をブラッシュアップする
         stories:
-          - name: BDDエキスパートに相談して構造を整えるPRを出す
+          - name: BDDエキスパートに相談して構造を整えるコミットを重ねる
             key: refine-example-mapping-with-bdd-expert
       - key: plan-against-implementation-and-design
         name: 実装・デザインと突き合わせて計画する
@@ -94,7 +94,7 @@ activities:
       - key: reflect-in-master-mapping
         name: livtリポジトリの実例マッピングに反映する
         stories:
-          - name: ルール単位の細かいPRで実例マッピングを更新する
+          - name: ルール単位の細かいコミットで実例マッピングを更新する
             key: update-example-mapping-per-rule
       - key: follow-up-open-questions
         name: 未解決の疑問点を追う
