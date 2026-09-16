@@ -91,6 +91,13 @@ var en = Catalog{
 	"opportunity.proposed-rules":    "Proposed rules",
 	"opportunity.automated-rules":   "Automated rules",
 	"opportunity.unautomated-rules": "Un-automated rules",
+	// The dashboard's two groups, named by the way their counts move: a
+	// burn-up climbs to the whole, a burn-down falls to zero. A fraction alone
+	// does not say which, and the two look alike while meaning the opposite.
+	"opportunity.burn-up":        "Burn-up",
+	"opportunity.burn-up-hint":   "counts that climb to the whole",
+	"opportunity.burn-down":      "Burn-down",
+	"opportunity.burn-down-hint": "counts that fall to zero",
 
 	// The canvas's three zones, and the ten boxes keyed by domain.CanvasBox.Key.
 	// A prompt is the question the box asks: the heading alone does not say what

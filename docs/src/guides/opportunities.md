@@ -174,17 +174,32 @@ that changes. Mixing them would put a figure that moves weekly above a statement
 that has not moved since the opportunity was framed. An opportunity with no
 story map has no progress to read, so it gets no page and links to none.
 
-### Four meters
+### Four meters, in two groups
 
 The page leads with four, each drawn as a share of the whole it belongs to — a
-bare `2` does not say whether a board is nearly agreed, and a filled bar does:
+bare `2` does not say whether a board is nearly agreed, and a filled bar does.
+They stand in two groups, split by **which way the count is meant to move**, the
+way a burn-up chart and a burn-down chart split the same numbers:
+
+**Burn-up** — counts that climb to the whole:
 
 - **Stories through an example mapping** — of the stories its maps hang under
   the backbone, how many have had their conversation
+
+**Burn-down** — counts that fall to zero:
+
 - **Un-automated rules** — how many of its rules are waiting for a test
 - **Proposed rules** — how many are waiting for an agreement
 - **Open questions** — against every question its boards have asked, settled
   ones included
+
+A fraction over a whole does not say which of the two it is: `2/3` stories
+mapped is two-thirds of the way there, and `1/3` rules un-automated is one-third
+still to go, and in one grid the two bars look alike while meaning the opposite.
+The group heading names the direction, and each meter repeats it with an arrow
+beside its fraction, so a card read on its own still says whether half full is
+half way there or half way still to go. Both grids share one column width, so
+the bars stay comparable across the split as well as within it.
 
 Each gets a meter of its own rather than becoming a segment of another's. The
 rule figures do share a denominator, and one stacked bar would say that

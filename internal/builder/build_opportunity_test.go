@@ -458,6 +458,54 @@ func TestOpportunityDashboardMetersCarryTheirWhole(t *testing.T) {
 	}
 }
 
+// A fraction over a whole does not say which way it is meant to move, so the
+// meters stand in two groups: the stories count under a burn-up heading, since
+// it is done at the whole, and the three counts of what is still open under a
+// burn-down heading, since they are done at zero. Each meter also carries the
+// arrow of its own group, so a card read alone still says which it is.
+// livt://mapping/show-opportunity-progress/rule/R-01
+func TestOpportunityDashboardSplitsBurnUpFromBurnDown(t *testing.T) {
+	b := progressBuilder(t)
+	if err := b.Build(); err != nil {
+		t.Fatal(err)
+	}
+	html := readFile(t, filepath.Join(b.OutDir, "opportunity-progress", "demo.html"))
+
+	en := i18n.Of(i18n.En)
+	up := strings.Index(html, en.Msg("opportunity.burn-up"))
+	down := strings.Index(html, en.Msg("opportunity.burn-down"))
+	if up < 0 || down < 0 {
+		t.Fatalf("burn-up heading at %d, burn-down heading at %d: want both", up, down)
+	}
+	if up > down {
+		t.Error("the burn-up group should lead: it is the figure that says how far discovery has got")
+	}
+	// The story count climbs to the whole; the rest fall to zero.
+	for label, wantDown := range map[string]bool{
+		"opportunity.mapped-stories":    false,
+		"opportunity.unautomated-rules": true,
+		"opportunity.proposed-rules":    true,
+		"opportunity.open-questions":    true,
+	} {
+		msg := en.Msg(label)
+		at := strings.Index(html, msg)
+		if at < 0 {
+			t.Errorf("%s has no meter", msg)
+			continue
+		}
+		if gotDown := at > down; gotDown != wantDown {
+			t.Errorf("the %s meter sits under the wrong heading: burn-down = %v, want %v", msg, gotDown, wantDown)
+		}
+		card := html[at:]
+		if end := strings.Index(card, "</div>"); end > 0 {
+			card = card[:end]
+		}
+		if gotDown := strings.Contains(card, "&darr;"); gotDown != wantDown {
+			t.Errorf("the %s meter carries the wrong arrow: down = %v, want %v", msg, gotDown, wantDown)
+		}
+	}
+}
+
 // The hub says which opportunity is moving without being opened, carrying the
 // same two figures its page leads with.
 // livt://mapping/show-opportunity-progress/rule/R-04

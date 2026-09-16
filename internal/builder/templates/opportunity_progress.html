@@ -48,13 +48,36 @@ rules anywhere.
 
 The two rule counts that remain are split the way the Tasks page splits them, so
 a proposal is never also counted as something waiting for a test.
+
+The meters sit in two groups, split by the way their count moves. A fraction
+over a whole does not say which way: 2/3 stories mapped is a count that climbs
+to 3, and 1/3 rules un-automated is one that falls to 0, and in one grid the two
+bars look alike while meaning the opposite. So the stories meter stands under a
+burn-up heading and the three that count what is still open stand under a
+burn-down heading, the way a burn-up and a burn-down chart split the same
+numbers. Both grids share one column width, so the bars stay comparable across
+the split as well as within it.
 */}}
-<div class="grid gap-3 sm:grid-cols-2">
-  {{template "opportunity-meter" meter (t "opportunity.mapped-stories") .Progress.MappedStories .Progress.TotalStories "bg-yellow-400" (t "nav.stories") .Progress.StoriesPath}}
-  {{template "opportunity-meter" meter (t "opportunity.unautomated-rules") (sub (sub .Progress.Rules .Progress.Automated) .Progress.Proposed) .Progress.Rules "bg-gray-500" (t "nav.tasks") .Progress.UnautomatedPath}}
-  {{template "opportunity-meter" meter (t "opportunity.proposed-rules") .Progress.Proposed .Progress.Rules "bg-blue-300" (t "nav.tasks") .Progress.ProposedPath}}
-  {{template "opportunity-meter" meter (t "opportunity.open-questions") .Progress.Questions .Progress.QuestionsAsked "bg-red-400" (t "nav.tasks") .Progress.QuestionsPath}}
-</div>
+<section class="mb-5">
+  <div class="flex items-baseline gap-2 mb-2">
+    <h2 class="text-sm font-semibold text-gray-800"><span class="text-gray-400" aria-hidden="true">&uarr;</span> {{t "opportunity.burn-up"}}</h2>
+    <span class="text-xs text-gray-400">{{t "opportunity.burn-up-hint"}}</span>
+  </div>
+  <div class="grid gap-3 sm:grid-cols-3">
+    {{template "opportunity-meter" meter (t "opportunity.mapped-stories") .Progress.MappedStories .Progress.TotalStories "bg-yellow-400" false (t "nav.stories") .Progress.StoriesPath}}
+  </div>
+</section>
+<section>
+  <div class="flex items-baseline gap-2 mb-2">
+    <h2 class="text-sm font-semibold text-gray-800"><span class="text-gray-400" aria-hidden="true">&darr;</span> {{t "opportunity.burn-down"}}</h2>
+    <span class="text-xs text-gray-400">{{t "opportunity.burn-down-hint"}}</span>
+  </div>
+  <div class="grid gap-3 sm:grid-cols-3">
+    {{template "opportunity-meter" meter (t "opportunity.unautomated-rules") (sub (sub .Progress.Rules .Progress.Automated) .Progress.Proposed) .Progress.Rules "bg-gray-500" true (t "nav.tasks") .Progress.UnautomatedPath}}
+    {{template "opportunity-meter" meter (t "opportunity.proposed-rules") .Progress.Proposed .Progress.Rules "bg-blue-300" true (t "nav.tasks") .Progress.ProposedPath}}
+    {{template "opportunity-meter" meter (t "opportunity.open-questions") .Progress.Questions .Progress.QuestionsAsked "bg-red-400" true (t "nav.tasks") .Progress.QuestionsPath}}
+  </div>
+</section>
 
 {{/*
 The stories in their maps' own release slices, which is the order a team heading

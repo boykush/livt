@@ -85,13 +85,17 @@ type meterView struct {
 	Part  int
 	Total int
 	Fill  string
+	// Down marks a burn-down: a count that is done when it reaches zero, as
+	// against one done when it reaches Total. The fraction reads the same
+	// either way, so the meter says which with a glyph beside it.
+	Down bool
 	// LinkLabel names the page the count is acted on; empty draws no footer.
 	LinkLabel string
 	LinkPath  string
 }
 
-func newMeterView(label string, part, total int, fill, linkLabel, linkPath string) meterView {
-	return meterView{Label: label, Part: part, Total: total, Fill: fill, LinkLabel: linkLabel, LinkPath: linkPath}
+func newMeterView(label string, part, total int, fill string, down bool, linkLabel, linkPath string) meterView {
+	return meterView{Label: label, Part: part, Total: total, Fill: fill, Down: down, LinkLabel: linkLabel, LinkPath: linkPath}
 }
 
 // idBadge is a sticky's own ID rendered bottom-right by the id-badge partial.
