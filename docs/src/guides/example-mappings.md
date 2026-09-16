@@ -39,7 +39,7 @@ ubiquitous:
 - `issues` is optional: the rule's automation Issue URLs on implementation repos (Issue URLs only). The livt repository records the links; their state lives at the URL target. A rule without `issues` is unlinked.
 - `automated` is optional: records the judgment that the rule is actually automated by tests, which is independent of Issues being filed or closed. Absent means not automated. Set it when the rule's automation lands; unset it when the rule changes.
 - `status` is optional and applies to a rule: `proposed` while the rule is put forward but not yet agreed, `accepted` once it is, `rejected` when the proposal was turned down, `retired` when spec it once was stopped holding. Absent means accepted, and any other value fails the build. See [Proposing a rule](#proposing-a-rule).
-- `retired` is optional and applies to an example or a question: it records that the item is no longer part of the spec. Absent means live. On a rule it is the superseded spelling of `status: rejected` and `status: retired` — still read, so a livt repository written against it keeps building, and going away.
+- `retired` is optional and applies to an example or a question: it records that the item is no longer part of the spec. Absent means live. It is not a rule field — a rule closes through `status`; see [Retiring an item](#retiring-an-item).
 - `superseded_by` is optional and goes with a closed rule or a retired example or question: the [livt URIs](../reference/uri.md) of whatever took its place. Absent means nothing did.
 
 ## Proposing a rule
@@ -56,7 +56,7 @@ A rule can go on the board before it is agreed. `status: proposed` marks it as p
 
 - **A proposal is a candidate answer.** A Question card records what the team does not know yet; a proposed rule puts one answer on the table, examples and all, for the team to agree to or turn down.
 - **Accepting it is a one-line diff.** `proposed` becomes `accepted`, and that line is what the review approves.
-- **Rejecting it is a one-line diff too.** `proposed` becomes `rejected`. Its ID stays taken like any closed rule's, and the record reads as a proposal that never became spec rather than as a rule dropped later — the distinction `retired: true` on its own could not draw.
+- **Rejecting it is a one-line diff too.** `proposed` becomes `rejected`. Its ID stays taken like any closed rule's, and the record reads as a proposal that never became spec rather than as a rule dropped later — the distinction a bare retirement flag could not draw.
 - **Absent means accepted.** Every rule written before the field existed was agreed when it went on the board, so an existing mapping reads as it always has.
 
 A proposed rule stays on the board, drawn pale with a dashed edge and stamped *proposed*, and its examples are drawn pale with it. The [Tasks page](../reference/file-structure.md) lists it under Proposed Rules — it closes by agreement, not by a test — and never under Un-automated Rules, even once a test covers it. The MCP server and `livt resolve` return `status` on every rule, so an agent choosing what to automate takes the `accepted` ones and passes over the rest without knowing the default.
@@ -68,7 +68,9 @@ A rule that no longer holds takes a closed `status` — `rejected` or `retired`;
 - **Deleting frees the ID.** With `R-01`/`R-02`/`R-03` on file, deleting `R-03` makes `R-02` the highest, so the next rule takes `R-03` back. A `livt://mapping/{story-key}/rule/R-03` reference already quoted in an Issue or a test comment then resolves to a *different* rule instead of failing — the quietest way for a reference to break. Retired items keep their IDs taken: new IDs are numbered from the max including them.
 - **Commenting out loses the record.** A comment is not part of the YAML structure, so any tool that rewrites the file drops it. Both spellings are fields and survive.
 
-A closed item stays readable in the file and still resolves by its livt URI, carrying `retired: true` so the reader can tell — and, for a rule, the `status` saying which way it closed. It leaves the board and the [Tasks page](../reference/file-structure.md): a retired question is not an open question, and a retired rule is not waiting for a test.
+A closed item stays readable in the file and still resolves by its livt URI, saying so the way it does in the YAML — a rule through its `status`, an example or a question through `retired: true`. It leaves the board and the [Tasks page](../reference/file-structure.md): a retired question is not an open question, and a retired rule is not waiting for a test.
+
+`retired: true` on a **rule** was once the spelling for both closed statuses, folded onto `status` as the mapping was read. It is not read any more: a rule still carrying that line is a rule with no `status`, which means accepted — back on the board, and back on the Tasks page. Write `status: retired` instead, or `status: rejected` where the rule was a proposal that was turned down.
 
 ### Saying where the spec went
 

@@ -147,13 +147,13 @@ func newRetiredTestServer(t *testing.T) *Server {
 }
 
 // livt://mapping/trace-test-to-rule/rule/R-05/example/EX-01 and EX-03: a retired
-// rule, example, and question each resolve by URI — flagged retired, text intact
-// — rather than 404ing, which is what a reference embedded elsewhere follows.
+// rule, example, and question each resolve by URI — saying they closed, text
+// intact — rather than 404ing, which is what a reference elsewhere follows.
 func TestReadRetiredItemsResolveAsRetired(t *testing.T) {
 	s := newRetiredTestServer(t)
 
 	rule := readResource[ruleResult](t, s.readRule, uri.Rule("demo", "R-02")).Rule
-	if !rule.Retired || rule.Name != "退役したルール" {
+	if rule.Status != "retired" || rule.Name != "退役したルール" {
 		t.Errorf("rule = %+v, want R-02 retired with its text kept", rule)
 	}
 	example := readResource[exampleResult](t, s.readExample, uri.Example("demo", "R-01", "EX-02")).Example
@@ -166,7 +166,7 @@ func TestReadRetiredItemsResolveAsRetired(t *testing.T) {
 	}
 
 	live := readResource[ruleResult](t, s.readRule, uri.Rule("demo", "R-01")).Rule
-	if live.Retired {
+	if live.Status != "accepted" {
 		t.Errorf("rule = %+v, want R-01 live", live)
 	}
 }
@@ -178,8 +178,8 @@ func TestMappingKeepsRetiredEntriesFlagged(t *testing.T) {
 	s := newRetiredTestServer(t)
 
 	em := readResource[exampleMappingResult](t, s.readMapping, uri.Mapping("demo")).Mapping
-	if len(em.Rules) != 2 || !em.Rules[1].Retired {
-		t.Fatalf("rules = %+v, want both, the second flagged retired", em.Rules)
+	if len(em.Rules) != 2 || em.Rules[1].Status != "retired" {
+		t.Fatalf("rules = %+v, want both, the second closed retired", em.Rules)
 	}
 	if len(em.Rules[0].Examples) != 2 || !em.Rules[0].Examples[1].Retired {
 		t.Errorf("examples = %+v, want both, the second flagged retired", em.Rules[0].Examples)
@@ -211,6 +211,26 @@ func TestLiveItemsOmitRetiredFromJSON(t *testing.T) {
 		if body := resourceText(t, res); strings.Contains(body, "retired") {
 			t.Errorf("live payload mentions retired: %s", body)
 		}
+	}
+}
+
+// livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-07: a rule
+// closes through status alone. A second field saying the same thing is a second
+// axis for a consumer to reconcile — and the one that can disagree with the
+// status beside it.
+func TestRulesCloseThroughStatusAlone(t *testing.T) {
+	s := newRetiredTestServer(t)
+
+	res, err := s.readRule(context.Background(), readReq(uri.Rule("demo", "R-02")))
+	if err != nil {
+		t.Fatalf("read retired rule: %v", err)
+	}
+	body := resourceText(t, res)
+	if !strings.Contains(body, `"status":"retired"`) {
+		t.Errorf("payload = %s, want the rule closed through status", body)
+	}
+	if strings.Contains(body, `"retired":`) {
+		t.Errorf("payload = %s, want no retired field on a rule", body)
 	}
 }
 
@@ -328,8 +348,8 @@ func TestRetiredWithoutSuccessorOmitsSupersededBy(t *testing.T) {
 		t.Fatalf("read retired rule: %v", err)
 	}
 	body := resourceText(t, res)
-	if !strings.Contains(body, "retired") {
-		t.Fatalf("payload should still be flagged retired: %s", body)
+	if !strings.Contains(body, `"status":"retired"`) {
+		t.Fatalf("payload should still say the rule is retired: %s", body)
 	}
 	if strings.Contains(body, "superseded_by") {
 		t.Errorf("payload mentions superseded_by with no successor: %s", body)

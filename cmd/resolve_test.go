@@ -175,8 +175,8 @@ func TestResolveURIDistinguishesMalformedFromMissing(t *testing.T) {
 }
 
 // livt://mapping/trace-test-to-rule/rule/R-05/example/EX-01: a retired rule
-// still resolves from the command line, flagged rather than refused. A
-// reference filed against it outlives the decision to retire it.
+// still resolves from the command line, saying it closed rather than refusing.
+// A reference filed against it outlives the decision to retire it.
 func TestResolveURIResolvesARetiredRule(t *testing.T) {
 	var out bytes.Buffer
 	if err := resolveURI(&out, newTestRepo(t), "livt://mapping/demo/rule/R-02", formatJSON, ""); err != nil {
@@ -185,15 +185,15 @@ func TestResolveURIResolvesARetiredRule(t *testing.T) {
 
 	var payload struct {
 		Rule struct {
-			Name    string `json:"name"`
-			Retired bool   `json:"retired"`
+			Name   string `json:"name"`
+			Status string `json:"status"`
 		} `json:"rule"`
 	}
 	if err := json.Unmarshal(out.Bytes(), &payload); err != nil {
 		t.Fatal(err)
 	}
-	if !payload.Rule.Retired {
-		t.Error("a retired rule should resolve carrying retired")
+	if payload.Rule.Status != "retired" {
+		t.Errorf("status = %q, want a retired rule to resolve as retired", payload.Rule.Status)
 	}
 	if payload.Rule.Name != "退役したルール" {
 		t.Errorf("name = %q, want the retired rule's text kept", payload.Rule.Name)

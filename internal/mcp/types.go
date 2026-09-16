@@ -175,7 +175,10 @@ type exampleJSON struct {
 	// numbered within their rule, so the address carries the rule.
 	URI  string `json:"uri"`
 	Name string `json:"name"`
-	// Retired as on ruleJSON.
+	// Retired says the example is no longer part of the spec. Omitted when
+	// false: it marks the exception, and every live example carrying
+	// "retired": false would drown the flag in noise. A rule closes through
+	// status instead, which is the whole of where a rule stands.
 	Retired bool `json:"retired,omitempty"`
 	// SupersededBy as on ruleJSON.
 	SupersededBy []string `json:"superseded_by,omitempty"`
@@ -197,17 +200,11 @@ type ruleJSON struct {
 	// Automated is always present: consumers read the recorded judgment
 	// without distinguishing absent from false.
 	Automated bool `json:"automated"`
-	// Retired says the rule is no longer part of the spec, which Status now says
-	// too. It is kept, derived, so a caller branching on it keeps working, and
-	// it goes away once they read Status instead. Omitted when false: it marks
-	// the exception, and every live rule carrying "retired": false would drown
-	// the flag in noise.
-	Retired bool `json:"retired,omitempty"`
 	// SupersededBy is where the spec went, as livt URIs, so a stale reference
 	// leads forward instead of stopping. It stays a URI: the successor is one
 	// read away for a caller who needs it, and inlining its text would spend
-	// context on a hop most callers never take. Omitted like Retired, and for
-	// the same reason.
+	// context on a hop most callers never take. Omitted when nothing replaced
+	// the rule, so it reads as the exception it marks.
 	SupersededBy []string `json:"superseded_by,omitempty"`
 }
 
@@ -217,7 +214,7 @@ type questionJSON struct {
 	// (livt://mapping/{story_key}/question/{id}).
 	URI  string `json:"uri"`
 	Text string `json:"text"`
-	// Retired as on ruleJSON; a retired question is no longer open.
+	// Retired as on exampleJSON; a retired question is no longer open.
 	Retired bool `json:"retired,omitempty"`
 	// SupersededBy as on ruleJSON; for a settled question it is the rule that
 	// settled it.
@@ -357,7 +354,7 @@ func toRuleJSON(storyKey string, r domain.Rule) ruleJSON {
 	for _, e := range r.Examples {
 		examples = append(examples, toExampleJSON(storyKey, r.ID, e))
 	}
-	return ruleJSON{ID: r.ID, URI: uri.Rule(storyKey, r.ID), Name: r.Name, Status: string(r.Status.OrDefault()), Examples: examples, Issues: r.Issues, Automated: r.Automated, Retired: !r.Status.Active(), SupersededBy: r.SupersededBy}
+	return ruleJSON{ID: r.ID, URI: uri.Rule(storyKey, r.ID), Name: r.Name, Status: string(r.Status.OrDefault()), Examples: examples, Issues: r.Issues, Automated: r.Automated, SupersededBy: r.SupersededBy}
 }
 
 func toExampleJSON(storyKey, ruleID string, e domain.Example) exampleJSON {

@@ -132,19 +132,18 @@ func TestParseExampleMappingReadsStatus(t *testing.T) {
 	}
 }
 
-// livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-05: a livt
-// repository written before the statuses absorbed retirement keeps building.
-// Which closed status it folds to is the distinction the two lines carried
-// together — a proposal closed that way was turned down, anything else was spec
-// that stopped holding.
-func TestParseExampleMappingFoldsRetiredOntoStatus(t *testing.T) {
+// livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-06: the old
+// spelling is no longer a rule field, so the line says nothing about where the
+// rule stands — status is the whole of that, and a rule still carrying retired
+// reads as one written without a status.
+func TestParseExampleMappingIgnoresRuleRetired(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "story.yaml")
 	data := []byte("rules:\n" +
 		"  - id: R-01\n" +
-		"    name: 退役したルール\n" +
+		"    name: 旧来の綴りで閉じたルール\n" +
 		"    retired: true\n" +
 		"  - id: R-02\n" +
-		"    name: 却下された提案\n" +
+		"    name: 旧来の綴りで閉じた提案\n" +
 		"    status: proposed\n" +
 		"    retired: true\n")
 	if err := os.WriteFile(path, data, 0o644); err != nil {
@@ -156,11 +155,11 @@ func TestParseExampleMappingFoldsRetiredOntoStatus(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	if got := em.Rules[0].Status; got != domain.RuleRetired {
-		t.Errorf("rule R-01 status = %q, want %q", got, domain.RuleRetired)
+	if got := em.Rules[0].Status; got != domain.RuleAccepted {
+		t.Errorf("rule R-01 status = %q, want %q", got, domain.RuleAccepted)
 	}
-	if got := em.Rules[1].Status; got != domain.RuleRejected {
-		t.Errorf("rule R-02 status = %q, want %q", got, domain.RuleRejected)
+	if got := em.Rules[1].Status; got != domain.RuleProposed {
+		t.Errorf("rule R-02 status = %q, want %q", got, domain.RuleProposed)
 	}
 }
 
