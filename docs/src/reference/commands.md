@@ -66,6 +66,12 @@ rather than of the file: a rule
 edits one field, a deleted one loses its entry, and to a reader both mean the
 rule is no longer asked for.
 
+A withdrawal is drawn as the removal it is, whichever way the file recorded it:
+retiring a rule *adds* the line that retires it, and drawn off the record it
+would read as the opposite of what happened. The line that records the
+withdrawal is left out — the mark says it once — and the successor stays, since
+where the spec went is what the reader came for.
+
 A withdrawn sticky goes back on its board, drawn the way a proposal is — pale,
 dashed, struck through — since a proposal is not spec *yet* and this is not spec
 *any more*. Only what left in this range comes back: a rule retired long ago

@@ -101,7 +101,8 @@ func Compare(base, head *Snapshot) []Change {
 		case !held:
 			placed = append(placed, placedChange{anchor: i, change: change(e, StatusAdded, became(false, e.Live), added(e.Fields))})
 		case !sameFields(before.Fields, e.Fields):
-			placed = append(placed, placedChange{anchor: i, change: change(e, StatusModified, became(before.Live, e.Live), diffFields(before.Fields, e.Fields))})
+			b := became(before.Live, e.Live)
+			placed = append(placed, placedChange{anchor: i, change: change(e, StatusModified, b, lines(b, before, e))})
 		}
 	}
 	placed = append(placed, removals(base, head)...)
@@ -137,13 +138,42 @@ func removals(base, head *Snapshot) []placedChange {
 			continue
 		}
 		after++
-		placed = append(placed, placedChange{anchor: anchor, after: after, change: change(e, StatusRemoved, became(e.Live, false), removed(e.Fields))})
+		placed = append(placed, placedChange{anchor: anchor, after: after, change: change(e, StatusRemoved, BecameWithdrawn, withdrawn(e, Entry{}))})
 	}
 	return placed
 }
 
 func change(e Entry, status Status, became Became, lines []Line) Change {
 	return Change{URI: e.URI, Kind: e.Kind, Parent: e.Parent, Title: e.Title, Status: status, Became: became, Lines: lines}
+}
+
+// lines draws the change. A withdrawal is drawn as the removal it is, whichever
+// way the file recorded it: retiring adds the line that retires, and read as an
+// addition it would say the opposite of what happened.
+func lines(b Became, before, after Entry) []Line {
+	if b == BecameWithdrawn {
+		return withdrawn(before, after)
+	}
+	return diffFields(before.Fields, after.Fields)
+}
+
+// withdrawn is the statement that stopped holding, and where the spec went. The
+// line recording the withdrawal is left out — the change says that once already,
+// and saying it again as an addition is what made a retirement look like the
+// opposite of a deletion when both are the same thing to a reader.
+func withdrawn(before, after Entry) []Line {
+	var out []Line
+	for _, f := range before.Fields {
+		if f.Label == "" {
+			out = append(out, Line{Op: OpDel, Field: f})
+		}
+	}
+	for _, f := range after.Fields {
+		if f.Label == LabelSupersededBy {
+			out = append(out, Line{Op: OpContext, Field: f})
+		}
+	}
+	return out
 }
 
 func added(fields []Field) []Line   { return ops(fields, OpAdd) }

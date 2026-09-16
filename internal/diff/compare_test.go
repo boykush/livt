@@ -175,17 +175,46 @@ func TestCompareKeepsUnchangedLinesAsContext(t *testing.T) {
 }
 
 // livt://mapping/review-diff-between-revisions/rule/R-04/example/EX-01: the
-// board drops a retired rule, which is exactly why the diff must not. Read as a
-// removal it would say the rule was deleted and its id freed.
-func TestCompareReadsARetiredRuleAsAChangedStatusRatherThanARemoval(t *testing.T) {
+// board drops a retired rule, which is exactly why the diff must not — and the
+// record keeps it, which is why the URI goes on resolving. The reading is a
+// withdrawal; the record is a modification, and both are true at once.
+func TestCompareReadsARetiredRuleAsAWithdrawalTheRecordStillHolds(t *testing.T) {
 	base := mapping(t, "checkout", oneRule)
 	head := mapping(t, "checkout", strings.Replace(oneRule, "name: first", "name: first\n    status: retired", 1))
 
 	change := findURI(t, Compare(base, head), "livt://mapping/checkout/rule/R-01")
-	if change.Status != StatusModified {
-		t.Fatalf("status = %q, want %q — a retired rule is still on file", change.Status, StatusModified)
+	if change.Became != BecameWithdrawn {
+		t.Errorf("became %q, want %q", change.Became, BecameWithdrawn)
 	}
-	want := []string{" first", "-" + status("accepted"), "+" + status("retired")}
+	if change.Status != StatusModified {
+		t.Errorf("status = %q, want %q — the entry is still on file, so its id is not free", change.Status, StatusModified)
+	}
+}
+
+// livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-07 and
+// EX-08: a withdrawal is drawn as the removal it is. Retiring *adds* the line
+// that retires, so drawn off the record it would read as the opposite of what
+// happened — and the line that records it says nothing the badge has not.
+func TestCompareDrawsAWithdrawalAsARemoval(t *testing.T) {
+	base := mapping(t, "checkout", oneRule)
+	head := mapping(t, "checkout", strings.Replace(oneRule, "name: first", "name: first\n    status: retired", 1))
+
+	change := findURI(t, Compare(base, head), "livt://mapping/checkout/rule/R-01")
+	if got := lineTexts(change.Lines); !equal(got, []string{"-first"}) {
+		t.Errorf("lines = %v, want the statement removed and nothing else", got)
+	}
+}
+
+// Where the spec went is what a reader does want from a withdrawal, so the
+// successor survives the pruning that drops the rest of the bookkeeping.
+func TestCompareKeepsTheSuccessorOfAWithdrawnItem(t *testing.T) {
+	const successor = "livt://mapping/checkout/rule/R-02"
+	base := mapping(t, "checkout", oneRule)
+	head := mapping(t, "checkout", strings.Replace(oneRule, "name: first",
+		"name: first\n    status: retired\n    superseded_by:\n      - "+successor, 1))
+
+	change := findURI(t, Compare(base, head), "livt://mapping/checkout/rule/R-01")
+	want := []string{"-first", " " + LabelSupersededBy + ": " + successor}
 	if got := lineTexts(change.Lines); !equal(got, want) {
 		t.Errorf("lines = %v, want %v", got, want)
 	}
