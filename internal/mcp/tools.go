@@ -72,12 +72,11 @@ func (s *Server) versioned() versioned {
 
 // --- data access on Config (pure; shared by the tool and the resource handlers) ---
 
-// Retirement never turns a read into not-found: a rule, example, or question
-// keeps resolving by its URI and carries retired so the caller can tell. The
-// mapping keeps its retired entries too — it is the structural record their ids
-// are numbered from, and dropping them would make a taken id look free. The
-// list_* tools enumerate stories, story maps, and terms, none of which have a
-// retired concept.
+// Retirement never turns a read into not-found: a rule keeps resolving by its
+// URI carrying status, an example or question carrying retired. The mapping
+// keeps its closed entries too — it is the structural record their ids are
+// numbered from, and dropping them would make a taken id look free. The list_*
+// tools enumerate stories, story maps, and terms, which never close.
 
 // exampleMapping loads the example mapping for storyKey. It distinguishes a
 // missing mapping ("not found") from a malformed one (parse error). The key is

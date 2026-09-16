@@ -81,7 +81,7 @@ func TestComputeCountsLeavesRetiredItemsOutOfTasks(t *testing.T) {
 			"    name: 現役の未自動化ルール\n"+
 			"  - id: R-02\n"+
 			"    name: 退役したルール\n"+
-			"    retired: true\n"+
+			"    status: retired\n"+
 			"questions:\n"+
 			"  - id: Q-01\n"+
 			"    text: 現役の疑問\n"+

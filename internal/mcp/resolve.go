@@ -11,8 +11,8 @@ import (
 // hold. Callers tell it apart from a malformed URI, which never reaches here,
 // and from a livt repository that fails to read, which surfaces as itself.
 //
-// A retired item is not one of these: it resolves like any other, carrying
-// retired, so a reference filed against it keeps working
+// A retired item is not one of these: it resolves like any other, saying it has
+// closed, so a reference filed against it keeps working
 // (livt://mapping/trace-test-to-rule/rule/R-05).
 var ErrNotFound = errors.New("not found")
 

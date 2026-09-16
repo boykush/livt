@@ -24,12 +24,9 @@ type ruleYAML struct {
 	Automated bool          `yaml:"automated"`
 	// Status reads as an ADR's does: proposed while the rule awaits agreement,
 	// accepted once it has it, rejected or retired once it has closed. Omitted
-	// means accepted.
+	// means accepted, and it is the whole of a rule's standing: nothing else
+	// closes a rule.
 	Status string `yaml:"status"`
-	// Retired is the superseded spelling of the two closed statuses, still read
-	// so a livt repository written against it keeps building. It is folded onto
-	// Status at parse time and will stop being accepted.
-	Retired bool `yaml:"retired"`
 	// SupersededBy carries the retirement's other half: where the spec went.
 	// It is livt URIs rather than bare ids so a successor in another mapping is
 	// sayable, and it is a list so a rule that split into two can name both.
@@ -47,25 +44,7 @@ func (r ruleYAML) status() (domain.RuleStatus, error) {
 			return "", fmt.Errorf("rule %q: unknown status %q (supported: %s)", r.ID, r.Status, domain.RuleStatusList())
 		}
 	}
-	if r.Retired {
-		return closed(status), nil
-	}
 	return status, nil
-}
-
-// closed folds the superseded retired: flag onto the status it was written
-// beside. A proposal closed that way was turned down; anything else was spec
-// that stopped holding — the distinction the flag left to whoever read both
-// lines together.
-func closed(status domain.RuleStatus) domain.RuleStatus {
-	switch status {
-	case domain.RuleProposed:
-		return domain.RuleRejected
-	case domain.RuleRejected, domain.RuleRetired:
-		return status
-	default:
-		return domain.RuleRetired
-	}
 }
 
 type exampleYAML struct {
