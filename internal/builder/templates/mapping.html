@@ -112,6 +112,12 @@ board whatever the reader chose.
   {{.StoryName}}
 </div>
 {{end}}
+{{if or .Diff .DiffGone}}
+<div class="-mt-4 mb-6 flex flex-wrap items-center gap-2">
+  {{with .Diff}}{{template "diff-mark" .}}{{end}}
+  {{with .DiffGone}}{{template "diff-gone" .}}{{end}}
+</div>
+{{end}}
 
 <div class="overflow-x-auto pt-3 px-3 pb-4">
 {{/*
@@ -140,6 +146,7 @@ back up into one row.
       {{end}}
       {{if $rule.ID}}{{template "id-badge" ruleBadge $rule.ID}}{{end}}
       <span class="rule-name">{{$rule.Name}}</span>
+      {{with index $.DiffMarks (ruleURI $.Mapping.StoryKey.Value $rule.ID)}}{{template "diff-mark" .}}{{end}}
       {{if $rule.Proposed}}
       <span title="{{t "mapping.proposed-title"}}" class="proposed-badge absolute -top-2 left-2 rounded-full border border-dashed border-blue-400 bg-white text-blue-500 text-[10px] font-semibold px-1.5 py-0.5 select-none">{{t "mapping.proposed-badge"}}</span>
       {{end}}
@@ -168,6 +175,7 @@ back up into one row.
     <div{{if and $rule.ID .ID}} id="{{exampleAnchor $rule.ID .ID}}"{{end}} class="example-card relative {{if $rule.Proposed}}proposed bg-green-50 border-green-300 border-dashed text-gray-500{{else}}bg-green-100 border-green-400 shadow text-gray-700{{end}} border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
       {{if and $rule.ID .ID}}{{template "id-badge" exampleBadge $rule.ID .ID}}{{end}}
       <span>{{.Name}}</span>
+      {{with index $.DiffMarks (exampleURI $.Mapping.StoryKey.Value $rule.ID .ID)}}{{template "diff-mark" .}}{{end}}
     </div>
     {{end}}
     </div>
@@ -190,6 +198,7 @@ back up into one row.
     <div{{if .ID}} id="{{questionAnchor .ID}}"{{end}} class="question-card relative bg-red-100 border-l-4 border-red-400 px-3 pt-3 pb-6 rounded shadow text-gray-700 text-sm scroll-mt-24">
       {{if .ID}}{{template "id-badge" questionBadge .ID}}{{end}}
       <span>{{.Text}}</span>
+      {{with index $.DiffMarks (questionURI $.Mapping.StoryKey.Value .ID)}}{{template "diff-mark" .}}{{end}}
     </div>
     {{end}}
     </div>

@@ -30,6 +30,7 @@ func (b *Builder) buildGlossary() error {
 			Key:        t.Key,
 			Name:       t.Name,
 			Definition: t.Body,
+			Diff:       b.diffMark("", uri.Term(t.Ctx, t.Key)),
 		})
 		// Context-free terms offer no axis to filter on: they belong to every
 		// context, so no chip would narrow the table to them.
@@ -52,6 +53,7 @@ func (b *Builder) buildGlossary() error {
 	defer f.Close()
 
 	if err := renderGlossary(f, b.Lang, glossaryView{
+		DiffGone: b.diffGoneFromList(uri.KindTerm),
 		Sidebar:  sb,
 		Terms:    cards,
 		Contexts: contexts,

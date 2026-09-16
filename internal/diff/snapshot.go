@@ -15,9 +15,10 @@ import (
 )
 
 // Dirs are the livt repository's input directories, relative to the root they
-// are read from. One revision is snapshotted by rebasing them onto the tree git
-// exported for it, so the same layout serves the working tree and a revision
-// without either side knowing which it is.
+// are read from — which is what lets the same layout name a path inside the
+// repository for git to export and a path inside the export to read it back
+// from. One revision is snapshotted by rebasing them onto the tree git wrote,
+// so neither side knows which of the two it is looking at.
 type Dirs struct {
 	Opportunities string
 	Canvases      string
@@ -43,10 +44,44 @@ func (d Dirs) paths() []string {
 	return []string{d.Opportunities, d.Canvases, d.Mappings, d.Stories, d.USM, d.Ubiquitous}
 }
 
+// Field is one line of an entry: a value, and what the thing holding it is
+// called. Label is empty when the value is the item's own text — a rule is its
+// text, not the value of a `name` key, and a diff that spelled the key would be
+// a prettier YAML diff rather than a different reading of one.
+type Field struct {
+	Label string
+	// Translate marks Label as a message catalog key. What livt names, livt
+	// translates; what the livt repository named — a frontmatter key — is its
+	// own word and is carried through as written.
+	Translate bool
+	Value     string
+}
+
+// Labels livt puts on its own fields. Where the site already has a word for
+// something, that word is reused rather than a second one minted here.
+const (
+	LabelStatus       = "diff.field.status"
+	LabelAutomated    = "diff.field.automated"
+	LabelIssue        = "diff.field.issue"
+	LabelSupersededBy = "diff.field.superseded-by"
+	LabelRetired      = "diff.field.retired"
+	LabelRelease      = "diff.field.release"
+	LabelTerms        = "nav.ubiquitous"
+	LabelActivity     = "label.activity"
+	LabelStep         = "label.step"
+	LabelStory        = "label.story"
+	// canvasLabelPrefix addresses a canvas box's heading, which the sheet
+	// already reads off the same key.
+	canvasLabelPrefix = "canvas."
+	// statusPrefix addresses a rule status as a word rather than as the value
+	// written in the file.
+	statusPrefix = "diff.status."
+)
+
 // Entry is one addressable point of the livt repository at one revision: the
-// URI it answers to, what to call it on a page, and its own fields as lines.
-// Only its own — a rule's text is no part of its mapping's entry, so a reworded
-// rule is one change rather than two.
+// URI it answers to, what to call it on a page, and its own fields. Only its
+// own — a rule's text is no part of its mapping's entry, so a reworded rule is
+// one change rather than two.
 type Entry struct {
 	URI  string
 	Kind uri.Kind
@@ -54,7 +89,7 @@ type Entry struct {
 	// can gather them under it. Empty on everything addressed in its own right.
 	Parent string
 	Title  string
-	Lines  []string
+	Fields []Field
 }
 
 // Snapshot is every entry of one revision, in the order the livt repository
@@ -114,10 +149,10 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 		// Named by its story, which is what a reader calls the board — the key
 		// alone is the filename, and the mapping heads a group of rules.
 		s.add(Entry{
-			URI:   mappingURI,
-			Kind:  uri.KindMapping,
-			Title: parser.FindStoryByKey(dirs.Stories, em.StoryKey).DisplayName(),
-			Lines: prefixed("ubiquitous", em.Ubiquitous),
+			URI:    mappingURI,
+			Kind:   uri.KindMapping,
+			Title:  parser.FindStoryByKey(dirs.Stories, em.StoryKey).DisplayName(),
+			Fields: listed(LabelTerms, em.Ubiquitous),
 		})
 		// Scanned as recorded rather than as the board shows it: a retirement
 		// and an agreement are exactly the changes a reviewer came for, and
@@ -128,7 +163,7 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 				Kind:   uri.KindRule,
 				Parent: mappingURI,
 				Title:  r.ID,
-				Lines:  ruleLines(r),
+				Fields: ruleFields(r),
 			})
 			for _, ex := range r.Examples {
 				s.add(Entry{
@@ -136,7 +171,7 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 					Kind:   uri.KindExample,
 					Parent: mappingURI,
 					Title:  r.ID + " " + ex.ID,
-					Lines:  itemLines("name", ex.Name, ex.Retired, ex.SupersededBy),
+					Fields: itemFields(ex.Name, ex.Retired, ex.SupersededBy),
 				})
 			}
 		}
@@ -146,34 +181,35 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 				Kind:   uri.KindQuestion,
 				Parent: mappingURI,
 				Title:  q.ID,
-				Lines:  itemLines("text", q.Text, q.Retired, q.SupersededBy),
+				Fields: itemFields(q.Text, q.Retired, q.SupersededBy),
 			})
 		}
 	}
 	return nil
 }
 
-// ruleLines always spells the status, so a proposal being agreed reads as the
+// ruleFields always spells the status, so a proposal being agreed reads as the
 // one-line change it is rather than as a line appearing out of nowhere — and so
 // a rule that writes its default explicitly diffs against one that omits it as
-// no change at all.
-func ruleLines(r domain.Rule) []string {
-	lines := []string{field("name", r.Name), field("status", string(r.Status.OrDefault()))}
+// no change at all. The status is carried as a message key, since the site has
+// words for these and "accepted" is the spelling in the file, not the reading.
+func ruleFields(r domain.Rule) []Field {
+	fields := []Field{text(r.Name), labelled(LabelStatus, statusPrefix+string(r.Status.OrDefault()))}
 	if r.Automated {
-		lines = append(lines, field("automated", "true"))
+		fields = append(fields, flag(LabelAutomated))
 	}
-	lines = append(lines, prefixed("issue", r.Issues)...)
-	return append(lines, prefixed("superseded_by", r.SupersededBy)...)
+	fields = append(fields, listed(LabelIssue, r.Issues)...)
+	return append(fields, listed(LabelSupersededBy, r.SupersededBy)...)
 }
 
-// itemLines renders an example or a question, which differ only in what their
-// text field is called.
-func itemLines(textKey, text string, retired bool, supersededBy []string) []string {
-	lines := []string{field(textKey, text)}
+// itemFields renders an example or a question, which are the same shape: their
+// own text, and what became of them.
+func itemFields(body string, retired bool, supersededBy []string) []Field {
+	fields := []Field{text(body)}
 	if retired {
-		lines = append(lines, field("retired", "true"))
+		fields = append(fields, flag(LabelRetired))
 	}
-	return append(lines, prefixed("superseded_by", supersededBy)...)
+	return append(fields, listed(LabelSupersededBy, supersededBy)...)
 }
 
 func scanOpportunities(s *Snapshot, dirs Dirs) error {
@@ -183,12 +219,12 @@ func scanOpportunities(s *Snapshot, dirs Dirs) error {
 	}
 	for _, o := range opportunities {
 		key := o.Key.Value
-		lines := append([]string{field("name", o.Name)}, bodyLines(o.Body)...)
+		fields := append([]Field{text(o.Name)}, bodyFields(o.Body)...)
 		s.add(Entry{
-			URI:   uri.Opportunity(key),
-			Kind:  uri.KindOpportunity,
-			Title: o.DisplayName(),
-			Lines: append(lines, metaLines(o.Meta)...),
+			URI:    uri.Opportunity(key),
+			Kind:   uri.KindOpportunity,
+			Title:  o.DisplayName(),
+			Fields: append(fields, metaFields(o.Meta)...),
 		})
 		// A canvas is read through its opportunity's key, so it is scanned here
 		// rather than from a directory walk of its own: the two are joined by
@@ -198,21 +234,23 @@ func scanOpportunities(s *Snapshot, dirs Dirs) error {
 			continue
 		}
 		s.add(Entry{
-			URI:   uri.OpportunityCanvas(key),
-			Kind:  uri.KindOpportunityCanvas,
-			Title: o.DisplayName(),
-			Lines: canvasLines(canvas),
+			URI:    uri.OpportunityCanvas(key),
+			Kind:   uri.KindOpportunityCanvas,
+			Title:  o.DisplayName(),
+			Fields: canvasFields(canvas),
 		})
 	}
 	return nil
 }
 
-func canvasLines(c *domain.OpportunityCanvas) []string {
-	var lines []string
+// canvasFields names each sticky by the box it sits in, using the heading the
+// sheet itself prints over that box.
+func canvasFields(c *domain.OpportunityCanvas) []Field {
+	var fields []Field
 	for _, box := range c.Boxes() {
-		lines = append(lines, prefixed(box.Key, box.Items)...)
+		fields = append(fields, listed(canvasLabelPrefix+box.Key, box.Items)...)
 	}
-	return append(lines, prefixed("ubiquitous", c.Ubiquitous)...)
+	return append(fields, listed(LabelTerms, c.Ubiquitous)...)
 }
 
 func scanStoryMaps(s *Snapshot, dirs Dirs) error {
@@ -222,33 +260,33 @@ func scanStoryMaps(s *Snapshot, dirs Dirs) error {
 	}
 	for _, m := range maps {
 		s.add(Entry{
-			URI:   uri.StoryMap(m.Name),
-			Kind:  uri.KindStoryMap,
-			Title: m.Name,
-			Lines: storyMapLines(m),
+			URI:    uri.StoryMap(m.Name),
+			Kind:   uri.KindStoryMap,
+			Title:  m.Name,
+			Fields: storyMapFields(m),
 		})
 	}
 	return nil
 }
 
-// storyMapLines walks the backbone in the order the board is read. The nesting
-// is spelled with indentation so a card moving between steps reads as the move
-// it is, rather than as two unrelated lines.
-func storyMapLines(m *domain.StoryMap) []string {
-	lines := []string{field("name", m.Name)}
+// storyMapFields walks the backbone in the order the board is read, each card
+// named by the kind of sticky it is. A card that moved between steps reads as
+// the move it is, because the step above it moved with it.
+func storyMapFields(m *domain.StoryMap) []Field {
+	fields := []Field{text(m.Name)}
 	for _, r := range m.Releases {
-		lines = append(lines, field("release "+r.ID, r.Name))
+		fields = append(fields, labelled(LabelRelease, r.DisplayName(0)))
 	}
 	for _, a := range m.Activities {
-		lines = append(lines, field("activity "+a.Key, a.Name))
+		fields = append(fields, labelled(LabelActivity, a.Name))
 		for _, step := range a.Steps {
-			lines = append(lines, "  "+field("step "+step.Key, step.Name))
+			fields = append(fields, labelled(LabelStep, step.Name))
 			for _, card := range step.Stories {
-				lines = append(lines, "    "+field("story "+card.Key.Value, card.Name)+releaseSuffix(card))
+				fields = append(fields, labelled(LabelStory, card.Name+releaseSuffix(card)))
 			}
 		}
 	}
-	return append(lines, prefixed("ubiquitous", m.Ubiquitous)...)
+	return append(fields, listed(LabelTerms, m.Ubiquitous)...)
 }
 
 func releaseSuffix(card domain.StoryCard) string {
@@ -264,12 +302,12 @@ func scanStories(s *Snapshot, dirs Dirs) error {
 		return err
 	}
 	for _, story := range stories {
-		lines := append([]string{field("name", story.Name)}, bodyLines(story.Body)...)
+		fields := append([]Field{text(story.Name)}, bodyFields(story.Body)...)
 		s.add(Entry{
-			URI:   uri.Story(story.Key.Value),
-			Kind:  uri.KindStory,
-			Title: story.DisplayName(),
-			Lines: append(lines, metaLines(story.Meta)...),
+			URI:    uri.Story(story.Key.Value),
+			Kind:   uri.KindStory,
+			Title:  story.DisplayName(),
+			Fields: append(fields, metaFields(story.Meta)...),
 		})
 	}
 	return nil
@@ -282,44 +320,66 @@ func scanTerms(s *Snapshot, dirs Dirs) error {
 	}
 	for _, t := range terms {
 		s.add(Entry{
-			URI:   uri.Term(t.Ctx, t.Key),
-			Kind:  uri.KindTerm,
-			Title: t.Name,
-			Lines: append([]string{field("name", t.Name)}, bodyLines(t.Body)...),
+			URI:    uri.Term(t.Ctx, t.Key),
+			Kind:   uri.KindTerm,
+			Title:  t.Name,
+			Fields: append([]Field{text(t.Name)}, bodyFields(t.Body)...),
 		})
 	}
 	return nil
 }
 
-func field(key, value string) string {
-	return key + ": " + value
+// text is the item speaking for itself, with nothing named in front of it.
+func text(value string) Field {
+	return Field{Value: value}
 }
 
-// prefixed renders a list field one line per item, so adding an item to it is
-// one added line rather than a rewrite of the whole list.
-func prefixed(key string, values []string) []string {
-	lines := make([]string, 0, len(values))
+// labelled is a field livt names and so translates.
+func labelled(label, value string) Field {
+	return Field{Label: label, Translate: true, Value: value}
+}
+
+// flag is a field that says something by being there at all. It carries no
+// value, so the line reads as the word itself: gaining it is the change.
+func flag(label string) Field {
+	return Field{Label: label, Translate: true}
+}
+
+// authored is a field the livt repository named, which is not livt's to
+// translate — a frontmatter key is the repository's own word.
+func authored(label, value string) Field {
+	return Field{Label: label, Value: value}
+}
+
+// listed renders a list field one line per item, so adding an item to it is one
+// added line rather than a rewrite of the whole list.
+func listed(label string, values []string) []Field {
+	fields := make([]Field, 0, len(values))
 	for _, v := range values {
-		lines = append(lines, field(key, v))
+		fields = append(fields, labelled(label, v))
 	}
-	return lines
+	return fields
 }
 
-func metaLines(meta []domain.MetaField) []string {
-	lines := make([]string, 0, len(meta))
+func metaFields(meta []domain.MetaField) []Field {
+	fields := make([]Field, 0, len(meta))
 	for _, m := range meta {
-		lines = append(lines, field("meta "+m.Key, m.Value))
+		fields = append(fields, authored(m.Key, m.Value))
 	}
-	return lines
+	return fields
 }
 
-// bodyLines keeps prose line by line, so a reworded sentence diffs to that
+// bodyFields keeps prose line by line, so a reworded sentence diffs to that
 // sentence. Blank lines at either end are dropped: they are how the file is
 // laid out, not anything the spec says.
-func bodyLines(body string) []string {
+func bodyFields(body string) []Field {
 	trimmed := strings.Trim(body, "\n")
 	if trimmed == "" {
 		return nil
 	}
-	return strings.Split(trimmed, "\n")
+	var fields []Field
+	for _, line := range strings.Split(trimmed, "\n") {
+		fields = append(fields, text(line))
+	}
+	return fields
 }

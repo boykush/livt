@@ -21,7 +21,7 @@ func TestRenderStoryLinksEachOpportunityByName(t *testing.T) {
 	}
 
 	var buf bytes.Buffer
-	if err := renderStory(&buf, i18n.En, story, "", opportunities); err != nil {
+	if err := renderStory(&buf, i18n.En, story, "", opportunities, nil); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()
@@ -44,7 +44,7 @@ func TestRenderStoryWithoutOpportunitiesShowsNoMapLink(t *testing.T) {
 	story := &domain.Story{Key: domain.StoryKey{Value: "orphan"}, Name: "Orphan"}
 
 	var buf bytes.Buffer
-	if err := renderStory(&buf, i18n.En, story, "", nil); err != nil {
+	if err := renderStory(&buf, i18n.En, story, "", nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	if strings.Contains(buf.String(), "../story-map/") {
@@ -58,7 +58,7 @@ func TestRenderStoryWithoutNameShowsTheKey(t *testing.T) {
 	story := &domain.Story{Key: domain.StoryKey{Value: "unnamed-story"}}
 
 	var buf bytes.Buffer
-	if err := renderStory(&buf, i18n.En, story, "", nil); err != nil {
+	if err := renderStory(&buf, i18n.En, story, "", nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()

@@ -34,6 +34,9 @@ type Builder struct {
 	// diff is recomputed per build rather than held across them; the sidebar of
 	// every page needs the count, which is why it is on the Builder at all.
 	diffResult *diff.Result
+	// diffByURI is the same result keyed for the lookup every resource page
+	// makes: did this one change, and how.
+	diffByURI map[string]diff.Status
 }
 
 // diffDirs is the input layout the diff reads a revision through, which is this
@@ -130,10 +133,6 @@ func (b *Builder) sidebar(active, prefix string) (Sidebar, error) {
 		StoryMaps:     c.storyMaps,
 		Stories:       c.stories,
 		Terms:         c.terms,
-	}
-	if b.diffResult != nil {
-		sb.HasDiff = true
-		sb.Diff = len(b.diffResult.Changes)
 	}
 	return sb, nil
 }
@@ -286,7 +285,7 @@ func (b *Builder) Build() error {
 	if b.diffResult == nil {
 		return b.removeDiff()
 	}
-	if err := b.buildDiff(b.diffResult); err != nil {
+	if err := b.buildDiff(); err != nil {
 		return err
 	}
 	fmt.Printf("  %s\n", diffPage)
@@ -298,7 +297,7 @@ func (b *Builder) Build() error {
 // the build was given no range — which is what keeps the diff off a site nobody
 // asked one for.
 func (b *Builder) computeDiff() error {
-	b.diffResult = nil
+	b.diffResult, b.diffByURI = nil, nil
 	if b.Diff == nil {
 		return nil
 	}
@@ -307,6 +306,10 @@ func (b *Builder) computeDiff() error {
 		return err
 	}
 	b.diffResult = result
+	b.diffByURI = make(map[string]diff.Status, len(result.Changes))
+	for _, c := range result.Changes {
+		b.diffByURI[c.URI] = c.Status
+	}
 	return nil
 }
 

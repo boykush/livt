@@ -58,6 +58,19 @@ var ja = Catalog{
 	"diff.working-tree": "作業ツリー",
 	"diff.empty":        "このリビジョン間に変更はありません。",
 
+	"diff.gone":                "件がここから消えました",
+	"diff.field.status":        "状態",
+	"diff.field.automated":     "自動化済み",
+	"diff.field.issue":         "自動化Issue",
+	"diff.field.superseded-by": "後継",
+	"diff.field.retired":       "退役",
+	"diff.field.release":       "リリース",
+
+	"diff.status.proposed": "提案中",
+	"diff.status.accepted": "合意済み",
+	"diff.status.rejected": "却下",
+	"diff.status.retired":  "退役",
+
 	"glossary.term":       "用語",
 	"glossary.key":        "キー",
 	"glossary.definition": "定義",

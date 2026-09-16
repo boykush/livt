@@ -18,6 +18,13 @@
   .diff-add > .sign { color: #15803d; }
   .diff-del { background-color: #fee2e2; }
   .diff-del > .sign { color: #b91c1c; }
+  {{/*
+  Inside a reworded pair, the phrase that actually moved is picked out of the
+  line it sits in. Most of what the livt repository holds is a sentence, and a
+  one-phrase edit read as two whole sentences is work the page can do instead.
+  */}}
+  .diff-add .moved { background-color: #86efac; border-radius: 0.125rem; }
+  .diff-del .moved { background-color: #fca5a5; border-radius: 0.125rem; }
 </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -63,10 +70,10 @@
 </html>
 
 {{define "diff-entry"}}
-<div class="px-4 py-3">
+<div id="{{.Anchor}}" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
   <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
     {{if .Status}}<span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 {{if eq .Status "added"}}bg-green-100 text-green-800{{else if eq .Status "removed"}}bg-red-100 text-red-800{{else}}bg-amber-100 text-amber-800{{end}}">{{t (print "diff." .Status)}}</span>{{end}}
-    <span class="font-medium text-gray-900">{{.Title}}</span>
+    {{if .Title}}<span class="font-medium text-gray-900">{{.Title}}</span>{{end}}
     {{/*
     The URI is the entry's name here, not a decoration: it is what a reviewer
     quotes in the thread, and the link is the same derivation `livt resolve`
@@ -81,7 +88,7 @@
   {{if .Lines}}
   <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
     {{range .Lines}}
-    <div class="diff-line{{if eq .Op "+"}} diff-add{{else if eq .Op "-"}} diff-del{{end}}"><span class="sign">{{.Op}}</span><span class="whitespace-pre-wrap break-words">{{.Text}}</span></div>
+    <div class="diff-line{{if eq .Op "+"}} diff-add{{else if eq .Op "-"}} diff-del{{end}}"><span class="sign">{{.Op}}</span><span class="whitespace-pre-wrap break-words">{{if .Parts}}{{if .Label}}{{.Label}}: {{end}}{{range .Parts}}{{if .Changed}}<span class="moved">{{.Text}}</span>{{else}}{{.Text}}{{end}}{{end}}{{else}}{{.Text}}{{end}}</span></div>
     {{end}}
   </div>
   {{end}}

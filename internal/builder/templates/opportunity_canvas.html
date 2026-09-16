@@ -35,6 +35,7 @@
 <main class="max-w-[1500px] mx-auto px-6 py-6">
 <div class="flex items-baseline gap-4 flex-wrap mb-3">
   <h1 class="text-lg font-bold text-gray-900">{{.OpportunityName}}</h1>
+  {{with .Diff}}{{template "diff-mark" .}}{{end}}
   <span class="text-xs font-semibold uppercase tracking-wide text-orange-600">{{t "label.opportunity-canvas"}}</span>
   <div class="ml-auto flex items-center gap-4 text-[11px] text-gray-500">
     <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-rose-100 border border-rose-300 rounded-sm"></span>{{t "canvas.zone.facts"}}</span>

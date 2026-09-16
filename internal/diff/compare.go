@@ -16,10 +16,20 @@ const (
 	OpDel     Op = "-"
 )
 
-// Line is one line of an entry's diff.
+// Line is one line of an entry's diff: the field it renders, and — when the
+// line is one half of a rewording — that field's value broken into what stayed
+// and what moved. Most of what a livt repository holds is prose, and two long
+// sentences side by side leave the reader to find the difference by eye.
 type Line struct {
-	Op   Op
-	Text string
+	Op    Op
+	Field Field
+	Parts []Part
+}
+
+// Part is a run of a line's value, marked as changed or not.
+type Part struct {
+	Changed bool
+	Text    string
 }
 
 // Status is what happened to a URI. There are only three: a URI the head does
@@ -39,13 +49,17 @@ type Change struct {
 	URI    string
 	Kind   uri.Kind
 	Parent string
-	Title  string
-	Status Status
-	Lines  []Line
-	Page   string
+	// ParentTitle is what the parent is called, carried on the child because a
+	// mapping heading its changed rules may have no change of its own to be
+	// named by.
+	ParentTitle string
+	Title       string
+	Status      Status
+	Lines       []Line
+	Page        string
 }
 
-// Compare pairs the two snapshots by URI. A URI both hold with the same lines
+// Compare pairs the two snapshots by URI. A URI both hold with the same fields
 // is not a change and is left out: the page is what moved, not the repository.
 func Compare(base, head *Snapshot) []Change {
 	var placed []placedChange
@@ -53,9 +67,9 @@ func Compare(base, head *Snapshot) []Change {
 		before, held := base.get(e.URI)
 		switch {
 		case !held:
-			placed = append(placed, placedChange{anchor: i, change: change(e, StatusAdded, added(e.Lines))})
-		case !sameLines(before.Lines, e.Lines):
-			placed = append(placed, placedChange{anchor: i, change: change(e, StatusModified, diffLines(before.Lines, e.Lines))})
+			placed = append(placed, placedChange{anchor: i, change: change(e, StatusAdded, added(e.Fields))})
+		case !sameFields(before.Fields, e.Fields):
+			placed = append(placed, placedChange{anchor: i, change: change(e, StatusModified, diffFields(before.Fields, e.Fields))})
 		}
 	}
 	placed = append(placed, removals(base, head)...)
@@ -91,7 +105,7 @@ func removals(base, head *Snapshot) []placedChange {
 			continue
 		}
 		after++
-		placed = append(placed, placedChange{anchor: anchor, after: after, change: change(e, StatusRemoved, removed(e.Lines))})
+		placed = append(placed, placedChange{anchor: anchor, after: after, change: change(e, StatusRemoved, removed(e.Fields))})
 	}
 	return placed
 }
@@ -100,18 +114,18 @@ func change(e Entry, status Status, lines []Line) Change {
 	return Change{URI: e.URI, Kind: e.Kind, Parent: e.Parent, Title: e.Title, Status: status, Lines: lines}
 }
 
-func added(lines []string) []Line   { return ops(lines, OpAdd) }
-func removed(lines []string) []Line { return ops(lines, OpDel) }
+func added(fields []Field) []Line   { return ops(fields, OpAdd) }
+func removed(fields []Field) []Line { return ops(fields, OpDel) }
 
-func ops(lines []string, op Op) []Line {
-	out := make([]Line, 0, len(lines))
-	for _, l := range lines {
-		out = append(out, Line{Op: op, Text: l})
+func ops(fields []Field, op Op) []Line {
+	out := make([]Line, 0, len(fields))
+	for _, f := range fields {
+		out = append(out, Line{Op: op, Field: f})
 	}
 	return out
 }
 
-func sameLines(a, b []string) bool {
+func sameFields(a, b []Field) bool {
 	if len(a) != len(b) {
 		return false
 	}
@@ -123,39 +137,119 @@ func sameLines(a, b []string) bool {
 	return true
 }
 
-// diffLines is the line diff git diff draws: the longest common subsequence
-// stays as context and everything else is a removal beside its replacement.
-// An entry holds its own fields and nothing else, so the quadratic table is
-// over a handful of lines.
-func diffLines(a, b []string) []Line {
-	lcs := make([][]int, len(a)+1)
-	for i := range lcs {
-		lcs[i] = make([]int, len(b)+1)
-	}
-	for i := len(a) - 1; i >= 0; i-- {
-		for j := len(b) - 1; j >= 0; j-- {
-			if a[i] == b[j] {
-				lcs[i][j] = lcs[i+1][j+1] + 1
-				continue
-			}
-			lcs[i][j] = max(lcs[i+1][j], lcs[i][j+1])
-		}
-	}
+// diffFields is the line diff git diff draws — the longest common subsequence
+// stays as context and everything else is a removal beside its replacement —
+// with each reworded pair then broken down further. An entry holds its own
+// fields and nothing else, so the quadratic table is over a handful of lines.
+func diffFields(a, b []Field) []Line {
+	lcs := lcsTable(len(a), len(b), func(i, j int) bool { return a[i] == b[j] })
 	var lines []Line
 	i, j := 0, 0
 	for i < len(a) && j < len(b) {
 		switch {
 		case a[i] == b[j]:
-			lines = append(lines, Line{Op: OpContext, Text: a[i]})
+			lines = append(lines, Line{Op: OpContext, Field: a[i]})
 			i, j = i+1, j+1
 		case lcs[i+1][j] >= lcs[i][j+1]:
-			lines = append(lines, Line{Op: OpDel, Text: a[i]})
+			lines = append(lines, Line{Op: OpDel, Field: a[i]})
 			i++
 		default:
-			lines = append(lines, Line{Op: OpAdd, Text: b[j]})
+			lines = append(lines, Line{Op: OpAdd, Field: b[j]})
 			j++
 		}
 	}
 	lines = append(lines, removed(a[i:])...)
-	return append(lines, added(b[j:])...)
+	lines = append(lines, added(b[j:])...)
+	return markReworded(lines)
+}
+
+// markReworded pairs each removal with the addition that replaced it and breaks
+// both down to what actually moved. Only a pair naming the same field is a
+// rewording; two different fields are two changes, and marking them up against
+// each other would invent a relation the record does not have.
+func markReworded(lines []Line) []Line {
+	for i := 0; i+1 < len(lines); i++ {
+		del, add := lines[i], lines[i+1]
+		if del.Op != OpDel || add.Op != OpAdd || del.Field.Label != add.Field.Label {
+			continue
+		}
+		delParts, addParts, ok := parts(del.Field.Value, add.Field.Value)
+		if !ok {
+			continue
+		}
+		lines[i].Parts, lines[i+1].Parts = delParts, addParts
+		i++
+	}
+	return lines
+}
+
+// similarEnough is the share of a line that has to survive a rewording for the
+// breakdown to help. Below it the two are different sentences rather than one
+// sentence edited, and marking up the few characters they happen to share
+// scatters highlights through both.
+const similarEnough = 0.4
+
+// parts breaks a reworded pair down to the runs that stayed and the runs that
+// moved. It works in runes: most of what a livt repository holds is prose, and
+// for a language that does not space its words the character is the only unit
+// the diff can honestly claim to see.
+func parts(before, after string) (delParts, addParts []Part, ok bool) {
+	a, b := []rune(before), []rune(after)
+	lcs := lcsTable(len(a), len(b), func(i, j int) bool { return a[i] == b[j] })
+	common := lcs[0][0]
+	if common == 0 || float64(common) < similarEnough*float64(max(len(a), len(b))) {
+		return nil, nil, false
+	}
+	var del, add []Part
+	i, j := 0, 0
+	for i < len(a) && j < len(b) {
+		switch {
+		case a[i] == b[j]:
+			del, add = appendPart(del, false, a[i]), appendPart(add, false, b[j])
+			i, j = i+1, j+1
+		case lcs[i+1][j] >= lcs[i][j+1]:
+			del = appendPart(del, true, a[i])
+			i++
+		default:
+			add = appendPart(add, true, b[j])
+			j++
+		}
+	}
+	for ; i < len(a); i++ {
+		del = appendPart(del, true, a[i])
+	}
+	for ; j < len(b); j++ {
+		add = appendPart(add, true, b[j])
+	}
+	return del, add, true
+}
+
+// appendPart grows the run being built rather than starting a new one, so a
+// changed phrase is highlighted once instead of character by character.
+func appendPart(parts []Part, changed bool, r rune) []Part {
+	if n := len(parts); n > 0 && parts[n-1].Changed == changed {
+		parts[n-1].Text += string(r)
+		return parts
+	}
+	return append(parts, Part{Changed: changed, Text: string(r)})
+}
+
+// lcsTable is the longest-common-subsequence table both diffs walk, over lines
+// or over runes. [i][j] is the length of the longest subsequence shared by the
+// two tails starting there.
+func lcsTable(n, m int, equal func(i, j int) bool) [][]int {
+	table := make([][]int, n+1)
+	for i := range table {
+		table[i] = make([]int, m+1)
+	}
+	for i := n - 1; i >= 0; i-- {
+		for j := m - 1; j >= 0; j-- {
+			if equal(i, j) {
+				table[i][j] = table[i+1][j+1] + 1
+				continue
+			}
+			table[i][j] = max(table[i+1][j], table[i][j+1])
+		}
+	}
+	return table
 }

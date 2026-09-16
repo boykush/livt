@@ -20,6 +20,7 @@
     <h2 class="text-lg font-semibold text-gray-800">{{t "nav.story-maps"}}</h2>
   </header>
   <main class="px-8 py-8 space-y-6">
+  {{with .DiffGone}}<div class="mb-4">{{template "diff-gone" .}}</div>{{end}}
   {{range .StoryMaps}}
     <a href="story-map/{{.Name}}.html" class="block rounded-xl border border-purple-200 bg-white shadow-sm overflow-hidden hover:shadow-md transition">
       <div class="flex items-center gap-2 px-4 py-2.5 border-b border-purple-100 bg-purple-50">

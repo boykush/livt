@@ -64,6 +64,7 @@ func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (
 		}
 
 		view := b.toStoryMapView(sm, own)
+		view.Diff = b.diffMark("../", uri.StoryMap(sm.Name))
 		outPath := filepath.Join(b.OutDir, uri.StoryMapPage(sm.Name))
 		if err := b.buildStoryMap(outPath, view); err != nil {
 			return storyMapBuild{}, err
@@ -198,6 +199,7 @@ type storyMapViewData struct {
 
 type storyMapView struct {
 	StoryMap storyMapViewData
+	Diff     *diffMarkView
 }
 
 func (b *Builder) toStoryMapView(sm *domain.StoryMap, opportunity *opportunityRef) storyMapView {

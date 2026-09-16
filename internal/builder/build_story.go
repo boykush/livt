@@ -5,6 +5,7 @@ import (
 	"path/filepath"
 
 	"github.com/boykush/livt/internal/domain"
+	"github.com/boykush/livt/internal/uri"
 )
 
 func (b *Builder) hasStoryPage(storyKey domain.StoryKey) bool {
@@ -25,5 +26,5 @@ func (b *Builder) buildStory(path string, story *domain.Story, mappingPath strin
 		return err
 	}
 	defer f.Close()
-	return renderStory(f, b.Lang, story, mappingPath, opportunities)
+	return renderStory(f, b.Lang, story, mappingPath, opportunities, b.diffMark("../", uri.Story(story.Key.Value)))
 }

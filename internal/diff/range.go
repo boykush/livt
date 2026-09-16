@@ -63,7 +63,9 @@ func (r Range) Compute(root string, dirs Dirs) (*Result, error) {
 	if err := requireRepo(root); err != nil {
 		return nil, err
 	}
-	site, err := Scan(dirs)
+	// Read under root like every other side, so the tree git is asked about and
+	// the tree the site is built from are the same one.
+	site, err := Scan(dirs.under(root))
 	if err != nil {
 		return nil, err
 	}
@@ -80,6 +82,9 @@ func (r Range) Compute(root string, dirs Dirs) (*Result, error) {
 	result := &Result{Base: baseRev, Head: headRev, Changes: Compare(base, head)}
 	for i, c := range result.Changes {
 		result.Changes[i].Page = page(site, c.URI)
+		if parent, held := head.get(c.Parent); held {
+			result.Changes[i].ParentTitle = parent.Title
+		}
 		switch c.Status {
 		case StatusAdded:
 			result.Added++
