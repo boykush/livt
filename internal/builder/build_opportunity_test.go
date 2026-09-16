@@ -458,6 +458,96 @@ func TestOpportunityDashboardMetersCarryTheirWhole(t *testing.T) {
 	}
 }
 
+// A proposal can carry a test ahead of its agreement, and then it is both
+// proposed and automated. The un-automated meter counts what the Tasks page
+// lists as waiting for a test — neither — rather than subtracting both counts
+// from the whole, which took such a rule out twice and could go below zero.
+// livt://mapping/show-opportunity-progress/rule/R-02
+func TestOpportunityUnautomatedMeterDoesNotSubtractAProposalTwice(t *testing.T) {
+	b := progressBuilder(t)
+	// half-story: one plain rule, one bare proposal, and one proposal whose
+	// test was written first.
+	writeFile(t, filepath.Join(b.MappingsDir, "half-story.yaml"),
+		"rules:\n"+
+			"  - id: R-01\n    name: まだのルール\n"+
+			"  - id: R-02\n    name: 提案中のルール\n    status: proposed\n"+
+			"  - id: R-03\n    name: 先にテストのある提案\n    status: proposed\n    automated: true\n"+
+			"questions: []\n")
+	_, _, tallies, err := b.buildMappings()
+	if err != nil {
+		t.Fatal(err)
+	}
+	o := &domain.Opportunity{Key: domain.OpportunityKey{Value: "demo"}, Name: "デモ機会"}
+	p := b.progressOf(o, oneSlice("held-story", "half-story"), tallies)
+	// Four live rules across the two boards: one automated, one plain, two
+	// proposed of which one is also automated.
+	if p.Rules != 4 || p.Automated != 2 || p.Proposed != 2 {
+		t.Fatalf("rules/automated/proposed = %d/%d/%d, want 4/2/2", p.Rules, p.Automated, p.Proposed)
+	}
+	if p.Unautomated != 1 {
+		t.Errorf("un-automated = %d, want 1: the plain rule alone is waiting for a test", p.Unautomated)
+	}
+
+	if err := b.Build(); err != nil {
+		t.Fatal(err)
+	}
+	html := readFile(t, filepath.Join(b.OutDir, "opportunity-progress", "demo.html"))
+	msg := i18n.Of(i18n.En).Msg("opportunity.unautomated-rules")
+	if at := strings.Index(html, msg); at < 0 {
+		t.Fatalf("%s has no meter", msg)
+	} else if want := `>1<span class="font-normal text-gray-400">/4<`; !strings.Contains(html[at:], want) {
+		t.Errorf("the %s meter should read 1/4: expected %q", msg, want)
+	}
+}
+
+// A fraction over a whole does not say which way it is meant to move, so the
+// meters stand in two groups: the stories count under a burn-up heading, since
+// it is done at the whole, and the three counts of what is still open under a
+// burn-down heading, since they are done at zero. Each meter also carries the
+// arrow of its own group, so a card read alone still says which it is.
+// livt://mapping/show-opportunity-progress/rule/R-01
+func TestOpportunityDashboardSplitsBurnUpFromBurnDown(t *testing.T) {
+	b := progressBuilder(t)
+	if err := b.Build(); err != nil {
+		t.Fatal(err)
+	}
+	html := readFile(t, filepath.Join(b.OutDir, "opportunity-progress", "demo.html"))
+
+	en := i18n.Of(i18n.En)
+	up := strings.Index(html, en.Msg("opportunity.burn-up"))
+	down := strings.Index(html, en.Msg("opportunity.burn-down"))
+	if up < 0 || down < 0 {
+		t.Fatalf("burn-up heading at %d, burn-down heading at %d: want both", up, down)
+	}
+	if up > down {
+		t.Error("the burn-up group should lead: it is the figure that says how far discovery has got")
+	}
+	// The story count climbs to the whole; the rest fall to zero.
+	for label, wantDown := range map[string]bool{
+		"opportunity.mapped-stories":    false,
+		"opportunity.unautomated-rules": true,
+		"opportunity.proposed-rules":    true,
+		"opportunity.open-questions":    true,
+	} {
+		msg := en.Msg(label)
+		at := strings.Index(html, msg)
+		if at < 0 {
+			t.Errorf("%s has no meter", msg)
+			continue
+		}
+		if gotDown := at > down; gotDown != wantDown {
+			t.Errorf("the %s meter sits under the wrong heading: burn-down = %v, want %v", msg, gotDown, wantDown)
+		}
+		card := html[at:]
+		if end := strings.Index(card, "</div>"); end > 0 {
+			card = card[:end]
+		}
+		if gotDown := strings.Contains(card, "&darr;"); gotDown != wantDown {
+			t.Errorf("the %s meter carries the wrong arrow: down = %v, want %v", msg, gotDown, wantDown)
+		}
+	}
+}
+
 // The hub says which opportunity is moving without being opened, carrying the
 // same two figures its page leads with.
 // livt://mapping/show-opportunity-progress/rule/R-04

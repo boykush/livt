@@ -89,6 +89,10 @@ var ja = Catalog{
 	"opportunity.proposed-rules":    "提案中のルール",
 	"opportunity.automated-rules":   "自動化済みのルール",
 	"opportunity.unautomated-rules": "未自動化のルール",
+	"opportunity.burn-up":           "バーンアップ",
+	"opportunity.burn-up-hint":      "全体まで増やしていく数",
+	"opportunity.burn-down":         "バーンダウン",
+	"opportunity.burn-down-hint":    "ゼロまで減らしていく数",
 
 	"canvas.zone.facts":    "確かめられる事実",
 	"canvas.zone.solution": "解決策",

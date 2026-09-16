@@ -23,8 +23,13 @@ found no rules.
 {{/*
 One figure on the dashboard: the count, the whole it is a share of, the bar that
 makes two meters comparable at a glance, and one link naming where the count is
-acted on. Five of these read as one instrument panel only if they are the same
-shape, so the shape lives here rather than five times over.
+acted on. Four of these read as one instrument panel only if they are the same
+shape, so the shape lives here rather than four times over.
+
+The arrow beside the fraction says which way the count is meant to move — a
+burn-up climbs to the whole, a burn-down falls to zero. The group heading above
+says it too, but a card read on its own, or a bar half full, has to say whether
+half full is half way there or half way still to go.
 
 The link sits below a hairline in the site's link colour with an arrow. It is
 the only thing on the card that navigates — a figure that looks like it leads
@@ -34,7 +39,7 @@ afford.
 <div class="bg-white rounded-lg border border-gray-200 px-4 py-3 flex flex-col">
   <div class="flex items-baseline gap-2">
     <span class="text-xs text-gray-600">{{.Label}}</span>
-    <span class="ml-auto font-mono text-sm font-semibold text-gray-900">{{.Part}}<span class="font-normal text-gray-400">/{{.Total}}</span></span>
+    <span class="ml-auto font-mono text-sm font-semibold text-gray-900 whitespace-nowrap">{{.Part}}<span class="font-normal text-gray-400">/{{.Total}}</span>{{if .Down}}<span class="ml-1 font-normal text-gray-400" title="{{t "opportunity.burn-down-hint"}}">&darr;</span>{{else}}<span class="ml-1 font-normal text-gray-400" title="{{t "opportunity.burn-up-hint"}}">&uarr;</span>{{end}}</span>
   </div>
   <div class="mt-2 h-2 rounded-sm bg-gray-200 overflow-hidden" aria-hidden="true">
     <div class="h-full {{.Fill}}" style="width: {{percent .Part .Total}}%"></div>

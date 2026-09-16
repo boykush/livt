@@ -20,7 +20,12 @@ type mappingTally struct {
 	Rules     int
 	Automated int
 	Proposed  int
-	Questions int
+	// Unautomated counts the rules waiting for a test the way the Tasks page
+	// lists them: neither automated nor proposed. It is not Rules less the
+	// other two, because a proposal can carry a test ahead of its agreement
+	// and then sits in both counts — subtracting both takes it out twice.
+	Unautomated int
+	Questions   int
 	// QuestionsAsked counts the retired ones too — the whole an open question
 	// is a part of. Without it the count of what is open has no size: five open
 	// questions reads differently on a board that has settled ten than on one
@@ -86,6 +91,9 @@ func tally(em *domain.ExampleMapping) mappingTally {
 		}
 		if r.Automated {
 			t.Automated++
+		}
+		if !r.Proposed() && !r.Automated {
+			t.Unautomated++
 		}
 	}
 	return t
