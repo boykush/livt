@@ -28,7 +28,7 @@ func keyedBoard() *domain.ExampleMapping {
 // copies the sticky's own URL.
 func TestRenderMappingEveryStickyCarriesACopyableIDBadge(t *testing.T) {
 	var buf bytes.Buffer
-	if err := renderMapping(&buf, i18n.En, keyedBoard(), "Story", "", nil, nil, nil, nil); err != nil {
+	if err := renderMapping(&buf, i18n.En, board{Mapping: keyedBoard().Active()}, "Story", "", nil, nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()
@@ -55,7 +55,7 @@ func TestRenderMappingEveryStickyCarriesACopyableIDBadge(t *testing.T) {
 // of them and an emoji renders full-colour whatever the card around it does.
 func TestRenderMappingIDBadgesAreTintedNotEmoji(t *testing.T) {
 	var buf bytes.Buffer
-	if err := renderMapping(&buf, i18n.En, keyedBoard(), "Story", "", nil, nil, nil, nil); err != nil {
+	if err := renderMapping(&buf, i18n.En, board{Mapping: keyedBoard().Active()}, "Story", "", nil, nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()
@@ -75,7 +75,7 @@ func TestRenderMappingIDBadgesAreTintedNotEmoji(t *testing.T) {
 // instead of leaving the reader to work out which one the URL meant.
 func TestRenderMappingFlashesEveryLinkableStickyKind(t *testing.T) {
 	var buf bytes.Buffer
-	if err := renderMapping(&buf, i18n.En, keyedBoard(), "Story", "", nil, nil, nil, nil); err != nil {
+	if err := renderMapping(&buf, i18n.En, board{Mapping: keyedBoard().Active()}, "Story", "", nil, nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()
@@ -102,7 +102,7 @@ func TestRenderMappingExampleAnchorsCarryTheirRule(t *testing.T) {
 	}
 
 	var buf bytes.Buffer
-	if err := renderMapping(&buf, i18n.En, em, "Story", "", nil, nil, nil, nil); err != nil {
+	if err := renderMapping(&buf, i18n.En, board{Mapping: em.Active()}, "Story", "", nil, nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()
@@ -125,7 +125,7 @@ func TestRenderMappingExampleUnderUnkeyedRuleOmitsAnchor(t *testing.T) {
 	}
 
 	var buf bytes.Buffer
-	if err := renderMapping(&buf, i18n.En, em, "Story", "", nil, nil, nil, nil); err != nil {
+	if err := renderMapping(&buf, i18n.En, board{Mapping: em.Active()}, "Story", "", nil, nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()
@@ -144,7 +144,7 @@ func TestRenderMappingMarksAutomatedRules(t *testing.T) {
 	}
 
 	var buf bytes.Buffer
-	if err := renderMapping(&buf, i18n.En, em, "Story", "", nil, nil, nil, nil); err != nil {
+	if err := renderMapping(&buf, i18n.En, board{Mapping: em.Active()}, "Story", "", nil, nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()
@@ -169,7 +169,7 @@ func TestRenderMappingLinksRuleIssues(t *testing.T) {
 	}
 
 	var buf bytes.Buffer
-	if err := renderMapping(&buf, i18n.En, em, "Story", "", nil, nil, nil, nil); err != nil {
+	if err := renderMapping(&buf, i18n.En, board{Mapping: em.Active()}, "Story", "", nil, nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()
@@ -207,7 +207,7 @@ func TestRenderMappingQuestionCarriesIDAnchor(t *testing.T) {
 	}
 
 	var buf bytes.Buffer
-	if err := renderMapping(&buf, i18n.En, em, "Story", "", nil, nil, nil, nil); err != nil {
+	if err := renderMapping(&buf, i18n.En, board{Mapping: em.Active()}, "Story", "", nil, nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()
@@ -293,7 +293,7 @@ func TestRenderMappingOmitsRetiredStickies(t *testing.T) {
 	}
 
 	var buf bytes.Buffer
-	if err := renderMapping(&buf, i18n.En, em, "Story", "", nil, nil, nil, nil); err != nil {
+	if err := renderMapping(&buf, i18n.En, board{Mapping: em.Active()}, "Story", "", nil, nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()
@@ -323,7 +323,7 @@ func TestRenderMappingDropsQuestionsColumnWhenEveryQuestionIsRetired(t *testing.
 	}
 
 	var buf bytes.Buffer
-	if err := renderMapping(&buf, i18n.En, em, "Story", "", nil, nil, nil, nil); err != nil {
+	if err := renderMapping(&buf, i18n.En, board{Mapping: em.Active()}, "Story", "", nil, nil, nil); err != nil {
 		t.Fatal(err)
 	}
 
@@ -383,7 +383,7 @@ func TestRenderMappingSetsProposedRulesApart(t *testing.T) {
 	}
 
 	var buf bytes.Buffer
-	if err := renderMapping(&buf, i18n.En, em, "Story", "", nil, nil, nil, nil); err != nil {
+	if err := renderMapping(&buf, i18n.En, board{Mapping: em.Active()}, "Story", "", nil, nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()
@@ -470,7 +470,7 @@ func TestRenderMappingRuleWithoutIDOmitsAnchor(t *testing.T) {
 	}
 
 	var buf bytes.Buffer
-	if err := renderMapping(&buf, i18n.En, em, "Story", "", nil, nil, nil, nil); err != nil {
+	if err := renderMapping(&buf, i18n.En, board{Mapping: em.Active()}, "Story", "", nil, nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()
@@ -504,7 +504,7 @@ func foldedBoard() *domain.ExampleMapping {
 func renderFoldedBoard(t *testing.T) string {
 	t.Helper()
 	var buf bytes.Buffer
-	if err := renderMapping(&buf, i18n.En, foldedBoard(), "Story", "", nil, nil, nil, nil); err != nil {
+	if err := renderMapping(&buf, i18n.En, board{Mapping: foldedBoard().Active()}, "Story", "", nil, nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	return buf.String()

@@ -35,8 +35,8 @@ type Builder struct {
 	// every page needs the count, which is why it is on the Builder at all.
 	diffResult *diff.Result
 	// diffByURI is the same result keyed for the lookup every resource page
-	// makes: did this one change, and how.
-	diffByURI map[string]diff.Status
+	// makes: did this one change, and what became of it.
+	diffByURI map[string]diff.Became
 }
 
 // diffDirs is the input layout the diff reads a revision through, which is this
@@ -306,9 +306,9 @@ func (b *Builder) computeDiff() error {
 		return err
 	}
 	b.diffResult = result
-	b.diffByURI = make(map[string]diff.Status, len(result.Changes))
+	b.diffByURI = make(map[string]diff.Became, len(result.Changes))
 	for _, c := range result.Changes {
-		b.diffByURI[c.URI] = c.Status
+		b.diffByURI[c.URI] = c.Became
 	}
 	return nil
 }

@@ -90,6 +90,10 @@ type Entry struct {
 	Parent string
 	Title  string
 	Fields []Field
+	// Live is whether the entry is spec in this revision. A rule closed and an
+	// example or question retired are still on file, and still have to be read
+	// back by their URI, but the spec has stopped asking for them.
+	Live bool
 }
 
 // Snapshot is every entry of one revision, in the order the livt repository
@@ -151,6 +155,7 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 		s.add(Entry{
 			URI:    mappingURI,
 			Kind:   uri.KindMapping,
+			Live:   true,
 			Title:  parser.FindStoryByKey(dirs.Stories, em.StoryKey).DisplayName(),
 			Fields: listed(LabelTerms, em.Ubiquitous),
 		})
@@ -164,6 +169,7 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 				Parent: mappingURI,
 				Title:  r.ID,
 				Fields: ruleFields(r),
+				Live:   r.Status.Active(),
 			})
 			for _, ex := range r.Examples {
 				s.add(Entry{
@@ -172,6 +178,9 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 					Parent: mappingURI,
 					Title:  r.ID + " " + ex.ID,
 					Fields: itemFields(ex.Name, ex.Retired, ex.SupersededBy),
+					// An example under a closed rule went with it: the statement
+					// it illustrates is no longer one the spec makes.
+					Live: !ex.Retired && r.Status.Active(),
 				})
 			}
 		}
@@ -182,6 +191,7 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 				Parent: mappingURI,
 				Title:  q.ID,
 				Fields: itemFields(q.Text, q.Retired, q.SupersededBy),
+				Live:   !q.Retired,
 			})
 		}
 	}
@@ -223,6 +233,7 @@ func scanOpportunities(s *Snapshot, dirs Dirs) error {
 		s.add(Entry{
 			URI:    uri.Opportunity(key),
 			Kind:   uri.KindOpportunity,
+			Live:   true,
 			Title:  o.DisplayName(),
 			Fields: append(fields, metaFields(o.Meta)...),
 		})
@@ -236,6 +247,7 @@ func scanOpportunities(s *Snapshot, dirs Dirs) error {
 		s.add(Entry{
 			URI:    uri.OpportunityCanvas(key),
 			Kind:   uri.KindOpportunityCanvas,
+			Live:   true,
 			Title:  o.DisplayName(),
 			Fields: canvasFields(canvas),
 		})
@@ -262,6 +274,7 @@ func scanStoryMaps(s *Snapshot, dirs Dirs) error {
 		s.add(Entry{
 			URI:    uri.StoryMap(m.Name),
 			Kind:   uri.KindStoryMap,
+			Live:   true,
 			Title:  m.Name,
 			Fields: storyMapFields(m),
 		})
@@ -306,6 +319,7 @@ func scanStories(s *Snapshot, dirs Dirs) error {
 		s.add(Entry{
 			URI:    uri.Story(story.Key.Value),
 			Kind:   uri.KindStory,
+			Live:   true,
 			Title:  story.DisplayName(),
 			Fields: append(fields, metaFields(story.Meta)...),
 		})
@@ -322,6 +336,7 @@ func scanTerms(s *Snapshot, dirs Dirs) error {
 		s.add(Entry{
 			URI:    uri.Term(t.Ctx, t.Key),
 			Kind:   uri.KindTerm,
+			Live:   true,
 			Title:  t.Name,
 			Fields: append([]Field{text(t.Name)}, bodyFields(t.Body)...),
 		})

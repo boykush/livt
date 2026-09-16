@@ -68,13 +68,13 @@ func diffAnchor(u string) string {
 // when the build was given no revisions, which is what keeps the mark off every
 // page without a single template having to ask.
 func (b *Builder) diffMark(prefix, u string) *diffMarkView {
-	status, changed := b.diffByURI[u]
+	became, changed := b.diffByURI[u]
 	if !changed {
 		return nil
 	}
 	return &diffMarkView{
-		Status: string(status),
-		Label:  i18n.Of(b.Lang).Msg("diff." + string(status)),
+		Status: string(became),
+		Label:  i18n.Of(b.Lang).Msg("diff." + string(became)),
 		Href:   prefix + diffPage + "#" + diffAnchor(u),
 	}
 }
@@ -99,22 +99,6 @@ type diffGoneView struct {
 	Count int
 	Label string
 	Href  string
-}
-
-// diffGoneFromBoard is what a mapping's board lost. shown is what the board
-// actually renders, which is its active view: a retired rule is still on file
-// and still in the diff, but it is no longer a sticky anyone can be pointed at.
-func (b *Builder) diffGoneFromBoard(prefix, mappingURI string, shown map[string]bool) *diffGoneView {
-	if b.diffResult == nil {
-		return nil
-	}
-	count := 0
-	for _, c := range b.diffResult.Changes {
-		if c.Parent == mappingURI && !shown[c.URI] {
-			count++
-		}
-	}
-	return b.gone(count, prefix+diffPage+"#"+diffAnchor(mappingURI))
 }
 
 // diffGoneFromList is what a hub list lost: resources of its kind the site no
@@ -155,13 +139,13 @@ func (b *Builder) buildDiff() error {
 	}
 	defer f.Close()
 	return renderDiff(f, b.Lang, diffView{
-		Sidebar:  sb,
-		Base:     result.Base,
-		Head:     result.Head,
-		Added:    result.Added,
-		Removed:  result.Removed,
-		Modified: result.Modified,
-		Groups:   b.diffGroupViews(result.Changes),
+		Sidebar:   sb,
+		Base:      result.Base,
+		Head:      result.Head,
+		Added:     result.Added,
+		Changed:   result.Changed,
+		Withdrawn: result.Withdrawn,
+		Groups:    b.diffGroupViews(result.Changes),
 	})
 }
 
@@ -186,7 +170,7 @@ func (b *Builder) diffGroupViews(changes []diff.Change) []diffGroupView {
 			URI:    c.URI,
 			Anchor: diffAnchor(c.URI),
 			Title:  c.Title,
-			Status: string(c.Status),
+			Status: string(c.Became),
 			Path:   c.Page,
 			Lines:  b.diffLineViews(c.Lines),
 		}

@@ -62,8 +62,8 @@ func TestComputeDiffsARevisionAgainstTheWorkingTree(t *testing.T) {
 		t.Error("base = empty, want the short hash git resolved")
 	}
 	change := findURI(t, result.Changes, "livt://mapping/checkout/rule/R-01")
-	if change.Status != StatusModified || result.Modified != 1 {
-		t.Errorf("got %s with %d modified, want one modified rule", change.Status, result.Modified)
+	if change.Became != BecameChanged || result.Changed != 1 {
+		t.Errorf("got %s with %d changed, want one changed rule", change.Became, result.Changed)
 	}
 }
 

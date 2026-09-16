@@ -161,25 +161,6 @@ func collectTasks(em *domain.ExampleMapping, storyName, storyPath string) taskSe
 	return out
 }
 
-// boardURIs is every sticky the board draws, which is its active view: what the
-// spec asks for today. Anything under the mapping and not in here has no sticky
-// to be marked on.
-func boardURIs(em *domain.ExampleMapping) map[string]bool {
-	key := em.StoryKey.Value
-	shown := make(map[string]bool)
-	active := em.Active()
-	for _, r := range active.Rules {
-		shown[uri.Rule(key, r.ID)] = true
-		for _, ex := range r.Examples {
-			shown[uri.Example(key, r.ID, ex.ID)] = true
-		}
-	}
-	for _, q := range active.Questions {
-		shown[uri.Question(key, q.ID)] = true
-	}
-	return shown
-}
-
 func (b *Builder) resolveStoryName(key domain.StoryKey) string {
 	return parser.FindStoryByKey(b.StoriesDir, key).DisplayName()
 }
@@ -191,8 +172,6 @@ func (b *Builder) buildMapping(path string, em *domain.ExampleMapping, storyName
 	}
 	defer f.Close()
 	// The board is one level down, so the diff it points back to is too.
-	mappingURI := uri.Mapping(em.StoryKey.Value)
-	return renderMapping(f, b.Lang, em, storyName, storyPath, ubiquitous,
-		b.diffMark("../", mappingURI), b.diffMarks("../"),
-		b.diffGoneFromBoard("../", mappingURI, boardURIs(em)))
+	return renderMapping(f, b.Lang, b.boardFor(em), storyName, storyPath, ubiquitous,
+		b.diffMark("../", uri.Mapping(em.StoryKey.Value)), b.diffMarks("../"))
 }

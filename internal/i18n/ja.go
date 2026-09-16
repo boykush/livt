@@ -53,8 +53,8 @@ var ja = Catalog{
 	"tasks.rules-empty-filtered":     "このオポチュニティの合意済みのルールはすべて自動化されています。",
 
 	"diff.added":        "追加",
-	"diff.removed":      "削除",
-	"diff.modified":     "変更",
+	"diff.changed":      "変更",
+	"diff.withdrawn":    "廃止",
 	"diff.working-tree": "作業ツリー",
 	"diff.empty":        "このリビジョン間に変更はありません。",
 

@@ -54,8 +54,8 @@ var en = Catalog{
 	// The diff between two revisions. The three statuses serve twice over: as
 	// the count chips in the header, and as the badge on each entry.
 	"diff.added":        "Added",
-	"diff.removed":      "Removed",
-	"diff.modified":     "Modified",
+	"diff.changed":      "Changed",
+	"diff.withdrawn":    "Withdrawn",
 	"diff.working-tree": "working tree",
 	"diff.empty":        "Nothing changed between these revisions.",
 

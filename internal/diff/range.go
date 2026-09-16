@@ -48,12 +48,13 @@ type Result struct {
 	// Base and Head are short hashes as git resolved them, so the page says
 	// which revisions were actually read rather than what was typed. Head is
 	// empty when the head is the working tree, which has no hash to print.
-	Base     string
-	Head     string
-	Changes  []Change
-	Added    int
-	Removed  int
-	Modified int
+	Base    string
+	Head    string
+	Changes []Change
+	// Counted by what became of each item as spec, which is what the page says.
+	Added     int
+	Changed   int
+	Withdrawn int
 }
 
 // Compute reads both revisions and pairs them. The working tree is read first
@@ -85,13 +86,13 @@ func (r Range) Compute(root string, dirs Dirs) (*Result, error) {
 		if parent, held := head.get(c.Parent); held {
 			result.Changes[i].ParentTitle = parent.Title
 		}
-		switch c.Status {
-		case StatusAdded:
+		switch c.Became {
+		case BecameAdded:
 			result.Added++
-		case StatusRemoved:
-			result.Removed++
-		case StatusModified:
-			result.Modified++
+		case BecameChanged:
+			result.Changed++
+		case BecameWithdrawn:
+			result.Withdrawn++
 		}
 	}
 	return result, nil

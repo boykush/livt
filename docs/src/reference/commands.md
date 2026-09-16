@@ -59,12 +59,18 @@ in the glossary — leading into the diff at that URI. The diff takes no entry i
 the nav: it is not a kind of thing the livt repository holds, so the way in is
 the thing that changed.
 
-Items are compared as recorded, not as the boards draw them. A
-[retired](../guides/example-mappings.md#retiring-an-item) rule is a changed
-status rather than a disappearance, and a proposal being agreed is the one-line
-change it is on the file. What *has* left the board — an item deleted, or
-retired and so no longer drawn — is counted on the board it left, since nothing
-there can carry its mark.
+Every mark says one of three words. An item was **added**, it was **changed**,
+or it was **withdrawn** — it stopped being spec. That is a reading of the spec
+rather than of the file: a rule
+[retired](../guides/example-mappings.md#retiring-an-item) keeps its entry and
+edits one field, a deleted one loses its entry, and to a reader both mean the
+rule is no longer asked for.
+
+A withdrawn sticky goes back on its board, drawn the way a proposal is — pale,
+dashed, struck through — since a proposal is not spec *yet* and this is not spec
+*any more*. Only what left in this range comes back: a rule retired long ago
+stays off the wall. A resource gone entirely has no page left to put anything
+on, so its list says how many of its kind went.
 
 ## `livt mcp`
 

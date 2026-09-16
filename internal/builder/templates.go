@@ -505,13 +505,13 @@ type glossaryView struct {
 // Base and Head are the short hashes git resolved; an empty Head is the working
 // tree, which the page says in words because it has no hash to print.
 type diffView struct {
-	Sidebar  Sidebar
-	Base     string
-	Head     string
-	Added    int
-	Removed  int
-	Modified int
-	Groups   []diffGroupView
+	Sidebar   Sidebar
+	Base      string
+	Head      string
+	Added     int
+	Changed   int
+	Withdrawn int
+	Groups    []diffGroupView
 }
 
 type diffGroupView struct {
@@ -574,8 +574,10 @@ type mappingView struct {
 	Mapping    *domain.ExampleMapping
 	Ubiquitous []termCard
 	Diff       *diffMarkView
-	// DiffGone is what changed under this mapping and is no longer drawn here.
-	DiffGone *diffGoneView
+	// Ghosts marks the stickies the board is only showing because they were
+	// withdrawn in this diff. What became of them is on their own mark; this
+	// only says to draw them as no longer spec.
+	Ghosts map[string]bool
 	// DiffMarks is every changed URI on this board, keyed by URI: the stickies
 	// are rendered straight off the domain types, so the mark is looked up
 	// beside each rather than carried on it.
@@ -627,10 +629,10 @@ func renderStory(w io.Writer, lang i18n.Lang, story *domain.Story, mappingPath s
 // renderMapping draws the board from the mapping's active view: a retired
 // sticky is off the wall, whichever kind it is, so the board shows what the
 // spec asks for today.
-func renderMapping(w io.Writer, lang i18n.Lang, em *domain.ExampleMapping, storyName, storyPath string, ubiquitous []termCard, diff *diffMarkView, marks map[string]*diffMarkView, gone *diffGoneView) error {
+func renderMapping(w io.Writer, lang i18n.Lang, bd board, storyName, storyPath string, ubiquitous []termCard, diff *diffMarkView, marks map[string]*diffMarkView) error {
 	return templates(lang).ExecuteTemplate(w, "mapping.html", mappingView{
-		StoryName: storyName, StoryPath: storyPath, Mapping: em.Active(),
-		Ubiquitous: ubiquitous, Diff: diff, DiffMarks: marks, DiffGone: gone,
+		StoryName: storyName, StoryPath: storyPath, Mapping: bd.Mapping,
+		Ubiquitous: ubiquitous, Diff: diff, Ghosts: bd.Ghosts, DiffMarks: marks,
 	})
 }
 

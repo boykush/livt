@@ -32,8 +32,9 @@ type Part struct {
 	Text    string
 }
 
-// Status is what happened to a URI. There are only three: a URI the head does
-// not hold, one the base did not, and one both hold differently.
+// Status is what happened to a URI's record: a URI the head does not hold, one
+// the base did not, and one both hold differently. It is not what happened to
+// the spec — for that, see Became.
 type Status string
 
 const (
@@ -41,6 +42,32 @@ const (
 	StatusRemoved  Status = "removed"
 	StatusModified Status = "modified"
 )
+
+// Became is what the change did to the item as spec, which is the reading the
+// site shows. It is not Status: retiring a rule keeps its entry and edits one
+// field, deleting takes the entry away, and to a reader both mean the rule
+// stopped being asked for. Deletion is no category of its own — the ID contract
+// forbids it, so it is an accident rather than a kind of change, and a shelf of
+// its own beside the two that are meant to happen would say otherwise.
+type Became string
+
+const (
+	BecameAdded     Became = "added"
+	BecameChanged   Became = "changed"
+	BecameWithdrawn Became = "withdrawn"
+)
+
+// became reads the two revisions' standing, not their records. An item that was
+// spec and is not was withdrawn, however that was written down.
+func became(wasSpec, isSpec bool) Became {
+	switch {
+	case wasSpec && !isSpec:
+		return BecameWithdrawn
+	case !wasSpec && isSpec:
+		return BecameAdded
+	}
+	return BecameChanged
+}
 
 // Change is one URI's diff. Page is where it lands on the site being built,
 // empty when the site does not hold it — a removed URI has nowhere to go, and a
@@ -55,8 +82,13 @@ type Change struct {
 	ParentTitle string
 	Title       string
 	Status      Status
-	Lines       []Line
-	Page        string
+	// Became is what the change did to the item as spec. Every surface that
+	// names a change to a reader names this one, so that one sticky wears one
+	// word: a retired rule is a modified record, and what happened to it is
+	// that it was withdrawn.
+	Became Became
+	Lines  []Line
+	Page   string
 }
 
 // Compare pairs the two snapshots by URI. A URI both hold with the same fields
@@ -67,9 +99,9 @@ func Compare(base, head *Snapshot) []Change {
 		before, held := base.get(e.URI)
 		switch {
 		case !held:
-			placed = append(placed, placedChange{anchor: i, change: change(e, StatusAdded, added(e.Fields))})
+			placed = append(placed, placedChange{anchor: i, change: change(e, StatusAdded, became(false, e.Live), added(e.Fields))})
 		case !sameFields(before.Fields, e.Fields):
-			placed = append(placed, placedChange{anchor: i, change: change(e, StatusModified, diffFields(before.Fields, e.Fields))})
+			placed = append(placed, placedChange{anchor: i, change: change(e, StatusModified, became(before.Live, e.Live), diffFields(before.Fields, e.Fields))})
 		}
 	}
 	placed = append(placed, removals(base, head)...)
@@ -105,13 +137,13 @@ func removals(base, head *Snapshot) []placedChange {
 			continue
 		}
 		after++
-		placed = append(placed, placedChange{anchor: anchor, after: after, change: change(e, StatusRemoved, removed(e.Fields))})
+		placed = append(placed, placedChange{anchor: anchor, after: after, change: change(e, StatusRemoved, became(e.Live, false), removed(e.Fields))})
 	}
 	return placed
 }
 
-func change(e Entry, status Status, lines []Line) Change {
-	return Change{URI: e.URI, Kind: e.Kind, Parent: e.Parent, Title: e.Title, Status: status, Lines: lines}
+func change(e Entry, status Status, became Became, lines []Line) Change {
+	return Change{URI: e.URI, Kind: e.Kind, Parent: e.Parent, Title: e.Title, Status: status, Became: became, Lines: lines}
 }
 
 func added(fields []Field) []Line   { return ops(fields, OpAdd) }

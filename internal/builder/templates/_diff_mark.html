@@ -6,5 +6,5 @@ that changed. Rendered by every page through {{with}}, so a build given no
 revisions draws nothing and no template has to ask whether there is a diff.
 */}}
 {{define "diff-mark"}}
-<a href="{{.Href}}" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition {{if eq .Status "added"}}bg-green-50 text-green-700 border-green-200 hover:bg-green-100{{else if eq .Status "removed"}}bg-red-50 text-red-700 border-red-200 hover:bg-red-100{{else}}bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100{{end}}">{{.Label}}</a>
+<a href="{{.Href}}" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition {{if eq .Status "added"}}bg-green-50 text-green-700 border-green-200 hover:bg-green-100{{else if eq .Status "withdrawn"}}bg-red-50 text-red-700 border-red-200 hover:bg-red-100{{else}}bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100{{end}}">{{.Label}}</a>
 {{end}}
