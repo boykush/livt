@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="{{t "lang.code"}}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>livt - {{t "nav.diff"}}</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  {{/*
+  The diff body borrows git's own colours rather than the sticky palette: the
+  page is read as a diff first, and a reader arriving from a PR already knows
+  what red and green mean here. The left rail carries the sign so the change is
+  legible without relying on the fill alone.
+  */}}
+  .diff-line { display: grid; grid-template-columns: 1.25rem 1fr; gap: 0.5rem; padding: 0.125rem 0.75rem; }
+  .diff-line > .sign { color: #9ca3af; user-select: none; text-align: center; }
+  .diff-add { background-color: #dcfce7; }
+  .diff-add > .sign { color: #15803d; }
+  .diff-del { background-color: #fee2e2; }
+  .diff-del > .sign { color: #b91c1c; }
+  {{/*
+  Inside a reworded pair, the phrase that actually moved is picked out of the
+  line it sits in. Most of what the livt repository holds is a sentence, and a
+  one-phrase edit read as two whole sentences is work the page can do instead.
+  */}}
+  .diff-add .moved { background-color: #86efac; border-radius: 0.125rem; }
+  .diff-del .moved { background-color: #fca5a5; border-radius: 0.125rem; }
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="flex min-h-screen">
+{{template "sidebar" .Sidebar}}
+<div class="flex-1 min-w-0">
+  <header class="bg-white border-b border-gray-200 px-8 py-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+    <h2 class="text-lg font-semibold text-gray-800">{{t "nav.diff"}}</h2>
+    <span class="text-sm font-mono text-gray-500">{{.Base}} &rarr; {{if .Head}}{{.Head}}{{else}}{{t "diff.working-tree"}}{{end}}</span>
+    <div class="ml-auto flex items-center gap-2 text-xs">
+      <span class="rounded-full px-2.5 py-1 bg-green-50 text-green-700 border border-green-200">{{t "diff.added"}} {{.Added}}</span>
+      <span class="rounded-full px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200">{{t "diff.changed"}} {{.Changed}}</span>
+      <span class="rounded-full px-2.5 py-1 bg-red-50 text-red-700 border border-red-200">{{t "diff.withdrawn"}} {{.Withdrawn}}</span>
+    </div>
+  </header>
+  <main class="px-8 py-8 max-w-4xl">
+  {{if .Groups}}
+  {{range .Groups}}
+  <section class="mb-8">
+    <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">{{t .Label}}</h3>
+    {{range .Entries}}
+    {{/*
+    A mapping with no status of its own is listed only to head the rules that
+    changed under it, so it renders as a heading rather than as an entry with an
+    empty diff below it.
+    */}}
+    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
+      {{template "diff-entry" .}}
+      {{range .Children}}
+      <div class="border-t border-gray-100 pl-4">{{template "diff-entry" .}}</div>
+      {{end}}
+    </div>
+    {{end}}
+  </section>
+  {{end}}
+  {{else}}
+  <p class="text-gray-400">{{t "diff.empty"}}</p>
+  {{end}}
+  </main>
+</div>
+</div>
+</body>
+</html>
+
+{{define "diff-entry"}}
+<div id="{{.Anchor}}" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    {{if .Status}}<span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 {{if eq .Status "added"}}bg-green-100 text-green-800{{else if eq .Status "withdrawn"}}bg-red-100 text-red-800{{else}}bg-amber-100 text-amber-800{{end}}">{{t (print "diff." .Status)}}</span>{{end}}
+    {{if .Title}}<span class="font-medium text-gray-900">{{.Title}}</span>{{end}}
+    {{/*
+    The URI is the entry's name here, not a decoration: it is what a reviewer
+    quotes in the thread, and the link is the same derivation `livt resolve`
+    makes. A removed URI carries no link because the site holds no page for it.
+    */}}
+    {{if .Path}}
+    <a href="{{.Path}}" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">{{.URI}}</a>
+    {{else}}
+    <span class="text-xs font-mono text-gray-400 break-all">{{.URI}}</span>
+    {{end}}
+  </div>
+  {{if .Lines}}
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    {{range .Lines}}
+    {{/* A line with no label is the item speaking for itself — the statement a
+    withdrawal is the end of, which is why it is the one struck through. */}}
+    <div class="diff-line{{if eq .Op "+"}} diff-add{{else if eq .Op "-"}} diff-del{{end}}"><span class="sign">{{.Op}}</span><span class="whitespace-pre-wrap break-words">{{if .Parts}}{{if .Label}}{{.Label}}: {{end}}{{range .Parts}}{{if .Changed}}<span class="moved">{{.Text}}</span>{{else}}{{.Text}}{{end}}{{end}}{{else}}{{.Text}}{{end}}</span></div>
+    {{end}}
+  </div>
+  {{end}}
+</div>
+{{end}}

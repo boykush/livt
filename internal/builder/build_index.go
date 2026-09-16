@@ -3,6 +3,8 @@ package builder
 import (
 	"os"
 	"path/filepath"
+
+	"github.com/boykush/livt/internal/uri"
 )
 
 // buildTasks renders tasks.html: what the livt repository leaves unfinished —
@@ -40,7 +42,7 @@ func (b *Builder) buildMappingsIndex(tiles []mappingTile, filterOpportunities []
 		return err
 	}
 	defer f.Close()
-	return renderMappingsIndex(f, b.Lang, mappingsIndexView{Sidebar: sb, Mappings: tiles, FilterOpportunities: filterOpportunities})
+	return renderMappingsIndex(f, b.Lang, mappingsIndexView{DiffGone: b.diffGoneFromList(uri.KindMapping), Sidebar: sb, Mappings: tiles, FilterOpportunities: filterOpportunities})
 }
 
 // buildStoryMapsIndex renders story-maps.html: the Story Maps overview, where
@@ -55,7 +57,7 @@ func (b *Builder) buildStoryMapsIndex(tiles []storyMapTile) error {
 		return err
 	}
 	defer f.Close()
-	return renderStoryMapsIndex(f, b.Lang, storyMapsIndexView{Sidebar: sb, StoryMaps: tiles})
+	return renderStoryMapsIndex(f, b.Lang, storyMapsIndexView{DiffGone: b.diffGoneFromList(uri.KindStoryMap), Sidebar: sb, StoryMaps: tiles})
 }
 
 // buildOpportunitiesIndex renders opportunities.html: the Opportunities hub,
@@ -71,7 +73,7 @@ func (b *Builder) buildOpportunitiesIndex(tiles []opportunityTile) error {
 		return err
 	}
 	defer f.Close()
-	return renderOpportunitiesIndex(f, b.Lang, opportunitiesIndexView{Sidebar: sb, Opportunities: tiles})
+	return renderOpportunitiesIndex(f, b.Lang, opportunitiesIndexView{DiffGone: b.diffGoneFromList(uri.KindOpportunity), Sidebar: sb, Opportunities: tiles})
 }
 
 // buildStoriesIndex renders stories.html: the Stories list. filterOpportunities
@@ -86,5 +88,5 @@ func (b *Builder) buildStoriesIndex(items []storyItem, filterOpportunities []str
 		return err
 	}
 	defer f.Close()
-	return renderStoriesIndex(f, b.Lang, storiesIndexView{Sidebar: sb, Stories: items, FilterOpportunities: filterOpportunities})
+	return renderStoriesIndex(f, b.Lang, storiesIndexView{DiffGone: b.diffGoneFromList(uri.KindStory), Sidebar: sb, Stories: items, FilterOpportunities: filterOpportunities})
 }

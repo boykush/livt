@@ -14,6 +14,7 @@
     <h2 class="text-lg font-semibold text-gray-800">{{t "nav.stories"}}</h2>
   </header>
   <main class="px-8 py-8 max-w-3xl">
+  {{with .DiffGone}}<div class="mb-4">{{template "diff-gone" .}}</div>{{end}}
   {{template "filter" (filter "opportunity" (t "label.opportunity") .FilterOpportunities)}}
   {{range .Stories}}
     {{/*

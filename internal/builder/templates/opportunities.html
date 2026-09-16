@@ -22,6 +22,7 @@
     <h2 class="text-lg font-semibold text-gray-800">{{t "nav.opportunities"}}</h2>
   </header>
   <main class="px-8 py-8 space-y-6 max-w-4xl">
+  {{with .DiffGone}}<div class="mb-4">{{template "diff-gone" .}}</div>{{end}}
   {{range .Opportunities}}
     <div class="rounded-xl border border-orange-200 bg-white shadow-sm overflow-hidden">
       <a href="opportunity/{{.Key}}.html" class="flex items-center gap-2 px-4 py-2.5 border-b border-orange-100 bg-orange-50 hover:bg-orange-100 transition">

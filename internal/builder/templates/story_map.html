@@ -23,6 +23,7 @@
     <a href="../story-maps.html" class="text-sm text-gray-400 hover:text-gray-600">&larr; {{t "nav.story-maps"}}</a>
     <span class="text-gray-300">|</span>
     <span class="text-xl font-bold text-gray-900 tracking-tight">livt</span>
+    {{with .Diff}}{{template "diff-mark" .}}{{end}}
   </div>
 </header>
 

@@ -35,6 +35,9 @@ func funcs(lang i18n.Lang) template.FuncMap {
 		"percent":           percent,
 		"meter":             newMeterView,
 		"tasksAnchors":      tasksAnchors,
+		"ruleURI":           uri.Rule,
+		"exampleURI":        uri.Example,
+		"questionURI":       uri.Question,
 	}
 }
 
@@ -300,6 +303,7 @@ type mappingTile struct {
 }
 
 type mappingsIndexView struct {
+	DiffGone            *diffGoneView
 	Sidebar             Sidebar
 	Mappings            []mappingTile
 	FilterOpportunities []string
@@ -347,6 +351,7 @@ type opportunityTile struct {
 }
 
 type opportunitiesIndexView struct {
+	DiffGone      *diffGoneView
 	Sidebar       Sidebar
 	Opportunities []opportunityTile
 }
@@ -354,6 +359,7 @@ type opportunitiesIndexView struct {
 // opportunityView is one opportunity's own page. CanvasPath is empty when no
 // canvas has been filled in for it, the same way storyView.MappingPath is.
 type opportunityView struct {
+	Diff        *diffMarkView
 	Opportunity *domain.Opportunity
 	Meta        []metaFieldView
 	CanvasPath  string
@@ -376,6 +382,7 @@ type opportunityProgressView struct {
 }
 
 type opportunityCanvasView struct {
+	Diff            *diffMarkView
 	OpportunityKey  string
 	OpportunityName string
 	Panels          domain.CanvasPanels
@@ -383,6 +390,7 @@ type opportunityCanvasView struct {
 }
 
 type storyMapsIndexView struct {
+	DiffGone  *diffGoneView
 	Sidebar   Sidebar
 	StoryMaps []storyMapTile
 }
@@ -434,6 +442,7 @@ func urlMetaFieldViews(meta []domain.MetaField) []metaFieldView {
 }
 
 type storiesIndexView struct {
+	DiffGone            *diffGoneView
 	Sidebar             Sidebar
 	Stories             []storyItem
 	FilterOpportunities []string
@@ -477,15 +486,67 @@ type glossaryCard struct {
 	Key        string
 	Name       string
 	Definition string
+	// Diff is the note the row carries when the term changed between the
+	// revisions a diff build was given, nil otherwise.
+	Diff *diffMarkView
 }
 
 // glossaryView is the whole ubiquitous language as one table. Contexts are the
 // axes it can be narrowed to, omitting the context-free terms — they have no
 // axis of their own.
 type glossaryView struct {
+	DiffGone *diffGoneView
 	Sidebar  Sidebar
 	Terms    []glossaryCard
 	Contexts []string
+}
+
+// diffView is what changed between two revisions, gathered by resource type.
+// Base and Head are the short hashes git resolved; an empty Head is the working
+// tree, which the page says in words because it has no hash to print.
+type diffView struct {
+	Sidebar   Sidebar
+	Base      string
+	Head      string
+	Added     int
+	Changed   int
+	Withdrawn int
+	Groups    []diffGroupView
+}
+
+type diffGroupView struct {
+	Label   string
+	Entries []diffEntryView
+}
+
+// diffEntryView is one livt URI's change. Status is empty on a mapping listed
+// only to head its changed rules, and Path is empty when the site holds no page
+// for the URI — which is every removed one.
+type diffEntryView struct {
+	URI      string
+	Anchor   string
+	Title    string
+	Status   string
+	Path     string
+	Lines    []diffLineView
+	Children []diffEntryView
+}
+
+// diffLineView is one line of an entry's diff, Op being git diff's own " ", "+"
+// or "-" so the page needs no legend to be read. Text is the whole line; Parts
+// is the same value broken into what stayed and what moved, and is set only on
+// the two halves of a rewording.
+type diffLineView struct {
+	Op    string
+	Label string
+	Text  string
+	Parts []diffPartView
+}
+
+// diffPartView is a run of a reworded line, marked where it changed.
+type diffPartView struct {
+	Changed bool
+	Text    string
 }
 
 type storyView struct {
@@ -493,6 +554,7 @@ type storyView struct {
 	Meta          []metaFieldView
 	MappingPath   string
 	Opportunities []opportunityRef
+	Diff          *diffMarkView
 }
 
 // termCard is a referenced ubiquitous language term rendered as a pink sticky on
@@ -511,6 +573,15 @@ type mappingView struct {
 	StoryPath  string
 	Mapping    *domain.ExampleMapping
 	Ubiquitous []termCard
+	Diff       *diffMarkView
+	// Ghosts marks the stickies the board is only showing because they were
+	// withdrawn in this diff. What became of them is on their own mark; this
+	// only says to draw them as no longer spec.
+	Ghosts map[string]bool
+	// DiffMarks is every changed URI on this board, keyed by URI: the stickies
+	// are rendered straight off the domain types, so the mark is looked up
+	// beside each rather than carried on it.
+	DiffMarks map[string]*diffMarkView
 }
 
 func renderTasks(w io.Writer, lang i18n.Lang, view tasksView) error {
@@ -545,20 +616,24 @@ func renderStoriesIndex(w io.Writer, lang i18n.Lang, view storiesIndexView) erro
 	return templates(lang).ExecuteTemplate(w, "stories.html", view)
 }
 
-func renderStory(w io.Writer, lang i18n.Lang, story *domain.Story, mappingPath string, opportunities []opportunityRef) error {
+func renderStory(w io.Writer, lang i18n.Lang, story *domain.Story, mappingPath string, opportunities []opportunityRef, mark *diffMarkView) error {
 	return templates(lang).ExecuteTemplate(w, "story.html", storyView{
 		Story:         story,
 		Meta:          metaFieldViews(story.Meta),
 		MappingPath:   mappingPath,
 		Opportunities: opportunities,
+		Diff:          mark,
 	})
 }
 
 // renderMapping draws the board from the mapping's active view: a retired
 // sticky is off the wall, whichever kind it is, so the board shows what the
 // spec asks for today.
-func renderMapping(w io.Writer, lang i18n.Lang, em *domain.ExampleMapping, storyName, storyPath string, ubiquitous []termCard) error {
-	return templates(lang).ExecuteTemplate(w, "mapping.html", mappingView{StoryName: storyName, StoryPath: storyPath, Mapping: em.Active(), Ubiquitous: ubiquitous})
+func renderMapping(w io.Writer, lang i18n.Lang, bd board, storyName, storyPath string, ubiquitous []termCard, diff *diffMarkView, marks map[string]*diffMarkView) error {
+	return templates(lang).ExecuteTemplate(w, "mapping.html", mappingView{
+		StoryName: storyName, StoryPath: storyPath, Mapping: bd.Mapping,
+		Ubiquitous: ubiquitous, Diff: diff, Ghosts: bd.Ghosts, DiffMarks: marks,
+	})
 }
 
 func renderStoryMap(w io.Writer, lang i18n.Lang, view storyMapView) error {
@@ -567,4 +642,8 @@ func renderStoryMap(w io.Writer, lang i18n.Lang, view storyMapView) error {
 
 func renderGlossary(w io.Writer, lang i18n.Lang, view glossaryView) error {
 	return templates(lang).ExecuteTemplate(w, "glossary.html", view)
+}
+
+func renderDiff(w io.Writer, lang i18n.Lang, view diffView) error {
+	return templates(lang).ExecuteTemplate(w, "diff.html", view)
 }

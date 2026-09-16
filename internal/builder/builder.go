@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/boykush/livt/internal/diff"
 	"github.com/boykush/livt/internal/i18n"
 	"github.com/boykush/livt/internal/parser"
 )
@@ -22,6 +23,43 @@ type Builder struct {
 	// renders in livt's default rather than failing, so a Builder built without
 	// a config still produces a site.
 	Lang i18n.Lang
+	// Diff is the revision range to render a diff for, nil when the build was
+	// given none. Root is the git repository those revisions are read from —
+	// the directory the input directories are relative to.
+	Diff *diff.Range
+	Root string
+
+	// diffResult is the range computed for the run in progress. `livt serve`
+	// rebuilds on every edit and the working tree is usually the head, so the
+	// diff is recomputed per build rather than held across them; the sidebar of
+	// every page needs the count, which is why it is on the Builder at all.
+	diffResult *diff.Result
+	// diffByURI is the same result keyed for the lookup every resource page
+	// makes: did this one change, and what became of it.
+	diffByURI map[string]diff.Became
+}
+
+// diffDirs is the input layout the diff reads a revision through, which is this
+// Builder's own: the site and the diff must not drift into reading different
+// places.
+func (b *Builder) diffDirs() diff.Dirs {
+	return diff.Dirs{
+		Opportunities: b.OpportunitiesDir,
+		Canvases:      b.CanvasesDir,
+		Mappings:      b.MappingsDir,
+		Stories:       b.StoriesDir,
+		USM:           b.USMDir,
+		Ubiquitous:    b.UbiquitousDir,
+	}
+}
+
+// root is where git is asked about revisions, defaulting to the directory the
+// build already runs in.
+func (b *Builder) root() string {
+	if b.Root == "" {
+		return "."
+	}
+	return b.Root
 }
 
 type sidebarCounts struct {
@@ -86,7 +124,7 @@ func (b *Builder) sidebar(active, prefix string) (Sidebar, error) {
 	if err != nil {
 		return Sidebar{}, err
 	}
-	return Sidebar{
+	sb := Sidebar{
 		Prefix:        prefix,
 		Active:        active,
 		Opportunities: c.opportunities,
@@ -95,7 +133,8 @@ func (b *Builder) sidebar(active, prefix string) (Sidebar, error) {
 		StoryMaps:     c.storyMaps,
 		Stories:       c.stories,
 		Terms:         c.terms,
-	}, nil
+	}
+	return sb, nil
 }
 
 // generatedDirs are the output subdirectories holding one page per resource.
@@ -123,6 +162,13 @@ func (b *Builder) resetGeneratedDirs() error {
 
 func (b *Builder) Build() error {
 	if err := b.resetGeneratedDirs(); err != nil {
+		return err
+	}
+
+	// Computed before any page is written, because every hub page's sidebar
+	// carries the count — and because a revision that does not resolve should
+	// stop the build rather than leave a site half rewritten.
+	if err := b.computeDiff(); err != nil {
 		return err
 	}
 
@@ -236,6 +282,34 @@ func (b *Builder) Build() error {
 	}
 	fmt.Printf("  stories.html\n")
 
+	if b.diffResult == nil {
+		return b.removeDiff()
+	}
+	if err := b.buildDiff(); err != nil {
+		return err
+	}
+	fmt.Printf("  %s\n", diffPage)
+
+	return nil
+}
+
+// computeDiff reads the two revisions for this run, leaving diffResult nil when
+// the build was given no range — which is what keeps the diff off a site nobody
+// asked one for.
+func (b *Builder) computeDiff() error {
+	b.diffResult, b.diffByURI = nil, nil
+	if b.Diff == nil {
+		return nil
+	}
+	result, err := b.Diff.Compute(b.root(), b.diffDirs())
+	if err != nil {
+		return err
+	}
+	b.diffResult = result
+	b.diffByURI = make(map[string]diff.Became, len(result.Changes))
+	for _, c := range result.Changes {
+		b.diffByURI[c.URI] = c.Became
+	}
 	return nil
 }
 

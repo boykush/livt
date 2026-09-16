@@ -171,5 +171,7 @@ func (b *Builder) buildMapping(path string, em *domain.ExampleMapping, storyName
 		return err
 	}
 	defer f.Close()
-	return renderMapping(f, b.Lang, em, storyName, storyPath, ubiquitous)
+	// The board is one level down, so the diff it points back to is too.
+	return renderMapping(f, b.Lang, b.boardFor(em), storyName, storyPath, ubiquitous,
+		b.diffMark("../", uri.Mapping(em.StoryKey.Value)), b.diffMarks("../"))
 }

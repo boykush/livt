@@ -104,6 +104,7 @@ func (b *Builder) renderOpportunityPage(path string, o *domain.Opportunity, canv
 	}
 	defer f.Close()
 	return renderOpportunity(f, b.Lang, opportunityView{
+		Diff:         b.diffMark("../", uri.Opportunity(o.Key.Value)),
 		Opportunity:  o,
 		Meta:         metaFieldViews(o.Meta),
 		CanvasPath:   canvasPath,
@@ -262,6 +263,7 @@ func (b *Builder) buildOpportunityCanvas(o *domain.Opportunity) error {
 	}
 	defer f.Close()
 	if err := renderOpportunityCanvas(f, b.Lang, opportunityCanvasView{
+		Diff:            b.diffMark("../", uri.OpportunityCanvas(o.Key.Value)),
 		OpportunityKey:  o.Key.Value,
 		OpportunityName: o.DisplayName(),
 		Panels:          canvas.Panels(),

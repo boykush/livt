@@ -56,7 +56,14 @@ board whatever the reader chose.
   [data-view="list"] :is(.rule-card, .example-card, .question-card):not(:target) { box-shadow: none; }
   [data-view="list"] [data-foldable] > .rule-card:hover { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
   {{/* A proposal keeps its dashed edge here, on the accent the row has room for. */}}
-  [data-view="list"] .proposed { border-style: solid solid solid dashed; }
+  [data-view="list"] .proposed, [data-view="list"] .ghost { border-style: solid solid solid dashed; }
+  {{/*
+  A sticky the board is only showing because it left: struck through, so that it
+  reads as no longer spec without resting on the pale fill a proposal also wears.
+  The two are the same statement inverted — not spec yet, not spec any more — and
+  the stamp is what tells them apart.
+  */}}
+  .ghost .sticky-text { text-decoration: line-through; text-decoration-color: #9ca3af; }
   [data-view="list"] :is(.rule-card, .question-card):not(.proposed) { color: #111827; }
   [data-view="list"] .question-card { font-size: 1rem; }
   [data-view="list"] .example-card { padding: 0.625rem 1.25rem; }
@@ -112,6 +119,7 @@ board whatever the reader chose.
   {{.StoryName}}
 </div>
 {{end}}
+{{with .Diff}}<div class="-mt-4 mb-6">{{template "diff-mark" .}}</div>{{end}}
 
 <div class="overflow-x-auto pt-3 px-3 pb-4">
 {{/*
@@ -132,14 +140,16 @@ back up into one row.
   <div class="rule-group" data-rule-group{{if $rule.Examples}} data-foldable{{end}}>
     {{/* A proposed rule is drawn pale, dashed and unpinned, and stamped as well,
     so telling it from an agreed one never rests on colour alone. */}}
-    <div{{if $rule.ID}} id="{{ruleAnchor $rule.ID}}"{{end}} class="rule-card relative {{if $rule.Proposed}}proposed bg-blue-50 border-blue-300 border-dashed text-gray-500{{else}}bg-blue-100 border-blue-400 shadow text-gray-800{{end}} border-l-4 px-3 pt-3 pb-6 rounded font-semibold scroll-mt-24">
+    {{$ruleGhost := index $.Ghosts (ruleURI $.Mapping.StoryKey.Value $rule.ID)}}
+    <div{{if $rule.ID}} id="{{ruleAnchor $rule.ID}}"{{end}} class="rule-card relative {{if $ruleGhost}}ghost bg-blue-50 border-blue-300 border-dashed text-gray-500{{else if $rule.Proposed}}proposed bg-blue-50 border-blue-300 border-dashed text-gray-500{{else}}bg-blue-100 border-blue-400 shadow text-gray-800{{end}} border-l-4 px-3 pt-3 pb-6 rounded font-semibold scroll-mt-24">
       {{if $rule.Examples}}
       <button type="button" data-fold aria-expanded="false" aria-controls="examples-{{$i}}" aria-label="{{t "label.examples"}}" class="rule-fold w-4 shrink-0 justify-center text-gray-400"><span class="chevron" aria-hidden="true">&#9656;</span></button>
       {{else}}
       <span class="rule-fold w-4 shrink-0" aria-hidden="true"></span>
       {{end}}
       {{if $rule.ID}}{{template "id-badge" ruleBadge $rule.ID}}{{end}}
-      <span class="rule-name">{{$rule.Name}}</span>
+      <span class="rule-name sticky-text">{{$rule.Name}}</span>
+      {{with index $.DiffMarks (ruleURI $.Mapping.StoryKey.Value $rule.ID)}}{{template "diff-mark" .}}{{end}}
       {{if $rule.Proposed}}
       <span title="{{t "mapping.proposed-title"}}" class="proposed-badge absolute -top-2 left-2 rounded-full border border-dashed border-blue-400 bg-white text-blue-500 text-[10px] font-semibold px-1.5 py-0.5 select-none">{{t "mapping.proposed-badge"}}</span>
       {{end}}
@@ -165,9 +175,11 @@ back up into one row.
     to stay unique on the board while the badge keeps showing the local id. The
     two reading differently costs nothing: what a click copies is the URL.
     */}}
-    <div{{if and $rule.ID .ID}} id="{{exampleAnchor $rule.ID .ID}}"{{end}} class="example-card relative {{if $rule.Proposed}}proposed bg-green-50 border-green-300 border-dashed text-gray-500{{else}}bg-green-100 border-green-400 shadow text-gray-700{{end}} border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+    {{$exGhost := index $.Ghosts (exampleURI $.Mapping.StoryKey.Value $rule.ID .ID)}}
+    <div{{if and $rule.ID .ID}} id="{{exampleAnchor $rule.ID .ID}}"{{end}} class="example-card relative {{if $exGhost}}ghost bg-green-50 border-green-300 border-dashed text-gray-500{{else if $rule.Proposed}}proposed bg-green-50 border-green-300 border-dashed text-gray-500{{else}}bg-green-100 border-green-400 shadow text-gray-700{{end}} border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
       {{if and $rule.ID .ID}}{{template "id-badge" exampleBadge $rule.ID .ID}}{{end}}
-      <span>{{.Name}}</span>
+      <span class="sticky-text">{{.Name}}</span>
+      {{with index $.DiffMarks (exampleURI $.Mapping.StoryKey.Value $rule.ID .ID)}}{{template "diff-mark" .}}{{end}}
     </div>
     {{end}}
     </div>
@@ -187,9 +199,11 @@ back up into one row.
     <div class="question-stack">
     {{range .Mapping.Questions}}
     {{/* Keyed questions get an anchor so the Tasks page can link to the sticky. */}}
-    <div{{if .ID}} id="{{questionAnchor .ID}}"{{end}} class="question-card relative bg-red-100 border-l-4 border-red-400 px-3 pt-3 pb-6 rounded shadow text-gray-700 text-sm scroll-mt-24">
+    {{$qGhost := index $.Ghosts (questionURI $.Mapping.StoryKey.Value .ID)}}
+    <div{{if .ID}} id="{{questionAnchor .ID}}"{{end}} class="question-card relative {{if $qGhost}}ghost bg-red-50 border-red-300 border-dashed text-gray-500{{else}}bg-red-100 border-red-400 shadow text-gray-700{{end}} border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
       {{if .ID}}{{template "id-badge" questionBadge .ID}}{{end}}
-      <span>{{.Text}}</span>
+      <span class="sticky-text">{{.Text}}</span>
+      {{with index $.DiffMarks (questionURI $.Mapping.StoryKey.Value .ID)}}{{template "diff-mark" .}}{{end}}
     </div>
     {{end}}
     </div>

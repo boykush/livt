@@ -11,6 +11,7 @@ var en = Catalog{
 	"nav.stories":          "Stories",
 	"nav.ubiquitous":       "Ubiquitous Language",
 	"nav.tasks":            "Tasks",
+	"nav.diff":             "Diff",
 
 	// Sticky kinds, shared by the board legends, the filter bars and the
 	// chips — one word each, so the same key serves wherever it appears.
@@ -49,6 +50,31 @@ var en = Catalog{
 	"tasks.rules-hint":               "closed by a test",
 	"tasks.rules-empty":              "Every accepted rule is automated.",
 	"tasks.rules-empty-filtered":     "Every accepted rule for this opportunity is automated.",
+
+	// The diff between two revisions. The three statuses serve twice over: as
+	// the count chips in the header, and as the badge on each entry.
+	"diff.added":        "Added",
+	"diff.changed":      "Changed",
+	"diff.withdrawn":    "Withdrawn",
+	"diff.working-tree": "working tree",
+	"diff.empty":        "Nothing changed between these revisions.",
+
+	// What livt itself names on a changed item. The livt repository's own words
+	// — a frontmatter key, a story's name — are carried through as written.
+	"diff.gone":                "gone from here",
+	"diff.field.status":        "Status",
+	"diff.field.automated":     "Automated",
+	"diff.field.issue":         "Automation issue",
+	"diff.field.superseded-by": "Superseded by",
+	"diff.field.retired":       "Retired",
+	"diff.field.release":       "Release",
+
+	// A rule's status as a word. "accepted" is how the file spells it, not how
+	// the rule is read.
+	"diff.status.proposed": "Proposed",
+	"diff.status.accepted": "Agreed",
+	"diff.status.rejected": "Rejected",
+	"diff.status.retired":  "Retired",
 
 	"glossary.term":       "Term",
 	"glossary.key":        "Key",

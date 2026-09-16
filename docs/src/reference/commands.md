@@ -18,6 +18,7 @@ livt serve [flags]
 |------|-------|---------|-------------|
 | `--port` | `-p` | `3000` | Port to listen on |
 | `--out` | `-o` | `dist` | Output directory |
+| `--diff` | | (off) | Also render the diff between two revisions — see [Reviewing a change](#reviewing-a-change) |
 
 ## `livt build`
 
@@ -30,9 +31,52 @@ livt build [flags]
 | Flag | Short | Default | Description |
 |------|-------|---------|-------------|
 | `--out` | `-o` | `dist` | Output directory |
+| `--diff` | | (off) | Also render the diff between two revisions — see [Reviewing a change](#reviewing-a-change) |
 
 Both commands read [`livt.yaml`](./configuration.md) from the directory they run
 in, which is where the site's language is set.
+
+### Reviewing a change
+
+A pull request against a livt repository is a YAML diff: indentation, list
+ordering, quoting. `--diff` renders what changed as the spec instead, one
+[livt URI](./uri.md) at a time.
+
+```bash
+livt serve --diff main
+```
+
+The argument is git's own two-dot range — `<base>..<head>` — or, as above, a
+single revision against your working tree, which is the shape a review usually
+takes: you are on the branch that makes the change. Revisions are read with
+`git archive`, so the command must run inside the repository and a revision git
+cannot resolve fails the build rather than producing a site.
+
+The site is otherwise the site you always get. What is added is `diff.html`,
+which groups every changed URI under the resource type it belongs to, and a mark
+on each changed item where it lives — a rule's sticky on its board, a term's row
+in the glossary — leading into the diff at that URI. The diff takes no entry in
+the nav: it is not a kind of thing the livt repository holds, so the way in is
+the thing that changed.
+
+Every mark says one of three words. An item was **added**, it was **changed**,
+or it was **withdrawn** — it stopped being spec. That is a reading of the spec
+rather than of the file: a rule
+[retired](../guides/example-mappings.md#retiring-an-item) keeps its entry and
+edits one field, a deleted one loses its entry, and to a reader both mean the
+rule is no longer asked for.
+
+A withdrawal is drawn as the removal it is, whichever way the file recorded it:
+retiring a rule *adds* the line that retires it, and drawn off the record it
+would read as the opposite of what happened. The line that records the
+withdrawal is left out — the mark says it once — and the successor stays, since
+where the spec went is what the reader came for.
+
+A withdrawn sticky goes back on its board, drawn the way a proposal is — pale,
+dashed, struck through — since a proposal is not spec *yet* and this is not spec
+*any more*. Only what left in this range comes back: a rule retired long ago
+stays off the wall. A resource gone entirely has no page left to put anything
+on, so its list says how many of its kind went.
 
 ## `livt mcp`
 
