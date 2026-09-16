@@ -11,6 +11,7 @@ var en = Catalog{
 	"nav.stories":          "Stories",
 	"nav.ubiquitous":       "Ubiquitous Language",
 	"nav.tasks":            "Tasks",
+	"nav.diff":             "Diff",
 
 	// Sticky kinds, shared by the board legends, the filter bars and the
 	// chips — one word each, so the same key serves wherever it appears.
@@ -49,6 +50,14 @@ var en = Catalog{
 	"tasks.rules-hint":               "closed by a test",
 	"tasks.rules-empty":              "Every accepted rule is automated.",
 	"tasks.rules-empty-filtered":     "Every accepted rule for this opportunity is automated.",
+
+	// The diff between two revisions. The three statuses serve twice over: as
+	// the count chips in the header, and as the badge on each entry.
+	"diff.added":        "Added",
+	"diff.removed":      "Removed",
+	"diff.modified":     "Modified",
+	"diff.working-tree": "working tree",
+	"diff.empty":        "Nothing changed between these revisions.",
 
 	"glossary.term":       "Term",
 	"glossary.key":        "Key",

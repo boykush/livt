@@ -14,6 +14,7 @@ var ja = Catalog{
 	"nav.stories":          "ストーリー",
 	"nav.ubiquitous":       "ユビキタス言語",
 	"nav.tasks":            "タスク",
+	"nav.diff":             "差分",
 
 	"label.story":           "ストーリー",
 	"label.rule":            "ルール",
@@ -50,6 +51,12 @@ var ja = Catalog{
 	"tasks.rules-hint":               "テストで閉じる",
 	"tasks.rules-empty":              "合意済みのルールはすべて自動化されています。",
 	"tasks.rules-empty-filtered":     "このオポチュニティの合意済みのルールはすべて自動化されています。",
+
+	"diff.added":        "追加",
+	"diff.removed":      "削除",
+	"diff.modified":     "変更",
+	"diff.working-tree": "作業ツリー",
+	"diff.empty":        "このリビジョン間に変更はありません。",
 
 	"glossary.term":       "用語",
 	"glossary.key":        "キー",

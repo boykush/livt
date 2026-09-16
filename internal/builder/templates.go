@@ -291,6 +291,12 @@ type Sidebar struct {
 	StoryMaps int
 	Stories   int
 	Terms     int
+	// HasDiff is whether this build was given revisions to diff. The entry is
+	// hidden rather than shown empty when it was not: a site built from the
+	// working tree alone has no revisions to compare, so a Diff of 0 would be a
+	// count of nothing rather than a diff with no changes in it.
+	HasDiff bool
+	Diff    int
 }
 
 type mappingTile struct {
@@ -488,6 +494,43 @@ type glossaryView struct {
 	Contexts []string
 }
 
+// diffView is what changed between two revisions, gathered by resource type.
+// Base and Head are the short hashes git resolved; an empty Head is the working
+// tree, which the page says in words because it has no hash to print.
+type diffView struct {
+	Sidebar  Sidebar
+	Base     string
+	Head     string
+	Added    int
+	Removed  int
+	Modified int
+	Groups   []diffGroupView
+}
+
+type diffGroupView struct {
+	Label   string
+	Entries []diffEntryView
+}
+
+// diffEntryView is one livt URI's change. Status is empty on a mapping listed
+// only to head its changed rules, and Path is empty when the site holds no page
+// for the URI — which is every removed one.
+type diffEntryView struct {
+	URI      string
+	Title    string
+	Status   string
+	Path     string
+	Lines    []diffLineView
+	Children []diffEntryView
+}
+
+// diffLineView is one line of an entry's diff, Op being git diff's own " ", "+"
+// or "-" so the page needs no legend to be read.
+type diffLineView struct {
+	Op   string
+	Text string
+}
+
 type storyView struct {
 	Story         *domain.Story
 	Meta          []metaFieldView
@@ -567,4 +610,8 @@ func renderStoryMap(w io.Writer, lang i18n.Lang, view storyMapView) error {
 
 func renderGlossary(w io.Writer, lang i18n.Lang, view glossaryView) error {
 	return templates(lang).ExecuteTemplate(w, "glossary.html", view)
+}
+
+func renderDiff(w io.Writer, lang i18n.Lang, view diffView) error {
+	return templates(lang).ExecuteTemplate(w, "diff.html", view)
 }
