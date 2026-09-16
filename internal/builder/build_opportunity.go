@@ -144,12 +144,16 @@ type opportunityProgress struct {
 	// Releases are the opportunity's stories in its maps' own release slices,
 	// which is the order a team heading for a release reads them in. A map that
 	// declares no release leaves one unnamed slice holding every story.
-	Releases       []opportunityReleaseRow
-	TotalStories   int
-	MappedStories  int
-	Rules          int
-	Automated      int
-	Proposed       int
+	Releases      []opportunityReleaseRow
+	TotalStories  int
+	MappedStories int
+	Rules         int
+	Automated     int
+	Proposed      int
+	// Unautomated is what the Tasks page lists as waiting for a test: neither
+	// automated nor proposed. Not derived from the three above, since a
+	// proposal that already carries a test is in two of them.
+	Unautomated    int
 	Questions      int
 	QuestionsAsked int
 	// StoriesPath and TasksPath narrow the lists that already render these
@@ -227,6 +231,7 @@ func (b *Builder) progressOf(o *domain.Opportunity, slices []opportunityReleaseS
 				row.Rules += t.Rules
 				row.Automated += t.Automated
 				p.Proposed += t.Proposed
+				p.Unautomated += t.Unautomated
 				p.Questions += t.Questions
 				p.QuestionsAsked += t.QuestionsAsked
 			case b.hasStoryPage(storyKey):

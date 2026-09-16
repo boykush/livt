@@ -458,6 +458,48 @@ func TestOpportunityDashboardMetersCarryTheirWhole(t *testing.T) {
 	}
 }
 
+// A proposal can carry a test ahead of its agreement, and then it is both
+// proposed and automated. The un-automated meter counts what the Tasks page
+// lists as waiting for a test — neither — rather than subtracting both counts
+// from the whole, which took such a rule out twice and could go below zero.
+// livt://mapping/show-opportunity-progress/rule/R-02
+func TestOpportunityUnautomatedMeterDoesNotSubtractAProposalTwice(t *testing.T) {
+	b := progressBuilder(t)
+	// half-story: one plain rule, one bare proposal, and one proposal whose
+	// test was written first.
+	writeFile(t, filepath.Join(b.MappingsDir, "half-story.yaml"),
+		"rules:\n"+
+			"  - id: R-01\n    name: まだのルール\n"+
+			"  - id: R-02\n    name: 提案中のルール\n    status: proposed\n"+
+			"  - id: R-03\n    name: 先にテストのある提案\n    status: proposed\n    automated: true\n"+
+			"questions: []\n")
+	_, _, tallies, err := b.buildMappings()
+	if err != nil {
+		t.Fatal(err)
+	}
+	o := &domain.Opportunity{Key: domain.OpportunityKey{Value: "demo"}, Name: "デモ機会"}
+	p := b.progressOf(o, oneSlice("held-story", "half-story"), tallies)
+	// Four live rules across the two boards: one automated, one plain, two
+	// proposed of which one is also automated.
+	if p.Rules != 4 || p.Automated != 2 || p.Proposed != 2 {
+		t.Fatalf("rules/automated/proposed = %d/%d/%d, want 4/2/2", p.Rules, p.Automated, p.Proposed)
+	}
+	if p.Unautomated != 1 {
+		t.Errorf("un-automated = %d, want 1: the plain rule alone is waiting for a test", p.Unautomated)
+	}
+
+	if err := b.Build(); err != nil {
+		t.Fatal(err)
+	}
+	html := readFile(t, filepath.Join(b.OutDir, "opportunity-progress", "demo.html"))
+	msg := i18n.Of(i18n.En).Msg("opportunity.unautomated-rules")
+	if at := strings.Index(html, msg); at < 0 {
+		t.Fatalf("%s has no meter", msg)
+	} else if want := `>1<span class="font-normal text-gray-400">/4<`; !strings.Contains(html[at:], want) {
+		t.Errorf("the %s meter should read 1/4: expected %q", msg, want)
+	}
+}
+
 // A fraction over a whole does not say which way it is meant to move, so the
 // meters stand in two groups: the stories count under a burn-up heading, since
 // it is done at the whole, and the three counts of what is still open under a

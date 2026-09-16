@@ -33,7 +33,6 @@ func funcs(lang i18n.Lang) template.FuncMap {
 		"questionBadge":     questionBadge,
 		"storyBadge":        storyBadge,
 		"percent":           percent,
-		"sub":               func(a, b int) int { return a - b },
 		"meter":             newMeterView,
 		"tasksAnchors":      tasksAnchors,
 	}

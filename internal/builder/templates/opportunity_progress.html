@@ -73,7 +73,7 @@ the split as well as within it.
     <span class="text-xs text-gray-400">{{t "opportunity.burn-down-hint"}}</span>
   </div>
   <div class="grid gap-3 sm:grid-cols-3">
-    {{template "opportunity-meter" meter (t "opportunity.unautomated-rules") (sub (sub .Progress.Rules .Progress.Automated) .Progress.Proposed) .Progress.Rules "bg-gray-500" true (t "nav.tasks") .Progress.UnautomatedPath}}
+    {{template "opportunity-meter" meter (t "opportunity.unautomated-rules") .Progress.Unautomated .Progress.Rules "bg-gray-500" true (t "nav.tasks") .Progress.UnautomatedPath}}
     {{template "opportunity-meter" meter (t "opportunity.proposed-rules") .Progress.Proposed .Progress.Rules "bg-blue-300" true (t "nav.tasks") .Progress.ProposedPath}}
     {{template "opportunity-meter" meter (t "opportunity.open-questions") .Progress.Questions .Progress.QuestionsAsked "bg-red-400" true (t "nav.tasks") .Progress.QuestionsPath}}
   </div>
