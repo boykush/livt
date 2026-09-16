@@ -1,6 +1,6 @@
 ---
 name: inspect-automation
-description: Inspect each rule's automation record (`automated:`) against what actually happened in the implementation repositories, by reading the state of the issues the rule already records and the mapping's own git history, and propose each correction as its own fine-grained PR with evidence. Never decides on its own. The judgment and the evidence it needs are livt's; the tracker the issues live in, and the tool that reads it, are the team's. Use when automation has landed, or a rule has moved on, and the board may be showing a stale grade. Filing new issues routes to file-rule-issues.
+description: Inspect each rule's automation record (`automated:`) against what actually happened in the implementation repositories, by reading the state of the issues the rule already records and the mapping's own git history, and propose each correction as its own fine-grained commit with evidence. Never decides on its own. The judgment and the evidence it needs are livt's; the tracker the issues live in, and the tool that reads it, are the team's. Use when automation has landed, or a rule has moved on, and the board may be showing a stale grade. Filing new issues routes to file-rule-issues.
 ---
 
 You **inspect** the automation record — the inspect station of the delivery ring.
@@ -11,7 +11,7 @@ The living document renders that record faithfully. That is exactly why a stale 
 
 ## Language
 
-This skill is written in English for maintainability — English is not the language to answer in. Match the user: hold the conversation and write your report and PR bodies in the language they are using. `key:` identifiers, code, and tool commands stay English; rule and example text stays verbatim in the mapping's language.
+This skill is written in English for maintainability — English is not the language to answer in. Match the user: hold the conversation and write your report and commit messages in the language they are using. `key:` identifiers, code, and tool commands stay English; rule and example text stays verbatim in the mapping's language.
 
 ## You Propose; The Review Decides
 
@@ -42,7 +42,7 @@ A story declares `repos:`, and `file-rule-issues` files per **rule × repository
 
 - Propose setting it only when **every** recorded issue is closed. A rule automated in one repository and untouched in another is not an automated rule; the flag is about the rule, not about a repository.
 - A rule closed in one repository and open in another is a **partial rollout** — report it, propose nothing. It is the most common mid-rollout shape and the easiest to misread as done.
-- Gather evidence per repository and name every one of them in the PR body. A reviewer setting one flag that covers three repositories needs all three in front of them.
+- Gather evidence per repository and name every one of them in the commit message. A reviewer setting one flag that covers three repositories needs all three in front of them.
 
 ## When You Cannot Read an Issue
 
@@ -73,15 +73,23 @@ A tracker answers the same way whether an issue was deleted, moved, or is simply
    git log --follow -p -- discoveries/example-mappings/{story-key}.yaml
    ```
 
-   Read the diff hunks for that rule's block; the file holds many rules, so a commit touching the file says nothing on its own. Only when the text change is the later commit is the flag stale — `change-rule` requires unsetting the flag in the same PR as a rule change, so a finding here means that discipline was missed.
-6. Ship each proposal as its own PR (see PR Contract). One rule's record per PR.
+   Read the diff hunks for that rule's block; the file holds many rules, so a commit touching the file says nothing on its own. Only when the text change is the later commit is the flag stale — `change-rule` requires unsetting the flag in the same commit as a rule change, so a finding here means that discipline was missed.
+6. Commit each proposal on its own (see Commit Contract). One rule's record per commit.
 7. Report every rule in scope and where it landed: proposed set, proposed unset, no finding, or not verifiable — and why.
 
-## PR Contract
+## Commit Contract
 
-- **One rule's record change per PR**, a branch each — mirroring `change-rule`'s granularity, for the same reason: each judgment has to be reviewable on its own. A sweep over twenty mappings is twenty PRs, not one.
+Canonical statement in `change-rule`; these bullets are verbatim from it. Your granularity mirrors that skill's, for the same reason: each judgment has to be reviewable on its own, so a sweep over twenty mappings is twenty commits — however few branches you send them up on.
+
+- **The commit is livt's unit.** One decision per commit — a rule-level change, a record's baseline, the structural edit on top of it, a story's card. It is the smallest thing a reviewer can weigh on its own, and the only split livt asks for.
+- **Never fold two decisions into one commit.** That is the one thing no later grouping can undo: a reviewer reading a combined diff cannot tell which change carried which reason, and neither can the history.
+- **The message carries the why.** The subject names what changed; the body states the reason a reviewer weighs. It is written once, in the commit, where it cannot drift from the diff it explains.
+- **How commits are grouped into pull requests is yours.** One per commit, one per session, one per chat thread — that is your team's branch and review convention, and no skill here has an opinion on it. Sending several up together is not batching, as long as each decision arrived as its own commit.
+
+For you, that unit is one rule's record change:
+
 - The commit message names the rule and the mapping: `Set automated on rule R-04 in {story-key}`, `Unset automated on rule R-02 in {story-key}`.
-- The PR body carries the evidence, as links a reviewer can follow:
+- The body carries the evidence, as links a reviewer can follow:
   - the closed issue(s), with how and when they closed
   - the closing change and the test files it added — or a plain statement that it added none
   - for an unset, the commit that set the flag and the commit that changed the rule after it
@@ -89,7 +97,7 @@ A tracker answers the same way whether an issue was deleted, moved, or is simply
 
 ## What NOT to Do
 
-- Don't set or unset `automated:` outside a PR, and don't batch several rules into one.
+- Don't set or unset `automated:` outside a commit of its own, and don't fold several rules into one.
 - Don't treat a closed issue as proof, and don't let a "not planned" close pass as automation landing.
 - Don't read implementation repositories' code — the issue and its closing change are the whole window, the same limit the filing skills work under.
 - Don't edit rule text, examples, questions, or `issues:` — a rule whose meaning drifted is `change-rule`'s business (propose it there), and an unfiled rule is `file-rule-issues`'s.
@@ -100,4 +108,4 @@ A tracker answers the same way whether an issue was deleted, moved, or is simply
 
 ## Output
 
-One PR per proposed record change, each carrying its evidence, plus a report covering every rule in scope — including the ones you left alone and the ones you could not verify.
+One commit per proposed record change, each carrying its evidence, plus a report covering every rule in scope — including the ones you left alone and the ones you could not verify.

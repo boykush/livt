@@ -1,6 +1,6 @@
 ---
 name: record-story-map
-description: Record a User Story Mapping session into discoveries/usm/{map-name}.yaml as two commits on one PR — the board as it stands, committed verbatim as the baseline, then a structural edit consulting the usm-expert skill, whose diff is what the review reads. Use after a story-mapping session, or when a mapped board was reworked; it never changes what the room agreed. A story's card routes to write-story-card, a rule-level change to change-rule.
+description: Record a User Story Mapping session into discoveries/usm/{map-name}.yaml as two commits — the board as it stands, committed verbatim as the baseline, then a structural edit consulting the usm-expert skill, whose diff is what the review reads. Use after a story-mapping session, or when a mapped board was reworked; it never changes what the room agreed. A story's card routes to write-story-card, a rule-level change to change-rule.
 ---
 
 You **record** a story map — the record station of the discovery ring.
@@ -11,14 +11,14 @@ The mapping session already happened: people built the map together on a board (
 
 This skill is written in English for maintainability — English is not the language to answer in. Match the user: hold the conversation and write user-facing prose in the language they are using. Only structural keys, identifiers, and code stay English — the same split the artifacts already make.
 
-## Two Commits, One PR
+## Two Commits
 
-The record ships as one PR carrying two commits, in this order:
+The record ships as two commits, in this order:
 
 1. **Baseline** — the board verbatim, committed with no edits at all. This is the session's residue, and the reference every later diff is read against.
 2. **Edit** — structure only, consulting the `usm-expert` skill: narrative flow, granularity, story framing, ordering. The diff of this commit is the deliverable. A reviewer reads it to see exactly what the record changed, and to confirm that no meaning moved.
 
-Never fold the edit into the baseline. A pre-polished baseline hides the edit, and the review loses the one thing the second commit exists to show. When the board needs nothing, the PR carries the baseline alone — an empty edit is a fine outcome, a disguised one is not.
+Never fold the edit into the baseline. A pre-polished baseline hides the edit, and the review loses the one thing the second commit exists to show. When the board needs nothing, the record is the baseline alone — an empty edit is a fine outcome, a disguised one is not.
 
 ## Where You Sit
 
@@ -60,12 +60,12 @@ The discovery ring runs opportunity → story map → card → conversation → 
    - **Story framing** — phrase stories as user-valuable units; keep the same intent.
    - **Ordering** — fix backbone or priority order only where the board's order was clearly an artifact of the room, not a decision.
 3. Re-read the diff against the baseline: every change is structural, none is a scope change.
-4. Commit it as the edit, and open the PR.
+4. Commit it as the edit.
 
 ### What the edit never touches
 
 - Don't add activities, tasks, or stories that weren't mapped. Discovering more is the session's job.
-- Don't re-slice releases or re-prioritize against the team's decisions — raise the concern in the PR body instead.
+- Don't re-slice releases or re-prioritize against the team's decisions — raise the concern in the edit commit's message instead.
 - Don't mint a `key:` the baseline did not intend; writing a card is `write-story-card`'s job.
 - Keep `key:` identifiers in **English** (they back `stories/{key}.md` filenames and `step` cross-references); `name:` follows the board's language.
 
@@ -111,9 +111,17 @@ Pink stickies are the words the room agreed on, and the record is their only pat
 
 ## Commit Contract
 
+Canonical statement in `change-rule`; these bullets are verbatim from it. You write two commits rather than one, so the order between them is yours to keep as well.
+
+- **The commit is livt's unit.** One decision per commit — a rule-level change, a record's baseline, the structural edit on top of it, a story's card. It is the smallest thing a reviewer can weigh on its own, and the only split livt asks for.
+- **Never fold two decisions into one commit.** That is the one thing no later grouping can undo: a reviewer reading a combined diff cannot tell which change carried which reason, and neither can the history.
+- **The message carries the why.** The subject names what changed; the body states the reason a reviewer weighs. It is written once, in the commit, where it cannot drift from the diff it explains.
+- **How commits are grouped into pull requests is yours.** One per commit, one per session, one per chat thread — that is your team's branch and review convention, and no skill here has an opinion on it. Sending several up together is not batching, as long as each decision arrived as its own commit.
+
+For you, those units are the baseline and the edit:
+
 - Baseline: `Record {map-name} story map (baseline)`, committed with no edits.
-- Edit: `Edit {map-name} story map structure`, on top of the baseline.
-- One PR holding both. The PR body says what the edit changed and why, so the review can confirm that no meaning moved.
+- Edit: `Edit {map-name} story map structure`, on top of the baseline. The body says what the edit changed and why, so the review can confirm that no meaning moved.
 
 ## Completeness Checks (record, not map health)
 
@@ -128,4 +136,4 @@ Before the baseline commit, verify the record is complete — not whether the ma
 
 ## Output
 
-`discoveries/usm/{map-name}.yaml` on one PR with two commits: the verbatim baseline, and a structural edit whose diff the review reads. Plus the `ubiquitous/{term-key}.md` files the board's definitions produced, and a note of which referenced terms are still undefined.
+`discoveries/usm/{map-name}.yaml` as two commits: the verbatim baseline, and a structural edit whose diff the review reads. Plus the `ubiquitous/{term-key}.md` files the board's definitions produced, and a note of which referenced terms are still undefined.

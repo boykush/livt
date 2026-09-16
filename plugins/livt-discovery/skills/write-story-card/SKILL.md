@@ -50,7 +50,16 @@ When a story is conceived directly — with no candidate on a map — create `st
 
 ## Commit Contract
 
-Writing a card does not change agreed meaning, so it ships as a single, plain git commit — not a PR that asks for review of a diff. The commit pairs the new `stories/{key}.md` with the one-line `key:` addition to the map. The message names the key, e.g. `Write story card {key}`.
+Canonical statement in `change-rule`; these bullets are verbatim from it. Writing a card does not change agreed meaning, so the commit is the whole of it — no edit commit rides on top, and nothing here asks a reviewer to weigh a decision.
+
+- **The commit is livt's unit.** One decision per commit — a rule-level change, a record's baseline, the structural edit on top of it, a story's card. It is the smallest thing a reviewer can weigh on its own, and the only split livt asks for.
+- **Never fold two decisions into one commit.** That is the one thing no later grouping can undo: a reviewer reading a combined diff cannot tell which change carried which reason, and neither can the history.
+- **The message carries the why.** The subject names what changed; the body states the reason a reviewer weighs. It is written once, in the commit, where it cannot drift from the diff it explains.
+- **How commits are grouped into pull requests is yours.** One per commit, one per session, one per chat thread — that is your team's branch and review convention, and no skill here has an opinion on it. Sending several up together is not batching, as long as each decision arrived as its own commit.
+
+For you, that unit is the card:
+
+- The commit pairs the new `stories/{key}.md` with the one-line `key:` addition to the map. The message names the key, e.g. `Write story card {key}`.
 
 ## What NOT to Do
 
