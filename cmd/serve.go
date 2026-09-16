@@ -11,6 +11,7 @@ var port int
 func init() {
 	serveCmd.Flags().IntVarP(&port, "port", "p", 3000, "port to listen on")
 	serveCmd.Flags().StringVarP(&outDir, "out", "o", "dist", "output directory")
+	serveCmd.Flags().StringVar(&diffRange, "diff", "", diffFlagUsage)
 	rootCmd.AddCommand(serveCmd)
 }
 
