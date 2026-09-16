@@ -25,6 +25,18 @@
   */}}
   .diff-add .moved { background-color: #86efac; border-radius: 0.125rem; }
   .diff-del .moved { background-color: #fca5a5; border-radius: 0.125rem; }
+  {{/*
+  An entry wears what became of it; its lines wear what became of the record.
+  The two answer different questions and can disagree — retiring a rule *adds*
+  the line that retires it — so the card is coloured on its own left rail rather
+  than by the fill of the lines inside it, and a withdrawn statement is struck
+  through the way its sticky is on the board.
+  */}}
+  .entry { border-left: 3px solid transparent; }
+  .entry-added { border-left-color: #22c55e; }
+  .entry-changed { border-left-color: #f59e0b; }
+  .entry-withdrawn { border-left-color: #ef4444; }
+  .entry-withdrawn .own-text { text-decoration: line-through; text-decoration-color: #9ca3af; }
 </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -70,7 +82,7 @@
 </html>
 
 {{define "diff-entry"}}
-<div id="{{.Anchor}}" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+<div id="{{.Anchor}}" class="entry{{if .Status}} entry-{{.Status}}{{end}} px-4 py-3 scroll-mt-4 target:bg-violet-50">
   <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
     {{if .Status}}<span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 {{if eq .Status "added"}}bg-green-100 text-green-800{{else if eq .Status "withdrawn"}}bg-red-100 text-red-800{{else}}bg-amber-100 text-amber-800{{end}}">{{t (print "diff." .Status)}}</span>{{end}}
     {{if .Title}}<span class="font-medium text-gray-900">{{.Title}}</span>{{end}}
@@ -88,7 +100,9 @@
   {{if .Lines}}
   <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
     {{range .Lines}}
-    <div class="diff-line{{if eq .Op "+"}} diff-add{{else if eq .Op "-"}} diff-del{{end}}"><span class="sign">{{.Op}}</span><span class="whitespace-pre-wrap break-words">{{if .Parts}}{{if .Label}}{{.Label}}: {{end}}{{range .Parts}}{{if .Changed}}<span class="moved">{{.Text}}</span>{{else}}{{.Text}}{{end}}{{end}}{{else}}{{.Text}}{{end}}</span></div>
+    {{/* A line with no label is the item speaking for itself — the statement a
+    withdrawal is the end of, which is why it is the one struck through. */}}
+    <div class="diff-line{{if eq .Op "+"}} diff-add{{else if eq .Op "-"}} diff-del{{end}}"><span class="sign">{{.Op}}</span><span class="whitespace-pre-wrap break-words{{if not .Label}} own-text{{end}}">{{if .Parts}}{{if .Label}}{{.Label}}: {{end}}{{range .Parts}}{{if .Changed}}<span class="moved">{{.Text}}</span>{{else}}{{.Text}}{{end}}{{end}}{{else}}{{.Text}}{{end}}</span></div>
     {{end}}
   </div>
   {{end}}

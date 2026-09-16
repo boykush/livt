@@ -292,3 +292,27 @@ func TestABoardWithoutADiffPutsNothingBack(t *testing.T) {
 		t.Error("a board built without revisions shows a retired rule")
 	}
 }
+
+// livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-07: the two
+// colours answer different questions and are allowed to disagree. Retiring a
+// rule adds the line that retires it, so the body is green while the entry is a
+// withdrawal — the entry is coloured on its own rail rather than by the lines
+// inside it.
+func TestAWithdrawnEntryReadsAsOneEvenWhenItsLinesWereAdded(t *testing.T) {
+	withdrawn := ruleChange("R-01", diff.BecameWithdrawn)
+	withdrawn.Lines = []diff.Line{
+		{Op: diff.OpContext, Field: diff.Field{Value: "the statement that stops holding"}},
+		{Op: diff.OpAdd, Field: diff.Field{Label: diff.LabelRetired, Translate: true}},
+	}
+	page := renderedDiff(t, &diff.Result{Base: "abc1234", Changes: []diff.Change{withdrawn}, Withdrawn: 1})
+
+	if !strings.Contains(page, "entry-withdrawn") {
+		t.Error("the entry is not coloured by what became of it")
+	}
+	if !strings.Contains(page, "diff-add") {
+		t.Error("the added line lost the colour the record earned it")
+	}
+	if !strings.Contains(page, `own-text">the statement that stops holding`) {
+		t.Error("the withdrawn statement is not the line struck through")
+	}
+}
