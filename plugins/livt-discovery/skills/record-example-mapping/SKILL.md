@@ -1,6 +1,6 @@
 ---
 name: record-example-mapping
-description: Record an Example Mapping session into discoveries/example-mappings/{story-key}.yaml as two commits on one PR — the board's rules, examples, and questions verbatim as the baseline, then a structural edit consulting the bdd-expert skill, whose diff is what the review reads. Use after a session on a story's board, or when that board was reworked; it never changes what the room agreed. A rule proposed, changed, or added outside a session routes to change-rule; checking against the implementation is plan-story's.
+description: Record an Example Mapping session into discoveries/example-mappings/{story-key}.yaml as two commits — the board's rules, examples, and questions verbatim as the baseline, then a structural edit consulting the bdd-expert skill, whose diff is what the review reads. Use after a session on a story's board, or when that board was reworked; it never changes what the room agreed. A rule proposed, changed, or added outside a session routes to change-rule; checking against the implementation is plan-story's.
 ---
 
 You **record** an example mapping — the record station of the discovery ring, at the story level.
@@ -11,14 +11,14 @@ The Example Mapping session already happened: people worked it out together on a
 
 This skill is written in English for maintainability — English is not the language to answer in. Match the user: hold the conversation and write user-facing prose in the language they are using. Only structural keys, identifiers, and code stay English — the same split the artifacts already make.
 
-## Two Commits, One PR
+## Two Commits
 
-The record ships as one PR carrying two commits, in this order:
+The record ships as two commits, in this order:
 
 1. **Baseline** — the board verbatim, committed with no edits at all. This is the session's residue, and the reference every later diff is read against.
 2. **Edit** — structure only, consulting the `bdd-expert` skill: rule clarity, example naming, grouping, question phrasing. The diff of this commit is the deliverable. A reviewer reads it to see exactly what the record changed, and to confirm that no meaning moved.
 
-Never fold the edit into the baseline. A pre-polished baseline hides the edit, and the review loses the one thing the second commit exists to show. When the board needs nothing, the PR carries the baseline alone.
+Never fold the edit into the baseline. A pre-polished baseline hides the edit, and the review loses the one thing the second commit exists to show. When the board needs nothing, the record is the baseline alone.
 
 ## Where You Sit
 
@@ -59,15 +59,15 @@ Never fold the edit into the baseline. A pre-polished baseline hides the edit, a
    - **Rule clarity** — sharpen vague rule names into crisp business rules; keep the team's intent.
    - **Example naming** — make examples concrete and memorable ("the one where…"); keep the same scenario.
    - **Grouping** — example IDs are rule-scoped, so moving an example to the rule it actually illustrates always changes its ID. Move it only while nothing can be pointing at it: a just-recorded baseline where no rule carries `issues:` or `automated:`. Otherwise — and whenever you are unsure — retire it where it sits and add it under the right rule with a fresh ID, with `superseded_by:` on the retired one naming the new URI, so its old URI keeps resolving to the same text and says where the example went.
-   - **Splitting** — if the map shows too many rules (story too large), recommend a split in the PR body; don't silently shard.
+   - **Splitting** — if the map shows too many rules (story too large), recommend a split in the edit commit's message; don't silently shard.
    - **Question phrasing** — make a Question precise without answering it.
 3. Re-read the diff against the baseline: every change is structural, none is a meaning change.
-4. Commit it as the edit, and open the PR.
+4. Commit it as the edit.
 
 ### What the edit never touches
 
 - Don't add rules or examples that weren't discovered.
-- Don't fold in rule changes or additions decided after the session — `change-rule` ships those as their own fine-grained PRs.
+- Don't fold in rule changes or additions decided after the session — `change-rule` ships those as their own fine-grained commits.
 - Don't resolve or delete open Questions.
 - Don't check the mapping against the implementation or design — that is `plan-story`'s job.
 - Don't write Gherkin — example mapping stays low-tech.
@@ -129,9 +129,17 @@ When the team reworks a board that has already been recorded, `discoveries/examp
 
 ## Commit Contract
 
+Canonical statement in `change-rule`; these bullets are verbatim from it. You write two commits rather than one, so the order between them is yours to keep as well.
+
+- **The commit is livt's unit.** One decision per commit — a rule-level change, a record's baseline, the structural edit on top of it, a story's card. It is the smallest thing a reviewer can weigh on its own, and the only split livt asks for.
+- **Never fold two decisions into one commit.** That is the one thing no later grouping can undo: a reviewer reading a combined diff cannot tell which change carried which reason, and neither can the history.
+- **The message carries the why.** The subject names what changed; the body states the reason a reviewer weighs. It is written once, in the commit, where it cannot drift from the diff it explains.
+- **How commits are grouped into pull requests is yours.** One per commit, one per session, one per chat thread — that is your team's branch and review convention, and no skill here has an opinion on it. Sending several up together is not batching, as long as each decision arrived as its own commit.
+
+For you, those units are the baseline and the edit:
+
 - Baseline: `Record {story-key} example mapping (baseline)`, committed with no edits.
-- Edit: `Edit {story-key} example mapping structure`, on top of the baseline.
-- One PR holding both. The PR body says what the edit changed and why, so the review can confirm that no meaning moved.
+- Edit: `Edit {story-key} example mapping structure`, on top of the baseline. The body says what the edit changed and why, so the review can confirm that no meaning moved.
 
 ## Completeness Checks (record, not session health)
 
@@ -146,4 +154,4 @@ Before the baseline commit, verify the record is complete — not whether the ma
 
 ## Output
 
-`discoveries/example-mappings/{story-key}.yaml` on one PR with two commits: the verbatim baseline, and a structural edit whose diff the review reads. Plus the `ubiquitous/{term-key}.md` files the board's definitions produced, and a note of which referenced terms are still undefined.
+`discoveries/example-mappings/{story-key}.yaml` as two commits: the verbatim baseline, and a structural edit whose diff the review reads. Plus the `ubiquitous/{term-key}.md` files the board's definitions produced, and a note of which referenced terms are still undefined.

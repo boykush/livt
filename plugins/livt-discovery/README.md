@@ -12,9 +12,9 @@ opportunity ─▶ story map ─▶ card ─▶ conversation ─▶ record ─�
 
 Live facilitation happens with people on a board (Miro, sticky notes). These skills start where the board ends, and each is named for the **station** it serves rather than for how it edits a file:
 
-- **Record** — *talk, then record* (Patton). A session's outcome is written out as two commits on one PR: the board verbatim as the baseline, then a structural edit, consulting an expert skill, whose diff is what the review reads. The record never changes what the room agreed.
+- **Record** — *talk, then record* (Patton). A session's outcome is written out as two commits: the board verbatim as the baseline, then a structural edit, consulting an expert skill, whose diff is what the review reads. The record never changes what the room agreed.
 - **Card** — the Card of Ron Jeffries' three Cs. A story candidate picked from the map gets `stories/{story-key}.md` and a stable key, so its own conversation — an Example Mapping — can be held and recorded against it.
-- **Change** — discovery's **asynchronous lane**. A rule proposed, changed, or retired outside a session lands in the mapping as its own fine-grained PR; a proposal carries `status: proposed`, the PR review stands in for the conversation, and agreement is a one-line diff.
+- **Change** — discovery's **asynchronous lane**. A rule proposed, changed, or retired outside a session lands in the mapping as its own fine-grained commit; a proposal carries `status: proposed`, the review stands in for the conversation, and agreement is a one-line diff.
 
 No skill here reads the implementation. The first read of the code is where the [delivery ring](../livt-delivery/README.md) begins.
 
@@ -25,7 +25,7 @@ Two authorities make a discovery skill true, and neither of them is your team:
 - **livt's** — the YAML the record writes, the ID contract (numbering past retired IDs, immutability, retire-don't-delete, `superseded_by`), the key contract, and the line between what a record may change and what only an agreed decision may. `change-rule` holds the canonical statement of the ID contract; `record-example-mapping` repeats it verbatim, as does `record-story-map` for the ubiquitous-language section they share. This half moves when livt moves.
 - **The practice's** — Patton on opportunities and story maps, Jeffries' three Cs, BDD and Example Mapping. The expert skills below are that knowledge and nothing else, which is why they are the part of this plugin that is worth reading even without livt: they do not move when livt moves.
 
-**Yours** is the board and the session: which tool the room uses, how facilitation is run, what else a card carries once it exists, and your own branch and review conventions. The record skills take a board as a photo, an export, or pasted text, and no skill here assumes a board tool — a session held on paper records the same way.
+**Yours** is the board and the session: which tool the room uses, how facilitation is run, what else a card carries once it exists, and your own branch and review conventions — livt's unit of change is the commit, and how commits are grouped into pull requests is a decision no skill here makes for you. The record skills take a board as a photo, an export, or pasted text, and no skill here assumes a board tool — a session held on paper records the same way.
 
 Every skill here is a plain [Agent Skill](https://agentskills.io) — no subagents, no hooks, no slash-command-only behaviour — so the whole discovery ring works in any conformant runtime, and the runtime-specific glue stays on your side of the line. The record skills consult the expert skills as peer skills for exactly that reason.
 
@@ -42,7 +42,7 @@ Every skill here is a plain [Agent Skill](https://agentskills.io) — no subagen
 
 ### Change
 
-- **`/change-rule`** — change one business rule in an existing example mapping — propose, accept, reject, change, or retire it with its examples — as its own fine-grained PR. The canonical statement of the ID contract lives here.
+- **`/change-rule`** — change one business rule in an existing example mapping — propose, accept, reject, change, or retire it with its examples — as its own fine-grained commit. The canonical statements of the ID contract and the commit contract live here.
 
 ## Expert skills
 
@@ -66,8 +66,8 @@ Coming from `discovery-facilitator` 0.x? The skills were renamed for their stati
 
 | Was | Now |
 |-----|-----|
-| `/usm-transcribe` + `/usm-refine` | `/record-story-map` (one PR, two commits) |
-| `/example-mapping-transcribe` + `/example-mapping-refine` | `/record-example-mapping` (one PR, two commits) |
+| `/usm-transcribe` + `/usm-refine` | `/record-story-map` (two commits) |
+| `/example-mapping-transcribe` + `/example-mapping-refine` | `/record-example-mapping` (two commits) |
 | `/story-commit` | `/write-story-card` |
 | `/example-mapping-update` | `/change-rule` |
 | `/example-mapping-plan` | `/plan-story` — in [livt-delivery](../livt-delivery/README.md) |

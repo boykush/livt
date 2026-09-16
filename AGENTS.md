@@ -35,5 +35,6 @@ Two consequences worth stating:
 
 - livt repository changes (`discoveries/`, `stories/`, `ubiquitous/`) ship as `docs:`. The branch prefix mirrors the type: `docs/…`, `feat/…`, `fix/…`.
 - The body explains **why** the change is right — the diff already says what changed. Wrap at ~80 columns.
-- One rule-level change per PR, a branch each: `docs: add rule R-11 to file-automation-issues-to-impl-repos`. The ID and PR contracts live in [change-rule/SKILL.md](plugins/livt-discovery/skills/change-rule/SKILL.md) — a filed rule ID is immutable.
+- One rule-level change per commit: `docs: add rule R-11 to file-automation-issues-to-impl-repos`. The ID and commit contracts live in [change-rule/SKILL.md](plugins/livt-discovery/skills/change-rule/SKILL.md) — a filed rule ID is immutable.
+- How those commits are grouped into a PR is this repository's call, not livt's: a session's worth of work ships as one PR on one branch, however many commits it took. Never fold two decisions into one commit to make that grouping tidier.
 - A commit automating a rule cites it by livt URI: `Automates livt://mapping/{story-key}/rule/{rule-id}.` A bare `R-02` exists in every mapping file and so identifies nothing.
