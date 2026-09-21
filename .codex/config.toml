@@ -1,3 +1,10 @@
 [mcp_servers.playwright]
-args = ["@playwright/mcp@0.0.70"]
 command = "npx"
+args = ["@playwright/mcp@0.0.70"]
+id = ""
+
+[mcp_servers.playwright.env]
+
+[mcp_servers.adr]
+url = "https://adr-mcp.boykush.com/mcp"
+id = ""
