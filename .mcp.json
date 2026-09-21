@@ -2,7 +2,13 @@
   "mcpServers": {
     "playwright": {
       "command": "npx",
-      "args": ["@playwright/mcp@0.0.70"]
+      "args": [
+        "@playwright/mcp@0.0.70"
+      ]
+    },
+    "adr": {
+      "type": "http",
+      "url": "https://adr-mcp.boykush.com/mcp"
     }
   }
 }
