@@ -4,9 +4,14 @@ description: Agent config for working in this repository
 targets:
   - claude
   - codex
-# apm install writes the adr server into .mcp.json and .codex/config.toml.
-# The playwright server in those files is maintained by hand.
+# apm install generates .mcp.json and .codex/config.toml from this file; don't edit them by hand.
 dependencies:
   apm:
     - boykush/ai-plugins/plugins/adr-remote-mcp#4b9ae00c41111225446cd063da0f38a89ae76164
-  mcp: []
+  mcp:
+    - name: playwright
+      registry: false
+      transport: stdio
+      command: npx
+      args:
+        - "@playwright/mcp@0.0.70"

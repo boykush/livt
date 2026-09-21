@@ -23,7 +23,25 @@ deployments:
   content_hash: null
 - kind: uri
   target: mcp
+  value: playwright
+  runtime: claude
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: uri
+  target: mcp
   value: adr
+  runtime: codex
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: uri
+  target: mcp
+  value: playwright
   runtime: codex
   scope: project
   owners:
@@ -32,16 +50,26 @@ deployments:
   content_hash: null
 mcp_servers:
 - adr
+- playwright
 mcp_configs:
   adr:
     name: adr
     transport: http
     registry: false
     url: https://adr-mcp.boykush.com/mcp
+  playwright:
+    name: playwright
+    transport: stdio
+    args:
+    - '@playwright/mcp@0.0.70'
+    registry: false
+    command: npx
 mcp_target_servers:
   claude:
   - adr
+  - playwright
   codex:
   - adr
+  - playwright
 mcp_config_provenance:
   adr: adr-remote-mcp
