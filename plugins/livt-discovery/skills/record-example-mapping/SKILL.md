@@ -1,6 +1,6 @@
 ---
 name: record-example-mapping
-description: Record an Example Mapping session into discoveries/example-mappings/{story-key}.yaml as two commits — the board's rules, examples, and questions verbatim as the baseline, then a structural edit consulting the bdd-expert skill, whose diff is what the review reads. Use after a session on a story's board, or when that board was reworked; it never changes what the room agreed. A rule proposed, changed, or added outside a session routes to change-rule; checking against the implementation is plan-story's.
+description: Record an Example Mapping session into discoveries/example-mappings/{story-key}.yaml as two commits — the board's rules, examples, and questions verbatim as the baseline, then a structural edit consulting the bdd-expert skill, whose diff is what the review reads. Use after a session on a story's board, or when that board was reworked; it never changes what the room agreed. A rule proposed, changed, or added outside a session routes to change-rule; this skill never reads the implementation.
 ---
 
 You **record** an example mapping — the record station of the discovery ring, at the story level.
@@ -24,7 +24,7 @@ Never fold the edit into the baseline. A pre-polished baseline hides the edit, a
 
 - Before you: `write-story-card` wrote `stories/{story-key}.md`, and the team held the session on that story's board.
 - You: record the board against the card's key.
-- After you: `plan-story` holds the agreed mapping against the implementation and design — the first read of the code, and the start of the delivery ring. A rule that changes later, or is proposed without a session, is `change-rule`'s.
+- After you: the agreed mapping is handed outward by `file-story-issue` and `file-rule-issues` — the start of the delivery ring. A rule that changes later, or is proposed without a session, is `change-rule`'s.
 
 ## Recording the Baseline
 
@@ -69,7 +69,7 @@ Never fold the edit into the baseline. A pre-polished baseline hides the edit, a
 - Don't add rules or examples that weren't discovered.
 - Don't fold in rule changes or additions decided after the session — `change-rule` ships those as their own fine-grained commits.
 - Don't resolve or delete open Questions.
-- Don't check the mapping against the implementation or design — that is `plan-story`'s job.
+- Don't check the mapping against the implementation or design — no discovery skill reads code.
 - Don't write Gherkin — example mapping stays low-tech.
 - Don't change the `story` key.
 - Don't retire rules or questions. The regrouped example is the only retirement in your remit; retiring a rule takes an agreed business decision, which is `change-rule`'s.

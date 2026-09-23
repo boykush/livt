@@ -5,15 +5,14 @@ Skills for the **delivery ring** of a livt repository: carrying an agreed exampl
 ## The ring
 
 ```
-livt repository ─▶ plan ─▶ file ─▶ build ─▶ inspect ─▶ review ─▶ livt repository
-                                     │
-                          implementation repository
-                          (livt-automation)
+livt repository ─▶ file ─▶ build ─▶ inspect ─▶ review ─▶ livt repository
+                             │
+                  implementation repository
+                  (livt-automation)
 ```
 
-The boundary with the [discovery ring](../livt-discovery/README.md) is the **first read of the implementation**: no discovery skill reads code, and `plan-story` is where that starts. Each skill is named for its **station**:
+The boundary with the [discovery ring](../livt-discovery/README.md) is the **record**: no discovery skill reads code, and nothing here decides what the mapping says. Delivery starts when an agreed record is handed outward, and the implementation is first read on the far side of that hand-off, in the implementation repository. Each skill is named for its **station**:
 
-- **Plan** — sprint planning (Scrum). The agreed mapping is the backlog item; hold each rule against the current implementation and design and work out how to realize it. Questions the code settles come back to discovery as proposals, through `change-rule`.
 - **File** — hand the agreed rules, and the story's context, to where the team tracks its work, as issues carrying livt URI backpointers. The created URLs are written back; the livt repository, not the tracker, is the record of what is filed where.
 - **Build** — the implementation repository's own station: test-driven automation of the rules, citing the spec by livt URI. That end of the ring is [livt-automation](../livt-automation/README.md).
 - **Inspect** — Scrum's inspection. Hold each rule's `automated:` against what actually happened — the issues the rule records, the changes that closed them, the mapping's own history — and propose every correction for review with the evidence attached. A closed issue is a trigger, never proof.
@@ -61,7 +60,6 @@ Parent links are write-only sugar for the tracker's UI. Dedupe and parenthood ar
 
 ## Skills
 
-- **`/plan-story`** — plan a story's implementation from its agreed example mapping, rule by rule, against the implementation and design the user (or the story's frontmatter) points at: `feasible`, `needs-decision`, `contradicts`, `resolved-question`, or `unverifiable`, each citing where it looked. A written plan for a human decision — never an edit of the mapping, never an audit of what is built.
 - **`/file-story-issue`** — file a story-level issue carrying the story body and backpointers, deduped against the story frontmatter's `issues:`, with the created URL written back. Adopts the mapping's rule issues as children where the tracker supports it.
 - **`/file-rule-issues`** — file automation issues for a story's rules, one per rule × destination, deduped by the mapping's own record, each carrying the rule, its examples, and backpointers; the created URL is written back to the rule's `issues:`. Only rules with `status: accepted` are filed. Holds the canonical statement of the record contract.
 - **`/inspect-automation`** — propose setting `automated:` where every recorded issue closed with tests behind it, and unsetting it where a rule changed after the flag was set — one rule's record per commit, evidence attached, unverifiable reported as such.
@@ -78,4 +76,4 @@ Every skill here is a plain [Agent Skill](https://agentskills.io) — no subagen
 
 The skills and their inputs are unchanged; what left them is the tracker. `gh issue create`, `gh issue view`, `gh pr view`, and the `addSubIssue` GraphQL calls moved out of the three delivery skills and into the reference implementation above, and the issue-body markdown shrank to the backpointer block — the rest of the body is your template now. A team that was already filing to GitHub loses nothing: the recipe is a scroll away rather than a fork away. A team that had forked a skill to change the tracker should re-read the boundary above; most of what those forks changed is no longer in the skill.
 
-Coming from `discovery-facilitator` 0.x: `/example-mapping-plan` → `/plan-story`, `/story-issue-file` → `/file-story-issue`, `/rule-issue-file` → `/file-rule-issues`, `/rule-automation-sync` → `/inspect-automation`. The other skills moved to [livt-discovery](../livt-discovery/README.md).
+Coming from `discovery-facilitator` 0.x: `/example-mapping-plan` → removed, `/story-issue-file` → `/file-story-issue`, `/rule-issue-file` → `/file-rule-issues`, `/rule-automation-sync` → `/inspect-automation`. The other skills moved to [livt-discovery](../livt-discovery/README.md).
