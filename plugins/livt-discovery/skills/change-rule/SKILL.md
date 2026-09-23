@@ -15,14 +15,14 @@ This skill is written in English for maintainability — English is not the lang
 
 This is the common mix-up, so settle it first:
 
-- **The record (`record-example-mapping`)** writes a session's outcome: a verbatim baseline, then a structural edit. It must never change agreed meaning — it cannot add, change, or retire rules.
+- **The record (`record-example-mapping`)** writes a session's outcome: the board, verbatim. **The formulation (`formulate-example-mapping`)** sharpens how that record reads, over the baseline it committed. Neither may change agreed meaning — neither can add, change, or retire rules.
 - **You** change meaning on purpose, because the business changed it or is being asked to. You apply exactly that change — no more, no less.
 
 When there is no fresh session and the ask is "this rule changed / a new rule was added / this rule was retired / propose this rule", you are the right skill, not the record.
 
 ## Two Lanes Into One Record
 
-- **The synchronous lane** — people around a board at the same time, then `record-example-mapping`. This is Example Mapping as designed: a structured conversation.
+- **The synchronous lane** — people around a board at the same time, then `record-example-mapping` and `formulate-example-mapping`. This is Example Mapping as designed: a structured conversation.
 - **The asynchronous lane (you)** — a proposal lands on the board pale and dashed, the Tasks page lists it under Proposed Rules ("closed by agreement"), and the review accepts it, reworks it, or turns it down. In Ron Jeffries' three Cs the proposal is the card, the review thread — wherever your team holds it — is the conversation, and the one-line acceptance is the confirmation.
 - **Where proposals come from** — `inspect-automation` finding a rule the implementation has drifted from; an agent in an implementation repository reading the spec through `livt-automation` and noticing a gap; a person between sessions. Record all of these as proposals unless the user says the business already agreed.
 - **When the lane stalls** — a proposal nobody agrees to asynchronously stays on the Tasks page, beside the open questions, as the agenda of the next session. The two lanes do not compete: the asynchronous one runs ahead, the synchronous one catches what it leaves.
@@ -31,7 +31,7 @@ When there is no fresh session and the ask is "this rule changed / a new rule wa
 
 - **One rule-level change per commit.** A rule proposed, added, changed, or retired — together with the examples that illustrate it. A second rule-level change is a second commit, even when it touches the same mapping and arrived in the same conversation.
 - **You record decisions; you don't make them.** The decision happened in ongoing work — a conversation, a ticket, an incident — or is being put forward for one. Capture what was decided, in the user's words. Still being debated? With no candidate answer on the table it is a Question card; a concrete rule put forward for agreement is a rule with `status: proposed`.
-- **The diff is the deliverable.** A reviewer must see exactly one business decision in the commit. Don't mix in structural tidying — that noise belongs to the record's edit commit, if one is ever needed.
+- **The diff is the deliverable.** A reviewer must see exactly one business decision in the commit. Don't mix in structural tidying — that noise belongs to `formulate-example-mapping`, if it is ever needed.
 - **The mapping may lead the implementation.** After your change lands, the code may not match the mapping yet. That gap is the delivery ring's business, not a reason to hold the change back.
 
 ## Change Flow
@@ -52,7 +52,7 @@ When there is no fresh session and the ask is "this rule changed / a new rule wa
 
 ## ID Contract
 
-This is the canonical statement. `record-example-mapping` repeats these bullets verbatim, and `file-rule-issues` the immutability half — a skill loads on its own, so every skill that can mint, move, or quote an ID has to carry them. Change one, change all.
+This is the canonical statement. `record-example-mapping` and `formulate-example-mapping` repeat these bullets verbatim, and `file-rule-issues` the immutability half — a skill loads on its own, so every skill that can mint, move, or quote an ID has to carry them. Change one, change all.
 
 - **Numbering** — a new ID is one past the highest ever used in its scope, **retired IDs included**. Rules and questions are numbered within the story (`R-NN`, `Q-NN`), examples within their rule (each rule starts from `EX-01`). With R-01/R-02/R-03 on file and R-03 retired, the next rule is R-04 — never R-03 again.
 - **Immutability** — an ID, once used, keeps pointing at the same thing. Never renumber, never reuse, and never move an item to where its ID would change. This holds whether or not an automation issue was filed: the item's livt URI is quoted by MCP consumers, by the board's copy-link, in test comments, and in commit messages, and the livt repository records none of those — there is no list of references to check before breaking one.
@@ -61,7 +61,7 @@ This is the canonical statement. `record-example-mapping` repeats these bullets 
 
 ## Commit Contract
 
-This is the canonical statement. `record-story-map`, `record-example-mapping`, `write-story-card`, and `inspect-automation` repeat these bullets verbatim — a skill loads on its own, so every skill that writes a commit has to carry them. Change one, change all.
+This is the canonical statement. `record-story-map`, `record-example-mapping`, `formulate-example-mapping`, `write-story-card`, and `inspect-automation` repeat these bullets verbatim — a skill loads on its own, so every skill that writes a commit has to carry them. Change one, change all.
 
 - **The commit is livt's unit.** One decision per commit — a rule-level change, a record's baseline, the structural edit on top of it, a story's card. It is the smallest thing a reviewer can weigh on its own, and the only split livt asks for.
 - **Never fold two decisions into one commit.** That is the one thing no later grouping can undo: a reviewer reading a combined diff cannot tell which change carried which reason, and neither can the history.
@@ -75,7 +75,7 @@ For you, that unit is one rule-level change:
 
 ## What NOT to Do
 
-- Don't restructure, rename, or re-file anything outside the agreed change — that is the record's edit commit, on its own diff.
+- Don't restructure, rename, or re-file anything outside the agreed change — that is `formulate-example-mapping`'s, on its own diff.
 - Don't add rules or examples beyond what was agreed or proposed, and don't answer open Questions in passing.
 - Don't accept a proposal on your own reading of a conversation. `status: accepted` records that the business agreed, so it takes the user saying so.
 - Don't check the change against the implementation — discovery never reads code; the gap closes on the delivery side, after the change lands.

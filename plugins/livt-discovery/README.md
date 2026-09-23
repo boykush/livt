@@ -5,14 +5,15 @@ Skills for the **discovery ring** of a livt repository: the conversations that d
 ## The ring
 
 ```
-opportunity ─▶ story map ─▶ card ─▶ conversation ─▶ record ─▶ livt repository
-                                        ▲                          │
-                                        └── what remains open ◀────┘
+opportunity ─▶ story map ─▶ card ─▶ conversation ─▶ record ─▶ formulation ─▶ livt repository
+                                        ▲                                           │
+                                        └── what remains open ◀─────────────────────┘
 ```
 
 Live facilitation happens with people on a board (Miro, sticky notes). These skills start where the board ends, and each is named for the **station** it serves rather than for how it edits a file:
 
-- **Record** — *talk, then record* (Patton). A session's outcome is written out as two commits: the board verbatim as the baseline, then a structural edit, consulting an expert skill, whose diff is what the review reads. The record never changes what the room agreed.
+- **Record** — *talk, then record* (Patton). A session's outcome is written out as text and committed, and the record never changes what the room agreed. On a story map that is two commits, the board verbatim and a structural edit consulting `usm-expert`; on an example mapping the edit has a station of its own.
+- **Formulate** — BDD's Formulation, at the story level. The recorded mapping is made into something every reader reads the same behaviour out of — rules that assert, examples named for what they show — as a structural edit over the committed baseline, whose diff is what the review reads. Mainstream BDD formulates by writing Gherkin; livt derives Gherkin from the mapping instead, so the act is the rewrite of the mapping itself. It runs again whenever the wording needs it, with no new board.
 - **Card** — the Card of Ron Jeffries' three Cs. A story candidate picked from the map gets `stories/{story-key}.md` and a stable key, so its own conversation — an Example Mapping — can be held and recorded against it.
 - **Change** — discovery's **asynchronous lane**. A rule proposed, changed, or retired outside a session lands in the mapping as its own fine-grained commit; a proposal carries `status: proposed`, the review stands in for the conversation, and agreement is a one-line diff.
 
@@ -22,7 +23,7 @@ No skill here reads the implementation. The first read of the code is where the 
 
 Two authorities make a discovery skill true, and neither of them is your team:
 
-- **livt's** — the YAML the record writes, the ID contract (numbering past retired IDs, immutability, retire-don't-delete, `superseded_by`), the key contract, and the line between what a record may change and what only an agreed decision may. `change-rule` holds the canonical statement of the ID contract; `record-example-mapping` repeats it verbatim, as does `record-story-map` for the ubiquitous-language section they share. This half moves when livt moves.
+- **livt's** — the YAML the record writes, the ID contract (numbering past retired IDs, immutability, retire-don't-delete, `superseded_by`), the key contract, and the line between what a record may change and what only an agreed decision may. `change-rule` holds the canonical statement of the ID contract; `record-example-mapping` and `formulate-example-mapping` repeat it verbatim, as does `record-story-map` for the ubiquitous-language section it shares with the record. This half moves when livt moves.
 - **The practice's** — Patton on opportunities and story maps, Jeffries' three Cs, North on BDD and Wynne on Example Mapping. The expert skills below are that knowledge and nothing else, which is why they are the part of this plugin that is worth reading even without livt: they do not move when livt moves. Each names its sources, so the summary can be checked against — and traded for — the original.
 
 **Yours** is the board and the session: which tool the room uses, how facilitation is run, what else a card carries once it exists, and your own branch and review conventions — livt's unit of change is the commit, and how commits are grouped into pull requests is a decision no skill here makes for you. The record skills take a board as a photo, an export, or pasted text, and no skill here assumes a board tool — a session held on paper records the same way.
@@ -34,7 +35,11 @@ Every skill here is a plain [Agent Skill](https://agentskills.io) — no subagen
 ### Record
 
 - **`/record-story-map`** — record a User Story Mapping session into `discoveries/usm/{map-name}.yaml`: backbone (activities, user tasks), story cards, release slices, and the board's ubiquitous terms, as a verbatim baseline plus a structural edit consulting `usm-expert`.
-- **`/record-example-mapping`** — record an Example Mapping session into `discoveries/example-mappings/{story-key}.yaml`: rules, examples, questions, and terms, as a verbatim baseline plus a structural edit consulting `bdd-expert`. Re-recording a reworked board keeps every ID.
+- **`/record-example-mapping`** — record an Example Mapping session into `discoveries/example-mappings/{story-key}.yaml`: rules, examples, questions, and terms, committed verbatim as the baseline. Re-recording a reworked board keeps every ID.
+
+### Formulate
+
+- **`/formulate-example-mapping`** — formulate a recorded example mapping: rule wording, example naming, grouping, and question phrasing, consulting `bdd-expert`, as one structural edit over the committed baseline. It runs on a mapping recorded minutes or months ago, and changes expression and structure only — never what the room agreed.
 
 ### Card
 
@@ -46,7 +51,7 @@ Every skill here is a plain [Agent Skill](https://agentskills.io) — no subagen
 
 ## Expert skills
 
-The expert skills are the **knowledge backend** the record skills consult for their structural edit; you can also invoke them standalone (`/opportunity-expert`, `/usm-expert`, `/bdd-expert`) for ad-hoc consulting.
+The expert skills are the **knowledge backend** the record and formulation skills consult for their structural edit; you can also invoke them standalone (`/opportunity-expert`, `/usm-expert`, `/bdd-expert`) for ad-hoc consulting.
 
 - **`opportunity-expert`** — Jeff Patton's Opportunity Canvas: framing an opportunity, keeping verifiable facts apart from assumptions about value, and supporting the decision of whether to take it on at all, including the decision not to.
 - **`usm-expert`** — Jeff Patton's User Story Mapping: narrative flow, backbone structure, release slicing, and story scope.
@@ -57,6 +62,18 @@ The expert skills are the **knowledge backend** the record skills consult for th
 ```
 /plugin install livt-discovery@boykush/livt
 ```
+
+## Coming from 3.x
+
+`/record-example-mapping` now ships the baseline and stops. The structural edit it used to commit on top is `/formulate-example-mapping`:
+
+| Was | Now |
+|-----|-----|
+| `/record-example-mapping` (baseline + edit) | `/record-example-mapping` (baseline) then `/formulate-example-mapping` (edit) |
+
+Nothing about the two commits changed — the same baseline, the same edit over it, in the same order. What changed is that the edit can now be asked for on its own, against a mapping recorded long ago, which the record skill could not do without a board in hand.
+
+`/record-story-map` is unchanged and still ships both commits. A story map's structural edit is narrative work, not Formulation: the word is defined over rules and examples, and stretching it to cover a backbone would buy a symmetry livt does not mean.
 
 ## Coming from 1.x
 
