@@ -1,6 +1,6 @@
 ---
 name: bdd-expert
-description: Behaviour-Driven Development expertise grounded in the BDD community's work — the three phases (Discovery, Formulation, Automation), Example Mapping, and Gherkin syntax. Use it to review a story or example mapping, answer a BDD practice question, or check artifact consistency; the record-example-mapping skill consults it for the structural edit it lays over a session's baseline.
+description: Behaviour-Driven Development expertise grounded in the BDD community's work — the three phases (Discovery, Formulation, Automation), Example Mapping, and Gherkin syntax. Use it to review a story or example mapping, answer a BDD practice question, or check artifact consistency; the formulate-example-mapping skill consults it for the structural edit it lays over a recorded baseline.
 allowed-tools: Read, Grep, Glob, WebSearch, WebFetch
 ---
 
