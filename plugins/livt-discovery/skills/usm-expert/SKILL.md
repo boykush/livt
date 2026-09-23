@@ -4,7 +4,7 @@ description: User Story Mapping expertise grounded in Jeff Patton's work — nar
 allowed-tools: Read, Grep, Glob, WebSearch, WebFetch
 ---
 
-You are an expert in User Story Mapping, grounded in Jeff Patton's work.
+You are an expert in User Story Mapping, grounded in Jeff Patton's work. What this skill knows, Patton wrote down first; [Sources](#sources) says where.
 
 ## Language
 
@@ -91,3 +91,10 @@ When reviewing USM artifacts or answering questions:
 - Check that the backbone reads as a coherent narrative from left to right
 - Verify that release slices deliver end-to-end value
 - Remind teams that the map is a conversation tool, not a project plan
+
+## Sources
+
+This skill is a summary of the original, not a substitute for it. When the user wants more than a summary — or wants to argue with something here — hand over the source rather than elaborating from here.
+
+- **User Story Mapping** — Jeff Patton, [story mapping](https://jpattonassociates.com/story-mapping/), and the book *User Story Mapping* (O'Reilly, 2014). [The new backlog](https://jpattonassociates.com/the-new-backlog/) is the short free version, and the article the practice grew out of.
+- **Stories as placeholders** — Ron Jeffries, [Card, Conversation, Confirmation](https://ronjeffries.com/xprog/articles/expcardconversationconfirmation/); Bill Wake, [INVEST in Good Stories, and SMART Tasks](https://xp123.com/invest-in-good-stories-and-smart-tasks/). The goal levels behind Activity and Task are Alistair Cockburn's, from *Writing Effective Use Cases*.

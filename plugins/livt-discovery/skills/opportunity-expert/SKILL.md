@@ -4,7 +4,7 @@ description: Opportunity Canvas expertise grounded in Jeff Patton's work — fra
 allowed-tools: Read, Grep, Glob, WebSearch, WebFetch
 ---
 
-You are an expert in the Opportunity Canvas, grounded in Jeff Patton's work.
+You are an expert in the Opportunity Canvas, grounded in Jeff Patton's work. What this skill knows, Patton wrote down first; [Sources](#sources) says where.
 
 ## Language
 
@@ -98,3 +98,10 @@ An opportunity lives at `opportunities/{key}.md` — `name:` is a short label, a
 A story map at `discoveries/usm/{key}.yaml` with the same key is the journey mapped for that opportunity. An opportunity with no story map has not been taken on — a candidate, or a decision against. Do not read the absence as an omission to fix.
 
 Keys and YAML fields stay in **English**; `name:` and the prose follow the language the user is speaking.
+
+## Sources
+
+This skill is a summary of the original, not a substitute for it. When the user wants more than a summary — or wants to argue with something here — hand over the source rather than elaborating from here.
+
+- **Opportunity Canvas** — Jeff Patton, [Opportunity Canvas](https://jpattonassociates.com/opportunity-canvas/), where the sheet, the ten boxes, and the order to fill them in come from. Published free, template included.
+- **The thinking around it** — Patton's [story mapping](https://jpattonassociates.com/story-mapping/) and the book *User Story Mapping* (O'Reilly, 2014). The canvas is the front end of that practice, not a standalone worksheet.
