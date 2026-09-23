@@ -4,14 +4,16 @@ ubiquitous:
   - example-mapping
   - story
   - discovery
+  - bdd/discovery
   - record
+  - formulation
   - planning
   - ubiquitous-language
   - context
   - livt-repository
 activities:
   - key: story-mapping
-    name: 全体ストーリーを発見する
+    name: 全体ストーリーを組み立てる
     steps:
       - key: frame-user-journey
         name: ユーザージャーニーを描く
@@ -40,7 +42,7 @@ activities:
           - name: 詳細ディスカバリー用にストーリー候補のカードを書く
             key: commit-story-candidates-for-detailed-discovery
   - key: discovery
-    name: ディスカバリー
+    name: 発見
     steps:
       - key: pick-story
         name: 探索するストーリーを選ぶ
@@ -54,7 +56,7 @@ activities:
       - key: illustrate-examples
         name: 具体例で示す
       - key: capture-questions
-        name: 疑問点を記録する
+        name: 決めきれないものを疑問点に残す
       - key: align-language
         name: 言葉を揃える
         stories:
@@ -62,8 +64,8 @@ activities:
             key: look-up-terms-in-glossary
           - name: 用語を文脈で切り分ける
             key: scope-terms-by-context
-  - key: refine-discovery
-    name: ディスカバリーをブラッシュアップする
+  - key: record-and-formulate
+    name: 発見の成果を記録して定式化する
     steps:
       - key: transcribe-collaboration-outcome
         name: 協働結果を記録する
@@ -72,10 +74,10 @@ activities:
             key: transcribe-example-mapping-from-board
           - name: ブラウザで実例マッピングをプレビューする
             key: preview-example-mapping-in-browser
-      - key: refine-example-mapping-structure
-        name: 実例マッピングの構造をブラッシュアップする
+      - key: formulate-example-mapping
+        name: 実例マッピングを定式化する
         stories:
-          - name: BDDエキスパートに相談して構造を整えるコミットを重ねる
+          - name: BDDエキスパートに相談して定式化のコミットを重ねる
             key: refine-example-mapping-with-bdd-expert
       - key: plan-against-implementation-and-design
         name: 実装・デザインと突き合わせて計画する

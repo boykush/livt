@@ -1,9 +1,10 @@
 name: 律速する意思決定
 ubiquitous:
   - discovery
+  - bdd/discovery
   - example-mapping
   - story
-  - record
+  - formulation
   - livt-repository
 activities:
   - key: prepare-the-session
@@ -14,7 +15,7 @@ activities:
       - key: hand-the-context-over
         name: AIに文脈を渡す
   - key: decide-with-ai-in-the-room
-    name: AIを招いて決める
+    name: AIを招いて発見する
     steps:
       - key: surface-examples-live
         name: その場で具体例を出す
@@ -27,7 +28,7 @@ activities:
   - key: close-within-the-session
     name: セッション中に閉じる
     steps:
-      - key: record-in-session
-        name: その場で記録する
+      - key: formulate-in-session
+        name: その場で定式化する
       - key: check-it-in-the-room
         name: その場で開いて確かめる
