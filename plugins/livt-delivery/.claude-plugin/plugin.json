@@ -1,7 +1,7 @@
 {
   "name": "livt-delivery",
   "version": "3.0.0",
-  "description": "The delivery ring of a livt repository: plan a story against the implementation and design, file story and rule issues to the team's tracker with livt URI backpointers, and inspect the automation record against what the implementation repositories did — proposing every change for review",
+  "description": "The delivery ring of a livt repository: file story and rule issues to the team's tracker with livt URI backpointers, and inspect the automation record against what the implementation repositories did — proposing every change for review",
   "author": {
     "name": "boykush",
     "email": "boykush315@gmail.com"

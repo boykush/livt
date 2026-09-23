@@ -70,7 +70,7 @@ Coming from `discovery-facilitator` 0.x? The skills were renamed for their stati
 | `/example-mapping-transcribe` + `/example-mapping-refine` | `/record-example-mapping` (two commits) |
 | `/story-commit` | `/write-story-card` |
 | `/example-mapping-update` | `/change-rule` |
-| `/example-mapping-plan` | `/plan-story` — in [livt-delivery](../livt-delivery/README.md) |
+| `/example-mapping-plan` | removed |
 | `/story-issue-file` | `/file-story-issue` — in livt-delivery |
 | `/rule-issue-file` | `/file-rule-issues` — in livt-delivery |
 | `/rule-automation-sync` | `/inspect-automation` — in livt-delivery |

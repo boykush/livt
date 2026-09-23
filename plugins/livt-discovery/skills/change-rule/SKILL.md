@@ -1,6 +1,6 @@
 ---
 name: change-rule
-description: Change one business rule in an existing Example Mapping — propose, accept, reject, change, or retire it, with its examples — as its own fine-grained commit. This is discovery's asynchronous lane — a rule enters the mapping as a proposal carrying status `proposed`, without a session, and the review stands in for the conversation. Use for "this rule changed", "a rule was added", "propose this rule"; a session's outcome routes to record-example-mapping, and checking against the implementation to plan-story.
+description: Change one business rule in an existing Example Mapping — propose, accept, reject, change, or retire it, with its examples — as its own fine-grained commit. This is discovery's asynchronous lane — a rule enters the mapping as a proposal carrying status `proposed`, without a session, and the review stands in for the conversation. Use for "this rule changed", "a rule was added", "propose this rule"; a session's outcome routes to record-example-mapping, and this skill never reads the implementation.
 ---
 
 You **change a rule** — the asynchronous lane of the discovery ring.
@@ -24,7 +24,7 @@ When there is no fresh session and the ask is "this rule changed / a new rule wa
 
 - **The synchronous lane** — people around a board at the same time, then `record-example-mapping`. This is Example Mapping as designed: a structured conversation.
 - **The asynchronous lane (you)** — a proposal lands on the board pale and dashed, the Tasks page lists it under Proposed Rules ("closed by agreement"), and the review accepts it, reworks it, or turns it down. In Ron Jeffries' three Cs the proposal is the card, the review thread — wherever your team holds it — is the conversation, and the one-line acceptance is the confirmation.
-- **Where proposals come from** — `plan-story` settling a question from the implementation or design; `inspect-automation` finding a rule the implementation has drifted from; an agent in an implementation repository reading the spec through `livt-automation` and noticing a gap; a person between sessions. Record all of these as proposals unless the user says the business already agreed.
+- **Where proposals come from** — `inspect-automation` finding a rule the implementation has drifted from; an agent in an implementation repository reading the spec through `livt-automation` and noticing a gap; a person between sessions. Record all of these as proposals unless the user says the business already agreed.
 - **When the lane stalls** — a proposal nobody agrees to asynchronously stays on the Tasks page, beside the open questions, as the agenda of the next session. The two lanes do not compete: the asynchronous one runs ahead, the synchronous one catches what it leaves.
 
 ## Change Philosophy
@@ -32,7 +32,7 @@ When there is no fresh session and the ask is "this rule changed / a new rule wa
 - **One rule-level change per commit.** A rule proposed, added, changed, or retired — together with the examples that illustrate it. A second rule-level change is a second commit, even when it touches the same mapping and arrived in the same conversation.
 - **You record decisions; you don't make them.** The decision happened in ongoing work — a conversation, a ticket, an incident — or is being put forward for one. Capture what was decided, in the user's words. Still being debated? With no candidate answer on the table it is a Question card; a concrete rule put forward for agreement is a rule with `status: proposed`.
 - **The diff is the deliverable.** A reviewer must see exactly one business decision in the commit. Don't mix in structural tidying — that noise belongs to the record's edit commit, if one is ever needed.
-- **The mapping may lead the implementation.** After your change lands, the code may not match the mapping yet. That gap is `plan-story`'s business, not a reason to hold the change back.
+- **The mapping may lead the implementation.** After your change lands, the code may not match the mapping yet. That gap is the delivery ring's business, not a reason to hold the change back.
 
 ## Change Flow
 
@@ -78,7 +78,7 @@ For you, that unit is one rule-level change:
 - Don't restructure, rename, or re-file anything outside the agreed change — that is the record's edit commit, on its own diff.
 - Don't add rules or examples beyond what was agreed or proposed, and don't answer open Questions in passing.
 - Don't accept a proposal on your own reading of a conversation. `status: accepted` records that the business agreed, so it takes the user saying so.
-- Don't check the change against the implementation — that is `plan-story`'s job, after the change lands.
+- Don't check the change against the implementation — discovery never reads code; the gap closes on the delivery side, after the change lands.
 - Don't fold two rule-level changes into one commit, even if they arrived together.
 
 ## Output
