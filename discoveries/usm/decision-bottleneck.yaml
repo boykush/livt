@@ -1,0 +1,33 @@
+name: 律速する意思決定
+ubiquitous:
+  - discovery
+  - example-mapping
+  - story
+  - record
+  - livt-repository
+activities:
+  - key: prepare-the-session
+    name: セッションを仕込む
+    steps:
+      - key: pick-what-to-decide
+        name: 何を決めるかを絞る
+      - key: hand-the-context-over
+        name: AIに文脈を渡す
+  - key: decide-with-ai-in-the-room
+    name: AIを招いて決める
+    steps:
+      - key: surface-examples-live
+        name: その場で具体例を出す
+      - key: press-for-gaps
+        name: 抜けを突く
+      - key: settle-rules
+        name: ルールを決めきる
+      - key: leave-questions-open
+        name: 決めきれないものを疑問点に残す
+  - key: close-within-the-session
+    name: セッション中に閉じる
+    steps:
+      - key: record-in-session
+        name: その場で記録する
+      - key: check-it-in-the-room
+        name: その場で開いて確かめる
