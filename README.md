@@ -111,6 +111,12 @@ See [File Structure reference](https://boykush.github.io/livt/reference/file-str
 
 Issues and pull requests are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md). For vulnerability reports, see [SECURITY.md](SECURITY.md).
 
+## Acknowledgements
+
+livt renders practices it did not invent. Example Mapping is [Matt Wynne's](https://cucumber.io/blog/bdd/example-mapping-introduction/), the three phases it organizes around are the [BDD community's](https://cucumber.io/docs/bdd/), and Opportunity Canvas and User Story Mapping are [Jeff Patton's](https://jpattonassociates.com/). What livt borrowed, what it added, and where it departs on purpose is [livt and BDD](https://boykush.github.io/livt/livt-and-bdd.html).
+
+Cucumber's maintainers run on donations at [Open Collective](https://opencollective.com/cucumber). If livt saved your team an argument it had already had, some of that is theirs.
+
 ## License
 
 [MIT](LICENSE)
