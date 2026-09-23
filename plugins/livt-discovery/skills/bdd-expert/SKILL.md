@@ -1,10 +1,10 @@
 ---
 name: bdd-expert
-description: Behaviour-Driven Development expertise — the three phases (Discovery, Formulation, Automation), Example Mapping, and Gherkin syntax. Use it to review a story or example mapping, answer a BDD practice question, or check artifact consistency; the record-example-mapping skill consults it for the structural edit it lays over a session's baseline.
+description: Behaviour-Driven Development expertise grounded in the BDD community's work — the three phases (Discovery, Formulation, Automation), Example Mapping, and Gherkin syntax. Use it to review a story or example mapping, answer a BDD practice question, or check artifact consistency; the record-example-mapping skill consults it for the structural edit it lays over a session's baseline.
 allowed-tools: Read, Grep, Glob, WebSearch, WebFetch
 ---
 
-You are an expert in Behaviour-Driven Development (BDD).
+You are an expert in Behaviour-Driven Development (BDD), grounded in the work of the community that built the practice — Dan North, Matt Wynne, Gáspár Nagy and Seb Rose, and Cucumber. What this skill knows, they wrote down first; [Sources](#sources) says where.
 
 ## Language
 
@@ -105,3 +105,14 @@ This skill is written in English for maintainability — English is not the lang
 - Rules buried in comments instead of using Rule keyword
 - Writing Gherkin during Example Mapping sessions
 - Proceeding to Formulation with unresolved Questions
+
+## Sources
+
+What this skill knows, the BDD community wrote down. Some of it that community gives away; some of it — the Discovery workshop's shape, BRIEF, the Illustrative/Journey distinction — it sells, and those sales are part of how it stays alive. So treat this section as one of the skill's outputs: when the user wants more than a summary, hand them the source instead of elaborating from here.
+
+- **BDD** — Dan North, [Introducing BDD](https://dannorth.net/introducing-bdd/) (2006), where the idea and the name start. The three phases are the community's own framing: [Cucumber's BDD docs](https://cucumber.io/docs/bdd/).
+- **Example Mapping** — Matt Wynne, [Introducing Example Mapping](https://cucumber.io/blog/bdd/example-mapping-introduction/) (2015). The four cards, the timebox, and reading the colours back are Wynne's.
+- **BRIEF** — Seb Rose, [Keep your scenarios BRIEF](https://cucumber.io/blog/bdd/keep-your-scenarios-brief/).
+- **Discovery and Formulation in depth** — Gáspár Nagy and Seb Rose, [The BDD Books](https://bddbooks.com/) (*Discovery*, *Formulation*; Japanese editions on Leanpub), and [Cucumber School](https://school.cucumber.io/). Paid. Most of what the sections above compress into a bullet is a chapter there, and the compression drops the worked examples that make it teachable.
+- **Gherkin** — the [Gherkin Reference](https://cucumber.io/docs/gherkin/reference/) is the syntax's definition; the section above is a digest of it and will go stale.
+- **The community** — Cucumber's maintainers are funded by donations at [Open Collective](https://opencollective.com/cucumber). A team that gets value out of this skill got it from them first.

@@ -15,7 +15,7 @@ Collaborative outcomes evolve alongside the product as living text.
 
 - Provide a CLI tool that captures collaborative outcomes as text files (YAML, Markdown)
 - Track consistency across artifacts via ID-based references with automated checks
-- Treat Formulation artifacts (Gherkin scenarios) as generated output, not the source of truth — that lives in the Discovery artifacts
+- Treat Formulation artifacts (Gherkin scenarios) as generated output, not the source of truth — that lives in the Discovery artifacts. This one is a position rather than a settled design, and the community's runs the other way: see [livt and BDD](./livt-and-bdd.md)
 
 ## Live Demo
 

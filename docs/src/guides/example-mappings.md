@@ -1,6 +1,6 @@
 # Example Mappings
 
-Example mappings are YAML files stored in `discoveries/example-mappings/`. They capture the rules, examples, and questions discovered during an Example Mapping session for a story.
+Example mappings are YAML files stored in `discoveries/example-mappings/`. They capture the rules, examples, and questions discovered during an Example Mapping session for a story. The format is [Matt Wynne's](https://cucumber.io/blog/bdd/example-mapping-introduction/); what livt adds to it, and where it departs, is [livt and BDD](../livt-and-bdd.md).
 
 ## Format
 
