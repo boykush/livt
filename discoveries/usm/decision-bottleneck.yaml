@@ -22,7 +22,9 @@ activities:
       - key: press-for-gaps
         name: 抜けを突く
       - key: settle-rules
-        name: ルールを決めきる
+        name: 確度が高いルールは決めきる
+      - key: propose-rules-for-agreement
+        name: 人間同士の合意が要るルールは提案中として置く
       - key: leave-questions-open
         name: 決めきれないものを疑問点に残す
   - key: close-within-the-session
