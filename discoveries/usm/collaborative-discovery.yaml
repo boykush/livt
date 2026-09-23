@@ -7,7 +7,6 @@ ubiquitous:
   - bdd/discovery
   - record
   - formulation
-  - planning
   - ubiquitous-language
   - context
   - livt-repository
@@ -79,11 +78,6 @@ activities:
         stories:
           - name: BDDエキスパートに相談して定式化のコミットを重ねる
             key: refine-example-mapping-with-bdd-expert
-      - key: plan-against-implementation-and-design
-        name: 実装・デザインと突き合わせて計画する
-        stories:
-          - name: 実例マッピングを実装・デザインと突き合わせて計画する
-            key: plan-example-mapping-against-implementation-and-design
           - name: 協働結果の漏れを調査する
   - key: maintain-living-master
     name: livtリポジトリを生かし続ける
