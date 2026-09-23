@@ -23,7 +23,7 @@ No skill here reads the implementation. The first read of the code is where the 
 Two authorities make a discovery skill true, and neither of them is your team:
 
 - **livt's** — the YAML the record writes, the ID contract (numbering past retired IDs, immutability, retire-don't-delete, `superseded_by`), the key contract, and the line between what a record may change and what only an agreed decision may. `change-rule` holds the canonical statement of the ID contract; `record-example-mapping` repeats it verbatim, as does `record-story-map` for the ubiquitous-language section they share. This half moves when livt moves.
-- **The practice's** — Patton on opportunities and story maps, Jeffries' three Cs, BDD and Example Mapping. The expert skills below are that knowledge and nothing else, which is why they are the part of this plugin that is worth reading even without livt: they do not move when livt moves.
+- **The practice's** — Patton on opportunities and story maps, Jeffries' three Cs, North on BDD and Wynne on Example Mapping. The expert skills below are that knowledge and nothing else, which is why they are the part of this plugin that is worth reading even without livt: they do not move when livt moves. Each names its sources, so the summary can be checked against — and traded for — the original.
 
 **Yours** is the board and the session: which tool the room uses, how facilitation is run, what else a card carries once it exists, and your own branch and review conventions — livt's unit of change is the commit, and how commits are grouped into pull requests is a decision no skill here makes for you. The record skills take a board as a photo, an export, or pasted text, and no skill here assumes a board tool — a session held on paper records the same way.
 
@@ -50,7 +50,7 @@ The expert skills are the **knowledge backend** the record skills consult for th
 
 - **`opportunity-expert`** — Jeff Patton's Opportunity Canvas: framing an opportunity, keeping verifiable facts apart from assumptions about value, and supporting the decision of whether to take it on at all, including the decision not to.
 - **`usm-expert`** — Jeff Patton's User Story Mapping: narrative flow, backbone structure, release slicing, and story scope.
-- **`bdd-expert`** — Behaviour-Driven Development (Discovery, Formulation, Automation), Example Mapping, and Gherkin syntax.
+- **`bdd-expert`** — Behaviour-Driven Development as its community teaches it: the three phases (Discovery, Formulation, Automation), Matt Wynne's Example Mapping, and Gherkin syntax. Its `Sources` section is where to send anyone who wants more than the summary.
 
 ## Install
 
