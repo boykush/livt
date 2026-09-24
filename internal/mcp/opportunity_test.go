@@ -90,15 +90,25 @@ func TestOpportunityLookupsRefuseUnknownAndTraversingKeys(t *testing.T) {
 
 // A canvas stands on its own: it resolves whether or not an opportunity file
 // was committed for it, the way a mapping resolves for an uncommitted story.
+// It still carries the key, but no opportunity_uri: that would hand out a URI
+// that does not resolve.
 func TestOpportunityCanvasResolvesWithoutItsOpportunityFile(t *testing.T) {
 	s := newTestServer(t)
 	writeFile(t, s.cfg.canvasesDir()+"/orphan.yaml", "canvas:\n  problems:\n    - 課題\n")
 
-	if _, err := s.cfg.opportunityCanvas("orphan"); err != nil {
+	canvas, err := s.cfg.opportunityCanvas("orphan")
+	if err != nil {
 		t.Fatalf("canvas without an opportunity file: %v", err)
 	}
 	if _, err := s.cfg.opportunity("orphan"); err == nil {
 		t.Fatal("expected the opportunity itself to be not found")
+	}
+	out := s.cfg.toOpportunityCanvasJSON(canvas)
+	if out.OpportunityKey != "orphan" {
+		t.Errorf("opportunity_key = %q, want the key the canvas is filed under", out.OpportunityKey)
+	}
+	if out.OpportunityURI != "" {
+		t.Errorf("opportunity_uri = %q, want none without an opportunity file", out.OpportunityURI)
 	}
 }
 

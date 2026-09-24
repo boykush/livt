@@ -111,12 +111,30 @@ rules:
     examples:
       - id: EX-01
         name: list_stories の各エントリは所属オポチュニティ（マップ名とストーリーマップのリソースURI）を示し、無所属なら空になる
+        retired: true
+        superseded_by:
+          - livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-05
+          - livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-06
       - id: EX-02
         name: list_stories に opportunity パラメータ（マップ名）を指定すると、そのマップに載るストーリーだけが返る
+        retired: true
+        superseded_by:
+          - livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-07
       - id: EX-03
         name: 存在しないオポチュニティ名の指定は空の一覧を返す
+        retired: true
+        superseded_by:
+          - livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-08
       - id: EX-04
         name: livt://story/{story_key} リソースも所属オポチュニティを示す
+      - id: EX-05
+        name: list_stories の各エントリは所属オポチュニティをキー・名前・リソースURIで示し、無所属なら空になる
+      - id: EX-06
+        name: オポチュニティのファイルがないストーリーマップでは、キーはそのままに、名前とURIをマップのものが兼ねる
+      - id: EX-07
+        name: list_stories に opportunity パラメータ（オポチュニティのキー）を指定すると、そのオポチュニティのストーリーマップに載るストーリーだけが返る
+      - id: EX-08
+        name: 存在しないオポチュニティのキーの指定は空の一覧を返す
     issues:
       - https://github.com/boykush/livt/issues/82
   - id: R-14

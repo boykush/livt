@@ -26,7 +26,11 @@
 <body class="bg-gray-50 min-h-screen">
 <header class="bg-white border-b border-gray-200">
   <div class="max-w-full mx-auto px-6 py-4 flex items-center gap-3">
-    <a href="../opportunity/{{.OpportunityKey}}.html" class="text-sm text-gray-400 hover:text-gray-600">&larr; {{.OpportunityName}}</a>
+    {{if .OpportunityPath}}
+    <a href="{{.OpportunityPath}}" class="text-sm text-gray-400 hover:text-gray-600">&larr; {{.OpportunityName}}</a>
+    {{else}}
+    <a href="../opportunities.html" class="text-sm text-gray-400 hover:text-gray-600">&larr; {{t "nav.opportunities"}}</a>
+    {{end}}
     <span class="text-gray-300">|</span>
     <span class="text-xl font-bold text-gray-900 tracking-tight">livt</span>
   </div>

@@ -228,6 +228,16 @@ func scanOpportunities(s *Snapshot, dirs Dirs) error {
 	if err != nil {
 		return err
 	}
+	// Canvases are walked on their own, since one stands without an opportunity
+	// file; one that shares an opportunity's key is read in right after it.
+	canvases, err := parser.ParseAllOpportunityCanvases(dirs.Canvases)
+	if err != nil {
+		return err
+	}
+	unpaired := make(map[string]*domain.OpportunityCanvas, len(canvases))
+	for _, c := range canvases {
+		unpaired[c.OpportunityKey.Value] = c
+	}
 	for _, o := range opportunities {
 		key := o.Key.Value
 		fields := append([]Field{text(o.Name)}, bodyFields(o.Body)...)
@@ -238,22 +248,29 @@ func scanOpportunities(s *Snapshot, dirs Dirs) error {
 			Title:  o.DisplayName(),
 			Fields: append(fields, metaFields(o.Meta)...),
 		})
-		// A canvas is read through its opportunity's key, so it is scanned here
-		// rather than from a directory walk of its own: the two are joined by
-		// that key, and only one of them names it.
-		canvas, err := parser.ParseOpportunityCanvas(filepath.Join(dirs.Canvases, key+".yaml"))
-		if err != nil {
-			continue
+		if canvas, ok := unpaired[key]; ok {
+			addCanvas(s, canvas, o.DisplayName())
+			delete(unpaired, key)
 		}
-		s.add(Entry{
-			URI:    uri.OpportunityCanvas(key),
-			Kind:   uri.KindOpportunityCanvas,
-			Live:   true,
-			Title:  o.DisplayName(),
-			Fields: canvasFields(canvas),
-		})
+	}
+	for _, c := range canvases {
+		if _, ok := unpaired[c.OpportunityKey.Value]; ok {
+			addCanvas(s, c, c.OpportunityKey.Value)
+		}
 	}
 	return nil
+}
+
+// addCanvas reads one canvas in, titled as its sheet is: by its opportunity's
+// name, or by the key when no opportunity file shares it.
+func addCanvas(s *Snapshot, c *domain.OpportunityCanvas, title string) {
+	s.add(Entry{
+		URI:    uri.OpportunityCanvas(c.OpportunityKey.Value),
+		Kind:   uri.KindOpportunityCanvas,
+		Live:   true,
+		Title:  title,
+		Fields: canvasFields(c),
+	})
 }
 
 // canvasFields names each sticky by the box it sits in, using the heading the

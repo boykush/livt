@@ -54,7 +54,7 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "opportunity-canvas",
 		Title:       "Opportunity canvas",
-		Description: "The Opportunity Canvas filled in for an opportunity: ten boxes holding the problems, the users, what they do today, the business challenges, the value and metrics, the adoption strategy, and the budget. Every box is returned, empty ones included — a blank box records a question the opportunity has not answered yet.",
+		Description: "The Opportunity Canvas filled in for an opportunity: ten boxes holding the problems, the users, what they do today, the business challenges, the value and metrics, the adoption strategy, and the budget. Every box is returned, empty ones included — a blank box records a question the opportunity has not answered yet. A canvas stands without an opportunity file: opportunity_key is always there, opportunity_uri only when an opportunity file shares the key.",
 		MIMEType:    "application/json",
 		URITemplate: uri.OpportunityCanvasTemplate,
 	}, s.readOpportunityCanvas)

@@ -80,17 +80,17 @@ func TestEndToEnd(t *testing.T) {
 		t.Errorf("demo uri = %q, want livt://story/demo", uri)
 	}
 	// Each entry shows its opportunities over the wire: a mapped story carries
-	// its map's name and story map resource URI, an unmapped one carries none.
-	if got := opportunitiesOf(list.Stories, "demo"); len(got) != 1 || got[0] != demoMapRef {
-		t.Errorf("demo opportunities = %+v, want [%+v]", got, demoMapRef)
+	// its opportunity's key, name and resource URI, an unmapped one carries none.
+	if got := opportunitiesOf(list.Stories, "demo"); len(got) != 1 || got[0] != demoOpportunityRef {
+		t.Errorf("demo opportunities = %+v, want [%+v]", got, demoOpportunityRef)
 	}
 	if got := opportunitiesOf(list.Stories, "other"); len(got) != 0 {
 		t.Errorf("other opportunities = %+v, want none (on no map)", got)
 	}
 
-	// Filtering by opportunity keeps only that map's stories; an unknown name
+	// Filtering by opportunity key keeps only that map's stories; an unknown key
 	// yields an empty list, not an error.
-	res, err = cs.CallTool(ctx, &mcpsdk.CallToolParams{Name: "list_stories", Arguments: map[string]any{"opportunity": "デモマップ"}})
+	res, err = cs.CallTool(ctx, &mcpsdk.CallToolParams{Name: "list_stories", Arguments: map[string]any{"opportunity": "demo-map"}})
 	if err != nil {
 		t.Fatalf("call list_stories filtered: %v", err)
 	}
@@ -101,7 +101,7 @@ func TestEndToEnd(t *testing.T) {
 	if len(filtered.Stories) != 1 || filtered.Stories[0].Key != "demo" {
 		t.Fatalf("filtered stories = %+v, want only demo", filtered.Stories)
 	}
-	res, err = cs.CallTool(ctx, &mcpsdk.CallToolParams{Name: "list_stories", Arguments: map[string]any{"opportunity": "存在しないマップ"}})
+	res, err = cs.CallTool(ctx, &mcpsdk.CallToolParams{Name: "list_stories", Arguments: map[string]any{"opportunity": "no-such-opportunity"}})
 	if err != nil {
 		t.Fatalf("call list_stories with unknown opportunity: %v", err)
 	}
@@ -243,8 +243,8 @@ func TestEndToEnd(t *testing.T) {
 		t.Errorf("story example_mapping_uri = %q, want livt://mapping/demo", story.Story.ExampleMappingURI)
 	}
 	// The story resource shows the same opportunities as the list entries.
-	if got := story.Story.Opportunities; len(got) != 1 || got[0] != demoMapRef {
-		t.Errorf("story opportunities = %+v, want [%+v]", got, demoMapRef)
+	if got := story.Story.Opportunities; len(got) != 1 || got[0] != demoOpportunityRef {
+		t.Errorf("story opportunities = %+v, want [%+v]", got, demoOpportunityRef)
 	}
 
 	// Discover the glossary, then read a term through the URI the tool handed
