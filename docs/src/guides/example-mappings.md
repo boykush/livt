@@ -87,7 +87,7 @@ A mapping does not record whether a rule is automated. The tests do: a test in a
 func TestAnExpiredCardIsRejected(t *testing.T) {
 ```
 
-The comment syntax is whatever the test's language uses; livt looks only for the marker and the URI. `livt automations` collects every marked line in the implementation repository into a report, which goes back to the livt repository as a pull request and lands under `automations/`. livt reads the reports there, and a rule is automated when one of them cites it.
+The comment syntax is whatever the test's language uses; livt looks only for the marker and the URI. [`livt automations`](../reference/commands.md#livt-automations) collects every marked line in the implementation repository into a report, which goes back to the livt repository as a pull request and lands under `automations/`. livt reads the reports there, and a rule is automated when one of them cites it.
 
 - **The test is the record.** Which tests cover a rule is the implementation's state, not a decision, so the mapping does not keep it. A citation is written beside the test that makes it true and read again from that test each time the report is collected, so the mapping has nothing to keep in step by hand.
 - **A rule and its examples are cited separately.** An example is cited by its own URI, `livt://mapping/{story-key}/rule/{rule-id}/example/{example-id}`, and that automates the example alone: a rule whose examples are all cited is still not automated until a test cites the rule itself. The test's author already said which one they meant, and livt does not infer the other.

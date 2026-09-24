@@ -252,6 +252,120 @@ different fixes:
 | **Malformed URI** | The string is not a livt URI at all. The error lists every shape one can take. Fix the URI. |
 | **Nothing to resolve** | The URI is well formed but the livt repository holds no such item, e.g. `rule "R-99" not found in story "trace-test-to-rule"`. Fix the reference, or add the item. |
 
+## `livt automations`
+
+Collect what an implementation repository's tests say they automate, as a report
+the livt repository can commit. It walks a checkout for comment lines carrying
+the `livt:automates` marker and one [livt URI](./uri.md), and writes what it
+found.
+
+This is the one command that runs in the implementation repository rather than
+on the livt repository: it reads code, and the site reads only what it leaves
+behind. What a test writes, and what a citation means for a rule, is
+[Automating a rule](../guides/example-mappings.md#automating-a-rule); this page
+is the command.
+
+```bash
+livt automations [path] [flags]
+```
+
+`path` is the checkout to walk, and defaults to the current directory. Hidden
+directories and `node_modules`, `vendor`, `dist` and `target` are skipped, along
+with binary files: other people's code makes no claims about your spec.
+
+| Flag | Short | Default | Description |
+|------|-------|---------|-------------|
+| `--out` | `-o` | (stdout) | Write the report to this file, creating its directory |
+| `--repo` | | the checkout's `origin` | Repository the report speaks for, as `owner/repo` |
+| `--rev` | | the checkout's `HEAD` | Revision scanned |
+| `--forge` | | inferred from `origin` | Code host to build line URLs for: `github` or `gitlab` |
+| `--url-template` | | — | Line URL template for a host livt does not know, e.g. `{base}/src/commit/{rev}/{path}#L{line}` |
+
+A URI's **shape** is what the walk checks, never its target, so collecting needs
+no access to the livt repository at all — [`livt resolve`](#livt-resolve) is what
+answers whether a citation lands on something that exists. A URI written with
+placeholders, as the guide writes it, is documentation rather than a claim and is
+not collected: that is what lets the marker be written about.
+
+### The report
+
+```json
+{
+  "repo": "boykush/livt",
+  "rev": "39d110cbe24dc5afaf234b361806aaf594ff4da9",
+  "generated_at": "2026-09-24T08:24:49Z",
+  "citations": [
+    {
+      "livt_uri": "livt://mapping/collect-automations/rule/R-07/example/EX-01",
+      "file": "internal/automation/changed_test.go",
+      "line": 69,
+      "url": "https://github.com/boykush/livt/blob/39d110cbe24dc5afaf234b361806aaf594ff4da9/internal/automation/changed_test.go#L69"
+    }
+  ]
+}
+```
+
+- It **names its own repository, revision and generation time**, so a reader can
+  tell a fresh answer from a stale one rather than reading it as timeless.
+- It **judges nothing.** Whether a rule counts as automated is derived when the
+  site is built; a report that decided it would be a second home for the same
+  fact, free to disagree with the first.
+- `url` is where the line can be read on the forge, pinned to `rev` so it shows
+  the code that was scanned. livt knows `github.com` and `gitlab.com` by
+  hostname, and a self-hosted host is just a hostname, so it declares itself with
+  `--forge` or `--url-template`. A citation with no URL keeps its `file` and
+  `line`: the link is decoration, and its absence never changes whether the
+  citation counts.
+- A **dirty working tree reports no revision**, and no URLs with it. The walk
+  reads the working tree, so naming `HEAD` would pin every link to code that is
+  not the code that was read. The file `--out` writes is left out of that
+  judgment, so landing the report inside the tree it describes is not what makes
+  the tree dirty.
+
+### `livt automations changed`
+
+Collecting walks every file, which is worth avoiding on a large repository. Only
+an added or removed marker line can change what a report claims, and this answers
+whether a range holds one:
+
+```bash
+livt automations changed <base> [head]
+```
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `--path` | `.` | The checkout to read the diff in |
+
+`head` defaults to `HEAD`. The answer is `true` or `false` on stdout, so CI
+branches on a plain command substitution, and the judgment stays livt's: a CI
+step spelling the marker for itself would keep a second copy of what a marker is,
+free to drift the moment the real one moves.
+
+- **A line that merely moved, or a rename, answers false.** A report is a dated
+  snapshot rather than a live view — `rev`, `file` and `line` all come from one
+  revision, and the URL is pinned to it. A later commit that shifts a cited line
+  leaves the report describing an earlier revision, which it says out loud.
+- **A removal answers true.** A deleted test whose claim outlives it leaves the
+  board naming a rule nothing covers any more. Out of date is one thing; wrong
+  about the present is another.
+- **A range livt cannot read answers true**, and says why on stderr: a new
+  branch, a force-push, a revision since gone. The two mistakes are not the same
+  size — guessing false drops a claim, and guessing true costs one walk.
+
+When the answer is true the whole repository is rescanned rather than the old
+report patched: the question decides whether to walk, never what the report says.
+
+### Where the report goes
+
+`--out` is what lands it at `automations/{owner}/{repo}.json` in a checkout of
+the livt repository, where it is committed through a pull request rather than
+pushed. Which repositories collect, and what their CI runs, is the implementation
+side's to decide rather than livt's: the
+[`livt-automation` plugin](https://github.com/boykush/livt/tree/main/plugins/livt-automation#sending-automations-back)
+carries a workflow to copy, and livt's own
+[`.github/workflows/automations.yml`](https://github.com/boykush/livt/blob/main/.github/workflows/automations.yml)
+is that shape for a repository that is its own implementation repository.
+
 ## `livt version`
 
 Print the version of livt.
