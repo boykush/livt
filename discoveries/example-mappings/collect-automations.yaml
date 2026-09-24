@@ -110,6 +110,9 @@ rules:
         name: artifactや外部サービスには置かない（読むのに同じ権限が要り、期限で消え、過去のリビジョンで引けない）
       - id: EX-09
         name: 実装リポジトリのCIが、デフォルトブランチへのマージ時に走査してlivtリポジトリへPRを出す
+        retired: true
+        superseded_by:
+          - livt://mapping/collect-automations/rule/R-05/example/EX-13
       - id: EX-10
         name: 置き場は automations/{owner}/{repo}.json で、実装リポジトリごとに1ファイル
       - id: EX-11
@@ -117,6 +120,10 @@ rules:
       - id: EX-12
         name: PRのCIが引用したlivt URIを検証し、解決しなければ落ちる（それ以外はグリーンでautomergeされる）
         retired: true
+      - id: EX-13
+        name: 実装リポジトリのCIはマージしたrevを通知するだけで、走査もPR作成もlivtリポジトリ側が行う
+      - id: EX-14
+        name: 置き場・ブランチ名・コミット・PR本文を知るのはlivtリポジトリ側だけで、実装リポジトリは通知先しか知らない
   - id: R-06
     name: テストの所在はforgeのURLとして運べるが、無くても自動化の判定は変わらない
     examples:
