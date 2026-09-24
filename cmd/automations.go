@@ -3,6 +3,7 @@ package cmd
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"os"
 	"path/filepath"
 
@@ -16,6 +17,7 @@ var (
 	automationsForge       string
 	automationsURLTemplate string
 	automationsOut         string
+	automationsChangedPath string
 )
 
 func init() {
@@ -24,6 +26,8 @@ func init() {
 	automationsCmd.Flags().StringVar(&automationsForge, "forge", "", "code host to build line URLs for: github or gitlab (default: inferred from origin, otherwise no URLs)")
 	automationsCmd.Flags().StringVar(&automationsURLTemplate, "url-template", "", "line URL template for a host livt does not know, e.g. {base}/src/commit/{rev}/{path}#L{line}")
 	automationsCmd.Flags().StringVarP(&automationsOut, "out", "o", "", "write the report to this file (default: stdout)")
+	automationsChangedCmd.Flags().StringVar(&automationsChangedPath, "path", ".", "the checkout to read the diff in")
+	automationsCmd.AddCommand(automationsChangedCmd)
 	rootCmd.AddCommand(automationsCmd)
 }
 
@@ -85,6 +89,46 @@ automated is derived when the site is built, not decided here.`,
 		}
 		return nil
 	},
+}
+
+var automationsChangedCmd = &cobra.Command{
+	Use:   "changed <base> [head]",
+	Short: "Report whether a range could have changed what the tests claim",
+	Long: `Report whether the diff between two revisions adds or removes a marker line.
+
+Collecting walks every file, which is worth avoiding on a large repository,
+and only an added or removed marker line can change what a report claims. A
+rename, or a line that merely moved, produces neither and answers false: a
+report is a dated snapshot, so a later commit that shifts a cited line leaves
+the link pinned to the revision the report names. A deleted test's markers
+arrive as removals and answer true, because a claim that outlives its test
+leaves the board naming a rule nothing covers any more.
+
+Prints true or false. A range that cannot be read — a new branch, a
+force-push, a revision since gone — is not an answer of false: it warns and
+answers true, since the cost of the extra walk is a walk, and the cost of the
+wrong skip is a board that lies.`,
+	Args: cobra.RangeArgs(1, 2),
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmd.SilenceUsage = true
+		head := "HEAD"
+		if len(args) == 2 {
+			head = args[1]
+		}
+		reportChanged(cmd.OutOrStdout(), cmd.ErrOrStderr(), automationsChangedPath, args[0], head)
+		return nil
+	},
+}
+
+// reportChanged answers on stdout and explains itself on stderr, so CI reads
+// the answer with a plain command substitution and still sees why.
+func reportChanged(out, warn io.Writer, root, base, head string) {
+	changed, err := automation.Changed(root, base, head)
+	if err != nil {
+		fmt.Fprintln(warn, "warning: "+err.Error()+"; answering true rather than guessing")
+		changed = true
+	}
+	fmt.Fprintln(out, changed)
 }
 
 // writeReport puts the report where the caller asked. --out exists so CI can

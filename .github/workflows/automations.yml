@@ -1,0 +1,119 @@
+name: automations
+
+# livt is its own implementation repository, so the scan runs here and the
+# report goes back to the livt repository — itself — as a pull request, which
+# is where a citation can be checked. Scanning itself needs no credential
+# beyond the default GITHUB_TOKEN.
+on:
+  push:
+    branches: [main]
+
+permissions: {}
+
+# The report branch is one per implementation repository, so two merges must
+# not race to rewrite it.
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
+jobs:
+  collect:
+    name: collect
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push the report branch
+      pull-requests: write # open the report's pull request
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup mise
+        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+        with:
+          install_args: go
+          # This job can push to the default branch, so it restores no cache a
+          # pull request could have poisoned (zizmor: cache-poisoning).
+          cache: false
+
+      # Collecting walks every file, which is worth avoiding on a large
+      # repository. livt answers whether this push could have changed what the
+      # report claims; a base it cannot read answers true, so a failed fetch
+      # needs no handling of its own here.
+      - name: Decide whether to collect
+        id: gate
+        env:
+          BEFORE: ${{ github.event.before }}
+          REMOTE: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+        run: |
+          set -euo pipefail
+          git fetch --no-tags --depth=1 "$REMOTE" "$BEFORE" 2>/dev/null || true
+          echo "collect=$(go run . automations changed "$BEFORE")" >> "$GITHUB_OUTPUT"
+
+      # The whole repository is rescanned rather than the old report patched:
+      # the gate decides whether to walk, never what the report says.
+      - name: Collect
+        if: steps.gate.outputs.collect == 'true'
+        env:
+          REPORT: automations/${{ github.repository }}.json
+        run: go run . automations . --out "$REPORT"
+
+      # rev, generated_at and the urls built from rev move on every run, so a
+      # report never matches byte for byte. The claims are what the comparison
+      # is about; jq -S and unique keep citation order and duplicates out of it.
+      - name: Compare the claims
+        id: compare
+        if: steps.gate.outputs.collect == 'true'
+        env:
+          REPORT: automations/${{ github.repository }}.json
+        run: |
+          set -euo pipefail
+          claims() { jq -S '[.citations[].livt_uri] | unique' "$1"; }
+          if git show "HEAD:$REPORT" > "$RUNNER_TEMP/committed.json" 2>/dev/null \
+             && [ "$(claims "$RUNNER_TEMP/committed.json")" = "$(claims "$REPORT")" ]; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # One branch per implementation repository, force-updated: a report is a
+      # snapshot, so the open pull request carries the latest one rather than a
+      # queue of them.
+      - name: Open the report's pull request
+        if: steps.compare.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REMOTE: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          REPORT: automations/${{ github.repository }}.json
+          BRANCH: automations/${{ github.repository }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git switch --create "$BRANCH"
+          git add "$REPORT"
+          git commit --file - <<EOF
+          chore: collect automations from $GITHUB_REPOSITORY
+
+          The merge added or removed a livt:automates line, so the whole
+          repository was rescanned. Read at $GITHUB_SHA by $RUN_URL.
+          EOF
+          git push --force "$REMOTE" "HEAD:refs/heads/$BRANCH"
+          if [ -n "$(gh pr list --head "$BRANCH" --state open --json number --jq '.[].number')" ]; then
+            exit 0
+          fi
+          gh pr create --head "$BRANCH" \
+            --title "chore: collect automations from $GITHUB_REPOSITORY" \
+            --body "$(cat <<EOF
+          Collected from $GITHUB_REPOSITORY at $GITHUB_SHA.
+
+          The collection runs on a merge that livt answered for, and this pull
+          request opens only when the set of cited livt URIs changed. The branch
+          holds one report per implementation repository and is force-updated,
+          so a later run replaces this diff rather than stacking another onto it.
+
+          Opened by $RUN_URL.
+          EOF
+          )"
