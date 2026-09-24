@@ -22,7 +22,7 @@ You do **not** change agreed meaning. Reframing a story or restructuring the map
 ## Card Flow
 
 1. Identify the source map and the candidate. The candidate is matched by its `name:` in `discoveries/usm/{map-name}.yaml`. If the map or candidate is ambiguous, ask the user.
-2. Decide the story **key** — kebab-case, English (lowercase letters, digits, hyphens; e.g. `preview-story-map-in-browser`). Ask the user if they have a preferred key; otherwise propose one from the candidate's intent.
+2. Decide the story **key** — kebab-case, English (lowercase letters, digits, hyphens), and **at least four words** (e.g. `preview-story-map-in-browser`; see Key Contract). Ask the user if they have a preferred key; otherwise propose one from the candidate's intent. When a preferred key is shorter, propose it extended with what sets this story apart rather than writing it as given.
 3. Check the preconditions before writing anything:
    - the candidate appears **exactly once** in the map (refuse if it is not unique),
    - the candidate has **no `key:` yet** (refuse if it already has a card),
@@ -45,8 +45,9 @@ When a story is conceived directly — with no candidate on a map — create `st
 ## Key Contract
 
 - Keys are kebab-case and **English** — they are used as the filename `stories/{key}.md` and as cross-references from story maps and example mappings.
+- Keys have **at least four words**, counted between the hyphens. Every story shares one flat namespace that only grows — a key is never renamed and never reused — so over the years it is the short keys that collide: `search-site` fits every story about searching the site, the first to get a card takes it, and it goes on claiming the whole topic after the others arrive. Four words name the action, what it acts on, and what sets this story apart from the next one on the same topic, as `search-site-by-text` does. Reach four with words that narrow the story — filler like `the` or `feature` leaves the key as broad as before.
 - Uniqueness is enforced by the filesystem: two stories cannot share `stories/{key}.md`. Never reuse a key.
-- Once the card is written, the key is **owned** by `stories/{key}.md`.
+- Once the card is written, the key is **owned** by `stories/{key}.md`. The four-word minimum governs keys being minted: a key already on file keeps its words, however few, since renaming it would break every livt URI that cites it.
 
 ## Commit Contract
 
