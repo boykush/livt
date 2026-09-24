@@ -324,6 +324,28 @@ func TestStoryMapHeaderLinksBackToStoryMapsIndex(t *testing.T) {
 	}
 }
 
+// The legend keys what the board is made of, and an opportunity is no part of a
+// story map: it is a file of its own that the board links to, and that link says
+// what it leads to. A board serving no opportunity mentions none, and one serving
+// an opportunity mentions it once, on the link.
+func TestStoryMapLegendKeysOnlyTheBoard(t *testing.T) {
+	label := i18n.Of(i18n.En).Msg("label.opportunity")
+	for served, want := range map[bool]int{false: 0, true: 1} {
+		var opportunity *opportunityRef
+		if served {
+			opportunity = &opportunityRef{Name: "デモ", Path: "../opportunity/demo.html"}
+		}
+		b := Builder{}
+		var buf bytes.Buffer
+		if err := renderStoryMap(&buf, i18n.En, b.toStoryMapView(&domain.StoryMap{Name: "デモ"}, opportunity)); err != nil {
+			t.Fatal(err)
+		}
+		if got := strings.Count(buf.String(), label); got != want {
+			t.Errorf("serving an opportunity: %v; the board says %q %d times, want %d", served, label, got, want)
+		}
+	}
+}
+
 // livt:automates livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-02
 // At the source: a story key that appears on two maps collects an opportunity
 // ref per map, so its card can carry a chip for each.

@@ -149,7 +149,7 @@ discoveries/usm/collaborative-discovery.yaml      # the journey mapped for it
 No field connects them; the filename does, as everywhere else in livt. When the
 two match:
 
-- The story map board names its opportunity, and links to it
+- The story map board and the opportunity's page link to each other
 - Every story on that map carries the **opportunity's** name on its chip, and the
   chip links to the opportunity's page
 - The Stories, Example Mappings, and Tasks lists filter on that name

@@ -77,11 +77,11 @@ func TestRenderOpportunityLinksItsCanvasAndStoryMap(t *testing.T) {
 	}
 }
 
-// A map is often named as its opportunity is, so a link reading the map's name
-// would sit on the opportunity's own page as if it led back there. The link says
-// what it leads to instead, as a story's link to its example mapping does, on
-// the page and on the hub's tile alike.
-func TestOpportunityLinksItsStoryMapByKind(t *testing.T) {
+// A map is often named as its opportunity is, so a link reading the other's
+// name would sit beside the same name as if it led nowhere new. Each link says
+// what it leads to instead, as a story's link to its example mapping does, in
+// both directions and on the hub's tile alike.
+func TestOpportunityAndStoryMapLinkEachOtherByKind(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	writeFile(t, filepath.Join(b.OpportunitiesDir, "demo.md"), "---\nname: デモ\n---\n\n一文\n")
 	writeFile(t, filepath.Join(b.USMDir, "demo.yaml"),
@@ -90,23 +90,32 @@ func TestOpportunityLinksItsStoryMapByKind(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	label := i18n.Of(i18n.En).Msg("label.story-map")
-	for page, href := range map[string]string{
-		filepath.Join("opportunity", "demo.html"): mapHref("../story-map/", "デモ"),
-		"opportunities.html":                      mapHref("story-map/", "デモ"),
+	en := i18n.Of(i18n.En)
+	for _, c := range []struct{ page, href, label string }{
+		{filepath.Join("opportunity", "demo.html"), mapHref("../story-map/", "デモ"), en.Msg("label.story-map")},
+		{"opportunities.html", mapHref("story-map/", "デモ"), en.Msg("label.story-map")},
+		{filepath.Join("story-map", "デモ.html"), "../opportunity/demo.html", en.Msg("label.opportunity")},
 	} {
-		html := readFile(t, filepath.Join(b.OutDir, page))
-		at := strings.Index(html, `href="`+href+`"`)
-		if at < 0 {
-			t.Errorf("%s does not link the story map", page)
+		text, ok := linkText(readFile(t, filepath.Join(b.OutDir, c.page)), c.href)
+		if !ok {
+			t.Errorf("%s has no link to %s", c.page, c.href)
 			continue
 		}
-		link := html[at:]
-		link = link[strings.Index(link, ">")+1 : strings.Index(link, "</a>")]
-		if !strings.Contains(link, label) || strings.Contains(link, "デモ") {
-			t.Errorf("%s names the story map link %q, want %q", page, strings.TrimSpace(link), label)
+		if !strings.Contains(text, c.label) || strings.Contains(text, "デモ") {
+			t.Errorf("%s names its link to %s %q, want %q", c.page, c.href, text, c.label)
 		}
 	}
+}
+
+// linkText is what the first link to href on a page reads, and false when the
+// page has no such link.
+func linkText(html, href string) (string, bool) {
+	at := strings.Index(html, `href="`+href+`"`)
+	if at < 0 {
+		return "", false
+	}
+	link := html[at:]
+	return strings.TrimSpace(link[strings.Index(link, ">")+1 : strings.Index(link, "</a>")]), true
 }
 
 // An opportunity nobody has held a canvas session for links to none, so the

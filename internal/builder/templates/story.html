@@ -46,9 +46,19 @@
   <section class="mt-7">
     <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">{{t "story.related"}}</h2>
     <div class="flex gap-3 flex-wrap">
+    {{/*
+    The kind alone, as the link beside it says, unless the story sits on several
+    maps: the kind would not tell their opportunities apart, so each is named.
+    */}}
+    {{$several := gt (len .Opportunities) 1}}
     {{range .Opportunities}}
-      <a href="{{.Path}}" class="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 text-sm font-medium px-4 py-2 rounded-lg border border-purple-200 hover:bg-purple-100 transition">
+      <a href="{{.Path}}" class="inline-flex items-center gap-1.5 bg-orange-50 text-orange-700 text-sm font-medium px-4 py-2 rounded-lg border border-orange-200 hover:bg-orange-100 transition">
+        {{if $several}}
+        <span class="text-xs font-semibold uppercase tracking-wide text-orange-600">{{t "label.opportunity"}}</span>
         {{.Name}} &rarr;
+        {{else}}
+        {{t "label.opportunity"}} &rarr;
+        {{end}}
       </a>
     {{end}}
     {{if .MappingPath}}
