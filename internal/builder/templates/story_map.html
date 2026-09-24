@@ -40,9 +40,14 @@
   <div class="bg-purple-100 border-l-4 border-purple-400 p-3 rounded shadow font-bold text-gray-800 w-[180px]">
     {{.StoryMap.Name}}
   </div>
+  {{/*
+  Named by kind, as the opportunity's page names its link here: the filename
+  join gives a map one opportunity at most, and the two often share a name,
+  which beside the map's own would read as a caption rather than a link.
+  */}}
   {{with .StoryMap.Opportunity}}
   <a href="{{.Path}}" class="inline-flex items-center gap-1.5 bg-orange-50 text-orange-700 text-sm font-medium px-4 py-2 rounded-lg border border-orange-200 hover:bg-orange-100 transition">
-    {{.Name}} &rarr;
+    {{t "label.opportunity"}} &rarr;
   </a>
   {{end}}
 </div>
