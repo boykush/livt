@@ -63,12 +63,23 @@ rules:
         name: レポートは生成物としてディスカバリーの成果物の外に置き、人は手で編集しない
       - id: EX-05
         name: livtリポジトリ側の定期ジョブが走査し、変化があればPRを開く（人の手順は増えない）
+        retired: true
+        superseded_by:
+          - livt://mapping/collect-automations/rule/R-05/example/EX-09
       - id: EX-06
         name: レポートは生成時刻を名乗り、古いレポートは古いものとして映る
       - id: EX-07
         name: 読み手はlivtリポジトリの権限だけで状況を読め、実装リポジトリへの権限は要らない
       - id: EX-08
         name: artifactや外部サービスには置かない（読むのに同じ権限が要り、期限で消え、過去のリビジョンで引けない）
+      - id: EX-09
+        name: 実装リポジトリのCIが、デフォルトブランチへのマージ時に走査してlivtリポジトリへPRを出す
+      - id: EX-10
+        name: 置き場は automations/{owner}/{repo}.json で、実装リポジトリごとに1ファイル
+      - id: EX-11
+        name: 内容が変わったときだけPRを出し、ブランチは実装リポジトリごとに1本を更新する
+      - id: EX-12
+        name: PRのCIが引用したlivt URIを検証し、解決しなければ落ちる（それ以外はグリーンでautomergeされる）
   - id: R-06
     name: テストの所在はforgeのURLとして運べるが、無くても自動化の判定は変わらない
     examples:
