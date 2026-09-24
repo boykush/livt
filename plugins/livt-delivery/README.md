@@ -68,7 +68,8 @@ Every skill here is a plain [Agent Skill](https://agentskills.io) — no subagen
 ## Install
 
 ```
-/plugin install livt-delivery@boykush/livt
+/plugin marketplace add boykush/livt
+/plugin install livt-delivery@livt-claude-code-plugins
 ```
 
 ## Coming from 4.x

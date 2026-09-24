@@ -26,10 +26,11 @@ One server backs every repository on your machine: no per-repo checkout of the l
 
    Keep `git pull` current on that checkout — the spec and its `spec_version` are read per request, so updates are served live.
 
-2. **Install this plugin** in each implementation repository:
+2. **Install this plugin** in each implementation repository, adding livt's marketplace first if you haven't already:
 
    ```
-   /plugin install livt-automation@boykush/livt
+   /plugin marketplace add boykush/livt
+   /plugin install livt-automation@livt-claude-code-plugins
    ```
 
 The agent can then call `list_stories` / `list_story_maps` / `list_terms` and read resources such as `livt://story-map/{map_name}`, `livt://story/{story_key}`, `livt://mapping/{story_key}`, and `livt://ubiquitous/{term_key}`. See the [`livt mcp` command reference](https://github.com/boykush/livt/blob/main/docs/src/reference/commands.md) for the full tool and resource list. A rule whose `status` is `proposed` is a candidate awaiting agreement, not spec to automate yet.
