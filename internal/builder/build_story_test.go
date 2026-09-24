@@ -39,6 +39,32 @@ func TestRenderStoryLinksEachOpportunityByName(t *testing.T) {
 	}
 }
 
+// Each opportunity link says what it leads to beside the name R-02 keeps on it,
+// and wears the opportunity's colour: purple is the story map's, and would read
+// as a way to the board rather than to the opportunity.
+func TestRenderStoryOpportunityLinkSaysItsKind(t *testing.T) {
+	story := &domain.Story{Key: domain.StoryKey{Value: "s"}, Name: "S"}
+	opportunities := []opportunityRef{{Name: "デモ", Path: "../opportunity/demo.html"}}
+
+	var buf bytes.Buffer
+	if err := renderStory(&buf, i18n.En, story, "", opportunities, nil); err != nil {
+		t.Fatal(err)
+	}
+	html := buf.String()
+
+	at := strings.Index(html, `href="../opportunity/demo.html"`)
+	if at < 0 {
+		t.Fatal("expected a Related link to the opportunity")
+	}
+	if tag := html[at : at+strings.Index(html[at:], ">")]; strings.Contains(tag, "purple") || !strings.Contains(tag, "orange") {
+		t.Errorf("the opportunity link wears %q, want the opportunity's orange", tag)
+	}
+	text, _ := linkText(html, "../opportunity/demo.html")
+	if want := i18n.Of(i18n.En).Msg("label.opportunity"); !strings.Contains(text, want) || !strings.Contains(text, "デモ") {
+		t.Errorf("the opportunity link reads %q, want %q beside the name", text, want)
+	}
+}
+
 // A story on no map shows no opportunity link in the Related section.
 func TestRenderStoryWithoutOpportunitiesShowsNoMapLink(t *testing.T) {
 	story := &domain.Story{Key: domain.StoryKey{Value: "orphan"}, Name: "Orphan"}
