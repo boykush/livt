@@ -70,9 +70,41 @@ func TestRenderOpportunityLinksItsCanvasAndStoryMap(t *testing.T) {
 	}
 	html := readFile(t, out)
 
-	for _, want := range []string{"Opportunity Canvas", "デモマップ", "一文で言う"} {
+	for _, want := range []string{"Opportunity Canvas", `href="` + mapHref("../story-map/", "デモマップ") + `"`, "一文で言う"} {
 		if !strings.Contains(html, want) {
 			t.Errorf("expected %q on the opportunity page", want)
+		}
+	}
+}
+
+// A map is often named as its opportunity is, so a link reading the map's name
+// would sit on the opportunity's own page as if it led back there. The link says
+// what it leads to instead, as a story's link to its example mapping does, on
+// the page and on the hub's tile alike.
+func TestOpportunityLinksItsStoryMapByKind(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	writeFile(t, filepath.Join(b.OpportunitiesDir, "demo.md"), "---\nname: デモ\n---\n\n一文\n")
+	writeFile(t, filepath.Join(b.USMDir, "demo.yaml"),
+		"name: デモ\nactivities:\n  - key: a\n    name: A\n    steps:\n      - key: s\n        name: S\n")
+	if err := b.Build(); err != nil {
+		t.Fatal(err)
+	}
+
+	label := i18n.Of(i18n.En).Msg("label.story-map")
+	for page, href := range map[string]string{
+		filepath.Join("opportunity", "demo.html"): mapHref("../story-map/", "デモ"),
+		"opportunities.html":                      mapHref("story-map/", "デモ"),
+	} {
+		html := readFile(t, filepath.Join(b.OutDir, page))
+		at := strings.Index(html, `href="`+href+`"`)
+		if at < 0 {
+			t.Errorf("%s does not link the story map", page)
+			continue
+		}
+		link := html[at:]
+		link = link[strings.Index(link, ">")+1 : strings.Index(link, "</a>")]
+		if !strings.Contains(link, label) || strings.Contains(link, "デモ") {
+			t.Errorf("%s names the story map link %q, want %q", page, strings.TrimSpace(link), label)
 		}
 	}
 }
