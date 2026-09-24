@@ -44,6 +44,7 @@ activities:
         name: テストから自動化を集める
         stories:
           - name: 実装リポジトリのテストから自動化を集めてレポートにする
+            key: collect-automations
             release: project-from-tests
       - key: derive-automation-status
         name: レポートからルールの状況を導く
