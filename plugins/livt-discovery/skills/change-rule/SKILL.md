@@ -36,7 +36,7 @@ When there is no fresh session and the ask is "this rule changed / a new rule wa
 
 ## Change Flow
 
-1. Identify the affected story and read `discoveries/example-mappings/{story-key}.yaml` and `stories/{story-key}.md`. Ask the user which mapping if it is ambiguous.
+1. Identify the affected story and read `discoveries/example-mappings/{story-key}.yaml` and `stories/{story-key}.md` — a story with no card has only its mapping, scoped by the mapping's own `name:`. Ask the user which mapping if it is ambiguous.
 2. Capture the change from the user: which rule, what changed, and why — and whether it is agreed or only put forward. Don't invent or extrapolate.
 3. Apply the minimal rule-level edit (IDs throughout follow the ID Contract):
    - **Added rule** — append it with the next rule ID, with the examples agreed alongside it.

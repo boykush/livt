@@ -41,7 +41,7 @@ This skill ships no tracker knowledge on purpose: one team's answer shipped as e
 
 ## Filing Flow
 
-1. Read `discoveries/example-mappings/{story-key}.yaml` and `stories/{story-key}.md`. Resolve the destination(s) from the story's `repos:`, or from what the user named.
+1. Read `discoveries/example-mappings/{story-key}.yaml` and `stories/{story-key}.md`. Resolve the destination(s) from the story's `repos:`, or from what the user named. A story with no card has no `repos:` to read, so ask for the destination.
 2. Select the rules to file (rule-id → that one; story-key only → all), keeping only rules with `status: accepted`: a `proposed` rule is not asked for yet, and a `rejected` or `retired` one is not asked for any more, so neither has anything to automate. Then dedupe each **rule × destination** pair against the record. A link to one destination never blocks filing to another.
 3. Record the spec rev of the livt repository: `git rev-parse --short HEAD`.
 4. Compose each issue (see Issue Content) and file it with the tool the team uses — a tracker's CLI or MCP server. Never check out the target repository. With no tool that reaches the destination, hand the composed body to the user and take the created URL back; the record treats it exactly as one you filed.
@@ -63,7 +63,7 @@ The body carries the rule and its live examples — quoted verbatim, in the mapp
 - living document: {living-doc-url}/mapping/{story-key}.html#rule-{rule-id}
 ```
 
-Every reference is a **livt URI** — the citation form the implementation repository carries onward into test comments. A bare `{rule-id}` names nothing on its own: rule and example ids restart in every mapping, so each example is quoted by its own URI and a test can cite the one it covers. `spec_version` pins which revision of the livt repository the issue was cut from. The living document anchor is a convenience for humans in a browser; it depends on where the site is deployed, and an issue in someone else's tracker is not yours to edit later, so it never replaces the URI. No site published? Drop that line.
+Every reference is a **livt URI** — the citation form the implementation repository carries onward into test comments. A bare `{rule-id}` names nothing on its own: rule and example ids restart in every mapping, so each example is quoted by its own URI and a test can cite the one it covers. `spec_version` pins which revision of the livt repository the issue was cut from. The living document anchor is a convenience for humans in a browser; it depends on where the site is deployed, and an issue in someone else's tracker is not yours to edit later, so it never replaces the URI. No site published? Drop that line. No story card? Drop the `story:` line too: there is no story resource for it to name.
 
 Above that block the shape is the team's — their issue template, or a plain heading naming the rule and a list of its examples when nothing is prescribed.
 
