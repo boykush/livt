@@ -20,6 +20,8 @@ project-root/
     {term-key}.md                         # Terms holding across contexts
     {ctx}/
       {term-key}.md                       # Terms scoped to one context
+  automations/
+    {owner}/{repo}.json                   # Collected automation reports
 ```
 
 - `livt.yaml` configures the site build — see [Configuration](./configuration.md). Without it, every setting takes its default
@@ -33,6 +35,7 @@ project-root/
 - Term keys are derived from filenames, and a term's [context](../guides/ubiquitous-language.md#contexts) from the directory holding it. The path is what makes a term unique, so the same key can sit at the root and under a context as two separate terms
 - A context is optional and one directory deep; terms nested deeper are not addressable and are left out of the glossary
 - A term is anchored as `ubiquitous.html#{term-key}`, or `ubiquitous.html#{ctx}/{term-key}` when it is scoped
+- `automations/` holds the reports `livt automations` collects from implementation repositories' tests, one file per repository. They are generated, not written by hand: livt derives from them which rules and examples are automated — see [Automating a rule](../guides/example-mappings.md#automating-a-rule)
 
 ## Output
 

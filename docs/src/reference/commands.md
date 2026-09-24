@@ -6,9 +6,10 @@ Build artifacts and start a local server.
 
 While the server is running, livt watches every directory the build reads
 (`opportunities`, `discoveries/opportunity-canvases`,
-`discoveries/example-mappings`, `stories`, `discoveries/usm`, and `ubiquitous`)
-along with `livt.yaml`. When a file changes, livt rebuilds and reloads the page
-in the browser automatically, so you can preview refinements while editing.
+`discoveries/example-mappings`, `stories`, `discoveries/usm`, `ubiquitous`, and
+`automations`) along with `livt.yaml`. When a file changes, livt rebuilds and
+reloads the page in the browser automatically, so you can preview refinements
+while editing.
 
 ```bash
 livt serve [flags]
@@ -19,6 +20,7 @@ livt serve [flags]
 | `--port` | `-p` | `3000` | Port to listen on |
 | `--out` | `-o` | `dist` | Output directory |
 | `--diff` | | (off) | Also render the diff between two revisions — see [Reviewing a change](#reviewing-a-change) |
+| `--reports` | | `automations` | Directory of collected automation reports — see [Automating a rule](../guides/example-mappings.md#automating-a-rule) |
 
 ## `livt build`
 
@@ -32,6 +34,7 @@ livt build [flags]
 |------|-------|---------|-------------|
 | `--out` | `-o` | `dist` | Output directory |
 | `--diff` | | (off) | Also render the diff between two revisions — see [Reviewing a change](#reviewing-a-change) |
+| `--reports` | | `automations` | Directory of collected automation reports — see [Automating a rule](../guides/example-mappings.md#automating-a-rule) |
 
 Both commands read [`livt.yaml`](./configuration.md) from the directory they run
 in, which is where the site's language is set.
