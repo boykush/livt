@@ -5,8 +5,6 @@ Example mappings are YAML files stored in `discoveries/example-mappings/`. They 
 ## Format
 
 ```yaml
-story: story-key
-
 rules:
   - id: R-01
     name: Rule description
@@ -33,7 +31,7 @@ ubiquitous:
   - term-key
 ```
 
-- `story` is optional (links to the corresponding story detail page)
+- The filename is the story key: `{story-key}.yaml` maps the story in `stories/{story-key}.md`, and the board links to that story's page when there is one
 - IDs must be unique within their rule or question list
 - `ubiquitous` is optional: each entry is a [ubiquitous language](./ubiquitous-language.md) term key, rendered as a pink sticky linking to `ubiquitous.html#{term-key}`. A key with no matching term file renders as a plain pink card.
 - `issues` is optional: the rule's automation Issue URLs on implementation repos (Issue URLs only). The livt repository records the links; their state lives at the URL target. A rule without `issues` is unlinked.
