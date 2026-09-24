@@ -1,0 +1,1564 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>livt - Living Text</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Collaborate on board. Make it living in text.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-e96d0476.css">
+        <link rel="stylesheet" href="css/chrome-d279d366.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-a643fbf3.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-a62fb9f7.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">livt - Living Text</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="livt---living-text"><a class="header" href="#livt---living-text">livt - Living Text</a></h1>
+<blockquote>
+<p>Collaborate on board. Make it living in text.</p>
+</blockquote>
+<h2 id="outcome"><a class="header" href="#outcome">Outcome</a></h2>
+<p>Collaborative outcomes evolve alongside the product as living text.</p>
+<h2 id="opportunities"><a class="header" href="#opportunities">Opportunities</a></h2>
+<ul>
+<li><strong>Stale Discovery</strong>: Discovery-phase artifacts are not persisted after synchronous collaboration sessions</li>
+<li><strong>Discovery-Development Gap</strong>: Persisted discovery artifacts are not leveraged in the development process</li>
+</ul>
+<h2 id="solutions"><a class="header" href="#solutions">Solutions</a></h2>
+<ul>
+<li>Provide a CLI tool that captures collaborative outcomes as text files (YAML, Markdown)</li>
+<li>Track consistency across artifacts via ID-based references with automated checks</li>
+<li>Treat Formulation artifacts (Gherkin scenarios) as generated output, not the source of truth — that lives in the Discovery artifacts. This one is a position rather than a settled design, and the community’s runs the other way: see <a href="#livt-and-bdd">livt and BDD</a></li>
+</ul>
+<h2 id="live-demo"><a class="header" href="#live-demo">Live Demo</a></h2>
+<p>livt dogfoods itself: its own discovery artifacts — stories, story maps, example mappings, and ubiquitous language — are published with <code>livt build</code> as a <a href="https://boykush.github.io/livt/demo/">live demo</a>. It shows exactly what the guides below describe.</p>
+<p>The demo reads in Japanese, which is what <code>lang: ja</code> in its <a href="#configuration">livt.yaml</a> does: this repository’s artifacts are written in Japanese, so the site is framed to match them. livt itself defaults to English — the screenshots in these guides show that default.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="livt-and-bdd"><a class="header" href="#livt-and-bdd">livt and BDD</a></h1>
+<p>livt renders practices it did not invent. This page says which parts are the community’s, which parts livt added, where livt departs on purpose, and what livt deliberately leaves alone.</p>
+<p>If you arrived from the BDD community, the short version: <strong>livt is not an alternative to Cucumber.</strong> It runs no tests. It keeps what a Discovery session decided, so the decision is still readable — and still quotable — when someone implements it months later.</p>
+<h2 id="what-livt-takes"><a class="header" href="#what-livt-takes">What livt takes</a></h2>
+<ul>
+<li><strong>Behaviour-Driven Development</strong> — Dan North, <a href="https://dannorth.net/introducing-bdd/">Introducing BDD</a> (2006). The three phases livt organizes around, Discovery / Formulation / Automation, are the community’s own framing: <a href="https://cucumber.io/docs/bdd/">Cucumber’s BDD docs</a>.</li>
+<li><strong>Example Mapping</strong> — Matt Wynne, <a href="https://cucumber.io/blog/bdd/example-mapping-introduction/">Introducing Example Mapping</a> (2015). The four cards, their colours, the timebox, and reading the board back as a signal about the story. livt’s board is that format, rendered from a file.</li>
+<li><strong>Ubiquitous language</strong> — Eric Evans’ term from Domain-Driven Design, and a thread through BDD’s Formulation. livt keeps it as a <a href="#ubiquitous-language-1">glossary</a> beside the artifacts that use it.</li>
+<li><strong>Opportunity Canvas and User Story Mapping</strong> — Jeff Patton. Not BDD, but under the same rule; the <a href="#opportunities-1">Opportunities</a> and <a href="#story-maps">Story Maps</a> guides link the originals.</li>
+</ul>
+<h2 id="what-livt-adds"><a class="header" href="#what-livt-adds">What livt adds</a></h2>
+<p>None of this is in the practice. It is livt’s, and it moves when livt moves:</p>
+<ul>
+<li><strong>A file instead of a photograph.</strong> The mapping is YAML in the repository, versioned alongside the code it specifies.</li>
+<li><strong>Identity.</strong> Every rule, example, and question has an ID that is stable once filed, numbered past retired ones, and addressable as a <a href="#livt-uri">livt URI</a> — so a rule quoted from an Issue or a test comment cannot silently come to mean something else.</li>
+<li><strong>A lifecycle.</strong> A rule carries <code>status: proposed</code>, <code>accepted</code>, <code>rejected</code>, or <code>retired</code>, borrowed from <a href="https://adr.github.io/">architecture decision records</a>, and <code>superseded_by</code> says where the spec went. See <a href="#example-mappings">Example Mappings</a>.</li>
+<li><strong>An asynchronous lane.</strong> A rule can be proposed and agreed in a pull request review, between sessions, when the room does not need to meet for it.</li>
+<li><strong>Links outward.</strong> A rule records the Issues filed to automate it, and the tests that automate it cite it back by livt URI. livt collects those citations from the implementation repository — what each test claims to cover, not whether it passes — and the site rolls them up.</li>
+</ul>
+<h2 id="where-livt-departs"><a class="header" href="#where-livt-departs">Where livt departs</a></h2>
+<h3 id="an-example-mapping-is-supposed-to-be-disposable"><a class="header" href="#an-example-mapping-is-supposed-to-be-disposable">An Example Mapping is supposed to be disposable</a></h3>
+<p>This is the real departure, and it is worth naming rather than smuggling.</p>
+<p>Wynne’s Example Mapping is a twenty-five minute conversation whose product is shared understanding. The cards are a byproduct and a gauge: too many blue and the story is too big, too many red and it is not ready. Once they have said that, they have done their job. A team that photographs the board and never opens the photo again has not failed at the practice.</p>
+<p>livt keeps the map, because of the gap it was built for: the developer who needs the agreed rule six months later cannot query a photograph. But a durable artifact invites maintenance, and maintenance invites treating the map as a specification to be completed rather than a conversation to be had. That anti-pattern is real, and no tool can rule it out. livt’s structural answer is that the record is written after the room agrees and never changes what was agreed — the <a href="https://github.com/boykush/livt/tree/main/plugins/livt-discovery">record skills</a> write the board verbatim first, and only then a structural edit whose diff is what the review reads.</p>
+<p>So, plainly: <strong>if you have to choose, choose the conversation.</strong> A team that runs good sessions and keeps no record is doing BDD. A team with immaculate YAML and no session is not.</p>
+<h3 id="livt-takes-a-position-on-formulation-that-the-community-does-not-share"><a class="header" href="#livt-takes-a-position-on-formulation-that-the-community-does-not-share">livt takes a position on Formulation that the community does not share</a></h3>
+<p>Mainstream BDD treats the feature file as the shared artifact: the Gherkin is what the Three Amigos produce together, and it is the living documentation. livt’s <a href="#livt---living-text">stated intent</a> runs the other way — Discovery artifacts are the source of truth, and Gherkin would be generated output.</p>
+<p>Be clear about what that is worth today: <strong>livt does not generate Gherkin at all.</strong> Nothing in the tool depends on the position yet. It is a view under test, it is the part of livt most likely to be wrong, and it belongs in an argument rather than in a release note. If you think it is wrong, <a href="https://github.com/boykush/livt/issues">say so</a> — that is a more useful contribution than agreement.</p>
+<h2 id="what-livt-does-not-do"><a class="header" href="#what-livt-does-not-do">What livt does not do</a></h2>
+<ul>
+<li><strong>Run tests.</strong> livt is not an alternative to Cucumber, SpecFlow, Behave, or anything else that executes specifications. If it ever emits Gherkin, it will emit the standard syntax for those tools to run, never a dialect of its own.</li>
+<li><strong>Facilitate the session.</strong> No timer, no voting, no board. Live facilitation happens with people, on whatever board the room already uses; livt starts where the board ends.</li>
+<li><strong>Teach BDD.</strong> These guides describe file formats and what the site renders. The practice is taught by the people below, and taught better.</li>
+<li><strong>Redefine the community’s words.</strong> Where a term is the practice’s — rule, example, question, discovery, formulation — it keeps the practice’s meaning. Where livt needed a term of its own, the name says so: livt repository, livt URI, implementation repository.</li>
+</ul>
+<h2 id="the-people-who-wrote-this-down"><a class="header" href="#the-people-who-wrote-this-down">The people who wrote this down</a></h2>
+<p>Most of what livt renders was worked out and published by a community that gives away the introduction and sells the depth, and whose maintainers have run on donations since 2023.</p>
+<ul>
+<li>Dan North — <a href="https://dannorth.net/introducing-bdd/">Introducing BDD</a></li>
+<li>Matt Wynne — <a href="https://cucumber.io/blog/bdd/example-mapping-introduction/">Introducing Example Mapping</a></li>
+<li>Seb Rose — <a href="https://cucumber.io/blog/bdd/keep-your-scenarios-brief/">Keep your scenarios BRIEF</a></li>
+<li>Gáspár Nagy and Seb Rose — <a href="https://bddbooks.com/">The BDD Books</a>: <em>Discovery</em> and <em>Formulation</em>, with Japanese editions on Leanpub</li>
+<li><a href="https://school.cucumber.io/">Cucumber School</a> — the courses, free and paid</li>
+<li><a href="https://opencollective.com/cucumber">Cucumber on Open Collective</a> — where the maintainers are funded</li>
+</ul>
+<p>If livt saved your team an argument it had already had, some of that is theirs.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="installation"><a class="header" href="#installation">Installation</a></h1>
+<p>livt ships as a single static binary. Every release is built by the
+<a href="https://github.com/boykush/livt/blob/main/.github/workflows/release.yml">release workflow</a>
+on GitHub Actions, and every artifact is:</p>
+<ul>
+<li>listed in <code>checksums.txt</code> (SHA-256)</li>
+<li>signed with a <a href="https://github.com/boykush/livt/attestations">GitHub artifact attestation</a>
+(Sigstore build provenance) tying it to the exact source commit and workflow run</li>
+<li>built from the module as served by the Go module proxy and verified against the
+<a href="https://sum.golang.org/">Go checksum database</a>, so the binaries can be
+reproduced from the public source</li>
+</ul>
+<p>Pick the method that matches how much of that verification you want automated.</p>
+<h2 id="mise-recommended"><a class="header" href="#mise-recommended">mise (recommended)</a></h2>
+<p>The <a href="https://mise.jdx.dev/dev-tools/backends/github.html">mise <code>github</code> backend</a>
+downloads the release binary and verifies its build provenance attestation by
+default — a tampered or foreign-built asset fails to install.</p>
+<pre><code class="language-bash">mise use "github:boykush/livt@&lt;version&gt;"
+</code></pre>
+<p>Or in <code>mise.toml</code>:</p>
+<pre><code class="language-toml">[settings]
+lockfile = true # pin checksum + provenance in mise.lock
+
+[tools]
+"github:boykush/livt" = "&lt;version&gt;"
+</code></pre>
+<p>With <a href="https://mise.jdx.dev/dev-tools/mise-lock.html"><code>lockfile = true</code></a>, the
+asset checksum and attestation provenance are recorded in <code>mise.lock</code>, so
+later installs — on CI or a teammate’s machine — must match bit-for-bit.</p>
+<h2 id="manual-download"><a class="header" href="#manual-download">Manual download</a></h2>
+<p>Download the archive for your platform and <code>checksums.txt</code> from
+<a href="https://github.com/boykush/livt/releases">GitHub Releases</a>, then verify
+before running:</p>
+<pre><code class="language-bash"># Provenance: proves the artifact was built by this repository's release
+# workflow on GitHub Actions (requires the GitHub CLI)
+gh attestation verify livt_&lt;version&gt;_&lt;os&gt;_&lt;arch&gt;.tar.gz --repo boykush/livt
+
+# Integrity: check the SHA-256 checksum (macOS: shasum -a 256 -c)
+sha256sum --check --ignore-missing checksums.txt
+
+tar -xzf livt_&lt;version&gt;_&lt;os&gt;_&lt;arch&gt;.tar.gz
+install livt ~/.local/bin/ # or anywhere on your PATH
+</code></pre>
+<h2 id="build-from-source"><a class="header" href="#build-from-source">Build from source</a></h2>
+<p>Source installs are verified by the Go checksum database: everyone gets
+byte-identical source for a given version, and a silently re-pushed tag is
+rejected. Pin a release version rather than <code>latest</code> so installs stay
+reproducible.</p>
+<pre><code class="language-bash">go install github.com/boykush/livt@&lt;version&gt;
+</code></pre>
+<p>Or with the <a href="https://mise.jdx.dev/dev-tools/backends/go.html">mise <code>go</code> backend</a>
+(requires Go on your PATH):</p>
+<pre><code class="language-bash">mise use "go:github.com/boykush/livt@&lt;version&gt;"
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="getting-started"><a class="header" href="#getting-started">Getting Started</a></h1>
+<h2 id="installation-1"><a class="header" href="#installation-1">Installation</a></h2>
+<p>Install with <a href="https://mise.jdx.dev/">mise</a>, which verifies the release binary’s build provenance attestation by default:</p>
+<pre><code class="language-bash">mise use "github:boykush/livt@&lt;version&gt;"
+</code></pre>
+<p>See <a href="#installation">Installation</a> for all methods and how release artifacts are verified.</p>
+<h2 id="quick-start"><a class="header" href="#quick-start">Quick Start</a></h2>
+<ol>
+<li>Create the required directories:</li>
+</ol>
+<pre><code class="language-bash">mkdir -p stories discoveries/usm discoveries/example-mappings ubiquitous
+</code></pre>
+<ol start="2">
+<li>Create your first story in <code>stories/my-first-story.md</code>:</li>
+</ol>
+<pre><code class="language-markdown">---
+name: My first story
+---
+
+As a user
+I want to do something
+So that I get value
+</code></pre>
+<ol start="3">
+<li>Build and serve:</li>
+</ol>
+<pre><code class="language-bash">livt serve
+</code></pre>
+<ol start="4">
+<li>Open <a href="http://localhost:3000">http://localhost:3000</a> in your browser. Every page has a sidebar to
+switch between Example Mappings, Story Maps, Stories, and Ubiquitous Language.
+Open <strong>Stories</strong> to find the story you just created:</li>
+</ol>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/stories-index.png" alt="Stories list and sidebar navigation"><span class="img-wrapper"><img src="images/stories-index.png" alt="Stories list and sidebar navigation"></span></label></p>
+<p>The site is rendered in English by default. To read it in Japanese instead, add
+<code>livt.yaml</code> beside your <code>stories/</code> directory:</p>
+<pre><code class="language-yaml">lang: ja
+</code></pre>
+<p><code>livt serve</code> watches the file, so the open page reloads in the new language.
+Only the labels livt renders change — your stories, rules and terms are shown as
+you wrote them. See <a href="#configuration">Configuration</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="opportunities-1"><a class="header" href="#opportunities-1">Opportunities</a></h1>
+<p>An <strong>opportunity</strong> is something the product could take on: a user problem
+together with the business benefit of solving it, held as one unit of
+consideration. It is what a story map is <em>for</em> — you decide whether to pursue an
+opportunity before you map the journey that serves it.</p>
+<p>Opportunities are Markdown files with YAML frontmatter, stored in the
+<code>opportunities/</code> directory. Their canvases are YAML files stored in
+<code>discoveries/opportunity-canvases/</code>.</p>
+<h2 id="format"><a class="header" href="#format">Format</a></h2>
+<pre><code class="language-markdown">---
+name: Opportunity display name
+---
+
+Whose problem this is, and what the business gets from solving it.
+</code></pre>
+<p>The <code>name</code> field is a short label — it is what the filter chips and the
+navigation show. The <strong>body is the opportunity itself</strong>: the sentence saying
+whose problem it is and what solving it is worth. This is the same split a
+<a href="#stories">story</a> makes between its name and its narrative, and it is there
+for the same reason — a label fits on a card, a statement does not.</p>
+<p>Name the <strong>opportunity</strong>, not the subject area it sits in. “Collaborative
+discovery” names a topic; “stale discovery” names something you could decide to
+fix. The topic already has a home — it is what the
+<a href="#story-maps">story map</a> is called, and a map and its opportunity are free to
+carry different names precisely because they answer different questions: the map
+says which journey was drawn, the opportunity says why anyone drew it.</p>
+<p>The <strong>opportunity key</strong> is derived from the filename (without <code>.md</code>), and must
+be kebab-case. Key uniqueness is enforced by the filesystem.</p>
+<h2 id="example"><a class="header" href="#example">Example</a></h2>
+<p><code>opportunities/collaborative-discovery.md</code>:</p>
+<pre><code class="language-markdown">---
+name: Stale discovery
+repos:
+  - boykush/livt
+---
+
+Discovery outcomes sit in the board tool and go stale. The raw record is rough, and
+nothing versions it or checks it for consistency. Recording it, and keeping it
+updated as rules change, saves re-running the same argument and lets the outcome
+stand as the specification.
+</code></pre>
+<p>Any frontmatter field beyond <code>name</code> is kept and shown as metadata, and a field
+whose value is a URL renders as a link — the same treatment story frontmatter gets.</p>
+<h2 id="the-opportunity-canvas"><a class="header" href="#the-opportunity-canvas">The opportunity canvas</a></h2>
+<p>The <a href="https://jpattonassociates.com/opportunity-canvas/">Opportunity Canvas</a> holds
+an opportunity on a single sheet. It is a discovery session’s outcome, so it
+lives in <code>discoveries/</code> beside the story maps and example mappings, and it joins
+its opportunity <strong>by filename</strong>:</p>
+<pre><code>opportunities/collaborative-discovery.md                        # the opportunity
+discoveries/opportunity-canvases/collaborative-discovery.yaml   # its canvas
+</code></pre>
+<p>This is the same filename join an <a href="#example-mappings">example mapping</a> makes
+with its story, and it carries the same meaning: either file can exist without
+the other. An opportunity with no canvas has not been thought through yet; a
+canvas with no opportunity file still renders.</p>
+<h3 id="format-1"><a class="header" href="#format-1">Format</a></h3>
+<pre><code class="language-yaml">canvas:
+  solution-ideas:
+    - A specific product, feature, or enhancement idea
+  problems:
+    - A problem users have today
+  users-and-customers:
+    - Who has that problem
+  solutions-today:
+    - How they address it now
+  business-challenges:
+    - What those problems cost the business
+  user-value:
+    - What users will do with the solution
+  user-metrics:
+    - What you could measure to show they did it
+  adoption-strategy:
+    - How they discover and adopt it
+  business-impact:
+    - Which business metrics move
+  budget:
+    - What you would spend to find out
+
+ubiquitous:
+  - term-key
+</code></pre>
+<p>Every box is a <strong>list</strong>, because a box on a canvas holds sticky notes rather
+than a paragraph. Keeping them apart is what lets the board render one card per
+idea, the way it sat in the room.</p>
+<p>Every key is optional. A box left out renders as an empty box on the sheet
+rather than disappearing from it — a blank box is the visible record of a
+question the opportunity has not answered yet, and that is worth seeing.</p>
+<p><code>ubiquitous</code> is optional and works exactly as it does on the other boards: each
+entry is a <a href="#ubiquitous-language-1">ubiquitous language</a> term key, rendered as
+a pink sticky below the sheet.</p>
+<h3 id="the-ten-boxes"><a class="header" href="#the-ten-boxes">The ten boxes</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>YAML key</th><th>Box</th><th>Zone</th></tr>
+</thead>
+<tbody>
+<tr><td><code>solution-ideas</code></td><td>1. Solution Ideas</td><td>Solution</td></tr>
+<tr><td><code>problems</code></td><td>2. Problems</td><td>Verifiable facts</td></tr>
+<tr><td><code>users-and-customers</code></td><td>3. Users and Customers</td><td>Verifiable facts</td></tr>
+<tr><td><code>solutions-today</code></td><td>4. Solutions Today</td><td>Verifiable facts</td></tr>
+<tr><td><code>business-challenges</code></td><td>5. Business Challenges</td><td>Verifiable facts</td></tr>
+<tr><td><code>user-value</code></td><td>6. What Will Users Do To Get Value?</td><td>Assumptions about value</td></tr>
+<tr><td><code>user-metrics</code></td><td>7. User Metrics</td><td>Assumptions about value</td></tr>
+<tr><td><code>adoption-strategy</code></td><td>8. Adoption Strategy</td><td>Assumptions about value</td></tr>
+<tr><td><code>business-impact</code></td><td>9. Business Impact</td><td>Assumptions about value</td></tr>
+<tr><td><code>budget</code></td><td>10. Budget</td><td>Solution</td></tr>
+</tbody>
+</table>
+</div>
+<p>The numbers are the order Jeff Patton recommends filling the boxes in. The
+<strong>zones</strong> are how the sheet is laid out, which is a different thing: the facts
+on the left, the solution down the middle, the assumptions about value on the
+right. Reading the sheet left to right walks back from the idea to the problem
+it solves, then forward to the value it would create.</p>
+<p>The split is the point of the canvas — what you can go and check sits apart from
+what you are only assuming until the thing ships.</p>
+<h2 id="linking-a-story-map"><a class="header" href="#linking-a-story-map">Linking a story map</a></h2>
+<p>A story map serves an opportunity when its <strong>filename key matches</strong>:</p>
+<pre><code>opportunities/collaborative-discovery.md          # the opportunity
+discoveries/usm/collaborative-discovery.yaml      # the journey mapped for it
+</code></pre>
+<p>No field connects them; the filename does, as everywhere else in livt. When the
+two match:</p>
+<ul>
+<li>The story map board and the opportunity’s page link to each other</li>
+<li>Every story on that map carries the <strong>opportunity’s</strong> name on its chip, and the
+chip links to the opportunity’s page</li>
+<li>The Stories, Example Mappings, and Tasks lists filter on that name</li>
+</ul>
+<p>A story map whose key names no opportunity file keeps working exactly as it did
+before opportunities were files of their own: the map stands in as its own
+opportunity, named by the map. Nothing has to be migrated.</p>
+<h2 id="the-opportunity-dashboard"><a class="header" href="#the-opportunity-dashboard">The opportunity dashboard</a></h2>
+<p>How far an opportunity has been taken is a <strong>page of its own</strong>, linked from the
+opportunity under Related:</p>
+<pre><code>opportunity/collaborative-discovery.html               # what the opportunity is
+opportunity-progress/collaborative-discovery.html      # how far it has got
+</code></pre>
+<p>This is the same split the canvas makes, for the same reason: what an
+opportunity <em>is</em> reads the same on every visit, and the progress is the part
+that changes. Mixing them would put a figure that moves weekly above a statement
+that has not moved since the opportunity was framed. An opportunity with no
+story map has no progress to read, so it gets no page and links to none.</p>
+<h3 id="four-meters-in-two-groups"><a class="header" href="#four-meters-in-two-groups">Four meters, in two groups</a></h3>
+<p>The page leads with four, each drawn as a share of the whole it belongs to — a
+bare <code>2</code> does not say whether a board is nearly agreed, and a filled bar does.
+They stand in two groups, split by <strong>which way the count is meant to move</strong>, the
+way a burn-up chart and a burn-down chart split the same numbers:</p>
+<p><strong>Burn-up</strong> — counts that climb to the whole:</p>
+<ul>
+<li><strong>Stories through an example mapping</strong> — of the stories its maps hang under
+the backbone, how many have had their conversation</li>
+</ul>
+<p><strong>Burn-down</strong> — counts that fall to zero:</p>
+<ul>
+<li><strong>Un-automated rules</strong> — how many of its rules are waiting for a test</li>
+<li><strong>Proposed rules</strong> — how many are waiting for an agreement</li>
+<li><strong>Open questions</strong> — against every question its boards have asked, settled
+ones included</li>
+</ul>
+<p>A fraction over a whole does not say which of the two it is: <code>2/3</code> stories
+mapped is two-thirds of the way there, and <code>1/3</code> rules un-automated is one-third
+still to go, and in one grid the two bars look alike while meaning the opposite.
+The group heading names the direction, and each meter repeats it with an arrow
+beside its fraction, so a card read on its own still says whether half full is
+half way there or half way still to go. Both grids share one column width, so
+the bars stay comparable across the split as well as within it.</p>
+<p>Each gets a meter of its own rather than becoming a segment of another’s. The
+rule figures do share a denominator, and one stacked bar would say that
+arithmetic — but what <em>closes</em> each of them differs (a test, an agreement, a
+conversation), and a segment inside someone else’s bar is not a thing anyone can
+go and do. They are counted the way the <a href="#file-structure">Tasks page</a>
+splits them, so a proposal is never also counted as something waiting for a test.</p>
+<p><strong>What is automated has no meter.</strong> The breakdown below already says it, slice by
+slice and story by story, and says <em>where</em> — a figure at the top that only
+restates the section under it costs a glance and settles nothing. It was also the
+one meter with nowhere to lead, since no page on the site lists automated rules.
+The tiles on the Opportunities list do carry it, because a tile has no room for a
+breakdown and one number is all it can offer.</p>
+<h3 id="stories-in-their-release-slices"><a class="header" href="#stories-in-their-release-slices">Stories, in their release slices</a></h3>
+<p>Below the gauges the stories are grouped by the <strong>release slice</strong> their map puts
+them in, in the map’s declared order, with the stories it left unscoped last.
+Each slice carries its own coverage, because that is the number the next release
+turns on rather than the opportunity’s. A map that declares no release leaves
+one unnamed group holding every story, and that group gets no heading — a lone
+“no release” row would name a distinction the map never drew.</p>
+<p>Each row draws its own coverage bar beside the fraction — the fraction alone does
+not say that 4/5 and 19/20 are the same measure the meters take, and bars do. The
+column is named once, at the head of the section, <strong>with the bars’ own colour
+beside the name</strong>: a label in the corner says what the section is, but the swatch
+is what tells a reader that the blue bar three rows down is the thing being
+named. A story with no example mapping says so in words rather than showing
+<code>0/0</code>, which would read as a conversation that found no rules.</p>
+<h3 id="what-the-figures-link-to"><a class="header" href="#what-the-figures-link-to">What the figures link to</a></h3>
+<p>One link sits at page level, beside the subtitle: the opportunity’s own <strong>Example
+Mappings</strong>, narrowed to it. It hangs off no meter, because a reader who came to
+read the boards is not answering a figure, and hanging it under one would turn it
+into a claim about that count.</p>
+<p>Each meter then carries <strong>one link, in its footer</strong>, set below a hairline in the site’s
+link colour and naming the page it leads to. It is the only thing on the card
+that navigates: a figure that looks like it leads somewhere, paired with a link
+that does not look like one, is what a dashboard cannot afford. A story row opens
+its example mapping, or the story’s card until there is one.</p>
+<p>Every destination is a page that already renders what the meter counted, and it
+arrives <strong>at the list it counted</strong> — the Tasks page keeps three, and landing on
+the first leaves the reader to find the other two — narrowed to this opportunity
+through the same filter those lists already carry. Nothing here is a second copy
+of them.</p>
+<p>Retired rules are counted in neither gauge, the same way the Tasks page and the
+sidebar badge leave them out: a rule the board has closed is not spec anyone is
+waiting on. A retired question is counted only in the <em>whole</em> an open question is
+measured against — a question that has been settled is part of the record of how
+much the boards have worked through.</p>
+<h2 id="where-opportunities-sit"><a class="header" href="#where-opportunities-sit">Where opportunities sit</a></h2>
+<pre><code>Opportunity  ──▶  Story Map  ──▶  Story  ──▶  Example Mapping
+   why, and         the journey     what one     how it must
+   whether at all   that serves it  person does  behave
+</code></pre>
+<p>An opportunity is deliberately allowed to sit alone. One with no story map is
+one that has not been taken on — still a candidate, or decided against. livt
+records no status for this: whether the map exists <strong>is</strong> the record, the same
+way a rule counts as automated because a test says so and not because livt
+worked it out.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="stories"><a class="header" href="#stories">Stories</a></h1>
+<p>Stories are Markdown files with YAML frontmatter, stored in the <code>stories/</code> directory.
+The <code>stories/</code> directory is the story registry: once a story candidate’s card is written for detailed discovery, its key is owned by <code>stories/{story-key}.md</code>.</p>
+<h2 id="format-2"><a class="header" href="#format-2">Format</a></h2>
+<pre><code class="language-markdown">---
+name: Story display name
+---
+
+Story body in Markdown.
+</code></pre>
+<p>The <code>name</code> field in frontmatter is required. The <strong>story key</strong> is derived from the filename (without <code>.md</code>).
+Story keys must be kebab-case, using lowercase letters, numbers, and hyphens.
+Key uniqueness is enforced by the filesystem: two stories cannot use the same <code>stories/{story-key}.md</code> path.</p>
+<h2 id="example-1"><a class="header" href="#example-1">Example</a></h2>
+<p><code>stories/confirm-story-map.md</code>:</p>
+<pre><code class="language-markdown">---
+name: Confirm story map
+---
+
+As a team member
+I want to view the story map as a board
+So that I can visually confirm the discovery outcomes maintained in text
+</code></pre>
+<p>This story has key <code>confirm-story-map</code>, which is used to reference it from story maps and example mappings.</p>
+<h2 id="writing-the-card-from-a-story-map"><a class="header" href="#writing-the-card-from-a-story-map">Writing the card from a story map</a></h2>
+<p>A story’s file is its card — the Card of the three Cs, written when a candidate on a story map is
+picked for its own Example Mapping. Writing it is handled by the <code>/write-story-card</code> skill (from the
+<code>livt-discovery</code> plugin), rather than a CLI command. Given the story map and the candidate, it creates
+<code>stories/{story-key}.md</code> first and then writes the same <code>key</code> back to the matching candidate in the
+story map.</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/story-detail.png" alt="Story detail page"><span class="img-wrapper"><img src="images/story-detail.png" alt="Story detail page"></span></label></p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="story-maps"><a class="header" href="#story-maps">Story Maps</a></h1>
+<p>Story maps are YAML files stored in <code>discoveries/usm/</code>. They define the structure of a User Story Map with activities, user tasks, stories, and release slices.
+The <code>steps:</code> field holds the user tasks — the field keeps livt’s own name, the boards use Patton’s.</p>
+<p>A map’s <strong>filename</strong> names the <a href="#opportunities-1">opportunity</a> it serves: a map whose key matches an <code>opportunities/{key}.md</code> is the journey mapped for that opportunity, and every story on it carries that opportunity’s chip. A map whose key matches no opportunity stands in as its own, named by the map — see <a href="#linking-a-story-map">Linking a story map</a>. The map’s <code>name:</code> stays its own display name either way, and is what addresses it.</p>
+<h2 id="format-3"><a class="header" href="#format-3">Format</a></h2>
+<pre><code class="language-yaml">name: Map Name
+
+activities:
+  - key: activity-key
+    name: Activity Name
+    steps:
+      - key: step-key
+        name: Step Name
+        stories:
+          - key: story-key
+            name: Story Card Name
+            release: release-id
+          - name: Lightweight Story Card
+
+releases:
+  - id: release-id
+    name: Release Name
+
+ubiquitous:
+  - term-key
+</code></pre>
+<h2 id="ubiquitous-language"><a class="header" href="#ubiquitous-language">Ubiquitous Language</a></h2>
+<ul>
+<li><code>ubiquitous</code> is optional: each entry is a <a href="#ubiquitous-language-1">ubiquitous language</a> term key</li>
+<li>Referenced terms render as pink stickies below the board, linking to <code>ubiquitous.html#{term-key}</code></li>
+<li>A key with no matching term file renders as a plain pink card</li>
+</ul>
+<h2 id="releases"><a class="header" href="#releases">Releases</a></h2>
+<ul>
+<li>Each release defines a horizontal divider on the board</li>
+<li>Each release has an <code>id</code> that story cards reference with <code>release</code></li>
+<li>Stories with a <code>release</code> appear above that release’s divider</li>
+<li>A release without <code>name</code> defaults to “Release N” based on position</li>
+<li>Stories not in any release appear below all dividers</li>
+<li>Story cards without <code>key</code> appear as plain cards and can still belong to a release</li>
+<li>A story can reference only one release</li>
+</ul>
+<h2 id="example-2"><a class="header" href="#example-2">Example</a></h2>
+<p><code>discoveries/usm/collaborative-discovery.yaml</code>:</p>
+<pre><code class="language-yaml">name: Collaborative Discovery
+
+activities:
+  - key: story-mapping
+    name: Story Mapping
+    steps:
+      - key: discover-stories
+        name: Discover stories
+        stories:
+          - key: confirm-story-context
+            name: Confirm story context
+            release: walking-skeleton
+          - key: confirm-story-map
+            name: Confirm story map
+            release: walking-skeleton
+          - name: Draft session outcomes
+      - key: slice-releases
+        name: Slice into releases
+        stories:
+          - key: split-release-scope
+            name: Split release scope
+            release: release-2
+
+  - key: discovery
+    name: Discovery
+    steps:
+      - key: discover-rules
+        name: Discover rules
+        stories:
+          - key: confirm-discovery-outcomes
+            name: Confirm discovery outcomes
+            release: walking-skeleton
+
+releases:
+  - id: walking-skeleton
+    name: Walking Skeleton
+  - id: release-2
+</code></pre>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/story-map.png" alt="Story map board"><span class="img-wrapper"><img src="images/story-map.png" alt="Story map board"></span></label></p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="example-mappings"><a class="header" href="#example-mappings">Example Mappings</a></h1>
+<p>Example mappings are YAML files stored in <code>discoveries/example-mappings/</code>. They capture the rules, examples, and questions discovered during an Example Mapping session for a story. The format is <a href="https://cucumber.io/blog/bdd/example-mapping-introduction/">Matt Wynne’s</a>; what livt adds to it, and where it departs, is <a href="#livt-and-bdd">livt and BDD</a>.</p>
+<h2 id="format-4"><a class="header" href="#format-4">Format</a></h2>
+<pre><code class="language-yaml">name: Mapping name
+
+rules:
+  - id: R-01
+    name: Rule description
+    examples:
+      - id: EX-01
+        name: Example description
+    issues:
+      - https://github.com/owner/repo/issues/1
+  - id: R-02
+    name: Rule the spec no longer asks for
+    status: retired
+    superseded_by:
+      - livt://mapping/story-key/rule/R-03
+  - id: R-03
+    name: Rule put forward, not yet agreed
+    status: proposed
+
+questions:
+  - id: Q-01
+    text: Question text
+
+ubiquitous:
+  - term-key
+</code></pre>
+<ul>
+<li>The filename is the story key: <code>{story-key}.yaml</code> maps the story in <code>stories/{story-key}.md</code>, and the board links to that story’s page when there is one</li>
+<li><code>name</code> is optional: the mapping’s own name. The board, its overview tile, the Tasks page, and the diff call the mapping by it, falling back to the story’s name and then to the key. livt reads it apart from the story’s <code>name</code> and never compares the two; keeping them the same where both are written is left to whoever writes them, which the <a href="https://github.com/boykush/livt/tree/main/plugins/livt-discovery">livt-discovery skills</a> do. See <a href="#a-mapping-without-a-story">A mapping without a story</a></li>
+<li>IDs must be unique within their rule or question list</li>
+<li><code>ubiquitous</code> is optional: each entry is a <a href="#ubiquitous-language-1">ubiquitous language</a> term key, rendered as a pink sticky linking to <code>ubiquitous.html#{term-key}</code>. A key with no matching term file renders as a plain pink card.</li>
+<li><code>issues</code> is optional: the rule’s automation Issue URLs on implementation repos (Issue URLs only). The livt repository records the links; their state lives at the URL target. A rule without <code>issues</code> is unlinked.</li>
+<li>Whether a rule is automated is not a field. The tests that automate it say so, and livt reads it from them — see <a href="#automating-a-rule">Automating a rule</a>.</li>
+<li><code>status</code> is optional and applies to a rule: <code>proposed</code> while the rule is put forward but not yet agreed, <code>accepted</code> once it is, <code>rejected</code> when the proposal was turned down, <code>retired</code> when spec it once was stopped holding. Absent means accepted, and any other value fails the build. See <a href="#proposing-a-rule">Proposing a rule</a>.</li>
+<li><code>retired</code> is optional and applies to an example or a question: it records that the item is no longer part of the spec. Absent means live. It is not a rule field — a rule closes through <code>status</code>; see <a href="#retiring-an-item">Retiring an item</a>.</li>
+<li><code>superseded_by</code> is optional and goes with a closed rule or a retired example or question: the <a href="#livt-uri">livt URIs</a> of whatever took its place. Absent means nothing did.</li>
+</ul>
+<h2 id="a-mapping-without-a-story"><a class="header" href="#a-mapping-without-a-story">A mapping without a story</a></h2>
+<p>Not every mapping starts from a story card. A bug fix whose expected behaviour is already clear can go straight to the rule it broke and an example that reproduces it, and from there into a failing test. Such a mapping is a file with no <code>stories/{story-key}.md</code> beside it:</p>
+<pre><code class="language-yaml">name: Login rejects a password with a full-width space
+
+rules:
+  - id: R-01
+    name: A password is compared exactly as it was typed
+    examples:
+      - id: EX-01
+        name: A password starting with a full-width space logs in
+</code></pre>
+<p>Give it a <code>name</code>: without one, the board is called by its key. Otherwise it is a mapping like any other — it renders, lists on the Tasks page, diffs, and resolves by livt URI. What it lacks is a story page to link to and, since a mapping reaches its opportunities through its story, any opportunity to be filtered under. An agent finds it through the MCP server’s <code>list_example_mappings</code>, which lists every mapping, story or not.</p>
+<h2 id="proposing-a-rule"><a class="header" href="#proposing-a-rule">Proposing a rule</a></h2>
+<p>A rule can go on the board before it is agreed. <code>status: proposed</code> marks it as put forward and awaiting agreement, and from there it moves on the way an <a href="https://adr.github.io/">architecture decision record</a> does:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>ADR status</th><th>In an example mapping</th></tr>
+</thead>
+<tbody>
+<tr><td>Proposed</td><td><code>status: proposed</code></td></tr>
+<tr><td>Accepted</td><td><code>status: accepted</code>, or no <code>status</code> at all</td></tr>
+<tr><td>Rejected</td><td><code>status: rejected</code></td></tr>
+<tr><td>Deprecated</td><td><code>status: retired</code></td></tr>
+<tr><td>Superseded</td><td><code>status: retired</code> with <a href="#saying-where-the-spec-went"><code>superseded_by</code></a></td></tr>
+</tbody>
+</table>
+</div>
+<ul>
+<li><strong>A proposal is a candidate answer.</strong> A Question card records what the team does not know yet; a proposed rule puts one answer on the table, examples and all, for the team to agree to or turn down.</li>
+<li><strong>Accepting it is a one-line diff.</strong> <code>proposed</code> becomes <code>accepted</code>, and that line is what the review approves.</li>
+<li><strong>Rejecting it is a one-line diff too.</strong> <code>proposed</code> becomes <code>rejected</code>. Its ID stays taken like any closed rule’s, and the record reads as a proposal that never became spec rather than as a rule dropped later — the distinction a bare retirement flag could not draw.</li>
+<li><strong>Absent means accepted.</strong> Every rule written before the field existed was agreed when it went on the board, so an existing mapping reads as it always has.</li>
+</ul>
+<p>A proposed rule stays on the board, drawn pale with a dashed edge and stamped <em>proposed</em>, and its examples are drawn pale with it. The <a href="#file-structure">Tasks page</a> lists it under Proposed Rules — it closes by agreement, not by a test — and never under Un-automated Rules, even once a test covers it. The MCP server and <code>livt resolve</code> return <code>status</code> on every rule, so an agent choosing what to automate takes the <code>accepted</code> ones and passes over the rest without knowing the default.</p>
+<h2 id="automating-a-rule"><a class="header" href="#automating-a-rule">Automating a rule</a></h2>
+<p>A mapping does not record whether a rule is automated. The tests do: a test in an implementation repository that automates a rule says so on a comment line above itself, with the <code>livt:automates</code> marker and the rule’s <a href="#livt-uri">livt URI</a>.</p>
+<pre><code class="language-go">// livt:automates livt://mapping/{story-key}/rule/{rule-id}
+func TestAnExpiredCardIsRejected(t *testing.T) {
+</code></pre>
+<p>The comment syntax is whatever the test’s language uses; livt looks only for the marker and the URI. <a href="#livt-automations"><code>livt automations</code></a> collects every marked line in the implementation repository into a report, which goes back to the livt repository as a pull request and lands under <code>automations/</code>. livt reads the reports there, and a rule is automated when one of them cites it.</p>
+<ul>
+<li><strong>The test is the record.</strong> Which tests cover a rule is the implementation’s state, not a decision, so the mapping does not keep it. A citation is written beside the test that makes it true and read again from that test each time the report is collected, so the mapping has nothing to keep in step by hand.</li>
+<li><strong>A rule and its examples are cited separately.</strong> An example is cited by its own URI, <code>livt://mapping/{story-key}/rule/{rule-id}/example/{example-id}</code>, and that automates the example alone: a rule whose examples are all cited is still not automated until a test cites the rule itself. The test’s author already said which one they meant, and livt does not infer the other.</li>
+<li><strong>One marker, one URI, one line.</strong> A test that automates several points writes a line for each. A line with anything after its URI is not collected: <code>livt automations</code> names it and exits non-zero rather than dropping it in silence.</li>
+<li><strong>Without the marker, a URI is a reference.</strong> Code quotes the spec for context too, so a livt URI in a comment counts as automation only when the marker comes before it.</li>
+<li><strong>A citation names the rule, not its wording.</strong> Reword a rule and the tests citing it go on counting, so it keeps reading as automated until they catch up. Nothing unsets that for you: say so in the commit that changes the rule, where the review will see it.</li>
+<li><strong>Filing is not automating.</strong> <a href="#format-4"><code>issues</code></a> link the work to automate a rule; filing one, or closing it, changes nothing here.</li>
+</ul>
+<p>On the board, a rule or an example that a test cites is stamped ✓ <em>automated</em> on its own sticky, and lists its citations: the repository, file and line of each, linked to that line on the forge when livt could build the link. The <a href="#file-structure">Tasks page</a> lists every accepted rule that no report cites under Un-automated Rules. Neither says whether the tests pass — livt runs no tests, and shows what a test claims without deciding whether the claim is true.</p>
+<p>Setting this up in an implementation repository — the CI step that collects the report and opens its pull request — is covered by the <a href="https://github.com/boykush/livt/blob/main/plugins/livt-automation/README.md#sending-automations-back">livt-automation plugin</a>.</p>
+<p><code>automated: true</code> on a rule once recorded all of this as a judgment written into the mapping. It is not read any more: a rule still carrying that line is automated only once a report cites it. Delete the line, and cite the rule from the test that automates it.</p>
+<h2 id="retiring-an-item"><a class="header" href="#retiring-an-item">Retiring an item</a></h2>
+<p>A rule that no longer holds takes a closed <code>status</code> — <code>rejected</code> or <code>retired</code>; an example or a question that no longer holds is marked <code>retired: true</code>. Neither is deleted, and neither is commented out:</p>
+<ul>
+<li><strong>Deleting frees the ID.</strong> With <code>R-01</code>/<code>R-02</code>/<code>R-03</code> on file, deleting <code>R-03</code> makes <code>R-02</code> the highest, so the next rule takes <code>R-03</code> back. A <code>livt://mapping/{story-key}/rule/R-03</code> reference already quoted in an Issue or a test comment then resolves to a <em>different</em> rule instead of failing — the quietest way for a reference to break. Retired items keep their IDs taken: new IDs are numbered from the max including them.</li>
+<li><strong>Commenting out loses the record.</strong> A comment is not part of the YAML structure, so any tool that rewrites the file drops it. Both spellings are fields and survive.</li>
+</ul>
+<p>A closed item stays readable in the file and still resolves by its livt URI, saying so the way it does in the YAML — a rule through its <code>status</code>, an example or a question through <code>retired: true</code>. It leaves the board and the <a href="#file-structure">Tasks page</a>: a retired question is not an open question, and a retired rule is not waiting for a test.</p>
+<p><code>retired: true</code> on a <strong>rule</strong> was once the spelling for both closed statuses, folded onto <code>status</code> as the mapping was read. It is not read any more: a rule still carrying that line is a rule with no <code>status</code>, which means accepted — back on the board, and back on the Tasks page. Write <code>status: retired</code> instead, or <code>status: rejected</code> where the rule was a proposal that was turned down.</p>
+<h3 id="saying-where-the-spec-went"><a class="header" href="#saying-where-the-spec-went">Saying where the spec went</a></h3>
+<p>Retirement alone tells a reference it has stopped, not where to go. <code>superseded_by</code> adds that half — the livt URIs of whatever took the item’s place:</p>
+<pre><code class="language-yaml">rules:
+  - id: R-02
+    name: Rule the spec no longer asks for
+    status: retired
+    superseded_by:
+      - livt://mapping/story-key/rule/R-05
+      - livt://mapping/another-story/rule/R-01
+
+questions:
+  - id: Q-01
+    text: Question that turned into a rule
+    retired: true
+    superseded_by:
+      - livt://mapping/story-key/rule/R-05
+</code></pre>
+<ul>
+<li><strong>It is a list</strong>, so a rule that split into two names both.</li>
+<li><strong>It holds livt URIs, not bare ids.</strong> A successor can live in another mapping — the rule moved to the story that actually owns it — and <code>R-05</code> on its own names nothing, since ids restart in every mapping.</li>
+<li><strong>A settled question points at the rule that settled it.</strong> The answer lands as a rule; the Question card never carries one.</li>
+<li><strong>Nothing replaced it?</strong> Leave <code>superseded_by</code> off. Plenty of retirements are just the business no longer asking.</li>
+</ul>
+<p>Only the pointer is structured. <em>Why</em> the item was retired belongs to the commit that retired it, where it is written once and cannot drift — a second copy in the YAML would. Tooling reads the pointer back as URIs and stops there: the successor is one read away for whoever needs it, and inlining its text would spend a consumer’s context on a hop most of them never take.</p>
+<h2 id="visual-layout"><a class="header" href="#visual-layout">Visual Layout</a></h2>
+<p>The board renders cards in the <a href="https://cucumber.io/blog/bdd/example-mapping-introduction/">Example Mapping</a> format:</p>
+<ul>
+<li><strong>Yellow</strong> card: Story (top), reading the mapping’s <code>name</code> when it has one and the story’s otherwise; it links to the story page when there is one</li>
+<li><strong>Blue</strong> cards: Rules (row below story)</li>
+<li><strong>Pale blue, dashed</strong> cards: Proposed rules, stamped <em>proposed</em>; their examples are drawn pale too</li>
+<li><strong>Green</strong> cards: Examples (stacked under their rule)</li>
+<li><strong>Red</strong> cards: Questions (separate column)</li>
+<li><strong>Pink</strong> cards: Ubiquitous language terms (referenced via <code>ubiquitous</code>, below the board)</li>
+</ul>
+<h3 id="reading-it-back-as-a-list"><a class="header" href="#reading-it-back-as-a-list">Reading it back as a list</a></h3>
+<p>The board keeps the layout the session left on the wall. To read a mapping back later, switch it to <strong>List</strong> with the toggle above it:</p>
+<ul>
+<li>Each rule is one row: its ID, name, automated mark and citations, and issue links, with the number of examples folded under it</li>
+<li>Examples fold under their rule. Click a row to open it</li>
+<li>Questions follow the rules, one row each</li>
+</ul>
+<p>The choice is remembered in the browser, so the next mapping you open is shown the same way; the previews on the overview page stay boards. A link to a sticky lands on it in either view — a link to a folded example opens its rule first.</p>
+<h2 id="example-3"><a class="header" href="#example-3">Example</a></h2>
+<p><code>discoveries/example-mappings/confirm-discovery-outcomes.yaml</code>:</p>
+<pre><code class="language-yaml">rules:
+  - id: R-01
+    name: An example mapping can be rendered as a sticky view with only a story reference
+    examples:
+      - id: EX-01
+        name: A YAML with only a story reference displays a single yellow Story card
+
+  - id: R-02
+    name: Cards are laid out following the Example Mapping format
+    examples:
+      - id: EX-01
+        name: Rules are displayed as blue cards in a row below the Story card
+      - id: EX-02
+        name: Examples are displayed as green cards stacked under their Rule
+      - id: EX-03
+        name: Questions are displayed as red cards in a separate column
+
+questions: []
+</code></pre>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/example-mapping.png" alt="Example mapping board"><span class="img-wrapper"><img src="images/example-mapping.png" alt="Example mapping board"></span></label></p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="ubiquitous-language-1"><a class="header" href="#ubiquitous-language-1">Ubiquitous Language</a></h1>
+<p>Ubiquitous language terms are Markdown files with YAML frontmatter, stored in the
+<code>ubiquitous/</code> directory. Each file is a single term, and livt renders them as a
+table you can browse like a database.</p>
+<h2 id="format-5"><a class="header" href="#format-5">Format</a></h2>
+<pre><code class="language-markdown">---
+name: Term display name
+---
+
+Definition in Markdown.
+</code></pre>
+<p>The <code>name</code> field in frontmatter is the display term. The <strong>term key</strong> is derived
+from the filename (without <code>.md</code>) and must be kebab-case, using lowercase
+letters, numbers, and hyphens. The body is the term’s definition.</p>
+<h2 id="example-4"><a class="header" href="#example-4">Example</a></h2>
+<p><code>ubiquitous/story-map.md</code>:</p>
+<pre><code class="language-markdown">---
+name: Story Map
+---
+
+A board to overview activities, steps, and stories alongside release slices.
+</code></pre>
+<h2 id="contexts"><a class="header" href="#contexts">Contexts</a></h2>
+<p>A term can be scoped to a <strong>context</strong> by putting it in a directory:</p>
+<pre><code>ubiquitous/
+  story-map.md                # holds across contexts
+  billing/
+    invoice.md                # what "invoice" means in billing
+  shipping/
+    invoice.md                # what "invoice" means in shipping
+</code></pre>
+<p>A context is optional. Cut one when a word means different things to different
+parts of the domain — the DDD bounded context — and leave a term at the root
+when its meaning holds everywhere. Most livt repositories start with every term at the
+root and grow contexts only where the language actually diverges.</p>
+<p>The directory is what makes a term unique, so <code>invoice</code> above is three separate
+terms, not one with three labels. Each has its own definition, its own row, and
+its own address. A term reference is therefore <code>{ctx}/{term-key}</code> for a scoped
+term and <code>{term-key}</code> for a context-free one, and the two never resolve to each
+other: a bare <code>invoice</code> names the root term even when <code>billing/invoice</code> exists.</p>
+<p>Contexts are one directory deep. <code>ubiquitous/billing/eu/invoice.md</code> is not a
+term livt can address, and is left out of the glossary.</p>
+<h2 id="visual-layout-1"><a class="header" href="#visual-layout-1">Visual Layout</a></h2>
+<p><code>livt build</code> renders every term as a row on a single page at <code>ubiquitous.html</code>,
+with <strong>Term</strong>, <strong>Key</strong>, and <strong>Definition</strong> columns. A scoped term shows its
+context beneath its key. Each row carries an <code>id={term-ref}</code> anchor, so a term is
+linkable as <code>ubiquitous.html#{term-key}</code> or <code>ubiquitous.html#{ctx}/{term-key}</code>.</p>
+<p>When a livt repository cuts at least one context, the page carries a filter bar above the
+table. Selecting a context narrows the table to that context’s terms, and the
+selection is mirrored in the <code>?context=</code> query parameter so a filtered view is
+shareable. Context-free terms are not part of any single context, so they drop
+out while a filter is on rather than being repeated under every chip.</p>
+<h2 id="referencing-terms-from-boards"><a class="header" href="#referencing-terms-from-boards">Referencing terms from boards</a></h2>
+<p>Story maps and example mappings can declare the terms they use with a top-level
+<code>ubiquitous</code> list of term references:</p>
+<pre><code class="language-yaml">ubiquitous:
+  - story-map
+  - billing/invoice
+</code></pre>
+<p>Referenced terms render as pink stickies below the board, each linking to its
+glossary row, with the context shown on the sticky when it has one. A reference
+with no matching file renders as a plain pink card, so references degrade
+gracefully. See <a href="#story-maps">Story Maps</a> and
+<a href="#example-mappings">Example Mappings</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="commands"><a class="header" href="#commands">Commands</a></h1>
+<h2 id="livt-serve"><a class="header" href="#livt-serve"><code>livt serve</code></a></h2>
+<p>Build artifacts and start a local server.</p>
+<p>While the server is running, livt watches every directory the build reads
+(<code>opportunities</code>, <code>discoveries/opportunity-canvases</code>,
+<code>discoveries/example-mappings</code>, <code>stories</code>, <code>discoveries/usm</code>, <code>ubiquitous</code>, and
+<code>automations</code>) along with <code>livt.yaml</code>. When a file changes, livt rebuilds and
+reloads the page in the browser automatically, so you can preview refinements
+while editing.</p>
+<pre><code class="language-bash">livt serve [flags]
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Short</th><th>Default</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--port</code></td><td><code>-p</code></td><td><code>3000</code></td><td>Port to listen on</td></tr>
+<tr><td><code>--out</code></td><td><code>-o</code></td><td><code>dist</code></td><td>Output directory</td></tr>
+<tr><td><code>--diff</code></td><td></td><td>(off)</td><td>Also render the diff between two revisions — see <a href="#reviewing-a-change">Reviewing a change</a></td></tr>
+<tr><td><code>--reports</code></td><td></td><td><code>automations</code></td><td>Directory of collected automation reports — see <a href="#automating-a-rule">Automating a rule</a></td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="livt-build"><a class="header" href="#livt-build"><code>livt build</code></a></h2>
+<p>Build static HTML from artifacts without starting a server.</p>
+<pre><code class="language-bash">livt build [flags]
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Short</th><th>Default</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--out</code></td><td><code>-o</code></td><td><code>dist</code></td><td>Output directory</td></tr>
+<tr><td><code>--diff</code></td><td></td><td>(off)</td><td>Also render the diff between two revisions — see <a href="#reviewing-a-change">Reviewing a change</a></td></tr>
+<tr><td><code>--reports</code></td><td></td><td><code>automations</code></td><td>Directory of collected automation reports — see <a href="#automating-a-rule">Automating a rule</a></td></tr>
+</tbody>
+</table>
+</div>
+<p>Both commands read <a href="#configuration"><code>livt.yaml</code></a> from the directory they run
+in, which is where the site’s language is set.</p>
+<h3 id="reviewing-a-change"><a class="header" href="#reviewing-a-change">Reviewing a change</a></h3>
+<p>A pull request against a livt repository is a YAML diff: indentation, list
+ordering, quoting. <code>--diff</code> renders what changed as the spec instead, one
+<a href="#livt-uri">livt URI</a> at a time.</p>
+<pre><code class="language-bash">livt serve --diff main
+</code></pre>
+<p>The argument is git’s own two-dot range — <code>&lt;base&gt;..&lt;head&gt;</code> — or, as above, a
+single revision against your working tree, which is the shape a review usually
+takes: you are on the branch that makes the change. Revisions are read with
+<code>git archive</code>, so the command must run inside the repository and a revision git
+cannot resolve fails the build rather than producing a site.</p>
+<p>The site is otherwise the site you always get. What is added is <code>diff.html</code>,
+which groups every changed URI under the resource type it belongs to, and a mark
+on each changed item where it lives — a rule’s sticky on its board, a term’s row
+in the glossary — leading into the diff at that URI. The diff takes no entry in
+the nav: it is not a kind of thing the livt repository holds, so the way in is
+the thing that changed.</p>
+<p>Every mark says one of three words. An item was <strong>added</strong>, it was <strong>changed</strong>,
+or it was <strong>withdrawn</strong> — it stopped being spec. That is a reading of the spec
+rather than of the file: a rule
+<a href="#retiring-an-item">retired</a> keeps its entry and
+edits one field, a deleted one loses its entry, and to a reader both mean the
+rule is no longer asked for.</p>
+<p>A withdrawal is drawn as the removal it is, whichever way the file recorded it:
+retiring a rule <em>adds</em> the line that retires it, and drawn off the record it
+would read as the opposite of what happened. The line that records the
+withdrawal is left out — the mark says it once — and the successor stays, since
+where the spec went is what the reader came for.</p>
+<p>A withdrawn sticky goes back on its board, drawn the way a proposal is — pale,
+dashed, struck through — since a proposal is not spec <em>yet</em> and this is not spec
+<em>any more</em>. Only what left in this range comes back: a rule retired long ago
+stays off the wall. A resource gone entirely has no page left to put anything
+on, so its list says how many of its kind went.</p>
+<h2 id="livt-mcp"><a class="header" href="#livt-mcp"><code>livt mcp</code></a></h2>
+<p>Run an MCP (<a href="https://modelcontextprotocol.io">Model Context Protocol</a>) server
+that exposes the livt repository (story maps, stories, example mappings, and
+the ubiquitous language). An implementation repo’s coding agent can then fetch
+the spec for a story or rule without reading livt’s source.</p>
+<p>The livt repository usually lives in a separate checkout from the consumer, so point at
+it with <code>--root</code> or the <code>LIVT_ROOT</code> environment variable. The flag takes
+precedence; both default to the current directory.</p>
+<pre><code class="language-bash">livt mcp [flags]
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Default</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--root</code></td><td><code>$LIVT_ROOT</code>, then <code>.</code></td><td>Path to the root of the livt repository</td></tr>
+<tr><td><code>--http</code></td><td>(off; stdio)</td><td>Serve over Streamable HTTP at this address (e.g. <code>localhost:5488</code>) instead of stdio; the MCP endpoint is <code>&lt;addr&gt;/mcp</code></td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="transports"><a class="header" href="#transports">Transports</a></h3>
+<p>By default the server runs over <strong>stdio</strong>, spawned per consumer — the client
+launches <code>livt mcp</code> as a subprocess. stdio is the recommended form: the
+binding to the livt repository is read at spawn time from the consumer’s own
+environment, so each workspace resolves against what it declares, and a
+session never outlives the declaration it was started with.</p>
+<p>Reach for <strong><code>--http</code></strong> when reachability is the problem — a client that
+cannot spawn processes, or several repos sharing one machine-wide server
+without each holding a checkout of the livt repository. It serves Streamable
+HTTP from one long-running process:</p>
+<pre><code class="language-bash">livt mcp --http localhost:5488
+</code></pre>
+<p>Each consumer points its MCP client at <code>http://localhost:5488/mcp</code>. The server
+is stateless and read-only, so one process backs many clients; keep <code>git pull</code>
+current on its checkout and the served spec (and <code>spec_version</code>) updates live.
+The binding trades the other way from stdio: the server fixes its repository
+once, at start, for every client — not per workspace.
+For distributing this client configuration to implementation repos, see the
+<a href="https://github.com/boykush/livt/tree/main/plugins/livt-automation"><code>livt-automation</code> plugin</a>.
+This mode assumes local use with no authentication — the server is meant to bind
+to localhost, not a public network.</p>
+<h3 id="tools"><a class="header" href="#tools">Tools</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Tool</th><th>Arguments</th><th>Returns</th></tr>
+</thead>
+<tbody>
+<tr><td><code>list_opportunities</code></td><td>—</td><td>Every <a href="#opportunities-1">opportunity</a> with its key, name, and statement. Each entry links to its opportunity resource (<code>uri</code>), to its canvas (<code>canvas_uri</code>) when one has been filled in, and to the story maps mapped for it. A missing canvas or story map is the record that the opportunity has not been taken that far.</td></tr>
+<tr><td><code>list_stories</code></td><td><code>opportunity</code> (optional) — an opportunity name, matched exactly against the name a story’s opportunity chip carries; keeps only the stories on that map, and an unknown name yields an empty list</td><td>Every story with its key and name. Each entry links to its story resource (<code>uri</code>); stories that have an example mapping also include <code>example_mapping_uri</code>, and stories on a story map carry <code>opportunities</code> — one map name plus story map resource URI per map they sit on.</td></tr>
+<tr><td><code>list_example_mappings</code></td><td><code>opportunity</code> (optional) — as for <code>list_stories</code>; a mapping whose key sits on no map, as one with no story usually does, matches none</td><td>Every example mapping, including one whose story has no card, with its story key and mapping resource URI (<code>uri</code>). A mapping carries <code>name</code> when it has one of its own and <code>story_uri</code> when a story file exists — read that story for the name of a mapping with none of its own — and <code>opportunities</code>, the story maps its key sits on.</td></tr>
+<tr><td><code>list_story_maps</code></td><td>—</td><td>Every story map with its name and its story map resource URI (<code>uri</code>).</td></tr>
+<tr><td><code>list_terms</code></td><td>—</td><td>Every <a href="#ubiquitous-language-1">ubiquitous language</a> term with its key, display name, and term resource URI (<code>uri</code>) — including terms no board references. A term scoped to a context also carries <code>ctx</code>, which is part of what identifies it.</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="resources"><a class="header" href="#resources">Resources</a></h3>
+<p>The spec itself is exposed as resources, addressable by URI
+(opportunity → story map → story → mapping → rule → example, with the canvas,
+questions, and ubiquitous terms linked alongside):</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>URI</th><th>Returns</th></tr>
+</thead>
+<tbody>
+<tr><td><code>livt://opportunity/{opportunity_key}</code></td><td>An opportunity: its name, its statement (whose problem, and what the business gets from solving it), and its frontmatter meta. Carries <code>canvas_uri</code> when a canvas has been filled in, and <code>story_maps</code> — the maps whose key matches, as map name plus story map resource URI.</td></tr>
+<tr><td><code>livt://opportunity-canvas/{opportunity_key}</code></td><td>The <a href="#the-opportunity-canvas">Opportunity Canvas</a> filled in for an opportunity, as its ten <code>boxes</code> — each with its <code>key</code>, printed <code>number</code>, heading, the <code>prompt</code> it asks, and its <code>items</code>. Every box is returned, unanswered ones with an empty <code>items</code>: a blank box records a question the opportunity has not answered.</td></tr>
+<tr><td><code>livt://story-map/{map_name}</code></td><td>A story map: activities, steps, story cards, and releases. Story cards that have a story file link to their story resource. <code>{map_name}</code> is the map’s display name (percent-encoded) — the same identifier the build output uses for <code>story-map/{name}.html</code>.</td></tr>
+<tr><td><code>livt://story/{story_key}</code></td><td>The story’s name, body, and frontmatter meta (e.g. <code>issue</code>), plus <code>example_mapping_uri</code> when a mapping exists and <code>opportunities</code> — the story maps the story sits on, as map name plus story map resource URI.</td></tr>
+<tr><td><code>livt://mapping/{story_key}</code></td><td>The story’s example mapping (rules, examples, questions, ubiquitous terms), with its own <code>name</code> when it has one — the only name a mapping with no story file carries. Each rule, example, and question carries its own <code>uri</code>, and <code>ubiquitous_terms</code> resolves each referenced term to its resource URI. <a href="#retiring-an-item">Retired</a> entries are listed too, saying how they closed — the mapping is the structural record their ids are numbered from.</td></tr>
+<tr><td><code>livt://mapping/{story_key}/rule/{rule_id}</code></td><td>A single rule and its examples, its <code>status</code> — <code>proposed</code> while it awaits agreement, <code>accepted</code> once agreed, <code>rejected</code> or <code>retired</code> once closed, and present on every rule — plus its automation: <code>issues</code> (automation Issue URLs, as the mapping records them), <code>automated</code> (whether a collected report cites the rule itself — citing one of its examples does not count), and <code>automations</code> (each citing test’s <code>repo</code>, <code>rev</code>, <code>file</code>, <code>line</code>, and <code>url</code> where one could be built; omitted when no test cites it). The last two are <a href="#automating-a-rule">derived from the reports</a> under <code>automations/</code>, never read from the mapping. Each example carries its own <code>automated</code> and <code>automations</code>, answered for the example alone. Rules inside <code>livt://mapping/{story_key}</code> carry the same fields.</td></tr>
+<tr><td><code>livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}</code></td><td>A single example of a rule. Example ids are numbered within their rule, so the address carries <code>{rule_id}</code> — <code>EX-01</code> alone does not identify an example.</td></tr>
+<tr><td><code>livt://mapping/{story_key}/question/{question_id}</code></td><td>A single question. Questions hang off the mapping rather than off a rule, so the address stops at <code>{story_key}</code>.</td></tr>
+<tr><td><code>livt://ubiquitous/{term_key}</code></td><td>A ubiquitous language term’s name and definition. This shape addresses a term whose meaning holds across contexts.</td></tr>
+<tr><td><code>livt://ubiquitous/{ctx}/{term_key}</code></td><td>A term scoped to one <a href="#contexts">context</a>, carrying <code>ctx</code> alongside its key. A context is optional and part of the address, so the same <code>{term_key}</code> can name one term at the root and another inside a context; the two never resolve to each other.</td></tr>
+</tbody>
+</table>
+</div>
+<p>A closed rule and a retired example or question keep resolving by their URI and
+say so as they do in the YAML — a rule through its <code>status</code>, an example or a
+question through <code>retired: true</code> — so a reference to one reads as closed rather
+than failing (or, worse, landing on whatever reused its id). A live example or
+question omits the flag. When something took the item’s place, <code>superseded_by</code>
+lists it as livt URIs, so the reference reads on instead of stopping; a
+retirement that replaced nothing omits that field too.</p>
+<p>Read them with <code>resources/read</code>; all appear in <code>resources/templates/list</code>. The
+server advertises templates only — there is no concrete resource list and no
+change notification (subscribe); every read is served fresh from disk.</p>
+<p>Every tool and resource payload also includes a <code>spec_version</code> field – the
+short git revision of the livt repository – so consumers can tell which version of the
+spec they are reading and detect drift.</p>
+<h3 id="citing-the-livt-repository"><a class="header" href="#citing-the-livt-repository">Citing the livt repository</a></h3>
+<p>The handshake carries <code>instructions</code>, so every session tells the consuming agent
+how to reference the livt repository in what it produces: copy the <code>uri</code> from the result
+verbatim, and never write a bare <code>id</code>. Ids are unique only within one mapping
+file, so <code>R-02</code> exists in every mapping and identifies nothing on its own.</p>
+<pre><code class="language-go">// livt://mapping/place-order-with-saved-card/rule/R-13/example/EX-01
+</code></pre>
+<p>That applies wherever a reference leaves the livt repository – a test comment, an issue
+body, a commit message, a PR description. A published living-document URL is a
+convenience link for humans, not the citation form: it depends on where the site
+is deployed, and the livt URI does not.</p>
+<p>In a test comment, a URI quoted this way is a reference. A test that automates
+the point it quotes puts the <code>livt:automates</code> marker in front of the URI, and
+only such a line is collected as automation. See
+<a href="#automating-a-rule">Automating a rule</a>.</p>
+<p>A URI cited this way is read back with <a href="#livt-resolve"><code>livt resolve</code></a>, which
+needs no MCP client – so the citation stays followable for CI, an editor, or a
+reader who only has a checkout.</p>
+<h2 id="livt-resolve"><a class="header" href="#livt-resolve"><code>livt resolve</code></a></h2>
+<p>Resolve a <a href="#livt-uri">livt URI</a> against the livt repository, without running an
+MCP client. A rule, example, or question cited in a test comment, an issue body,
+or a commit message can then be read back by whoever needs it — CI, an editor,
+or an agent that is not connected to livt over MCP.</p>
+<pre><code class="language-bash">livt resolve &lt;uri&gt; [flags]
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Default</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--root</code></td><td><code>$LIVT_ROOT</code>, then <code>.</code></td><td>Path to the root of the livt repository</td></tr>
+<tr><td><code>--format</code></td><td><code>json</code></td><td>Output form: <code>json</code> or <code>url</code></td></tr>
+<tr><td><code>--base-url</code></td><td>—</td><td>Root of the deployed site; required by <code>--format url</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>Every URI shape the MCP server exposes as a resource resolves here: mappings,
+rules, examples, questions, stories, story maps, and ubiquitous language terms.</p>
+<h3 id="output-forms"><a class="header" href="#output-forms">Output forms</a></h3>
+<p><strong><code>--format json</code></strong> (the default) prints the same payload an MCP
+<code>resources/read</code> of that URI serves, <code>spec_version</code> included — the two surfaces
+resolve through one code path, so a consumer sees one shape whichever way it
+asked:</p>
+<pre><code class="language-bash">livt resolve livt://mapping/trace-test-to-rule/rule/R-04
+</code></pre>
+<p><strong><code>--format url</code></strong> prints the item’s page on the deployed site, using the same
+<a href="#uri-to-page">URI-to-page derivation</a> the site build anchors its
+stickies to:</p>
+<pre><code class="language-bash">$ livt resolve livt://mapping/trace-test-to-rule/rule/R-04 \
+    --format url --base-url https://boykush.github.io/livt
+https://boykush.github.io/livt/mapping/trace-test-to-rule.html#rule-R-04
+</code></pre>
+<p>The livt repository is still read in this form, even though the page path derives from
+the URI alone: a link to a page that was never built is worse than an error.</p>
+<h3 id="when-a-uri-does-not-resolve"><a class="header" href="#when-a-uri-does-not-resolve">When a URI does not resolve</a></h3>
+<p>Both cases exit non-zero and explain themselves on stderr, because they need
+different fixes:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th></th><th></th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Malformed URI</strong></td><td>The string is not a livt URI at all. The error lists every shape one can take. Fix the URI.</td></tr>
+<tr><td><strong>Nothing to resolve</strong></td><td>The URI is well formed but the livt repository holds no such item, e.g. <code>rule "R-99" not found in story "trace-test-to-rule"</code>. Fix the reference, or add the item.</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="livt-automations"><a class="header" href="#livt-automations"><code>livt automations</code></a></h2>
+<p>Collect what an implementation repository’s tests say they automate, as a report
+the livt repository can commit. It walks a checkout for comment lines carrying
+the <code>livt:automates</code> marker and one <a href="#livt-uri">livt URI</a>, and writes what it
+found.</p>
+<p>This is the one command that runs in the implementation repository rather than
+on the livt repository: it reads code, and the site reads only what it leaves
+behind. What a test writes, and what a citation means for a rule, is
+<a href="#automating-a-rule">Automating a rule</a>; this page
+is the command.</p>
+<pre><code class="language-bash">livt automations [path] [flags]
+</code></pre>
+<p><code>path</code> is the checkout to walk, and defaults to the current directory. Hidden
+directories and <code>node_modules</code>, <code>vendor</code>, <code>dist</code> and <code>target</code> are skipped, along
+with binary files: other people’s code makes no claims about your spec.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Short</th><th>Default</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--out</code></td><td><code>-o</code></td><td>(stdout)</td><td>Write the report to this file, creating its directory</td></tr>
+<tr><td><code>--repo</code></td><td></td><td>the checkout’s <code>origin</code></td><td>Repository the report speaks for, as <code>owner/repo</code></td></tr>
+<tr><td><code>--rev</code></td><td></td><td>the checkout’s <code>HEAD</code></td><td>Revision scanned</td></tr>
+<tr><td><code>--forge</code></td><td></td><td>inferred from <code>origin</code></td><td>Code host to build line URLs for: <code>github</code> or <code>gitlab</code></td></tr>
+<tr><td><code>--url-template</code></td><td></td><td>—</td><td>Line URL template for a host livt does not know, e.g. <code>{base}/src/commit/{rev}/{path}#L{line}</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>A URI’s <strong>shape</strong> is what the walk checks, never its target, so collecting needs
+no access to the livt repository at all — <a href="#livt-resolve"><code>livt resolve</code></a> is what
+answers whether a citation lands on something that exists. A URI written with
+placeholders, as the guide writes it, is documentation rather than a claim and is
+not collected: that is what lets the marker be written about.</p>
+<h3 id="the-report"><a class="header" href="#the-report">The report</a></h3>
+<pre><code class="language-json">{
+  "repo": "boykush/livt",
+  "rev": "39d110cbe24dc5afaf234b361806aaf594ff4da9",
+  "generated_at": "2026-09-24T08:24:49Z",
+  "citations": [
+    {
+      "livt_uri": "livt://mapping/collect-automations/rule/R-07/example/EX-01",
+      "file": "internal/automation/changed_test.go",
+      "line": 69,
+      "url": "https://github.com/boykush/livt/blob/39d110cbe24dc5afaf234b361806aaf594ff4da9/internal/automation/changed_test.go#L69"
+    }
+  ]
+}
+</code></pre>
+<ul>
+<li>It <strong>names its own repository, revision and generation time</strong>, so a reader can
+tell a fresh answer from a stale one rather than reading it as timeless.</li>
+<li>It <strong>judges nothing.</strong> Whether a rule counts as automated is derived when the
+site is built; a report that decided it would be a second home for the same
+fact, free to disagree with the first.</li>
+<li><code>url</code> is where the line can be read on the forge, pinned to <code>rev</code> so it shows
+the code that was scanned. livt knows <code>github.com</code> and <code>gitlab.com</code> by
+hostname, and a self-hosted host is just a hostname, so it declares itself with
+<code>--forge</code> or <code>--url-template</code>. A citation with no URL keeps its <code>file</code> and
+<code>line</code>: the link is decoration, and its absence never changes whether the
+citation counts.</li>
+<li>A <strong>dirty working tree reports no revision</strong>, and no URLs with it. The walk
+reads the working tree, so naming <code>HEAD</code> would pin every link to code that is
+not the code that was read. The file <code>--out</code> writes is left out of that
+judgment, so landing the report inside the tree it describes is not what makes
+the tree dirty.</li>
+</ul>
+<h3 id="livt-automations-changed"><a class="header" href="#livt-automations-changed"><code>livt automations changed</code></a></h3>
+<p>Collecting walks every file, which is worth avoiding on a large repository. Only
+an added or removed marker line can change what a report claims, and this answers
+whether a range holds one:</p>
+<pre><code class="language-bash">livt automations changed &lt;base&gt; [head]
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Default</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--path</code></td><td><code>.</code></td><td>The checkout to read the diff in</td></tr>
+</tbody>
+</table>
+</div>
+<p><code>head</code> defaults to <code>HEAD</code>. The answer is <code>true</code> or <code>false</code> on stdout, so CI
+branches on a plain command substitution, and the judgment stays livt’s: a CI
+step spelling the marker for itself would keep a second copy of what a marker is,
+free to drift the moment the real one moves.</p>
+<ul>
+<li><strong>A line that merely moved, or a rename, answers false.</strong> A report is a dated
+snapshot rather than a live view — <code>rev</code>, <code>file</code> and <code>line</code> all come from one
+revision, and the URL is pinned to it. A later commit that shifts a cited line
+leaves the report describing an earlier revision, which it says out loud.</li>
+<li><strong>A removal answers true.</strong> A deleted test whose claim outlives it leaves the
+board naming a rule nothing covers any more. Out of date is one thing; wrong
+about the present is another.</li>
+<li><strong>A range livt cannot read answers true</strong>, and says why on stderr: a new
+branch, a force-push, a revision since gone. The two mistakes are not the same
+size — guessing false drops a claim, and guessing true costs one walk.</li>
+</ul>
+<p>When the answer is true the whole repository is rescanned rather than the old
+report patched: the question decides whether to walk, never what the report says.</p>
+<h3 id="where-the-report-goes"><a class="header" href="#where-the-report-goes">Where the report goes</a></h3>
+<p><code>--out</code> is what lands it at <code>automations/{owner}/{repo}.json</code> in a checkout of
+the livt repository, where it is committed through a pull request rather than
+pushed. Which repositories collect, and what their CI runs, is the implementation
+side’s to decide rather than livt’s: the
+<a href="https://github.com/boykush/livt/tree/main/plugins/livt-automation#sending-automations-back"><code>livt-automation</code> plugin</a>
+carries a workflow to copy, and livt’s own
+<a href="https://github.com/boykush/livt/blob/main/.github/workflows/automations.yml"><code>.github/workflows/automations.yml</code></a>
+is that shape for a repository that is its own implementation repository.</p>
+<h2 id="livt-version"><a class="header" href="#livt-version"><code>livt version</code></a></h2>
+<p>Print the version of livt.</p>
+<pre><code class="language-bash">livt version
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="configuration"><a class="header" href="#configuration">Configuration</a></h1>
+<p><code>livt.yaml</code> at the root of the livt repository configures the site build:</p>
+<pre><code class="language-yaml">lang: ja
+</code></pre>
+<p>The file is optional and every field falls back to a default, so a repository
+without one builds exactly as it did before there was one.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Field</th><th>Default</th><th>Values</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>lang</code></td><td><code>en</code></td><td><code>en</code>, <code>ja</code></td><td>Language of the site chrome</td></tr>
+</tbody>
+</table>
+</div>
+<p>Both <a href="#livt-build"><code>livt build</code></a> and
+<a href="#livt-serve"><code>livt serve</code></a> read it from the directory the command
+runs in — the same place <code>stories/</code> and <code>discoveries/</code> are resolved from.
+<code>livt serve</code> watches it like any other input, so an edit rebuilds and reloads
+the page you have open.</p>
+<p>A value livt does not support is an error rather than a silent fall back to the
+default, since the alternative is a site built in a language nobody asked for:</p>
+<pre><code class="language-console">$ livt build
+Error: livt.yaml: unknown lang "de" (supported: en, ja)
+</code></pre>
+<h2 id="lang"><a class="header" href="#lang"><code>lang</code></a></h2>
+<p><code>lang</code> is the language of everything livt renders <em>of itself</em>: the sidebar,
+page headings and titles, board legends, filter chips, table headers, empty
+states, the <code>lang</code> attribute of every page, and the headings and prompts of the
+<a href="#the-opportunity-canvas">Opportunity Canvas</a> — the
+questions printed on the sheet, which are livt’s words rather than yours.</p>
+<p>It does not touch the livt repository’s own prose. Story names and bodies,
+rules, examples, questions, and term definitions are rendered as written,
+whichever language they are written in. The two are independent on purpose — a
+team writing its stories in Japanese and reading the site in English is as
+ordinary an arrangement as the reverse, and the setting is about the frame, not
+the contents.</p>
+<p>The setting reaches the site only. <code>livt mcp</code> and <code>livt resolve</code> answer in
+English whatever it says, canvas headings included: those payloads are a
+contract read by agents, and a field that changed language with a site setting
+would not be one. What they carry <em>from</em> the livt repository — names, rules,
+definitions — is verbatim there too.</p>
+<p>Two languages are supported today, <code>en</code> and <code>ja</code>. A new one is a catalog in
+<code>internal/i18n/</code>; every catalog answers for every message, so a language is
+either complete or not offered.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="file-structure"><a class="header" href="#file-structure">File Structure</a></h1>
+<h2 id="input"><a class="header" href="#input">Input</a></h2>
+<pre><code>project-root/
+  livt.yaml                               # Site config (optional)
+  opportunities/
+    {opportunity-key}.md                  # Opportunity files
+  stories/
+    {story-key}.md                        # Story files
+  discoveries/
+    opportunity-canvases/
+      {opportunity-key}.yaml              # Opportunity canvas files
+    usm/
+      {opportunity-key}.yaml              # Story map files
+    example-mappings/
+      {story-key}.yaml                    # Example mapping files
+  ubiquitous/
+    {term-key}.md                         # Terms holding across contexts
+    {ctx}/
+      {term-key}.md                       # Terms scoped to one context
+  automations/
+    {owner}/{repo}.json                   # Collected automation reports
+</code></pre>
+<ul>
+<li><code>livt.yaml</code> configures the site build — see <a href="#configuration">Configuration</a>. Without it, every setting takes its default</li>
+<li>Opportunity keys, like story keys, are derived from filenames (without extension) and must be kebab-case</li>
+<li>An <a href="#the-opportunity-canvas">opportunity canvas</a> filename must match an opportunity key to link them</li>
+<li>A story map filename that matches an opportunity key marks the map as the journey mapped for that opportunity. A map whose key matches no opportunity stands in as its own, named by the map — which is how every livt repository behaved before opportunities were files</li>
+<li>Story keys are derived from filenames (without extension)</li>
+<li>Story keys must be kebab-case: lowercase letters, numbers, and hyphens</li>
+<li>The <code>stories/</code> directory is the story registry, and <code>stories/{story-key}.md</code> provides story key uniqueness</li>
+<li>An example mapping whose filename matches a story key maps that story. A mapping needs no story file: without one it is called by its <a href="#a-mapping-without-a-story"><code>name</code></a>, or else by its key</li>
+<li>Term keys are derived from filenames, and a term’s <a href="#contexts">context</a> from the directory holding it. The path is what makes a term unique, so the same key can sit at the root and under a context as two separate terms</li>
+<li>A context is optional and one directory deep; terms nested deeper are not addressable and are left out of the glossary</li>
+<li>A term is anchored as <code>ubiquitous.html#{term-key}</code>, or <code>ubiquitous.html#{ctx}/{term-key}</code> when it is scoped</li>
+<li><code>automations/</code> holds the reports <a href="#livt-automations"><code>livt automations</code></a> collects from implementation repositories’ tests, one file per repository. They are generated, not written by hand: livt derives from them which rules and examples are automated — see <a href="#automating-a-rule">Automating a rule</a></li>
+</ul>
+<h2 id="output"><a class="header" href="#output">Output</a></h2>
+<p><code>livt build</code> generates the following structure:</p>
+<pre><code>dist/
+  index.html                              # Example mappings overview (home)
+  opportunities.html                      # Opportunities overview
+  story-maps.html                         # Story maps overview
+  stories.html                            # Story list
+  ubiquitous.html                         # Ubiquitous language table
+  tasks.html                              # Open questions, proposed and un-automated rules
+  opportunity/
+    {opportunity-key}.html                # Opportunity detail pages
+  opportunity-canvas/
+    {opportunity-key}.html                # Opportunity canvas sheets
+  story/
+    {story-key}.html                      # Story detail pages
+  mapping/
+    {story-key}.html                      # Example mapping boards
+  story-map/
+    {map-name}.html                       # Story map boards
+</code></pre>
+<p>Every page shares a left sidebar that links the five resource types (Example
+Mappings, Opportunities, Story Maps, Stories, Ubiquitous Language) and, below
+them, Tasks. The overview pages render each example mapping, opportunity
+canvas, and story map as a preview card.</p>
+<p><code>tasks.html</code> gathers what the livt repository leaves unfinished, so none of it
+has to be hunted for board by board:</p>
+<ul>
+<li><strong>Open Questions</strong> — every <code>questions</code> entry across the example mappings.
+These close by a conversation, so they feed the next discovery session.</li>
+<li><strong>Proposed Rules</strong> — every rule marked
+<a href="#proposing-a-rule"><code>status: proposed</code></a>. These
+close by agreement — accepted, or rejected when turned down — so they are the
+decisions still open.</li>
+<li><strong>Un-automated Rules</strong> — every accepted rule that no collected
+<a href="#automating-a-rule">report</a> cites, including one
+whose examples are cited but not the rule itself. These close by a test, so
+they read as the list of behaviour still to build. A proposed rule is never
+here, even once a test covers it: a test cannot close what is not agreed yet.</li>
+</ul>
+<p><a href="#retiring-an-item">Closed</a> rules and retired
+examples and questions are on none of the lists, and off the boards as well:
+nothing can close them again, so they would sit here forever.</p>
+<p>Each item names the mapping it came from, as the board’s yellow sticky reads,
+and links to its own sticky on that board. All three lists are filtered together by opportunity, and
+the selection is mirrored in the <code>?opportunity=</code> query parameter so a filtered
+view is shareable.</p>
+<p>Items carry no issue state. A rule records its automation issue URLs but not
+their open/closed state, and the build never queries the issue tracker, so an
+item leaves this page only through what the livt repository records — a
+question becoming a rule, a proposal being accepted, a rule becoming automated —
+never through an issue closing.</p>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="livt-uri"><a class="header" href="#livt-uri">livt URI</a></h1>
+<p>A <strong>livt URI</strong> names one point in the livt repository — an opportunity, its
+canvas, a rule, an example, a question, a story, a story map, or a ubiquitous
+language term. It is the form to
+reach for whenever a reference has to survive outside the livt repository: a test comment,
+an issue body, a commit message.</p>
+<pre><code>livt://mapping/{story-key}/rule/{rule-id}
+</code></pre>
+<p>The MCP server addresses its resources by these URIs — see
+<a href="#resources">Commands</a> for what each one returns — and the
+generated site anchors its stickies to them. Neither depends on where the site
+is deployed.</p>
+<h2 id="why-not-a-bare-id"><a class="header" href="#why-not-a-bare-id">Why not a bare ID</a></h2>
+<p><code>R-02</code> on its own is not a reference. IDs are numbered within the file that
+holds them, so every example mapping in this repository defines an <code>R-02</code>, and
+every rule that has examples defines an <code>EX-01</code>. Even <code>R-13 EX-01</code> narrows it to
+nothing — the reader still cannot tell which mapping was meant, and neither can
+a search. The story key is the part that makes it addressable:</p>
+<pre><code>livt://mapping/trace-test-to-rule/rule/R-02/example/EX-01
+</code></pre>
+<h2 id="relative-to-a-repository"><a class="header" href="#relative-to-a-repository">Relative to a repository</a></h2>
+<p>The widening stops there: a livt URI never says <strong>which</strong> livt repository
+it belongs to. Its interpretation is uniform — one point in the livt
+repository at hand — the same shape <code>http://localhost/</code> has, where every
+reader agrees on the meaning while the referent depends on where it is
+resolved. Which repository answers is supplied by the consumer’s own
+declaration (<code>--root</code> / <code>LIVT_ROOT</code>), so scope lives in the workspace, not
+in the name. That is what keeps a citation short, and what lets the same
+reference work in every checkout of the same repository.</p>
+<p>The first segment is drawn from a closed set — <code>opportunity</code>,
+<code>opportunity-canvas</code>, <code>mapping</code>, <code>story</code>, <code>story-map</code>, <code>ubiquitous</code> — so a future form that names a repository in
+that position stays open without breaking any URI written today.</p>
+<h2 id="uri-to-page"><a class="header" href="#uri-to-page">URI to page</a></h2>
+<p><code>livt build</code> renders the livt repository as a static site, and this is where each URI
+lands in it. Paths are relative to the output root.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>livt URI</th><th>Page</th></tr>
+</thead>
+<tbody>
+<tr><td><code>livt://mapping/{story-key}</code></td><td><code>mapping/{story-key}.html</code></td></tr>
+<tr><td><code>livt://mapping/{story-key}/rule/{rule-id}</code></td><td><code>mapping/{story-key}.html#rule-{rule-id}</code></td></tr>
+<tr><td><code>livt://mapping/{story-key}/rule/{rule-id}/example/{example-id}</code></td><td><code>mapping/{story-key}.html#rule-{rule-id}-example-{example-id}</code></td></tr>
+<tr><td><code>livt://mapping/{story-key}/question/{question-id}</code></td><td><code>mapping/{story-key}.html#question-{question-id}</code></td></tr>
+<tr><td><code>livt://story/{story-key}</code></td><td><code>story/{story-key}.html</code></td></tr>
+<tr><td><code>livt://opportunity/{opportunity-key}</code></td><td><code>opportunity/{opportunity-key}.html</code></td></tr>
+<tr><td><code>livt://opportunity-canvas/{opportunity-key}</code></td><td><code>opportunity-canvas/{opportunity-key}.html</code></td></tr>
+<tr><td><code>livt://story-map/{map-name}</code></td><td><code>story-map/{map-name}.html</code></td></tr>
+<tr><td><code>livt://ubiquitous/{term-key}</code></td><td><code>ubiquitous.html#{term-key}</code></td></tr>
+<tr><td><code>livt://ubiquitous/{ctx}/{term-key}</code></td><td><code>ubiquitous.html#{ctx}/{term-key}</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>An example’s anchor repeats its rule for the same reason its URI does: <code>EX-01</code>
+recurs under every rule of a board, so <code>#example-EX-01</code> would land on whichever
+one happened to be first. The sticky’s own badge still shows the local <code>EX-01</code> —
+that is the ID the livt repository numbers — while the link behind it carries the rule.</p>
+<p>A term takes a <a href="#contexts">context</a> the same
+way, and for the same reason: <code>invoice</code> can mean one thing in billing and
+another in shipping, so the context is part of the address rather than a label
+on it. The context is optional — a term whose meaning holds everywhere keeps the
+one-segment form — and the two shapes never resolve to each other.</p>
+<p>An opportunity is addressed by key rather than by display name, unlike a story
+map. The key is what its filename and its canvas already join on, so it is the
+identifier the livt repository carries. The canvas sits beside the opportunity
+rather than under it, the way a mapping sits beside its story — the two are
+joined by key, and either can exist without the other.</p>
+<p>A <a href="#retiring-an-item">closed</a> item has no sticky,
+so its URI lands on the board with nothing to scroll to. The URI still resolves:
+ask the tooling, which answers with the item and how it closed — a rule’s
+<code>status</code>, an example’s or a question’s <code>retired: true</code> — plus <code>superseded_by</code>,
+the URIs of whatever took its place, when the retirement recorded any. Deriving
+a page is how a reference is <em>shown</em>, not how it is <em>resolved</em>.</p>
+<h2 id="store-the-uri-render-the-url"><a class="header" href="#store-the-uri-render-the-url">Store the URI, render the URL</a></h2>
+<p>Nothing in the livt repository records where the site is deployed. The deployment URL is
+prefixed onto the paths above only while a page is being rendered, which is why
+the same livt repository can be served from a local <code>livt serve</code>, from GitHub Pages, and
+from an internal host at once:</p>
+<pre><code>livt://mapping/trace-test-to-rule/rule/R-02
+  -&gt; mapping/trace-test-to-rule.html#rule-R-02
+  -&gt; https://boykush.github.io/livt/demo/mapping/trace-test-to-rule.html#rule-R-02
+</code></pre>
+<p>A deployed URL is therefore a fine thing to paste into a chat and a poor thing to
+commit: it goes stale the moment the site moves, and it buries the identity it
+was meant to carry. Keep the URI; let the URL be derived.</p>
+<h2 id="where-each-form-comes-from"><a class="header" href="#where-each-form-comes-from">Where each form comes from</a></h2>
+<ul>
+<li><strong>A URL, to send to a person</strong> — take it from the board. Every sticky shows its
+own ID in the bottom-right corner; clicking it copies the deployed URL of that
+sticky, so what you paste already points at the exact card.</li>
+<li><strong>A livt URI, to leave in an artifact</strong> — take it from the tooling rather than
+the board. Every rule, example, and question the MCP server returns carries
+its own <code>uri</code>, so an agent writing a test can quote the point it is proving
+without composing the URI by hand.</li>
+</ul>
+<p>Keeping the two apart is what stops the site from becoming a second source of
+identity. The board is for reading and sharing; the URI is what the livt repository
+actually knows about itself.</p>
+<h2 id="reading-one-back"><a class="header" href="#reading-one-back">Reading one back</a></h2>
+<p>A URI left in a test comment is only worth as much as the ability to follow it,
+and that has to work for a reader who is not running an MCP client — CI, an
+editor, or someone with just a checkout. <a href="#livt-resolve"><code>livt resolve</code></a>
+turns any of the shapes above back into the point it names:</p>
+<pre><code class="language-bash">$ livt resolve livt://mapping/trace-test-to-rule/rule/R-02
+{ "spec_version": "...", "rule": { "id": "R-02", ... } }
+
+$ livt resolve livt://mapping/trace-test-to-rule/rule/R-02 \
+    --format url --base-url https://boykush.github.io/livt
+https://boykush.github.io/livt/mapping/trace-test-to-rule.html#rule-R-02
+</code></pre>
+<p>The URL form is derived from the table above rather than restated, so a link the
+CLI hands out and the anchor the build writes cannot drift apart.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-09f2665d.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+
+    </div>
+    </body>
+</html>

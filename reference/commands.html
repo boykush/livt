@@ -1,0 +1,585 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Commands - livt - Living Text</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Collaborate on board. Make it living in text.">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="../favicon-8114d1fc.png">
+        <link rel="stylesheet" href="../css/variables-8adf115d.css">
+        <link rel="stylesheet" href="../css/general-e96d0476.css">
+        <link rel="stylesheet" href="../css/chrome-d279d366.css">
+        <link rel="stylesheet" href="../css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="../highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="../tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="../ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "../";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "../searchindex-a643fbf3.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc-a62fb9f7.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">livt - Living Text</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="commands"><a class="header" href="#commands">Commands</a></h1>
+<h2 id="livt-serve"><a class="header" href="#livt-serve"><code>livt serve</code></a></h2>
+<p>Build artifacts and start a local server.</p>
+<p>While the server is running, livt watches every directory the build reads
+(<code>opportunities</code>, <code>discoveries/opportunity-canvases</code>,
+<code>discoveries/example-mappings</code>, <code>stories</code>, <code>discoveries/usm</code>, <code>ubiquitous</code>, and
+<code>automations</code>) along with <code>livt.yaml</code>. When a file changes, livt rebuilds and
+reloads the page in the browser automatically, so you can preview refinements
+while editing.</p>
+<pre><code class="language-bash">livt serve [flags]
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Short</th><th>Default</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--port</code></td><td><code>-p</code></td><td><code>3000</code></td><td>Port to listen on</td></tr>
+<tr><td><code>--out</code></td><td><code>-o</code></td><td><code>dist</code></td><td>Output directory</td></tr>
+<tr><td><code>--diff</code></td><td></td><td>(off)</td><td>Also render the diff between two revisions — see <a href="#reviewing-a-change">Reviewing a change</a></td></tr>
+<tr><td><code>--reports</code></td><td></td><td><code>automations</code></td><td>Directory of collected automation reports — see <a href="../guides/example-mappings.html#automating-a-rule">Automating a rule</a></td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="livt-build"><a class="header" href="#livt-build"><code>livt build</code></a></h2>
+<p>Build static HTML from artifacts without starting a server.</p>
+<pre><code class="language-bash">livt build [flags]
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Short</th><th>Default</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--out</code></td><td><code>-o</code></td><td><code>dist</code></td><td>Output directory</td></tr>
+<tr><td><code>--diff</code></td><td></td><td>(off)</td><td>Also render the diff between two revisions — see <a href="#reviewing-a-change">Reviewing a change</a></td></tr>
+<tr><td><code>--reports</code></td><td></td><td><code>automations</code></td><td>Directory of collected automation reports — see <a href="../guides/example-mappings.html#automating-a-rule">Automating a rule</a></td></tr>
+</tbody>
+</table>
+</div>
+<p>Both commands read <a href="./configuration.html"><code>livt.yaml</code></a> from the directory they run
+in, which is where the site’s language is set.</p>
+<h3 id="reviewing-a-change"><a class="header" href="#reviewing-a-change">Reviewing a change</a></h3>
+<p>A pull request against a livt repository is a YAML diff: indentation, list
+ordering, quoting. <code>--diff</code> renders what changed as the spec instead, one
+<a href="./uri.html">livt URI</a> at a time.</p>
+<pre><code class="language-bash">livt serve --diff main
+</code></pre>
+<p>The argument is git’s own two-dot range — <code>&lt;base&gt;..&lt;head&gt;</code> — or, as above, a
+single revision against your working tree, which is the shape a review usually
+takes: you are on the branch that makes the change. Revisions are read with
+<code>git archive</code>, so the command must run inside the repository and a revision git
+cannot resolve fails the build rather than producing a site.</p>
+<p>The site is otherwise the site you always get. What is added is <code>diff.html</code>,
+which groups every changed URI under the resource type it belongs to, and a mark
+on each changed item where it lives — a rule’s sticky on its board, a term’s row
+in the glossary — leading into the diff at that URI. The diff takes no entry in
+the nav: it is not a kind of thing the livt repository holds, so the way in is
+the thing that changed.</p>
+<p>Every mark says one of three words. An item was <strong>added</strong>, it was <strong>changed</strong>,
+or it was <strong>withdrawn</strong> — it stopped being spec. That is a reading of the spec
+rather than of the file: a rule
+<a href="../guides/example-mappings.html#retiring-an-item">retired</a> keeps its entry and
+edits one field, a deleted one loses its entry, and to a reader both mean the
+rule is no longer asked for.</p>
+<p>A withdrawal is drawn as the removal it is, whichever way the file recorded it:
+retiring a rule <em>adds</em> the line that retires it, and drawn off the record it
+would read as the opposite of what happened. The line that records the
+withdrawal is left out — the mark says it once — and the successor stays, since
+where the spec went is what the reader came for.</p>
+<p>A withdrawn sticky goes back on its board, drawn the way a proposal is — pale,
+dashed, struck through — since a proposal is not spec <em>yet</em> and this is not spec
+<em>any more</em>. Only what left in this range comes back: a rule retired long ago
+stays off the wall. A resource gone entirely has no page left to put anything
+on, so its list says how many of its kind went.</p>
+<h2 id="livt-mcp"><a class="header" href="#livt-mcp"><code>livt mcp</code></a></h2>
+<p>Run an MCP (<a href="https://modelcontextprotocol.io">Model Context Protocol</a>) server
+that exposes the livt repository (story maps, stories, example mappings, and
+the ubiquitous language). An implementation repo’s coding agent can then fetch
+the spec for a story or rule without reading livt’s source.</p>
+<p>The livt repository usually lives in a separate checkout from the consumer, so point at
+it with <code>--root</code> or the <code>LIVT_ROOT</code> environment variable. The flag takes
+precedence; both default to the current directory.</p>
+<pre><code class="language-bash">livt mcp [flags]
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Default</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--root</code></td><td><code>$LIVT_ROOT</code>, then <code>.</code></td><td>Path to the root of the livt repository</td></tr>
+<tr><td><code>--http</code></td><td>(off; stdio)</td><td>Serve over Streamable HTTP at this address (e.g. <code>localhost:5488</code>) instead of stdio; the MCP endpoint is <code>&lt;addr&gt;/mcp</code></td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="transports"><a class="header" href="#transports">Transports</a></h3>
+<p>By default the server runs over <strong>stdio</strong>, spawned per consumer — the client
+launches <code>livt mcp</code> as a subprocess. stdio is the recommended form: the
+binding to the livt repository is read at spawn time from the consumer’s own
+environment, so each workspace resolves against what it declares, and a
+session never outlives the declaration it was started with.</p>
+<p>Reach for <strong><code>--http</code></strong> when reachability is the problem — a client that
+cannot spawn processes, or several repos sharing one machine-wide server
+without each holding a checkout of the livt repository. It serves Streamable
+HTTP from one long-running process:</p>
+<pre><code class="language-bash">livt mcp --http localhost:5488
+</code></pre>
+<p>Each consumer points its MCP client at <code>http://localhost:5488/mcp</code>. The server
+is stateless and read-only, so one process backs many clients; keep <code>git pull</code>
+current on its checkout and the served spec (and <code>spec_version</code>) updates live.
+The binding trades the other way from stdio: the server fixes its repository
+once, at start, for every client — not per workspace.
+For distributing this client configuration to implementation repos, see the
+<a href="https://github.com/boykush/livt/tree/main/plugins/livt-automation"><code>livt-automation</code> plugin</a>.
+This mode assumes local use with no authentication — the server is meant to bind
+to localhost, not a public network.</p>
+<h3 id="tools"><a class="header" href="#tools">Tools</a></h3>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Tool</th><th>Arguments</th><th>Returns</th></tr>
+</thead>
+<tbody>
+<tr><td><code>list_opportunities</code></td><td>—</td><td>Every <a href="../guides/opportunities.html">opportunity</a> with its key, name, and statement. Each entry links to its opportunity resource (<code>uri</code>), to its canvas (<code>canvas_uri</code>) when one has been filled in, and to the story maps mapped for it. A missing canvas or story map is the record that the opportunity has not been taken that far.</td></tr>
+<tr><td><code>list_stories</code></td><td><code>opportunity</code> (optional) — an opportunity name, matched exactly against the name a story’s opportunity chip carries; keeps only the stories on that map, and an unknown name yields an empty list</td><td>Every story with its key and name. Each entry links to its story resource (<code>uri</code>); stories that have an example mapping also include <code>example_mapping_uri</code>, and stories on a story map carry <code>opportunities</code> — one map name plus story map resource URI per map they sit on.</td></tr>
+<tr><td><code>list_example_mappings</code></td><td><code>opportunity</code> (optional) — as for <code>list_stories</code>; a mapping whose key sits on no map, as one with no story usually does, matches none</td><td>Every example mapping, including one whose story has no card, with its story key and mapping resource URI (<code>uri</code>). A mapping carries <code>name</code> when it has one of its own and <code>story_uri</code> when a story file exists — read that story for the name of a mapping with none of its own — and <code>opportunities</code>, the story maps its key sits on.</td></tr>
+<tr><td><code>list_story_maps</code></td><td>—</td><td>Every story map with its name and its story map resource URI (<code>uri</code>).</td></tr>
+<tr><td><code>list_terms</code></td><td>—</td><td>Every <a href="../guides/ubiquitous-language.html">ubiquitous language</a> term with its key, display name, and term resource URI (<code>uri</code>) — including terms no board references. A term scoped to a context also carries <code>ctx</code>, which is part of what identifies it.</td></tr>
+</tbody>
+</table>
+</div>
+<h3 id="resources"><a class="header" href="#resources">Resources</a></h3>
+<p>The spec itself is exposed as resources, addressable by URI
+(opportunity → story map → story → mapping → rule → example, with the canvas,
+questions, and ubiquitous terms linked alongside):</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>URI</th><th>Returns</th></tr>
+</thead>
+<tbody>
+<tr><td><code>livt://opportunity/{opportunity_key}</code></td><td>An opportunity: its name, its statement (whose problem, and what the business gets from solving it), and its frontmatter meta. Carries <code>canvas_uri</code> when a canvas has been filled in, and <code>story_maps</code> — the maps whose key matches, as map name plus story map resource URI.</td></tr>
+<tr><td><code>livt://opportunity-canvas/{opportunity_key}</code></td><td>The <a href="../guides/opportunities.html#the-opportunity-canvas">Opportunity Canvas</a> filled in for an opportunity, as its ten <code>boxes</code> — each with its <code>key</code>, printed <code>number</code>, heading, the <code>prompt</code> it asks, and its <code>items</code>. Every box is returned, unanswered ones with an empty <code>items</code>: a blank box records a question the opportunity has not answered.</td></tr>
+<tr><td><code>livt://story-map/{map_name}</code></td><td>A story map: activities, steps, story cards, and releases. Story cards that have a story file link to their story resource. <code>{map_name}</code> is the map’s display name (percent-encoded) — the same identifier the build output uses for <code>story-map/{name}.html</code>.</td></tr>
+<tr><td><code>livt://story/{story_key}</code></td><td>The story’s name, body, and frontmatter meta (e.g. <code>issue</code>), plus <code>example_mapping_uri</code> when a mapping exists and <code>opportunities</code> — the story maps the story sits on, as map name plus story map resource URI.</td></tr>
+<tr><td><code>livt://mapping/{story_key}</code></td><td>The story’s example mapping (rules, examples, questions, ubiquitous terms), with its own <code>name</code> when it has one — the only name a mapping with no story file carries. Each rule, example, and question carries its own <code>uri</code>, and <code>ubiquitous_terms</code> resolves each referenced term to its resource URI. <a href="../guides/example-mappings.html#retiring-an-item">Retired</a> entries are listed too, saying how they closed — the mapping is the structural record their ids are numbered from.</td></tr>
+<tr><td><code>livt://mapping/{story_key}/rule/{rule_id}</code></td><td>A single rule and its examples, its <code>status</code> — <code>proposed</code> while it awaits agreement, <code>accepted</code> once agreed, <code>rejected</code> or <code>retired</code> once closed, and present on every rule — plus its automation: <code>issues</code> (automation Issue URLs, as the mapping records them), <code>automated</code> (whether a collected report cites the rule itself — citing one of its examples does not count), and <code>automations</code> (each citing test’s <code>repo</code>, <code>rev</code>, <code>file</code>, <code>line</code>, and <code>url</code> where one could be built; omitted when no test cites it). The last two are <a href="../guides/example-mappings.html#automating-a-rule">derived from the reports</a> under <code>automations/</code>, never read from the mapping. Each example carries its own <code>automated</code> and <code>automations</code>, answered for the example alone. Rules inside <code>livt://mapping/{story_key}</code> carry the same fields.</td></tr>
+<tr><td><code>livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}</code></td><td>A single example of a rule. Example ids are numbered within their rule, so the address carries <code>{rule_id}</code> — <code>EX-01</code> alone does not identify an example.</td></tr>
+<tr><td><code>livt://mapping/{story_key}/question/{question_id}</code></td><td>A single question. Questions hang off the mapping rather than off a rule, so the address stops at <code>{story_key}</code>.</td></tr>
+<tr><td><code>livt://ubiquitous/{term_key}</code></td><td>A ubiquitous language term’s name and definition. This shape addresses a term whose meaning holds across contexts.</td></tr>
+<tr><td><code>livt://ubiquitous/{ctx}/{term_key}</code></td><td>A term scoped to one <a href="../guides/ubiquitous-language.html#contexts">context</a>, carrying <code>ctx</code> alongside its key. A context is optional and part of the address, so the same <code>{term_key}</code> can name one term at the root and another inside a context; the two never resolve to each other.</td></tr>
+</tbody>
+</table>
+</div>
+<p>A closed rule and a retired example or question keep resolving by their URI and
+say so as they do in the YAML — a rule through its <code>status</code>, an example or a
+question through <code>retired: true</code> — so a reference to one reads as closed rather
+than failing (or, worse, landing on whatever reused its id). A live example or
+question omits the flag. When something took the item’s place, <code>superseded_by</code>
+lists it as livt URIs, so the reference reads on instead of stopping; a
+retirement that replaced nothing omits that field too.</p>
+<p>Read them with <code>resources/read</code>; all appear in <code>resources/templates/list</code>. The
+server advertises templates only — there is no concrete resource list and no
+change notification (subscribe); every read is served fresh from disk.</p>
+<p>Every tool and resource payload also includes a <code>spec_version</code> field – the
+short git revision of the livt repository – so consumers can tell which version of the
+spec they are reading and detect drift.</p>
+<h3 id="citing-the-livt-repository"><a class="header" href="#citing-the-livt-repository">Citing the livt repository</a></h3>
+<p>The handshake carries <code>instructions</code>, so every session tells the consuming agent
+how to reference the livt repository in what it produces: copy the <code>uri</code> from the result
+verbatim, and never write a bare <code>id</code>. Ids are unique only within one mapping
+file, so <code>R-02</code> exists in every mapping and identifies nothing on its own.</p>
+<pre><code class="language-go">// livt://mapping/place-order-with-saved-card/rule/R-13/example/EX-01
+</code></pre>
+<p>That applies wherever a reference leaves the livt repository – a test comment, an issue
+body, a commit message, a PR description. A published living-document URL is a
+convenience link for humans, not the citation form: it depends on where the site
+is deployed, and the livt URI does not.</p>
+<p>In a test comment, a URI quoted this way is a reference. A test that automates
+the point it quotes puts the <code>livt:automates</code> marker in front of the URI, and
+only such a line is collected as automation. See
+<a href="../guides/example-mappings.html#automating-a-rule">Automating a rule</a>.</p>
+<p>A URI cited this way is read back with <a href="#livt-resolve"><code>livt resolve</code></a>, which
+needs no MCP client – so the citation stays followable for CI, an editor, or a
+reader who only has a checkout.</p>
+<h2 id="livt-resolve"><a class="header" href="#livt-resolve"><code>livt resolve</code></a></h2>
+<p>Resolve a <a href="./uri.html">livt URI</a> against the livt repository, without running an
+MCP client. A rule, example, or question cited in a test comment, an issue body,
+or a commit message can then be read back by whoever needs it — CI, an editor,
+or an agent that is not connected to livt over MCP.</p>
+<pre><code class="language-bash">livt resolve &lt;uri&gt; [flags]
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Default</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--root</code></td><td><code>$LIVT_ROOT</code>, then <code>.</code></td><td>Path to the root of the livt repository</td></tr>
+<tr><td><code>--format</code></td><td><code>json</code></td><td>Output form: <code>json</code> or <code>url</code></td></tr>
+<tr><td><code>--base-url</code></td><td>—</td><td>Root of the deployed site; required by <code>--format url</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>Every URI shape the MCP server exposes as a resource resolves here: mappings,
+rules, examples, questions, stories, story maps, and ubiquitous language terms.</p>
+<h3 id="output-forms"><a class="header" href="#output-forms">Output forms</a></h3>
+<p><strong><code>--format json</code></strong> (the default) prints the same payload an MCP
+<code>resources/read</code> of that URI serves, <code>spec_version</code> included — the two surfaces
+resolve through one code path, so a consumer sees one shape whichever way it
+asked:</p>
+<pre><code class="language-bash">livt resolve livt://mapping/trace-test-to-rule/rule/R-04
+</code></pre>
+<p><strong><code>--format url</code></strong> prints the item’s page on the deployed site, using the same
+<a href="./uri.html#uri-to-page">URI-to-page derivation</a> the site build anchors its
+stickies to:</p>
+<pre><code class="language-bash">$ livt resolve livt://mapping/trace-test-to-rule/rule/R-04 \
+    --format url --base-url https://boykush.github.io/livt
+https://boykush.github.io/livt/mapping/trace-test-to-rule.html#rule-R-04
+</code></pre>
+<p>The livt repository is still read in this form, even though the page path derives from
+the URI alone: a link to a page that was never built is worse than an error.</p>
+<h3 id="when-a-uri-does-not-resolve"><a class="header" href="#when-a-uri-does-not-resolve">When a URI does not resolve</a></h3>
+<p>Both cases exit non-zero and explain themselves on stderr, because they need
+different fixes:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th></th><th></th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Malformed URI</strong></td><td>The string is not a livt URI at all. The error lists every shape one can take. Fix the URI.</td></tr>
+<tr><td><strong>Nothing to resolve</strong></td><td>The URI is well formed but the livt repository holds no such item, e.g. <code>rule "R-99" not found in story "trace-test-to-rule"</code>. Fix the reference, or add the item.</td></tr>
+</tbody>
+</table>
+</div>
+<h2 id="livt-automations"><a class="header" href="#livt-automations"><code>livt automations</code></a></h2>
+<p>Collect what an implementation repository’s tests say they automate, as a report
+the livt repository can commit. It walks a checkout for comment lines carrying
+the <code>livt:automates</code> marker and one <a href="./uri.html">livt URI</a>, and writes what it
+found.</p>
+<p>This is the one command that runs in the implementation repository rather than
+on the livt repository: it reads code, and the site reads only what it leaves
+behind. What a test writes, and what a citation means for a rule, is
+<a href="../guides/example-mappings.html#automating-a-rule">Automating a rule</a>; this page
+is the command.</p>
+<pre><code class="language-bash">livt automations [path] [flags]
+</code></pre>
+<p><code>path</code> is the checkout to walk, and defaults to the current directory. Hidden
+directories and <code>node_modules</code>, <code>vendor</code>, <code>dist</code> and <code>target</code> are skipped, along
+with binary files: other people’s code makes no claims about your spec.</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Short</th><th>Default</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--out</code></td><td><code>-o</code></td><td>(stdout)</td><td>Write the report to this file, creating its directory</td></tr>
+<tr><td><code>--repo</code></td><td></td><td>the checkout’s <code>origin</code></td><td>Repository the report speaks for, as <code>owner/repo</code></td></tr>
+<tr><td><code>--rev</code></td><td></td><td>the checkout’s <code>HEAD</code></td><td>Revision scanned</td></tr>
+<tr><td><code>--forge</code></td><td></td><td>inferred from <code>origin</code></td><td>Code host to build line URLs for: <code>github</code> or <code>gitlab</code></td></tr>
+<tr><td><code>--url-template</code></td><td></td><td>—</td><td>Line URL template for a host livt does not know, e.g. <code>{base}/src/commit/{rev}/{path}#L{line}</code></td></tr>
+</tbody>
+</table>
+</div>
+<p>A URI’s <strong>shape</strong> is what the walk checks, never its target, so collecting needs
+no access to the livt repository at all — <a href="#livt-resolve"><code>livt resolve</code></a> is what
+answers whether a citation lands on something that exists. A URI written with
+placeholders, as the guide writes it, is documentation rather than a claim and is
+not collected: that is what lets the marker be written about.</p>
+<h3 id="the-report"><a class="header" href="#the-report">The report</a></h3>
+<pre><code class="language-json">{
+  "repo": "boykush/livt",
+  "rev": "39d110cbe24dc5afaf234b361806aaf594ff4da9",
+  "generated_at": "2026-09-24T08:24:49Z",
+  "citations": [
+    {
+      "livt_uri": "livt://mapping/collect-automations/rule/R-07/example/EX-01",
+      "file": "internal/automation/changed_test.go",
+      "line": 69,
+      "url": "https://github.com/boykush/livt/blob/39d110cbe24dc5afaf234b361806aaf594ff4da9/internal/automation/changed_test.go#L69"
+    }
+  ]
+}
+</code></pre>
+<ul>
+<li>It <strong>names its own repository, revision and generation time</strong>, so a reader can
+tell a fresh answer from a stale one rather than reading it as timeless.</li>
+<li>It <strong>judges nothing.</strong> Whether a rule counts as automated is derived when the
+site is built; a report that decided it would be a second home for the same
+fact, free to disagree with the first.</li>
+<li><code>url</code> is where the line can be read on the forge, pinned to <code>rev</code> so it shows
+the code that was scanned. livt knows <code>github.com</code> and <code>gitlab.com</code> by
+hostname, and a self-hosted host is just a hostname, so it declares itself with
+<code>--forge</code> or <code>--url-template</code>. A citation with no URL keeps its <code>file</code> and
+<code>line</code>: the link is decoration, and its absence never changes whether the
+citation counts.</li>
+<li>A <strong>dirty working tree reports no revision</strong>, and no URLs with it. The walk
+reads the working tree, so naming <code>HEAD</code> would pin every link to code that is
+not the code that was read. The file <code>--out</code> writes is left out of that
+judgment, so landing the report inside the tree it describes is not what makes
+the tree dirty.</li>
+</ul>
+<h3 id="livt-automations-changed"><a class="header" href="#livt-automations-changed"><code>livt automations changed</code></a></h3>
+<p>Collecting walks every file, which is worth avoiding on a large repository. Only
+an added or removed marker line can change what a report claims, and this answers
+whether a range holds one:</p>
+<pre><code class="language-bash">livt automations changed &lt;base&gt; [head]
+</code></pre>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>Flag</th><th>Default</th><th>Description</th></tr>
+</thead>
+<tbody>
+<tr><td><code>--path</code></td><td><code>.</code></td><td>The checkout to read the diff in</td></tr>
+</tbody>
+</table>
+</div>
+<p><code>head</code> defaults to <code>HEAD</code>. The answer is <code>true</code> or <code>false</code> on stdout, so CI
+branches on a plain command substitution, and the judgment stays livt’s: a CI
+step spelling the marker for itself would keep a second copy of what a marker is,
+free to drift the moment the real one moves.</p>
+<ul>
+<li><strong>A line that merely moved, or a rename, answers false.</strong> A report is a dated
+snapshot rather than a live view — <code>rev</code>, <code>file</code> and <code>line</code> all come from one
+revision, and the URL is pinned to it. A later commit that shifts a cited line
+leaves the report describing an earlier revision, which it says out loud.</li>
+<li><strong>A removal answers true.</strong> A deleted test whose claim outlives it leaves the
+board naming a rule nothing covers any more. Out of date is one thing; wrong
+about the present is another.</li>
+<li><strong>A range livt cannot read answers true</strong>, and says why on stderr: a new
+branch, a force-push, a revision since gone. The two mistakes are not the same
+size — guessing false drops a claim, and guessing true costs one walk.</li>
+</ul>
+<p>When the answer is true the whole repository is rescanned rather than the old
+report patched: the question decides whether to walk, never what the report says.</p>
+<h3 id="where-the-report-goes"><a class="header" href="#where-the-report-goes">Where the report goes</a></h3>
+<p><code>--out</code> is what lands it at <code>automations/{owner}/{repo}.json</code> in a checkout of
+the livt repository, where it is committed through a pull request rather than
+pushed. Which repositories collect, and what their CI runs, is the implementation
+side’s to decide rather than livt’s: the
+<a href="https://github.com/boykush/livt/tree/main/plugins/livt-automation#sending-automations-back"><code>livt-automation</code> plugin</a>
+carries a workflow to copy, and livt’s own
+<a href="https://github.com/boykush/livt/blob/main/.github/workflows/automations.yml"><code>.github/workflows/automations.yml</code></a>
+is that shape for a repository that is its own implementation repository.</p>
+<h2 id="livt-version"><a class="header" href="#livt-version"><code>livt version</code></a></h2>
+<p>Print the version of livt.</p>
+<pre><code class="language-bash">livt version
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../guides/ubiquitous-language.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                            </a>
+
+                            <a rel="next prefetch" href="../reference/configuration.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../guides/ubiquitous-language.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
+                    </a>
+
+                    <a rel="next prefetch" href="../reference/configuration.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr-ef4e11c1.min.js"></script>
+        <script src="../mark-09e88c2c.min.js"></script>
+        <script src="../searcher-09f2665d.js"></script>
+
+        <script src="../clipboard-1626706a.min.js"></script>
+        <script src="../highlight-abc7f01d.js"></script>
+        <script src="../book-609e4cb8.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+
+    </div>
+    </body>
+</html>
