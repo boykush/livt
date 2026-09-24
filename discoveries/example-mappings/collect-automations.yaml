@@ -57,6 +57,8 @@ rules:
         name: レポートは実装リポジトリの識別子・rev・生成時刻を名乗る
       - id: EX-03
         name: 自動化済みかどうかの判断は書かない（導出はderive-automation-status側）
+      - id: EX-04
+        name: 汚れた作業ツリーではrevを名乗らない（走査は作業ツリーを読むので、HEADを名乗ると行がズレる）
   - id: R-05
     name: レポートはlivtリポジトリにコミットし、書き戻しは機械だけが行う
     examples:
