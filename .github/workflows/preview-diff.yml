@@ -1,0 +1,120 @@
+name: Preview diff
+
+# On GitHub a pull request against the livt repository reads as a YAML diff;
+# `livt build --diff` reads the same change as the spec. Publishing that build
+# puts it one link from the review, for as long as the review stays open.
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+    paths:
+      - "opportunities/**"
+      - "discoveries/**"
+      - "stories/**"
+      - "ubiquitous/**"
+      - ".github/workflows/preview-diff.yml"
+      - ".github/workflows/publish-pages.yml"
+
+permissions: {}
+
+# A newer push makes the preview in progress stale, and so does closing.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: build
+    # A fork's pull request is handed a read-only token, so its preview has
+    # nowhere to go; `livt serve --diff` still reads it from a checkout.
+    if: github.event.action != 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # checkout
+    steps:
+      # The head rather than the merge commit, so the page names a revision
+      # the pull request lists. The full history is for finding the merge base.
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Setup mise
+        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+        with:
+          install_args: go
+
+      # From the merge base, as the Files changed tab reads a pull request:
+      # what the branch changes, not what the base has moved on to since.
+      - name: Build the site with its diff
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          base=$(git merge-base "$BASE" HEAD)
+          go run . build -o dist --diff "$base..HEAD"
+
+      - name: Upload the site
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: site
+          path: dist
+          if-no-files-found: error
+          overwrite: true # re-running every job uploads it again
+          retention-days: 1
+
+  # A job of its own, so the token that can write never runs the build:
+  # `go run` executes every module the build depends on.
+  publish:
+    needs: build
+    permissions:
+      contents: write # push to gh-pages
+    uses: $/.github/workflows/publish-pages.yml
+    with:
+      artifact: site
+      pr: ${{ github.event.pull_request.number }}
+
+  remove:
+    if: github.event.action == 'closed' && github.event.pull_request.head.repo.full_name == github.repository
+    permissions:
+      contents: write # push to gh-pages
+    uses: $/.github/workflows/publish-pages.yml
+    with:
+      pr: ${{ github.event.pull_request.number }}
+
+  # One comment edited in place, so the thread carries a single link, and it
+  # is the latest build's rather than one of a pile.
+  comment:
+    name: comment
+    needs: [publish, remove]
+    if: ${{ !cancelled() && contains(needs.*.result, 'success') }}
+    runs-on: ubuntu-latest
+    permissions:
+      pages: read # the site's URL
+      pull-requests: write # the comment
+    steps:
+      - name: Point the pull request at its preview
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ github.event.pull_request.number }}
+          ACTION: ${{ github.event.action }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PREVIEW: ${{ needs.publish.outputs.path }}
+        run: |
+          set -euo pipefail
+          marker='<!-- preview-diff -->'
+          if [ "$ACTION" = closed ]; then
+            text='The diff preview was taken down when this pull request closed.'
+          else
+            site=$(gh api "repos/$GITHUB_REPOSITORY/pages" --jq .html_url)
+            text="**[Diff preview](${site%/}/$PREVIEW/diff.html)** of $HEAD_SHA, rebuilt on every push. A new build can take a minute to reach GitHub Pages."
+          fi
+          body=$(printf '%s\n%s' "$marker" "$text")
+          id=$(gh api --paginate "repos/$GITHUB_REPOSITORY/issues/$PR/comments" \
+            | jq -rs --arg marker "$marker" \
+                'add | map(select(.user.login == "github-actions[bot]" and (.body | startswith($marker)))) | first | .id // empty')
+          if [ -n "$id" ]; then
+            gh api --method PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$id" -f body="$body" > /dev/null
+          elif [ "$ACTION" != closed ]; then
+            gh api --method POST "repos/$GITHUB_REPOSITORY/issues/$PR/comments" -f body="$body" > /dev/null
+          fi

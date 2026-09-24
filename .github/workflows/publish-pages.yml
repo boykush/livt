@@ -1,0 +1,101 @@
+name: Publish to gh-pages
+
+# gh-pages is the whole Pages site: the main site at its root, and a preview
+# of each open pull request under pr/{number}/. No two writers share a
+# directory, so they never conflict, only race — and a push that loses the
+# race is laid again over the one that won, since a shared concurrency group
+# would cancel whichever writer was left queued.
+on:
+  workflow_call:
+    inputs:
+      artifact:
+        description: Artifact holding the site to publish; empty removes the pull request's preview
+        type: string
+        default: ""
+      pr:
+        description: Pull request the preview belongs to; empty publishes the main site
+        type: string
+        default: ""
+    outputs:
+      path:
+        description: Directory the site landed in, relative to the root of the Pages site
+        value: ${{ jobs.push.outputs.path }}
+
+permissions: {}
+
+jobs:
+  push:
+    name: push
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push to gh-pages
+    outputs:
+      path: ${{ steps.push.outputs.path }}
+    steps:
+      - name: Download the site
+        if: inputs.artifact != ''
+        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: ${{ inputs.artifact }}
+          path: ${{ runner.temp }}/site
+
+      - name: Push to gh-pages
+        id: push
+        env:
+          ARTIFACT: ${{ inputs.artifact }}
+          PR: ${{ inputs.pr }}
+          SITE: ${{ runner.temp }}/site
+          REMOTE: https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}.git
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          set -euo pipefail
+          if [ -n "$PR" ]; then
+            path="pr/$PR"
+            if [ -n "$ARTIFACT" ]; then subject="Publish $path"; else subject="Remove $path"; fi
+          elif [ -n "$ARTIFACT" ]; then
+            path=""
+            subject="Publish the site"
+          else
+            echo "::error::The main site is only ever replaced, never removed"
+            exit 1
+          fi
+          echo "path=$path" >> "$GITHUB_OUTPUT"
+
+          git init --quiet --initial-branch=gh-pages "$RUNNER_TEMP/gh-pages"
+          cd "$RUNNER_TEMP/gh-pages"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+
+          for attempt in 1 2 3 4 5; do
+            # Jittered, so writers that just collided do not retry in step.
+            [ "$attempt" = 1 ] || sleep $((attempt + RANDOM % 10))
+            # Every attempt starts over from what gh-pages holds now, so a
+            # writer that got there first keeps what it pushed.
+            if git ls-remote --exit-code "$REMOTE" refs/heads/gh-pages > /dev/null; then
+              git fetch --quiet --depth=1 "$REMOTE" gh-pages
+              git reset --quiet --hard FETCH_HEAD
+            fi
+            if [ -z "$path" ]; then
+              # The previews outlive any one deploy of the main site.
+              find . -mindepth 1 -maxdepth 1 ! -name .git ! -name pr -exec rm -rf {} +
+              cp -R "$SITE/." .
+            else
+              rm -rf "$path"
+              if [ -n "$ARTIFACT" ]; then
+                mkdir -p "$path"
+                cp -R "$SITE/." "$path/"
+              fi
+            fi
+            # Served as it was built, rather than run through Jekyll first.
+            if [ -n "$ARTIFACT" ]; then touch .nojekyll; fi
+            git add --all
+            if git diff --cached --quiet; then
+              exit 0
+            fi
+            git commit --quiet --message "$subject" --message "Pushed by $RUN_URL."
+            if git push --quiet "$REMOTE" HEAD:refs/heads/gh-pages; then
+              exit 0
+            fi
+          done
+          echo "::error::gh-pages moved under every one of $attempt pushes"
+          exit 1
