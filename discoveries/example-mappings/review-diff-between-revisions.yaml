@@ -11,7 +11,7 @@ rules:
       - id: EX-04
         name: gitリポジトリでない場所や解決できないリビジョンを渡すと、ビルドはその場で失敗する
   - id: R-02
-    name: 差分の単位はlivt URIで、リソースの種類ごとにまとまって並ぶ
+    name: 差分の単位はlivt URIで、リソースの種類ごとにまとめて並ぶ
     examples:
       - id: EX-01
         name: ルールの文言が変わると、そのルールのURIが1件として並ぶ
@@ -75,6 +75,7 @@ rules:
         name: 状態や自動化のようなlivtが持つ項目は、サイトが使っている言葉で並ぶ
       - id: EX-03
         name: 文言が変わった行は、行のどこが変わったかが中で際立つ
+        retired: true
 
 questions:
   - id: Q-01
@@ -88,6 +89,8 @@ questions:
       - livt://mapping/review-diff-between-revisions/rule/R-01
   - id: Q-04
     text: 付箋の並び替えだけの変更を差分として映すか（livt URIは変わらないが、ボードの見えは変わる）
+  - id: Q-05
+    text: （動作確認用・マージしない）PRのプレビューで、この疑問点が追加として並ぶか
 
 ubiquitous:
   - livt-uri
