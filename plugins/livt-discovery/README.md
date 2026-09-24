@@ -60,7 +60,8 @@ The expert skills are the **knowledge backend** the record and formulation skill
 ## Install
 
 ```
-/plugin install livt-discovery@boykush/livt
+/plugin marketplace add boykush/livt
+/plugin install livt-discovery@livt-claude-code-plugins
 ```
 
 ## Coming from 3.x
