@@ -39,7 +39,7 @@ rules:
       - id: EX-02
         name: US Issueがなくてもルール単位の起票は成立する
   - id: R-06
-    name: livtは実装リポジトリのコードを読まず、Issueというポインタだけを送る
+    name: 起票は実装リポジトリのコードを読まず、Issueというポインタだけを送る
     examples:
       - id: EX-01
         name: 起票は対象リポジトリのチェックアウトを必要としない
