@@ -156,8 +156,36 @@ func TestRenderMappingMarksAutomatedRules(t *testing.T) {
 	if got := strings.Count(html, "✓ automated"); got != 1 {
 		t.Fatalf("automated badge rendered %d times, want once (only on the automated rule)", got)
 	}
-	if !strings.Contains(html, "Automated rule") {
+	if !strings.Contains(html, "Automated by a test") {
 		t.Fatal("expected the legend to explain the automated mark")
+	}
+}
+
+// livt:automates livt://mapping/show-automation-status-per-rule/rule/R-01/example/EX-04
+// An example carries its own mark, and a rule's says nothing about it: a rule
+// covered end to end sits over examples nobody has written a test for, and a
+// rule with no test of its own sits over examples that all have one.
+func TestRenderMappingMarksEachAxisOnItsOwn(t *testing.T) {
+	cited := []domain.Automation{{Repo: "acme/impl", File: "x_test.go", Line: 1}}
+	em := &domain.ExampleMapping{
+		Rules: []domain.Rule{
+			{ID: "R-01", Name: "Cited rule, uncited examples", Automations: cited, Examples: []domain.Example{
+				{ID: "EX-01", Name: "No test names this one"},
+			}},
+			{ID: "R-02", Name: "Uncited rule, cited examples", Examples: []domain.Example{
+				{ID: "EX-01", Name: "A test names this one", Automations: cited},
+			}},
+		},
+	}
+
+	var buf bytes.Buffer
+	if err := renderMapping(&buf, i18n.En, board{Mapping: em.Active()}, "Story", "", nil, nil, nil); err != nil {
+		t.Fatal(err)
+	}
+	html := buf.String()
+
+	if got := strings.Count(html, "✓ automated"); got != 2 {
+		t.Fatalf("automated badge rendered %d times, want 2: the cited rule and the cited example", got)
 	}
 }
 

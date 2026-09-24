@@ -83,7 +83,7 @@ var en = Catalog{
 	"story.related":     "Related",
 	"story.description": "Description",
 
-	"mapping.automated-legend": "Automated rule",
+	"mapping.automated-legend": "Automated by a test",
 	"mapping.automated-badge":  "✓ automated",
 	"mapping.automated-title":  "Automated by tests",
 	"mapping.proposed-legend":  "Proposed rule",

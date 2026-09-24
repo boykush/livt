@@ -78,7 +78,7 @@ var ja = Catalog{
 	"story.related":     "関連",
 	"story.description": "説明",
 
-	"mapping.automated-legend": "自動化済みルール",
+	"mapping.automated-legend": "テストが自動化している",
 	"mapping.automated-badge":  "✓ 自動化済み",
 	"mapping.automated-title":  "テストで自動化済み",
 	"mapping.proposed-legend":  "提案中のルール",
