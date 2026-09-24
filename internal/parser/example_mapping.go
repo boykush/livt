@@ -17,11 +17,10 @@ type exampleMappingYAML struct {
 }
 
 type ruleYAML struct {
-	ID        string        `yaml:"id"`
-	Name      string        `yaml:"name"`
-	Examples  []exampleYAML `yaml:"examples"`
-	Issues    []string      `yaml:"issues"`
-	Automated bool          `yaml:"automated"`
+	ID       string        `yaml:"id"`
+	Name     string        `yaml:"name"`
+	Examples []exampleYAML `yaml:"examples"`
+	Issues   []string      `yaml:"issues"`
 	// Status reads as an ADR's does: proposed while the rule awaits agreement,
 	// accepted once it has it, rejected or retired once it has closed. Omitted
 	// means accepted, and it is the whole of a rule's standing: nothing else
@@ -84,7 +83,7 @@ func ParseExampleMapping(path string) (*domain.ExampleMapping, error) {
 		for _, ex := range r.Examples {
 			examples = append(examples, domain.Example{ID: ex.ID, Name: ex.Name, Retired: ex.Retired, SupersededBy: ex.SupersededBy})
 		}
-		rules = append(rules, domain.Rule{ID: r.ID, Name: r.Name, Examples: examples, Status: status, Issues: r.Issues, Automated: r.Automated, SupersededBy: r.SupersededBy})
+		rules = append(rules, domain.Rule{ID: r.ID, Name: r.Name, Examples: examples, Status: status, Issues: r.Issues, SupersededBy: r.SupersededBy})
 	}
 
 	var questions []domain.Question

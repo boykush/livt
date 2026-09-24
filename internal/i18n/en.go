@@ -63,7 +63,6 @@ var en = Catalog{
 	// — a frontmatter key, a story's name — are carried through as written.
 	"diff.gone":                "gone from here",
 	"diff.field.status":        "Status",
-	"diff.field.automated":     "Automated",
 	"diff.field.issue":         "Automation issue",
 	"diff.field.superseded-by": "Superseded by",
 	"diff.field.retired":       "Retired",

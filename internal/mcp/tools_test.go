@@ -24,7 +24,6 @@ func newTestServer(t *testing.T) *Server {
 			"        name: 実例1\n"+
 			"    issues:\n"+
 			"      - https://github.com/boykush/livt/issues/25\n"+
-			"    automated: true\n"+
 			"  - id: R-02\n"+
 			"    name: ルール2\n"+
 			"questions:\n"+
@@ -33,6 +32,14 @@ func newTestServer(t *testing.T) *Server {
 			"ubiquitous:\n"+
 			"  - story\n"+
 			"  - missing-term\n")
+	writeFile(t, filepath.Join(root, "automations", "acme", "impl.json"),
+		"{\n"+
+			"  \"repo\": \"acme/impl\",\n"+
+			"  \"rev\": \"abc123\",\n"+
+			"  \"citations\": [\n"+
+			"    {\"uri\": \"livt://mapping/demo/rule/R-01\", \"file\": \"x_test.go\", \"line\": 7}\n"+
+			"  ]\n"+
+			"}\n")
 	writeFile(t, filepath.Join(root, "stories", "demo.md"),
 		"---\nname: デモストーリー\nissue: https://example.com/issues/1\n---\n\n本文\n")
 	writeFile(t, filepath.Join(root, "stories", "other.md"), "---\nname: 別ストーリー\n---\n\n本文\n")

@@ -6,6 +6,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"github.com/boykush/livt/internal/automation"
 	"github.com/boykush/livt/internal/domain"
 	"github.com/boykush/livt/internal/parser"
 	"github.com/boykush/livt/internal/uri"
@@ -94,6 +95,11 @@ func (c Config) exampleMapping(storyKey string) (*domain.ExampleMapping, error) 
 	if err != nil {
 		return nil, fmt.Errorf("parse example mapping for story %q: %w", storyKey, err)
 	}
+	idx, err := automation.Load(c.automationsDir())
+	if err != nil {
+		return nil, fmt.Errorf("read automations: %w", err)
+	}
+	idx.Attach(em)
 	return em, nil
 }
 

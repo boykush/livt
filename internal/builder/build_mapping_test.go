@@ -138,7 +138,7 @@ func TestRenderMappingExampleUnderUnkeyedRuleOmitsAnchor(t *testing.T) {
 func TestRenderMappingMarksAutomatedRules(t *testing.T) {
 	em := &domain.ExampleMapping{
 		Rules: []domain.Rule{
-			{ID: "R-01", Name: "An automated rule", Automated: true},
+			{ID: "R-01", Name: "An automated rule", Automations: []domain.Automation{{Repo: "acme/impl", File: "x_test.go", Line: 1}}},
 			{ID: "R-02", Name: "A rule not yet automated"},
 		},
 	}
@@ -227,7 +227,7 @@ func TestCollectTasksSplitsQuestionsFromUnautomatedRules(t *testing.T) {
 	em := &domain.ExampleMapping{
 		StoryKey: domain.StoryKey{Value: "overview-open-questions"},
 		Rules: []domain.Rule{
-			{ID: "R-01", Name: "A proven rule", Automated: true},
+			{ID: "R-01", Name: "A proven rule", Automations: []domain.Automation{{Repo: "acme/impl", File: "x_test.go", Line: 1}}},
 			{ID: "R-02", Name: "A rule not yet proven"},
 		},
 		Questions: []domain.Question{{ID: "Q-01", Text: "An open question"}},
@@ -417,7 +417,7 @@ func TestCollectTasksListsProposedRulesApart(t *testing.T) {
 		Rules: []domain.Rule{
 			{ID: "R-01", Name: "未自動化のルール"},
 			{ID: "R-02", Name: "提案中のルール", Status: domain.RuleProposed},
-			{ID: "R-03", Name: "テストが先に書かれた提案", Status: domain.RuleProposed, Automated: true},
+			{ID: "R-03", Name: "テストが先に書かれた提案", Status: domain.RuleProposed, Automations: []domain.Automation{{Repo: "acme/impl", File: "x_test.go", Line: 1}}},
 			{ID: "R-04", Name: "却下された提案", Status: domain.RuleRejected},
 		},
 	}
@@ -447,13 +447,14 @@ func TestTasksCountIncludesProposedRules(t *testing.T) {
 		"rules:\n"+
 			"  - id: R-01\n"+
 			"    name: 自動化済みのルール\n"+
-			"    automated: true\n"+
 			"  - id: R-02\n"+
 			"    name: テストが先に書かれた提案\n"+
 			"    status: proposed\n"+
-			"    automated: true\n"+
 			"  - id: R-03\n"+
 			"    name: 未自動化のルール\n")
+	writeAutomations(t, b,
+		"livt://mapping/checkout/rule/R-01",
+		"livt://mapping/checkout/rule/R-02")
 
 	c, err := b.computeCounts()
 	if err != nil {
@@ -489,11 +490,11 @@ func foldedBoard() *domain.ExampleMapping {
 	return &domain.ExampleMapping{
 		Rules: []domain.Rule{
 			{
-				ID:        "R-01",
-				Name:      "A rule with examples",
-				Examples:  []domain.Example{{ID: "EX-01", Name: "First example"}, {ID: "EX-02", Name: "Second example"}},
-				Issues:    []string{"https://github.com/boykush/livt/issues/25"},
-				Automated: true,
+				ID:          "R-01",
+				Name:        "A rule with examples",
+				Examples:    []domain.Example{{ID: "EX-01", Name: "First example"}, {ID: "EX-02", Name: "Second example"}},
+				Issues:      []string{"https://github.com/boykush/livt/issues/25"},
+				Automations: []domain.Automation{{Repo: "acme/impl", File: "x_test.go", Line: 1}},
 			},
 			{ID: "R-02", Name: "A rule without examples"},
 		},

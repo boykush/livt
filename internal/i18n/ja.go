@@ -60,7 +60,6 @@ var ja = Catalog{
 
 	"diff.gone":                "件がここから消えました",
 	"diff.field.status":        "状態",
-	"diff.field.automated":     "自動化済み",
 	"diff.field.issue":         "自動化Issue",
 	"diff.field.superseded-by": "後継",
 	"diff.field.retired":       "退役",

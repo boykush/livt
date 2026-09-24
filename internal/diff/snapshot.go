@@ -61,7 +61,6 @@ type Field struct {
 // something, that word is reused rather than a second one minted here.
 const (
 	LabelStatus       = "diff.field.status"
-	LabelAutomated    = "diff.field.automated"
 	LabelIssue        = "diff.field.issue"
 	LabelSupersededBy = "diff.field.superseded-by"
 	LabelRetired      = "diff.field.retired"
@@ -205,9 +204,6 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 // words for these and "accepted" is the spelling in the file, not the reading.
 func ruleFields(r domain.Rule) []Field {
 	fields := []Field{text(r.Name), labelled(LabelStatus, statusPrefix+string(r.Status.OrDefault()))}
-	if r.Automated {
-		fields = append(fields, flag(LabelAutomated))
-	}
 	fields = append(fields, listed(LabelIssue, r.Issues)...)
 	return append(fields, listed(LabelSupersededBy, r.SupersededBy)...)
 }

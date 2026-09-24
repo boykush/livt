@@ -1,7 +1,10 @@
 package builder
 
 import (
+	"encoding/json"
+
 	"fmt"
+	"github.com/boykush/livt/internal/automation"
 	"os"
 	"path/filepath"
 	"strings"
@@ -19,8 +22,25 @@ func emptyDirsBuilder(t *testing.T) Builder {
 		StoriesDir:       t.TempDir(),
 		USMDir:           t.TempDir(),
 		UbiquitousDir:    t.TempDir(),
+		AutomationsDir:   t.TempDir(),
 		OutDir:           t.TempDir(),
 	}
+}
+
+// writeAutomations stands in for what an implementation repository pushes, so
+// a test can make a rule automated the only way anything now can: by citing it
+// from a test.
+func writeAutomations(t *testing.T, b Builder, uris ...string) {
+	t.Helper()
+	citations := make([]automation.Citation, 0, len(uris))
+	for i, u := range uris {
+		citations = append(citations, automation.Citation{URI: u, File: "x_test.go", Line: i + 1})
+	}
+	data, err := json.MarshalIndent(automation.Report{Repo: "acme/impl", Rev: "abc123", Citations: citations}, "", "  ")
+	if err != nil {
+		t.Fatal(err)
+	}
+	writeFile(t, filepath.Join(b.AutomationsDir, "impl.json"), string(data))
 }
 
 func TestBuildMappingsIndexRendersPreviewCards(t *testing.T) {

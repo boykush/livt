@@ -43,6 +43,11 @@ func (b *Builder) buildMappings() ([]mappingTile, taskSet, map[string]mappingTal
 		return nil, taskSet{}, nil, err
 	}
 
+	automations, err := b.automationIndex()
+	if err != nil {
+		return nil, taskSet{}, nil, err
+	}
+
 	var tiles []mappingTile
 	var open taskSet
 	tallies := make(map[string]mappingTally, len(files))
@@ -51,6 +56,7 @@ func (b *Builder) buildMappings() ([]mappingTile, taskSet, map[string]mappingTal
 		if err != nil {
 			return nil, taskSet{}, nil, fmt.Errorf("parse %s: %w", f, err)
 		}
+		automations.Attach(em)
 
 		storyName := b.resolveStoryName(em.StoryKey)
 		storyPath := ""
@@ -89,10 +95,10 @@ func tally(em *domain.ExampleMapping) mappingTally {
 		if r.Proposed() {
 			t.Proposed++
 		}
-		if r.Automated {
+		if r.Automated() {
 			t.Automated++
 		}
-		if !r.Proposed() && !r.Automated {
+		if !r.Proposed() && !r.Automated() {
 			t.Unautomated++
 		}
 	}
@@ -154,7 +160,7 @@ func collectTasks(em *domain.ExampleMapping, storyName, storyPath string) taskSe
 		switch {
 		case r.Proposed():
 			out.ProposedRules = append(out.ProposedRules, item("proposed-rule", r.ID, r.Name, sticky(r.ID, uri.RulePage)))
-		case !r.Automated:
+		case !r.Automated():
 			out.UnautomatedRules = append(out.UnautomatedRules, item("rule", r.ID, r.Name, sticky(r.ID, uri.RulePage)))
 		}
 	}

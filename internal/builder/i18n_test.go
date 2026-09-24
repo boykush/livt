@@ -28,7 +28,6 @@ func filledBuilder(t *testing.T) Builder {
 			"    examples:\n"+
 			"      - id: EX-01\n"+
 			"        name: 在庫0の商品はカートに入らない\n"+
-			"    automated: true\n"+
 			"    issues:\n"+
 			"      - https://github.com/boykush/livt/issues/2\n"+
 			"  - id: R-02\n"+
@@ -44,6 +43,7 @@ func filledBuilder(t *testing.T) Builder {
 			"    text: 予約商品はどう扱うか\n"+
 			"ubiquitous:\n"+
 			"  - cart\n")
+	writeAutomations(t, b, "livt://mapping/checkout/rule/R-01")
 	writeFile(t, filepath.Join(b.USMDir, "shopping.yaml"),
 		"name: 買い物ジャーニー\n"+
 			"ubiquitous:\n"+

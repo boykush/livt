@@ -12,6 +12,7 @@ func init() {
 	serveCmd.Flags().IntVarP(&port, "port", "p", 3000, "port to listen on")
 	serveCmd.Flags().StringVarP(&outDir, "out", "o", "dist", "output directory")
 	serveCmd.Flags().StringVar(&diffRange, "diff", "", diffFlagUsage)
+	serveCmd.Flags().StringVar(&reportsDir, "reports", defaultReportsDir, reportsFlagUsage)
 	rootCmd.AddCommand(serveCmd)
 }
 

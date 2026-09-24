@@ -182,6 +182,28 @@ type exampleJSON struct {
 	Retired bool `json:"retired,omitempty"`
 	// SupersededBy as on ruleJSON.
 	SupersededBy []string `json:"superseded_by,omitempty"`
+	// Automated and Automations as on ruleJSON, answered for this example
+	// alone: the two are cited separately and neither implies the other.
+	Automated   bool             `json:"automated"`
+	Automations []automationJSON `json:"automations,omitempty"`
+}
+
+// automationJSON is one test citing this point of the spec, named by the
+// repository that reported it so a consumer knows whose answer it is reading.
+type automationJSON struct {
+	Repo string `json:"repo,omitempty"`
+	Rev  string `json:"rev,omitempty"`
+	File string `json:"file"`
+	Line int    `json:"line"`
+	URL  string `json:"url,omitempty"`
+}
+
+func toAutomationsJSON(as []domain.Automation) []automationJSON {
+	out := make([]automationJSON, 0, len(as))
+	for _, a := range as {
+		out = append(out, automationJSON{Repo: a.Repo, Rev: a.Rev, File: a.File, Line: a.Line, URL: a.URL})
+	}
+	return out
 }
 
 type ruleJSON struct {
@@ -197,9 +219,13 @@ type ruleJSON struct {
 	Examples []exampleJSON `json:"examples,omitempty"`
 	// Issues are the rule's automation Issue URLs as recorded on the livt repository.
 	Issues []string `json:"issues,omitempty"`
-	// Automated is always present: consumers read the recorded judgment
-	// without distinguishing absent from false.
+	// Automated is always present: consumers read it without distinguishing
+	// absent from false. It says only that some test cites this rule — an
+	// example of it being automated does not make the rule so.
 	Automated bool `json:"automated"`
+	// Automations are the tests that cite it, so a consumer can go to the
+	// code rather than take the flag on trust. Omitted when there are none.
+	Automations []automationJSON `json:"automations,omitempty"`
 	// SupersededBy is where the spec went, as livt URIs, so a stale reference
 	// leads forward instead of stopping. It stays a URI: the successor is one
 	// read away for a caller who needs it, and inlining its text would spend
@@ -354,11 +380,11 @@ func toRuleJSON(storyKey string, r domain.Rule) ruleJSON {
 	for _, e := range r.Examples {
 		examples = append(examples, toExampleJSON(storyKey, r.ID, e))
 	}
-	return ruleJSON{ID: r.ID, URI: uri.Rule(storyKey, r.ID), Name: r.Name, Status: string(r.Status.OrDefault()), Examples: examples, Issues: r.Issues, Automated: r.Automated, SupersededBy: r.SupersededBy}
+	return ruleJSON{ID: r.ID, URI: uri.Rule(storyKey, r.ID), Name: r.Name, Status: string(r.Status.OrDefault()), Examples: examples, Issues: r.Issues, Automated: r.Automated(), Automations: toAutomationsJSON(r.Automations), SupersededBy: r.SupersededBy}
 }
 
 func toExampleJSON(storyKey, ruleID string, e domain.Example) exampleJSON {
-	return exampleJSON{ID: e.ID, URI: uri.Example(storyKey, ruleID, e.ID), Name: e.Name, Retired: e.Retired, SupersededBy: e.SupersededBy}
+	return exampleJSON{ID: e.ID, URI: uri.Example(storyKey, ruleID, e.ID), Name: e.Name, Retired: e.Retired, SupersededBy: e.SupersededBy, Automated: e.Automated(), Automations: toAutomationsJSON(e.Automations)}
 }
 
 func toQuestionJSON(storyKey string, q domain.Question) questionJSON {

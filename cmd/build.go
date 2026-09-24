@@ -12,14 +12,23 @@ import (
 
 var outDir string
 var diffRange string
+var reportsDir string
 
 // diffFlagUsage is worded once and set on both commands, so `livt serve --diff`
 // cannot come to mean something `livt build --diff` does not.
 const diffFlagUsage = "render a diff between two revisions: <base>..<head>, or <base> alone against the working tree"
 
+// The reports flag is worded and defaulted once for the same reason as the
+// diff flag: build and serve must read the same place.
+const (
+	reportsFlagUsage  = "directory of collected automation reports"
+	defaultReportsDir = "automations"
+)
+
 func init() {
 	buildCmd.Flags().StringVarP(&outDir, "out", "o", "dist", "output directory")
 	buildCmd.Flags().StringVar(&diffRange, "diff", "", diffFlagUsage)
+	buildCmd.Flags().StringVar(&reportsDir, "reports", defaultReportsDir, reportsFlagUsage)
 	rootCmd.AddCommand(buildCmd)
 }
 
@@ -42,6 +51,7 @@ func newBuilder(outDir string) (*builder.Builder, error) {
 		StoriesDir:       "stories",
 		USMDir:           filepath.Join("discoveries", "usm"),
 		UbiquitousDir:    "ubiquitous",
+		AutomationsDir:   reportsDir,
 		OutDir:           outDir,
 		Lang:             cfg.Lang,
 		Diff:             revisions,

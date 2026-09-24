@@ -265,9 +265,10 @@ func progressBuilder(t *testing.T) Builder {
 	}
 	writeFile(t, filepath.Join(b.MappingsDir, "held-story.yaml"),
 		"rules:\n"+
-			"  - id: R-01\n    name: 押さえたルール\n    automated: true\n"+
+			"  - id: R-01\n    name: 押さえたルール\n"+
 			"  - id: R-02\n    name: 退役したルール\n    status: retired\n"+
 			"questions: []\n")
+	writeAutomations(t, b, "livt://mapping/held-story/rule/R-01")
 	writeFile(t, filepath.Join(b.MappingsDir, "half-story.yaml"),
 		"rules:\n"+
 			"  - id: R-01\n    name: まだのルール\n"+
@@ -471,8 +472,11 @@ func TestOpportunityUnautomatedMeterDoesNotSubtractAProposalTwice(t *testing.T) 
 		"rules:\n"+
 			"  - id: R-01\n    name: まだのルール\n"+
 			"  - id: R-02\n    name: 提案中のルール\n    status: proposed\n"+
-			"  - id: R-03\n    name: 先にテストのある提案\n    status: proposed\n    automated: true\n"+
+			"  - id: R-03\n    name: 先にテストのある提案\n    status: proposed\n"+
 			"questions: []\n")
+	writeAutomations(t, b,
+		"livt://mapping/held-story/rule/R-01",
+		"livt://mapping/half-story/rule/R-03")
 	_, _, tallies, err := b.buildMappings()
 	if err != nil {
 		t.Fatal(err)

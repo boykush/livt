@@ -6,7 +6,6 @@ rules:
         name: アクティビティが横並びで、その下にユーザータスクが並ぶ
     issues:
       - https://github.com/boykush/livt/issues/63
-    automated: true
   - id: R-02
     name: ストーリーファイルを持つストーリーは詳細ページにリンクする
     examples:
@@ -14,13 +13,11 @@ rules:
         name: ストーリーファイルがあるカードは矢印付きのリンクになる
       - id: EX-02
         name: キーのないストーリー候補はプレーンなカードで表示される
-    automated: true
   - id: R-03
     name: リリーススライスでストーリー行が区切られる
     examples:
       - id: EX-01
         name: リリース未指定のストーリーは未スコープ行にまとまる
-    automated: true
   - id: R-04
     name: ストーリーカードのリンクを容易に取得できる
     examples:
@@ -32,7 +29,6 @@ rules:
         name: キーのないストーリー候補にはコピーリンクが付かない
     issues:
       - https://github.com/boykush/livt/issues/69
-    automated: true
   - id: R-05
     name: ストーリーマップの一覧から各マップへ辿れる
     status: retired
@@ -43,7 +39,6 @@ rules:
       - id: EX-02
         name: ボードのヘッダーから一覧ページへ戻れる
         retired: true
-    automated: true
 
 questions: []
 

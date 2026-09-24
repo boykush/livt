@@ -9,4 +9,9 @@ type Example struct {
 	// SupersededBy as on Rule: the examples illustrating the rule in this one's
 	// place, as livt URIs.
 	SupersededBy []string
+	// Automations are the tests citing this example, derived as on Rule.
+	Automations []Automation
 }
+
+// Automated reports whether any test cites this example.
+func (e Example) Automated() bool { return len(e.Automations) > 0 }
