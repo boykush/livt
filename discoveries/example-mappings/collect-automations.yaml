@@ -22,16 +22,28 @@ rules:
       - id: EX-04
         name: 構造を読まないから、テストフレームワークごとの知識を持たずに済む
   - id: R-03
-    name: 走査する実装リポジトリは都度CIが選び、livtリポジトリは宣言を持たない
+    name: どの実装リポジトリが参加するかは実装側のCIが決め、livtリポジトリは宣言を持たない
     examples:
       - id: EX-01
         name: livt automations <path> がそのチェックアウトを走査してレポートを出す
       - id: EX-02
         name: 対象のチェックアウトと走査の実行はCIに書かれ、走行ごとに変えられる
+        retired: true
+        superseded_by:
+          - livt://mapping/collect-automations/rule/R-03/example/EX-05
       - id: EX-03
         name: livtリポジトリはsubmoduleを持たない（ピン留めは投影の鮮度を殺す）
       - id: EX-04
         name: 一般形は他リポジトリへのread権限を持つGitHub Appで、livtリポジトリ自身を走査するだけなら既定のGITHUB_TOKENで足りる
+        retired: true
+        superseded_by:
+          - livt://mapping/collect-automations/rule/R-03/example/EX-06
+      - id: EX-05
+        name: 実装リポジトリは自分自身を走査するので、参加はその1ステップをCIに足すかどうかで決まる
+      - id: EX-06
+        name: 資格情報は実装リポジトリ側がlivtリポジトリへのwriteを1本持ち、livtリポジトリは何も持たない
+      - id: EX-07
+        name: livtリポジトリ自身が実装リポジトリを兼ねる場合は、既定のGITHUB_TOKENで足りる
   - id: R-04
     name: レポートは引用の事実だけを運び、判断を持たない
     examples:
