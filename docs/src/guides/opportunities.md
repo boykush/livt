@@ -270,4 +270,5 @@ Opportunity  ──▶  Story Map  ──▶  Story  ──▶  Example Mapping
 An opportunity is deliberately allowed to sit alone. One with no story map is
 one that has not been taken on — still a candidate, or decided against. livt
 records no status for this: whether the map exists **is** the record, the same
-way a rule's automation is recorded rather than inferred.
+way a rule counts as automated because a test says so and not because livt
+worked it out.
