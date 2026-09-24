@@ -14,7 +14,10 @@ const Marker = "livt:automates"
 // File is relative to the scanned repository's root, so the same report reads
 // the same wherever it is checked out.
 type Citation struct {
-	URI  string `json:"uri"`
+	// URI is the point of the spec the test claims. It is spelled out in the
+	// report because the browsable URL sits beside it, and "uri" next to
+	// "url" is one letter apart from the wrong field.
+	URI  string `json:"livt_uri"`
 	File string `json:"file"`
 	Line int    `json:"line"`
 	// URL is where a reader can see that line on the forge. Empty when the
