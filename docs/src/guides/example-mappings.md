@@ -15,7 +15,6 @@ rules:
         name: Example description
     issues:
       - https://github.com/owner/repo/issues/1
-    automated: true
   - id: R-02
     name: Rule the spec no longer asks for
     status: retired
@@ -38,7 +37,7 @@ ubiquitous:
 - IDs must be unique within their rule or question list
 - `ubiquitous` is optional: each entry is a [ubiquitous language](./ubiquitous-language.md) term key, rendered as a pink sticky linking to `ubiquitous.html#{term-key}`. A key with no matching term file renders as a plain pink card.
 - `issues` is optional: the rule's automation Issue URLs on implementation repos (Issue URLs only). The livt repository records the links; their state lives at the URL target. A rule without `issues` is unlinked.
-- `automated` is optional: records the judgment that the rule is actually automated by tests, which is independent of Issues being filed or closed. Absent means not automated. Set it when the rule's automation lands; unset it when the rule changes.
+- Whether a rule is automated is not a field. The tests that automate it say so, and livt reads it from them — see [Automating a rule](#automating-a-rule).
 - `status` is optional and applies to a rule: `proposed` while the rule is put forward but not yet agreed, `accepted` once it is, `rejected` when the proposal was turned down, `retired` when spec it once was stopped holding. Absent means accepted, and any other value fails the build. See [Proposing a rule](#proposing-a-rule).
 - `retired` is optional and applies to an example or a question: it records that the item is no longer part of the spec. Absent means live. It is not a rule field — a rule closes through `status`; see [Retiring an item](#retiring-an-item).
 - `superseded_by` is optional and goes with a closed rule or a retired example or question: the [livt URIs](../reference/uri.md) of whatever took its place. Absent means nothing did.
@@ -78,6 +77,30 @@ A rule can go on the board before it is agreed. `status: proposed` marks it as p
 - **Absent means accepted.** Every rule written before the field existed was agreed when it went on the board, so an existing mapping reads as it always has.
 
 A proposed rule stays on the board, drawn pale with a dashed edge and stamped *proposed*, and its examples are drawn pale with it. The [Tasks page](../reference/file-structure.md) lists it under Proposed Rules — it closes by agreement, not by a test — and never under Un-automated Rules, even once a test covers it. The MCP server and `livt resolve` return `status` on every rule, so an agent choosing what to automate takes the `accepted` ones and passes over the rest without knowing the default.
+
+## Automating a rule
+
+A mapping does not record whether a rule is automated. The tests do: a test in an implementation repository that automates a rule says so on a comment line above itself, with the `livt:automates` marker and the rule's [livt URI](../reference/uri.md).
+
+```go
+// livt:automates livt://mapping/{story-key}/rule/{rule-id}
+func TestAnExpiredCardIsRejected(t *testing.T) {
+```
+
+The comment syntax is whatever the test's language uses; livt looks only for the marker and the URI. `livt automations` collects every marked line in the implementation repository into a report, which goes back to the livt repository as a pull request and lands under `automations/`. livt reads the reports there, and a rule is automated when one of them cites it.
+
+- **The test is the record.** Which tests cover a rule is the implementation's state, not a decision, so the mapping does not keep it. A citation is written beside the test that makes it true and read again from that test each time the report is collected, so the mapping has nothing to keep in step by hand.
+- **A rule and its examples are cited separately.** An example is cited by its own URI, `livt://mapping/{story-key}/rule/{rule-id}/example/{example-id}`, and that automates the example alone: a rule whose examples are all cited is still not automated until a test cites the rule itself. The test's author already said which one they meant, and livt does not infer the other.
+- **One marker, one URI, one line.** A test that automates several points writes a line for each. A line with anything after its URI is not collected: `livt automations` names it and exits non-zero rather than dropping it in silence.
+- **Without the marker, a URI is a reference.** Code quotes the spec for context too, so a livt URI in a comment counts as automation only when the marker comes before it.
+- **A citation names the rule, not its wording.** Reword a rule and the tests citing it go on counting, so it keeps reading as automated until they catch up. Nothing unsets that for you: say so in the commit that changes the rule, where the review will see it.
+- **Filing is not automating.** [`issues`](#format) link the work to automate a rule; filing one, or closing it, changes nothing here.
+
+On the board, a rule or an example that a test cites is stamped ✓ *automated* on its own sticky, and lists its citations: the repository, file and line of each, linked to that line on the forge when livt could build the link. The [Tasks page](../reference/file-structure.md) lists every accepted rule that no report cites under Un-automated Rules. Neither says whether the tests pass — livt runs no tests, and shows what a test claims without deciding whether the claim is true.
+
+Setting this up in an implementation repository — the CI step that collects the report and opens its pull request — is covered by the [livt-automation plugin](https://github.com/boykush/livt/blob/main/plugins/livt-automation/README.md#sending-automations-back).
+
+`automated: true` on a rule once recorded all of this as a judgment written into the mapping. It is not read any more: a rule still carrying that line is automated only once a report cites it. Delete the line, and cite the rule from the test that automates it.
 
 ## Retiring an item
 
@@ -133,7 +156,7 @@ The board renders cards in the [Example Mapping](https://cucumber.io/blog/bdd/ex
 
 The board keeps the layout the session left on the wall. To read a mapping back later, switch it to **List** with the toggle above it:
 
-- Each rule is one row: its ID, name, automated mark, and issue links, with the number of examples folded under it
+- Each rule is one row: its ID, name, automated mark and citations, and issue links, with the number of examples folded under it
 - Examples fold under their rule. Click a row to open it
 - Questions follow the rules, one row each
 

@@ -19,7 +19,7 @@ None of this is in the practice. It is livt's, and it moves when livt moves:
 - **Identity.** Every rule, example, and question has an ID that is stable once filed, numbered past retired ones, and addressable as a [livt URI](./reference/uri.md) — so a rule quoted from an Issue or a test comment cannot silently come to mean something else.
 - **A lifecycle.** A rule carries `status: proposed`, `accepted`, `rejected`, or `retired`, borrowed from [architecture decision records](https://adr.github.io/), and `superseded_by` says where the spec went. See [Example Mappings](./guides/example-mappings.md).
 - **An asynchronous lane.** A rule can be proposed and agreed in a pull request review, between sessions, when the room does not need to meet for it.
-- **Links outward.** A rule records the Issues that automate it and whether it is actually automated, and the site rolls that up.
+- **Links outward.** A rule records the Issues filed to automate it, and the tests that automate it cite it back by livt URI. livt collects those citations from the implementation repository — what each test claims to cover, not whether it passes — and the site rolls them up.
 
 ## Where livt departs
 
