@@ -4,10 +4,15 @@ rules:
     examples:
       - id: EX-01
         name: livt build --reports <dir> が渡されたディレクトリのレポートを読む
+        retired: true
+        superseded_by:
+          - livt://mapping/derive-automation-status/rule/R-01/example/EX-04
       - id: EX-02
         name: レポートが1つも無ければ、自動化の状況はどこにも出ない
       - id: EX-03
         name: forgeにもトラッカーにも問い合わせず、渡されたものだけから導く
+      - id: EX-04
+        name: livtリポジトリにコミットされたレポートを読むので、既定では何も渡さなくてよい
   - id: R-02
     name: ルールと具体例は、それぞれ自分の引用で状況が決まる
     examples:
