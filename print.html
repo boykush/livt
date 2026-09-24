@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-6c48737a.js";
+            window.path_to_searchindex_js = "searchindex-f5c97459.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-a62fb9f7.js"></script>
@@ -717,7 +717,7 @@ ubiquitous:
 <li>IDs must be unique within their rule or question list</li>
 <li><code>ubiquitous</code> is optional: each entry is a <a href="#ubiquitous-language-1">ubiquitous language</a> term key, rendered as a pink sticky linking to <code>ubiquitous.html#{term-key}</code>. A key with no matching term file renders as a plain pink card.</li>
 <li><code>issues</code> is optional: the rule’s automation Issue URLs on implementation repos (Issue URLs only). The livt repository records the links; their state lives at the URL target. A rule without <code>issues</code> is unlinked.</li>
-<li>Whether a rule is automated is not a field. The tests that automate it say so, and livt reads it from them — see <a href="#automating-a-rule">Automating a rule</a>.</li>
+<li>Whether a rule is automated is not a field. The tests that automate it say so, and livt reads it from them — see <a href="#automating-a-rule">Automating a rule</a>. A deprecated <code>automated:</code> is still read where a mapping carries one, until 0.16.0.</li>
 <li><code>status</code> is optional and applies to a rule: <code>proposed</code> while the rule is put forward but not yet agreed, <code>accepted</code> once it is, <code>rejected</code> when the proposal was turned down, <code>retired</code> when spec it once was stopped holding. Absent means accepted, and any other value fails the build. See <a href="#proposing-a-rule">Proposing a rule</a>.</li>
 <li><code>retired</code> is optional and applies to an example or a question: it records that the item is no longer part of the spec. Absent means live. It is not a rule field — a rule closes through <code>status</code>; see <a href="#retiring-an-item">Retiring an item</a>.</li>
 <li><code>superseded_by</code> is optional and goes with a closed rule or a retired example or question: the <a href="#livt-uri">livt URIs</a> of whatever took its place. Absent means nothing did.</li>
@@ -773,7 +773,7 @@ func TestAnExpiredCardIsRejected(t *testing.T) {
 </ul>
 <p>On the board, a rule or an example that a test cites is stamped ✓ <em>automated</em> on its own sticky, and lists its citations: the repository, file and line of each, linked to that line on the forge when livt could build the link. The <a href="#file-structure">Tasks page</a> lists every accepted rule that no report cites under Un-automated Rules. Neither says whether the tests pass — livt runs no tests, and shows what a test claims without deciding whether the claim is true.</p>
 <p>Setting this up in an implementation repository — the CI step that collects the report and opens its pull request — is covered by the <a href="https://github.com/boykush/livt/blob/main/plugins/livt-automation/README.md#sending-automations-back">livt-automation plugin</a>.</p>
-<p><code>automated: true</code> on a rule once recorded all of this as a judgment written into the mapping. It is not read any more: a rule still carrying that line is automated only once a report cites it. Delete the line, and cite the rule from the test that automates it.</p>
+<p><code>automated: true</code> on a rule once recorded all of this as a judgment written into the mapping. It is deprecated rather than gone: a rule still carrying the line reads as automated, so a repository keeps the board it had while its rules gain their citations. Nothing maintains the flag any more — no skill writes it and no command moves it — so it stays where a citation would have been withdrawn. Delete the line as each rule is cited from the test that automates it; livt stops reading it in 0.16.0.</p>
 <h2 id="retiring-an-item"><a class="header" href="#retiring-an-item">Retiring an item</a></h2>
 <p>A rule that no longer holds takes a closed <code>status</code> — <code>rejected</code> or <code>retired</code>; an example or a question that no longer holds is marked <code>retired: true</code>. Neither is deleted, and neither is commented out:</p>
 <ul>
@@ -1386,8 +1386,9 @@ These close by a conversation, so they feed the next discovery session.</li>
 close by agreement — accepted, or rejected when turned down — so they are the
 decisions still open.</li>
 <li><strong>Un-automated Rules</strong> — every accepted rule that no collected
-<a href="#automating-a-rule">report</a> cites, including one
-whose examples are cited but not the rule itself. These close by a test, so
+<a href="#automating-a-rule">report</a> cites and that
+carries no deprecated <code>automated:</code>, including one whose examples are cited but
+not the rule itself. These close by a test, so
 they read as the list of behaviour still to build. A proposed rule is never
 here, even once a test covers it: a test cannot close what is not agreed yet.</li>
 </ul>
