@@ -12,23 +12,22 @@ on:
       - "go.mod"
       - "go.sum"
       - ".github/workflows/deploy-pages.yml"
+      - ".github/workflows/publish-pages.yml"
   workflow_dispatch:
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+# Least privilege by default; each job grants only what it needs.
+permissions: {}
 
 concurrency:
   group: pages
   cancel-in-progress: false
 
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
+    name: build
     runs-on: ubuntu-latest
+    permissions:
+      contents: read # checkout
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -58,13 +57,22 @@ jobs:
           cp -r docs/book/. _site/
           cp -r dist/. _site/demo/
 
-      # v4.0.0+ pins its internal actions/upload-artifact to a SHA, satisfying
-      # the repo's "pin actions to a full-length SHA" policy (v3 did not).
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+      - name: Upload the site
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
+          name: site
           path: _site
+          if-no-files-found: error
+          overwrite: true # re-running every job uploads it again
+          retention-days: 1
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+  # Pages serves gh-pages, where the site shares the branch with the pull
+  # requests' previews. Pushed from a job of its own, so the token that can
+  # write never runs the build: `go run` executes every module it depends on.
+  publish:
+    needs: build
+    permissions:
+      contents: write # push to gh-pages
+    uses: $/.github/workflows/publish-pages.yml
+    with:
+      artifact: site
