@@ -20,6 +20,8 @@ project-root/
     {term-key}.md                         # Terms holding across contexts
     {ctx}/
       {term-key}.md                       # Terms scoped to one context
+  automations/
+    {owner}/{repo}.json                   # Collected automation reports
 ```
 
 - `livt.yaml` configures the site build — see [Configuration](./configuration.md). Without it, every setting takes its default
@@ -33,6 +35,7 @@ project-root/
 - Term keys are derived from filenames, and a term's [context](../guides/ubiquitous-language.md#contexts) from the directory holding it. The path is what makes a term unique, so the same key can sit at the root and under a context as two separate terms
 - A context is optional and one directory deep; terms nested deeper are not addressable and are left out of the glossary
 - A term is anchored as `ubiquitous.html#{term-key}`, or `ubiquitous.html#{ctx}/{term-key}` when it is scoped
+- `automations/` holds the reports `livt automations` collects from implementation repositories' tests, one file per repository. They are generated, not written by hand: livt derives from them which rules and examples are automated — see [Automating a rule](../guides/example-mappings.md#automating-a-rule)
 
 ## Output
 
@@ -72,10 +75,11 @@ has to be hunted for board by board:
   [`status: proposed`](../guides/example-mappings.md#proposing-a-rule). These
   close by agreement — accepted, or rejected when turned down — so they are the
   decisions still open.
-- **Un-automated Rules** — every accepted rule with no `automated: true`
-  recorded. These close by a test, so they read as the list of behaviour still
-  to build. A proposed rule is never here, even once a test covers it: a test
-  cannot close what is not agreed yet.
+- **Un-automated Rules** — every accepted rule that no collected
+  [report](../guides/example-mappings.md#automating-a-rule) cites, including one
+  whose examples are cited but not the rule itself. These close by a test, so
+  they read as the list of behaviour still to build. A proposed rule is never
+  here, even once a test covers it: a test cannot close what is not agreed yet.
 
 [Closed](../guides/example-mappings.md#retiring-an-item) rules and retired
 examples and questions are on none of the lists, and off the boards as well:

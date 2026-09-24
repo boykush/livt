@@ -6,9 +6,10 @@ Build artifacts and start a local server.
 
 While the server is running, livt watches every directory the build reads
 (`opportunities`, `discoveries/opportunity-canvases`,
-`discoveries/example-mappings`, `stories`, `discoveries/usm`, and `ubiquitous`)
-along with `livt.yaml`. When a file changes, livt rebuilds and reloads the page
-in the browser automatically, so you can preview refinements while editing.
+`discoveries/example-mappings`, `stories`, `discoveries/usm`, `ubiquitous`, and
+`automations`) along with `livt.yaml`. When a file changes, livt rebuilds and
+reloads the page in the browser automatically, so you can preview refinements
+while editing.
 
 ```bash
 livt serve [flags]
@@ -19,6 +20,7 @@ livt serve [flags]
 | `--port` | `-p` | `3000` | Port to listen on |
 | `--out` | `-o` | `dist` | Output directory |
 | `--diff` | | (off) | Also render the diff between two revisions — see [Reviewing a change](#reviewing-a-change) |
+| `--reports` | | `automations` | Directory of collected automation reports — see [Automating a rule](../guides/example-mappings.md#automating-a-rule) |
 
 ## `livt build`
 
@@ -32,6 +34,7 @@ livt build [flags]
 |------|-------|---------|-------------|
 | `--out` | `-o` | `dist` | Output directory |
 | `--diff` | | (off) | Also render the diff between two revisions — see [Reviewing a change](#reviewing-a-change) |
+| `--reports` | | `automations` | Directory of collected automation reports — see [Automating a rule](../guides/example-mappings.md#automating-a-rule) |
 
 Both commands read [`livt.yaml`](./configuration.md) from the directory they run
 in, which is where the site's language is set.
@@ -147,7 +150,7 @@ questions, and ubiquitous terms linked alongside):
 | `livt://story-map/{map_name}` | A story map: activities, steps, story cards, and releases. Story cards that have a story file link to their story resource. `{map_name}` is the map's display name (percent-encoded) — the same identifier the build output uses for `story-map/{name}.html`. |
 | `livt://story/{story_key}` | The story's name, body, and frontmatter meta (e.g. `issue`), plus `example_mapping_uri` when a mapping exists and `opportunities` — the story maps the story sits on, as map name plus story map resource URI. |
 | `livt://mapping/{story_key}` | The story's example mapping (rules, examples, questions, ubiquitous terms). Each rule, example, and question carries its own `uri`, and `ubiquitous_terms` resolves each referenced term to its resource URI. [Retired](../guides/example-mappings.md#retiring-an-item) entries are listed too, saying how they closed — the mapping is the structural record their ids are numbered from. |
-| `livt://mapping/{story_key}/rule/{rule_id}` | A single rule and its examples, its `status` — `proposed` while it awaits agreement, `accepted` once agreed, `rejected` or `retired` once closed, and present on every rule — plus its recorded automation: `issues` (automation Issue URLs) and `automated` (whether the rule is automated by tests). Rules inside `livt://mapping/{story_key}` carry the same fields. |
+| `livt://mapping/{story_key}/rule/{rule_id}` | A single rule and its examples, its `status` — `proposed` while it awaits agreement, `accepted` once agreed, `rejected` or `retired` once closed, and present on every rule — plus its automation: `issues` (automation Issue URLs, as the mapping records them), `automated` (whether a collected report cites the rule itself — citing one of its examples does not count), and `automations` (each citing test's `repo`, `rev`, `file`, `line`, and `url` where one could be built; omitted when no test cites it). The last two are [derived from the reports](../guides/example-mappings.md#automating-a-rule) under `automations/`, never read from the mapping. Each example carries its own `automated` and `automations`, answered for the example alone. Rules inside `livt://mapping/{story_key}` carry the same fields. |
 | `livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}` | A single example of a rule. Example ids are numbered within their rule, so the address carries `{rule_id}` — `EX-01` alone does not identify an example. |
 | `livt://mapping/{story_key}/question/{question_id}` | A single question. Questions hang off the mapping rather than off a rule, so the address stops at `{story_key}`. |
 | `livt://ubiquitous/{term_key}` | A ubiquitous language term's name and definition. This shape addresses a term whose meaning holds across contexts. |
@@ -184,6 +187,11 @@ That applies wherever a reference leaves the livt repository -- a test comment, 
 body, a commit message, a PR description. A published living-document URL is a
 convenience link for humans, not the citation form: it depends on where the site
 is deployed, and the livt URI does not.
+
+In a test comment, a URI quoted this way is a reference. A test that automates
+the point it quotes puts the `livt:automates` marker in front of the URI, and
+only such a line is collected as automation. See
+[Automating a rule](../guides/example-mappings.md#automating-a-rule).
 
 A URI cited this way is read back with [`livt resolve`](#livt-resolve), which
 needs no MCP client -- so the citation stays followable for CI, an editor, or a
