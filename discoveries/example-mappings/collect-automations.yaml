@@ -98,6 +98,7 @@ rules:
         name: 内容が変わったときだけPRを出し、ブランチは実装リポジトリごとに1本を更新する
       - id: EX-12
         name: PRのCIが引用したlivt URIを検証し、解決しなければ落ちる（それ以外はグリーンでautomergeされる）
+        retired: true
   - id: R-06
     name: テストの所在はforgeのURLとして運べるが、無くても自動化の判定は変わらない
     examples:
