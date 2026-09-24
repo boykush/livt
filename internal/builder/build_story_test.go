@@ -16,8 +16,8 @@ import (
 func TestRenderStoryLinksEachOpportunityByName(t *testing.T) {
 	story := &domain.Story{Key: domain.StoryKey{Value: "record-rule-automation"}, Name: "Record rule automation"}
 	opportunities := []opportunityRef{
-		{Name: "協働ディスカバリー", Path: "../story-map/協働ディスカバリー.html"},
-		{Name: "ディスカバリーと開発のギャップ", Path: "../story-map/ディスカバリーと開発のギャップ.html"},
+		{Name: "協働ディスカバリー", Path: "../story-map/collaborative-discovery.html"},
+		{Name: "ディスカバリーと開発のギャップ", Path: "../story-map/discovery-development-gap.html"},
 	}
 
 	var buf bytes.Buffer
@@ -27,7 +27,7 @@ func TestRenderStoryLinksEachOpportunityByName(t *testing.T) {
 	html := buf.String()
 
 	for _, o := range opportunities {
-		if !strings.Contains(html, `href="`+mapHref("../story-map/", o.Name)+`"`) {
+		if !strings.Contains(html, `href="`+o.Path+`"`) {
 			t.Fatalf("expected a Related link to the %q board", o.Name)
 		}
 		if !strings.Contains(html, o.Name) {

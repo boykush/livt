@@ -1,6 +1,6 @@
 ---
 name: record-story-map
-description: Record a User Story Mapping session into discoveries/usm/{map-name}.yaml as two commits — the board as it stands, committed verbatim as the baseline, then a structural edit consulting the usm-expert skill, whose diff is what the review reads. Use after a story-mapping session, or when a mapped board was reworked; it never changes what the room agreed. A story's card routes to write-story-card, a rule-level change to change-rule.
+description: Record a User Story Mapping session into discoveries/usm/{opportunity-key}.yaml as two commits — the board as it stands, committed verbatim as the baseline, then a structural edit consulting the usm-expert skill, whose diff is what the review reads. Use after a story-mapping session, or when a mapped board was reworked; it never changes what the room agreed. A story's card routes to write-story-card, a rule-level change to change-rule.
 ---
 
 You **record** a story map — the record station of the discovery ring.
@@ -37,9 +37,16 @@ The discovery ring runs opportunity → story map → card → conversation → 
    - **Story cards** (hanging below a task) → `stories[]` under that step, top-to-bottom as on the board
    - **Release slices** (the horizontal dividers cutting across the whole board) → `releases[]`, top-to-bottom, and stamp every card sitting above a divider with that slice's `release:`
 3. Capture the pink stickies — the terms the room agreed on — as `ubiquitous:` term references (see Ubiquitous Language below).
-4. Write to `discoveries/usm/{map-name}.yaml`.
+4. Write to `discoveries/usm/{opportunity-key}.yaml` (see Key Contract).
 5. Read the YAML back against the board and confirm nothing was dropped, reordered, or altered.
 6. Commit it as the baseline (see Commit Contract).
+
+### Key Contract
+
+- **The file is named by the opportunity's key.** A story map is the journey drawn for one opportunity, and the filename is the whole join: `discoveries/usm/{key}.yaml` is the map of `opportunities/{key}.md`, beside its canvas at `discoveries/opportunity-canvases/{key}.yaml`. The same key addresses the map, as `livt://story-map/{key}`.
+- **An opportunity has one map.** A file already at that key is the map being reworked, not room for a second. Record onto it.
+- **No opportunity file yet?** Agree the key with the user: kebab-case English, naming the opportunity the journey serves rather than the journey. The opportunity file and its canvas can come later under the same key.
+- **The map's `name:` is its title, not its address.** Write the board's own name there; renaming it later moves no link.
 
 ### Baseline principles
 
@@ -120,8 +127,8 @@ Canonical statement in `change-rule`; these bullets are verbatim from it. You wr
 
 For you, those units are the baseline and the edit:
 
-- Baseline: `Record {map-name} story map (baseline)`, committed with no edits.
-- Edit: `Edit {map-name} story map structure`, on top of the baseline. The body says what the edit changed and why, so the review can confirm that no meaning moved.
+- Baseline: `Record {opportunity-key} story map (baseline)`, committed with no edits.
+- Edit: `Edit {opportunity-key} story map structure`, on top of the baseline. The body says what the edit changed and why, so the review can confirm that no meaning moved.
 
 ## Completeness Checks (record, not map health)
 
@@ -136,4 +143,4 @@ Before the baseline commit, verify the record is complete — not whether the ma
 
 ## Output
 
-`discoveries/usm/{map-name}.yaml` as two commits: the verbatim baseline, and a structural edit whose diff the review reads. Plus the `ubiquitous/{term-key}.md` files the board's definitions produced, and a note of which referenced terms are still undefined.
+`discoveries/usm/{opportunity-key}.yaml` as two commits: the verbatim baseline, and a structural edit whose diff the review reads. Plus the `ubiquitous/{term-key}.md` files the board's definitions produced, and a note of which referenced terms are still undefined.

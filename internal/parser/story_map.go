@@ -111,11 +111,11 @@ func ParseStoryMap(path string) (*domain.StoryMap, error) {
 	}
 
 	return &domain.StoryMap{
-		Key:        strings.TrimSuffix(filepath.Base(path), ".yaml"),
-		Name:       raw.Name,
-		Activities: activities,
-		Releases:   releases,
-		Ubiquitous: raw.Ubiquitous,
+		OpportunityKey: domain.OpportunityKey{Value: strings.TrimSuffix(filepath.Base(path), ".yaml")},
+		Name:           raw.Name,
+		Activities:     activities,
+		Releases:       releases,
+		Ubiquitous:     raw.Ubiquitous,
 	}, nil
 }
 

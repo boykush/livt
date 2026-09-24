@@ -37,8 +37,7 @@ type Parsed struct {
 	RuleID         string // rule, example
 	ExampleID      string // example
 	QuestionID     string // question
-	MapName        string // story map, percent-decoded
-	OpportunityKey string // opportunity, opportunity canvas
+	OpportunityKey string // opportunity, opportunity canvas, story map
 	TermKey        string // term
 	TermCtx        string // term, empty when the term holds across contexts
 }
@@ -67,8 +66,8 @@ func Parse(s string) (Parsed, bool) {
 	if key, ok := ParseOpportunity(s); ok {
 		return Parsed{Kind: KindOpportunity, OpportunityKey: key}, true
 	}
-	if name, ok := ParseStoryMap(s); ok {
-		return Parsed{Kind: KindStoryMap, MapName: name}, true
+	if key, ok := ParseStoryMap(s); ok {
+		return Parsed{Kind: KindStoryMap, OpportunityKey: key}, true
 	}
 	if key, ok := ParseStory(s); ok {
 		return Parsed{Kind: KindStory, StoryKey: key}, true
@@ -79,8 +78,7 @@ func Parse(s string) (Parsed, bool) {
 	return Parsed{}, false
 }
 
-// String rebuilds the URI in canonical form, so a story map named in plain text
-// comes back percent-encoded.
+// String rebuilds the URI from its parts.
 func (p Parsed) String() string {
 	switch p.Kind {
 	case KindMapping:
@@ -92,7 +90,7 @@ func (p Parsed) String() string {
 	case KindQuestion:
 		return Question(p.StoryKey, p.QuestionID)
 	case KindStoryMap:
-		return StoryMap(p.MapName)
+		return StoryMap(p.OpportunityKey)
 	case KindOpportunity:
 		return Opportunity(p.OpportunityKey)
 	case KindOpportunityCanvas:
@@ -119,7 +117,7 @@ func (p Parsed) Page() string {
 	case KindQuestion:
 		return QuestionPage(p.StoryKey, p.QuestionID)
 	case KindStoryMap:
-		return StoryMapPage(p.MapName)
+		return StoryMapPage(p.OpportunityKey)
 	case KindOpportunity:
 		return OpportunityPage(p.OpportunityKey)
 	case KindOpportunityCanvas:

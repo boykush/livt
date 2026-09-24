@@ -309,28 +309,30 @@ type mappingsIndexView struct {
 	FilterOpportunities []string
 }
 
+// storyMapTile is one card on the Story Maps hub. Key is what its page is filed
+// under; Name is only what the card shows.
 type storyMapTile struct {
+	Key  string
 	Name string
 	// Opportunity is the opportunity this map serves, empty when no opportunity
 	// file claims the map's key.
 	Opportunity *opportunityRef
 }
 
-// storyMapRef links an opportunity to one story map mapped for it, the reverse
+// storyMapRef links an opportunity to the story map drawn for it, the reverse
 // of the join opportunityRef makes.
 type storyMapRef struct {
 	Name string
 	Path string
 }
 
-// rootRelativeMaps rebases refs written for a page under a subdirectory onto
+// rootRelativeMap rebases a ref written for a page under a subdirectory onto
 // the output root, where the hub lists render (mirrors rootRelativeOpportunities).
-func rootRelativeMaps(refs []storyMapRef) []storyMapRef {
-	out := make([]storyMapRef, len(refs))
-	for i, r := range refs {
-		out[i] = storyMapRef{Name: r.Name, Path: strings.TrimPrefix(r.Path, "../")}
+func rootRelativeMap(ref *storyMapRef) *storyMapRef {
+	if ref == nil {
+		return nil
 	}
-	return out
+	return &storyMapRef{Name: ref.Name, Path: strings.TrimPrefix(ref.Path, "../")}
 }
 
 // opportunityTile is one card on the Opportunities hub. Statement is the
@@ -342,7 +344,7 @@ type opportunityTile struct {
 	Name      string
 	Statement string
 	HasCanvas bool
-	StoryMaps []storyMapRef
+	StoryMap  *storyMapRef
 	Links     []metaFieldView
 	// Progress is the same reading the opportunity's own page leads with, so a
 	// reader scanning the hub sees which opportunity is moving without opening
@@ -366,8 +368,9 @@ type opportunityView struct {
 	// ProgressPath is empty when the opportunity has taken on no story, the
 	// same way CanvasPath is empty when no canvas has been filled in.
 	ProgressPath string
-	StoryMaps    []storyMapRef
-	Progress     opportunityProgress
+	// StoryMap is nil when no map has been drawn for the opportunity.
+	StoryMap *storyMapRef
+	Progress opportunityProgress
 }
 
 // opportunityProgressView is one opportunity's progress on a page of its own.

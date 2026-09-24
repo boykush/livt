@@ -137,23 +137,24 @@ func TestParseMapping(t *testing.T) {
 	}
 }
 
+// A map is addressed by the key of the opportunity it is drawn for, guarded
+// like every other key since it names a file.
 func TestParseStoryMap(t *testing.T) {
 	cases := []struct {
-		uri  string
-		name string
-		ok   bool
+		uri string
+		key string
+		ok  bool
 	}{
-		{"livt://story-map/plain-name", "plain-name", true},
-		// Display names travel percent-encoded and are decoded on read.
-		{"livt://story-map/%E3%83%87%E3%83%A2%E3%83%9E%E3%83%83%E3%83%97", "デモマップ", true},
-		{"livt://story-map/", "", false},    // empty name
-		{"livt://story/demo", "", false},    // a story URI, not a story map URI
-		{"livt://story-map/%zz", "", false}, // invalid percent-encoding
+		{"livt://story-map/discovery", "discovery", true},
+		{"livt://story-map/", "", false},          // empty key
+		{"livt://story/demo", "", false},          // a story URI, not a story map URI
+		{"livt://story-map/../secret", "", false}, // traversal
+		{"livt://story-map/a/b", "", false},       // nested path
 	}
 	for _, c := range cases {
-		name, ok := ParseStoryMap(c.uri)
-		if ok != c.ok || name != c.name {
-			t.Errorf("ParseStoryMap(%q) = (%q, %v), want (%q, %v)", c.uri, name, ok, c.name, c.ok)
+		key, ok := ParseStoryMap(c.uri)
+		if ok != c.ok || key != c.key {
+			t.Errorf("ParseStoryMap(%q) = (%q, %v), want (%q, %v)", c.uri, key, ok, c.key, c.ok)
 		}
 	}
 }
@@ -247,9 +248,9 @@ func TestURIsRoundTrip(t *testing.T) {
 	if !ok || qk != "demo" || qid != "Q-01" {
 		t.Fatalf("question round trip = (%q, %q, %v), want (demo, Q-01, true)", qk, qid, ok)
 	}
-	name, ok := ParseStoryMap(StoryMap("デモマップ"))
-	if !ok || name != "デモマップ" {
-		t.Fatalf("story map round trip = (%q, %v), want (デモマップ, true)", name, ok)
+	mk, ok := ParseStoryMap(StoryMap("discovery"))
+	if !ok || mk != "discovery" {
+		t.Fatalf("story map round trip = (%q, %v), want (discovery, true)", mk, ok)
 	}
 	sk, ok := ParseStory(Story("demo"))
 	if !ok || sk != "demo" {

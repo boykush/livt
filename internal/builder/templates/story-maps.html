@@ -22,7 +22,7 @@
   <main class="px-8 py-8 space-y-6">
   {{with .DiffGone}}<div class="mb-4">{{template "diff-gone" .}}</div>{{end}}
   {{range .StoryMaps}}
-    <a href="story-map/{{.Name}}.html" class="block rounded-xl border border-purple-200 bg-white shadow-sm overflow-hidden hover:shadow-md transition">
+    <a href="story-map/{{.Key}}.html" class="block rounded-xl border border-purple-200 bg-white shadow-sm overflow-hidden hover:shadow-md transition">
       <div class="flex items-center gap-2 px-4 py-2.5 border-b border-purple-100 bg-purple-50">
         <span class="w-2.5 h-2.5 rounded-sm bg-purple-400"></span>
         <span class="text-sm font-semibold text-purple-900">{{.Name}}</span>
@@ -30,7 +30,7 @@
         <span class="ml-auto text-purple-400 text-sm">&rarr;</span>
       </div>
       <div class="thumb" style="height: 260px;">
-        <iframe src="story-map/{{.Name}}.html" scrolling="no" loading="lazy"></iframe>
+        <iframe src="story-map/{{.Key}}.html" scrolling="no" loading="lazy"></iframe>
       </div>
     </a>
   {{else}}

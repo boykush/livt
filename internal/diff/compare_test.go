@@ -160,6 +160,30 @@ func TestCompareCoversEveryURIKind(t *testing.T) {
 	}
 }
 
+// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-09/example/EX-07
+// A map is addressed by its key, so renaming it is a change to the one map —
+// its name line reworded — rather than one map withdrawn and another added.
+func TestCompareReadsARenamedStoryMapAsAChangeToIt(t *testing.T) {
+	storyMap := func(name string) *Snapshot {
+		t.Helper()
+		dirs := repoDirs(t.TempDir())
+		write(t, filepath.Join(dirs.USM, "discovery.yaml"), "name: "+name+"\nactivities: []\n")
+		snapshot, err := Scan(dirs)
+		if err != nil {
+			t.Fatal(err)
+		}
+		return snapshot
+	}
+
+	change := only(t, Compare(storyMap("旧い名前"), storyMap("新しい名前")))
+	if change.URI != uri.StoryMap("discovery") || change.Status != StatusModified {
+		t.Fatalf("got %s %q, want the map modified", change.Status, change.URI)
+	}
+	if got, want := lineTexts(change.Lines), []string{"-旧い名前", "+新しい名前"}; !equal(got, want) {
+		t.Errorf("lines = %v, want %v", got, want)
+	}
+}
+
 // A canvas stands without an opportunity file, so the diff reads one too: after
 // the opportunities, titled by its key. One that shares an opportunity's key is
 // read right after it and called by the opportunity's name, as its sheet is.

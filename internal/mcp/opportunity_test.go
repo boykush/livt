@@ -31,10 +31,50 @@ func TestListOpportunitiesHandsOutCanvasAndMapURIs(t *testing.T) {
 	if o.Statement == "" {
 		t.Error("statement is empty; the opportunity's own sentence is what a caller reads first")
 	}
-	// The join is the filename, so the map is found by key while the ref carries
-	// the display name the map is addressed by.
-	if len(o.StoryMaps) != 1 || o.StoryMaps[0].Name != "デモマップ" {
-		t.Fatalf("story_maps = %+v, want the map keyed demo-map", o.StoryMaps)
+	// The join is the filename: an opportunity has one map, filed under its key,
+	// and the map's URI is built on that key.
+	want := storyMapSummaryJSON{OpportunityKey: "demo-map", Name: "デモマップ", URI: "livt://story-map/demo-map"}
+	if o.StoryMap == nil || *o.StoryMap != want {
+		t.Fatalf("story_map = %+v, want %+v", o.StoryMap, want)
+	}
+}
+
+// An opportunity nobody has drawn a map for carries no story_map, so the gap
+// reads as the record it is rather than as an empty map.
+func TestListOpportunitiesLeavesOutAMapNotDrawn(t *testing.T) {
+	s := newTestServer(t)
+	writeFile(t, s.cfg.opportunitiesDir()+"/undrawn.md", "---\nname: 未着手\n---\n\n一文\n")
+
+	got, err := s.cfg.opportunities()
+	if err != nil {
+		t.Fatal(err)
+	}
+	for _, o := range got {
+		if o.Key != "undrawn" {
+			continue
+		}
+		if o.StoryMap != nil {
+			t.Errorf("story_map = %+v, want none for an opportunity with no map", o.StoryMap)
+		}
+		return
+	}
+	t.Fatal("undrawn is missing from the listing")
+}
+
+// A map links back to its opportunity only when a file describes it, the way a
+// canvas does; a map standing in as its own opportunity has nothing to link to.
+func TestStoryMapLinksItsOpportunityOnlyWhenTheFileExists(t *testing.T) {
+	s := newTestServer(t)
+	writeFile(t, s.cfg.usmDir()+"/second-map.yaml", "name: 第二マップ\nactivities: []\n")
+
+	for key, want := range map[string]string{"demo-map": "livt://opportunity/demo-map", "second-map": ""} {
+		sm, err := s.cfg.storyMap(key)
+		if err != nil {
+			t.Fatalf("storyMap(%q): %v", key, err)
+		}
+		if got := s.cfg.toStoryMapJSON(sm).OpportunityURI; got != want {
+			t.Errorf("%s opportunity_uri = %q, want %q", key, got, want)
+		}
 	}
 }
 

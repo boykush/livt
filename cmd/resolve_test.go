@@ -63,7 +63,7 @@ func TestResolveURIResolvesEveryKind(t *testing.T) {
 		{"livt://mapping/demo/rule/R-01", "rule"},
 		{"livt://mapping/demo/rule/R-01/example/EX-01", "example"},
 		{"livt://mapping/demo/question/Q-01", "question"},
-		{"livt://story-map/デモマップ", "story_map"},
+		{"livt://story-map/demo-map", "story_map"},
 		{"livt://story/demo", "story"},
 		{"livt://ubiquitous/story", "term"},
 		{"livt://ubiquitous/billing/invoice", "term"},
@@ -103,7 +103,7 @@ func TestResolveURIWritesTheURLForm(t *testing.T) {
 		{"livt://story/demo", base + "/story/demo.html"},
 		{"livt://ubiquitous/story", base + "/ubiquitous.html#story"},
 		{"livt://ubiquitous/billing/invoice", base + "/ubiquitous.html#billing/invoice"},
-		{"livt://story-map/デモマップ", base + "/story-map/デモマップ.html"},
+		{"livt://story-map/demo-map", base + "/story-map/demo-map.html"},
 	}
 	for _, c := range cases {
 		var out bytes.Buffer

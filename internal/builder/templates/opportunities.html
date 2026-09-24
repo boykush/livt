@@ -57,7 +57,7 @@
       {{end}}
       <div class="px-4 pb-3 flex items-center gap-2 flex-wrap">
         <span class="font-mono text-xs text-gray-400">{{.Key}}</span>
-        {{range .StoryMaps}}<a href="{{.Path}}" class="text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-2 py-0.5 hover:bg-purple-100 transition">{{t "label.story-map"}}</a>{{end}}
+        {{with .StoryMap}}<a href="{{.Path}}" class="text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-2 py-0.5 hover:bg-purple-100 transition">{{t "label.story-map"}}</a>{{end}}
         {{range .Links}}<a href="{{.Href}}" class="text-xs text-gray-600 bg-white border border-gray-200 rounded-full px-2 py-0.5 hover:bg-gray-50 transition">&#128279; {{.Key}}</a>{{end}}
       </div>
       {{if .HasCanvas}}

@@ -290,10 +290,10 @@ func scanStoryMaps(s *Snapshot, dirs Dirs) error {
 	}
 	for _, m := range maps {
 		s.add(Entry{
-			URI:    uri.StoryMap(m.Name),
+			URI:    uri.StoryMap(m.OpportunityKey.Value),
 			Kind:   uri.KindStoryMap,
 			Live:   true,
-			Title:  m.Name,
+			Title:  m.DisplayName(),
 			Fields: storyMapFields(m),
 		})
 	}
@@ -302,9 +302,13 @@ func scanStoryMaps(s *Snapshot, dirs Dirs) error {
 
 // storyMapFields walks the backbone in the order the board is read, each card
 // named by the kind of sticky it is. A card that moved between steps reads as
-// the move it is, because the step above it moved with it.
+// the move it is, because the step above it moved with it. The map's own name is
+// a line only when it has one, as a mapping's is.
 func storyMapFields(m *domain.StoryMap) []Field {
-	fields := []Field{text(m.Name)}
+	var fields []Field
+	if m.Name != "" {
+		fields = append(fields, text(m.Name))
+	}
 	for _, r := range m.Releases {
 		fields = append(fields, labelled(LabelRelease, r.DisplayName(0)))
 	}

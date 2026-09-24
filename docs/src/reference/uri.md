@@ -56,7 +56,7 @@ lands in it. Paths are relative to the output root.
 | `livt://story/{story-key}` | `story/{story-key}.html` |
 | `livt://opportunity/{opportunity-key}` | `opportunity/{opportunity-key}.html` |
 | `livt://opportunity-canvas/{opportunity-key}` | `opportunity-canvas/{opportunity-key}.html` |
-| `livt://story-map/{map-name}` | `story-map/{map-name}.html` |
+| `livt://story-map/{opportunity-key}` | `story-map/{opportunity-key}.html` |
 | `livt://ubiquitous/{term-key}` | `ubiquitous.html#{term-key}` |
 | `livt://ubiquitous/{ctx}/{term-key}` | `ubiquitous.html#{ctx}/{term-key}` |
 
@@ -71,11 +71,16 @@ another in shipping, so the context is part of the address rather than a label
 on it. The context is optional — a term whose meaning holds everywhere keeps the
 one-segment form — and the two shapes never resolve to each other.
 
-An opportunity is addressed by key rather than by display name, unlike a story
-map. The key is what its filename and its canvas already join on, so it is the
-identifier the livt repository carries. The canvas sits beside the opportunity
-rather than under it, the way a mapping sits beside its story — the two are
-joined by key, and either can exist without the other.
+An opportunity is addressed by key rather than by display name. The key is what
+its filename, its canvas, and its story map already join on, so it is the
+identifier the livt repository carries. The canvas and the map sit beside the
+opportunity rather than under it, the way a mapping sits beside its story —
+each is joined to it by key, and either can exist without the other.
+
+An opportunity has one story map and a map serves one opportunity, since the
+filename is the whole join, so the opportunity's key addresses the map too. The
+map's `name` is what its board shows: renaming a map moves neither its URI nor
+its page.
 
 A [closed](../guides/example-mappings.md#retiring-an-item) item has no sticky,
 so its URI lands on the board with nothing to scroll to. The URI still resolves:

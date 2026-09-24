@@ -3,7 +3,6 @@ package builder
 import (
 	"encoding/json"
 
-	"fmt"
 	"github.com/boykush/livt/internal/automation"
 	"os"
 	"path/filepath"
@@ -244,7 +243,7 @@ func TestBuildTasksItemWithoutStoryPageStillNamesItsStory(t *testing.T) {
 
 func TestBuildStoryMapsIndexRendersPreviewCards(t *testing.T) {
 	b := emptyDirsBuilder(t)
-	if err := b.buildStoryMapsIndex([]storyMapTile{{Name: "discovery"}}); err != nil {
+	if err := b.buildStoryMapsIndex([]storyMapTile{{Key: "discovery", Name: "協働ディスカバリー"}}); err != nil {
 		t.Fatal(err)
 	}
 
@@ -253,8 +252,12 @@ func TestBuildStoryMapsIndexRendersPreviewCards(t *testing.T) {
 		t.Fatal(err)
 	}
 	html := string(out)
+	// The board is filed under the key; the name is only what the tile shows.
 	if !strings.Contains(html, `href="story-map/discovery.html"`) {
 		t.Fatal("expected tile to link to the story map board")
+	}
+	if !strings.Contains(html, "協働ディスカバリー") {
+		t.Fatal("expected the tile to show the map's name")
 	}
 	if !strings.Contains(html, `src="story-map/discovery.html"`) {
 		t.Fatal("expected story map preview iframe source")
@@ -292,26 +295,6 @@ func readRendered(t *testing.T, path string) string {
 	return string(out)
 }
 
-// mapHref mirrors how html/template normalizes an href: bytes outside the URL
-// unreserved set (so every byte of a non-ASCII map name) become lowercase %xx.
-// Chip links to Japanese-named maps therefore ship URL-encoded, which is also
-// what lets a filtered URL round-trip
-// (livt://mapping/filter-lists-by-opportunity/rule/R-04).
-func mapHref(prefix, name string) string {
-	var b strings.Builder
-	b.WriteString(prefix)
-	for _, c := range []byte(name) {
-		if (c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9') ||
-			c == '-' || c == '.' || c == '_' || c == '~' {
-			b.WriteByte(c)
-		} else {
-			fmt.Fprintf(&b, "%%%02x", c)
-		}
-	}
-	b.WriteString(".html")
-	return b.String()
-}
-
 // livt:automates livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-01
 // A story on one map carries a chip named after that opportunity (the map),
 // linked to its board, in place of the old generic "Story Map" badge.
@@ -321,7 +304,7 @@ func TestBuildStoriesIndexShowsOpportunityChipNamedAfterTheMap(t *testing.T) {
 		Key:  "filter-lists-by-opportunity",
 		Name: "Filter lists by opportunity",
 		Opportunities: []opportunityRef{
-			{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"},
+			{Name: "協働ディスカバリー", Path: "story-map/collaborative-discovery.html"},
 		},
 	}}
 	if err := b.buildStoriesIndex(items, nil); err != nil {
@@ -332,7 +315,7 @@ func TestBuildStoriesIndexShowsOpportunityChipNamedAfterTheMap(t *testing.T) {
 	if !strings.Contains(html, "協働ディスカバリー") {
 		t.Fatal("expected the opportunity (map) name on the story card")
 	}
-	if !strings.Contains(html, `href="`+mapHref("story-map/", "協働ディスカバリー")+`"`) {
+	if !strings.Contains(html, `href="story-map/collaborative-discovery.html"`) {
 		t.Fatal("expected the opportunity chip to link to the map board")
 	}
 	if strings.Contains(html, `>Story Map</span>`) {
@@ -348,8 +331,8 @@ func TestBuildStoriesIndexShowsAChipPerMapForMultiMapStory(t *testing.T) {
 		Key:  "record-rule-automation",
 		Name: "Record rule automation",
 		Opportunities: []opportunityRef{
-			{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"},
-			{Name: "ディスカバリーと開発のギャップ", Path: "story-map/ディスカバリーと開発のギャップ.html"},
+			{Name: "協働ディスカバリー", Path: "story-map/collaborative-discovery.html"},
+			{Name: "ディスカバリーと開発のギャップ", Path: "story-map/discovery-development-gap.html"},
 		},
 	}}
 	if err := b.buildStoriesIndex(items, nil); err != nil {
@@ -357,12 +340,12 @@ func TestBuildStoriesIndexShowsAChipPerMapForMultiMapStory(t *testing.T) {
 	}
 	html := readRendered(t, filepath.Join(b.OutDir, "stories.html"))
 
-	for _, name := range []string{"協働ディスカバリー", "ディスカバリーと開発のギャップ"} {
-		if !strings.Contains(html, name) {
-			t.Fatalf("expected a chip for map %q", name)
+	for _, o := range items[0].Opportunities {
+		if !strings.Contains(html, o.Name) {
+			t.Fatalf("expected a chip for map %q", o.Name)
 		}
-		if !strings.Contains(html, `href="`+mapHref("story-map/", name)+`"`) {
-			t.Fatalf("expected chip for %q to link to its board", name)
+		if !strings.Contains(html, `href="`+o.Path+`"`) {
+			t.Fatalf("expected chip for %q to link to its board", o.Name)
 		}
 	}
 }
@@ -393,7 +376,7 @@ func TestBuildStoriesIndexStoryOnNoMapHasNoChipAndMatchesNoFilter(t *testing.T) 
 // The Stories list renders opportunity filter controls, including a reset.
 func TestBuildStoriesIndexRendersOpportunityFilterControls(t *testing.T) {
 	b := emptyDirsBuilder(t)
-	items := []storyItem{{Key: "s", Name: "S", Opportunities: []opportunityRef{{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"}}}}
+	items := []storyItem{{Key: "s", Name: "S", Opportunities: []opportunityRef{{Name: "協働ディスカバリー", Path: "story-map/collaborative-discovery.html"}}}}
 	if err := b.buildStoriesIndex(items, []string{"協働ディスカバリー"}); err != nil {
 		t.Fatal(err)
 	}
@@ -442,7 +425,7 @@ func TestBuildMappingsIndexShowsOpportunityChipsAndFilter(t *testing.T) {
 		Key:  "filter-lists-by-opportunity",
 		Name: "Filter lists by opportunity",
 		Opportunities: []opportunityRef{
-			{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"},
+			{Name: "協働ディスカバリー", Path: "story-map/collaborative-discovery.html"},
 		},
 	}}
 	if err := b.buildMappingsIndex(tiles, []string{"協働ディスカバリー"}); err != nil {
@@ -453,7 +436,7 @@ func TestBuildMappingsIndexShowsOpportunityChipsAndFilter(t *testing.T) {
 	if !strings.Contains(html, `data-filter-values="[&#34;協働ディスカバリー&#34;]"`) {
 		t.Fatal("expected the tile to carry its opportunity set as the filter hook")
 	}
-	if !strings.Contains(html, `href="`+mapHref("story-map/", "協働ディスカバリー")+`"`) {
+	if !strings.Contains(html, `href="story-map/collaborative-discovery.html"`) {
 		t.Fatal("expected the mapping tile's opportunity chip to link to the map board")
 	}
 	if !strings.Contains(html, "data-filter-bar") {
