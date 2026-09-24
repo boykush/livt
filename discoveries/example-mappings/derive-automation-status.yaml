@@ -50,14 +50,23 @@ rules:
       - id: EX-03
         name: 1つのルールが複数の実装リポジトリで自動化されることもある
   - id: R-05
-    name: ruleのautomatedは退役し、状況はレポートからのみ導かれる
+    name: ruleのautomatedは、誰も書かなくなった後も1リリースのあいだ読まれてから退役する
     examples:
       - id: EX-01
         name: フラグと投影を並走させない（同じ事実の記録が2つあると、どちらも真実を名乗れなくなる）
+        retired: true
+        superseded_by:
+          - livt://mapping/derive-automation-status/rule/R-05/example/EX-04
       - id: EX-02
         name: 投影が動いてからフラグを落とし、その間のmainはどの時点でも整合する
       - id: EX-03
         name: YAMLスキーマとMCPペイロードの破壊的変更として、メジャーバージョンで切る
+      - id: EX-04
+        name: フラグは読まれるだけで誰も書かないので、投影と競う2つ目の記録にはならない
+      - id: EX-05
+        name: 読まれる期間はリリースをまたぎ、次のマイナーがスキーマごと消す
+      - id: EX-06
+        name: 読み続けるのは移行が重いからで、フラグが正しいからではない（引用の無いフラグは古いままボードに残る）
   - id: R-06
     name: 走査と投影のテストは、ドッグフーディングでは現れない形を含む
     examples:
