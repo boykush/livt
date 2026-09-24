@@ -50,6 +50,7 @@ activities:
         name: レポートからルールの状況を導く
         stories:
           - name: 自動化レポートからルールごとの状況を導く
+            key: derive-automation-status
             release: project-from-tests
       - key: show-status-per-rule
         name: ルールごとに自動化の状況を映す
