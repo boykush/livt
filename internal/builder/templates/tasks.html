@@ -93,9 +93,9 @@ sticky colour the item carries on that board.
   <div class="flex items-center gap-2 mt-2 flex-wrap">
     {{if .ID}}<span class="font-mono text-xs text-gray-400">{{.ID}}</span>{{end}}
     {{if .StoryPath}}
-    <a href="{{.StoryPath}}" class="relative z-20 text-xs text-yellow-800 bg-yellow-50 border border-yellow-200 rounded-full px-2 py-0.5 hover:bg-yellow-100 transition">{{.StoryName}}</a>
+    <a href="{{.StoryPath}}" class="relative z-20 text-xs text-yellow-800 bg-yellow-50 border border-yellow-200 rounded-full px-2 py-0.5 hover:bg-yellow-100 transition">{{.MappingName}}</a>
     {{else}}
-    <span class="text-xs text-yellow-800 bg-yellow-50 border border-yellow-200 rounded-full px-2 py-0.5">{{.StoryName}}</span>
+    <span class="text-xs text-yellow-800 bg-yellow-50 border border-yellow-200 rounded-full px-2 py-0.5">{{.MappingName}}</span>
     {{end}}
     {{range .Opportunities}}<a href="{{.Path}}" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">{{.Name}}</a>{{end}}
   </div>

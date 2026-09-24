@@ -255,3 +255,30 @@ func TestParseExampleMappingReadsSupersededBy(t *testing.T) {
 		t.Error("items without the field should carry no successor")
 	}
 }
+
+// livt:automates livt://mapping/name-example-mapping-itself/rule/R-01
+// A file without a name reads as nameless rather than as its key: falling back
+// is for the surfaces, which know whether a story is there to fall back to.
+func TestParseExampleMappingReadsItsOwnName(t *testing.T) {
+	dir := t.TempDir()
+	named := filepath.Join(dir, "fix-login.yaml")
+	unnamed := filepath.Join(dir, "checkout.yaml")
+	for path, data := range map[string]string{
+		named:   "name: 全角スペースでログインできない\nrules: []\n",
+		unnamed: "rules: []\n",
+	} {
+		if err := os.WriteFile(path, []byte(data), 0o644); err != nil {
+			t.Fatal(err)
+		}
+	}
+
+	for path, want := range map[string]string{named: "全角スペースでログインできない", unnamed: ""} {
+		em, err := ParseExampleMapping(path)
+		if err != nil {
+			t.Fatal(err)
+		}
+		if em.Name != want {
+			t.Errorf("%s: name = %q, want %q", filepath.Base(path), em.Name, want)
+		}
+	}
+}

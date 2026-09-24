@@ -19,7 +19,7 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "example-mapping",
 		Title:       "Example mapping",
-		Description: "An example mapping (rules, examples, questions, ubiquitous terms) for a story, addressed by story key. Every rule, example, and question inside carries its own uri — the address to read next or to cite.",
+		Description: "An example mapping (rules, examples, questions, ubiquitous terms) for a story, addressed by story key. Every rule, example, and question inside carries its own uri — the address to read next or to cite. name is the mapping's own name when it has one, and the only name a mapping with no story file carries.",
 		MIMEType:    "application/json",
 		URITemplate: uri.MappingTemplate,
 	}, s.readMapping)

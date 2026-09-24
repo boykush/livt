@@ -29,7 +29,7 @@ project-root/
 - Story keys are derived from filenames (without extension)
 - Story keys must be kebab-case: lowercase letters, numbers, and hyphens
 - The `stories/` directory is the story registry, and `stories/{story-key}.md` provides story key uniqueness
-- Example mapping filenames must match story keys to link them
+- An example mapping whose filename matches a story key maps that story. A mapping needs no story file: without one it is called by its [`name`](../guides/example-mappings.md#a-mapping-without-a-story), or else by its key
 - Term keys are derived from filenames, and a term's [context](../guides/ubiquitous-language.md#contexts) from the directory holding it. The path is what makes a term unique, so the same key can sit at the root and under a context as two separate terms
 - A context is optional and one directory deep; terms nested deeper are not addressable and are left out of the glossary
 - A term is anchored as `ubiquitous.html#{term-key}`, or `ubiquitous.html#{ctx}/{term-key}` when it is scoped
@@ -81,8 +81,8 @@ has to be hunted for board by board:
 examples and questions are on none of the lists, and off the boards as well:
 nothing can close them again, so they would sit here forever.
 
-Each item names the story it came from and links to its own sticky on that
-story's mapping board. All three lists are filtered together by opportunity, and
+Each item names the mapping it came from, as the board's yellow sticky reads,
+and links to its own sticky on that board. All three lists are filtered together by opportunity, and
 the selection is mirrored in the `?opportunity=` query parameter so a filtered
 view is shareable.
 

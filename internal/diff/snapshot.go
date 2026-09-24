@@ -149,14 +149,19 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 	for _, em := range mappings {
 		key := em.StoryKey.Value
 		mappingURI := uri.Mapping(key)
-		// Named by its story, which is what a reader calls the board — the key
-		// alone is the filename, and the mapping heads a group of rules.
+		// Named as its board is, since the mapping heads a group of rules. Its own
+		// name is a line only when it has one: every nameless mapping carrying a
+		// blank line would add one to each mapping a diff adds.
+		fields := listed(LabelTerms, em.Ubiquitous)
+		if em.Name != "" {
+			fields = append([]Field{text(em.Name)}, fields...)
+		}
 		s.add(Entry{
 			URI:    mappingURI,
 			Kind:   uri.KindMapping,
 			Live:   true,
-			Title:  parser.FindStoryByKey(dirs.Stories, em.StoryKey).DisplayName(),
-			Fields: listed(LabelTerms, em.Ubiquitous),
+			Title:  em.DisplayName(parser.FindStoryByKey(dirs.Stories, em.StoryKey)),
+			Fields: fields,
 		})
 		// Scanned as recorded rather than as the board shows it: a retirement
 		// and an agreement are exactly the changes a reviewer came for, and

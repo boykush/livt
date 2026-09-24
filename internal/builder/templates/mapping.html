@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{.StoryName}} - livt</title>
+<title>{{.Name}} - livt</title>
 <script src="https://cdn.tailwindcss.com"></script>
 {{/*
 Settled before the body is parsed, so a reader who chose the list never sees
@@ -112,11 +112,11 @@ board whatever the reader chose.
 </div>
 {{if .StoryPath}}
 <a href="{{.StoryPath}}" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow font-bold text-gray-800 w-[180px] mb-6 hover:bg-yellow-200 transition">
-  <span>{{.StoryName}}</span><span>&rarr;</span>
+  <span>{{.Name}}</span><span>&rarr;</span>
 </a>
 {{else}}
 <div class="bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow font-bold text-gray-800 w-[180px] mb-6">
-  {{.StoryName}}
+  {{.Name}}
 </div>
 {{end}}
 {{with .Diff}}<div class="-mt-4 mb-6">{{template "diff-mark" .}}</div>{{end}}

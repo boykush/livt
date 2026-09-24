@@ -30,10 +30,10 @@
     is the filter hook (mapping → story → map).
     */}}
     <div data-filter-values="{{opportunityValues .Opportunities}}" class="relative rounded-xl border border-green-200 bg-white shadow-sm overflow-hidden hover:shadow-md transition">
-      <a href="mapping/{{.Key}}.html" class="absolute inset-0 z-10 rounded-xl" aria-label="{{.StoryName}}"></a>
+      <a href="mapping/{{.Key}}.html" class="absolute inset-0 z-10 rounded-xl" aria-label="{{.Name}}"></a>
       <div class="flex items-center gap-2 px-4 py-2.5 border-b border-green-100 bg-green-50">
         <span class="w-2.5 h-2.5 rounded-sm bg-green-400"></span>
-        <span class="text-sm font-semibold text-green-900">{{.StoryName}}</span>
+        <span class="text-sm font-semibold text-green-900">{{.Name}}</span>
         {{range .Opportunities}}<a href="{{.Path}}" class="relative z-20 text-[11px] text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">{{.Name}}</a>{{end}}
         <span class="ml-auto text-green-400 text-sm">&rarr;</span>
       </div>

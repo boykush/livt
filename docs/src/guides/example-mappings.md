@@ -5,6 +5,8 @@ Example mappings are YAML files stored in `discoveries/example-mappings/`. They 
 ## Format
 
 ```yaml
+name: Mapping name
+
 rules:
   - id: R-01
     name: Rule description
@@ -32,6 +34,7 @@ ubiquitous:
 ```
 
 - The filename is the story key: `{story-key}.yaml` maps the story in `stories/{story-key}.md`, and the board links to that story's page when there is one
+- `name` is optional: the mapping's own name. The board, its overview tile, the Tasks page, and the diff call the mapping by it, falling back to the story's name and then to the key. livt reads it apart from the story's `name` and never compares the two; keeping them the same where both are written is left to whoever writes them, which the [livt-discovery skills](https://github.com/boykush/livt/tree/main/plugins/livt-discovery) do. See [A mapping without a story](#a-mapping-without-a-story)
 - IDs must be unique within their rule or question list
 - `ubiquitous` is optional: each entry is a [ubiquitous language](./ubiquitous-language.md) term key, rendered as a pink sticky linking to `ubiquitous.html#{term-key}`. A key with no matching term file renders as a plain pink card.
 - `issues` is optional: the rule's automation Issue URLs on implementation repos (Issue URLs only). The livt repository records the links; their state lives at the URL target. A rule without `issues` is unlinked.
@@ -39,6 +42,23 @@ ubiquitous:
 - `status` is optional and applies to a rule: `proposed` while the rule is put forward but not yet agreed, `accepted` once it is, `rejected` when the proposal was turned down, `retired` when spec it once was stopped holding. Absent means accepted, and any other value fails the build. See [Proposing a rule](#proposing-a-rule).
 - `retired` is optional and applies to an example or a question: it records that the item is no longer part of the spec. Absent means live. It is not a rule field — a rule closes through `status`; see [Retiring an item](#retiring-an-item).
 - `superseded_by` is optional and goes with a closed rule or a retired example or question: the [livt URIs](../reference/uri.md) of whatever took its place. Absent means nothing did.
+
+## A mapping without a story
+
+Not every mapping starts from a story card. A bug fix whose expected behaviour is already clear can go straight to the rule it broke and an example that reproduces it, and from there into a failing test. Such a mapping is a file with no `stories/{story-key}.md` beside it:
+
+```yaml
+name: Login rejects a password with a full-width space
+
+rules:
+  - id: R-01
+    name: A password is compared exactly as it was typed
+    examples:
+      - id: EX-01
+        name: A password starting with a full-width space logs in
+```
+
+Give it a `name`: without one, the board is called by its key. Otherwise it is a mapping like any other — it renders, lists on the Tasks page, diffs, and resolves by livt URI. What it lacks is a story page to link to and, since a mapping reaches its opportunities through its story, any opportunity to be filtered under. The MCP server lists mappings through their stories, so hand an agent a story-less mapping's livt URI directly.
 
 ## Proposing a rule
 
@@ -102,7 +122,7 @@ Only the pointer is structured. *Why* the item was retired belongs to the commit
 
 The board renders cards in the [Example Mapping](https://cucumber.io/blog/bdd/example-mapping-introduction/) format:
 
-- **Yellow** card: Story (top)
+- **Yellow** card: Story (top), reading the mapping's `name` when it has one and the story's otherwise; it links to the story page when there is one
 - **Blue** cards: Rules (row below story)
 - **Pale blue, dashed** cards: Proposed rules, stamped *proposed*; their examples are drawn pale too
 - **Green** cards: Examples (stacked under their rule)

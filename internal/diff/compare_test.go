@@ -365,3 +365,23 @@ func changedParts(l Line) string {
 	}
 	return changed.String()
 }
+
+// livt:automates livt://mapping/name-example-mapping-itself/rule/R-03
+// livt:automates livt://mapping/name-example-mapping-itself/rule/R-03/example/EX-01
+// A renamed mapping is a change to the mapping itself, read as the rewording it
+// is and headed by the name it has now.
+func TestCompareReadsARenamedMappingAsAChangeToIt(t *testing.T) {
+	base := mapping(t, "fix-login", "name: 旧い名前\n"+oneRule)
+	head := mapping(t, "fix-login", "name: 新しい名前\n"+oneRule)
+
+	change := only(t, Compare(base, head))
+	if change.URI != uri.Mapping("fix-login") || change.Status != StatusModified {
+		t.Fatalf("got %s %q, want the mapping modified", change.Status, change.URI)
+	}
+	if got, want := lineTexts(change.Lines), []string{"-旧い名前", "+新しい名前"}; !equal(got, want) {
+		t.Errorf("lines = %v, want %v", got, want)
+	}
+	if change.Title != "新しい名前" {
+		t.Errorf("title = %q, want the name it has now", change.Title)
+	}
+}

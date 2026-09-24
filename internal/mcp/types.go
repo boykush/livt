@@ -248,7 +248,11 @@ type questionJSON struct {
 }
 
 type exampleMappingJSON struct {
-	StoryKey  string         `json:"story_key"`
+	StoryKey string `json:"story_key"`
+	// Name is the mapping's own, and the only name a mapping with no story has.
+	// Omitted when it has none: the story's name is read from livt://story/{key},
+	// never copied in here.
+	Name      string         `json:"name,omitempty"`
 	Rules     []ruleJSON     `json:"rules,omitempty"`
 	Questions []questionJSON `json:"questions,omitempty"`
 	// Ubiquitous keeps the raw term keys as authored in the mapping;
@@ -405,6 +409,7 @@ func (c Config) toExampleMappingJSON(em *domain.ExampleMapping) exampleMappingJS
 	}
 	return exampleMappingJSON{
 		StoryKey:        em.StoryKey.Value,
+		Name:            em.Name,
 		Rules:           rules,
 		Questions:       questions,
 		Ubiquitous:      em.Ubiquitous,

@@ -29,7 +29,7 @@ func (b *Builder) boardFor(em *domain.ExampleMapping) board {
 	if b.diffResult == nil {
 		return board{Mapping: em.Active()}
 	}
-	out := &domain.ExampleMapping{StoryKey: em.StoryKey, Ubiquitous: em.Ubiquitous}
+	out := &domain.ExampleMapping{StoryKey: em.StoryKey, Name: em.Name, Ubiquitous: em.Ubiquitous}
 	ghosts := make(map[string]bool)
 	key := em.StoryKey.Value
 
