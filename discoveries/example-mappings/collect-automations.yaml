@@ -44,10 +44,28 @@ rules:
           - livt://mapping/collect-automations/rule/R-03/example/EX-06
       - id: EX-05
         name: 実装リポジトリは自分自身を走査するので、参加はその1ステップをCIに足すかどうかで決まる
+        retired: true
+        superseded_by:
+          - livt://mapping/collect-automations/rule/R-03/example/EX-08
+          - livt://mapping/collect-automations/rule/R-03/example/EX-09
       - id: EX-06
         name: 資格情報は実装リポジトリ側がlivtリポジトリへのwriteを1本持ち、livtリポジトリは何も持たない
+        retired: true
+        superseded_by:
+          - livt://mapping/collect-automations/rule/R-03/example/EX-10
       - id: EX-07
         name: livtリポジトリ自身が実装リポジトリを兼ねる場合は、既定のGITHUB_TOKENで足りる
+        retired: true
+        superseded_by:
+          - livt://mapping/collect-automations/rule/R-03/example/EX-11
+      - id: EX-08
+        name: 実装リポジトリは走査せず、マージしたrevを通知するだけで、そのrevをfetchして走査するのはlivtリポジトリ側
+      - id: EX-09
+        name: 参加は実装リポジトリのCIにlivtが配るactionを1つ足すことで決まり、走査の作法を写す必要はない
+      - id: EX-10
+        name: 資格情報は実装リポジトリ側がlivtリポジトリへdispatchを送る1本と、livtリポジトリ側が実装リポジトリを読む1本（publicなら後者は要らない）
+      - id: EX-11
+        name: livtリポジトリ自身が実装リポジトリを兼ねる場合も、既定のGITHUB_TOKENでは足りない（それが署名したdispatchはworkflowを起動しない）
   - id: R-04
     name: レポートは引用の事実だけを運び、判断を持たない
     examples:
