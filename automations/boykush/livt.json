@@ -1,756 +1,913 @@
 {
   "repo": "boykush/livt",
-  "generated_at": "2026-09-24T04:14:06Z",
+  "rev": "8be55e75d7d08ed9ee7483e9be640f7efd267611",
+  "generated_at": "2026-09-24T04:14:43Z",
   "citations": [
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-04/example/EX-01",
       "file": "cmd/resolve_test.go",
-      "line": 53
+      "line": 53,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/cmd/resolve_test.go#L53"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-04/example/EX-03",
       "file": "cmd/resolve_test.go",
-      "line": 91
+      "line": 91,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/cmd/resolve_test.go#L91"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-05/example/EX-01",
       "file": "cmd/resolve_test.go",
-      "line": 178
+      "line": 178,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/cmd/resolve_test.go#L178"
     },
     {
       "livt_uri": "livt://mapping/collect-automations/rule/R-06/example/EX-01",
       "file": "internal/automation/git_test.go",
-      "line": 5
+      "line": 5,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/automation/git_test.go#L5"
     },
     {
       "livt_uri": "livt://mapping/collect-automations/rule/R-06/example/EX-02",
       "file": "internal/automation/git_test.go",
-      "line": 25
+      "line": 25,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/automation/git_test.go#L25"
+    },
+    {
+      "livt_uri": "livt://mapping/collect-automations/rule/R-04/example/EX-04",
+      "file": "internal/automation/git_test.go",
+      "line": 63,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/automation/git_test.go#L63"
     },
     {
       "livt_uri": "livt://mapping/collect-automations/rule/R-01/example/EX-01",
       "file": "internal/automation/scan_test.go",
-      "line": 44
+      "line": 44,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/automation/scan_test.go#L44"
     },
     {
       "livt_uri": "livt://mapping/collect-automations/rule/R-01/example/EX-02",
       "file": "internal/automation/scan_test.go",
-      "line": 64
+      "line": 64,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/automation/scan_test.go#L64"
     },
     {
       "livt_uri": "livt://mapping/collect-automations/rule/R-01/example/EX-03",
       "file": "internal/automation/scan_test.go",
-      "line": 83
+      "line": 83,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/automation/scan_test.go#L83"
     },
     {
       "livt_uri": "livt://mapping/collect-automations/rule/R-01/example/EX-04",
       "file": "internal/automation/scan_test.go",
-      "line": 95
+      "line": 95,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/automation/scan_test.go#L95"
     },
     {
       "livt_uri": "livt://mapping/collect-automations/rule/R-01",
       "file": "internal/automation/scan_test.go",
-      "line": 112
+      "line": 112,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/automation/scan_test.go#L112"
     },
     {
       "livt_uri": "livt://mapping/collect-automations/rule/R-02/example/EX-01",
       "file": "internal/automation/scan_test.go",
-      "line": 127
+      "line": 127,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/automation/scan_test.go#L127"
     },
     {
       "livt_uri": "livt://mapping/collect-automations/rule/R-02/example/EX-03",
       "file": "internal/automation/scan_test.go",
-      "line": 142
+      "line": 142,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/automation/scan_test.go#L142"
     },
     {
       "livt_uri": "livt://mapping/collect-automations/rule/R-06/example/EX-03",
       "file": "internal/automation/scan_test.go",
-      "line": 174
+      "line": 174,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/automation/scan_test.go#L174"
     },
     {
       "livt_uri": "livt://mapping/collect-automations/rule/R-06/example/EX-04",
       "file": "internal/automation/scan_test.go",
-      "line": 191
+      "line": 191,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/automation/scan_test.go#L191"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-01/example/EX-01",
       "file": "internal/builder/build_diff_test.go",
-      "line": 39
+      "line": 39,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_diff_test.go#L39"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-01/example/EX-02",
       "file": "internal/builder/build_diff_test.go",
-      "line": 64
+      "line": 64,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_diff_test.go#L64"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-05/example/EX-04",
       "file": "internal/builder/build_diff_test.go",
-      "line": 75
+      "line": 75,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_diff_test.go#L75"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-05/example/EX-03",
       "file": "internal/builder/build_diff_test.go",
-      "line": 88
+      "line": 88,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_diff_test.go#L88"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-02/example/EX-05",
       "file": "internal/builder/build_diff_test.go",
-      "line": 137
+      "line": 137,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_diff_test.go#L137"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-05/example/EX-02",
       "file": "internal/builder/build_diff_test.go",
-      "line": 161
+      "line": 161,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_diff_test.go#L161"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-02/example/EX-04",
       "file": "internal/builder/build_diff_test.go",
-      "line": 177
+      "line": 177,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_diff_test.go#L177"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-06/example/EX-02",
       "file": "internal/builder/build_diff_test.go",
-      "line": 188
+      "line": 188,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_diff_test.go#L188"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-05/example/EX-05",
       "file": "internal/builder/build_diff_test.go",
-      "line": 222
+      "line": 222,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_diff_test.go#L222"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-07",
       "file": "internal/builder/build_diff_test.go",
-      "line": 296
+      "line": 296,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_diff_test.go#L296"
     },
     {
       "livt_uri": "livt://mapping/scope-terms-by-context/rule/R-03/example/EX-01",
       "file": "internal/builder/build_glossary_test.go",
-      "line": 68
+      "line": 68,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_glossary_test.go#L68"
     },
     {
       "livt_uri": "livt://mapping/scope-terms-by-context/rule/R-03/example/EX-02",
       "file": "internal/builder/build_glossary_test.go",
-      "line": 69
+      "line": 69,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_glossary_test.go#L69"
     },
     {
       "livt_uri": "livt://mapping/scope-terms-by-context/rule/R-03/example/EX-03",
       "file": "internal/builder/build_glossary_test.go",
-      "line": 92
+      "line": 92,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_glossary_test.go#L92"
     },
     {
       "livt_uri": "livt://mapping/scope-terms-by-context/rule/R-04/example/EX-01",
       "file": "internal/builder/build_glossary_test.go",
-      "line": 108
+      "line": 108,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_glossary_test.go#L108"
     },
     {
       "livt_uri": "livt://mapping/scope-terms-by-context/rule/R-04/example/EX-03",
       "file": "internal/builder/build_glossary_test.go",
-      "line": 109
+      "line": 109,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_glossary_test.go#L109"
     },
     {
       "livt_uri": "livt://mapping/overview-open-questions/rule/R-01/example/EX-01",
       "file": "internal/builder/build_index_test.go",
-      "line": 84
+      "line": 84,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_index_test.go#L84"
     },
     {
       "livt_uri": "livt://mapping/overview-open-questions/rule/R-02/example/EX-01",
       "file": "internal/builder/build_index_test.go",
-      "line": 85
+      "line": 85,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_index_test.go#L85"
     },
     {
       "livt_uri": "livt://mapping/overview-open-questions/rule/R-01/example/EX-03",
       "file": "internal/builder/build_index_test.go",
-      "line": 120
+      "line": 120,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_index_test.go#L120"
     },
     {
       "livt_uri": "livt://mapping/overview-open-questions/rule/R-03",
       "file": "internal/builder/build_index_test.go",
-      "line": 148
+      "line": 148,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_index_test.go#L148"
     },
     {
       "livt_uri": "livt://mapping/overview-open-questions/rule/R-03/example/EX-03",
       "file": "internal/builder/build_index_test.go",
-      "line": 169
+      "line": 169,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_index_test.go#L169"
     },
     {
       "livt_uri": "livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-01",
       "file": "internal/builder/build_index_test.go",
-      "line": 315
+      "line": 315,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_index_test.go#L315"
     },
     {
       "livt_uri": "livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-02",
       "file": "internal/builder/build_index_test.go",
-      "line": 343
+      "line": 343,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_index_test.go#L343"
     },
     {
       "livt_uri": "livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-03",
       "file": "internal/builder/build_index_test.go",
-      "line": 370
+      "line": 370,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_index_test.go#L370"
     },
     {
       "livt_uri": "livt://mapping/filter-lists-by-opportunity/rule/R-01",
       "file": "internal/builder/build_index_test.go",
-      "line": 392
+      "line": 392,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_index_test.go#L392"
     },
     {
       "livt_uri": "livt://mapping/filter-lists-by-opportunity/rule/R-03",
       "file": "internal/builder/build_index_test.go",
-      "line": 413
+      "line": 413,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_index_test.go#L413"
     },
     {
       "livt_uri": "livt://mapping/filter-lists-by-opportunity/rule/R-01/example/EX-02",
       "file": "internal/builder/build_index_test.go",
-      "line": 436
+      "line": 436,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_index_test.go#L436"
     },
     {
       "livt_uri": "livt://mapping/propose-rule-before-agreement/rule/R-03",
       "file": "internal/builder/build_index_test.go",
-      "line": 477
+      "line": 477,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_index_test.go#L477"
     },
     {
       "livt_uri": "livt://mapping/propose-rule-before-agreement/rule/R-03/example/EX-03",
       "file": "internal/builder/build_index_test.go",
-      "line": 496
+      "line": 496,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_index_test.go#L496"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-03/example/EX-01",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 25
+      "line": 25,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L25"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-03/example/EX-02",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 26
+      "line": 26,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L26"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-03/example/EX-03",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 53
+      "line": 53,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L53"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-03/example/EX-01",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 74
+      "line": 74,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L74"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-02/example/EX-02",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 95
+      "line": 95,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L95"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-02/example/EX-01",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 96
+      "line": 96,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L96"
     },
     {
       "livt_uri": "livt://mapping/overview-open-questions/rule/R-02/example/EX-02",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 205
+      "line": 205,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L205"
     },
     {
       "livt_uri": "livt://mapping/overview-open-questions/rule/R-01",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 227
+      "line": 227,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L227"
     },
     {
       "livt_uri": "livt://mapping/overview-open-questions/rule/R-02/example/EX-02",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 257
+      "line": 257,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L257"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 281
+      "line": 281,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L281"
     },
     {
       "livt_uri": "livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-04",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 282
+      "line": 282,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L282"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 322
+      "line": 322,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L322"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 341
+      "line": 341,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L341"
     },
     {
       "livt_uri": "livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-04",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 342
+      "line": 342,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L342"
     },
     {
       "livt_uri": "livt://mapping/propose-rule-before-agreement/rule/R-02",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 380
+      "line": 380,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L380"
     },
     {
       "livt_uri": "livt://mapping/propose-rule-before-agreement/rule/R-03/example/EX-01",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 416
+      "line": 416,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L416"
     },
     {
       "livt_uri": "livt://mapping/review-example-mapping-as-list/rule/R-01/example/EX-01",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 521
+      "line": 521,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L521"
     },
     {
       "livt_uri": "livt://mapping/review-example-mapping-as-list/rule/R-02/example/EX-01",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 539
+      "line": 539,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L539"
     },
     {
       "livt_uri": "livt://mapping/review-example-mapping-as-list/rule/R-02/example/EX-03",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 558
+      "line": 558,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L558"
     },
     {
       "livt_uri": "livt://mapping/review-example-mapping-as-list/rule/R-03/example/EX-01",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 568
+      "line": 568,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L568"
     },
     {
       "livt_uri": "livt://mapping/review-example-mapping-as-list/rule/R-04/example/EX-02",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 588
+      "line": 588,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L588"
     },
     {
       "livt_uri": "livt://mapping/review-example-mapping-as-list/rule/R-02/example/EX-03",
       "file": "internal/builder/build_mapping_test.go",
-      "line": 628
+      "line": 628,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_mapping_test.go#L628"
     },
     {
       "livt_uri": "livt://opportunity/collaborative-discovery",
       "file": "internal/builder/build_opportunity_test.go",
-      "line": 59
+      "line": 59,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_opportunity_test.go#L59"
     },
     {
       "livt_uri": "livt://mapping/show-opportunity-progress/rule/R-02",
       "file": "internal/builder/build_opportunity_test.go",
-      "line": 282
+      "line": 282,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_opportunity_test.go#L282"
     },
     {
       "livt_uri": "livt://mapping/show-opportunity-progress/rule/R-03",
       "file": "internal/builder/build_opportunity_test.go",
-      "line": 309
+      "line": 309,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_opportunity_test.go#L309"
     },
     {
       "livt_uri": "livt://mapping/show-opportunity-progress/rule/R-01",
       "file": "internal/builder/build_opportunity_test.go",
-      "line": 349
+      "line": 349,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_opportunity_test.go#L349"
     },
     {
       "livt_uri": "livt://mapping/show-opportunity-progress/rule/R-01",
       "file": "internal/builder/build_opportunity_test.go",
-      "line": 370
+      "line": 370,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_opportunity_test.go#L370"
     },
     {
       "livt_uri": "livt://mapping/show-opportunity-progress/rule/R-02",
       "file": "internal/builder/build_opportunity_test.go",
-      "line": 392
+      "line": 392,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_opportunity_test.go#L392"
     },
     {
       "livt_uri": "livt://mapping/show-opportunity-progress/rule/R-02",
       "file": "internal/builder/build_opportunity_test.go",
-      "line": 420
+      "line": 420,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_opportunity_test.go#L420"
     },
     {
       "livt_uri": "livt://mapping/show-opportunity-progress/rule/R-02",
       "file": "internal/builder/build_opportunity_test.go",
-      "line": 462
+      "line": 462,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_opportunity_test.go#L462"
     },
     {
       "livt_uri": "livt://mapping/show-opportunity-progress/rule/R-01",
       "file": "internal/builder/build_opportunity_test.go",
-      "line": 507
+      "line": 507,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_opportunity_test.go#L507"
     },
     {
       "livt_uri": "livt://mapping/show-opportunity-progress/rule/R-04",
       "file": "internal/builder/build_opportunity_test.go",
-      "line": 554
+      "line": 554,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_opportunity_test.go#L554"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-03/example/EX-03",
       "file": "internal/builder/build_story_map_test.go",
-      "line": 256
+      "line": 256,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_story_map_test.go#L256"
     },
     {
       "livt_uri": "livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-02",
       "file": "internal/builder/build_story_map_test.go",
-      "line": 327
+      "line": 327,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_story_map_test.go#L327"
     },
     {
       "livt_uri": "livt://mapping/filter-lists-by-opportunity/rule/R-02",
       "file": "internal/builder/build_story_test.go",
-      "line": 12
+      "line": 12,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_story_test.go#L12"
     },
     {
       "livt_uri": "livt://mapping/scope-terms-by-context/rule/R-02/example/EX-03",
       "file": "internal/builder/build_term_ref_test.go",
-      "line": 40
+      "line": 40,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/build_term_ref_test.go#L40"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02",
       "file": "internal/builder/builder_test.go",
-      "line": 73
+      "line": 73,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/builder_test.go#L73"
     },
     {
       "livt_uri": "livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-02/example/EX-01",
       "file": "internal/builder/builder_test.go",
-      "line": 111
+      "line": 111,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/builder_test.go#L111"
     },
     {
       "livt_uri": "livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-02/example/EX-02",
       "file": "internal/builder/builder_test.go",
-      "line": 139
+      "line": 139,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/builder/builder_test.go#L139"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-02/example/EX-01",
       "file": "internal/diff/compare_test.go",
-      "line": 90
+      "line": 90,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/diff/compare_test.go#L90"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-02/example/EX-02",
       "file": "internal/diff/compare_test.go",
-      "line": 107
+      "line": 107,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/diff/compare_test.go#L107"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-02/example/EX-04",
       "file": "internal/diff/compare_test.go",
-      "line": 123
+      "line": 123,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/diff/compare_test.go#L123"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-02/example/EX-03",
       "file": "internal/diff/compare_test.go",
-      "line": 134
+      "line": 134,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/diff/compare_test.go#L134"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-02",
       "file": "internal/diff/compare_test.go",
-      "line": 163
+      "line": 163,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/diff/compare_test.go#L163"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-04/example/EX-01",
       "file": "internal/diff/compare_test.go",
-      "line": 177
+      "line": 177,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/diff/compare_test.go#L177"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-07",
       "file": "internal/diff/compare_test.go",
-      "line": 195
+      "line": 195,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/diff/compare_test.go#L195"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-04/example/EX-02",
       "file": "internal/diff/compare_test.go",
-      "line": 224
+      "line": 224,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/diff/compare_test.go#L224"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-04/example/EX-03",
       "file": "internal/diff/compare_test.go",
-      "line": 240
+      "line": 240,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/diff/compare_test.go#L240"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-01/example/EX-03",
       "file": "internal/diff/compare_test.go",
-      "line": 285
+      "line": 285,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/diff/compare_test.go#L285"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-06/example/EX-01",
       "file": "internal/diff/compare_test.go",
-      "line": 312
+      "line": 312,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/diff/compare_test.go#L312"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-06/example/EX-03",
       "file": "internal/diff/compare_test.go",
-      "line": 325
+      "line": 325,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/diff/compare_test.go#L325"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-01/example/EX-03",
       "file": "internal/diff/range_test.go",
-      "line": 46
+      "line": 46,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/diff/range_test.go#L46"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-05/example/EX-01",
       "file": "internal/diff/range_test.go",
-      "line": 70
+      "line": 70,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/diff/range_test.go#L70"
     },
     {
       "livt_uri": "livt://mapping/review-diff-between-revisions/rule/R-01/example/EX-04",
       "file": "internal/diff/range_test.go",
-      "line": 110
+      "line": 110,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/diff/range_test.go#L110"
     },
     {
       "livt_uri": "livt://mapping/automate-from-master-in-impl-repos/rule/R-14/example/EX-01",
       "file": "internal/mcp/integration_test.go",
-      "line": 35
+      "line": 35,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/integration_test.go#L35"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02",
       "file": "internal/mcp/integration_test.go",
-      "line": 158
+      "line": 158,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/integration_test.go#L158"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-01/example/EX-03",
       "file": "internal/mcp/integration_test.go",
-      "line": 174
+      "line": 174,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/integration_test.go#L174"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-04/example/EX-02",
       "file": "internal/mcp/resolve_test.go",
-      "line": 28
+      "line": 28,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/resolve_test.go#L28"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-04/example/EX-01",
       "file": "internal/mcp/resolve_test.go",
-      "line": 76
+      "line": 76,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/resolve_test.go#L76"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02",
       "file": "internal/mcp/resources_test.go",
-      "line": 31
+      "line": 31,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/resources_test.go#L31"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-01/example/EX-03",
       "file": "internal/mcp/resources_test.go",
-      "line": 46
+      "line": 46,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/resources_test.go#L46"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02",
       "file": "internal/mcp/resources_test.go",
-      "line": 61
+      "line": 61,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/resources_test.go#L61"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-01/example/EX-01",
       "file": "internal/mcp/resources_test.go",
-      "line": 106
+      "line": 106,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/resources_test.go#L106"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-01/example/EX-03",
       "file": "internal/mcp/resources_test.go",
-      "line": 107
+      "line": 107,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/resources_test.go#L107"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-05/example/EX-01",
       "file": "internal/mcp/resources_test.go",
-      "line": 150
+      "line": 150,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/resources_test.go#L150"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-05/example/EX-03",
       "file": "internal/mcp/resources_test.go",
-      "line": 151
+      "line": 151,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/resources_test.go#L151"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-05",
       "file": "internal/mcp/resources_test.go",
-      "line": 177
+      "line": 177,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/resources_test.go#L177"
     },
     {
       "livt_uri": "livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-07",
       "file": "internal/mcp/resources_test.go",
-      "line": 221
+      "line": 221,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/resources_test.go#L221"
     },
     {
       "livt_uri": "livt://mapping/propose-rule-before-agreement/rule/R-04/example/EX-01",
       "file": "internal/mcp/resources_test.go",
-      "line": 245
+      "line": 245,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/resources_test.go#L245"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-09/example/EX-01",
       "file": "internal/mcp/resources_test.go",
-      "line": 307
+      "line": 307,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/resources_test.go#L307"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-09/example/EX-02",
       "file": "internal/mcp/resources_test.go",
-      "line": 308
+      "line": 308,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/resources_test.go#L308"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-09/example/EX-03",
       "file": "internal/mcp/resources_test.go",
-      "line": 309
+      "line": 309,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/resources_test.go#L309"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-09/example/EX-06",
       "file": "internal/mcp/resources_test.go",
-      "line": 330
+      "line": 330,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/resources_test.go#L330"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-09/example/EX-04",
       "file": "internal/mcp/resources_test.go",
-      "line": 345
+      "line": 345,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/resources_test.go#L345"
     },
     {
       "livt_uri": "livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-01",
       "file": "internal/mcp/tools_test.go",
-      "line": 192
+      "line": 192,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/tools_test.go#L192"
     },
     {
       "livt_uri": "livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-02",
       "file": "internal/mcp/tools_test.go",
-      "line": 211
+      "line": 211,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/tools_test.go#L211"
     },
     {
       "livt_uri": "livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-03",
       "file": "internal/mcp/tools_test.go",
-      "line": 225
+      "line": 225,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/tools_test.go#L225"
     },
     {
       "livt_uri": "livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-04",
       "file": "internal/mcp/tools_test.go",
-      "line": 426
+      "line": 426,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/mcp/tools_test.go#L426"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-05/example/EX-04",
       "file": "internal/parser/example_mapping_test.go",
-      "line": 45
+      "line": 45,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/parser/example_mapping_test.go#L45"
     },
     {
       "livt_uri": "livt://mapping/propose-rule-before-agreement/rule/R-01",
       "file": "internal/parser/example_mapping_test.go",
-      "line": 92
+      "line": 92,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/parser/example_mapping_test.go#L92"
     },
     {
       "livt_uri": "livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-06",
       "file": "internal/parser/example_mapping_test.go",
-      "line": 136
+      "line": 136,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/parser/example_mapping_test.go#L136"
     },
     {
       "livt_uri": "livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-03",
       "file": "internal/parser/example_mapping_test.go",
-      "line": 167
+      "line": 167,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/parser/example_mapping_test.go#L167"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-09/example/EX-01",
       "file": "internal/parser/example_mapping_test.go",
-      "line": 206
+      "line": 206,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/parser/example_mapping_test.go#L206"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-09/example/EX-03",
       "file": "internal/parser/example_mapping_test.go",
-      "line": 207
+      "line": 207,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/parser/example_mapping_test.go#L207"
     },
     {
       "livt_uri": "livt://mapping/scope-terms-by-context/rule/R-01/example/EX-01",
       "file": "internal/parser/term_test.go",
-      "line": 50
+      "line": 50,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/parser/term_test.go#L50"
     },
     {
       "livt_uri": "livt://mapping/scope-terms-by-context/rule/R-01/example/EX-03",
       "file": "internal/parser/term_test.go",
-      "line": 69
+      "line": 69,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/parser/term_test.go#L69"
     },
     {
       "livt_uri": "livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-04/example/EX-02",
       "file": "internal/server/server_test.go",
-      "line": 40
+      "line": 40,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/server/server_test.go#L40"
     },
     {
       "livt_uri": "livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-01/example/EX-02",
       "file": "internal/server/server_test.go",
-      "line": 56
+      "line": 56,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/server/server_test.go#L56"
     },
     {
       "livt_uri": "livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-01/example/EX-02",
       "file": "internal/server/server_test.go",
-      "line": 75
+      "line": 75,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/server/server_test.go#L75"
     },
     {
       "livt_uri": "livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-01/example/EX-02",
       "file": "internal/server/server_test.go",
-      "line": 95
+      "line": 95,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/server/server_test.go#L95"
     },
     {
       "livt_uri": "livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-04/example/EX-01",
       "file": "internal/server/server_test.go",
-      "line": 122
+      "line": 122,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/server/server_test.go#L122"
     },
     {
       "livt_uri": "livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-04/example/EX-01",
       "file": "internal/server/server_test.go",
-      "line": 178
+      "line": 178,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/server/server_test.go#L178"
     },
     {
       "livt_uri": "livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-04/example/EX-01",
       "file": "internal/server/server_test.go",
-      "line": 231
+      "line": 231,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/server/server_test.go#L231"
     },
     {
       "livt_uri": "livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-01",
       "file": "internal/server/server_test.go",
-      "line": 290
+      "line": 290,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/server/server_test.go#L290"
     },
     {
       "livt_uri": "livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-03",
       "file": "internal/server/server_test.go",
-      "line": 325
+      "line": 325,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/server/server_test.go#L325"
     },
     {
       "livt_uri": "livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-03/example/EX-01",
       "file": "internal/server/server_test.go",
-      "line": 346
+      "line": 346,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/server/server_test.go#L346"
     },
     {
       "livt_uri": "livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-03/example/EX-02",
       "file": "internal/server/server_test.go",
-      "line": 361
+      "line": 361,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/server/server_test.go#L361"
     },
     {
       "livt_uri": "livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-02",
       "file": "internal/server/server_test.go",
-      "line": 378
+      "line": 378,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/server/server_test.go#L378"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-02/example/EX-02",
       "file": "internal/uri/page_test.go",
-      "line": 8
+      "line": 8,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/uri/page_test.go#L8"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02",
       "file": "internal/uri/page_test.go",
-      "line": 35
+      "line": 35,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/uri/page_test.go#L35"
     },
     {
       "livt_uri": "livt://mapping/scope-terms-by-context/rule/R-03/example/EX-03",
       "file": "internal/uri/page_test.go",
-      "line": 45
+      "line": 45,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/uri/page_test.go#L45"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-02/example/EX-01",
       "file": "internal/uri/page_test.go",
-      "line": 59
+      "line": 59,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/uri/page_test.go#L59"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-04/example/EX-01",
       "file": "internal/uri/parse_test.go",
-      "line": 5
+      "line": 5,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/uri/parse_test.go#L5"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-01/example/EX-01",
       "file": "internal/uri/uri_test.go",
-      "line": 5
+      "line": 5,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/uri/uri_test.go#L5"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02",
       "file": "internal/uri/uri_test.go",
-      "line": 29
+      "line": 29,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/uri/uri_test.go#L29"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02",
       "file": "internal/uri/uri_test.go",
-      "line": 59
+      "line": 59,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/uri/uri_test.go#L59"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-01/example/EX-03",
       "file": "internal/uri/uri_test.go",
-      "line": 80
+      "line": 80,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/uri/uri_test.go#L80"
     },
     {
       "livt_uri": "livt://mapping/trace-test-to-rule/rule/R-01/example/EX-04",
       "file": "internal/uri/uri_test.go",
-      "line": 106
+      "line": 106,
+      "url": "https://github.com/boykush/livt/blob/8be55e75d7d08ed9ee7483e9be640f7efd267611/internal/uri/uri_test.go#L106"
     }
   ]
 }
