@@ -7,18 +7,24 @@ name: automations
 on:
   push:
     branches: [main]
+  # The check reads the committed reports, so it runs on the pull request that
+  # changes them — which is the report's own, whoever opened it.
+  pull_request:
+    paths: ['automations/**']
 
 permissions: {}
 
 # The report branch is one per implementation repository, so two merges must
-# not race to rewrite it.
+# not race to rewrite it. A pull request rewrites nothing and gets its own
+# group: made to wait behind a merge, it would only delay its answer.
 concurrency:
-  group: ${{ github.workflow }}
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || 'collect' }}
   cancel-in-progress: false
 
 jobs:
   collect:
     name: collect
+    if: github.event_name == 'push'
     runs-on: ubuntu-latest
     permissions:
       contents: read # clone, and fetch the base the gate reads
@@ -133,3 +139,31 @@ jobs:
           Opened by $RUN_URL.
           EOF
           )"
+
+  # An unresolvable citation is a typo in a test comment, or a livt URI naming
+  # an id that moved. Nothing downstream notices — it matches no rule, so the
+  # board shows the rule as un-automated and the test goes on passing — and
+  # automerge would carry it onto main unread.
+  verify:
+    name: verify
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # clone
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Setup mise
+        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
+        with:
+          install_args: go
+
+      # The reports are committed beside the spec they cite, so both sides are
+      # in this checkout and the command takes no arguments. It fails on a URI
+      # that resolves to nothing; one resolving to a retired rule passes, since
+      # the rule closed here while the test naming it still runs and passes.
+      - name: Verify the cited livt URIs
+        run: go run . automations verify
