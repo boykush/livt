@@ -312,6 +312,11 @@ func (c Config) hasOpportunityCanvas(opportunityKey string) bool {
 	return err == nil
 }
 
+func (c Config) hasOpportunity(opportunityKey string) bool {
+	_, err := os.Stat(filepath.Join(c.opportunitiesDir(), opportunityKey+".md"))
+	return err == nil
+}
+
 // opportunity loads one opportunity by key. Like Config.story it reports a
 // missing file as not found rather than fabricating a placeholder.
 func (c Config) opportunity(opportunityKey string) (*domain.Opportunity, error) {

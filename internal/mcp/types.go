@@ -341,8 +341,10 @@ type opportunityJSON struct {
 // opportunity has not answered, and dropping it would hide the gap.
 type opportunityCanvasJSON struct {
 	OpportunityKey string `json:"opportunity_key"`
-	// OpportunityURI is the opportunity this canvas fills in.
-	OpportunityURI  string          `json:"opportunity_uri"`
+	// OpportunityURI is the opportunity this canvas fills in, present only when
+	// an opportunity file shares the key — the way a mapping's story_uri is.
+	// The key names the opportunity either way.
+	OpportunityURI  string          `json:"opportunity_uri,omitempty"`
 	Boxes           []canvasBoxJSON `json:"boxes"`
 	Ubiquitous      []string        `json:"ubiquitous,omitempty"`
 	UbiquitousTerms []termRefJSON   `json:"ubiquitous_terms,omitempty"`
@@ -533,13 +535,16 @@ func (c Config) toOpportunityCanvasJSON(canvas *domain.OpportunityCanvas) opport
 			Items:  items,
 		})
 	}
-	return opportunityCanvasJSON{
+	out := opportunityCanvasJSON{
 		OpportunityKey:  key,
-		OpportunityURI:  uri.Opportunity(key),
 		Boxes:           boxes,
 		Ubiquitous:      canvas.Ubiquitous,
 		UbiquitousTerms: c.toTermRefs(canvas.Ubiquitous),
 	}
+	if c.hasOpportunity(key) {
+		out.OpportunityURI = uri.Opportunity(key)
+	}
+	return out
 }
 
 func toTermJSON(term *domain.Term) termJSON {
