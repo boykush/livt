@@ -187,6 +187,14 @@ back up into one row.
       {{if and $rule.ID .ID}}{{template "id-badge" exampleBadge $rule.ID .ID}}{{end}}
       <span class="sticky-text">{{.Name}}</span>
       {{with index $.DiffMarks (exampleURI $.Mapping.StoryKey.Value $rule.ID .ID)}}{{template "diff-mark" .}}{{end}}
+      {{/*
+      The same badge the rule carries, in the example's own colour: the two
+      axes are answered separately, so reading them the same way is what says
+      neither one stands for the other.
+      */}}
+      {{if .Automated}}
+      <span title="{{t "mapping.automated-title"}}" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">{{t "mapping.automated-badge"}}</span>
+      {{end}}
       {{if .Automations}}
       <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
         {{range .Automations}}
