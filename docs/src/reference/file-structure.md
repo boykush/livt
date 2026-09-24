@@ -53,12 +53,15 @@ dist/
     {opportunity-key}.html                # Opportunity detail pages
   opportunity-canvas/
     {opportunity-key}.html                # Opportunity canvas sheets
+  opportunity-progress/
+    {opportunity-key}.html                # Opportunity dashboards
   story/
     {story-key}.html                      # Story detail pages
   mapping/
     {story-key}.html                      # Example mapping boards
   story-map/
     {opportunity-key}.html                # Story map boards
+  diff.html                               # The diff, only with --diff
 ```
 
 Every page shares a left sidebar that links the five resource types (Example

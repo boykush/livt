@@ -13,9 +13,10 @@ import (
 	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
-// registerTools wires the discovery tools. The spec reads (story maps, stories,
-// example mappings, rules, ubiquitous terms) are exposed as resources instead —
-// see registerResources; the tools only list what exists and hand out URIs.
+// registerTools wires the discovery tools. The spec reads (opportunities and
+// their canvases, story maps, stories, example mappings, rules, ubiquitous
+// terms) are exposed as resources instead — see registerResources; the tools
+// only list what exists and hand out URIs.
 func (s *Server) registerTools(srv *mcpsdk.Server) {
 	mcpsdk.AddTool(srv, &mcpsdk.Tool{
 		Name:        "list_opportunities",

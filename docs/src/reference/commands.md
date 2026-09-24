@@ -84,8 +84,9 @@ on, so its list says how many of its kind went.
 ## `livt mcp`
 
 Run an MCP ([Model Context Protocol](https://modelcontextprotocol.io)) server
-that exposes the livt repository (story maps, stories, example mappings, and
-the ubiquitous language). An implementation repo's coding agent can then fetch
+that exposes the livt repository (opportunities and their canvases, story maps,
+stories, example mappings, and the ubiquitous language). An implementation
+repo's coding agent can then fetch
 the spec for a story or rule without reading livt's source.
 
 The livt repository usually lives in a separate checkout from the consumer, so point at
@@ -215,8 +216,9 @@ livt resolve <uri> [flags]
 | `--format` | `json` | Output form: `json` or `url` |
 | `--base-url` | — | Root of the deployed site; required by `--format url` |
 
-Every URI shape the MCP server exposes as a resource resolves here: mappings,
-rules, examples, questions, stories, story maps, and ubiquitous language terms.
+Every URI shape the MCP server exposes as a resource resolves here:
+opportunities, opportunity canvases, story maps, stories, mappings, rules,
+examples, questions, and ubiquitous language terms.
 
 ### Output forms
 
