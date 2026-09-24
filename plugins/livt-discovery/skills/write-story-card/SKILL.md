@@ -13,7 +13,7 @@ This skill is written in English for maintainability — English is not the lang
 
 ## Where You Sit
 
-- Before you: the map was recorded (`record-story-map`). Candidates live in `discoveries/usm/{map-name}.yaml`.
+- Before you: the map was recorded (`record-story-map`). Candidates live in `discoveries/usm/{opportunity-key}.yaml`, the map filed under the key of the opportunity it serves.
 - You: write one candidate's card and stamp its `key:` onto the map.
 - After you: the team prepares and holds the story's Example Mapping; `record-example-mapping` reads `stories/{story-key}.md` for the key and scope.
 
@@ -21,7 +21,7 @@ You do **not** change agreed meaning. Reframing a story or restructuring the map
 
 ## Card Flow
 
-1. Identify the source map and the candidate. The candidate is matched by its `name:` in `discoveries/usm/{map-name}.yaml`. If the map or candidate is ambiguous, ask the user.
+1. Identify the source map and the candidate. The candidate is matched by its `name:` in `discoveries/usm/{opportunity-key}.yaml`. If the map or candidate is ambiguous, ask the user.
 2. Decide the story **key** — kebab-case, English (lowercase letters, digits, hyphens), and **at least four words** (e.g. `preview-story-map-in-browser`; see Key Contract). Ask the user if they have a preferred key; otherwise propose one from the candidate's intent. When a preferred key is shorter, propose it extended with what sets this story apart rather than writing it as given.
 3. Check the preconditions before writing anything:
    - the candidate appears **exactly once** in the map (refuse if it is not unique),
@@ -31,7 +31,7 @@ You do **not** change agreed meaning. Reframing a story or restructuring the map
 4. Create `stories/{key}.md`:
    - frontmatter `name:` = the candidate's name, verbatim from the map — unless the key's mapping already carries a `name:` that reads differently, which the Name Contract settles.
    - optionally a story body in **As a / I want / So that** form (persona / goal / benefit) — include all three together or none. Write the body in the **map's language**; the key stays English.
-5. Write the same `key:` back onto the matching candidate in `discoveries/usm/{map-name}.yaml`. Touch only that one candidate — preserve the order, structure, indentation, and wording of everything else in the file.
+5. Write the same `key:` back onto the matching candidate in `discoveries/usm/{opportunity-key}.yaml`. Touch only that one candidate — preserve the order, structure, indentation, and wording of everything else in the file.
 6. Read both files back: `stories/{key}.md` exists with the right frontmatter, and the candidate now carries `key: {key}`.
 7. Commit the card (see Commit Contract).
 

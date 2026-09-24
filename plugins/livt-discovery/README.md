@@ -34,7 +34,7 @@ Every skill here is a plain [Agent Skill](https://agentskills.io) — no subagen
 
 ### Record
 
-- **`/record-story-map`** — record a User Story Mapping session into `discoveries/usm/{map-name}.yaml`: backbone (activities, user tasks), story cards, release slices, and the board's ubiquitous terms, as a verbatim baseline plus a structural edit consulting `usm-expert`.
+- **`/record-story-map`** — record a User Story Mapping session into `discoveries/usm/{opportunity-key}.yaml`, the one map of the opportunity it serves: backbone (activities, user tasks), story cards, release slices, and the board's ubiquitous terms, as a verbatim baseline plus a structural edit consulting `usm-expert`.
 - **`/record-example-mapping`** — record an Example Mapping session into `discoveries/example-mappings/{story-key}.yaml`: rules, examples, questions, and terms, committed verbatim as the baseline. Re-recording a reworked board keeps every ID.
 
 ### Formulate
