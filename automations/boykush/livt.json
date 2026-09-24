@@ -1,0 +1,73 @@
+{
+  "repo": "boykush/livt",
+  "rev": "0e5838db73122f68a346c14bef8b5242e1f824a8",
+  "generated_at": "2026-09-24T04:08:50Z",
+  "citations": [
+    {
+      "uri": "livt://mapping/collect-automations/rule/R-06/example/EX-01",
+      "file": "internal/automation/git_test.go",
+      "line": 5,
+      "url": "https://github.com/boykush/livt/blob/0e5838db73122f68a346c14bef8b5242e1f824a8/internal/automation/git_test.go#L5"
+    },
+    {
+      "uri": "livt://mapping/collect-automations/rule/R-06/example/EX-02",
+      "file": "internal/automation/git_test.go",
+      "line": 25,
+      "url": "https://github.com/boykush/livt/blob/0e5838db73122f68a346c14bef8b5242e1f824a8/internal/automation/git_test.go#L25"
+    },
+    {
+      "uri": "livt://mapping/collect-automations/rule/R-01/example/EX-01",
+      "file": "internal/automation/scan_test.go",
+      "line": 44,
+      "url": "https://github.com/boykush/livt/blob/0e5838db73122f68a346c14bef8b5242e1f824a8/internal/automation/scan_test.go#L44"
+    },
+    {
+      "uri": "livt://mapping/collect-automations/rule/R-01/example/EX-02",
+      "file": "internal/automation/scan_test.go",
+      "line": 64,
+      "url": "https://github.com/boykush/livt/blob/0e5838db73122f68a346c14bef8b5242e1f824a8/internal/automation/scan_test.go#L64"
+    },
+    {
+      "uri": "livt://mapping/collect-automations/rule/R-01/example/EX-03",
+      "file": "internal/automation/scan_test.go",
+      "line": 83,
+      "url": "https://github.com/boykush/livt/blob/0e5838db73122f68a346c14bef8b5242e1f824a8/internal/automation/scan_test.go#L83"
+    },
+    {
+      "uri": "livt://mapping/collect-automations/rule/R-01/example/EX-04",
+      "file": "internal/automation/scan_test.go",
+      "line": 95,
+      "url": "https://github.com/boykush/livt/blob/0e5838db73122f68a346c14bef8b5242e1f824a8/internal/automation/scan_test.go#L95"
+    },
+    {
+      "uri": "livt://mapping/collect-automations/rule/R-01",
+      "file": "internal/automation/scan_test.go",
+      "line": 112,
+      "url": "https://github.com/boykush/livt/blob/0e5838db73122f68a346c14bef8b5242e1f824a8/internal/automation/scan_test.go#L112"
+    },
+    {
+      "uri": "livt://mapping/collect-automations/rule/R-02/example/EX-01",
+      "file": "internal/automation/scan_test.go",
+      "line": 127,
+      "url": "https://github.com/boykush/livt/blob/0e5838db73122f68a346c14bef8b5242e1f824a8/internal/automation/scan_test.go#L127"
+    },
+    {
+      "uri": "livt://mapping/collect-automations/rule/R-02/example/EX-03",
+      "file": "internal/automation/scan_test.go",
+      "line": 142,
+      "url": "https://github.com/boykush/livt/blob/0e5838db73122f68a346c14bef8b5242e1f824a8/internal/automation/scan_test.go#L142"
+    },
+    {
+      "uri": "livt://mapping/collect-automations/rule/R-06/example/EX-03",
+      "file": "internal/automation/scan_test.go",
+      "line": 174,
+      "url": "https://github.com/boykush/livt/blob/0e5838db73122f68a346c14bef8b5242e1f824a8/internal/automation/scan_test.go#L174"
+    },
+    {
+      "uri": "livt://mapping/collect-automations/rule/R-06/example/EX-04",
+      "file": "internal/automation/scan_test.go",
+      "line": 191,
+      "url": "https://github.com/boykush/livt/blob/0e5838db73122f68a346c14bef8b5242e1f824a8/internal/automation/scan_test.go#L191"
+    }
+  ]
+}
