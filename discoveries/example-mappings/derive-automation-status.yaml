@@ -87,6 +87,9 @@ questions:
       - livt://mapping/show-automation-status-per-rule/rule/R-01
   - id: Q-02
     text: 母数が走行ごとに動くことをサイトがどう示すか（何リポジトリ中いくつを走査したかを明示しないと、前回との比較が黙って壊れる）
+    retired: true
+    superseded_by:
+      - livt://mapping/derive-automation-status/rule/R-02
   - id: Q-03
     text: ルールの本文が変わったとき、古い意味を検証している引用をどう扱うか（引用はlivt URIなので書き換えを素通りし、ボードは自動化済みと言い続ける。フラグの頃はchange-ruleが同じコミットで外させていたが、外す先が無くなった）
 
