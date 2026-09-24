@@ -2,8 +2,8 @@ package uri
 
 import "testing"
 
-// livt://mapping/trace-test-to-rule/rule/R-01/example/EX-01: a rule is
-// livt://mapping/{story-key}/rule/{rule-id}.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-01/example/EX-01
+// A rule is livt://mapping/{story-key}/rule/{rule-id}.
 func TestParseRule(t *testing.T) {
 	cases := []struct {
 		uri  string
@@ -26,9 +26,10 @@ func TestParseRule(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02: an example is
-// livt://mapping/{story-key}/rule/{rule-id}/example/{example-id} — the rule is
-// part of the address because example ids are numbered within their rule.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02
+// An example is livt://mapping/{story-key}/rule/{rule-id}/example/{example-
+// id} — the rule is part of the address because example ids are numbered
+// within their rule.
 func TestParseExample(t *testing.T) {
 	cases := []struct {
 		uri     string
@@ -55,9 +56,9 @@ func TestParseExample(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02: an example URI and
-// the rule URI it hangs off never resolve to each other, so following one
-// cannot silently serve the other.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02
+// An example URI and the rule URI it hangs off never resolve to each other,
+// so following one cannot silently serve the other.
 func TestRuleAndExampleURIsDoNotCrossParse(t *testing.T) {
 	ruleURI := Rule("demo", "R-01")
 	exampleURI := Example("demo", "R-01", "EX-01")
@@ -76,9 +77,9 @@ func TestRuleAndExampleURIsDoNotCrossParse(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-01/example/EX-03: a question is
-// livt://mapping/{story-key}/question/{question-id} — it hangs off the mapping,
-// not off a rule.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-01/example/EX-03
+// A question is livt://mapping/{story-key}/question/{question-id} — it hangs
+// off the mapping, not off a rule.
 func TestParseQuestion(t *testing.T) {
 	cases := []struct {
 		uri      string
@@ -102,9 +103,9 @@ func TestParseQuestion(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-01/example/EX-04: a bare id is not an
-// address — the same rule and example ids live in every mapping, so only the
-// story key tells them apart.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-01/example/EX-04
+// A bare id is not an address — the same rule and example ids live in every
+// mapping, so only the story key tells them apart.
 func TestBareIDsNeedTheStoryKey(t *testing.T) {
 	if a, b := Rule("demo", "R-02"), Rule("other", "R-02"); a == b {
 		t.Errorf("R-02 in two stories built the same URI %q", a)

@@ -32,9 +32,10 @@ func TestEndToEnd(t *testing.T) {
 	}
 	defer cs.Close()
 
-	// livt://mapping/automate-from-master-in-impl-repos/rule/R-14/example/EX-01:
-	// the handshake instructs the consuming agent on how to cite the livt repository. The
-	// wording is free to change; that it arrives and names the uri is not.
+	// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-14/example/EX-01
+	// The handshake instructs the consuming agent on how to cite the livt
+	// repository. The wording is free to change; that it arrives and names the
+	// uri is not.
 	if got := cs.InitializeResult().Instructions; got == "" || !strings.Contains(got, "uri") {
 		t.Errorf("instructions = %q, want non-empty and naming the uri", got)
 	}
@@ -154,9 +155,10 @@ func TestEndToEnd(t *testing.T) {
 		t.Errorf("rule = %+v, want the recorded issue URL and automated=true over the wire", rule.Rule)
 	}
 
-	// livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02: follow the rule's
-	// example to its own resource. The example URI carries the rule, and the
-	// longer shape still routes past the rule template to the example handler.
+	// livt:automates livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02
+	// Follow the rule's example to its own resource. The example URI carries the
+	// rule, and the longer shape still routes past the rule template to the
+	// example handler.
 	er, err := cs.ReadResource(ctx, &mcpsdk.ReadResourceParams{URI: rule.Rule.Examples[0].URI})
 	if err != nil {
 		t.Fatalf("read example %q: %v", rule.Rule.Examples[0].URI, err)
@@ -169,8 +171,9 @@ func TestEndToEnd(t *testing.T) {
 		t.Errorf("example = %+v, want EX-01 実例1", example.Example)
 	}
 
-	// livt://mapping/trace-test-to-rule/rule/R-01/example/EX-03: a question is
-	// addressed off the mapping, and the mapping hands out its URI.
+	// livt:automates livt://mapping/trace-test-to-rule/rule/R-01/example/EX-03
+	// A question is addressed off the mapping, and the mapping hands out its
+	// URI.
 	qr, err := cs.ReadResource(ctx, &mcpsdk.ReadResourceParams{URI: em.Mapping.Questions[0].URI})
 	if err != nil {
 		t.Fatalf("read question %q: %v", em.Mapping.Questions[0].URI, err)

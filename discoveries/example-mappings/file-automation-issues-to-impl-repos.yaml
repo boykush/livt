@@ -39,7 +39,7 @@ rules:
       - id: EX-02
         name: US Issueがなくてもルール単位の起票は成立する
   - id: R-06
-    name: livtは実装リポジトリのコードを読まず、Issueというポインタだけを送る
+    name: 起票は実装リポジトリのコードを読まず、Issueというポインタだけを送る
     examples:
       - id: EX-01
         name: 起票は対象リポジトリのチェックアウトを必要としない
@@ -59,7 +59,6 @@ rules:
         name: issuesに置くのはIssueのURLに統一し、PR・テストへの直リンクは置かない
       - id: EX-03
         name: issuesのないruleは未紐づけとして扱われる
-    automated: true
   - id: R-09
     name: 紐づけの正はlivtリポジトリが持ち、GitHub側の構造には依存しない
     examples:
@@ -85,7 +84,6 @@ rules:
         name: 人が踏めるHTTPリンクは併記してよいが、一次はlivt URI
       - id: EX-03
         name: 他リポジトリのIssueは後から直せないので、デプロイ先に依存させない
-    automated: true
 
 ubiquitous:
   - livt-uri

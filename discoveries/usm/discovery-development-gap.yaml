@@ -40,12 +40,18 @@ activities:
   - key: reflect-automation-status
     name: 自動化の状況を映す
     steps:
-      - key: record-rule-automation
-        name: ルールの自動化を記録する
+      - key: collect-automations
+        name: テストから自動化を集める
         stories:
-          - name: ルールの自動化をlivtリポジトリに記録する
-            key: record-rule-automation
-            release: coordinate-with-issues
+          - name: 実装リポジトリのテストから自動化を集めてレポートにする
+            key: collect-automations
+            release: project-from-tests
+      - key: derive-automation-status
+        name: レポートからルールの状況を導く
+        stories:
+          - name: 自動化レポートからルールごとの状況を導く
+            key: derive-automation-status
+            release: project-from-tests
       - key: show-status-per-rule
         name: ルールごとに自動化の状況を映す
         stories:
@@ -76,3 +82,5 @@ releases:
     name: Issueで協調できる
   - id: reflect-status
     name: 自動化の状態が映る
+  - id: project-from-tests
+    name: テストから自動化の状態が導かれる

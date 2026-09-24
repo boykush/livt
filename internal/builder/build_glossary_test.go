@@ -65,8 +65,10 @@ func buildGlossaryHTML(t *testing.T, ubiquitousDir string) string {
 	return string(out)
 }
 
-// livt://mapping/scope-terms-by-context/rule/R-03/example/EX-01 and EX-02: the
-// table shows a scoped term's context and leaves a context-free one without one.
+// livt:automates livt://mapping/scope-terms-by-context/rule/R-03/example/EX-01
+// livt:automates livt://mapping/scope-terms-by-context/rule/R-03/example/EX-02
+// The table shows a scoped term's context and leaves a context-free one
+// without one.
 func TestBuildGlossaryShowsContextOnScopedTermsOnly(t *testing.T) {
 	dir := t.TempDir()
 	writeGlossaryTerm(t, dir, "", "story", "ストーリー")
@@ -87,8 +89,9 @@ func TestBuildGlossaryShowsContextOnScopedTermsOnly(t *testing.T) {
 	}
 }
 
-// livt://mapping/scope-terms-by-context/rule/R-03/example/EX-03: one key under
-// two contexts gives two rows, told apart by their anchors and their contexts.
+// livt:automates livt://mapping/scope-terms-by-context/rule/R-03/example/EX-03
+// One key under two contexts gives two rows, told apart by their anchors and
+// their contexts.
 func TestBuildGlossaryKeepsTheSameKeyUnderTwoContextsApart(t *testing.T) {
 	dir := t.TempDir()
 	writeGlossaryTerm(t, dir, "billing", "invoice", "請求の請求書")
@@ -102,8 +105,10 @@ func TestBuildGlossaryKeepsTheSameKeyUnderTwoContextsApart(t *testing.T) {
 	}
 }
 
-// livt://mapping/scope-terms-by-context/rule/R-04/example/EX-01 and EX-03: the
-// table offers one chip per context and mirrors the selection in ?context=.
+// livt:automates livt://mapping/scope-terms-by-context/rule/R-04/example/EX-01
+// livt:automates livt://mapping/scope-terms-by-context/rule/R-04/example/EX-03
+// The table offers one chip per context and mirrors the selection in
+// ?context=.
 func TestBuildGlossaryRendersContextFilterControls(t *testing.T) {
 	dir := t.TempDir()
 	writeGlossaryTerm(t, dir, "", "story", "ストーリー")

@@ -50,8 +50,9 @@ func newTestRepo(t *testing.T) string {
 	return root
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-04/example/EX-01: a rule, example,
-// question, story, story map, or term all resolve from the command line.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-04/example/EX-01
+// A rule, example, question, story, story map, or term all resolve from the
+// command line.
 func TestResolveURIResolvesEveryKind(t *testing.T) {
 	root := newTestRepo(t)
 	cases := []struct {
@@ -87,10 +88,10 @@ func TestResolveURIResolvesEveryKind(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-04/example/EX-03: the URL form is
-// the item's page on the deployed site. The paths and anchors come from the
-// same derivation the site build anchors its stickies to, so a link resolved
-// here lands where the board says it does.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-04/example/EX-03
+// The URL form is the item's page on the deployed site. The paths and anchors
+// come from the same derivation the site build anchors its stickies to, so a
+// link resolved here lands where the board says it does.
 func TestResolveURIWritesTheURLForm(t *testing.T) {
 	root := newTestRepo(t)
 	const base = "https://boykush.github.io/livt"
@@ -174,9 +175,10 @@ func TestResolveURIDistinguishesMalformedFromMissing(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-05/example/EX-01: a retired rule
-// still resolves from the command line, saying it closed rather than refusing.
-// A reference filed against it outlives the decision to retire it.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-05/example/EX-01
+// A retired rule still resolves from the command line, saying it closed
+// rather than refusing. A reference filed against it outlives the decision to
+// retire it.
 func TestResolveURIResolvesARetiredRule(t *testing.T) {
 	var out bytes.Buffer
 	if err := resolveURI(&out, newTestRepo(t), "livt://mapping/demo/rule/R-02", formatJSON, ""); err != nil {

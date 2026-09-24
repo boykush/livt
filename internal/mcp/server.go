@@ -46,6 +46,13 @@ func (c Config) canvasesDir() string {
 	return filepath.Join(c.Root, "discoveries", "opportunity-canvases")
 }
 
+// automationsDir holds the reports the implementation repositories push, read
+// per request like everything else so a long-running server serves what was
+// merged a moment ago.
+func (c Config) automationsDir() string {
+	return filepath.Join(c.Root, "automations")
+}
+
 func (c Config) mappingsDir() string {
 	return filepath.Join(c.Root, "discoveries", "example-mappings")
 }

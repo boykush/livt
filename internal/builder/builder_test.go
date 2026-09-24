@@ -70,9 +70,9 @@ func TestBuildKeepsUnrelatedFilesInOutDir(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02: the sidebar's Tasks
-// badge counts what the Tasks page lists, so a retired question or rule is out
-// of the number as well as out of the list.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02
+// The sidebar's Tasks badge counts what the Tasks page lists, so a retired
+// question or rule is out of the number as well as out of the list.
 func TestComputeCountsLeavesRetiredItemsOutOfTasks(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	writeFile(t, filepath.Join(b.MappingsDir, "demo.yaml"),
@@ -108,14 +108,11 @@ func writeFile(t *testing.T, path, content string) {
 	}
 }
 
-// livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-02/example/EX-01: a new input
-// the build reads joins what is reflected, without anyone remembering to add
-// it. This test is what keeps `livt serve` honest.
-// The watch list is derived from InputDirs, so an input directory added to
-// Builder and left out of it would be built from but never watched — the site
+// livt:automates livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-02/example/EX-01
+// The watch list is derived from InputDirs, so a directory added to Builder
+// and left out of it would be built from but never watched, and the site
 // would go stale under an edit with no sign anything was missed. Fields are
-// read by reflection rather than listed here so a new one fails this test
-// instead of quietly slipping past it.
+// read by reflection so a new one fails this test instead of slipping past.
 func TestInputDirsCoversEveryInputDirectory(t *testing.T) {
 	b := emptyDirsBuilder(t)
 
@@ -139,9 +136,9 @@ func TestInputDirsCoversEveryInputDirectory(t *testing.T) {
 	}
 }
 
-// livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-02/example/EX-02: the output
-// is left out. It lives inside the repository in the default layout, so
-// watching it would make every rebuild trigger the next one.
+// livt:automates livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-02/example/EX-02
+// The output is left out. It lives inside the repository in the default
+// layout, so watching it would make every rebuild trigger the next one.
 func TestInputDirsExcludesOutDir(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	if slices.Contains(b.InputDirs(), b.OutDir) {

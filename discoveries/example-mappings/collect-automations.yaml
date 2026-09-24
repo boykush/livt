@@ -1,0 +1,124 @@
+rules:
+  - id: R-01
+    name: テストは自動化する対象を、マーカー付きのlivt URIで示す
+    examples:
+      - id: EX-01
+        name: コメント行に livt:automates と1つのlivt URIを並べて書く
+      - id: EX-02
+        name: コメントの書き方は各言語の構文に従い、livtは言語を知らない
+      - id: EX-03
+        name: マーカーのない裸のlivt URIはただの参照で、自動化として数えない
+      - id: EX-04
+        name: 1つのテストが複数を自動化するなら、1行1URIで並べる
+      - id: EX-05
+        name: プレースホルダを含むURIは引用として数えない（マーカーの書き方をドキュメントに示せる）
+      - id: EX-06
+        name: マーカーはあるがURIが1つに読めない行は、黙って落とさず警告する
+  - id: R-02
+    name: 走査はルールと具体例を独立に拾い、構造を推論しない
+    examples:
+      - id: EX-01
+        name: ルールのURIを引用すればルールが、具体例のURIを引用すればその具体例が自動化済みになる
+      - id: EX-02
+        name: 具体例が全て引用されていても、ルール自身は自動化済みにならない
+      - id: EX-03
+        name: ルールを囲むブロックに具体例のケースを入れ子にするのは書き手の作法で、走査は行とURIしか見ない
+      - id: EX-04
+        name: 構造を読まないから、テストフレームワークごとの知識を持たずに済む
+  - id: R-03
+    name: どの実装リポジトリが参加するかは実装側のCIが決め、livtリポジトリは宣言を持たない
+    examples:
+      - id: EX-01
+        name: livt automations <path> がそのチェックアウトを走査してレポートを出す
+      - id: EX-02
+        name: 対象のチェックアウトと走査の実行はCIに書かれ、走行ごとに変えられる
+        retired: true
+        superseded_by:
+          - livt://mapping/collect-automations/rule/R-03/example/EX-05
+      - id: EX-03
+        name: livtリポジトリはsubmoduleを持たない（ピン留めは投影の鮮度を殺す）
+      - id: EX-04
+        name: 一般形は他リポジトリへのread権限を持つGitHub Appで、livtリポジトリ自身を走査するだけなら既定のGITHUB_TOKENで足りる
+        retired: true
+        superseded_by:
+          - livt://mapping/collect-automations/rule/R-03/example/EX-06
+      - id: EX-05
+        name: 実装リポジトリは自分自身を走査するので、参加はその1ステップをCIに足すかどうかで決まる
+      - id: EX-06
+        name: 資格情報は実装リポジトリ側がlivtリポジトリへのwriteを1本持ち、livtリポジトリは何も持たない
+      - id: EX-07
+        name: livtリポジトリ自身が実装リポジトリを兼ねる場合は、既定のGITHUB_TOKENで足りる
+  - id: R-04
+    name: レポートは引用の事実だけを運び、判断を持たない
+    examples:
+      - id: EX-01
+        name: 各エントリはlivt URIとファイル・行を示す
+      - id: EX-02
+        name: レポートは実装リポジトリの識別子・rev・生成時刻を名乗る
+      - id: EX-03
+        name: 自動化済みかどうかの判断は書かない（導出はderive-automation-status側）
+      - id: EX-04
+        name: 汚れた作業ツリーではrevを名乗らない（走査は作業ツリーを読むので、HEADを名乗ると行がズレる）
+  - id: R-05
+    name: レポートはlivtリポジトリにコミットし、書き戻しは機械だけが行う
+    examples:
+      - id: EX-01
+        name: 置き場はビルドの作業ディレクトリで、gitignoreされる
+        retired: true
+        superseded_by:
+          - livt://mapping/collect-automations/rule/R-05/example/EX-04
+      - id: EX-02
+        name: 実装リポジトリが自分のリポジトリにレポートを持つ形も成立する
+        retired: true
+        superseded_by:
+          - livt://mapping/collect-automations/rule/R-05/example/EX-07
+      - id: EX-03
+        name: 実装リポジトリからlivtリポジトリへpushしない（書き戻しが機械の姿で戻る）
+        retired: true
+        superseded_by:
+          - livt://mapping/collect-automations/rule/R-05/example/EX-05
+      - id: EX-04
+        name: レポートは生成物としてディスカバリーの成果物の外に置き、人は手で編集しない
+      - id: EX-05
+        name: livtリポジトリ側の定期ジョブが走査し、変化があればPRを開く（人の手順は増えない）
+        retired: true
+        superseded_by:
+          - livt://mapping/collect-automations/rule/R-05/example/EX-09
+      - id: EX-06
+        name: レポートは生成時刻を名乗り、古いレポートは古いものとして映る
+      - id: EX-07
+        name: 読み手はlivtリポジトリの権限だけで状況を読め、実装リポジトリへの権限は要らない
+      - id: EX-08
+        name: artifactや外部サービスには置かない（読むのに同じ権限が要り、期限で消え、過去のリビジョンで引けない）
+      - id: EX-09
+        name: 実装リポジトリのCIが、デフォルトブランチへのマージ時に走査してlivtリポジトリへPRを出す
+      - id: EX-10
+        name: 置き場は automations/{owner}/{repo}.json で、実装リポジトリごとに1ファイル
+      - id: EX-11
+        name: 内容が変わったときだけPRを出し、ブランチは実装リポジトリごとに1本を更新する
+      - id: EX-12
+        name: PRのCIが引用したlivt URIを検証し、解決しなければ落ちる（それ以外はグリーンでautomergeされる）
+  - id: R-06
+    name: テストの所在はforgeのURLとして運べるが、無くても自動化の判定は変わらない
+    examples:
+      - id: EX-01
+        name: 既定で知るのは github.com と gitlab.com のURL形だけ
+      - id: EX-02
+        name: セルフホストはホスト名で見分けられないので、forgeかテンプレートをCIが宣言する
+      - id: EX-03
+        name: URLはrevで固定し、走査した時点のコードを指す
+      - id: EX-04
+        name: URLを組み立てられないときはファイルと行をそのまま示し、リンクにしない
+
+questions:
+  - id: Q-01
+    text: 囲むブロックを持たないフラットなテストで、ルールのlivt URIをどこに引用するか（本リポジトリは259個のトップレベル関数でt.Runは1ファイルのみ。入れ子の作法がそのまま当てはまらない）
+  - id: Q-02
+    text: 走査が拾うパターンをリポジトリごとに宣言できるようにするか（マーカーを1つに決めたので今は要らないが、言語ネイティブのアノテーションを使いたい場合の拡張先）
+
+ubiquitous:
+  - livt-uri
+  - livt-repository
+  - implementation-repository
+  - example-mapping
+  - story

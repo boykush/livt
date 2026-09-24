@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/boykush/livt/internal/automation"
 	"github.com/boykush/livt/internal/diff"
 	"github.com/boykush/livt/internal/i18n"
 	"github.com/boykush/livt/internal/parser"
@@ -18,7 +19,11 @@ type Builder struct {
 	StoriesDir       string
 	USMDir           string
 	UbiquitousDir    string
-	OutDir           string
+	// AutomationsDir holds the collected reports the implementation
+	// repositories push. Absent is the ordinary state of a livt repository no
+	// implementation points at, and the site then shows no automation at all.
+	AutomationsDir string
+	OutDir         string
 	// Lang is the language of the site chrome, from livt.yaml. The zero value
 	// renders in livt's default rather than failing, so a Builder built without
 	// a config still produces a site.
@@ -37,6 +42,23 @@ type Builder struct {
 	// diffByURI is the same result keyed for the lookup every resource page
 	// makes: did this one change, and what became of it.
 	diffByURI map[string]diff.Became
+	// automations is the run's report index. `livt serve` rebuilds on every
+	// edit, so it is reloaded per build rather than held across them.
+	automations *automation.Index
+}
+
+// automationIndex loads the reports once per build. Every surface that asks
+// what a rule is automated by goes through here, so the boards and the counts
+// cannot end up reading different answers.
+func (b *Builder) automationIndex() (*automation.Index, error) {
+	if b.automations == nil {
+		idx, err := automation.Load(b.AutomationsDir)
+		if err != nil {
+			return nil, err
+		}
+		b.automations = idx
+	}
+	return b.automations, nil
 }
 
 // diffDirs is the input layout the diff reads a revision through, which is this
@@ -86,6 +108,13 @@ func (b *Builder) computeCounts() (sidebarCounts, error) {
 	if err != nil {
 		return sidebarCounts{}, err
 	}
+	automations, err := b.automationIndex()
+	if err != nil {
+		return sidebarCounts{}, err
+	}
+	for _, em := range mappings {
+		automations.Attach(em)
+	}
 	terms, err := parser.ParseAllTerms(b.UbiquitousDir)
 	if err != nil {
 		return sidebarCounts{}, err
@@ -102,7 +131,7 @@ func (b *Builder) computeCounts() (sidebarCounts, error) {
 		tasks += len(active.Questions)
 		for _, r := range active.Rules {
 			// A proposed rule is listed until it is agreed, automated or not.
-			if r.Proposed() || !r.Automated {
+			if r.Proposed() || !r.Automated() {
 				tasks++
 			}
 		}
@@ -164,6 +193,7 @@ func (b *Builder) Build() error {
 	if err := b.resetGeneratedDirs(); err != nil {
 		return err
 	}
+	b.automations = nil
 
 	// Computed before any page is written, because every hub page's sidebar
 	// carries the count — and because a revision that does not resolve should
@@ -325,5 +355,6 @@ func (b *Builder) InputDirs() []string {
 		b.StoriesDir,
 		b.USMDir,
 		b.UbiquitousDir,
+		b.AutomationsDir,
 	}
 }

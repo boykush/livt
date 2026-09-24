@@ -56,9 +56,9 @@ func TestRenderOpportunityCanvasLaysOutTheThreeZones(t *testing.T) {
 	}
 }
 
-// livt://opportunity/collaborative-discovery: the Related section is what says
-// how far an opportunity has been taken. A canvas means it was thought through,
-// a story map means it was taken on.
+// livt:automates livt://opportunity/collaborative-discovery
+// The Related section is what says how far an opportunity has been taken. A
+// canvas means it was thought through, a story map means it was taken on.
 func TestRenderOpportunityLinksItsCanvasAndStoryMap(t *testing.T) {
 	b := outDirsBuilder(t)
 	o := &domain.Opportunity{Key: domain.OpportunityKey{Value: "demo"}, Name: "デモ", Body: "一文で言う"}
@@ -265,9 +265,10 @@ func progressBuilder(t *testing.T) Builder {
 	}
 	writeFile(t, filepath.Join(b.MappingsDir, "held-story.yaml"),
 		"rules:\n"+
-			"  - id: R-01\n    name: 押さえたルール\n    automated: true\n"+
+			"  - id: R-01\n    name: 押さえたルール\n"+
 			"  - id: R-02\n    name: 退役したルール\n    status: retired\n"+
 			"questions: []\n")
+	writeAutomations(t, b, "livt://mapping/held-story/rule/R-01")
 	writeFile(t, filepath.Join(b.MappingsDir, "half-story.yaml"),
 		"rules:\n"+
 			"  - id: R-01\n    name: まだのルール\n"+
@@ -278,10 +279,10 @@ func progressBuilder(t *testing.T) Builder {
 	return b
 }
 
+// livt:automates livt://mapping/show-opportunity-progress/rule/R-02
 // The two gauges are the reading, and neither may count what the board has
 // closed: a retired rule is not spec anyone is waiting on, so counting it would
 // make the opportunity read as less finished than it is.
-// livt://mapping/show-opportunity-progress/rule/R-02
 func TestOpportunityProgressCountsStoriesAndLiveRules(t *testing.T) {
 	b := progressBuilder(t)
 	_, _, tallies, err := b.buildMappings()
@@ -305,9 +306,9 @@ func TestOpportunityProgressCountsStoriesAndLiveRules(t *testing.T) {
 	}
 }
 
+// livt:automates livt://mapping/show-opportunity-progress/rule/R-03
 // A row leads to the mapping once the story has one and to its card until then,
 // because that is where a reader can act on it in either state.
-// livt://mapping/show-opportunity-progress/rule/R-03
 func TestOpportunityProgressRowsLinkToMappingOrStory(t *testing.T) {
 	b := progressBuilder(t)
 	_, _, tallies, err := b.buildMappings()
@@ -345,10 +346,10 @@ func TestOpportunityProgressRowsLinkToMappingOrStory(t *testing.T) {
 	}
 }
 
+// livt:automates livt://mapping/show-opportunity-progress/rule/R-01
 // An opportunity nobody has mapped a journey for has no progress to read, so it
 // gets no page and its own page links to none — the absence is the record, the
 // same way it is for a canvas that was never filled in.
-// livt://mapping/show-opportunity-progress/rule/R-01
 func TestOpportunityWithNoStoryMapGetsNoProgressPage(t *testing.T) {
 	b := progressBuilder(t)
 	if err := os.Remove(filepath.Join(b.USMDir, "demo.yaml")); err != nil {
@@ -366,10 +367,10 @@ func TestOpportunityWithNoStoryMapGetsNoProgressPage(t *testing.T) {
 	}
 }
 
+// livt:automates livt://mapping/show-opportunity-progress/rule/R-01
 // The opportunity's page is the way in and nothing more: what an opportunity is
 // reads the same on every visit, and the reading that changes lives on its own
 // page rather than being previewed beside the statement.
-// livt://mapping/show-opportunity-progress/rule/R-01
 func TestOpportunityPageOnlyLeadsToTheProgress(t *testing.T) {
 	b := progressBuilder(t)
 	if err := b.Build(); err != nil {
@@ -388,9 +389,9 @@ func TestOpportunityPageOnlyLeadsToTheProgress(t *testing.T) {
 	}
 }
 
+// livt:automates livt://mapping/show-opportunity-progress/rule/R-02
 // The breakdown is one row per story the opportunity took on, and every figure
 // on it carries the whole it is part of.
-// livt://mapping/show-opportunity-progress/rule/R-02
 func TestOpportunityProgressPageBreaksDownByStory(t *testing.T) {
 	b := progressBuilder(t)
 	if err := b.Build(); err != nil {
@@ -416,11 +417,11 @@ func TestOpportunityProgressPageBreaksDownByStory(t *testing.T) {
 	}
 }
 
+// livt:automates livt://mapping/show-opportunity-progress/rule/R-02
 // A bare count does not say whether a board is nearly agreed, so every figure on
 // the dashboard is drawn as a share of the whole it belongs to — and every
 // figure gets a meter of its own, because what closes each of them differs and a
 // segment inside another's bar is not a thing anyone can go and do.
-// livt://mapping/show-opportunity-progress/rule/R-02
 func TestOpportunityDashboardMetersCarryTheirWhole(t *testing.T) {
 	b := progressBuilder(t)
 	_, _, tallies, err := b.buildMappings()
@@ -458,11 +459,11 @@ func TestOpportunityDashboardMetersCarryTheirWhole(t *testing.T) {
 	}
 }
 
+// livt:automates livt://mapping/show-opportunity-progress/rule/R-02
 // A proposal can carry a test ahead of its agreement, and then it is both
 // proposed and automated. The un-automated meter counts what the Tasks page
 // lists as waiting for a test — neither — rather than subtracting both counts
 // from the whole, which took such a rule out twice and could go below zero.
-// livt://mapping/show-opportunity-progress/rule/R-02
 func TestOpportunityUnautomatedMeterDoesNotSubtractAProposalTwice(t *testing.T) {
 	b := progressBuilder(t)
 	// half-story: one plain rule, one bare proposal, and one proposal whose
@@ -471,8 +472,11 @@ func TestOpportunityUnautomatedMeterDoesNotSubtractAProposalTwice(t *testing.T) 
 		"rules:\n"+
 			"  - id: R-01\n    name: まだのルール\n"+
 			"  - id: R-02\n    name: 提案中のルール\n    status: proposed\n"+
-			"  - id: R-03\n    name: 先にテストのある提案\n    status: proposed\n    automated: true\n"+
+			"  - id: R-03\n    name: 先にテストのある提案\n    status: proposed\n"+
 			"questions: []\n")
+	writeAutomations(t, b,
+		"livt://mapping/held-story/rule/R-01",
+		"livt://mapping/half-story/rule/R-03")
 	_, _, tallies, err := b.buildMappings()
 	if err != nil {
 		t.Fatal(err)
@@ -500,12 +504,11 @@ func TestOpportunityUnautomatedMeterDoesNotSubtractAProposalTwice(t *testing.T) 
 	}
 }
 
+// livt:automates livt://mapping/show-opportunity-progress/rule/R-01
 // A fraction over a whole does not say which way it is meant to move, so the
-// meters stand in two groups: the stories count under a burn-up heading, since
-// it is done at the whole, and the three counts of what is still open under a
-// burn-down heading, since they are done at zero. Each meter also carries the
-// arrow of its own group, so a card read alone still says which it is.
-// livt://mapping/show-opportunity-progress/rule/R-01
+// meters stand in two groups: stories under a burn-up heading, done at the
+// whole, and what is still open under a burn-down one, done at zero. Each
+// carries its own group's arrow, so a card read alone still says which it is.
 func TestOpportunityDashboardSplitsBurnUpFromBurnDown(t *testing.T) {
 	b := progressBuilder(t)
 	if err := b.Build(); err != nil {
@@ -548,9 +551,9 @@ func TestOpportunityDashboardSplitsBurnUpFromBurnDown(t *testing.T) {
 	}
 }
 
+// livt:automates livt://mapping/show-opportunity-progress/rule/R-04
 // The hub says which opportunity is moving without being opened, carrying the
 // same two figures its page leads with.
-// livt://mapping/show-opportunity-progress/rule/R-04
 func TestOpportunitiesHubCarriesTheSameFigures(t *testing.T) {
 	b := progressBuilder(t)
 	if err := b.Build(); err != nil {

@@ -25,9 +25,9 @@ var everyKind = []string{
 	"livt://opportunity-canvas/demo-map",
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-04/example/EX-02: what the CLI
-// prints is what an MCP resources/read serves. Both go through Resolve, and
-// this drives a real session to hold that to the byte.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-04/example/EX-02
+// What the CLI prints is what an MCP resources/read serves. Both go through
+// Resolve, and this drives a real session to hold that to the byte.
 func TestResolveMatchesTheMCPResourceRead(t *testing.T) {
 	ctx := context.Background()
 	s := newTestServer(t)
@@ -73,8 +73,8 @@ func TestResolveMatchesTheMCPResourceRead(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-04/example/EX-01: every kind the
-// livt repository holds resolves, not just the rules.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-04/example/EX-01
+// Every kind the livt repository holds resolves, not just the rules.
 func TestResolveEveryKind(t *testing.T) {
 	s := newTestServer(t)
 	for _, raw := range everyKind {

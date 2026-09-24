@@ -37,9 +37,10 @@ func TestResolveTermCardUnresolvedRendersPlainCard(t *testing.T) {
 	}
 }
 
-// livt://mapping/scope-terms-by-context/rule/R-02/example/EX-03: a board writes
-// "{ctx}/{term-key}" to reach a term scoped to one context, and the sticky keeps
-// the context so it says which meaning is being reached for.
+// livt:automates livt://mapping/scope-terms-by-context/rule/R-02/example/EX-03
+// A board writes "{ctx}/{term-key}" to reach a term scoped to one context,
+// and the sticky keeps the context so it says which meaning is being reached
+// for.
 func TestResolveTermCardResolvesScopedReference(t *testing.T) {
 	dir := t.TempDir()
 	if err := os.MkdirAll(filepath.Join(dir, "billing"), 0o755); err != nil {

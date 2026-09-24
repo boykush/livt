@@ -47,8 +47,9 @@ func TestParseTermReadsNameAndBody(t *testing.T) {
 	}
 }
 
-// livt://mapping/scope-terms-by-context/rule/R-01/example/EX-01: the directory
-// holding the file is the context, so a term under one reads as scoped to it.
+// livt:automates livt://mapping/scope-terms-by-context/rule/R-01/example/EX-01
+// The directory holding the file is the context, so a term under one reads as
+// scoped to it.
 func TestParseTermTakesContextFromItsDirectory(t *testing.T) {
 	dir := t.TempDir()
 	writeTerm(t, dir, "billing", "invoice", "請求書")
@@ -65,9 +66,10 @@ func TestParseTermTakesContextFromItsDirectory(t *testing.T) {
 	}
 }
 
-// livt://mapping/scope-terms-by-context/rule/R-01/example/EX-03: the same key at
-// the root and under a context are two terms, and the filesystem is what keeps
-// them apart. Resolving one must never hand back the other.
+// livt:automates livt://mapping/scope-terms-by-context/rule/R-01/example/EX-03
+// The same key at the root and under a context are two terms, and the
+// filesystem is what keeps them apart. Resolving one must never hand back the
+// other.
 func TestSameKeyAtRootAndUnderContextAreDistinctTerms(t *testing.T) {
 	dir := t.TempDir()
 	writeTerm(t, dir, "", "invoice", "共通の請求書")

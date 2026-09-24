@@ -1,18 +1,29 @@
 rules:
   - id: R-01
     name: ruleは自動化済みかどうかをautomatedとして持てる
+    status: retired
+    superseded_by:
+      - livt://mapping/derive-automation-status/rule/R-03
+      - livt://mapping/derive-automation-status/rule/R-05
     examples:
       - id: EX-01
         name: Issueの起票・クローズと、ルールが自動化済みかは別で、automatedは後者を記録する
+        retired: true
       - id: EX-02
         name: automatedのないruleは未自動化として扱われる
+        retired: true
       - id: EX-03
         name: 自動化状況の変化はマッピングYAMLのdiffとして履歴に残る
+        retired: true
       - id: EX-04
         name: 表示への反映はshow-automation-status-per-ruleのスコープ
-    automated: true
+        retired: true
   - id: R-02
     name: automatedの更新はAIスキルが証跡付きで提案し、人が判断して確定する
+    status: retired
+    superseded_by:
+      - livt://mapping/collect-automations/rule/R-01
+      - livt://mapping/derive-automation-status/rule/R-05
     examples:
       - id: EX-01
         name: 自動化Issueがクローズされたら、ルールメンテナーがautomatedを立てる
@@ -22,12 +33,16 @@ rules:
           - livt://mapping/record-rule-automation/rule/R-02/example/EX-05
       - id: EX-02
         name: ルールを変更するコミットでは、該当ruleのautomatedを外す（change-ruleの手順に組み込む）
+        retired: true
       - id: EX-03
         name: "クローズ済みIssueを持つ未automatedのルールは、スキルが証跡（クローズしたPR・テスト）を添えてautomated: trueを提案する"
+        retired: true
       - id: EX-04
         name: "automated: true の後に本文が変わったルールは、スキルがマッピングの履歴を根拠にフラグ解除を提案する"
+        retired: true
       - id: EX-05
         name: Issueのクローズは提案のトリガーであって証拠ではなく、automatedを立てるかは人が決める
+        retired: true
 
 ubiquitous:
   - example-mapping
