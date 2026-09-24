@@ -68,9 +68,14 @@
         {{t "label.opportunity-progress"}} &rarr;
       </a>
     {{end}}
+    {{/*
+    Named by kind, as the canvas and the dashboard are: the filename join leaves
+    an opportunity one map at most, and the map's name is often the
+    opportunity's own, which would read as a link back to this page.
+    */}}
     {{range .StoryMaps}}
       <a href="{{.Path}}" class="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 text-sm font-medium px-4 py-2 rounded-lg border border-purple-200 hover:bg-purple-100 transition">
-        {{.Name}} &rarr;
+        {{t "label.story-map"}} &rarr;
       </a>
     {{end}}
     </div>
