@@ -6,6 +6,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/boykush/livt/internal/automation"
 	"github.com/boykush/livt/internal/uri"
 	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
 )
@@ -38,6 +39,14 @@ func TestEndToEnd(t *testing.T) {
 	// uri is not.
 	if got := cs.InitializeResult().Instructions; got == "" || !strings.Contains(got, "uri") {
 		t.Errorf("instructions = %q, want non-empty and naming the uri", got)
+	}
+
+	// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-14/example/EX-05
+	// A claim and a reference are different citations; instructing only the bare
+	// form would send every agent to write claims nothing collects. The marker
+	// comes from the scanner's own constant so the two cannot drift apart.
+	if got := cs.InitializeResult().Instructions; !strings.Contains(got, automation.Marker) {
+		t.Errorf("instructions = %q, want the %q marker", got, automation.Marker)
 	}
 
 	// Discovery: the list tools hand out resource URIs.
