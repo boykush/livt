@@ -68,12 +68,32 @@ rules:
     examples:
       - id: EX-01
         name: list_story_maps で全ストーリーマップの名前とリソースURI（livt://story-map/{map_name}）を取得する
+        retired: true
+        superseded_by:
+          - livt://mapping/automate-from-master-in-impl-repos/rule/R-09/example/EX-05
       - id: EX-02
         name: resources/read livt://story-map/{map_name} でアクティビティ・ユーザータスク・ストーリーカード・リリースを取得する
+        retired: true
+        superseded_by:
+          - livt://mapping/automate-from-master-in-impl-repos/rule/R-09/example/EX-06
       - id: EX-03
         name: マップ名はビルド出力（story-map/{name}.html）と同じ表示名で、URI上はパーセントエンコードして表す
+        retired: true
+        superseded_by:
+          - livt://mapping/automate-from-master-in-impl-repos/rule/R-09/example/EX-07
       - id: EX-04
         name: 存在しないマップ名は not found を返す
+        retired: true
+        superseded_by:
+          - livt://mapping/automate-from-master-in-impl-repos/rule/R-09/example/EX-08
+      - id: EX-05
+        name: list_story_maps で全ストーリーマップのキー・名前とリソースURI（livt://story-map/{opportunity_key}）を取得する
+      - id: EX-06
+        name: resources/read livt://story-map/{opportunity_key} でアクティビティ・ユーザータスク・ストーリーカード・リリースを取得する
+      - id: EX-07
+        name: マップはオポチュニティのキー（ファイル名）で番地付けされ、名前を変えてもURIとビルド出力（story-map/{opportunity_key}.html）は変わらない
+      - id: EX-08
+        name: 存在しないキーは not found を返す
   - id: R-10
     name: 実装リポジトリはストーリー本文をリソースとして取得できる
     examples:
