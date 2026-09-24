@@ -45,6 +45,8 @@ git tag v0.x.y
 git push origin v0.x.y
 ```
 
+The published notes are GoReleaser's changelog, grouped by commit type. Once the release is up, the [`enrich-release-notes`](.apm/skills/enrich-release-notes/SKILL.md) skill writes the part above it for people who use livt — who is affected, what to do, how to upgrade — and publishes it after you approve the draft.
+
 Dry-run the release build locally without publishing:
 
 ```bash
