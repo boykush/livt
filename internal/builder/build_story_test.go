@@ -39,29 +39,37 @@ func TestRenderStoryLinksEachOpportunityByName(t *testing.T) {
 	}
 }
 
-// Each opportunity link says what it leads to beside the name R-02 keeps on it,
-// and wears the opportunity's colour: purple is the story map's, and would read
-// as a way to the board rather than to the opportunity.
+// An opportunity link says what it leads to, in the opportunity's colour: purple
+// is the story map's, and would read as a way to the board. The kind alone does
+// for a story on one map; on several, each link is named too, since the kind
+// would not tell them apart.
 func TestRenderStoryOpportunityLinkSaysItsKind(t *testing.T) {
 	story := &domain.Story{Key: domain.StoryKey{Value: "s"}, Name: "S"}
-	opportunities := []opportunityRef{{Name: "デモ", Path: "../opportunity/demo.html"}}
+	label := i18n.Of(i18n.En).Msg("label.opportunity")
+	demo := opportunityRef{Name: "デモ", Path: "../opportunity/demo.html"}
+	other := opportunityRef{Name: "別件", Path: "../opportunity/other.html"}
 
-	var buf bytes.Buffer
-	if err := renderStory(&buf, i18n.En, story, "", opportunities, nil); err != nil {
-		t.Fatal(err)
-	}
-	html := buf.String()
+	for _, opportunities := range [][]opportunityRef{{demo}, {demo, other}} {
+		var buf bytes.Buffer
+		if err := renderStory(&buf, i18n.En, story, "", opportunities, nil); err != nil {
+			t.Fatal(err)
+		}
+		html := buf.String()
+		named := len(opportunities) > 1
 
-	at := strings.Index(html, `href="../opportunity/demo.html"`)
-	if at < 0 {
-		t.Fatal("expected a Related link to the opportunity")
-	}
-	if tag := html[at : at+strings.Index(html[at:], ">")]; strings.Contains(tag, "purple") || !strings.Contains(tag, "orange") {
-		t.Errorf("the opportunity link wears %q, want the opportunity's orange", tag)
-	}
-	text, _ := linkText(html, "../opportunity/demo.html")
-	if want := i18n.Of(i18n.En).Msg("label.opportunity"); !strings.Contains(text, want) || !strings.Contains(text, "デモ") {
-		t.Errorf("the opportunity link reads %q, want %q beside the name", text, want)
+		for _, o := range opportunities {
+			at := strings.Index(html, `href="`+o.Path+`"`)
+			if at < 0 {
+				t.Fatalf("expected a Related link to %s", o.Path)
+			}
+			if tag := html[at : at+strings.Index(html[at:], ">")]; strings.Contains(tag, "purple") || !strings.Contains(tag, "orange") {
+				t.Errorf("the link to %s wears %q, want the opportunity's orange", o.Path, tag)
+			}
+			text, _ := linkText(html, o.Path)
+			if !strings.Contains(text, label) || strings.Contains(text, o.Name) != named {
+				t.Errorf("with %d opportunities the link to %s reads %q, want %q, named: %v", len(opportunities), o.Path, text, label, named)
+			}
+		}
 	}
 }
 
