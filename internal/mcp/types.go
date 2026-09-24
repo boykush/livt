@@ -23,7 +23,7 @@ type listOpportunitiesOutput struct {
 }
 
 // opportunitySummaryJSON is one row of the opportunity listing. CanvasURI and
-// StoryMaps are what say how far the opportunity has been taken: a canvas means
+// StoryMap are what say how far the opportunity has been taken: a canvas means
 // it was thought through, a story map means it was taken on. Both are omitted
 // when absent, so the gap is legible rather than reported as an empty thing.
 type opportunitySummaryJSON struct {
@@ -34,8 +34,9 @@ type opportunitySummaryJSON struct {
 	CanvasURI string `json:"canvas_uri,omitempty"`
 	// Statement is the opportunity's body: whose problem, and what the business
 	// gets from solving it.
-	Statement string                `json:"statement,omitempty"`
-	StoryMaps []storyMapSummaryJSON `json:"story_maps,omitempty"`
+	Statement string `json:"statement,omitempty"`
+	// StoryMap is the one map drawn for the opportunity, filed under its key.
+	StoryMap *storyMapSummaryJSON `json:"story_map,omitempty"`
 }
 
 // --- list_stories tool ---
@@ -296,7 +297,11 @@ type exampleMappingJSON struct {
 
 type storyMapJSON struct {
 	// OpportunityKey and Name as on storyMapSummaryJSON.
-	OpportunityKey string         `json:"opportunity_key"`
+	OpportunityKey string `json:"opportunity_key"`
+	// OpportunityURI is the opportunity the map is drawn for, present only when
+	// an opportunity file shares the key — as on the canvas. Without one the map
+	// stands in as its own opportunity.
+	OpportunityURI string         `json:"opportunity_uri,omitempty"`
 	Name           string         `json:"name"`
 	Activities     []activityJSON `json:"activities,omitempty"`
 	Releases       []releaseJSON  `json:"releases,omitempty"`
@@ -339,9 +344,10 @@ type opportunityJSON struct {
 	Statement string `json:"statement"`
 	// Meta carries the opportunity's frontmatter fields beyond name, in source order.
 	Meta []metaFieldJSON `json:"meta,omitempty"`
-	// CanvasURI is present only when a canvas has been filled in.
-	CanvasURI string                `json:"canvas_uri,omitempty"`
-	StoryMaps []storyMapSummaryJSON `json:"story_maps,omitempty"`
+	// CanvasURI is present only when a canvas has been filled in, and StoryMap
+	// only when a map has been drawn.
+	CanvasURI string               `json:"canvas_uri,omitempty"`
+	StoryMap  *storyMapSummaryJSON `json:"story_map,omitempty"`
 }
 
 // opportunityCanvasJSON projects the canvas as its ten boxes in the order they
@@ -483,7 +489,7 @@ func (c Config) toStoryMapJSON(sm *domain.StoryMap) storyMapJSON {
 	for _, r := range sm.Releases {
 		releases = append(releases, releaseJSON{ID: r.ID, Name: r.Name})
 	}
-	return storyMapJSON{
+	out := storyMapJSON{
 		OpportunityKey:  sm.OpportunityKey.Value,
 		Name:            sm.DisplayName(),
 		Activities:      activities,
@@ -491,6 +497,10 @@ func (c Config) toStoryMapJSON(sm *domain.StoryMap) storyMapJSON {
 		Ubiquitous:      sm.Ubiquitous,
 		UbiquitousTerms: c.toTermRefs(sm.Ubiquitous),
 	}
+	if c.hasOpportunity(out.OpportunityKey) {
+		out.OpportunityURI = uri.Opportunity(out.OpportunityKey)
+	}
+	return out
 }
 
 // toStoryJSON is a Config method because linking the example mapping and
@@ -515,7 +525,7 @@ func (c Config) toStoryJSON(story *domain.Story) (storyJSON, error) {
 }
 
 // toOpportunityJSON is a Config method because linking the canvas and the story
-// maps mapped for the opportunity reads the livt repository's other directories.
+// map drawn for the opportunity reads the livt repository's other directories.
 func (c Config) toOpportunityJSON(o *domain.Opportunity) (opportunityJSON, error) {
 	meta := make([]metaFieldJSON, 0, len(o.Meta))
 	for _, m := range o.Meta {
@@ -525,11 +535,11 @@ func (c Config) toOpportunityJSON(o *domain.Opportunity) (opportunityJSON, error
 	if c.hasOpportunityCanvas(o.Key.Value) {
 		out.CanvasURI = uri.OpportunityCanvas(o.Key.Value)
 	}
-	maps, err := c.storyMapsForOpportunity(o.Key.Value)
+	sm, err := c.storyMapFor(o.Key.Value)
 	if err != nil {
 		return opportunityJSON{}, err
 	}
-	out.StoryMaps = maps
+	out.StoryMap = sm
 	return out, nil
 }
 

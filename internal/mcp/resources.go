@@ -47,7 +47,7 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "opportunity",
 		Title:       "Opportunity",
-		Description: "One thing the product could take on — a user problem together with the business benefit of solving it — addressed by opportunity key. Carries the statement, the uri of its canvas when one has been filled in, and the story maps mapped for it. Read this to learn why a story map exists before reading what it maps.",
+		Description: "One thing the product could take on — a user problem together with the business benefit of solving it — addressed by opportunity key. Carries the statement, the uri of its canvas when one has been filled in, and its story_map when one has been drawn. Read this to learn why a story map exists before reading what it maps.",
 		MIMEType:    "application/json",
 		URITemplate: uri.OpportunityTemplate,
 	}, s.readOpportunity)
@@ -61,7 +61,7 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "story-map",
 		Title:       "Story map",
-		Description: "The user story map drawn for an opportunity (activities, steps, story cards, releases, ubiquitous terms), addressed by the opportunity's key: an opportunity has one map, filed under its key. opportunity_key is that key; name is the map's own, or the key when it has none.",
+		Description: "The user story map drawn for an opportunity (activities, steps, story cards, releases, ubiquitous terms), addressed by the opportunity's key: an opportunity has one map, filed under its key. opportunity_key is that key, opportunity_uri the opportunity when a file describes it; name is the map's own, or the key when it has none.",
 		MIMEType:    "application/json",
 		URITemplate: uri.StoryMapTemplate,
 	}, s.readStoryMap)

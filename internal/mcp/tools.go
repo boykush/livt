@@ -19,7 +19,7 @@ import (
 func (s *Server) registerTools(srv *mcpsdk.Server) {
 	mcpsdk.AddTool(srv, &mcpsdk.Tool{
 		Name:        "list_opportunities",
-		Description: "List the opportunities — what the product could take on, each a user problem together with the business benefit of solving it. Start here to see why a story map exists at all. Each entry hands out the uri of its opportunity resource (livt://opportunity/{key}), of its canvas (livt://opportunity-canvas/{key}) when one has been filled in, and of the story maps mapped for it. A missing canvas or story map is the record that the opportunity has not been taken that far, not an omission.",
+		Description: "List the opportunities — what the product could take on, each a user problem together with the business benefit of solving it. Start here to see why a story map exists at all. Each entry hands out the uri of its opportunity resource (livt://opportunity/{key}), of its canvas (livt://opportunity-canvas/{key}) when one has been filled in, and its story_map (livt://story-map/{key}) when one has been drawn — an opportunity has one map, filed under its key. A missing canvas or story map is the record that the opportunity has not been taken that far, not an omission.",
 	}, s.listOpportunities)
 	mcpsdk.AddTool(srv, &mcpsdk.Tool{
 		Name:        "list_stories",
@@ -293,30 +293,30 @@ func (c Config) opportunities() ([]opportunitySummaryJSON, error) {
 		if c.hasOpportunityCanvas(o.Key.Value) {
 			summary.CanvasURI = uri.OpportunityCanvas(o.Key.Value)
 		}
-		maps, err := c.storyMapsForOpportunity(o.Key.Value)
+		sm, err := c.storyMapFor(o.Key.Value)
 		if err != nil {
 			return nil, err
 		}
-		summary.StoryMaps = maps
+		summary.StoryMap = sm
 		out = append(out, summary)
 	}
 	return out, nil
 }
 
-// storyMapsForOpportunity names the maps whose file key is this opportunity's —
-// the same filename join the site build uses.
-func (c Config) storyMapsForOpportunity(opportunityKey string) ([]storyMapSummaryJSON, error) {
-	all, err := parser.ParseAllStoryMaps(c.usmDir())
+// storyMapFor names the map filed under this opportunity's key, nil when none
+// has been drawn. A malformed map is an error rather than nil: reading it as
+// absent would misreport the opportunity as never taken on.
+func (c Config) storyMapFor(opportunityKey string) (*storyMapSummaryJSON, error) {
+	path := filepath.Join(c.usmDir(), opportunityKey+".yaml")
+	if _, err := os.Stat(path); err != nil {
+		return nil, nil
+	}
+	sm, err := parser.ParseStoryMap(path)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("parse story map for %q: %w", opportunityKey, err)
 	}
-	var out []storyMapSummaryJSON
-	for _, sm := range all {
-		if sm.OpportunityKey.Value == opportunityKey {
-			out = append(out, toStoryMapSummaryJSON(sm))
-		}
-	}
-	return out, nil
+	summary := toStoryMapSummaryJSON(sm)
+	return &summary, nil
 }
 
 func (c Config) hasOpportunityCanvas(opportunityKey string) bool {
