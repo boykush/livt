@@ -210,6 +210,49 @@ func TestScanReadsACanvasWithNoOpportunityFile(t *testing.T) {
 	}
 }
 
+// filedOutOfIDOrder lists a mapping's rules and examples somewhere other than
+// where their IDs put them, which is what an author does to keep a new example
+// beside the one it speaks to rather than at the end of the rule.
+const filedOutOfIDOrder = `rules:
+  - id: R-02
+    name: second
+    examples:
+      - id: EX-01
+        name: an example of the second
+  - id: R-01
+    name: first
+    examples:
+      - id: EX-01
+        name: an example
+`
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-02/example/EX-06
+// The file's order is where an author put things; the ID is what the item is
+// called. Read off the file, a retirement lands wherever its replacement was
+// inserted, and the pair a review came to read side by side is split.
+func TestCompareOrdersAMappingsChangesByTheirIDs(t *testing.T) {
+	base := mapping(t, "checkout", filedOutOfIDOrder)
+	head := mapping(t, "checkout", strings.NewReplacer(
+		"an example of the second", "a reworded example of the second",
+		`      - id: EX-01
+        name: an example
+`, `      - id: EX-02
+        name: a replacement
+      - id: EX-01
+        name: an example
+        retired: true
+`).Replace(filedOutOfIDOrder))
+
+	want := []string{
+		"livt://mapping/checkout/rule/R-01/example/EX-01",
+		"livt://mapping/checkout/rule/R-01/example/EX-02",
+		"livt://mapping/checkout/rule/R-02/example/EX-01",
+	}
+	if got := uris(Compare(base, head)); !equal(got, want) {
+		t.Errorf("changes = %v, want %v", got, want)
+	}
+}
+
 // livt:automates livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-02
 // EX-03: what changed is a removal beside its replacement, and what did not
 // is still there to read it against.

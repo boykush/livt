@@ -6,7 +6,10 @@
 package diff
 
 import (
+	"cmp"
 	"path/filepath"
+	"slices"
+	"strconv"
 	"strings"
 
 	"github.com/boykush/livt/internal/domain"
@@ -96,7 +99,8 @@ type Entry struct {
 }
 
 // Snapshot is every entry of one revision, in the order the livt repository
-// reads.
+// reads — a mapping's rules, examples, and questions by their IDs, everything
+// else as its directory lists it.
 type Snapshot struct {
 	Entries []Entry
 	byURI   map[string]int
@@ -166,7 +170,7 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 		// Scanned as recorded rather than as the board shows it: a retirement
 		// and an agreement are exactly the changes a reviewer came for, and
 		// Active() is what hides them.
-		for _, r := range em.Rules {
+		for _, r := range byID(em.Rules, func(r domain.Rule) string { return r.ID }) {
 			s.add(Entry{
 				URI:    uri.Rule(key, r.ID),
 				Kind:   uri.KindRule,
@@ -175,7 +179,7 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 				Fields: ruleFields(r),
 				Live:   r.Status.Active(),
 			})
-			for _, ex := range r.Examples {
+			for _, ex := range byID(r.Examples, func(ex domain.Example) string { return ex.ID }) {
 				s.add(Entry{
 					URI:    uri.Example(key, r.ID, ex.ID),
 					Kind:   uri.KindExample,
@@ -188,7 +192,7 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 				})
 			}
 		}
-		for _, q := range em.Questions {
+		for _, q := range byID(em.Questions, func(q domain.Question) string { return q.ID }) {
 			s.add(Entry{
 				URI:    uri.Question(key, q.ID),
 				Kind:   uri.KindQuestion,
@@ -200,6 +204,41 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 		}
 	}
 	return nil
+}
+
+// byID orders a mapping's items the way their IDs read rather than the way the
+// file lists them. The ID is the item's address and never moves; a line is
+// wherever an author put it, and following it scatters a rule's withdrawals
+// among the additions that replaced them — the one pair a review reads side by
+// side. The file's own order is the board's to keep, and the board keeps it.
+func byID[T any](items []T, id func(T) string) []T {
+	ordered := slices.Clone(items)
+	slices.SortStableFunc(ordered, func(a, b T) int { return compareID(id(a), id(b)) })
+	return ordered
+}
+
+// compareID orders two IDs by the number they end in rather than by spelling,
+// so EX-10 follows EX-9 in a livt repository that does not pad to two digits.
+// An ID ending in no number has none to be ordered by, and keeps its spelling.
+func compareID(a, b string) int {
+	if an, bn := idNumber(a), idNumber(b); an != bn {
+		return cmp.Compare(an, bn)
+	}
+	return strings.Compare(a, b)
+}
+
+// idNumber is the number an ID ends in — the NN of R-NN — or -1 for an ID that
+// ends in no digits, which sorts it ahead of every numbered one.
+func idNumber(id string) int {
+	digits := len(id)
+	for digits > 0 && id[digits-1] >= '0' && id[digits-1] <= '9' {
+		digits--
+	}
+	n, err := strconv.Atoi(id[digits:])
+	if err != nil {
+		return -1
+	}
+	return n
 }
 
 // ruleFields always spells the status, so a proposal being agreed reads as the
