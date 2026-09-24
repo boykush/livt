@@ -12,6 +12,42 @@ dependencies:
   package_type: apm_package
   content_hash: sha256:6745a096e1cc71a877b44ad80a430b066a5939c20103dccf83f419ad194b61ed
 deployments:
+- kind: project-relative
+  target: claude
+  value: .claude/skills/enrich-release-notes
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/enrich-release-notes/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:2210836307b0dcdfda0363a3a50f1dc98527bdd2abe96182427c99b0e1b84b24
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/enrich-release-notes
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/enrich-release-notes/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:2210836307b0dcdfda0363a3a50f1dc98527bdd2abe96182427c99b0e1b84b24
 - kind: uri
   target: mcp
   value: adr
@@ -73,3 +109,11 @@ mcp_target_servers:
   - playwright
 mcp_config_provenance:
   adr: adr-remote-mcp
+local_deployed_files:
+- .agents/skills/enrich-release-notes
+- .agents/skills/enrich-release-notes/SKILL.md
+- .claude/skills/enrich-release-notes
+- .claude/skills/enrich-release-notes/SKILL.md
+local_deployed_file_hashes:
+  .agents/skills/enrich-release-notes/SKILL.md: sha256:2210836307b0dcdfda0363a3a50f1dc98527bdd2abe96182427c99b0e1b84b24
+  .claude/skills/enrich-release-notes/SKILL.md: sha256:2210836307b0dcdfda0363a3a50f1dc98527bdd2abe96182427c99b0e1b84b24
