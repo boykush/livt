@@ -1,6 +1,6 @@
 {
   "name": "livt-discovery",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "description": "The discovery ring of a livt repository: record a story-mapping or example-mapping session as text (the board verbatim), formulate the recorded mapping as a structural edit the review reads, write a story's card, and change a rule asynchronously as a proposal — with expert skills for the Opportunity Canvas, User Story Mapping, and BDD Example Mapping",
   "author": {
     "name": "boykush",
