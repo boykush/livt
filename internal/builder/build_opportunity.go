@@ -38,7 +38,7 @@ func (b *Builder) opportunityIndex() (map[string]*domain.Opportunity, error) {
 // standing in as its own opportunity, named by the map — which is what every
 // opportunity chip meant before opportunities became files of their own.
 func mapOpportunity(sm *domain.StoryMap, index map[string]*domain.Opportunity) opportunityRef {
-	if o, ok := index[sm.Key]; ok {
+	if o, ok := index[sm.OpportunityKey.Value]; ok {
 		return opportunityRef{Name: o.DisplayName(), Path: "../" + uri.OpportunityPage(o.Key.Value)}
 	}
 	return opportunityRef{Name: sm.Name, Path: "../" + uri.StoryMapPage(sm.Name)}

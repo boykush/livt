@@ -43,23 +43,24 @@ func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (
 	slices := make(map[string]*releaseSlices)
 	seenByOpportunity := make(map[string]map[string]bool)
 	for _, sm := range maps {
+		key := sm.OpportunityKey.Value
 		ref := mapOpportunity(sm, opportunities)
 		// The map page names its opportunity only when a file backs it; a map
 		// standing in as its own opportunity would just link to itself.
 		var own *opportunityRef
-		if _, ok := opportunities[sm.Key]; ok {
+		if _, ok := opportunities[key]; ok {
 			own = &ref
-			out.MapsByOpportunity[sm.Key] = append(out.MapsByOpportunity[sm.Key],
+			out.MapsByOpportunity[key] = append(out.MapsByOpportunity[key],
 				storyMapRef{Name: sm.Name, Path: "../" + uri.StoryMapPage(sm.Name)})
-			if seenByOpportunity[sm.Key] == nil {
-				seenByOpportunity[sm.Key] = make(map[string]bool)
-				slices[sm.Key] = newReleaseSlices()
+			if seenByOpportunity[key] == nil {
+				seenByOpportunity[key] = make(map[string]bool)
+				slices[key] = newReleaseSlices()
 			}
 			// Declared first and in the map's own order, so the slices read the
 			// way the map draws them rather than the order stories happen to be
 			// hung under the backbone.
 			for i, r := range sm.Releases {
-				slices[sm.Key].declare(r.ID, r.DisplayName(i))
+				slices[key].declare(r.ID, r.DisplayName(i))
 			}
 		}
 
@@ -86,9 +87,9 @@ func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (
 					// Deduped across the opportunity, not the map: two maps for
 					// one opportunity can hold the same story, and it is one
 					// story to the opportunity either way.
-					if own != nil && !seenByOpportunity[sm.Key][sc.Key.Value] {
-						seenByOpportunity[sm.Key][sc.Key.Value] = true
-						slices[sm.Key].add(sc.Release, sc.Key.Value)
+					if own != nil && !seenByOpportunity[key][sc.Key.Value] {
+						seenByOpportunity[key][sc.Key.Value] = true
+						slices[key].add(sc.Release, sc.Key.Value)
 					}
 				}
 			}

@@ -248,9 +248,10 @@ func (c Config) storyOpportunities() (map[string][]opportunityRefJSON, error) {
 	}
 	index := make(map[string][]opportunityRefJSON)
 	for _, sm := range maps {
-		ref := opportunityRefJSON{Key: sm.Key, Name: sm.Name, URI: uri.StoryMap(sm.Name)}
-		if o, ok := described[sm.Key]; ok {
-			ref.Name, ref.URI = o.DisplayName(), uri.Opportunity(sm.Key)
+		key := sm.OpportunityKey.Value
+		ref := opportunityRefJSON{Key: key, Name: sm.Name, URI: uri.StoryMap(sm.Name)}
+		if o, ok := described[key]; ok {
+			ref.Name, ref.URI = o.DisplayName(), uri.Opportunity(key)
 		}
 		seen := make(map[string]bool)
 		for _, a := range sm.Activities {
@@ -312,7 +313,7 @@ func (c Config) storyMapsForOpportunity(opportunityKey string) ([]storyMapSummar
 	}
 	var out []storyMapSummaryJSON
 	for _, sm := range all {
-		if sm.Key == opportunityKey {
+		if sm.OpportunityKey.Value == opportunityKey {
 			out = append(out, storyMapSummaryJSON{Name: sm.Name, URI: uri.StoryMap(sm.Name)})
 		}
 	}
