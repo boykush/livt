@@ -45,7 +45,7 @@ func writeAutomations(t *testing.T, b Builder, uris ...string) {
 
 func TestBuildMappingsIndexRendersPreviewCards(t *testing.T) {
 	b := emptyDirsBuilder(t)
-	if err := b.buildMappingsIndex([]mappingTile{{Key: "checkout", StoryName: "Checkout flow"}}, nil); err != nil {
+	if err := b.buildMappingsIndex([]mappingTile{{Key: "checkout", Name: "Checkout flow"}}, nil); err != nil {
 		t.Fatal(err)
 	}
 
@@ -90,12 +90,12 @@ func TestBuildTasksListsOpenQuestionsAndUnautomatedRules(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	questions := []taskItem{{
 		Kind: "question", ID: "Q-01", Text: "解決した疑問はどう扱うか",
-		StoryKey: "overview-open-questions", StoryName: "未解決の疑問を横断で見渡す",
+		StoryKey: "overview-open-questions", MappingName: "未解決の疑問を横断で見渡す",
 		StoryPath: "story/overview-open-questions.html", MappingPath: "mapping/overview-open-questions.html#question-Q-01",
 	}}
 	rules := []taskItem{{
 		Kind: "rule", ID: "R-01", Text: "未自動化のルールは全実例マッピングを横断して一覧できる",
-		StoryKey: "overview-unautomated-rules", StoryName: "未自動化のルールを横断で見渡す",
+		StoryKey: "overview-unautomated-rules", MappingName: "未自動化のルールを横断で見渡す",
 		StoryPath: "story/overview-unautomated-rules.html", MappingPath: "mapping/overview-unautomated-rules.html#rule-R-01",
 	}}
 	if err := b.buildTasks(taskSet{Questions: questions, UnautomatedRules: rules}, nil); err != nil {
@@ -139,9 +139,9 @@ func TestBuildTasksEmptyStatesReadPerList(t *testing.T) {
 // opportunity, so a filter test exercises every section.
 func oneOfEachTask(opp []opportunityRef) taskSet {
 	return taskSet{
-		Questions:        []taskItem{{Kind: "question", Text: "A question", StoryName: "S", Opportunities: opp}},
-		ProposedRules:    []taskItem{{Kind: "proposed-rule", Text: "A proposal", StoryName: "S", Opportunities: opp}},
-		UnautomatedRules: []taskItem{{Kind: "rule", Text: "A rule", StoryName: "S", Opportunities: opp}},
+		Questions:        []taskItem{{Kind: "question", Text: "A question", MappingName: "S", Opportunities: opp}},
+		ProposedRules:    []taskItem{{Kind: "proposed-rule", Text: "A proposal", MappingName: "S", Opportunities: opp}},
+		UnautomatedRules: []taskItem{{Kind: "rule", Text: "A rule", MappingName: "S", Opportunities: opp}},
 	}
 }
 
@@ -228,7 +228,7 @@ func TestBuildTasksSectionsStayHonestWhenAFilterEmptiesThem(t *testing.T) {
 // An item whose story has no page still names its story; only the link drops.
 func TestBuildTasksItemWithoutStoryPageStillNamesItsStory(t *testing.T) {
 	b := emptyDirsBuilder(t)
-	questions := []taskItem{{Kind: "question", Text: "A question", StoryName: "orphan-story"}}
+	questions := []taskItem{{Kind: "question", Text: "A question", MappingName: "orphan-story"}}
 	if err := b.buildTasks(taskSet{Questions: questions}, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -439,8 +439,8 @@ func TestBuildStoriesIndexFilterIsClientSideAndSyncsURL(t *testing.T) {
 func TestBuildMappingsIndexShowsOpportunityChipsAndFilter(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	tiles := []mappingTile{{
-		Key:       "filter-lists-by-opportunity",
-		StoryName: "Filter lists by opportunity",
+		Key:  "filter-lists-by-opportunity",
+		Name: "Filter lists by opportunity",
 		Opportunities: []opportunityRef{
 			{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"},
 		},
@@ -464,7 +464,7 @@ func TestBuildMappingsIndexShowsOpportunityChipsAndFilter(t *testing.T) {
 // A mapping tile on no map has an empty filter set, matching no opportunity axis.
 func TestBuildMappingsIndexTileOnNoMapHasEmptyFilterData(t *testing.T) {
 	b := emptyDirsBuilder(t)
-	tiles := []mappingTile{{Key: "orphan", StoryName: "Orphan"}}
+	tiles := []mappingTile{{Key: "orphan", Name: "Orphan"}}
 	if err := b.buildMappingsIndex(tiles, nil); err != nil {
 		t.Fatal(err)
 	}
@@ -481,7 +481,7 @@ func TestBuildTasksListsProposedRulesApart(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	proposed := []taskItem{{
 		Kind: "proposed-rule", ID: "R-02", Text: "提案中のルール",
-		StoryKey: "checkout", StoryName: "Checkout", MappingPath: "mapping/checkout.html#rule-R-02",
+		StoryKey: "checkout", MappingName: "Checkout", MappingPath: "mapping/checkout.html#rule-R-02",
 	}}
 	if err := b.buildTasks(taskSet{ProposedRules: proposed}, nil); err != nil {
 		t.Fatal(err)

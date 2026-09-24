@@ -11,6 +11,7 @@ import (
 )
 
 type exampleMappingYAML struct {
+	Name       string         `yaml:"name"`
 	Rules      []ruleYAML     `yaml:"rules"`
 	Questions  []questionYAML `yaml:"questions"`
 	Ubiquitous []string       `yaml:"ubiquitous"`
@@ -93,6 +94,7 @@ func ParseExampleMapping(path string) (*domain.ExampleMapping, error) {
 
 	return &domain.ExampleMapping{
 		StoryKey:   storyKey,
+		Name:       raw.Name,
 		Rules:      rules,
 		Questions:  questions,
 		Ubiquitous: raw.Ubiquitous,

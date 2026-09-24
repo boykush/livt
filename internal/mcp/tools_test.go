@@ -513,3 +513,52 @@ func TestServerRegistersToolsWithoutPanic(t *testing.T) {
 		t.Fatal("mcpServer returned nil")
 	}
 }
+
+// livt:automates livt://mapping/name-example-mapping-itself/rule/R-06
+// livt:automates livt://mapping/name-example-mapping-itself/rule/R-06/example/EX-01
+// livt:automates livt://mapping/name-example-mapping-itself/rule/R-06/example/EX-02
+// A mapping with no story is listed beside the rest with its own name, while a
+// story's name stays where it lives, behind story_uri.
+func TestListExampleMappingsReachesAMappingWithoutAStory(t *testing.T) {
+	s := newTestServer(t)
+	writeFile(t, filepath.Join(s.cfg.Root, "discoveries", "example-mappings", "fix-login-with-full-width-space.yaml"),
+		"name: 全角スペースでログインできない\nrules: []\n")
+
+	_, out, err := s.listExampleMappings(context.Background(), nil, listExampleMappingsInput{})
+	if err != nil {
+		t.Fatalf("listExampleMappings: %v", err)
+	}
+	byKey := make(map[string]exampleMappingSummaryJSON, len(out.ExampleMappings))
+	for _, m := range out.ExampleMappings {
+		byKey[m.StoryKey] = m
+	}
+
+	fix := byKey["fix-login-with-full-width-space"]
+	if fix.URI != "livt://mapping/fix-login-with-full-width-space" || fix.Name != "全角スペースでログインできない" || fix.StoryURI != "" {
+		t.Errorf("story-less mapping = %+v, want its uri and own name and no story_uri", fix)
+	}
+	demo := byKey["demo"]
+	if demo.URI != "livt://mapping/demo" || demo.StoryURI != "livt://story/demo" || demo.Name != "" {
+		t.Errorf("story-backed mapping = %+v, want its uri and story_uri and no name of its own", demo)
+	}
+}
+
+// livt:automates livt://mapping/name-example-mapping-itself/rule/R-06/example/EX-03
+// Narrowed to an opportunity, the list keeps the mappings on that map, and one
+// with no story sits on none.
+func TestListExampleMappingsFiltersByOpportunity(t *testing.T) {
+	s := newTestServer(t)
+	writeFile(t, filepath.Join(s.cfg.Root, "discoveries", "example-mappings", "fix-login-with-full-width-space.yaml"),
+		"name: 全角スペースでログインできない\nrules: []\n")
+
+	_, out, err := s.listExampleMappings(context.Background(), nil, listExampleMappingsInput{Opportunity: "デモマップ"})
+	if err != nil {
+		t.Fatalf("listExampleMappings: %v", err)
+	}
+	if len(out.ExampleMappings) != 1 || out.ExampleMappings[0].StoryKey != "demo" {
+		t.Fatalf("mappings = %+v, want only demo (the one mapping on デモマップ)", out.ExampleMappings)
+	}
+	if got := out.ExampleMappings[0].Opportunities; len(got) != 1 || got[0] != demoMapRef {
+		t.Errorf("demo opportunities = %+v, want [%+v]", got, demoMapRef)
+	}
+}

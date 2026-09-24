@@ -275,7 +275,7 @@ func TestCollectTasksSplitsQuestionsFromUnautomatedRules(t *testing.T) {
 		t.Fatalf("un-automated rules = %+v, want only the unproven rule", out.UnautomatedRules)
 	}
 	for _, item := range append(out.Questions, out.UnautomatedRules...) {
-		if item.StoryName != "疑問を見渡す" {
+		if item.MappingName != "疑問を見渡す" {
 			t.Errorf("item %q lost the story it came from "+
 				"(livt://mapping/overview-open-questions/rule/R-02/example/EX-01 and its mirror)", item.Text)
 		}
@@ -663,5 +663,103 @@ func TestRenderMappingHeadsTheListsSections(t *testing.T) {
 		if !strings.Contains(html, want) {
 			t.Errorf("expected a section head %q", want)
 		}
+	}
+}
+
+// storySticky is the board's yellow sticky from its opening tag through the
+// name it shows — the one place a board names itself besides its title.
+func storySticky(t *testing.T, html string) string {
+	t.Helper()
+	i := strings.Index(html, "bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow font-bold")
+	if i < 0 {
+		t.Fatal("board has no yellow sticky")
+	}
+	start := strings.LastIndex(html[:i], "<")
+	end := i + strings.Index(html[i:], "</")
+	return html[start:end]
+}
+
+// livt:automates livt://mapping/name-example-mapping-itself/rule/R-01/example/EX-02
+// livt:automates livt://mapping/name-example-mapping-itself/rule/R-02/example/EX-01
+// A board is called by its own name, then by its story's, then by its key.
+func TestBuildNamesABoardByItsOwnNameThenItsStorysThenItsKey(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	writeFile(t, filepath.Join(b.MappingsDir, "named.yaml"), "name: 自分の名前\nrules: []\n")
+	writeFile(t, filepath.Join(b.MappingsDir, "both.yaml"), "name: 自分の名前\nrules: []\n")
+	writeFile(t, filepath.Join(b.StoriesDir, "both.md"), "---\nname: ストーリーの名前\n---\n")
+	writeFile(t, filepath.Join(b.MappingsDir, "storied.yaml"), "rules: []\n")
+	writeFile(t, filepath.Join(b.StoriesDir, "storied.md"), "---\nname: ストーリーの名前\n---\n")
+	writeFile(t, filepath.Join(b.MappingsDir, "bare.yaml"), "rules: []\n")
+
+	if err := b.Build(); err != nil {
+		t.Fatal(err)
+	}
+
+	for key, want := range map[string]string{
+		"named":   "自分の名前",
+		"both":    "自分の名前",
+		"storied": "ストーリーの名前",
+		"bare":    "bare",
+	} {
+		html := readRendered(t, filepath.Join(b.OutDir, "mapping", key+".html"))
+		if !strings.Contains(html, "<title>"+want+" - livt</title>") {
+			t.Errorf("mapping %s is not titled %q", key, want)
+		}
+		if sticky := storySticky(t, html); !strings.Contains(sticky, want) {
+			t.Errorf("mapping %s: yellow sticky %q does not read %q", key, sticky, want)
+		}
+	}
+}
+
+// livt:automates livt://mapping/name-example-mapping-itself/rule/R-01/example/EX-01
+// With no story to lean on, the name is what every surface naming the board
+// shows: its sticky, its tile, and the chip its unfinished items wear.
+func TestBuildCallsAStorylessMappingByItsNameEverywhere(t *testing.T) {
+	const name = "全角スペースでログインできない"
+	b := emptyDirsBuilder(t)
+	writeFile(t, filepath.Join(b.MappingsDir, "fix-login.yaml"),
+		"name: "+name+"\n"+
+			"rules:\n"+
+			"  - id: R-01\n"+
+			"    name: パスワードの前後の空白は取り除かない\n")
+
+	if err := b.Build(); err != nil {
+		t.Fatal(err)
+	}
+
+	board := readRendered(t, filepath.Join(b.OutDir, "mapping", "fix-login.html"))
+	if sticky := storySticky(t, board); !strings.HasPrefix(sticky, "<div") || !strings.Contains(sticky, name) {
+		t.Errorf("yellow sticky = %q, want an unlinked sticky reading %q", sticky, name)
+	}
+	if index := readRendered(t, filepath.Join(b.OutDir, "index.html")); !strings.Contains(index, `aria-label="`+name+`"`) {
+		t.Errorf("the overview tile is not named %q", name)
+	}
+	tasks := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
+	if !strings.Contains(tasks, ">"+name+"</span>") || strings.Contains(tasks, ">fix-login<") {
+		t.Errorf("the Tasks chip does not name the board %q", name)
+	}
+}
+
+// livt:automates livt://mapping/name-example-mapping-itself/rule/R-02
+// livt:automates livt://mapping/name-example-mapping-itself/rule/R-02/example/EX-02
+// livt:automates livt://mapping/name-example-mapping-itself/rule/R-02/example/EX-03
+// The two names are read independently: the board keeps its own, the story
+// page keeps the story's, and the sticky still leads from one to the other.
+func TestBuildKeepsAMappingsNameApartFromItsStorys(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	writeFile(t, filepath.Join(b.MappingsDir, "checkout.yaml"), "name: 決済の境界\nrules: []\n")
+	writeFile(t, filepath.Join(b.StoriesDir, "checkout.md"), "---\nname: 決済する\n---\n")
+
+	if err := b.Build(); err != nil {
+		t.Fatal(err)
+	}
+
+	sticky := storySticky(t, readRendered(t, filepath.Join(b.OutDir, "mapping", "checkout.html")))
+	if !strings.HasPrefix(sticky, `<a href="../story/checkout.html"`) || !strings.Contains(sticky, "決済の境界") {
+		t.Errorf("yellow sticky = %q, want the board's own name linking to the story page", sticky)
+	}
+	story := readRendered(t, filepath.Join(b.OutDir, "story", "checkout.html"))
+	if !strings.Contains(story, "<title>決済する - livt</title>") || strings.Contains(story, "決済の境界") {
+		t.Error("the story page should keep the story's own name")
 	}
 }

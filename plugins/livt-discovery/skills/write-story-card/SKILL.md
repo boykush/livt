@@ -1,6 +1,6 @@
 ---
 name: write-story-card
-description: Write a story's card — create stories/{story-key}.md for a story candidate on a User Story Map and stamp the key back onto that candidate — so the story can go into its own conversation, an Example Mapping. Use when the team picks a candidate for detailed discovery, or conceives a story that sits on no map; it registers the card and changes no meaning. Rules and examples route to record-example-mapping.
+description: Write a story's card — create stories/{story-key}.md for a story candidate on a User Story Map and stamp the key back onto that candidate — so the story can go into its own conversation, an Example Mapping. Use when the team picks a candidate for detailed discovery, conceives a story that sits on no map, or gives a card to a story that so far lived only as a named example mapping; it registers the card and changes no meaning. Rules and examples route to record-example-mapping.
 ---
 
 You **write a story's card** — the card station of the discovery ring.
@@ -27,8 +27,9 @@ You do **not** change agreed meaning. Reframing a story or restructuring the map
    - the candidate appears **exactly once** in the map (refuse if it is not unique),
    - the candidate has **no `key:` yet** (refuse if it already has a card),
    - `stories/{key}.md` **does not already exist** — that filesystem path is what guarantees key uniqueness.
+   - if `discoveries/example-mappings/{key}.yaml` **already exists**, the filename joins it to the card you are about to write. Confirm with the user that the card is for the story that mapping was about, and read its `name:` — the Name Contract below applies.
 4. Create `stories/{key}.md`:
-   - frontmatter `name:` = the candidate's name, verbatim from the map.
+   - frontmatter `name:` = the candidate's name, verbatim from the map — unless the key's mapping already carries a `name:` that reads differently, which the Name Contract settles.
    - optionally a story body in **As a / I want / So that** form (persona / goal / benefit) — include all three together or none. Write the body in the **map's language**; the key stays English.
 5. Write the same `key:` back onto the matching candidate in `discoveries/usm/{map-name}.yaml`. Touch only that one candidate — preserve the order, structure, indentation, and wording of everything else in the file.
 6. Read both files back: `stories/{key}.md` exists with the right frontmatter, and the candidate now carries `key: {key}`.
@@ -40,7 +41,7 @@ You write the card's `name:` and, when asked, its As a / I want / So that body. 
 
 ## Standalone Stories
 
-When a story is conceived directly — with no candidate on a map — create `stories/{key}.md` from a name given by the user, following the same key and body rules, and skip the map write-back. This is the secondary path; a card written from a map is the norm.
+When a story is conceived directly — with no candidate on a map — create `stories/{key}.md` from a name given by the user, following the same key and body rules, and skip the map write-back. This is the secondary path; a card written from a map is the norm. A story that so far lived only as a named example mapping takes that mapping's key and, unless the user says otherwise, its `name:`.
 
 ## Key Contract
 
@@ -48,6 +49,14 @@ When a story is conceived directly — with no candidate on a map — create `st
 - Keys have **at least four words**, counted between the hyphens. Every story shares one flat namespace that only grows — a key is never renamed and never reused — so over the years it is the short keys that collide: `search-site` fits every story about searching the site, the first to get a card takes it, and it goes on claiming the whole topic after the others arrive. Four words name the action, what it acts on, and what sets this story apart from the next one on the same topic, as `search-site-by-text` does. Reach four with words that narrow the story — filler like `the` or `feature` leaves the key as broad as before.
 - Uniqueness is enforced by the filesystem: two stories cannot share `stories/{key}.md`. Never reuse a key.
 - Once the card is written, the key is **owned** by `stories/{key}.md`. The four-word minimum governs keys being minted: a key already on file keeps its words, however few, since renaming it would break every livt URI that cites it.
+
+## Name Contract
+
+This is the canonical statement. `record-example-mapping` repeats these bullets verbatim — a skill loads on its own, so every skill that writes a story's or a mapping's `name:` has to carry them. Change one, change both.
+
+- **A story is named where it is written down.** A card names its story in `stories/{key}.md`. A story that never got a card — a bug fix taken straight to its rules and a failing example — is named by `name:` at the top of its example mapping instead, and livt shows that name wherever the board is named.
+- **Two names, one string.** When a key has a card *and* its mapping carries `name:`, the two are the same string. livt reads them independently and never compares them, so nothing but a skill keeps them together: a skill that writes either one reads the other first.
+- **A difference is the team's call.** When the two would read differently, ask the user which wording stands and write it to both, in the same commit.
 
 ## Commit Contract
 
@@ -60,11 +69,11 @@ Canonical statement in `change-rule`; these bullets are verbatim from it. Writin
 
 For you, that unit is the card:
 
-- The commit pairs the new `stories/{key}.md` with the one-line `key:` addition to the map. The message names the key, e.g. `Write story card {key}`.
+- The commit pairs the new `stories/{key}.md` with the one-line `key:` addition to the map — and, when the Name Contract changed the key's mapping, its one-line `name:` change. The message names the key, e.g. `Write story card {key}`.
 
 ## What NOT to Do
 
 - Don't reword, restructure, re-file, or reformat anything in the map beyond adding the one `key:`.
 - Don't re-key a candidate that already has one, and don't overwrite an existing `stories/{key}.md`.
-- Don't reframe the story or rewrite its name — take the candidate as agreed. Reframing is the record's edit commit, on the map.
+- Don't reframe the story or rewrite its name — take the candidate as agreed. Reframing is the record's edit commit, on the map. The one other wording a card can take is the one the user settles on under the Name Contract.
 - Don't add Example Mapping content (rules, examples, questions) — that is `record-example-mapping`'s job, after the conversation.

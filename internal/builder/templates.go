@@ -298,7 +298,7 @@ type Sidebar struct {
 
 type mappingTile struct {
 	Key           string
-	StoryName     string
+	Name          string
 	Opportunities []opportunityRef
 }
 
@@ -454,11 +454,13 @@ type storiesIndexView struct {
 // "proposed-rule" or "rule") picks the sticky colour it wears on its board;
 // MappingPath deep-links to that sticky, and StoryPath is empty with no page.
 type taskItem struct {
-	Kind          string
-	ID            string
-	Text          string
-	StoryKey      string
-	StoryName     string
+	Kind     string
+	ID       string
+	Text     string
+	StoryKey string
+	// MappingName is what the board's yellow sticky reads, so the chip and the
+	// sticky it stands for cannot name the same board two ways.
+	MappingName   string
 	StoryPath     string
 	MappingPath   string
 	Opportunities []opportunityRef
@@ -569,7 +571,9 @@ type termCard struct {
 }
 
 type mappingView struct {
-	StoryName  string
+	// Name is the board's, which its yellow sticky reads; StoryPath still leads
+	// to the story when there is one, however differently the two are named.
+	Name       string
 	StoryPath  string
 	Mapping    *domain.ExampleMapping
 	Ubiquitous []termCard
@@ -629,9 +633,9 @@ func renderStory(w io.Writer, lang i18n.Lang, story *domain.Story, mappingPath s
 // renderMapping draws the board from the mapping's active view: a retired
 // sticky is off the wall, whichever kind it is, so the board shows what the
 // spec asks for today.
-func renderMapping(w io.Writer, lang i18n.Lang, bd board, storyName, storyPath string, ubiquitous []termCard, diff *diffMarkView, marks map[string]*diffMarkView) error {
+func renderMapping(w io.Writer, lang i18n.Lang, bd board, name, storyPath string, ubiquitous []termCard, diff *diffMarkView, marks map[string]*diffMarkView) error {
 	return templates(lang).ExecuteTemplate(w, "mapping.html", mappingView{
-		StoryName: storyName, StoryPath: storyPath, Mapping: bd.Mapping,
+		Name: name, StoryPath: storyPath, Mapping: bd.Mapping,
 		Ubiquitous: ubiquitous, Diff: diff, Ghosts: bd.Ghosts, DiffMarks: marks,
 	})
 }

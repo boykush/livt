@@ -68,6 +68,33 @@ type storySummaryJSON struct {
 	Opportunities []opportunityRefJSON `json:"opportunities,omitempty"`
 }
 
+// --- list_example_mappings tool ---
+
+type listExampleMappingsInput struct {
+	// Opportunity narrows the list as it does list_stories. A mapping sits on the
+	// maps its key is carried on, so one with no story sits on none.
+	Opportunity string `json:"opportunity,omitempty" jsonschema:"Keep only mappings on this opportunity, matched exactly against a story map display name (one story map is one opportunity). A mapping whose key sits on no map, as one with no story usually does, matches none. Unknown names yield an empty list; omit to list every mapping."`
+}
+
+type listExampleMappingsOutput struct {
+	versioned
+	ExampleMappings []exampleMappingSummaryJSON `json:"example_mappings"`
+}
+
+// exampleMappingSummaryJSON is one row of the mapping listing. A name lives in
+// one place, so the row carries the mapping's own and points at the story's
+// through StoryURI rather than copying it in.
+type exampleMappingSummaryJSON struct {
+	StoryKey string `json:"story_key"`
+	Name     string `json:"name,omitempty"`
+	// URI is the mapping's own resource (livt://mapping/{key}).
+	URI string `json:"uri"`
+	// StoryURI is present only when a story file exists for the key.
+	StoryURI string `json:"story_uri,omitempty"`
+	// Opportunities as on storySummaryJSON: the story maps the key sits on.
+	Opportunities []opportunityRefJSON `json:"opportunities,omitempty"`
+}
+
 // --- list_story_maps tool ---
 
 type listStoryMapsInput struct{}
@@ -248,7 +275,11 @@ type questionJSON struct {
 }
 
 type exampleMappingJSON struct {
-	StoryKey  string         `json:"story_key"`
+	StoryKey string `json:"story_key"`
+	// Name is the mapping's own, and the only name a mapping with no story has.
+	// Omitted when it has none: the story's name is read from livt://story/{key},
+	// never copied in here.
+	Name      string         `json:"name,omitempty"`
 	Rules     []ruleJSON     `json:"rules,omitempty"`
 	Questions []questionJSON `json:"questions,omitempty"`
 	// Ubiquitous keeps the raw term keys as authored in the mapping;
@@ -405,6 +436,7 @@ func (c Config) toExampleMappingJSON(em *domain.ExampleMapping) exampleMappingJS
 	}
 	return exampleMappingJSON{
 		StoryKey:        em.StoryKey.Value,
+		Name:            em.Name,
 		Rules:           rules,
 		Questions:       questions,
 		Ubiquitous:      em.Ubiquitous,

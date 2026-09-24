@@ -45,7 +45,7 @@ func TestEndToEnd(t *testing.T) {
 	if err != nil {
 		t.Fatalf("list tools: %v", err)
 	}
-	want := []string{"list_opportunities", "list_stories", "list_story_maps", "list_terms"}
+	want := []string{"list_opportunities", "list_stories", "list_example_mappings", "list_story_maps", "list_terms"}
 	names := toolNames(tools.Tools)
 	if len(names) != len(want) {
 		t.Fatalf("tools = %v, want %v", names, want)

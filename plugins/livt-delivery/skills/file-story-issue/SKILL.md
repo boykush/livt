@@ -36,7 +36,7 @@ This skill ships no tracker knowledge on purpose: one team's answer shipped as e
 
 ## Inputs
 
-- **story-key** (required).
+- **story-key** (required). A mapping whose story has no card has no story to file; its rules go out on their own through `file-rule-issues`.
 - **Destination** — the tracker of the story's `repos:` by default; with several declared, or a tracker the user names, confirm which one(s). Ask if `repos:` is missing and no destination was given. The livt repository itself is a valid destination; nothing in the flow assumes the destination is a different repository.
 
 ## Filing Flow

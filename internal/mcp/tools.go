@@ -26,6 +26,10 @@ func (s *Server) registerTools(srv *mcpsdk.Server) {
 		Description: "List all stories. Each entry hands out the uris to read next: its story resource (livt://story/{key}), its example mapping resource (livt://mapping/{key}) when one exists, and the opportunities (story maps, livt://story-map/{map_name}) it sits on. Pass opportunity to list only the stories on that map.",
 	}, s.listStories)
 	mcpsdk.AddTool(srv, &mcpsdk.Tool{
+		Name:        "list_example_mappings",
+		Description: "List every example mapping, including one whose story has no card, which list_stories cannot reach. Each entry hands out the uri of its mapping resource (livt://mapping/{key}), its own name when it has one, story_uri (livt://story/{key}) when a story file exists — read that story for the name of a mapping with none of its own — and the opportunities (story maps) its key sits on. Pass opportunity to list only the mappings on that map.",
+	}, s.listExampleMappings)
+	mcpsdk.AddTool(srv, &mcpsdk.Tool{
 		Name:        "list_story_maps",
 		Description: "List all story maps. Each entry hands out the uri of its story map resource (livt://story-map/{map_name}).",
 	}, s.listStoryMaps)
@@ -49,6 +53,14 @@ func (s *Server) listStories(_ context.Context, _ *mcpsdk.CallToolRequest, in li
 		return nil, listStoriesOutput{}, err
 	}
 	return nil, listStoriesOutput{versioned: s.versioned(), Stories: stories}, nil
+}
+
+func (s *Server) listExampleMappings(_ context.Context, _ *mcpsdk.CallToolRequest, in listExampleMappingsInput) (*mcpsdk.CallToolResult, listExampleMappingsOutput, error) {
+	mappings, err := s.cfg.exampleMappings(in.Opportunity)
+	if err != nil {
+		return nil, listExampleMappingsOutput{}, err
+	}
+	return nil, listExampleMappingsOutput{versioned: s.versioned(), ExampleMappings: mappings}, nil
 }
 
 func (s *Server) listStoryMaps(_ context.Context, _ *mcpsdk.CallToolRequest, _ listStoryMapsInput) (*mcpsdk.CallToolResult, listStoryMapsOutput, error) {
@@ -172,6 +184,34 @@ func (c Config) stories(opportunity string) ([]storySummaryJSON, error) {
 		summary := storySummaryJSON{Key: story.Key.Value, Name: story.Name, URI: uri.Story(story.Key.Value), Opportunities: refs}
 		if c.hasExampleMapping(story.Key.Value) {
 			summary.ExampleMappingURI = uri.Mapping(story.Key.Value)
+		}
+		out = append(out, summary)
+	}
+	return out, nil
+}
+
+// exampleMappings lists every mapping file, story or not — the one read that
+// reaches a mapping with no story — filtered by opportunity the way stories
+// are. A missing mappings directory yields an empty list, not an error.
+func (c Config) exampleMappings(opportunity string) ([]exampleMappingSummaryJSON, error) {
+	all, err := parser.ParseAllExampleMappings(c.mappingsDir())
+	if err != nil {
+		return nil, err
+	}
+	index, err := c.storyOpportunities()
+	if err != nil {
+		return nil, err
+	}
+	out := make([]exampleMappingSummaryJSON, 0, len(all))
+	for _, em := range all {
+		key := em.StoryKey.Value
+		refs := index[key]
+		if opportunity != "" && !hasOpportunity(refs, opportunity) {
+			continue
+		}
+		summary := exampleMappingSummaryJSON{StoryKey: key, Name: em.Name, URI: uri.Mapping(key), Opportunities: refs}
+		if c.hasStory(key) {
+			summary.StoryURI = uri.Story(key)
 		}
 		out = append(out, summary)
 	}

@@ -27,7 +27,7 @@ Check this before you touch anything: the mapping's last change is in a commit, 
 
 If the record is still sitting uncommitted, stop and say so. Committing it is `record-example-mapping`'s last step, and folding your edit into it destroys the one thing this station exists to produce: a pre-polished baseline hides the edit, and the review can no longer see what moved.
 
-Then read, in this order: `stories/{story-key}.md` for the story's scope and key, and the mapping as it stands — as it is, not as you would have recorded it.
+Then read, in this order: `stories/{story-key}.md` for the story's scope and key — or, for a story with no card, the mapping's own `name:` — and the mapping as it stands — as it is, not as you would have recorded it.
 
 ## The Edit
 
@@ -48,7 +48,7 @@ Then read, in this order: `stories/{story-key}.md` for the story's scope and key
 - Don't resolve or delete open Questions.
 - Don't check the mapping against the implementation or design — no discovery skill reads code.
 - Don't write Gherkin — example mapping stays low-tech, and the Gherkin livt derives from the mapping is Automation's output, not yours.
-- Don't change the `story` key.
+- Don't change the mapping's key or its `name:`. The name is the story's, not a rule's, so sharpening it is no part of formulation — and where the story also has a card, the two have to stay the same string.
 - Don't retire rules or questions. The regrouped example is the only retirement in your remit; retiring a rule takes an agreed business decision, which is `change-rule`'s.
 - Don't change a rule's `status:`. Accepting or turning down a proposal is a business decision too, and `change-rule`'s.
 - Don't touch `ubiquitous:`. The pink stickies are the room's and the record is their path off the board; sharpening a rule's wording is not a licence to name a term nobody agreed. Tell the user what the wording seems to want instead.

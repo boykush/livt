@@ -360,3 +360,28 @@ func TestRetiredWithoutSuccessorOmitsSupersededBy(t *testing.T) {
 		t.Errorf("payload mentions superseded_by with no successor: %s", body)
 	}
 }
+
+// livt:automates livt://mapping/name-example-mapping-itself/rule/R-04
+// livt:automates livt://mapping/name-example-mapping-itself/rule/R-04/example/EX-01
+// livt:automates livt://mapping/name-example-mapping-itself/rule/R-04/example/EX-02
+// A mapping's own name travels with it; a nameless one carries none at all,
+// neither an empty one nor its story's.
+func TestMappingCarriesOnlyItsOwnName(t *testing.T) {
+	root := t.TempDir()
+	mappings := filepath.Join(root, "discoveries", "example-mappings")
+	writeFile(t, filepath.Join(mappings, "fix-login.yaml"), "name: 全角スペースでログインできない\nrules: []\n")
+	writeFile(t, filepath.Join(mappings, "checkout.yaml"), "rules: []\n")
+	writeFile(t, filepath.Join(root, "stories", "checkout.md"), "---\nname: 決済する\n---\n")
+	s := NewServer(Config{Root: root}, "test")
+
+	named := readResource[exampleMappingResult](t, s.readMapping, uri.Mapping("fix-login")).Mapping
+	if named.Name != "全角スペースでログインできない" {
+		t.Errorf("name = %q, want the mapping's own", named.Name)
+	}
+	nameless := readResource[struct {
+		Mapping map[string]any `json:"mapping"`
+	}](t, s.readMapping, uri.Mapping("checkout")).Mapping
+	if got, ok := nameless["name"]; ok {
+		t.Errorf("a nameless mapping carries name %v, want none", got)
+	}
+}

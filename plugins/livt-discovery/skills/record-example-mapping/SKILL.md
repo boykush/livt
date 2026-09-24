@@ -1,6 +1,6 @@
 ---
 name: record-example-mapping
-description: Record an Example Mapping session into discoveries/example-mappings/{story-key}.yaml — the board's rules, examples, and questions committed verbatim as the baseline every later diff is read against. Use after a session on a story's board, or when that board was reworked; it never changes what the room agreed, and never tidies what it wrote — sharpening the mapping is formulate-example-mapping's commit, laid over yours. A rule proposed, changed, or added outside a session routes to change-rule; this skill never reads the implementation.
+description: Record an Example Mapping session into discoveries/example-mappings/{story-key}.yaml — the board's rules, examples, and questions committed verbatim as the baseline every later diff is read against. Use after a session on a story's board, whether or not the story has a card, or when that board was reworked; it never changes what the room agreed, and never tidies what it wrote — sharpening the mapping is formulate-example-mapping's commit, laid over yours. A rule proposed, changed, or added outside a session routes to change-rule; this skill never reads the implementation.
 ---
 
 You **record** an example mapping — the record station of the discovery ring, at the story level.
@@ -19,16 +19,16 @@ Making the mapping read well — rule clarity, example naming, grouping, questio
 
 ## Where You Sit
 
-- Before you: `write-story-card` wrote `stories/{story-key}.md`, and the team held the session on that story's board.
-- You: record the board against the card's key.
+- Before you: `write-story-card` wrote `stories/{story-key}.md`, and the team held the session on that story's board. A story taken straight to its rules and examples — a bug fix whose behaviour is already clear — may have no card at all; its board is then named by the mapping itself (see Name Contract).
+- You: record the board against the card's key, or against a key agreed with the user when there is no card.
 - After you: `formulate-example-mapping` lays the structural edit over your baseline, and the agreed mapping is handed outward from there by `file-story-issue` and `file-rule-issues` — the start of the delivery ring. A rule that changes later, or is proposed without a session, is `change-rule`'s.
 
 ## Recording the Baseline
 
-1. Read the story from `stories/{story-key}.md` to get the scope and key.
+1. Read the story from `stories/{story-key}.md` to get the scope and key. With no card, the board's yellow sticky is the scope, and the key is agreed with the user under `write-story-card`'s Key Contract — kebab-case English, at least four words — naming neither an existing card nor an existing mapping.
 2. Take in the board — a screenshot/photo, exported text, or pasted sticky-note contents. Ask the user for it if it was not provided.
 3. Walk the board card by card and capture every card, by color:
-   - Yellow (Story) → the `story` key
+   - Yellow (Story) → with a card, nothing to write: the card names the board and the filename carries its key. With no card, its text becomes `name:`, as written on the board
    - Blue (Rule) → a `rules[]` entry
    - Green (Example) → an `examples[]` entry under its rule
    - Red (Question) → a `questions[]` entry
@@ -52,7 +52,7 @@ Making the mapping read well — rule clarity, example naming, grouping, questio
 ## YAML Format
 
 ```yaml
-story: {story-key}
+name: {the yellow sticky, as written on the board — only when the story has no card}
 
 rules:
   - id: R-01
@@ -70,6 +70,7 @@ ubiquitous:
   - {ctx}/{term-key}
 ```
 
+- The file is named for the story's key; there is no `story:` field. The top-level `name:` follows the Name Contract below.
 - IDs follow the ID Contract below. A board recorded for the first time simply numbers from 01 in each scope.
 - Keep `key:` identifiers in English; `name:`/`text:` follow the board's language.
 - `ubiquitous` lists the board's pink stickies as term references (see Ubiquitous Language below).
@@ -82,6 +83,14 @@ Canonical statement in `change-rule`; these bullets are verbatim from it. You mi
 - **Immutability** — an ID, once used, keeps pointing at the same thing. Never renumber, never reuse, and never move an item to where its ID would change. This holds whether or not an automation issue was filed: the item's livt URI is quoted by MCP consumers, by the board's copy-link, in test comments, and in commit messages, and the livt repository records none of those — there is no list of references to check before breaking one.
 - **Retire, don't delete** — a rule that no longer holds gets a closed `status` (`rejected` or `retired`) and an example or question gets `retired: true`; either way it stays in the file, its ID taken and its text readable. Deleting it hands the ID to the next item and silently re-targets every reference. Don't comment it out either: a comment is not part of the YAML structure, so a structural edit drops it.
 - **Say where the spec went** — when something took the closed item's place, add `superseded_by:` beside the status or the flag, listing the successors as **livt URIs** so a reference landing on the retired item reads on instead of stopping. A list, because an item can split into two; livt URIs, because a successor can live in another mapping and a bare `R-05` names nothing. Leave the field off when nothing replaced it. Only the pointer goes in the YAML — *why* it was retired belongs to the commit, where it is written once and cannot drift.
+
+## Name Contract
+
+Canonical statement in `write-story-card`; these bullets are verbatim from it. You write the mapping's `name:`, so the contract binds you from the other side: `name:` goes in only for a story with no card, and one already on file beside a card keeps reading as the card does.
+
+- **A story is named where it is written down.** A card names its story in `stories/{key}.md`. A story that never got a card — a bug fix taken straight to its rules and a failing example — is named by `name:` at the top of its example mapping instead, and livt shows that name wherever the board is named.
+- **Two names, one string.** When a key has a card *and* its mapping carries `name:`, the two are the same string. livt reads them independently and never compares them, so nothing but a skill keeps them together: a skill that writes either one reads the other first.
+- **A difference is the team's call.** When the two would read differently, ask the user which wording stands and write it to both, in the same commit.
 
 ## Ubiquitous Language
 
@@ -97,6 +106,7 @@ Pink stickies are the words the room agreed on, and the record is their only pat
 When the team reworks a board that has already been recorded, `discoveries/example-mappings/{story-key}.yaml` already holds IDs. Record onto that file — never write a fresh one over it, which would re-mint every ID:
 
 - A card already on file keeps its ID, even where the board reworded it. Follow the board for the text; leave the ID alone.
+- A reworded yellow sticky follows the Name Contract: with no story card, `name:` takes the board's wording; beside a card, ask the user rather than letting the two names part.
 - A card that is new on the board takes the next ID.
 - A card that has left the board is closed where it sits — `status: retired` on a rule, `retired: true` on an example or a question — gone from the spec, still in the file. A rule that has gone takes each of its examples with it: neither spelling cascades, so an unflagged example still resolves as live.
 - An example the board moved under a different rule cannot keep its ID, since example IDs are rule-scoped. Retire it under the old rule and add it under the new one with a fresh ID, with `superseded_by:` on the retired one naming the new URI: the board's grouping is honoured, the old URI still resolves to the same text, and it says where the example went.
@@ -116,7 +126,7 @@ Yours is one: `Record {story-key} example mapping (baseline)`, committed with no
 
 Before the baseline commit, verify the record is complete — not whether the map is "good" (that is `formulate-example-mapping`'s question, and the session's before it):
 
-- Every card on the board appears in the YAML; no card was dropped.
+- Every card on the board appears in the YAML; no card was dropped. The yellow sticky counts: the story's card names it, or `name:` carries it when there is no card.
 - Every green card sits under the same rule it sat under on the board.
 - Every red card is preserved as a Question — none were silently answered.
 - Every pink card appears in `ubiquitous:`, and every term whose definition the board carried has its `ubiquitous/{term-key}.md`.
