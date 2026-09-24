@@ -31,9 +31,14 @@ type Origin struct {
 	Host string
 }
 
-// ReadOrigin asks git, so a scan needs no arguments in the common case.
+// ReadOrigin asks git, so a scan needs no arguments in the common case. A
+// dirty tree reports no revision: the scan reads the working tree, so claiming
+// HEAD would pin every line URL to code that is not the code that was read.
 func ReadOrigin(root string) Origin {
-	o := Origin{Rev: gitOutput(root, "rev-parse", "HEAD")}
+	o := Origin{}
+	if gitOutput(root, "status", "--porcelain") == "" {
+		o.Rev = gitOutput(root, "rev-parse", "HEAD")
+	}
 	remote := gitOutput(root, "remote", "get-url", "origin")
 	if remote == "" {
 		return o
