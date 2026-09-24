@@ -385,3 +385,21 @@ func TestMappingCarriesOnlyItsOwnName(t *testing.T) {
 		t.Errorf("a nameless mapping carries name %v, want none", got)
 	}
 }
+
+// A mapping links to its story only when a story file describes the key, the
+// way a canvas links to its opportunity: a mapping with no story hands out no
+// URI that would not resolve.
+func TestMappingLinksItsStoryOnlyWhenTheFileExists(t *testing.T) {
+	root := t.TempDir()
+	mappings := filepath.Join(root, "discoveries", "example-mappings")
+	writeFile(t, filepath.Join(mappings, "fix-login.yaml"), "name: 全角スペースでログインできない\nrules: []\n")
+	writeFile(t, filepath.Join(mappings, "checkout.yaml"), "rules: []\n")
+	writeFile(t, filepath.Join(root, "stories", "checkout.md"), "---\nname: 決済する\n---\n")
+	s := NewServer(Config{Root: root}, "test")
+
+	for key, want := range map[string]string{"checkout": "livt://story/checkout", "fix-login": ""} {
+		if got := readResource[exampleMappingResult](t, s.readMapping, uri.Mapping(key)).Mapping.StoryURI; got != want {
+			t.Errorf("%s story_uri = %q, want %q", key, got, want)
+		}
+	}
+}

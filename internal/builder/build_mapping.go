@@ -17,6 +17,9 @@ import (
 // waiting on, so counting it would make an opportunity read as less finished
 // than it is.
 type mappingTally struct {
+	// Name is what the board is called, so a row naming a story with no story
+	// file reads as the board it leads to does rather than as its bare key.
+	Name      string
 	Rules     int
 	Automated int
 	Proposed  int
@@ -76,7 +79,9 @@ func (b *Builder) buildMappings() ([]mappingTile, taskSet, map[string]mappingTal
 		// The Tasks page renders at the output root, so its links resolve from
 		// there, not from the mapping/ directory.
 		open.add(collectTasks(em, name, strings.TrimPrefix(storyPath, "../")))
-		tallies[em.StoryKey.Value] = tally(em)
+		t := tally(em)
+		t.Name = name
+		tallies[em.StoryKey.Value] = t
 	}
 
 	return tiles, open, tallies, nil

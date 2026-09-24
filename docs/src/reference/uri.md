@@ -1,8 +1,8 @@
 # livt URI
 
 A **livt URI** names one point in the livt repository — an opportunity, its
-canvas, a rule, an example, a question, a story, a story map, or a ubiquitous
-language term. It is the form to
+canvas, its story map, a story, an example mapping, a rule, an example, a
+question, or a ubiquitous language term. It is the form to
 reach for whenever a reference has to survive outside the livt repository: a test comment,
 an issue body, a commit message.
 

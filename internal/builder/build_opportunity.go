@@ -228,6 +228,7 @@ func (b *Builder) progressOf(o *domain.Opportunity, slices []opportunityReleaseS
 			}
 			switch {
 			case mapped:
+				story.Name = t.Name
 				story.Path = "../" + uri.MappingPage(key)
 				row.MappedStories++
 				row.Rules += t.Rules

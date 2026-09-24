@@ -84,8 +84,9 @@ on, so its list says how many of its kind went.
 ## `livt mcp`
 
 Run an MCP ([Model Context Protocol](https://modelcontextprotocol.io)) server
-that exposes the livt repository (story maps, stories, example mappings, and
-the ubiquitous language). An implementation repo's coding agent can then fetch
+that exposes the livt repository (opportunities and their canvases, story maps,
+stories, example mappings, and the ubiquitous language). An implementation
+repo's coding agent can then fetch
 the spec for a story or rule without reading livt's source.
 
 The livt repository usually lives in a separate checkout from the consumer, so point at
@@ -150,7 +151,7 @@ questions, and ubiquitous terms linked alongside):
 | `livt://opportunity-canvas/{opportunity_key}` | The [Opportunity Canvas](../guides/opportunities.md#the-opportunity-canvas) filled in for an opportunity, as its ten `boxes` — each with its `key`, printed `number`, heading, the `prompt` it asks, and its `items`. Every box is returned, unanswered ones with an empty `items`: a blank box records a question the opportunity has not answered. Carries `opportunity_key` always, and `opportunity_uri` when an opportunity file shares the key — a canvas resolves without one. |
 | `livt://story-map/{opportunity_key}` | The story map drawn for an opportunity: activities, steps, story cards, and releases. Story cards that have a story file link to their story resource. An opportunity has one map, filed under its key, so `{opportunity_key}` addresses it — the same key the build output uses for `story-map/{opportunity_key}.html`. Carries `opportunity_key`; `opportunity_uri` when an opportunity file shares the key, as a canvas does; and `name`: the map's own, or the key when it has none. |
 | `livt://story/{story_key}` | The story's name, body, and frontmatter meta (e.g. `issue`), plus `example_mapping_uri` when a mapping exists and `opportunities` — the opportunities the story sits on, as `list_stories` gives them. |
-| `livt://mapping/{story_key}` | The story's example mapping (rules, examples, questions, ubiquitous terms), with its own `name` when it has one — the only name a mapping with no story file carries. Each rule, example, and question carries its own `uri`, and `ubiquitous_terms` resolves each referenced term to its resource URI. [Retired](../guides/example-mappings.md#retiring-an-item) entries are listed too, saying how they closed — the mapping is the structural record their ids are numbered from. |
+| `livt://mapping/{story_key}` | The story's example mapping (rules, examples, questions, ubiquitous terms), with `story_uri` when a story file exists for the key, and its own `name` when it has one — the only name a mapping with no story file carries. Each rule, example, and question carries its own `uri`, and `ubiquitous_terms` resolves each referenced term to its resource URI. [Retired](../guides/example-mappings.md#retiring-an-item) entries are listed too, saying how they closed — the mapping is the structural record their ids are numbered from. |
 | `livt://mapping/{story_key}/rule/{rule_id}` | A single rule and its examples, its `status` — `proposed` while it awaits agreement, `accepted` once agreed, `rejected` or `retired` once closed, and present on every rule — plus its automation: `issues` (automation Issue URLs, as the mapping records them), `automated` (whether a collected report cites the rule itself — citing one of its examples does not count), and `automations` (each citing test's `repo`, `rev`, `file`, `line`, and `url` where one could be built; omitted when no test cites it). The last two are [derived from the reports](../guides/example-mappings.md#automating-a-rule) under `automations/`, never read from the mapping. Each example carries its own `automated` and `automations`, answered for the example alone. Rules inside `livt://mapping/{story_key}` carry the same fields. |
 | `livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}` | A single example of a rule. Example ids are numbered within their rule, so the address carries `{rule_id}` — `EX-01` alone does not identify an example. |
 | `livt://mapping/{story_key}/question/{question_id}` | A single question. Questions hang off the mapping rather than off a rule, so the address stops at `{story_key}`. |
@@ -215,8 +216,9 @@ livt resolve <uri> [flags]
 | `--format` | `json` | Output form: `json` or `url` |
 | `--base-url` | — | Root of the deployed site; required by `--format url` |
 
-Every URI shape the MCP server exposes as a resource resolves here: mappings,
-rules, examples, questions, stories, story maps, and ubiquitous language terms.
+Every URI shape the MCP server exposes as a resource resolves here:
+opportunities, opportunity canvases, story maps, stories, mappings, rules,
+examples, questions, and ubiquitous language terms.
 
 ### Output forms
 

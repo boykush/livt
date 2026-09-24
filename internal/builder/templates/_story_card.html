@@ -2,13 +2,13 @@
 {{/*
 A story card on the story map, shared by the release rows and the unscoped
 row. Keyed cards carry a deep-link anchor and a copy-link badge; the badge
-sits on a relative wrapper because an Opened card is itself an <a> and
+sits on a relative wrapper because a card with a Path is itself an <a> and
 anchors cannot nest.
 */}}
 {{if .Key}}
 <div id="{{storyCardAnchor .Key}}" class="story-card relative scroll-mt-24">
-  {{if .Opened}}
-  <a href="../story/{{.Key}}.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 pb-6 rounded shadow text-sm text-gray-700 hover:bg-yellow-200 transition">
+  {{if .Path}}
+  <a href="{{.Path}}" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 pb-6 rounded shadow text-sm text-gray-700 hover:bg-yellow-200 transition">
     <span>{{.Name}}</span><span>&rarr;</span>
   </a>
   {{else}}
