@@ -21,8 +21,8 @@ jobs:
     name: collect
     runs-on: ubuntu-latest
     permissions:
-      contents: write # push the report branch
-      pull-requests: write # open the report's pull request
+      contents: read # clone, and fetch the base the gate reads
+      id-token: write # assume the signing role, see the token step
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -77,14 +77,30 @@ jobs:
             echo "changed=true" >> "$GITHUB_OUTPUT"
           fi
 
+      # GITHUB_TOKEN cannot open this pull request — and where the setting lets
+      # it, the pull request it opens starts no workflow, so the checks the
+      # ruleset requires never report and it can never merge. Minted only when
+      # there is a pull request to open, and scoped to this repository: no
+      # owner: input, as in approve-pr.yml.
+      - name: Generate the repo-writer App token
+        id: app-token
+        if: steps.compare.outputs.changed == 'true'
+        uses: suzuki-shunsuke/create-github-app-token-aws-kms@b4a29a5f1cd6ea2b633d6ee6d9806dbce26493cf # v0.0.3
+        with:
+          client-id: Iv23li08SMJuhhwV0lBk
+          kms-key-id: arn:aws:kms:ap-northeast-1:509266991346:alias/github-app-repo-writer
+          role-to-assume: arn:aws:iam::509266991346:role/github-actions-github-app-repo-writer
+          permission-contents: write
+          permission-pull-requests: write
+
       # One branch per implementation repository, force-updated: a report is a
       # snapshot, so the open pull request carries the latest one rather than a
       # queue of them.
       - name: Open the report's pull request
         if: steps.compare.outputs.changed == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REMOTE: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          REMOTE: https://x-access-token:${{ steps.app-token.outputs.token }}@github.com/${{ github.repository }}.git
           REPORT: automations/${{ github.repository }}.json
           BRANCH: automations/${{ github.repository }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
