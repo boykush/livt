@@ -41,10 +41,11 @@ type opportunitySummaryJSON struct {
 // --- list_stories tool ---
 
 type listStoriesInput struct {
-	// Opportunity narrows the list to the stories on one story map, matched by
-	// exact display name — in livt a story map is one opportunity, so the map
-	// name doubles as the filter axis. Unknown names yield an empty list.
-	Opportunity string `json:"opportunity,omitempty" jsonschema:"Keep only stories on this opportunity, matched exactly against a story map display name (one story map is one opportunity). Unknown names yield an empty list; omit to list every story."`
+	// Opportunity narrows the list to the stories on one opportunity's map,
+	// matched by key: the key is what list_opportunities hands out, and it names
+	// the opportunity whether or not a file describes it. Unknown keys yield an
+	// empty list.
+	Opportunity string `json:"opportunity,omitempty" jsonschema:"Keep only stories on this opportunity, matched exactly against its key as list_opportunities hands it out — the key of the story map mapped for it. Unknown keys yield an empty list; omit to list every story."`
 }
 
 type listStoriesOutput struct {
@@ -63,8 +64,8 @@ type storySummaryJSON struct {
 	// a boolean flag: absent means no mapping, present gives a handle the client
 	// can read via resources/read.
 	ExampleMappingURI string `json:"example_mapping_uri,omitempty"`
-	// Opportunities are the story maps this story sits on, one ref per map in
-	// map order; empty for a story on no map.
+	// Opportunities are the opportunities this story sits on, one ref per map
+	// in map order; empty for a story on no map.
 	Opportunities []opportunityRefJSON `json:"opportunities,omitempty"`
 }
 
@@ -73,7 +74,7 @@ type storySummaryJSON struct {
 type listExampleMappingsInput struct {
 	// Opportunity narrows the list as it does list_stories. A mapping sits on the
 	// maps its key is carried on, so one with no story sits on none.
-	Opportunity string `json:"opportunity,omitempty" jsonschema:"Keep only mappings on this opportunity, matched exactly against a story map display name (one story map is one opportunity). A mapping whose key sits on no map, as one with no story usually does, matches none. Unknown names yield an empty list; omit to list every mapping."`
+	Opportunity string `json:"opportunity,omitempty" jsonschema:"Keep only mappings on this opportunity, matched exactly against its key as list_opportunities hands it out. A mapping whose key sits on no map, as one with no story usually does, matches none. Unknown keys yield an empty list; omit to list every mapping."`
 }
 
 type listExampleMappingsOutput struct {
@@ -91,7 +92,8 @@ type exampleMappingSummaryJSON struct {
 	URI string `json:"uri"`
 	// StoryURI is present only when a story file exists for the key.
 	StoryURI string `json:"story_uri,omitempty"`
-	// Opportunities as on storySummaryJSON: the story maps the key sits on.
+	// Opportunities as on storySummaryJSON: the opportunities of the maps the
+	// key sits on.
 	Opportunities []opportunityRefJSON `json:"opportunities,omitempty"`
 }
 
@@ -368,7 +370,7 @@ type storyJSON struct {
 	Meta []metaFieldJSON `json:"meta,omitempty"`
 	// ExampleMappingURI as on storySummaryJSON: present only when a mapping exists.
 	ExampleMappingURI string `json:"example_mapping_uri,omitempty"`
-	// Opportunities as on storySummaryJSON: the story maps this story sits on.
+	// Opportunities as on storySummaryJSON: the opportunities this story sits on.
 	Opportunities []opportunityRefJSON `json:"opportunities,omitempty"`
 }
 
@@ -400,10 +402,13 @@ type termRefJSON struct {
 	URI  string `json:"uri,omitempty"`
 }
 
-// opportunityRefJSON points at one story map a story belongs to. In livt a
-// story map is one opportunity, so Name is the opportunity name (= map name)
-// and URI is the story map resource (livt://story-map/{map_name}).
+// opportunityRefJSON points at one opportunity a story sits on, through the map
+// carrying its key. Key is the map's filename key, which is the opportunity's.
+// Name and URI are the opportunity's when a file describes it; without one the
+// map stands in as its own opportunity, as it does on the site, with its name
+// and its story map resource.
 type opportunityRefJSON struct {
+	Key  string `json:"key"`
 	Name string `json:"name"`
 	URI  string `json:"uri"`
 }

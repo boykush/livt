@@ -23,11 +23,11 @@ func (s *Server) registerTools(srv *mcpsdk.Server) {
 	}, s.listOpportunities)
 	mcpsdk.AddTool(srv, &mcpsdk.Tool{
 		Name:        "list_stories",
-		Description: "List all stories. Each entry hands out the uris to read next: its story resource (livt://story/{key}), its example mapping resource (livt://mapping/{key}) when one exists, and the opportunities (story maps, livt://story-map/{map_name}) it sits on. Pass opportunity to list only the stories on that map.",
+		Description: "List all stories. Each entry hands out the uris to read next: its story resource (livt://story/{key}), its example mapping resource (livt://mapping/{key}) when one exists, and the opportunities it sits on, each with its key, name, and uri — livt://opportunity/{key}, or the story map's own when no opportunity file describes it and the map stands in. Pass opportunity, an opportunity key as list_opportunities hands it out, to list only the stories on its map.",
 	}, s.listStories)
 	mcpsdk.AddTool(srv, &mcpsdk.Tool{
 		Name:        "list_example_mappings",
-		Description: "List every example mapping, including one whose story has no card, which list_stories cannot reach. Each entry hands out the uri of its mapping resource (livt://mapping/{key}), its own name when it has one, story_uri (livt://story/{key}) when a story file exists — read that story for the name of a mapping with none of its own — and the opportunities (story maps) its key sits on. Pass opportunity to list only the mappings on that map.",
+		Description: "List every example mapping, including one whose story has no card, which list_stories cannot reach. Each entry hands out the uri of its mapping resource (livt://mapping/{key}), its own name when it has one, story_uri (livt://story/{key}) when a story file exists — read that story for the name of a mapping with none of its own — and the opportunities its key sits on, as list_stories gives them. Pass opportunity, an opportunity key, to list only the mappings on its map.",
 	}, s.listExampleMappings)
 	mcpsdk.AddTool(srv, &mcpsdk.Tool{
 		Name:        "list_story_maps",
@@ -161,11 +161,11 @@ func (c Config) question(storyKey, questionID string) (domain.Question, error) {
 }
 
 // stories lists every story, linking to its own story resource, to its example
-// mapping resource when one exists, and to the opportunities (story maps) it
-// sits on. A non-empty opportunity keeps only the stories on the map with that
-// exact name; an unknown name yields an empty list, not an error — which
-// opportunities exist is the livt repository's business, not the caller's. A missing
-// stories directory yields an empty list, not an error.
+// mapping resource when one exists, and to the opportunities it sits on. A
+// non-empty opportunity keeps only the stories on the map with that key; an
+// unknown key yields an empty list, not an error — which opportunities exist is
+// the livt repository's business, not the caller's. A missing stories directory
+// yields an empty list, not an error.
 func (c Config) stories(opportunity string) ([]storySummaryJSON, error) {
 	all, err := parser.ParseAllStories(c.storiesDir())
 	if err != nil {
@@ -178,7 +178,7 @@ func (c Config) stories(opportunity string) ([]storySummaryJSON, error) {
 	out := make([]storySummaryJSON, 0, len(all))
 	for _, story := range all {
 		refs := index[story.Key.Value]
-		if opportunity != "" && !hasOpportunity(refs, opportunity) {
+		if opportunity != "" && !sitsOn(refs, opportunity) {
 			continue
 		}
 		summary := storySummaryJSON{Key: story.Key.Value, Name: story.Name, URI: uri.Story(story.Key.Value), Opportunities: refs}
@@ -206,7 +206,7 @@ func (c Config) exampleMappings(opportunity string) ([]exampleMappingSummaryJSON
 	for _, em := range all {
 		key := em.StoryKey.Value
 		refs := index[key]
-		if opportunity != "" && !hasOpportunity(refs, opportunity) {
+		if opportunity != "" && !sitsOn(refs, opportunity) {
 			continue
 		}
 		summary := exampleMappingSummaryJSON{StoryKey: key, Name: em.Name, URI: uri.Mapping(key), Opportunities: refs}
@@ -218,28 +218,40 @@ func (c Config) exampleMappings(opportunity string) ([]exampleMappingSummaryJSON
 	return out, nil
 }
 
-// hasOpportunity reports whether refs include a story map with this name.
-func hasOpportunity(refs []opportunityRefJSON, name string) bool {
+// sitsOn reports whether refs include the opportunity with this key.
+func sitsOn(refs []opportunityRefJSON, opportunityKey string) bool {
 	for _, r := range refs {
-		if r.Name == name {
+		if r.Key == opportunityKey {
 			return true
 		}
 	}
 	return false
 }
 
-// storyOpportunities indexes every story key to the opportunities (story maps)
-// it sits on, one ref per map in map file order — the same story-to-maps
-// derivation the site build uses for its opportunity chips. A key can recur
-// across steps within one map and still gets a single ref for it.
+// storyOpportunities indexes every story key to the opportunities it sits on,
+// one ref per map in map file order — the same derivation the site build uses
+// for its opportunity chips, down to a map with no opportunity file standing in
+// as its own. A key can recur across steps within one map and still gets a
+// single ref for it.
 func (c Config) storyOpportunities() (map[string][]opportunityRefJSON, error) {
 	maps, err := parser.ParseAllStoryMaps(c.usmDir())
 	if err != nil {
 		return nil, err
 	}
+	opportunities, err := parser.ParseAllOpportunities(c.opportunitiesDir())
+	if err != nil {
+		return nil, err
+	}
+	described := make(map[string]*domain.Opportunity, len(opportunities))
+	for _, o := range opportunities {
+		described[o.Key.Value] = o
+	}
 	index := make(map[string][]opportunityRefJSON)
 	for _, sm := range maps {
-		ref := opportunityRefJSON{Name: sm.Name, URI: uri.StoryMap(sm.Name)}
+		ref := opportunityRefJSON{Key: sm.Key, Name: sm.Name, URI: uri.StoryMap(sm.Name)}
+		if o, ok := described[sm.Key]; ok {
+			ref.Name, ref.URI = o.DisplayName(), uri.Opportunity(sm.Key)
+		}
 		seen := make(map[string]bool)
 		for _, a := range sm.Activities {
 			for _, st := range a.Steps {

@@ -5,6 +5,8 @@ import (
 	"os"
 	"path/filepath"
 	"testing"
+
+	"github.com/boykush/livt/internal/uri"
 )
 
 // newTestServer lays out a livt repository under a temp root with one mapped story
@@ -185,13 +187,14 @@ func TestListStoriesLinksExampleMapping(t *testing.T) {
 	}
 }
 
-// demoMapRef is the opportunity ref the test repository's デモマップ resolves to:
-// the map name plus its story map resource URI (display name percent-encoded).
-var demoMapRef = opportunityRefJSON{Name: "デモマップ", URI: "livt://story-map/%E3%83%87%E3%83%A2%E3%83%9E%E3%83%83%E3%83%97"}
+// demoOpportunityRef is the ref a story on the test repository's デモマップ
+// carries: the map is keyed demo-map, and an opportunity file describes that
+// key, so the ref is the opportunity's rather than the map's.
+var demoOpportunityRef = opportunityRefJSON{Key: "demo-map", Name: "デモ機会", URI: "livt://opportunity/demo-map"}
 
-// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-01
-// Each entry shows its opportunities — the story maps it sits on, as map name
-// plus story map resource URI — and a story on no map shows none.
+// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-05
+// Each entry shows its opportunities by key, name, and resource URI, and a
+// story on no map shows none.
 func TestListStoriesCarriesOpportunities(t *testing.T) {
 	s := newTestServer(t)
 
@@ -200,34 +203,70 @@ func TestListStoriesCarriesOpportunities(t *testing.T) {
 		t.Fatalf("listStories: %v", err)
 	}
 	byKey := storiesByKey(out.Stories)
-	if got := byKey["demo"].Opportunities; len(got) != 1 || got[0] != demoMapRef {
-		t.Errorf("demo opportunities = %+v, want [%+v]", got, demoMapRef)
+	if got := byKey["demo"].Opportunities; len(got) != 1 || got[0] != demoOpportunityRef {
+		t.Errorf("demo opportunities = %+v, want [%+v]", got, demoOpportunityRef)
 	}
 	if got := byKey["other"].Opportunities; len(got) != 0 {
 		t.Errorf("other opportunities = %+v, want none (on no map)", got)
 	}
 }
 
-// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-02
-// The opportunity parameter keeps only the stories on that map.
+// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-06
+// A map with no opportunity file stands in as its own opportunity: the key is
+// still the map's, and the name and URI are the map's too.
+func TestMapWithNoOpportunityFileStandsInAsItsOwn(t *testing.T) {
+	s := newTestServer(t)
+	writeFile(t, filepath.Join(s.cfg.Root, "discoveries", "usm", "second-map.yaml"),
+		"name: 第二マップ\n"+
+			"activities:\n"+
+			"  - name: アクティビティ\n"+
+			"    steps:\n"+
+			"      - name: ステップ\n"+
+			"        stories:\n"+
+			"          - name: 別ストーリー\n"+
+			"            key: other\n")
+
+	_, out, err := s.listStories(context.Background(), nil, listStoriesInput{})
+	if err != nil {
+		t.Fatalf("listStories: %v", err)
+	}
+	want := opportunityRefJSON{Key: "second-map", Name: "第二マップ", URI: uri.StoryMap("第二マップ")}
+	if got := storiesByKey(out.Stories)["other"].Opportunities; len(got) != 1 || got[0] != want {
+		t.Errorf("other opportunities = %+v, want [%+v]", got, want)
+	}
+}
+
+// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-07
+// The opportunity parameter takes the key list_opportunities hands out and
+// keeps only the stories on its map. A name is not a key, so it matches none.
 func TestListStoriesFiltersByOpportunity(t *testing.T) {
 	s := newTestServer(t)
 
-	_, out, err := s.listStories(context.Background(), nil, listStoriesInput{Opportunity: "デモマップ"})
+	_, out, err := s.listStories(context.Background(), nil, listStoriesInput{Opportunity: "demo-map"})
 	if err != nil {
 		t.Fatalf("listStories: %v", err)
 	}
 	if len(out.Stories) != 1 || out.Stories[0].Key != "demo" {
-		t.Fatalf("stories = %+v, want only demo (the one story on デモマップ)", out.Stories)
+		t.Fatalf("stories = %+v, want only demo (the one story on demo-map)", out.Stories)
+	}
+
+	for _, name := range []string{"デモ機会", "デモマップ"} {
+		_, byName, err := s.listStories(context.Background(), nil, listStoriesInput{Opportunity: name})
+		if err != nil {
+			t.Fatalf("listStories(%q): %v", name, err)
+		}
+		if len(byName.Stories) != 0 {
+			t.Errorf("filtering by the name %q kept %+v, want none", name, byName.Stories)
+		}
 	}
 }
 
-// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-03
-// An unknown opportunity name yields an empty list, not an error.
+// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-08
+// An unknown opportunity key yields an empty list, not an error.
 func TestListStoriesUnknownOpportunityYieldsEmptyList(t *testing.T) {
 	s := newTestServer(t)
 
-	_, out, err := s.listStories(context.Background(), nil, listStoriesInput{Opportunity: "存在しないマップ"})
+	_, out, err := s.listStories(context.Background(), nil, listStoriesInput{Opportunity: "no-such-opportunity"})
 	if err != nil {
 		t.Fatalf("listStories: %v", err)
 	}
@@ -260,16 +299,16 @@ func TestListStoriesStoryOnSeveralMaps(t *testing.T) {
 		t.Fatalf("listStories: %v", err)
 	}
 	got := storiesByKey(out.Stories)["demo"].Opportunities
-	if len(got) != 2 || got[0].Name != "デモマップ" || got[1].Name != "第二マップ" {
-		t.Fatalf("demo opportunities = %+v, want [デモマップ 第二マップ] in map file order", got)
+	if len(got) != 2 || got[0].Key != "demo-map" || got[1].Key != "second-map" {
+		t.Fatalf("demo opportunities = %+v, want [demo-map second-map] in map file order", got)
 	}
 
-	_, filtered, err := s.listStories(context.Background(), nil, listStoriesInput{Opportunity: "第二マップ"})
+	_, filtered, err := s.listStories(context.Background(), nil, listStoriesInput{Opportunity: "second-map"})
 	if err != nil {
 		t.Fatalf("listStories filtered: %v", err)
 	}
 	if len(filtered.Stories) != 1 || filtered.Stories[0].Key != "demo" {
-		t.Fatalf("filtered stories = %+v, want only demo (on 第二マップ)", filtered.Stories)
+		t.Fatalf("filtered stories = %+v, want only demo (on second-map)", filtered.Stories)
 	}
 }
 
@@ -437,8 +476,8 @@ func TestStoryJSONCarriesOpportunities(t *testing.T) {
 	if err != nil {
 		t.Fatalf("toStoryJSON: %v", err)
 	}
-	if len(got.Opportunities) != 1 || got.Opportunities[0] != demoMapRef {
-		t.Errorf("demo opportunities = %+v, want [%+v]", got.Opportunities, demoMapRef)
+	if len(got.Opportunities) != 1 || got.Opportunities[0] != demoOpportunityRef {
+		t.Errorf("demo opportunities = %+v, want [%+v]", got.Opportunities, demoOpportunityRef)
 	}
 
 	unmapped, err := cfg.story("other")
@@ -551,14 +590,14 @@ func TestListExampleMappingsFiltersByOpportunity(t *testing.T) {
 	writeFile(t, filepath.Join(s.cfg.Root, "discoveries", "example-mappings", "fix-login-with-full-width-space.yaml"),
 		"name: 全角スペースでログインできない\nrules: []\n")
 
-	_, out, err := s.listExampleMappings(context.Background(), nil, listExampleMappingsInput{Opportunity: "デモマップ"})
+	_, out, err := s.listExampleMappings(context.Background(), nil, listExampleMappingsInput{Opportunity: "demo-map"})
 	if err != nil {
 		t.Fatalf("listExampleMappings: %v", err)
 	}
 	if len(out.ExampleMappings) != 1 || out.ExampleMappings[0].StoryKey != "demo" {
-		t.Fatalf("mappings = %+v, want only demo (the one mapping on デモマップ)", out.ExampleMappings)
+		t.Fatalf("mappings = %+v, want only demo (the one mapping on demo-map)", out.ExampleMappings)
 	}
-	if got := out.ExampleMappings[0].Opportunities; len(got) != 1 || got[0] != demoMapRef {
-		t.Errorf("demo opportunities = %+v, want [%+v]", got, demoMapRef)
+	if got := out.ExampleMappings[0].Opportunities; len(got) != 1 || got[0] != demoOpportunityRef {
+		t.Errorf("demo opportunities = %+v, want [%+v]", got, demoOpportunityRef)
 	}
 }
