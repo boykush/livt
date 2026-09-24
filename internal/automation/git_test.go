@@ -59,3 +59,17 @@ func TestParseRemoteReducesEveryCheckoutShapeToTheSameBase(t *testing.T) {
 		}
 	}
 }
+
+// livt:automates livt://mapping/collect-automations/rule/R-04/example/EX-04
+func TestCleanDisregardsOnlyTheReportBeingWritten(t *testing.T) {
+	report := "automations/acme/impl.json"
+	if !clean(" M "+report+"\n", []string{report}) {
+		t.Error("the scan could not name a revision because of its own output")
+	}
+	if clean(" M internal/thing.go\n M "+report+"\n", []string{report}) {
+		t.Error("a scanned file changed and the revision was claimed anyway")
+	}
+	if !clean("", nil) {
+		t.Error("an unchanged tree was read as dirty")
+	}
+}

@@ -52,7 +52,13 @@ automated is derived when the site is built, not decided here.`,
 			root = args[0]
 		}
 
-		origin := automation.ReadOrigin(root)
+		// The report usually lands inside the tree being scanned, and a run
+		// must still be able to name the revision it read.
+		ignore := []string{}
+		if rel, err := filepath.Rel(root, automationsOut); err == nil && automationsOut != "" {
+			ignore = append(ignore, filepath.ToSlash(rel))
+		}
+		origin := automation.ReadOrigin(root, ignore...)
 		template, err := automation.URLTemplate(automationsForge, automationsURLTemplate, origin)
 		if err != nil {
 			return err

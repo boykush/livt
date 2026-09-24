@@ -3,6 +3,7 @@ package automation
 import (
 	"fmt"
 	"os/exec"
+	"slices"
 	"strings"
 )
 
@@ -34,9 +35,9 @@ type Origin struct {
 // ReadOrigin asks git, so a scan needs no arguments in the common case. A
 // dirty tree reports no revision: the scan reads the working tree, so claiming
 // HEAD would pin every line URL to code that is not the code that was read.
-func ReadOrigin(root string) Origin {
+func ReadOrigin(root string, ignore ...string) Origin {
 	o := Origin{}
-	if gitOutput(root, "status", "--porcelain") == "" {
+	if clean(gitOutput(root, "status", "--porcelain"), ignore) {
 		o.Rev = gitOutput(root, "rev-parse", "HEAD")
 	}
 	remote := gitOutput(root, "remote", "get-url", "origin")
@@ -45,6 +46,25 @@ func ReadOrigin(root string) Origin {
 	}
 	o.Base, o.Host, o.Repo = parseRemote(remote)
 	return o
+}
+
+// clean reads the porcelain listing, disregarding the report the scan is about
+// to write: a run that lands its own output in the tree it scanned would
+// otherwise be unable to name the revision it just read.
+func clean(status string, ignore []string) bool {
+	for _, line := range strings.Split(strings.TrimSpace(status), "\n") {
+		if line == "" {
+			continue
+		}
+		path := strings.TrimSpace(line)
+		if i := strings.Index(path, " "); i >= 0 {
+			path = path[i+1:]
+		}
+		if !slices.Contains(ignore, path) {
+			return false
+		}
+	}
+	return true
 }
 
 func gitOutput(root string, args ...string) string {
