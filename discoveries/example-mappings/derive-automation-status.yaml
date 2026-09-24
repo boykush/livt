@@ -25,7 +25,7 @@ rules:
       - id: EX-04
         name: 具体例が全て自動化されていても、ルール自身の状況は変わらない
   - id: R-03
-    name: 状況は3つあり、レポートの存在が「見た」という宣言になる
+    name: 状況は引用の有無で決まり、レポートがあること自体が「見た」という宣言になる
     examples:
       - id: EX-01
         name: レポートに引用があれば自動化済み
@@ -33,6 +33,11 @@ rules:
         name: レポートはあるが引用が無ければ未自動化
       - id: EX-03
         name: その実装リポジトリのレポートが無ければ対象外で、未自動化とは区別する
+        retired: true
+        superseded_by:
+          - livt://mapping/derive-automation-status/rule/R-03/example/EX-05
+      - id: EX-05
+        name: 来るはずだったレポートという概念を持たない（宣言が無いので、届かなかった相手を名指せない）
       - id: EX-04
         name: 走査する実装リポジトリは走行ごとに変わってよく、母数もそれに従って動く
   - id: R-04
@@ -77,6 +82,9 @@ rules:
 questions:
   - id: Q-01
     text: ルール付箋・具体例付箋の見せ方をどう作り直すか（✓スタンプ1個では、ルール軸と具体例軸・3つの状況・テストへのリンクを運べない）
+    retired: true
+    superseded_by:
+      - livt://mapping/show-automation-status-per-rule/rule/R-01
   - id: Q-02
     text: 母数が走行ごとに動くことをサイトがどう示すか（何リポジトリ中いくつを走査したかを明示しないと、前回との比較が黙って壊れる）
   - id: Q-03
