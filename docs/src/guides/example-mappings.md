@@ -58,7 +58,7 @@ rules:
         name: A password starting with a full-width space logs in
 ```
 
-Give it a `name`: without one, the board is called by its key. Otherwise it is a mapping like any other — it renders, lists on the Tasks page, diffs, and resolves by livt URI. What it lacks is a story page to link to and, since a mapping reaches its opportunities through its story, any opportunity to be filtered under. The MCP server lists mappings through their stories, so hand an agent a story-less mapping's livt URI directly.
+Give it a `name`: without one, the board is called by its key. Otherwise it is a mapping like any other — it renders, lists on the Tasks page, diffs, and resolves by livt URI. What it lacks is a story page to link to and, since a mapping reaches its opportunities through its story, any opportunity to be filtered under. An agent finds it through the MCP server's `list_example_mappings`, which lists every mapping, story or not.
 
 ## Proposing a rule
 
