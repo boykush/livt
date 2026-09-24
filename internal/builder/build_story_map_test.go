@@ -48,8 +48,8 @@ func TestStoryMapViewRendersKeylessStoriesAsUnscopedPlainCards(t *testing.T) {
 	if len(releaseStories) != 1 {
 		t.Fatalf("got %d release stories, want 1", len(releaseStories))
 	}
-	if !releaseStories[0].Opened {
-		t.Fatal("expected keyed story with markdown file to be opened")
+	if releaseStories[0].Path != "../story/detailed-card.html" {
+		t.Fatalf("got path %q, want a keyed story with a markdown file to lead to its page", releaseStories[0].Path)
 	}
 
 	if view.StoryMap.UnscopedStories == nil {
@@ -62,7 +62,7 @@ func TestStoryMapViewRendersKeylessStoriesAsUnscopedPlainCards(t *testing.T) {
 	if unscopedStories[0].Key != "" {
 		t.Fatalf("got keyless story key %q", unscopedStories[0].Key)
 	}
-	if unscopedStories[0].Opened {
+	if unscopedStories[0].Path != "" {
 		t.Fatal("expected keyless story to render as a plain card")
 	}
 }
@@ -102,7 +102,7 @@ func TestStoryMapViewUsesStoryReleaseForReleaseRows(t *testing.T) {
 	if releaseStories[0].Name != "Keyless release card" {
 		t.Fatalf("got release story name %q", releaseStories[0].Name)
 	}
-	if releaseStories[0].Opened {
+	if releaseStories[0].Path != "" {
 		t.Fatal("expected keyless release story to render as a plain card")
 	}
 
@@ -455,5 +455,29 @@ func TestStoryMapPageIsFiledUnderItsKey(t *testing.T) {
 	}
 	if _, err := os.Stat(filepath.Join(b.OutDir, "story-map", ".html")); !os.IsNotExist(err) {
 		t.Errorf("a nameless map wrote a page with no filename (stat error: %v)", err)
+	}
+}
+
+// A key on the map names its story whether or not a story file describes it.
+// With only an example mapping under that key, the card leads to the mapping,
+// and the opportunity's progress row reads as the board does, not as the key.
+func TestKeyWithOnlyAMappingLeadsToIt(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	writeFile(t, filepath.Join(b.OpportunitiesDir, "fixes.md"), "---\nname: 修正\n---\n\n一文\n")
+	writeFile(t, filepath.Join(b.USMDir, "fixes.yaml"),
+		"name: 修正マップ\nactivities:\n  - key: a\n    name: A\n    steps:\n      - key: s\n        name: S\n        stories:\n"+
+			"          - key: fix-login-with-full-width-space\n            name: 全角スペースでログインできない\n")
+	writeFile(t, filepath.Join(b.MappingsDir, "fix-login-with-full-width-space.yaml"),
+		"name: 全角スペースを含むパスワードでログインできる\nrules:\n  - id: R-01\n    name: パスワードは入力どおりに比較する\n")
+	if err := b.Build(); err != nil {
+		t.Fatal(err)
+	}
+
+	if html := readFile(t, filepath.Join(b.OutDir, "story-map", "fixes.html")); !strings.Contains(html, `href="../mapping/fix-login-with-full-width-space.html"`) {
+		t.Error("the card does not lead to the mapping filed under its key")
+	}
+	progress := readFile(t, filepath.Join(b.OutDir, "opportunity-progress", "fixes.html"))
+	if !strings.Contains(progress, "全角スペースを含むパスワードでログインできる") {
+		t.Error("the progress row is not named as its board is")
 	}
 }

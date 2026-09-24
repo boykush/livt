@@ -154,9 +154,10 @@ func (s *releaseSlices) rows() []opportunityReleaseStories {
 }
 
 type storyMapViewStory struct {
-	Key    string
-	Name   string
-	Opened bool
+	Key  string
+	Name string
+	// Path is where the card leads, empty for a plain card.
+	Path string
 }
 
 type storyMapViewStepHeader struct {
@@ -246,9 +247,9 @@ func (b *Builder) buildReleaseRows(allActivities []domain.Activity, releases []d
 			sg := stepGroup{perRelease: make(map[int][]storyMapViewStory)}
 			for _, sc := range s.Stories {
 				vs := storyMapViewStory{
-					Key:    sc.Key.Value,
-					Name:   sc.Name,
-					Opened: sc.HasKey() && b.hasStoryPage(sc.Key),
+					Key:  sc.Key.Value,
+					Name: sc.Name,
+					Path: b.storyCardPath(sc),
 				}
 				if sc.Release != "" {
 					if idx, ok := releaseIndexByID[sc.Release]; ok {
@@ -308,6 +309,22 @@ func (b *Builder) buildReleaseRows(allActivities []domain.Activity, releases []d
 	}
 
 	return rows, unscoped
+}
+
+// storyCardPath is where a card on the map leads: the story's page, or — for a
+// key with an example mapping but no story file — the mapping, since the key
+// names the story whether or not a file describes it. A card with neither, or
+// with no key, leads nowhere.
+func (b *Builder) storyCardPath(sc domain.StoryCard) string {
+	switch {
+	case !sc.HasKey():
+		return ""
+	case b.hasStoryPage(sc.Key):
+		return "../" + uri.StoryPage(sc.Key.Value)
+	case b.hasExampleMapping(sc.Key):
+		return "../" + uri.MappingPage(sc.Key.Value)
+	}
+	return ""
 }
 
 func (b *Builder) buildStoryMap(path string, view storyMapView) error {
