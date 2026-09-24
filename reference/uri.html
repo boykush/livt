@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-68820154.js";
+            window.path_to_searchindex_js = "../searchindex-cc7ffef7.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-a62fb9f7.js"></script>
@@ -222,7 +222,7 @@ lands in it. Paths are relative to the output root.</p>
 <tr><td><code>livt://story/{story-key}</code></td><td><code>story/{story-key}.html</code></td></tr>
 <tr><td><code>livt://opportunity/{opportunity-key}</code></td><td><code>opportunity/{opportunity-key}.html</code></td></tr>
 <tr><td><code>livt://opportunity-canvas/{opportunity-key}</code></td><td><code>opportunity-canvas/{opportunity-key}.html</code></td></tr>
-<tr><td><code>livt://story-map/{map-name}</code></td><td><code>story-map/{map-name}.html</code></td></tr>
+<tr><td><code>livt://story-map/{opportunity-key}</code></td><td><code>story-map/{opportunity-key}.html</code></td></tr>
 <tr><td><code>livt://ubiquitous/{term-key}</code></td><td><code>ubiquitous.html#{term-key}</code></td></tr>
 <tr><td><code>livt://ubiquitous/{ctx}/{term-key}</code></td><td><code>ubiquitous.html#{ctx}/{term-key}</code></td></tr>
 </tbody>
@@ -237,11 +237,15 @@ way, and for the same reason: <code>invoice</code> can mean one thing in billing
 another in shipping, so the context is part of the address rather than a label
 on it. The context is optional — a term whose meaning holds everywhere keeps the
 one-segment form — and the two shapes never resolve to each other.</p>
-<p>An opportunity is addressed by key rather than by display name, unlike a story
-map. The key is what its filename and its canvas already join on, so it is the
-identifier the livt repository carries. The canvas sits beside the opportunity
-rather than under it, the way a mapping sits beside its story — the two are
-joined by key, and either can exist without the other.</p>
+<p>An opportunity is addressed by key rather than by display name. The key is what
+its filename, its canvas, and its story map already join on, so it is the
+identifier the livt repository carries. The canvas and the map sit beside the
+opportunity rather than under it, the way a mapping sits beside its story —
+each is joined to it by key, and either can exist without the other.</p>
+<p>An opportunity has one story map and a map serves one opportunity, since the
+filename is the whole join, so the opportunity’s key addresses the map too. The
+map’s <code>name</code> is what its board shows: renaming a map moves neither its URI nor
+its page.</p>
 <p>A <a href="../guides/example-mappings.html#retiring-an-item">closed</a> item has no sticky,
 so its URI lands on the board with nothing to scroll to. The URI still resolves:
 ask the tooling, which answers with the item and how it closed — a rule’s

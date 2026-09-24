@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-68820154.js";
+            window.path_to_searchindex_js = "../searchindex-cc7ffef7.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-a62fb9f7.js"></script>
@@ -200,7 +200,7 @@
 <li><code>livt.yaml</code> configures the site build — see <a href="./configuration.html">Configuration</a>. Without it, every setting takes its default</li>
 <li>Opportunity keys, like story keys, are derived from filenames (without extension) and must be kebab-case</li>
 <li>An <a href="../guides/opportunities.html#the-opportunity-canvas">opportunity canvas</a> filename must match an opportunity key to link them</li>
-<li>A story map filename that matches an opportunity key marks the map as the journey mapped for that opportunity. A map whose key matches no opportunity stands in as its own, named by the map — which is how every livt repository behaved before opportunities were files</li>
+<li>A story map filename that matches an opportunity key marks the map as the journey mapped for that opportunity. The filename is the whole join, so an opportunity has one map, and the key is what addresses it. A map whose key matches no opportunity stands in as its own, named by the map — which is how every livt repository behaved before opportunities were files</li>
 <li>Story keys are derived from filenames (without extension)</li>
 <li>Story keys must be kebab-case: lowercase letters, numbers, and hyphens</li>
 <li>The <code>stories/</code> directory is the story registry, and <code>stories/{story-key}.md</code> provides story key uniqueness</li>
@@ -228,7 +228,7 @@
   mapping/
     {story-key}.html                      # Example mapping boards
   story-map/
-    {map-name}.html                       # Story map boards
+    {opportunity-key}.html                # Story map boards
 </code></pre>
 <p>Every page shares a left sidebar that links the five resource types (Example
 Mappings, Opportunities, Story Maps, Stories, Ubiquitous Language) and, below

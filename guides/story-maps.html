@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-68820154.js";
+            window.path_to_searchindex_js = "../searchindex-cc7ffef7.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-a62fb9f7.js"></script>
@@ -177,7 +177,7 @@
                         <h1 id="story-maps"><a class="header" href="#story-maps">Story Maps</a></h1>
 <p>Story maps are YAML files stored in <code>discoveries/usm/</code>. They define the structure of a User Story Map with activities, user tasks, stories, and release slices.
 The <code>steps:</code> field holds the user tasks — the field keeps livt’s own name, the boards use Patton’s.</p>
-<p>A map’s <strong>filename</strong> names the <a href="./opportunities.html">opportunity</a> it serves: a map whose key matches an <code>opportunities/{key}.md</code> is the journey mapped for that opportunity, and every story on it carries that opportunity’s chip. A map whose key matches no opportunity stands in as its own, named by the map — see <a href="./opportunities.html#linking-a-story-map">Linking a story map</a>. The map’s <code>name:</code> stays its own display name either way, and is what addresses it.</p>
+<p>A map’s <strong>filename</strong> names the <a href="./opportunities.html">opportunity</a> it serves: a map whose key matches an <code>opportunities/{key}.md</code> is the journey mapped for that opportunity, and every story on it carries that opportunity’s chip. A map whose key matches no opportunity stands in as its own, named by the map — see <a href="./opportunities.html#linking-a-story-map">Linking a story map</a>. An opportunity has one map, so the key addresses it as well: <code>livt://story-map/{key}</code>, and <code>story-map/{key}.html</code> on the site. The map’s <code>name:</code> stays its own either way — the board’s title, and optional, since a map without one is called by its key. Renaming a map moves no link.</p>
 <h2 id="format"><a class="header" href="#format">Format</a></h2>
 <pre><code class="language-yaml">name: Map Name
 

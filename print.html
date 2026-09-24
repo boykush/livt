@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-68820154.js";
+            window.path_to_searchindex_js = "searchindex-cc7ffef7.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-a62fb9f7.js"></script>
@@ -462,8 +462,9 @@ what you are only assuming until the thing ships.</p>
 <pre><code>opportunities/collaborative-discovery.md          # the opportunity
 discoveries/usm/collaborative-discovery.yaml      # the journey mapped for it
 </code></pre>
-<p>No field connects them; the filename does, as everywhere else in livt. When the
-two match:</p>
+<p>No field connects them; the filename does, as everywhere else in livt. A
+directory holds a filename once, so an opportunity has one story map and a map
+serves one opportunity. When the two match:</p>
 <ul>
 <li>The story map board and the opportunity’s page link to each other</li>
 <li>Every story on that map carries the <strong>opportunity’s</strong> name on its chip, and the
@@ -491,7 +492,7 @@ They stand in two groups, split by <strong>which way the count is meant to move<
 way a burn-up chart and a burn-down chart split the same numbers:</p>
 <p><strong>Burn-up</strong> — counts that climb to the whole:</p>
 <ul>
-<li><strong>Stories through an example mapping</strong> — of the stories its maps hang under
+<li><strong>Stories through an example mapping</strong> — of the stories its map hangs under
 the backbone, how many have had their conversation</li>
 </ul>
 <p><strong>Burn-down</strong> — counts that fall to zero:</p>
@@ -600,7 +601,7 @@ story map.</p>
 <h1 id="story-maps"><a class="header" href="#story-maps">Story Maps</a></h1>
 <p>Story maps are YAML files stored in <code>discoveries/usm/</code>. They define the structure of a User Story Map with activities, user tasks, stories, and release slices.
 The <code>steps:</code> field holds the user tasks — the field keeps livt’s own name, the boards use Patton’s.</p>
-<p>A map’s <strong>filename</strong> names the <a href="#opportunities-1">opportunity</a> it serves: a map whose key matches an <code>opportunities/{key}.md</code> is the journey mapped for that opportunity, and every story on it carries that opportunity’s chip. A map whose key matches no opportunity stands in as its own, named by the map — see <a href="#linking-a-story-map">Linking a story map</a>. The map’s <code>name:</code> stays its own display name either way, and is what addresses it.</p>
+<p>A map’s <strong>filename</strong> names the <a href="#opportunities-1">opportunity</a> it serves: a map whose key matches an <code>opportunities/{key}.md</code> is the journey mapped for that opportunity, and every story on it carries that opportunity’s chip. A map whose key matches no opportunity stands in as its own, named by the map — see <a href="#linking-a-story-map">Linking a story map</a>. An opportunity has one map, so the key addresses it as well: <code>livt://story-map/{key}</code>, and <code>story-map/{key}.html</code> on the site. The map’s <code>name:</code> stays its own either way — the board’s title, and optional, since a map without one is called by its key. Renaming a map moves no link.</p>
 <h2 id="format-3"><a class="header" href="#format-3">Format</a></h2>
 <pre><code class="language-yaml">name: Map Name
 
@@ -1035,10 +1036,10 @@ to localhost, not a public network.</p>
 <tr><th>Tool</th><th>Arguments</th><th>Returns</th></tr>
 </thead>
 <tbody>
-<tr><td><code>list_opportunities</code></td><td>—</td><td>Every <a href="#opportunities-1">opportunity</a> with its key, name, and statement. Each entry links to its opportunity resource (<code>uri</code>), to its canvas (<code>canvas_uri</code>) when one has been filled in, and to the story maps mapped for it. A missing canvas or story map is the record that the opportunity has not been taken that far.</td></tr>
+<tr><td><code>list_opportunities</code></td><td>—</td><td>Every <a href="#opportunities-1">opportunity</a> with its key, name, and statement. Each entry links to its opportunity resource (<code>uri</code>), to its canvas (<code>canvas_uri</code>) when one has been filled in, and to its <code>story_map</code> when one has been drawn — an opportunity has one map, filed under its key. A missing canvas or story map is the record that the opportunity has not been taken that far.</td></tr>
 <tr><td><code>list_stories</code></td><td><code>opportunity</code> (optional) — an opportunity key, as <code>list_opportunities</code> hands it out; keeps only the stories on the map with that key, and an unknown key yields an empty list</td><td>Every story with its key and name. Each entry links to its story resource (<code>uri</code>); stories that have an example mapping also include <code>example_mapping_uri</code>, and stories on a story map carry <code>opportunities</code> — one per map they sit on, with the opportunity’s <code>key</code>, <code>name</code>, and <code>uri</code>. Where no opportunity file describes the map’s key, the map <a href="#linking-a-story-map">stands in</a> with its own name and story map resource URI.</td></tr>
 <tr><td><code>list_example_mappings</code></td><td><code>opportunity</code> (optional) — as for <code>list_stories</code>; a mapping whose key sits on no map, as one with no story usually does, matches none</td><td>Every example mapping, including one whose story has no card, with its story key and mapping resource URI (<code>uri</code>). A mapping carries <code>name</code> when it has one of its own and <code>story_uri</code> when a story file exists — read that story for the name of a mapping with none of its own — and <code>opportunities</code>, as <code>list_stories</code> gives them for the maps its key sits on.</td></tr>
-<tr><td><code>list_story_maps</code></td><td>—</td><td>Every story map with its name and its story map resource URI (<code>uri</code>).</td></tr>
+<tr><td><code>list_story_maps</code></td><td>—</td><td>Every story map — one per opportunity — with the <code>opportunity_key</code> it is filed under, its <code>name</code>, and its story map resource URI (<code>uri</code>).</td></tr>
 <tr><td><code>list_terms</code></td><td>—</td><td>Every <a href="#ubiquitous-language-1">ubiquitous language</a> term with its key, display name, and term resource URI (<code>uri</code>) — including terms no board references. A term scoped to a context also carries <code>ctx</code>, which is part of what identifies it.</td></tr>
 </tbody>
 </table>
@@ -1053,9 +1054,9 @@ questions, and ubiquitous terms linked alongside):</p>
 <tr><th>URI</th><th>Returns</th></tr>
 </thead>
 <tbody>
-<tr><td><code>livt://opportunity/{opportunity_key}</code></td><td>An opportunity: its name, its statement (whose problem, and what the business gets from solving it), and its frontmatter meta. Carries <code>canvas_uri</code> when a canvas has been filled in, and <code>story_maps</code> — the maps whose key matches, as map name plus story map resource URI.</td></tr>
+<tr><td><code>livt://opportunity/{opportunity_key}</code></td><td>An opportunity: its name, its statement (whose problem, and what the business gets from solving it), and its frontmatter meta. Carries <code>canvas_uri</code> when a canvas has been filled in, and <code>story_map</code> — the map filed under its key, as <code>list_story_maps</code> gives it — when one has been drawn.</td></tr>
 <tr><td><code>livt://opportunity-canvas/{opportunity_key}</code></td><td>The <a href="#the-opportunity-canvas">Opportunity Canvas</a> filled in for an opportunity, as its ten <code>boxes</code> — each with its <code>key</code>, printed <code>number</code>, heading, the <code>prompt</code> it asks, and its <code>items</code>. Every box is returned, unanswered ones with an empty <code>items</code>: a blank box records a question the opportunity has not answered. Carries <code>opportunity_key</code> always, and <code>opportunity_uri</code> when an opportunity file shares the key — a canvas resolves without one.</td></tr>
-<tr><td><code>livt://story-map/{map_name}</code></td><td>A story map: activities, steps, story cards, and releases. Story cards that have a story file link to their story resource. <code>{map_name}</code> is the map’s display name (percent-encoded) — the same identifier the build output uses for <code>story-map/{name}.html</code>.</td></tr>
+<tr><td><code>livt://story-map/{opportunity_key}</code></td><td>The story map drawn for an opportunity: activities, steps, story cards, and releases. Story cards that have a story file link to their story resource. An opportunity has one map, filed under its key, so <code>{opportunity_key}</code> addresses it — the same key the build output uses for <code>story-map/{opportunity_key}.html</code>. Carries <code>opportunity_key</code>; <code>opportunity_uri</code> when an opportunity file shares the key, as a canvas does; and <code>name</code>: the map’s own, or the key when it has none.</td></tr>
 <tr><td><code>livt://story/{story_key}</code></td><td>The story’s name, body, and frontmatter meta (e.g. <code>issue</code>), plus <code>example_mapping_uri</code> when a mapping exists and <code>opportunities</code> — the opportunities the story sits on, as <code>list_stories</code> gives them.</td></tr>
 <tr><td><code>livt://mapping/{story_key}</code></td><td>The story’s example mapping (rules, examples, questions, ubiquitous terms), with its own <code>name</code> when it has one — the only name a mapping with no story file carries. Each rule, example, and question carries its own <code>uri</code>, and <code>ubiquitous_terms</code> resolves each referenced term to its resource URI. <a href="#retiring-an-item">Retired</a> entries are listed too, saying how they closed — the mapping is the structural record their ids are numbered from.</td></tr>
 <tr><td><code>livt://mapping/{story_key}/rule/{rule_id}</code></td><td>A single rule and its examples, its <code>status</code> — <code>proposed</code> while it awaits agreement, <code>accepted</code> once agreed, <code>rejected</code> or <code>retired</code> once closed, and present on every rule — plus its automation: <code>issues</code> (automation Issue URLs, as the mapping records them), <code>automated</code> (whether a collected report cites the rule itself — citing one of its examples does not count), and <code>automations</code> (each citing test’s <code>repo</code>, <code>rev</code>, <code>file</code>, <code>line</code>, and <code>url</code> where one could be built; omitted when no test cites it). The last two are <a href="#automating-a-rule">derived from the reports</a> under <code>automations/</code>, never read from the mapping. Each example carries its own <code>automated</code> and <code>automations</code>, answered for the example alone. Rules inside <code>livt://mapping/{story_key}</code> carry the same fields.</td></tr>
@@ -1336,7 +1337,7 @@ either complete or not offered.</p>
 <li><code>livt.yaml</code> configures the site build — see <a href="#configuration">Configuration</a>. Without it, every setting takes its default</li>
 <li>Opportunity keys, like story keys, are derived from filenames (without extension) and must be kebab-case</li>
 <li>An <a href="#the-opportunity-canvas">opportunity canvas</a> filename must match an opportunity key to link them</li>
-<li>A story map filename that matches an opportunity key marks the map as the journey mapped for that opportunity. A map whose key matches no opportunity stands in as its own, named by the map — which is how every livt repository behaved before opportunities were files</li>
+<li>A story map filename that matches an opportunity key marks the map as the journey mapped for that opportunity. The filename is the whole join, so an opportunity has one map, and the key is what addresses it. A map whose key matches no opportunity stands in as its own, named by the map — which is how every livt repository behaved before opportunities were files</li>
 <li>Story keys are derived from filenames (without extension)</li>
 <li>Story keys must be kebab-case: lowercase letters, numbers, and hyphens</li>
 <li>The <code>stories/</code> directory is the story registry, and <code>stories/{story-key}.md</code> provides story key uniqueness</li>
@@ -1364,7 +1365,7 @@ either complete or not offered.</p>
   mapping/
     {story-key}.html                      # Example mapping boards
   story-map/
-    {map-name}.html                       # Story map boards
+    {opportunity-key}.html                # Story map boards
 </code></pre>
 <p>Every page shares a left sidebar that links the five resource types (Example
 Mappings, Opportunities, Story Maps, Stories, Ubiquitous Language) and, below
@@ -1446,7 +1447,7 @@ lands in it. Paths are relative to the output root.</p>
 <tr><td><code>livt://story/{story-key}</code></td><td><code>story/{story-key}.html</code></td></tr>
 <tr><td><code>livt://opportunity/{opportunity-key}</code></td><td><code>opportunity/{opportunity-key}.html</code></td></tr>
 <tr><td><code>livt://opportunity-canvas/{opportunity-key}</code></td><td><code>opportunity-canvas/{opportunity-key}.html</code></td></tr>
-<tr><td><code>livt://story-map/{map-name}</code></td><td><code>story-map/{map-name}.html</code></td></tr>
+<tr><td><code>livt://story-map/{opportunity-key}</code></td><td><code>story-map/{opportunity-key}.html</code></td></tr>
 <tr><td><code>livt://ubiquitous/{term-key}</code></td><td><code>ubiquitous.html#{term-key}</code></td></tr>
 <tr><td><code>livt://ubiquitous/{ctx}/{term-key}</code></td><td><code>ubiquitous.html#{ctx}/{term-key}</code></td></tr>
 </tbody>
@@ -1461,11 +1462,15 @@ way, and for the same reason: <code>invoice</code> can mean one thing in billing
 another in shipping, so the context is part of the address rather than a label
 on it. The context is optional — a term whose meaning holds everywhere keeps the
 one-segment form — and the two shapes never resolve to each other.</p>
-<p>An opportunity is addressed by key rather than by display name, unlike a story
-map. The key is what its filename and its canvas already join on, so it is the
-identifier the livt repository carries. The canvas sits beside the opportunity
-rather than under it, the way a mapping sits beside its story — the two are
-joined by key, and either can exist without the other.</p>
+<p>An opportunity is addressed by key rather than by display name. The key is what
+its filename, its canvas, and its story map already join on, so it is the
+identifier the livt repository carries. The canvas and the map sit beside the
+opportunity rather than under it, the way a mapping sits beside its story —
+each is joined to it by key, and either can exist without the other.</p>
+<p>An opportunity has one story map and a map serves one opportunity, since the
+filename is the whole join, so the opportunity’s key addresses the map too. The
+map’s <code>name</code> is what its board shows: renaming a map moves neither its URI nor
+its page.</p>
 <p>A <a href="#retiring-an-item">closed</a> item has no sticky,
 so its URI lands on the board with nothing to scroll to. The URI still resolves:
 ask the tooling, which answers with the item and how it closed — a rule’s
