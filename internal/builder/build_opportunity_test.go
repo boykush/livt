@@ -10,6 +10,7 @@ import (
 
 	"github.com/boykush/livt/internal/domain"
 	"github.com/boykush/livt/internal/i18n"
+	"github.com/boykush/livt/internal/parser"
 )
 
 const demoCanvasYAML = "canvas:\n" +
@@ -24,7 +25,11 @@ func TestRenderOpportunityCanvasLaysOutTheThreeZones(t *testing.T) {
 	writeFile(t, filepath.Join(b.OpportunitiesDir, "demo.md"), "---\nname: デモ\n---\n\n一文\n")
 	writeFile(t, filepath.Join(b.CanvasesDir, "demo.yaml"), demoCanvasYAML)
 
-	if err := b.buildOpportunityCanvas(&domain.Opportunity{Key: domain.OpportunityKey{Value: "demo"}, Name: "デモ"}); err != nil {
+	canvas, err := parser.ParseOpportunityCanvas(filepath.Join(b.CanvasesDir, "demo.yaml"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if err := b.buildOpportunityCanvas(canvas, &domain.Opportunity{Key: domain.OpportunityKey{Value: "demo"}, Name: "デモ"}); err != nil {
 		t.Fatal(err)
 	}
 	html := readFile(t, filepath.Join(b.OutDir, "opportunity-canvas", "demo.html"))
@@ -53,6 +58,47 @@ func TestRenderOpportunityCanvasLaysOutTheThreeZones(t *testing.T) {
 	facts, solution, value := strings.Index(html, "bg-rose-50"), strings.Index(html, "bg-sky-50"), strings.Index(html, "bg-emerald-50")
 	if facts >= solution || solution >= value {
 		t.Errorf("zones are out of order: facts=%d solution=%d value=%d", facts, solution, value)
+	}
+}
+
+// A canvas stands without an opportunity file, the way a mapping stands without
+// a story card: the build renders it, called by its key, and it leads back to
+// the list, since there is no opportunity page to lead to.
+func TestCanvasWithNoOpportunityFileStillRenders(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	writeFile(t, filepath.Join(b.CanvasesDir, "unframed.yaml"), demoCanvasYAML)
+	if err := b.Build(); err != nil {
+		t.Fatal(err)
+	}
+
+	html := readFile(t, filepath.Join(b.OutDir, "opportunity-canvas", "unframed.html"))
+	if !strings.Contains(html, ">unframed</h1>") {
+		t.Error("the sheet is not called by its key")
+	}
+	if strings.Contains(html, "opportunity/unframed.html") {
+		t.Error("the sheet links an opportunity page the build never wrote")
+	}
+	if !strings.Contains(html, `href="../opportunities.html"`) {
+		t.Error("the sheet has no way back once there is no opportunity to lead to")
+	}
+}
+
+// With an opportunity file beside it, the sheet takes the opportunity's name and
+// leads back to its page.
+func TestCanvasLeadsBackToItsOpportunity(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	writeFile(t, filepath.Join(b.OpportunitiesDir, "demo.md"), "---\nname: デモ\n---\n\n一文\n")
+	writeFile(t, filepath.Join(b.CanvasesDir, "demo.yaml"), demoCanvasYAML)
+	if err := b.Build(); err != nil {
+		t.Fatal(err)
+	}
+
+	html := readFile(t, filepath.Join(b.OutDir, "opportunity-canvas", "demo.html"))
+	if !strings.Contains(html, ">デモ</h1>") {
+		t.Error("the sheet is not called by its opportunity's name")
+	}
+	if !strings.Contains(html, `href="../opportunity/demo.html"`) {
+		t.Error("the sheet does not lead back to its opportunity")
 	}
 }
 

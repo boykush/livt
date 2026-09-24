@@ -44,11 +44,11 @@ func mapOpportunity(sm *domain.StoryMap, index map[string]*domain.Opportunity) o
 	return opportunityRef{Name: sm.Name, Path: "../" + uri.StoryMapPage(sm.Name)}
 }
 
-// buildOpportunities builds a page per opportunity and per canvas, and returns a
-// preview tile for each on the Opportunities hub. mapsByKey names the story maps
-// that share an opportunity's key, so the opportunity links the journey mapped
-// for it; storiesByKey and tallies are what its progress is summed from, which
-// is why this runs after the mappings rather than beside the maps.
+// buildOpportunities builds a page per opportunity, and returns a preview tile
+// for each on the Opportunities hub. mapsByKey names the story maps that share
+// an opportunity's key, so the opportunity links the journey mapped for it;
+// storiesByKey and tallies are what its progress is summed from, which is why
+// this runs after the mappings rather than beside the maps.
 func (b *Builder) buildOpportunities(mapsByKey map[string][]storyMapRef, storiesByKey map[string][]opportunityReleaseStories, tallies map[string]mappingTally) ([]opportunityTile, error) {
 	opportunities, err := parser.ParseAllOpportunities(b.OpportunitiesDir)
 	if err != nil {
@@ -60,9 +60,6 @@ func (b *Builder) buildOpportunities(mapsByKey map[string][]storyMapRef, stories
 		canvasPath := ""
 		if b.hasOpportunityCanvas(o.Key) {
 			canvasPath = "../" + uri.OpportunityCanvasPage(o.Key.Value)
-			if err := b.buildOpportunityCanvas(o); err != nil {
-				return nil, err
-			}
 		}
 
 		progress := b.progressOf(o, storiesByKey[o.Key.Value], tallies)
@@ -249,26 +246,51 @@ func (b *Builder) progressOf(o *domain.Opportunity, slices []opportunityReleaseS
 	return p
 }
 
-// buildOpportunityCanvas renders the ten-box board for one opportunity.
-func (b *Builder) buildOpportunityCanvas(o *domain.Opportunity) error {
-	canvas, err := parser.ParseOpportunityCanvas(filepath.Join(b.CanvasesDir, o.Key.Value+".yaml"))
+// buildOpportunityCanvases renders a sheet for every canvas file, whether or not
+// an opportunity file shares its key: the canvas sits beside its opportunity the
+// way a mapping sits beside its story, and either stands without the other.
+func (b *Builder) buildOpportunityCanvases(opportunities map[string]*domain.Opportunity) error {
+	files, err := filepath.Glob(filepath.Join(b.CanvasesDir, "*.yaml"))
 	if err != nil {
-		return fmt.Errorf("parse opportunity canvas %q: %w", o.Key.Value, err)
+		return err
+	}
+	for _, f := range files {
+		canvas, err := parser.ParseOpportunityCanvas(f)
+		if err != nil {
+			return fmt.Errorf("parse %s: %w", f, err)
+		}
+		if err := b.buildOpportunityCanvas(canvas, opportunities[canvas.OpportunityKey.Value]); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
+// buildOpportunityCanvas renders the ten-box board for one canvas. o is nil
+// when no opportunity file shares the canvas's key; the key still names the
+// opportunity, so the sheet is called by it, as a mapping with neither a name
+// nor a story is called by its key.
+func (b *Builder) buildOpportunityCanvas(canvas *domain.OpportunityCanvas, o *domain.Opportunity) error {
+	key := canvas.OpportunityKey.Value
+	view := opportunityCanvasView{
+		Diff:            b.diffMark("../", uri.OpportunityCanvas(key)),
+		OpportunityKey:  key,
+		OpportunityName: key,
+		Panels:          canvas.Panels(),
+		Ubiquitous:      b.resolveTermCards(canvas.Ubiquitous),
+	}
+	if o != nil {
+		view.OpportunityName = o.DisplayName()
+		view.OpportunityPath = "../" + uri.OpportunityPage(key)
 	}
 
-	outPath := filepath.Join(b.OutDir, uri.OpportunityCanvasPage(o.Key.Value))
+	outPath := filepath.Join(b.OutDir, uri.OpportunityCanvasPage(key))
 	f, err := os.Create(outPath)
 	if err != nil {
 		return err
 	}
 	defer f.Close()
-	if err := renderOpportunityCanvas(f, b.Lang, opportunityCanvasView{
-		Diff:            b.diffMark("../", uri.OpportunityCanvas(o.Key.Value)),
-		OpportunityKey:  o.Key.Value,
-		OpportunityName: o.DisplayName(),
-		Panels:          canvas.Panels(),
-		Ubiquitous:      b.resolveTermCards(canvas.Ubiquitous),
-	}); err != nil {
+	if err := renderOpportunityCanvas(f, b.Lang, view); err != nil {
 		return err
 	}
 	fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))

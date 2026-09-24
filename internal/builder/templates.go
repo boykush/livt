@@ -370,8 +370,6 @@ type opportunityView struct {
 	Progress     opportunityProgress
 }
 
-// opportunityCanvasView is the sheet. Panels are its three columns, since the
-// canvas is laid out by zone rather than by the order its boxes are filled in.
 // opportunityProgressView is one opportunity's progress on a page of its own.
 // The opportunity's page carries the two gauges and leads here for the reading
 // story by story.
@@ -381,10 +379,15 @@ type opportunityProgressView struct {
 	Progress        opportunityProgress
 }
 
+// opportunityCanvasView is the sheet. Panels are its three columns, since the
+// canvas is laid out by zone rather than by the order its boxes are filled in.
 type opportunityCanvasView struct {
 	Diff            *diffMarkView
 	OpportunityKey  string
 	OpportunityName string
+	// OpportunityPath is empty when no opportunity file shares the key, the same
+	// way a mapping's StoryPath is empty when its story has no card.
+	OpportunityPath string
 	Panels          domain.CanvasPanels
 	Ubiquitous      []termCard
 }

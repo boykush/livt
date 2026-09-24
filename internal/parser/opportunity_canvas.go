@@ -60,3 +60,24 @@ func ParseOpportunityCanvas(path string) (*domain.OpportunityCanvas, error) {
 		Ubiquitous:         raw.Ubiquitous,
 	}, nil
 }
+
+// ParseAllOpportunityCanvases reads every canvas file, whether or not an
+// opportunity file shares its key: the two are joined by key, and either stands
+// without the other.
+func ParseAllOpportunityCanvases(canvasesDir string) ([]*domain.OpportunityCanvas, error) {
+	files, err := filepath.Glob(filepath.Join(canvasesDir, "*.yaml"))
+	if err != nil {
+		return nil, err
+	}
+
+	var canvases []*domain.OpportunityCanvas
+	for _, f := range files {
+		canvas, err := ParseOpportunityCanvas(f)
+		if err != nil {
+			return nil, err
+		}
+		canvases = append(canvases, canvas)
+	}
+
+	return canvases, nil
+}

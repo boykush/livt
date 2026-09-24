@@ -160,6 +160,32 @@ func TestCompareCoversEveryURIKind(t *testing.T) {
 	}
 }
 
+// A canvas stands without an opportunity file, so the diff reads one too: after
+// the opportunities, titled by its key. One that shares an opportunity's key is
+// read right after it and called by the opportunity's name, as its sheet is.
+func TestScanReadsACanvasWithNoOpportunityFile(t *testing.T) {
+	dirs := repoDirs(t.TempDir())
+	write(t, filepath.Join(dirs.Opportunities, "growth.md"), "---\nname: Growth\n---\n\nwhy it matters\n")
+	write(t, filepath.Join(dirs.Canvases, "growth.yaml"), "canvas:\n  problems:\n    - a problem\n")
+	write(t, filepath.Join(dirs.Canvases, "unframed.yaml"), "canvas:\n  problems:\n    - another problem\n")
+	head, err := Scan(dirs)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	changes := Compare(&Snapshot{byURI: map[string]int{}}, head)
+	want := []string{uri.Opportunity("growth"), uri.OpportunityCanvas("growth"), uri.OpportunityCanvas("unframed")}
+	if got := uris(changes); !equal(got, want) {
+		t.Fatalf("changes = %v, want %v", got, want)
+	}
+	if got := changes[1].Title; got != "Growth" {
+		t.Errorf("paired canvas title = %q, want its opportunity's name", got)
+	}
+	if got := changes[2].Title; got != "unframed" {
+		t.Errorf("unpaired canvas title = %q, want its key", got)
+	}
+}
+
 // livt:automates livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-02
 // EX-03: what changed is a removal beside its replacement, and what did not
 // is still there to read it against.

@@ -207,6 +207,10 @@ func (b *Builder) Build() error {
 		return err
 	}
 
+	if err := b.buildOpportunityCanvases(opportunities); err != nil {
+		return err
+	}
+
 	maps, err := b.buildStoryMaps(opportunities)
 	if err != nil {
 		return err
