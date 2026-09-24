@@ -36,7 +36,7 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-cc7ffef7.js";
+            window.path_to_searchindex_js = "searchindex-6c48737a.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="toc-a62fb9f7.js"></script>
@@ -989,8 +989,9 @@ stays off the wall. A resource gone entirely has no page left to put anything
 on, so its list says how many of its kind went.</p>
 <h2 id="livt-mcp"><a class="header" href="#livt-mcp"><code>livt mcp</code></a></h2>
 <p>Run an MCP (<a href="https://modelcontextprotocol.io">Model Context Protocol</a>) server
-that exposes the livt repository (story maps, stories, example mappings, and
-the ubiquitous language). An implementation repo’s coding agent can then fetch
+that exposes the livt repository (opportunities and their canvases, story maps,
+stories, example mappings, and the ubiquitous language). An implementation
+repo’s coding agent can then fetch
 the spec for a story or rule without reading livt’s source.</p>
 <p>The livt repository usually lives in a separate checkout from the consumer, so point at
 it with <code>--root</code> or the <code>LIVT_ROOT</code> environment variable. The flag takes
@@ -1058,7 +1059,7 @@ questions, and ubiquitous terms linked alongside):</p>
 <tr><td><code>livt://opportunity-canvas/{opportunity_key}</code></td><td>The <a href="#the-opportunity-canvas">Opportunity Canvas</a> filled in for an opportunity, as its ten <code>boxes</code> — each with its <code>key</code>, printed <code>number</code>, heading, the <code>prompt</code> it asks, and its <code>items</code>. Every box is returned, unanswered ones with an empty <code>items</code>: a blank box records a question the opportunity has not answered. Carries <code>opportunity_key</code> always, and <code>opportunity_uri</code> when an opportunity file shares the key — a canvas resolves without one.</td></tr>
 <tr><td><code>livt://story-map/{opportunity_key}</code></td><td>The story map drawn for an opportunity: activities, steps, story cards, and releases. Story cards that have a story file link to their story resource. An opportunity has one map, filed under its key, so <code>{opportunity_key}</code> addresses it — the same key the build output uses for <code>story-map/{opportunity_key}.html</code>. Carries <code>opportunity_key</code>; <code>opportunity_uri</code> when an opportunity file shares the key, as a canvas does; and <code>name</code>: the map’s own, or the key when it has none.</td></tr>
 <tr><td><code>livt://story/{story_key}</code></td><td>The story’s name, body, and frontmatter meta (e.g. <code>issue</code>), plus <code>example_mapping_uri</code> when a mapping exists and <code>opportunities</code> — the opportunities the story sits on, as <code>list_stories</code> gives them.</td></tr>
-<tr><td><code>livt://mapping/{story_key}</code></td><td>The story’s example mapping (rules, examples, questions, ubiquitous terms), with its own <code>name</code> when it has one — the only name a mapping with no story file carries. Each rule, example, and question carries its own <code>uri</code>, and <code>ubiquitous_terms</code> resolves each referenced term to its resource URI. <a href="#retiring-an-item">Retired</a> entries are listed too, saying how they closed — the mapping is the structural record their ids are numbered from.</td></tr>
+<tr><td><code>livt://mapping/{story_key}</code></td><td>The story’s example mapping (rules, examples, questions, ubiquitous terms), with <code>story_uri</code> when a story file exists for the key, and its own <code>name</code> when it has one — the only name a mapping with no story file carries. Each rule, example, and question carries its own <code>uri</code>, and <code>ubiquitous_terms</code> resolves each referenced term to its resource URI. <a href="#retiring-an-item">Retired</a> entries are listed too, saying how they closed — the mapping is the structural record their ids are numbered from.</td></tr>
 <tr><td><code>livt://mapping/{story_key}/rule/{rule_id}</code></td><td>A single rule and its examples, its <code>status</code> — <code>proposed</code> while it awaits agreement, <code>accepted</code> once agreed, <code>rejected</code> or <code>retired</code> once closed, and present on every rule — plus its automation: <code>issues</code> (automation Issue URLs, as the mapping records them), <code>automated</code> (whether a collected report cites the rule itself — citing one of its examples does not count), and <code>automations</code> (each citing test’s <code>repo</code>, <code>rev</code>, <code>file</code>, <code>line</code>, and <code>url</code> where one could be built; omitted when no test cites it). The last two are <a href="#automating-a-rule">derived from the reports</a> under <code>automations/</code>, never read from the mapping. Each example carries its own <code>automated</code> and <code>automations</code>, answered for the example alone. Rules inside <code>livt://mapping/{story_key}</code> carry the same fields.</td></tr>
 <tr><td><code>livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}</code></td><td>A single example of a rule. Example ids are numbered within their rule, so the address carries <code>{rule_id}</code> — <code>EX-01</code> alone does not identify an example.</td></tr>
 <tr><td><code>livt://mapping/{story_key}/question/{question_id}</code></td><td>A single question. Questions hang off the mapping rather than off a rule, so the address stops at <code>{story_key}</code>.</td></tr>
@@ -1117,8 +1118,9 @@ or an agent that is not connected to livt over MCP.</p>
 </tbody>
 </table>
 </div>
-<p>Every URI shape the MCP server exposes as a resource resolves here: mappings,
-rules, examples, questions, stories, story maps, and ubiquitous language terms.</p>
+<p>Every URI shape the MCP server exposes as a resource resolves here:
+opportunities, opportunity canvases, story maps, stories, mappings, rules,
+examples, questions, and ubiquitous language terms.</p>
 <h3 id="output-forms"><a class="header" href="#output-forms">Output forms</a></h3>
 <p><strong><code>--format json</code></strong> (the default) prints the same payload an MCP
 <code>resources/read</code> of that URI serves, <code>spec_version</code> included — the two surfaces
@@ -1360,12 +1362,15 @@ either complete or not offered.</p>
     {opportunity-key}.html                # Opportunity detail pages
   opportunity-canvas/
     {opportunity-key}.html                # Opportunity canvas sheets
+  opportunity-progress/
+    {opportunity-key}.html                # Opportunity dashboards
   story/
     {story-key}.html                      # Story detail pages
   mapping/
     {story-key}.html                      # Example mapping boards
   story-map/
     {opportunity-key}.html                # Story map boards
+  diff.html                               # The diff, only with --diff
 </code></pre>
 <p>Every page shares a left sidebar that links the five resource types (Example
 Mappings, Opportunities, Story Maps, Stories, Ubiquitous Language) and, below
@@ -1401,8 +1406,8 @@ never through an issue closing.</p>
 <div style="break-before: page; page-break-before: always;"></div>
 <h1 id="livt-uri"><a class="header" href="#livt-uri">livt URI</a></h1>
 <p>A <strong>livt URI</strong> names one point in the livt repository — an opportunity, its
-canvas, a rule, an example, a question, a story, a story map, or a ubiquitous
-language term. It is the form to
+canvas, its story map, a story, an example mapping, a rule, an example, a
+question, or a ubiquitous language term. It is the form to
 reach for whenever a reference has to survive outside the livt repository: a test comment,
 an issue body, a commit message.</p>
 <pre><code>livt://mapping/{story-key}/rule/{rule-id}
