@@ -8,7 +8,7 @@ import (
 	"github.com/boykush/livt/internal/domain"
 )
 
-func TestParseExampleMappingReadsRuleIssues(t *testing.T) {
+func TestParseExampleMappingReadsRuleIssuesAndTheDeprecatedFlag(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "story.yaml")
 	data := []byte("rules:\n" +
 		"  - id: R-01\n" +
@@ -32,13 +32,13 @@ func TestParseExampleMappingReadsRuleIssues(t *testing.T) {
 	if len(recorded.Issues) != 2 || recorded.Issues[0] != "https://github.com/boykush/livt/issues/25" {
 		t.Fatalf("got issues %v, want the two recorded URLs", recorded.Issues)
 	}
-	if recorded.Automated() {
-		t.Fatal("automation is collected from the tests, not read from the mapping")
+	if !recorded.Automated() {
+		t.Fatal("a mapping still carrying automated: keeps the board it had")
 	}
 
 	bare := em.Rules[1]
-	if len(bare.Issues) != 0 {
-		t.Fatalf("bare rule should default to unlinked, got issues=%v", bare.Issues)
+	if len(bare.Issues) != 0 || bare.Automated() {
+		t.Fatalf("bare rule should default to unlinked and not automated, got issues=%v automated=%v", bare.Issues, bare.Automated())
 	}
 }
 
