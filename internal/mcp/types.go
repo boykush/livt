@@ -283,9 +283,12 @@ type questionJSON struct {
 
 type exampleMappingJSON struct {
 	StoryKey string `json:"story_key"`
+	// StoryURI is present only when a story file exists for the key, as on the
+	// listing row: the key names the story either way, the URI its file.
+	StoryURI string `json:"story_uri,omitempty"`
 	// Name is the mapping's own, and the only name a mapping with no story has.
-	// Omitted when it has none: the story's name is read from livt://story/{key},
-	// never copied in here.
+	// Omitted when it has none: the story's name is read from story_uri, never
+	// copied in here.
 	Name      string         `json:"name,omitempty"`
 	Rules     []ruleJSON     `json:"rules,omitempty"`
 	Questions []questionJSON `json:"questions,omitempty"`
@@ -453,7 +456,7 @@ func (c Config) toExampleMappingJSON(em *domain.ExampleMapping) exampleMappingJS
 	for _, q := range em.Questions {
 		questions = append(questions, toQuestionJSON(em.StoryKey.Value, q))
 	}
-	return exampleMappingJSON{
+	out := exampleMappingJSON{
 		StoryKey:        em.StoryKey.Value,
 		Name:            em.Name,
 		Rules:           rules,
@@ -461,6 +464,10 @@ func (c Config) toExampleMappingJSON(em *domain.ExampleMapping) exampleMappingJS
 		Ubiquitous:      em.Ubiquitous,
 		UbiquitousTerms: c.toTermRefs(em.Ubiquitous),
 	}
+	if c.hasStory(out.StoryKey) {
+		out.StoryURI = uri.Story(out.StoryKey)
+	}
+	return out
 }
 
 func toStoryMapSummaryJSON(sm *domain.StoryMap) storyMapSummaryJSON {
