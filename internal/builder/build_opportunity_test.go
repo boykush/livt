@@ -102,7 +102,7 @@ func TestCanvasLeadsBackToItsOpportunity(t *testing.T) {
 	}
 }
 
-// livt:automates livt://opportunity/collaborative-discovery
+// livt://opportunity/collaborative-discovery
 // The Related section is what says how far an opportunity has been taken. A
 // canvas means it was thought through, a story map means it was taken on.
 func TestRenderOpportunityLinksItsCanvasAndStoryMap(t *testing.T) {
