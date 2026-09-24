@@ -1,0 +1,214 @@
+name: livt automations collect
+description: Read an implementation repository at the revision it reported, and open its report's pull request against this livt repository. Expects this livt repository to be checked out already
+
+# The livt repository's half of the collect station. Everything an
+# implementation repository would otherwise have to know — where a report
+# lands, what branch carries it, what the commit and the pull request say —
+# lives here and nowhere else.
+inputs:
+  repository:
+    description: The implementation repository the report speaks for, as owner/repo
+    required: true
+  rev:
+    description: The revision of that repository to read, as a full 40-character SHA
+    required: true
+  token:
+    description: A token that can push a branch and open a pull request in this repository (Contents write, Pull requests write)
+    required: true
+  read-token:
+    description: A token that can read the implementation repository. Only needed when it is private
+    required: false
+    default: ""
+  livt-version:
+    description: The livt release to install, e.g. v0.15.0
+    required: false
+    default: latest
+  forge:
+    description: Code host to build line URLs for, github or gitlab. Only needed when the implementation repository is on a self-hosted one, which a hostname cannot identify
+    required: false
+    default: ""
+  url-template:
+    description: Line URL template for a host livt does not know, e.g. {base}/src/commit/{rev}/{path}#L{line}
+    required: false
+    default: ""
+
+outputs:
+  changed:
+    description: Whether the set of cited livt URIs differs from the committed report, as true or false
+    value: ${{ steps.compare.outputs.changed }}
+  report:
+    description: Path the report was written to, relative to this repository
+    value: ${{ steps.read.outputs.report }}
+
+runs:
+  using: composite
+  steps:
+    # Both values are handed to git, and the name becomes the path the report
+    # is written to, so their shape is checked before anything is done with
+    # them: a dispatch is input from outside. The event type is checked too,
+    # which catches a types: left off altogether — a misspelled one wakes
+    # nothing at all and no step here can see it.
+    - name: Read the dispatch
+      id: read
+      shell: bash
+      env:
+        REPOSITORY: ${{ inputs.repository }}
+        REV: ${{ inputs.rev }}
+        EVENT: ${{ github.event.action }}
+      run: |
+        set -euo pipefail
+        if [ "$GITHUB_EVENT_NAME" = repository_dispatch ] && [ "$EVENT" != automations-rev ]; then
+          echo "::error::woken by $EVENT; this workflow's types: should name automations-rev alone"
+          exit 1
+        fi
+        if ! printf %s "$REPOSITORY" | grep -qE '^[A-Za-z0-9_-][A-Za-z0-9._-]*/[A-Za-z0-9_-][A-Za-z0-9._-]*$'; then
+          echo "::error::repository is not an owner/repo name: $REPOSITORY"
+          exit 1
+        fi
+        if ! printf %s "$REV" | grep -qE '^[0-9a-f]{40}$'; then
+          echo "::error::rev is not a full revision: $REV"
+          exit 1
+        fi
+        echo "report=automations/$REPOSITORY.json" >> "$GITHUB_OUTPUT"
+
+    # Duplicated from the notify action rather than shared: a relative uses:
+    # inside a composite action resolves against the caller's workspace, so a
+    # shared step would only ever work for this repository.
+    - name: Install livt
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        VERSION: ${{ inputs.livt-version }}
+      run: |
+        set -euo pipefail
+        case "$(uname -s)" in
+          Linux) os=linux ;;
+          Darwin) os=darwin ;;
+          *) echo "::error::livt ships no build for $(uname -s)"; exit 1 ;;
+        esac
+        case "$(uname -m)" in
+          x86_64) arch=amd64 ;;
+          aarch64 | arm64) arch=arm64 ;;
+          *) echo "::error::livt ships no build for $(uname -m)"; exit 1 ;;
+        esac
+        asset="livt_*_${os}_${arch}.tar.gz"
+        if [ "$VERSION" = latest ]; then
+          gh release download --repo boykush/livt --pattern "$asset" --output - > "$RUNNER_TEMP/livt.tar.gz"
+        else
+          gh release download "$VERSION" --repo boykush/livt --pattern "$asset" --output - > "$RUNNER_TEMP/livt.tar.gz"
+        fi
+        tar -xz -C "$RUNNER_TEMP" -f "$RUNNER_TEMP/livt.tar.gz" livt
+
+    # One revision and no history: the scan reads a working tree, and the
+    # report is a snapshot of exactly this one. The credential goes in a header
+    # rather than the remote URL, because livt reads that URL back to name the
+    # forge — a token embedded there would be parsed as part of the hostname
+    # and land in every citation's url.
+    - name: Fetch the implementation repository
+      shell: bash
+      env:
+        REPOSITORY: ${{ inputs.repository }}
+        REV: ${{ inputs.rev }}
+        READ_TOKEN: ${{ inputs.read-token }}
+        IMPL: ${{ runner.temp }}/impl
+      run: |
+        set -euo pipefail
+        git init --quiet "$IMPL"
+        git -C "$IMPL" remote add origin "$GITHUB_SERVER_URL/$REPOSITORY.git"
+        if [ -n "$READ_TOKEN" ]; then
+          header="AUTHORIZATION: basic $(printf 'x-access-token:%s' "$READ_TOKEN" | base64 | tr -d '\n')"
+          git -C "$IMPL" -c "http.$GITHUB_SERVER_URL/.extraheader=$header" fetch --quiet --depth=1 origin "$REV"
+        else
+          git -C "$IMPL" fetch --quiet --depth=1 origin "$REV"
+        fi
+        git -C "$IMPL" checkout --quiet --detach FETCH_HEAD
+
+    # The whole repository is rescanned rather than the old report patched: the
+    # notifier decided whether this was worth reading at all, never what the
+    # report says. livt names the repository and revision by reading the
+    # checkout's own origin, so the report speaks for it rather than for us.
+    - name: Collect
+      shell: bash
+      env:
+        IMPL: ${{ runner.temp }}/impl
+        REPORT: ${{ steps.read.outputs.report }}
+        REV: ${{ inputs.rev }}
+        FORGE: ${{ inputs.forge }}
+        URL_TEMPLATE: ${{ inputs.url-template }}
+      run: |
+        set -euo pipefail
+        if [ -n "$URL_TEMPLATE" ]; then
+          "$RUNNER_TEMP/livt" automations "$IMPL" --out "$REPORT" --url-template "$URL_TEMPLATE"
+        elif [ -n "$FORGE" ]; then
+          "$RUNNER_TEMP/livt" automations "$IMPL" --out "$REPORT" --forge "$FORGE"
+        else
+          "$RUNNER_TEMP/livt" automations "$IMPL" --out "$REPORT"
+        fi
+        read=$(jq -r '.rev // ""' "$REPORT")
+        if [ "$read" != "$REV" ]; then
+          echo "::error::the report names ${read:-no revision}, not the $REV it was asked for"
+          exit 1
+        fi
+
+    # rev, generated_at and the urls built from rev move on every run, so a
+    # report never matches byte for byte. The claims are what the comparison
+    # is about; jq -S and unique keep citation order and duplicates out of it.
+    - name: Compare the claims
+      id: compare
+      shell: bash
+      env:
+        REPORT: ${{ steps.read.outputs.report }}
+      run: |
+        set -euo pipefail
+        claims() { jq -S '[.citations[].livt_uri] | unique' "$1"; }
+        if git show "HEAD:$REPORT" > "$RUNNER_TEMP/committed.json" 2>/dev/null \
+           && [ "$(claims "$RUNNER_TEMP/committed.json")" = "$(claims "$REPORT")" ]; then
+          echo "changed=false" >> "$GITHUB_OUTPUT"
+        else
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+        fi
+
+    # One branch per implementation repository, force-updated: a report is a
+    # snapshot, so the open pull request carries the latest one rather than a
+    # queue of them.
+    - name: Open the report's pull request
+      if: steps.compare.outputs.changed == 'true'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        REMOTE: https://x-access-token:${{ inputs.token }}@github.com/${{ github.repository }}.git
+        REPOSITORY: ${{ inputs.repository }}
+        REV: ${{ inputs.rev }}
+        REPORT: ${{ steps.read.outputs.report }}
+        RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      run: |
+        set -euo pipefail
+        branch="automations/$REPOSITORY"
+        git config user.name 'github-actions[bot]'
+        git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+        git switch --create "$branch"
+        git add "$REPORT"
+        git commit --file - <<EOF
+        chore: collect automations from $REPOSITORY
+
+        The merge added or removed a livt:automates line, so $REPOSITORY was
+        read at $REV and rescanned whole. Collected by $RUN_URL.
+        EOF
+        git push --force "$REMOTE" "HEAD:refs/heads/$branch"
+        if [ -n "$(gh pr list --head "$branch" --state open --json number --jq '.[].number')" ]; then
+          exit 0
+        fi
+        gh pr create --head "$branch" \
+          --title "chore: collect automations from $REPOSITORY" \
+          --body "$(cat <<EOF
+        Collected from $REPOSITORY at $REV.
+
+        $REPOSITORY reported the revision it merged, and livt read that revision
+        itself. This pull request opens only when the set of cited livt URIs
+        changed. The branch holds one report per implementation repository and
+        is force-updated, so a later run replaces this diff rather than stacking
+        another onto it.
+
+        Opened by $RUN_URL.
+        EOF
+        )"

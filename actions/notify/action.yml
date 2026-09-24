@@ -1,0 +1,84 @@
+name: livt automations notify
+description: Tell a livt repository which revision this repository merged, when the merge could have changed what its tests claim. Expects this repository to be checked out already
+
+# The implementation repository's half of the collect station. It carries no
+# knowledge of what the livt repository does with the answer: where a report
+# lands, what it is committed as and how it reaches main all stay over there.
+inputs:
+  livt-repository:
+    description: The livt repository to notify, as owner/repo
+    required: true
+  token:
+    description: A token that can send a repository dispatch to livt-repository (Contents write). GITHUB_TOKEN cannot stand in — a dispatch it signs starts no workflow run
+    required: true
+  livt-version:
+    description: The livt release to install, e.g. v0.15.0
+    required: false
+    default: latest
+
+outputs:
+  dispatched:
+    description: Whether a dispatch was sent, as true or false
+    value: ${{ steps.gate.outputs.collect }}
+
+runs:
+  using: composite
+  steps:
+    # github.token rather than an input: the release is public, and the only
+    # credential this action asks the caller for is the one that leaves the
+    # repository.
+    - name: Install livt
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        VERSION: ${{ inputs.livt-version }}
+      run: |
+        set -euo pipefail
+        case "$(uname -s)" in
+          Linux) os=linux ;;
+          Darwin) os=darwin ;;
+          *) echo "::error::livt ships no build for $(uname -s)"; exit 1 ;;
+        esac
+        case "$(uname -m)" in
+          x86_64) arch=amd64 ;;
+          aarch64 | arm64) arch=arm64 ;;
+          *) echo "::error::livt ships no build for $(uname -m)"; exit 1 ;;
+        esac
+        asset="livt_*_${os}_${arch}.tar.gz"
+        if [ "$VERSION" = latest ]; then
+          gh release download --repo boykush/livt --pattern "$asset" --output - > "$RUNNER_TEMP/livt.tar.gz"
+        else
+          gh release download "$VERSION" --repo boykush/livt --pattern "$asset" --output - > "$RUNNER_TEMP/livt.tar.gz"
+        fi
+        tar -xz -C "$RUNNER_TEMP" -f "$RUNNER_TEMP/livt.tar.gz" livt
+
+    # Only an added or removed marker line can change what a report claims, and
+    # livt is what knows how a marker is spelled — a step spelling it here would
+    # keep a second copy, free to drift. A base that cannot be read answers
+    # true, so the fetch is allowed to fail.
+    - name: Decide whether to collect
+      id: gate
+      shell: bash
+      env:
+        BEFORE: ${{ github.event.before }}
+        REMOTE: https://github.com/${{ github.repository }}.git
+      run: |
+        set -euo pipefail
+        git fetch --no-tags --depth=1 "$REMOTE" "$BEFORE" 2>/dev/null || true
+        echo "collect=$("$RUNNER_TEMP/livt" automations changed "$BEFORE")" >> "$GITHUB_OUTPUT"
+
+    # Two facts and no artifact. The livt repository reads the revision itself,
+    # so nothing here carries a report across the boundary.
+    - name: Tell the livt repository
+      if: steps.gate.outputs.collect == 'true'
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        LIVT_REPOSITORY: ${{ inputs.livt-repository }}
+      run: |
+        set -euo pipefail
+        jq -n \
+          --arg repository "$GITHUB_REPOSITORY" \
+          --arg rev "$GITHUB_SHA" \
+          '{event_type: "automations-rev", client_payload: {repository: $repository, rev: $rev}}' \
+          | gh api "repos/$LIVT_REPOSITORY/dispatches" --method POST --input -
