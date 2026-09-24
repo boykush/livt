@@ -45,11 +45,11 @@ func mapOpportunity(sm *domain.StoryMap, index map[string]*domain.Opportunity) o
 }
 
 // buildOpportunities builds a page per opportunity, and returns a preview tile
-// for each on the Opportunities hub. mapsByKey names the story maps that share
-// an opportunity's key, so the opportunity links the journey mapped for it;
+// for each on the Opportunities hub. mapByKey names the story map filed under an
+// opportunity's key, so the opportunity links the journey drawn for it;
 // storiesByKey and tallies are what its progress is summed from, which is why
 // this runs after the mappings rather than beside the maps.
-func (b *Builder) buildOpportunities(mapsByKey map[string][]storyMapRef, storiesByKey map[string][]opportunityReleaseStories, tallies map[string]mappingTally) ([]opportunityTile, error) {
+func (b *Builder) buildOpportunities(mapByKey map[string]storyMapRef, storiesByKey map[string][]opportunityReleaseStories, tallies map[string]mappingTally) ([]opportunityTile, error) {
 	opportunities, err := parser.ParseAllOpportunities(b.OpportunitiesDir)
 	if err != nil {
 		return nil, err
@@ -74,8 +74,12 @@ func (b *Builder) buildOpportunities(mapsByKey map[string][]storyMapRef, stories
 			}
 		}
 
+		var storyMap *storyMapRef
+		if ref, ok := mapByKey[o.Key.Value]; ok {
+			storyMap = &ref
+		}
 		outPath := filepath.Join(b.OutDir, uri.OpportunityPage(o.Key.Value))
-		if err := b.renderOpportunityPage(outPath, o, canvasPath, progressPath, mapsByKey[o.Key.Value], progress); err != nil {
+		if err := b.renderOpportunityPage(outPath, o, canvasPath, progressPath, storyMap, progress); err != nil {
 			return nil, err
 		}
 		fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))
@@ -85,7 +89,7 @@ func (b *Builder) buildOpportunities(mapsByKey map[string][]storyMapRef, stories
 			Name:      o.DisplayName(),
 			Statement: o.Body,
 			HasCanvas: canvasPath != "",
-			StoryMaps: rootRelativeMaps(mapsByKey[o.Key.Value]),
+			StoryMap:  rootRelativeMap(storyMap),
 			Links:     urlMetaFieldViews(o.Meta),
 			Progress:  progress,
 		})
@@ -94,7 +98,7 @@ func (b *Builder) buildOpportunities(mapsByKey map[string][]storyMapRef, stories
 	return tiles, nil
 }
 
-func (b *Builder) renderOpportunityPage(path string, o *domain.Opportunity, canvasPath, progressPath string, maps []storyMapRef, progress opportunityProgress) error {
+func (b *Builder) renderOpportunityPage(path string, o *domain.Opportunity, canvasPath, progressPath string, storyMap *storyMapRef, progress opportunityProgress) error {
 	f, err := os.Create(path)
 	if err != nil {
 		return err
@@ -106,7 +110,7 @@ func (b *Builder) renderOpportunityPage(path string, o *domain.Opportunity, canv
 		Meta:         metaFieldViews(o.Meta),
 		CanvasPath:   canvasPath,
 		ProgressPath: progressPath,
-		StoryMaps:    maps,
+		StoryMap:     storyMap,
 		Progress:     progress,
 	})
 }
@@ -139,7 +143,7 @@ func (b *Builder) buildOpportunityProgress(o *domain.Opportunity, progress oppor
 // tests. Folding the two into one number would let a high automation ratio over
 // a third of the stories read as nearly done.
 type opportunityProgress struct {
-	// Releases are the opportunity's stories in its maps' own release slices,
+	// Releases are the opportunity's stories in its map's own release slices,
 	// which is the order a team heading for a release reads them in. A map that
 	// declares no release leaves one unnamed slice holding every story.
 	Releases      []opportunityReleaseRow

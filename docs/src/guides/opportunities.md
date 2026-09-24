@@ -184,7 +184,7 @@ way a burn-up chart and a burn-down chart split the same numbers:
 
 **Burn-up** — counts that climb to the whole:
 
-- **Stories through an example mapping** — of the stories its maps hang under
+- **Stories through an example mapping** — of the stories its map hangs under
   the backbone, how many have had their conversation
 
 **Burn-down** — counts that fall to zero:

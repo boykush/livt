@@ -263,7 +263,7 @@ func (b *Builder) Build() error {
 	// An opportunity's progress is summed from the mappings its stories have,
 	// so its pages are built here rather than beside the maps that named those
 	// stories.
-	opportunityTiles, err := b.buildOpportunities(maps.MapsByOpportunity, maps.StoriesByOpportunity, tallies)
+	opportunityTiles, err := b.buildOpportunities(maps.MapByOpportunity, maps.StoriesByOpportunity, tallies)
 	if err != nil {
 		return err
 	}

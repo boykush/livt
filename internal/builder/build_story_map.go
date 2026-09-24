@@ -13,13 +13,13 @@ import (
 
 // storyMapBuild is what building the story maps leaves for the rest of the
 // build: the opportunity refs a story's cards earn it, a preview tile per map,
-// and the maps mapped for each opportunity, by opportunity key.
+// and the map drawn for each opportunity, by opportunity key.
 type storyMapBuild struct {
 	StoryOpportunities map[string][]opportunityRef
 	Tiles              []storyMapTile
-	MapsByOpportunity  map[string][]storyMapRef
+	MapByOpportunity   map[string]storyMapRef
 	// StoriesByOpportunity is the reverse of StoryOpportunities: the keyed
-	// stories an opportunity took on, in its maps' own release slices. Only
+	// stories an opportunity took on, in its map's own release slices. Only
 	// keyed cards are in it, because a candidate with no card cannot have been
 	// through an example mapping — counting it would make every opportunity look
 	// less discovered than it is by the only measure the livt repository can take.
@@ -37,30 +37,25 @@ func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (
 
 	out := storyMapBuild{
 		StoryOpportunities:   make(map[string][]opportunityRef),
-		MapsByOpportunity:    make(map[string][]storyMapRef),
+		MapByOpportunity:     make(map[string]storyMapRef),
 		StoriesByOpportunity: make(map[string][]opportunityReleaseStories),
 	}
-	slices := make(map[string]*releaseSlices)
-	seenByOpportunity := make(map[string]map[string]bool)
 	for _, sm := range maps {
 		key := sm.OpportunityKey.Value
 		ref := mapOpportunity(sm, opportunities)
 		// The map page names its opportunity only when a file backs it; a map
 		// standing in as its own opportunity would just link to itself.
 		var own *opportunityRef
+		var slices *releaseSlices
 		if _, ok := opportunities[key]; ok {
 			own = &ref
-			out.MapsByOpportunity[key] = append(out.MapsByOpportunity[key],
-				storyMapRef{Name: sm.DisplayName(), Path: "../" + uri.StoryMapPage(key)})
-			if seenByOpportunity[key] == nil {
-				seenByOpportunity[key] = make(map[string]bool)
-				slices[key] = newReleaseSlices()
-			}
+			out.MapByOpportunity[key] = storyMapRef{Name: sm.DisplayName(), Path: "../" + uri.StoryMapPage(key)}
+			slices = newReleaseSlices()
 			// Declared first and in the map's own order, so the slices read the
 			// way the map draws them rather than the order stories happen to be
 			// hung under the backbone.
 			for i, r := range sm.Releases {
-				slices[key].declare(r.ID, r.DisplayName(i))
+				slices.declare(r.ID, r.DisplayName(i))
 			}
 		}
 
@@ -84,26 +79,21 @@ func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (
 					}
 					seen[sc.Key.Value] = true
 					out.StoryOpportunities[sc.Key.Value] = append(out.StoryOpportunities[sc.Key.Value], ref)
-					// Deduped across the opportunity, not the map: two maps for
-					// one opportunity can hold the same story, and it is one
-					// story to the opportunity either way.
-					if own != nil && !seenByOpportunity[key][sc.Key.Value] {
-						seenByOpportunity[key][sc.Key.Value] = true
-						slices[key].add(sc.Release, sc.Key.Value)
+					if slices != nil {
+						slices.add(sc.Release, sc.Key.Value)
 					}
 				}
 			}
 		}
-	}
-
-	for key, s := range slices {
-		out.StoriesByOpportunity[key] = s.rows()
+		if slices != nil {
+			out.StoriesByOpportunity[key] = slices.rows()
+		}
 	}
 	return out, nil
 }
 
 // opportunityReleaseStories is one release slice of an opportunity's stories.
-// ID is empty for the stories its maps left unscoped — which is every story on
+// ID is empty for the stories its map left unscoped — which is every story on
 // a map that declares no release at all, the common case.
 type opportunityReleaseStories struct {
 	ID   string
@@ -111,8 +101,8 @@ type opportunityReleaseStories struct {
 	Keys []string
 }
 
-// releaseSlices buckets an opportunity's stories by the release its maps put
-// them in, keeping the maps' declared order. A slice nobody has hung a story
+// releaseSlices buckets an opportunity's stories by the release its map puts
+// them in, keeping the map's declared order. A slice nobody has hung a story
 // under is dropped rather than drawn empty: the map is where the plan is read,
 // and an empty row here would say a slice exists without saying anything about
 // it.
