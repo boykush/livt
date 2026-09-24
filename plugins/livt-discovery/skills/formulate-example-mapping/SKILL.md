@@ -35,7 +35,7 @@ Then read, in this order: `stories/{story-key}.md` for the story's scope and key
 2. Apply the edit to `discoveries/example-mappings/{story-key}.yaml`:
    - **Rule clarity** — sharpen vague rule names into crisp business rules; keep the team's intent.
    - **Example naming** — make examples concrete and memorable ("the one where…"); keep the same scenario.
-   - **Grouping** — example IDs are rule-scoped, so moving an example to the rule it actually illustrates always changes its ID. Move it only while nothing can be pointing at it: a just-recorded baseline where no rule carries `issues:` or `automated:`. Otherwise — and whenever you are unsure — retire it where it sits and add it under the right rule with a fresh ID, with `superseded_by:` on the retired one naming the new URI, so its old URI keeps resolving to the same text and says where the example went.
+   - **Grouping** — example IDs are rule-scoped, so moving an example to the rule it actually illustrates always changes its ID. Move it only while nothing can be pointing at it: a just-recorded baseline where no rule carries `issues:` and no test cites it yet. Otherwise — and whenever you are unsure — retire it where it sits and add it under the right rule with a fresh ID, with `superseded_by:` on the retired one naming the new URI, so its old URI keeps resolving to the same text and says where the example went.
    - **Splitting** — if the map shows too many rules (story too large), recommend a split in the commit message; don't silently shard.
    - **Question phrasing** — make a Question precise without answering it.
 3. Re-read the diff against the baseline: every change is structural, none is a meaning change. A line you cannot defend as expression is a line that belongs to `change-rule`.

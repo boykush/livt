@@ -15,7 +15,7 @@ This skill is written in English for maintainability — English is not the lang
 
 Verbatim from the canonical statement in `file-rule-issues` — the bullets this station depends on. A skill loads on its own, so it carries them rather than pointing at them. Change one, change all.
 
-- **The record lives in the livt repository.** A rule's `issues:` and a story's frontmatter `issues:` hold the automation issues filed for them; a rule's `automated:` holds the judgment that tests automate it. Neither is stored in a tracker, and neither is derived from one.
+- **The record lives in the livt repository.** A rule's `issues:` and a story's frontmatter `issues:` hold the automation issues filed for them. Neither is stored in a tracker, and neither is derived from one.
 - **`issues:` holds issue URLs and nothing else** — no PR links, no test links. A URL pasted in by hand counts exactly as one a skill filed.
 - **Dedupe reads the record, never the tracker.** An item is unfiled in a destination when its `issues:` holds no URL there. Never a tracker search, never a tracker's parent/child graph: links are written into a tracker, never read back out of it.
 - **The write-back is the filing.** An issue created and not recorded did not happen, so the created URL lands in `issues:` before you are done — a **working-tree edit only**, no commit and no PR, riding the team's normal review flow.

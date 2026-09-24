@@ -13,13 +13,13 @@ This skill is written in English for maintainability — English is not the lang
 
 ## The Record Contract
 
-This is the canonical statement. `file-story-issue` and `inspect-automation` repeat the bullets they need, verbatim — a skill loads on its own, so every skill that reads or writes the record has to carry them. Change one, change all.
+This is the canonical statement. `file-story-issue` repeats the bullets it needs, verbatim — a skill loads on its own, so every skill that reads or writes the record has to carry them. Change one, change all.
 
-- **The record lives in the livt repository.** A rule's `issues:` and a story's frontmatter `issues:` hold the automation issues filed for them; a rule's `automated:` holds the judgment that tests automate it. Neither is stored in a tracker, and neither is derived from one.
+- **The record lives in the livt repository.** A rule's `issues:` and a story's frontmatter `issues:` hold the automation issues filed for them. Neither is stored in a tracker, and neither is derived from one.
 - **`issues:` holds issue URLs and nothing else** — no PR links, no test links. A URL pasted in by hand counts exactly as one a skill filed.
 - **Dedupe reads the record, never the tracker.** An item is unfiled in a destination when its `issues:` holds no URL there. Never a tracker search, never a tracker's parent/child graph: links are written into a tracker, never read back out of it.
 - **The write-back is the filing.** An issue created and not recorded did not happen, so the created URL lands in `issues:` before you are done — a **working-tree edit only**, no commit and no PR, riding the team's normal review flow.
-- **`automated:` is a separate judgment.** Filing an issue, or closing it, does not make a rule automated; only evidence and a human do. Setting and unsetting it is `inspect-automation`'s station.
+- **Filing is not automating.** An issue opened here, or closed over there, says nothing about whether a rule is automated: that is answered by the tests citing it, which livt collects from the implementation repository.
 
 ## Yours and the Team's
 
@@ -85,7 +85,7 @@ The half you rely on, verbatim from the canonical statement in `change-rule`:
 
 - Don't check out or read the implementation repositories — the issue is a pointer, not a synchronized copy.
 - Don't consult the tracker to decide what is already filed, and don't re-file a rule × destination pair the record already holds — but don't let an existing link stop you filing the same rule to a *different* declared destination.
-- Don't put PR or test links in `issues:`, and don't set or unset `automated:`.
+- Don't put PR or test links in `issues:` — what goes there is an issue's URL, and a test is found by the citation it carries.
 - Don't cite the rule or its examples by bare id, and don't let the living-document URL stand in for the livt URI.
 - Don't commit or open a PR for the write-back.
 - Don't file story-level issues — that is `file-story-issue`'s job. Missing story issue? Suggest running it; don't improvise one.

@@ -90,4 +90,4 @@ Coming from `discovery-facilitator` 0.x? The skills were renamed for their stati
 | `/example-mapping-plan` | removed |
 | `/story-issue-file` | `/file-story-issue` — in livt-delivery |
 | `/rule-issue-file` | `/file-rule-issues` — in livt-delivery |
-| `/rule-automation-sync` | `/inspect-automation` — in livt-delivery |
+| `/rule-automation-sync` | removed — automation is collected from the tests |
