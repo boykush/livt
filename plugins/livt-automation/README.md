@@ -75,11 +75,13 @@ func TestAnExpiredCardIsRejected(t *testing.T) {
 
 The comment syntax is your language's — livt looks for the marker and the URI and never reads the structure around them. `livt automations <path>` walks a checkout and collects every such line into a report, and the livt repository's build derives each rule's status from the reports committed under `automations/`. A livt URI written without the marker is a reference, not a claim, and is not collected.
 
-The report goes back as a **pull request**, not a push: a pull request is where a citation can be checked. It lands at `automations/{owner}/{repo}.json` — one file and one branch per implementation repository, force-updated rather than accumulating, because a report is a snapshot and the open pull request should carry the latest one rather than a queue of them. The credential lives on your side, one token with write access to the livt repository; the livt repository holds none, which is what keeps joining the ring a change to your repository alone.
+The report goes back as a **pull request**, not a push: a pull request is where a citation can be checked. It lands at `automations/{owner}/{repo}.json` — one file and one branch per implementation repository, force-updated rather than accumulating, because a report is a snapshot and the open pull request should carry the latest one rather than a queue of them. None of that is yours to arrange. **Your side never scans and never writes a report**: it says which revision it merged, and the livt repository reads that revision itself. So the report is produced by one livt — the livt repository's — rather than by whichever version each implementation repository happened to install, and the path, the branch, the commit and the pull request stay where they are decided.
 
 ### The workflow
 
-Needs livt 0.15.0 or later, where `livt automations` and its `changed` subcommand arrived. Set `LIVT_REPOSITORY` to your livt repository, and put a token with write access to it in `LIVT_REPOSITORY_TOKEN` — a GitHub App installation token, or a fine-grained PAT with Contents and Pull requests write. If your livt repository *is* this repository, drop the second checkout and use the default `GITHUB_TOKEN` throughout.
+livt ships the step as an action, so nothing below spells out what a marker is or where a report goes. Set `LIVT_REPOSITORY` to your livt repository, and put a token that can send it a repository dispatch in `LIVT_REPOSITORY_TOKEN` — a GitHub App installation token, or a fine-grained PAT, with Contents write on that repository. `GITHUB_TOKEN` cannot stand in for it even when your livt repository *is* this repository: a dispatch it signs starts no workflow run, so nothing would wake to read the revision.
+
+The actions carry no versioning of their own: they live in the livt repository, so livt's release tags are theirs. Pin by commit SHA with the release in a comment, as you would any other action, and pin `livt-version` to that same release when you want the binary to move with the action rather than tracking the newest one.
 
 ```yaml
 name: livt-automations
@@ -90,95 +92,63 @@ on:
 
 permissions: {}
 
-# One report branch per implementation repository, so two merges must not
-# race to rewrite it.
-concurrency:
-  group: ${{ github.workflow }}
-  cancel-in-progress: false
-
-env:
-  LIVT_REPOSITORY: your-org/your-livt-repository
-
 jobs:
-  collect:
+  notify:
     runs-on: ubuntu-latest
     permissions:
-      contents: read # checkout
+      contents: read # checkout, and fetch the base the gate reads
     steps:
       - uses: actions/checkout@v7
         with:
           persist-credentials: false
 
-      - name: Install livt
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          set -euo pipefail
-          gh release download --repo boykush/livt \
-            --pattern 'livt_*_linux_amd64.tar.gz' --output - | tar -xz -C /usr/local/bin livt
-
-      # livt answers whether this push could have changed what the report
-      # claims. A base it cannot read answers true, so the fetch may fail.
-      - name: Decide whether to collect
-        id: gate
-        env:
-          BEFORE: ${{ github.event.before }}
-          REMOTE: https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-        run: |
-          set -euo pipefail
-          git fetch --no-tags --depth=1 "$REMOTE" "$BEFORE" 2>/dev/null || true
-          echo "collect=$(livt automations changed "$BEFORE")" >> "$GITHUB_OUTPUT"
-
-      # Collected before the livt repository is checked out: an untracked
-      # directory would leave the tree dirty, and a scan that cannot name its
-      # revision drops every line URL with it.
-      - name: Collect
-        if: steps.gate.outputs.collect == 'true'
-        run: livt automations . --out "$RUNNER_TEMP/report.json"
-
-      - name: Checkout the livt repository
-        if: steps.gate.outputs.collect == 'true'
-        uses: actions/checkout@v7
+      - uses: boykush/livt/actions/notify@<commit-sha> # <livt release>
         with:
-          repository: ${{ env.LIVT_REPOSITORY }}
+          livt-repository: your-org/your-livt-repository
           token: ${{ secrets.LIVT_REPOSITORY_TOKEN }}
-          path: livt-repository
-
-      - name: Open the report's pull request
-        if: steps.gate.outputs.collect == 'true'
-        working-directory: livt-repository
-        env:
-          GH_TOKEN: ${{ secrets.LIVT_REPOSITORY_TOKEN }}
-        run: |
-          set -euo pipefail
-          report="automations/$GITHUB_REPOSITORY.json"
-          branch="automations/$GITHUB_REPOSITORY"
-          mkdir -p "$(dirname "$report")"
-          cp "$RUNNER_TEMP/report.json" "$report"
-          # rev, generated_at and the urls built from rev move on every run, so
-          # the claims are compared and the snapshot's own dating is not.
-          claims() { jq -S '[.citations[].livt_uri] | unique' "$1"; }
-          if git show "HEAD:$report" > "$RUNNER_TEMP/committed.json" 2>/dev/null \
-             && [ "$(claims "$RUNNER_TEMP/committed.json")" = "$(claims "$report")" ]; then
-            exit 0
-          fi
-          git config user.name 'github-actions[bot]'
-          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
-          git switch --create "$branch"
-          git add "$report"
-          git commit --message "chore: collect automations from $GITHUB_REPOSITORY"
-          git push --force origin "HEAD:refs/heads/$branch"
-          if [ -z "$(gh pr list --repo "$LIVT_REPOSITORY" --head "$branch" \
-                       --state open --json number --jq '.[].number')" ]; then
-            gh pr create --repo "$LIVT_REPOSITORY" --head "$branch" \
-              --title "chore: collect automations from $GITHUB_REPOSITORY" \
-              --body "Collected from $GITHUB_REPOSITORY at $GITHUB_SHA."
-          fi
+          livt-version: <livt release> # omit to install the newest
 ```
+
+That is the whole of it. The action installs livt, asks it whether this push could have changed what your tests claim, and — only then — sends the revision. It writes nothing, reads nothing of the livt repository, and needs no checkout of it.
+
+### The livt repository's side
+
+The other half is an action too, and one workflow there serves every implementation repository:
+
+```yaml
+name: automations
+
+on:
+  repository_dispatch:
+    types: [automations-rev]
+
+permissions: {}
+
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # checkout, and read the committed report to compare against
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+
+      - uses: boykush/livt/actions/collect@<commit-sha> # <livt release>
+        with:
+          repository: ${{ github.event.client_payload.repository }}
+          rev: ${{ github.event.client_payload.rev }}
+          token: ${{ secrets.REPO_WRITER_TOKEN }}
+          # read-token: only when the implementation repository is private
+```
+
+It fetches that one revision of that one repository — no history, no checkout of anything else — scans it, compares the claims against the report already committed, and opens the pull request when they differ. Nothing in it names a participating repository: the dispatch says which one, and the report is refused if it does not name the same one back. A repository joins by adding the notify step to its CI and being handed a token, and the livt repository is not edited to let it in.
+
+`automations-rev` is livt's, the way the marker is. It is the one string both sides have to agree on, and the `types:` line is the one place a livt repository writes it — an action can ship steps, never a trigger. Get it wrong and the dispatch is accepted and nothing runs, which is quiet; it is a setup-time mistake, made once, while you are watching for the first report.
 
 ### Why the walk is gated, and why removal counts
 
-Collecting walks every file. That is sub-second on a small repository and not free on a monorepo, so `livt automations changed <base>` answers whether walking could tell you anything new, and the walk is skipped when it cannot. The judgment is livt's rather than your CI's: livt is what decides what a marker is, so a step spelling `livt:automates` itself would keep a second copy of that definition, free to drift the moment the real one moves.
+Collecting walks every file. That is sub-second on a small repository and not free on a monorepo, so `livt automations changed <base>` answers whether walking could tell you anything new, and nothing is said when it cannot — no dispatch, and so no fetch and no walk on the other side either. The judgment is livt's rather than your CI's: livt is what decides what a marker is, so a step spelling `livt:automates` itself would keep a second copy of that definition, free to drift the moment the real one moves. This is the one thing that has to run on your side, because the diff it reads is yours.
 
 A line that merely moved is not a reason to walk, and the reasoning is worth holding onto because it is easy to get backwards. A report is a **dated snapshot, not a live view**: its `rev`, `file` and `line` all come from one revision, and the forge URL is pinned to that revision. A later commit that moves a cited line does not break the link — the report simply describes an earlier revision, which it says out loud. A rename is the same, and `changed` answers false for both.
 
@@ -186,9 +156,9 @@ Removal *is* a reason. A deleted test leaves the board claiming a rule is automa
 
 A range livt cannot read — a new branch, a force-push, a revision since gone — answers **true**, not false, and says why on stderr. The two mistakes are not the same size: guessing false drops a claim, while guessing true costs one walk. That is why the fetch of the base revision above is allowed to fail quietly.
 
-When the gate does open, the whole repository is rescanned rather than the old report patched: the answer decides whether to walk, never what the report says.
+When the gate does open, the livt repository fetches that one revision and rescans the whole of it rather than patching the old report: the answer decides whether to read at all, never what the report says.
 
-The comparison that follows is on the claims, not on the bytes. A report never matches itself byte for byte — `rev`, `generated_at` and the urls built from `rev` all move on their own — so comparing files would open a pull request on every run. Comparing the set of cited livt URIs asks the question the pull request is actually about, and it is the same question the gate asked, one grain finer: could the claims have changed, and did they.
+The comparison that follows is on the claims, not on the bytes, and it runs on the livt side against the report already committed there — which is why it is not in your workflow. A report never matches itself byte for byte — `rev`, `generated_at` and the urls built from `rev` all move on their own — so comparing files would open a pull request on every run. Comparing the set of cited livt URIs asks the question the pull request is actually about, and it is the same question the gate asked, one grain finer: could the claims have changed, and did they.
 
 ## What this plugin teaches, and what it leaves to you
 
@@ -197,7 +167,17 @@ The comparison that follows is on the claims, not on the bytes. A report never m
 - **livt's** — the read surface it always shipped (the tools, the resources, the `spec_version` on every payload, the livt URI addressing each rule, example, and question), and now the claim that travels back the other way. The marker `livt:automates` followed by one livt URI and nothing else; a URI written without the marker as a reference rather than a claim, since production code cites rules for context too; a URI carrying a placeholder as documentation, so the form can be written about without inventing a citation; a marked line that does not read as one URI as a warning rather than a silent drop. Then the report it collects into — each citation a livt URI with its file and line, the whole of it naming the repository, the revision, and when it was read, and carrying no verdict about any of that — and what a diff must hold to be worth a walk at all, which is livt's for the same reason the marker is.
 - **Yours** — everything about building against it. The test framework, the comment syntax your language spells the line in, where in the file the citation sits, whether a block wrapping a rule's cases carries the rule's own citation above them, what counts as done. The scan reads lines and URIs and never the structure around them, which is what spares livt any knowledge of your framework and leaves all of that to you as house style, for your own `AGENTS.md` or a skill you write. So is taking part at all: your repository scans itself, so joining is one step added to your CI and one credential held on your side, with nothing about it declared in the livt repository.
 
-livt still ships no test framework, no CI recipe, and no definition of done. The workflow above is a worked example of that one step, not part of the plugin — the only parts of it livt owns are the two commands.
+livt still ships no test framework and no definition of done. What it does ship now is the step itself, as two actions — so the marker, the walk, the report, where it lands and what the pull request says are all livt's, and none of them is a recipe you keep a copy of. What stays yours is everything above the citation: the framework, the comment syntax, where in the file the line sits, what counts as covered.
+
+## Coming from 5.x
+
+The collect workflow is replaced, not adjusted. A 5.x one installed livt, scanned this repository, checked the livt repository out, committed the report and opened the pull request. All of that is gone from your side: you tell the livt repository which revision you merged, and it reads that revision itself.
+
+Recopy [the workflow](#the-workflow). What you keep is the trigger and a token; what you drop is the second checkout, the branch, the commit message, the pull request body, and the report file itself. The token narrows with it — Contents write on the livt repository is enough now, where Pull requests write was needed to open one.
+
+An old workflow keeps working. Nothing on the livt side refuses a pull request opened the way 5.x opened it, so nothing breaks the day you upgrade livt. What you carry until you recopy is a version of livt on your side producing a report read by a different version on theirs, and a copy of the livt repository's file layout that no longer has to be there.
+
+The livt repository gains a workflow of its own, listening for `automations-rev`. [The livt repository's side](#the-livt-repositorys-side) has it. Until it exists, a notify step dispatches into silence.
 
 ## Coming from 4.x
 
