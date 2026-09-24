@@ -2,22 +2,27 @@ package cmd
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"os"
 	"path/filepath"
 
 	"github.com/boykush/livt/internal/automation"
+	"github.com/boykush/livt/internal/mcp"
+	"github.com/boykush/livt/internal/uri"
 	"github.com/spf13/cobra"
 )
 
 var (
-	automationsRepo        string
-	automationsRev         string
-	automationsForge       string
-	automationsURLTemplate string
-	automationsOut         string
-	automationsChangedPath string
+	automationsRepo          string
+	automationsRev           string
+	automationsForge         string
+	automationsURLTemplate   string
+	automationsOut           string
+	automationsChangedPath   string
+	automationsVerifyRoot    string
+	automationsVerifyReports string
 )
 
 func init() {
@@ -27,7 +32,9 @@ func init() {
 	automationsCmd.Flags().StringVar(&automationsURLTemplate, "url-template", "", "line URL template for a host livt does not know, e.g. {base}/src/commit/{rev}/{path}#L{line}")
 	automationsCmd.Flags().StringVarP(&automationsOut, "out", "o", "", "write the report to this file (default: stdout)")
 	automationsChangedCmd.Flags().StringVar(&automationsChangedPath, "path", ".", "the checkout to read the diff in")
-	automationsCmd.AddCommand(automationsChangedCmd)
+	automationsVerifyCmd.Flags().StringVar(&automationsVerifyRoot, "root", "", "path to the root of the livt repository (default: $LIVT_ROOT, then the current directory)")
+	automationsVerifyCmd.Flags().StringVar(&automationsVerifyReports, "reports", "", reportsFlagUsage+" (default: "+defaultReportsDir+" under --root)")
+	automationsCmd.AddCommand(automationsChangedCmd, automationsVerifyCmd)
 	rootCmd.AddCommand(automationsCmd)
 }
 
@@ -118,6 +125,90 @@ wrong skip is a board that lies.`,
 		reportChanged(cmd.OutOrStdout(), cmd.ErrOrStderr(), automationsChangedPath, args[0], head)
 		return nil
 	},
+}
+
+var automationsVerifyCmd = &cobra.Command{
+	Use:   "verify",
+	Short: "Check that every livt URI the collected reports cite resolves",
+	Long: `Resolve every livt URI the collected reports cite against the livt repository
+holding them.
+
+A citation is written by hand in a test comment, and collecting only reads it:
+a mistyped marker, or one naming an id that moved, lands in the report as a
+claim about a point of the spec that is not there. Nothing downstream says so
+-- an unresolvable URI simply matches no rule, so the board shows a rule as
+un-automated and the test goes on passing.
+
+Run it where the reports land, on the pull request that commits them, and the
+typo fails there instead of on main.
+
+A URI that resolves to a retired rule is not a failure. The rule closed on the
+spec's side while the test naming it still runs and passes; that gap is the
+board's to show, not this command's to break a build over.`,
+	Args: cobra.NoArgs,
+	RunE: func(cmd *cobra.Command, args []string) error {
+		cmd.SilenceUsage = true
+		root := resolveRoot(automationsVerifyRoot)
+		// The reports live in the livt repository being resolved against, so a
+		// --root pointing elsewhere must take them with it: the default read
+		// from the wrong checkout would find no reports and pass on nothing.
+		reports := automationsVerifyReports
+		if reports == "" {
+			reports = filepath.Join(root, defaultReportsDir)
+		}
+		return verifyCitations(cmd.OutOrStdout(), root, reports)
+	},
+}
+
+// verifyCitations resolves every citation the reports carry, naming the ones
+// that resolve to nothing. Reports are read through the same loader the build
+// uses, so a missing directory is no error here either: a livt repository
+// nobody has pointed an implementation at has no citations to check.
+func verifyCitations(out io.Writer, root, reportsDir string) error {
+	idx, err := automation.Load(reportsDir)
+	if err != nil {
+		return err
+	}
+	cfg := mcp.Config{Root: root}
+	var checked, unresolved int
+	for _, report := range idx.Reports() {
+		for _, c := range report.Citations {
+			checked++
+			err := resolveCitation(cfg, c.URI)
+			if err == nil {
+				continue
+			}
+			unresolved++
+			fmt.Fprintf(out, "%s%s:%d cites %s: %v\n", repoPrefix(report.Repo), c.File, c.Line, c.URI, err)
+		}
+	}
+	if unresolved > 0 {
+		return fmt.Errorf("%d of %d cited livt URI(s) do not resolve against %s", unresolved, checked, root)
+	}
+	fmt.Fprintf(out, "%d cited livt URI(s) resolve\n", checked)
+	return nil
+}
+
+// resolveCitation answers whether the livt repository holds what the URI names.
+// A retired item does resolve and so passes: retiring is a decision taken on
+// the spec's side, and failing a build over it would reach further than the
+// decision does.
+func resolveCitation(cfg mcp.Config, rawURI string) error {
+	p, ok := uri.Parse(rawURI)
+	if !ok {
+		return errors.New("not a livt URI")
+	}
+	return cfg.Verify(p)
+}
+
+// repoPrefix names whose report a failing citation came from. A report
+// generated outside a checkout names no repository, and a bare space before
+// the file path would be the only trace left of it.
+func repoPrefix(repo string) string {
+	if repo == "" {
+		return ""
+	}
+	return repo + " "
 }
 
 // reportChanged answers on stdout and explains itself on stderr, so CI reads
