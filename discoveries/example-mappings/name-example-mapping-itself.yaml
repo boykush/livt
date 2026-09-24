@@ -36,10 +36,22 @@ rules:
         name: 名前付きの実例マッピングがあるキーにストーリーカードを書くとき、文言が食い違えば、どちらを採るかをユーザーに確かめて両方に書く
       - id: EX-02
         name: ストーリーカードのある盤面を記録するときは、実例マッピングに名前を書かない
+  - id: R-06
+    name: MCPは、ストーリーのない実例マッピングも含めて実例マッピングを一覧できる
+    examples:
+      - id: EX-01
+        name: 実例マッピングの一覧には、ストーリーのない実例マッピングも名前付きで並ぶ
+      - id: EX-02
+        name: ストーリーのある実例マッピングはstory_uriを持ち、名前はそのストーリーから引く
+      - id: EX-03
+        name: オポチュニティで絞り込むと、そのストーリーマップに載る実例マッピングだけが並ぶ
 
 questions:
   - id: Q-01
     text: ストーリーのない実例マッピングを、実装リポジトリのエージェントはどう見つけるか（MCPのlist_storiesはストーリーからしか辿らない）
+    retired: true
+    superseded_by:
+      - livt://mapping/name-example-mapping-itself/rule/R-06
 
 ubiquitous:
   - example-mapping
