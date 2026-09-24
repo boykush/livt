@@ -82,6 +82,9 @@ rules:
 questions:
   - id: Q-01
     text: ルール付箋・具体例付箋の見せ方をどう作り直すか（✓スタンプ1個では、ルール軸と具体例軸・3つの状況・テストへのリンクを運べない）
+    retired: true
+    superseded_by:
+      - livt://mapping/show-automation-status-per-rule/rule/R-01
   - id: Q-02
     text: 母数が走行ごとに動くことをサイトがどう示すか（何リポジトリ中いくつを走査したかを明示しないと、前回との比較が黙って壊れる）
   - id: Q-03
