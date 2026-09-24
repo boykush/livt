@@ -69,7 +69,7 @@ stdio needs the livt repository's path per repository (`LIVT_ROOT`, or `--root`)
 Reading the spec is the **build** station of the [delivery ring](../livt-delivery/README.md); this is the next one, **collect**. Telling the livt repository which rules your tests now cover is what keeps its board reporting the present instead of a guess, and no skill sits at the station — a machine can do it because nothing is being judged. The citation is a claim its author made while writing the test. A test makes it with a marker and a livt URI on a comment line above itself:
 
 ```go
-// livt:automates livt://mapping/checkout/rule/R-02/example/EX-01
+// livt:automates livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}
 func TestAnExpiredCardIsRejected(t *testing.T) {
 ```
 

@@ -13,6 +13,7 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/boykush/livt/internal/automation"
 	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
 )
 
@@ -29,6 +30,11 @@ Cite the livt repository by livt URI. Whenever a rule, example, or question is r
 
     good: // livt://mapping/place-order-with-saved-card/rule/R-13/example/EX-01
     bad:  // R-13 EX-01
+
+A test that automates a rule or an example claims it, and a claim carries the marker ` + automation.Marker + `: the comment line holds the marker and that one livt URI, nothing else. Everywhere else the bare URI is what you want — production code cites rules for context too, and only a marked line is collected as automation. Where in the file the marked comment sits is your repository's convention, not livt's.
+
+    claim:     // ` + automation.Marker + ` livt://mapping/place-order-with-saved-card/rule/R-13/example/EX-01
+    reference: // livt://mapping/place-order-with-saved-card/rule/R-13
 
 A published living-document URL is a convenience link for humans, not the citation form: it depends on where the site is deployed, and the livt URI does not.`
 
