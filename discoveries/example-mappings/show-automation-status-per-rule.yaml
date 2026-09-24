@@ -22,6 +22,11 @@ rules:
     examples:
       - id: EX-01
         name: SSGはruleのautomatedとissuesのみを読み、GitHubには問い合わせない
+        retired: true
+        superseded_by:
+          - livt://mapping/show-automation-status-per-rule/rule/R-02/example/EX-02
+      - id: EX-02
+        name: SSGは集められたレポートとruleのissuesのみを読み、forgeにもトラッカーにも問い合わせない
 
 questions: []
 
