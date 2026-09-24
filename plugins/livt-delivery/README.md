@@ -72,6 +72,12 @@ Every skill here is a plain [Agent Skill](https://agentskills.io) — no subagen
 /plugin install livt-delivery@boykush/livt
 ```
 
+## Coming from 3.x
+
+`/plan-story` is gone. Holding an agreed mapping against the implementation and the design is no longer a skill here — that work now largely happens inside the session that produces the mapping, and the station's position had gone ambiguous anyway: it called itself the first stop of the delivery ring while the delivery story map never carried it and the discovery map did.
+
+What it guarded survives it. No discovery skill reads code; they simply no longer point at one that would. And the ring boundary is the record itself — delivery starts when an agreed record is handed outward, and the implementation is first read on the far side of that hand-off. A question the code settles still reaches the mapping, as a proposal through [`/change-rule`](../livt-discovery/README.md).
+
 ## Coming from 1.x
 
 The skills and their inputs are unchanged; what left them is the tracker. `gh issue create`, `gh issue view`, `gh pr view`, and the `addSubIssue` GraphQL calls moved out of the three delivery skills and into the reference implementation above, and the issue-body markdown shrank to the backpointer block — the rest of the body is your template now. A team that was already filing to GitHub loses nothing: the recipe is a scroll away rather than a fork away. A team that had forked a skill to change the tracker should re-read the boundary above; most of what those forks changed is no longer in the skill.
