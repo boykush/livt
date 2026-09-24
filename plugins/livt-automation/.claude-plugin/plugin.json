@@ -1,6 +1,6 @@
 {
   "name": "livt-automation",
-  "version": "4.0.0",
+  "version": "5.0.0",
   "description": "The implementation repository's end of the delivery ring: connect a coding agent to a locally running livt MCP server (livt mcp --http) so it reads the spec — stories, example mappings, rules, ubiquitous language — and cites it by livt URI while automating rules as tests",
   "author": {
     "name": "boykush",
