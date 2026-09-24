@@ -389,12 +389,12 @@ func TestBuildStoryMapsCollectsMultipleOpportunitiesPerStory(t *testing.T) {
 	for _, r := range refs {
 		names[r.Name] = r.Path
 	}
-	for _, name := range []string{"Map A", "Map B"} {
+	for name, key := range map[string]string{"Map A": "map-a", "Map B": "map-b"} {
 		path, ok := names[name]
 		if !ok {
 			t.Fatalf("expected the shared story to belong to %q", name)
 		}
-		if want := "../story-map/" + name + ".html"; path != want {
+		if want := "../story-map/" + key + ".html"; path != want {
 			t.Fatalf("got path %q for %q, want %q", path, name, want)
 		}
 	}
@@ -433,4 +433,27 @@ func matchingDivEnd(t *testing.T, html string, start int) int {
 	}
 	t.Fatal("no matching </div> for the row container")
 	return -1
+}
+
+// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-09/example/EX-07
+// A board is filed under its opportunity's key whatever the map is called, so
+// renaming it moves nothing. A map with no name at all is called by that key
+// rather than rendering a blank title or a page with no filename.
+func TestStoryMapPageIsFiledUnderItsKey(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	writeFile(t, filepath.Join(b.USMDir, "discovery.yaml"), "name: 協働ディスカバリー\nactivities: []\n")
+	writeFile(t, filepath.Join(b.USMDir, "nameless.yaml"), "activities: []\n")
+	if err := b.Build(); err != nil {
+		t.Fatal(err)
+	}
+
+	if html := readFile(t, filepath.Join(b.OutDir, "story-map", "discovery.html")); !strings.Contains(html, "協働ディスカバリー") {
+		t.Error("the board filed under its key does not carry the map's name")
+	}
+	if html := readFile(t, filepath.Join(b.OutDir, "story-map", "nameless.html")); !strings.Contains(html, "<title>nameless - livt</title>") {
+		t.Error("a map with no name is not called by its key")
+	}
+	if _, err := os.Stat(filepath.Join(b.OutDir, "story-map", ".html")); !os.IsNotExist(err) {
+		t.Errorf("a nameless map wrote a page with no filename (stat error: %v)", err)
+	}
 }

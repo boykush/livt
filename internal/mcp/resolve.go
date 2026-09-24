@@ -71,7 +71,7 @@ func (s *Server) Resolve(p uri.Parsed) (any, error) {
 		}
 		return opportunityCanvasResult{versioned: s.versioned(), Canvas: s.cfg.toOpportunityCanvasJSON(canvas)}, nil
 	case uri.KindStoryMap:
-		sm, err := s.cfg.storyMap(p.MapName)
+		sm, err := s.cfg.storyMap(p.OpportunityKey)
 		if err != nil {
 			return nil, notFound(err)
 		}
@@ -118,7 +118,7 @@ func (c Config) Verify(p uri.Parsed) error {
 	case uri.KindOpportunityCanvas:
 		_, err = c.opportunityCanvas(p.OpportunityKey)
 	case uri.KindStoryMap:
-		_, err = c.storyMap(p.MapName)
+		_, err = c.storyMap(p.OpportunityKey)
 	case uri.KindStory:
 		_, err = c.story(p.StoryKey)
 	case uri.KindTerm:

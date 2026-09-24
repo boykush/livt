@@ -108,7 +108,7 @@ func TestCanvasLeadsBackToItsOpportunity(t *testing.T) {
 func TestRenderOpportunityLinksItsCanvasAndStoryMap(t *testing.T) {
 	b := outDirsBuilder(t)
 	o := &domain.Opportunity{Key: domain.OpportunityKey{Value: "demo"}, Name: "デモ", Body: "一文で言う"}
-	maps := []storyMapRef{{Name: "デモマップ", Path: "../story-map/デモマップ.html"}}
+	maps := []storyMapRef{{Name: "デモマップ", Path: "../story-map/demo.html"}}
 
 	out := filepath.Join(b.OutDir, "opportunity", "demo.html")
 	if err := b.renderOpportunityPage(out, o, "../opportunity-canvas/demo.html", "", maps, opportunityProgress{}); err != nil {
@@ -116,7 +116,7 @@ func TestRenderOpportunityLinksItsCanvasAndStoryMap(t *testing.T) {
 	}
 	html := readFile(t, out)
 
-	for _, want := range []string{"Opportunity Canvas", `href="` + mapHref("../story-map/", "デモマップ") + `"`, "一文で言う"} {
+	for _, want := range []string{"Opportunity Canvas", `href="../story-map/demo.html"`, "一文で言う"} {
 		if !strings.Contains(html, want) {
 			t.Errorf("expected %q on the opportunity page", want)
 		}
@@ -138,9 +138,9 @@ func TestOpportunityAndStoryMapLinkEachOtherByKind(t *testing.T) {
 
 	en := i18n.Of(i18n.En)
 	for _, c := range []struct{ page, href, label string }{
-		{filepath.Join("opportunity", "demo.html"), mapHref("../story-map/", "デモ"), en.Msg("label.story-map")},
-		{"opportunities.html", mapHref("story-map/", "デモ"), en.Msg("label.story-map")},
-		{filepath.Join("story-map", "デモ.html"), "../opportunity/demo.html", en.Msg("label.opportunity")},
+		{filepath.Join("opportunity", "demo.html"), "../story-map/demo.html", en.Msg("label.story-map")},
+		{"opportunities.html", "story-map/demo.html", en.Msg("label.story-map")},
+		{filepath.Join("story-map", "demo.html"), "../opportunity/demo.html", en.Msg("label.opportunity")},
 	} {
 		text, ok := linkText(readFile(t, filepath.Join(b.OutDir, c.page)), c.href)
 		if !ok {
@@ -229,7 +229,7 @@ func TestMapWithNoOpportunityFileStandsInAsItsOwn(t *testing.T) {
 	}
 
 	refs := built.StoryOpportunities["card"]
-	if len(refs) != 1 || refs[0].Name != "デモマップ" || refs[0].Path != "../story-map/デモマップ.html" {
+	if len(refs) != 1 || refs[0].Name != "デモマップ" || refs[0].Path != "../story-map/demo.html" {
 		t.Fatalf("got %+v, want the map standing in as its own opportunity", refs)
 	}
 	if len(built.MapsByOpportunity) != 0 {

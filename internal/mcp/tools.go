@@ -31,7 +31,7 @@ func (s *Server) registerTools(srv *mcpsdk.Server) {
 	}, s.listExampleMappings)
 	mcpsdk.AddTool(srv, &mcpsdk.Tool{
 		Name:        "list_story_maps",
-		Description: "List all story maps. Each entry hands out the uri of its story map resource (livt://story-map/{map_name}).",
+		Description: "List all story maps, one per opportunity. Each entry hands out the opportunity_key the map is filed under, the map's name, and the uri of its story map resource (livt://story-map/{opportunity_key}).",
 	}, s.listStoryMaps)
 	mcpsdk.AddTool(srv, &mcpsdk.Tool{
 		Name:        "list_terms",
@@ -249,7 +249,7 @@ func (c Config) storyOpportunities() (map[string][]opportunityRefJSON, error) {
 	index := make(map[string][]opportunityRefJSON)
 	for _, sm := range maps {
 		key := sm.OpportunityKey.Value
-		ref := opportunityRefJSON{Key: key, Name: sm.Name, URI: uri.StoryMap(sm.Name)}
+		ref := opportunityRefJSON{Key: key, Name: sm.DisplayName(), URI: uri.StoryMap(key)}
 		if o, ok := described[key]; ok {
 			ref.Name, ref.URI = o.DisplayName(), uri.Opportunity(key)
 		}
@@ -304,8 +304,7 @@ func (c Config) opportunities() ([]opportunitySummaryJSON, error) {
 }
 
 // storyMapsForOpportunity names the maps whose file key is this opportunity's —
-// the same filename join the site build uses. A map is addressed by display
-// name, so the ref carries the name while the key does the matching.
+// the same filename join the site build uses.
 func (c Config) storyMapsForOpportunity(opportunityKey string) ([]storyMapSummaryJSON, error) {
 	all, err := parser.ParseAllStoryMaps(c.usmDir())
 	if err != nil {
@@ -314,7 +313,7 @@ func (c Config) storyMapsForOpportunity(opportunityKey string) ([]storyMapSummar
 	var out []storyMapSummaryJSON
 	for _, sm := range all {
 		if sm.OpportunityKey.Value == opportunityKey {
-			out = append(out, storyMapSummaryJSON{Name: sm.Name, URI: uri.StoryMap(sm.Name)})
+			out = append(out, toStoryMapSummaryJSON(sm))
 		}
 	}
 	return out, nil
@@ -374,7 +373,7 @@ func (c Config) storyMaps() ([]storyMapSummaryJSON, error) {
 	}
 	out := make([]storyMapSummaryJSON, 0, len(all))
 	for _, sm := range all {
-		out = append(out, storyMapSummaryJSON{Name: sm.Name, URI: uri.StoryMap(sm.Name)})
+		out = append(out, toStoryMapSummaryJSON(sm))
 	}
 	return out, nil
 }
@@ -397,21 +396,22 @@ func (c Config) terms() ([]termSummaryJSON, error) {
 	return out, nil
 }
 
-// storyMap loads the story map with the given display name. Maps live in
-// discoveries/usm/*.yaml but are addressed by name — the identifier the build
-// output uses for story-map/{name}.html — so the lookup scans all maps. The
-// name never touches the filesystem, so it needs no segment validation.
-func (c Config) storyMap(name string) (*domain.StoryMap, error) {
-	all, err := parser.ParseAllStoryMaps(c.usmDir())
+// storyMap loads the story map drawn for an opportunity. It is filed under the
+// opportunity's key, so it is read by that key the way the canvas beside it is,
+// and the key is validated first so it cannot escape the usm directory.
+func (c Config) storyMap(opportunityKey string) (*domain.StoryMap, error) {
+	if !uri.ValidSegment(opportunityKey) {
+		return nil, fmt.Errorf("story map for %q not found", opportunityKey)
+	}
+	path := filepath.Join(c.usmDir(), opportunityKey+".yaml")
+	if _, err := os.Stat(path); err != nil {
+		return nil, fmt.Errorf("story map for %q not found", opportunityKey)
+	}
+	sm, err := parser.ParseStoryMap(path)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("parse story map for %q: %w", opportunityKey, err)
 	}
-	for _, sm := range all {
-		if sm.Name == name {
-			return sm, nil
-		}
-	}
-	return nil, fmt.Errorf("story map %q not found", name)
+	return sm, nil
 }
 
 // story loads a story by key. Unlike parser.FindStoryByKey it reports a

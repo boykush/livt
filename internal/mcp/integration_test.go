@@ -280,7 +280,7 @@ func TestEndToEnd(t *testing.T) {
 		"livt://mapping/demo/rule/R-99",
 		"livt://mapping/demo/rule/R-01/example/EX-99",
 		"livt://mapping/demo/question/Q-99",
-		uri.StoryMap("なし"),
+		uri.StoryMap("nope"),
 		"livt://story/nope",
 		"livt://ubiquitous/nope",
 	} {

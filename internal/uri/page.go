@@ -53,11 +53,9 @@ func StoryPage(storyKey string) string {
 	return "story/" + storyKey + ".html"
 }
 
-// StoryMapPage is where StoryMap lands. The name stays raw here: the URI
-// percent-encodes it to hold one path segment, but the build writes the file
-// under the display name itself.
-func StoryMapPage(name string) string {
-	return "story-map/" + name + ".html"
+// StoryMapPage is where StoryMap lands.
+func StoryMapPage(opportunityKey string) string {
+	return "story-map/" + opportunityKey + ".html"
 }
 
 // TermPage is where Term lands. The whole ubiquitous language is one table, so

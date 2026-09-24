@@ -107,8 +107,12 @@ type listStoryMapsOutput struct {
 }
 
 type storyMapSummaryJSON struct {
+	// OpportunityKey is the key the map is filed under, which is its
+	// opportunity's and what its URI is built on.
+	OpportunityKey string `json:"opportunity_key"`
+	// Name is the map's own, or the key when it has none.
 	Name string `json:"name"`
-	// URI is the story map's resource (livt://story-map/{map_name}).
+	// URI is the story map's resource (livt://story-map/{opportunity_key}).
 	URI string `json:"uri"`
 }
 
@@ -176,7 +180,7 @@ type opportunityCanvasResult struct {
 	Canvas opportunityCanvasJSON `json:"opportunity_canvas"`
 }
 
-// storyMapResult is the body of the livt://story-map/{map_name} resource.
+// storyMapResult is the body of the livt://story-map/{opportunity_key} resource.
 type storyMapResult struct {
 	versioned
 	StoryMap storyMapJSON `json:"story_map"`
@@ -291,9 +295,11 @@ type exampleMappingJSON struct {
 }
 
 type storyMapJSON struct {
-	Name       string         `json:"name"`
-	Activities []activityJSON `json:"activities,omitempty"`
-	Releases   []releaseJSON  `json:"releases,omitempty"`
+	// OpportunityKey and Name as on storyMapSummaryJSON.
+	OpportunityKey string         `json:"opportunity_key"`
+	Name           string         `json:"name"`
+	Activities     []activityJSON `json:"activities,omitempty"`
+	Releases       []releaseJSON  `json:"releases,omitempty"`
 	// Ubiquitous and UbiquitousTerms mirror the same pair on exampleMappingJSON.
 	Ubiquitous      []string      `json:"ubiquitous,omitempty"`
 	UbiquitousTerms []termRefJSON `json:"ubiquitous_terms,omitempty"`
@@ -451,6 +457,11 @@ func (c Config) toExampleMappingJSON(em *domain.ExampleMapping) exampleMappingJS
 	}
 }
 
+func toStoryMapSummaryJSON(sm *domain.StoryMap) storyMapSummaryJSON {
+	key := sm.OpportunityKey.Value
+	return storyMapSummaryJSON{OpportunityKey: key, Name: sm.DisplayName(), URI: uri.StoryMap(key)}
+}
+
 func (c Config) toStoryMapJSON(sm *domain.StoryMap) storyMapJSON {
 	activities := make([]activityJSON, 0, len(sm.Activities))
 	for _, a := range sm.Activities {
@@ -473,7 +484,8 @@ func (c Config) toStoryMapJSON(sm *domain.StoryMap) storyMapJSON {
 		releases = append(releases, releaseJSON{ID: r.ID, Name: r.Name})
 	}
 	return storyMapJSON{
-		Name:            sm.Name,
+		OpportunityKey:  sm.OpportunityKey.Value,
+		Name:            sm.DisplayName(),
 		Activities:      activities,
 		Releases:        releases,
 		Ubiquitous:      sm.Ubiquitous,

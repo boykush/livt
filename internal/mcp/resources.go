@@ -61,7 +61,7 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "story-map",
 		Title:       "Story map",
-		Description: "A user story map (activities, steps, story cards, releases, ubiquitous terms), addressed by its display name (percent-encoded).",
+		Description: "The user story map drawn for an opportunity (activities, steps, story cards, releases, ubiquitous terms), addressed by the opportunity's key: an opportunity has one map, filed under its key. opportunity_key is that key; name is the map's own, or the key when it has none.",
 		MIMEType:    "application/json",
 		URITemplate: uri.StoryMapTemplate,
 	}, s.readStoryMap)
@@ -118,7 +118,7 @@ func (s *Server) readOpportunityCanvas(_ context.Context, req *mcpsdk.ReadResour
 	return s.read(req.Params.URI, uri.KindOpportunityCanvas)
 }
 
-// readStoryMap serves livt://story-map/{map_name}.
+// readStoryMap serves livt://story-map/{opportunity_key}.
 func (s *Server) readStoryMap(_ context.Context, req *mcpsdk.ReadResourceRequest) (*mcpsdk.ReadResourceResult, error) {
 	return s.read(req.Params.URI, uri.KindStoryMap)
 }

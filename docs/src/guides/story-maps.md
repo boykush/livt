@@ -3,7 +3,7 @@
 Story maps are YAML files stored in `discoveries/usm/`. They define the structure of a User Story Map with activities, user tasks, stories, and release slices.
 The `steps:` field holds the user tasks — the field keeps livt's own name, the boards use Patton's.
 
-A map's **filename** names the [opportunity](./opportunities.md) it serves: a map whose key matches an `opportunities/{key}.md` is the journey mapped for that opportunity, and every story on it carries that opportunity's chip. A map whose key matches no opportunity stands in as its own, named by the map — see [Linking a story map](./opportunities.md#linking-a-story-map). The map's `name:` stays its own display name either way, and is what addresses it.
+A map's **filename** names the [opportunity](./opportunities.md) it serves: a map whose key matches an `opportunities/{key}.md` is the journey mapped for that opportunity, and every story on it carries that opportunity's chip. A map whose key matches no opportunity stands in as its own, named by the map — see [Linking a story map](./opportunities.md#linking-a-story-map). An opportunity has one map, so the key addresses it as well: `livt://story-map/{key}`, and `story-map/{key}.html` on the site. The map's `name:` stays its own either way — the board's title, and optional, since a map without one is called by its key. Renaming a map moves no link.
 
 ## Format
 

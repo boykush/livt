@@ -41,7 +41,7 @@ func mapOpportunity(sm *domain.StoryMap, index map[string]*domain.Opportunity) o
 	if o, ok := index[sm.OpportunityKey.Value]; ok {
 		return opportunityRef{Name: o.DisplayName(), Path: "../" + uri.OpportunityPage(o.Key.Value)}
 	}
-	return opportunityRef{Name: sm.Name, Path: "../" + uri.StoryMapPage(sm.Name)}
+	return opportunityRef{Name: sm.DisplayName(), Path: "../" + uri.StoryMapPage(sm.OpportunityKey.Value)}
 }
 
 // buildOpportunities builds a page per opportunity, and returns a preview tile

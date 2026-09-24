@@ -7,7 +7,6 @@
 package uri
 
 import (
-	"net/url"
 	"strings"
 )
 
@@ -17,8 +16,10 @@ const (
 	RuleTemplate        = "livt://mapping/{story_key}/rule/{rule_id}"
 	ExampleTemplate     = "livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}"
 	QuestionTemplate    = "livt://mapping/{story_key}/question/{question_id}"
-	StoryMapTemplate    = "livt://story-map/{map_name}"
 	OpportunityTemplate = "livt://opportunity/{opportunity_key}"
+	// StoryMapTemplate addresses the one map drawn for an opportunity, by the
+	// opportunity's key. It sits beside the opportunity the way the canvas does.
+	StoryMapTemplate = "livt://story-map/{opportunity_key}"
 	// OpportunityCanvasTemplate addresses the canvas filled in for an
 	// opportunity. It sits beside the opportunity rather than under it, the way
 	// a mapping sits beside its story: the two are joined by key, and either can
@@ -71,18 +72,17 @@ func Question(storyKey, questionID string) string {
 	return mappingPrefix + storyKey + questionInfix + questionID
 }
 
-// StoryMap builds the URI for a story map. Maps are addressed by display name —
-// the same identifier the build output uses for story-map/{name}.html —
-// percent-encoded because names are free text (often non-ASCII) and the URI
-// needs a single valid path segment.
-func StoryMap(name string) string {
-	return storyMapPrefix + url.PathEscape(name)
+// StoryMap builds the URI for the story map drawn for an opportunity. An
+// opportunity has one map, filed under its key, so the key addresses the map;
+// the map's name is only what a page shows.
+func StoryMap(opportunityKey string) string {
+	return storyMapPrefix + opportunityKey
 }
 
 // Opportunity builds the URI for an opportunity's name, statement, and meta.
-// Unlike a story map, an opportunity is addressed by key rather than display
-// name: the key is what the filename and the canvas join on, so it is already
-// the identifier the livt repository carries.
+// It is addressed by key rather than display name: the key is what the
+// filename, the canvas, and the map join on, so it is already the identifier
+// the livt repository carries.
 func Opportunity(opportunityKey string) string {
 	return opportunityPrefix + opportunityKey
 }
@@ -186,19 +186,13 @@ func ParseQuestion(s string) (storyKey, questionID string, ok bool) {
 	return key, id, true
 }
 
-// ParseStoryMap extracts the map name from a story map URI, undoing the
-// percent-encoding applied by StoryMap. The name is only ever compared against
-// parsed maps — never used as a file path — so it needs no segment guard.
-func ParseStoryMap(s string) (name string, ok bool) {
-	escaped, found := strings.CutPrefix(s, storyMapPrefix)
-	if !found || escaped == "" {
+// ParseStoryMap extracts the opportunity key from a story map URI.
+func ParseStoryMap(s string) (opportunityKey string, ok bool) {
+	key, found := strings.CutPrefix(s, storyMapPrefix)
+	if !found || !ValidSegment(key) {
 		return "", false
 	}
-	name, err := url.PathUnescape(escaped)
-	if err != nil || name == "" {
-		return "", false
-	}
-	return name, true
+	return key, true
 }
 
 // ParseOpportunity extracts the opportunity key from an opportunity URI. The

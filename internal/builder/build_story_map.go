@@ -51,7 +51,7 @@ func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (
 		if _, ok := opportunities[key]; ok {
 			own = &ref
 			out.MapsByOpportunity[key] = append(out.MapsByOpportunity[key],
-				storyMapRef{Name: sm.Name, Path: "../" + uri.StoryMapPage(sm.Name)})
+				storyMapRef{Name: sm.DisplayName(), Path: "../" + uri.StoryMapPage(key)})
 			if seenByOpportunity[key] == nil {
 				seenByOpportunity[key] = make(map[string]bool)
 				slices[key] = newReleaseSlices()
@@ -65,14 +65,14 @@ func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (
 		}
 
 		view := b.toStoryMapView(sm, own)
-		view.Diff = b.diffMark("../", uri.StoryMap(sm.Name))
-		outPath := filepath.Join(b.OutDir, uri.StoryMapPage(sm.Name))
+		view.Diff = b.diffMark("../", uri.StoryMap(key))
+		outPath := filepath.Join(b.OutDir, uri.StoryMapPage(key))
 		if err := b.buildStoryMap(outPath, view); err != nil {
 			return storyMapBuild{}, err
 		}
 		fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))
 
-		out.Tiles = append(out.Tiles, storyMapTile{Name: sm.Name, Opportunity: own})
+		out.Tiles = append(out.Tiles, storyMapTile{Key: key, Name: sm.DisplayName(), Opportunity: own})
 
 		// A key can recur across steps/releases within one map; add its chip once.
 		seen := make(map[string]bool)
@@ -229,7 +229,7 @@ func (b *Builder) toStoryMapView(sm *domain.StoryMap, opportunity *opportunityRe
 
 	return storyMapView{
 		StoryMap: storyMapViewData{
-			Name:            sm.Name,
+			Name:            sm.DisplayName(),
 			Opportunity:     opportunity,
 			Activities:      activities,
 			ReleaseRows:     releaseRows,

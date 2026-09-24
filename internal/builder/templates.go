@@ -309,7 +309,10 @@ type mappingsIndexView struct {
 	FilterOpportunities []string
 }
 
+// storyMapTile is one card on the Story Maps hub. Key is what its page is filed
+// under; Name is only what the card shows.
 type storyMapTile struct {
+	Key  string
 	Name string
 	// Opportunity is the opportunity this map serves, empty when no opportunity
 	// file claims the map's key.

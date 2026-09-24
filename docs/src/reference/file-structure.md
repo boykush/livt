@@ -27,7 +27,7 @@ project-root/
 - `livt.yaml` configures the site build — see [Configuration](./configuration.md). Without it, every setting takes its default
 - Opportunity keys, like story keys, are derived from filenames (without extension) and must be kebab-case
 - An [opportunity canvas](../guides/opportunities.md#the-opportunity-canvas) filename must match an opportunity key to link them
-- A story map filename that matches an opportunity key marks the map as the journey mapped for that opportunity. A map whose key matches no opportunity stands in as its own, named by the map — which is how every livt repository behaved before opportunities were files
+- A story map filename that matches an opportunity key marks the map as the journey mapped for that opportunity. The filename is the whole join, so an opportunity has one map, and the key is what addresses it. A map whose key matches no opportunity stands in as its own, named by the map — which is how every livt repository behaved before opportunities were files
 - Story keys are derived from filenames (without extension)
 - Story keys must be kebab-case: lowercase letters, numbers, and hyphens
 - The `stories/` directory is the story registry, and `stories/{story-key}.md` provides story key uniqueness
@@ -58,7 +58,7 @@ dist/
   mapping/
     {story-key}.html                      # Example mapping boards
   story-map/
-    {map-name}.html                       # Story map boards
+    {opportunity-key}.html                # Story map boards
 ```
 
 Every page shares a left sidebar that links the five resource types (Example

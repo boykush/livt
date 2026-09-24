@@ -21,8 +21,7 @@ func TestParseRecognisesEveryKind(t *testing.T) {
 		{"livt://story/demo", Parsed{Kind: KindStory, StoryKey: "demo"}},
 		{"livt://opportunity/demo", Parsed{Kind: KindOpportunity, OpportunityKey: "demo"}},
 		{"livt://opportunity-canvas/demo", Parsed{Kind: KindOpportunityCanvas, OpportunityKey: "demo"}},
-		{"livt://story-map/デモマップ", Parsed{Kind: KindStoryMap, MapName: "デモマップ"}},
-		{"livt://story-map/%E3%83%87%E3%83%A2%E3%83%9E%E3%83%83%E3%83%97", Parsed{Kind: KindStoryMap, MapName: "デモマップ"}},
+		{"livt://story-map/demo", Parsed{Kind: KindStoryMap, OpportunityKey: "demo"}},
 		{"livt://ubiquitous/livt-uri", Parsed{Kind: KindTerm, TermKey: "livt-uri"}},
 	}
 	for _, c := range cases {
@@ -44,6 +43,8 @@ func TestParseRejectsMalformed(t *testing.T) {
 		"livt://mapping/../secret",  // traversal
 		"livt://mapping/demo/rule/", // empty rule id
 		"livt://story/a/b",          // nested path
+		"livt://story-map/a/b",      // nested path
+		"livt://story-map/..",       // traversal
 	} {
 		if got, ok := Parse(s); ok {
 			t.Errorf("Parse(%q) = (%+v, true), want false", s, got)
@@ -72,7 +73,7 @@ func TestParsedStringRoundTrips(t *testing.T) {
 		"livt://mapping/demo/question/Q-01",
 		"livt://story/demo",
 		"livt://ubiquitous/livt-uri",
-		"livt://story-map/%E3%83%87%E3%83%A2%E3%83%9E%E3%83%83%E3%83%97",
+		"livt://story-map/demo",
 	} {
 		p, ok := Parse(s)
 		if !ok {
@@ -81,11 +82,5 @@ func TestParsedStringRoundTrips(t *testing.T) {
 		if got := p.String(); got != s {
 			t.Errorf("Parse(%q).String() = %q, want the same URI", s, got)
 		}
-	}
-
-	// A plainly written map name comes back percent-encoded.
-	p, _ := Parse("livt://story-map/デモマップ")
-	if got := p.String(); got != "livt://story-map/%E3%83%87%E3%83%A2%E3%83%9E%E3%83%83%E3%83%97" {
-		t.Errorf("String() = %q, want the percent-encoded form", got)
 	}
 }

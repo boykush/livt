@@ -230,7 +230,7 @@ func TestMapWithNoOpportunityFileStandsInAsItsOwn(t *testing.T) {
 	if err != nil {
 		t.Fatalf("listStories: %v", err)
 	}
-	want := opportunityRefJSON{Key: "second-map", Name: "第二マップ", URI: uri.StoryMap("第二マップ")}
+	want := opportunityRefJSON{Key: "second-map", Name: "第二マップ", URI: uri.StoryMap("second-map")}
 	if got := storiesByKey(out.Stories)["other"].Opportunities; len(got) != 1 || got[0] != want {
 		t.Errorf("other opportunities = %+v, want [%+v]", got, want)
 	}
@@ -320,6 +320,9 @@ func storiesByKey(stories []storySummaryJSON) map[string]storySummaryJSON {
 	return byKey
 }
 
+// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-09/example/EX-05
+// Each map is listed with the opportunity key it is filed under, its name, and
+// a URI built on the key, not on the name.
 func TestListStoryMapsLinksStoryMapResource(t *testing.T) {
 	s := newTestServer(t)
 
@@ -327,14 +330,9 @@ func TestListStoryMapsLinksStoryMapResource(t *testing.T) {
 	if err != nil {
 		t.Fatalf("listStoryMaps: %v", err)
 	}
-	if len(out.StoryMaps) != 1 || out.StoryMaps[0].Name != "デモマップ" {
-		t.Fatalf("story maps = %+v, want one デモマップ", out.StoryMaps)
-	}
-	// The URI carries the display name percent-encoded, so it round-trips
-	// through RFC 6570 template matching.
-	want := "livt://story-map/%E3%83%87%E3%83%A2%E3%83%9E%E3%83%83%E3%83%97"
-	if got := out.StoryMaps[0].URI; got != want {
-		t.Errorf("story map uri = %q, want %q", got, want)
+	want := storyMapSummaryJSON{OpportunityKey: "demo-map", Name: "デモマップ", URI: "livt://story-map/demo-map"}
+	if len(out.StoryMaps) != 1 || out.StoryMaps[0] != want {
+		t.Fatalf("story maps = %+v, want [%+v]", out.StoryMaps, want)
 	}
 }
 
@@ -389,16 +387,18 @@ func TestListTermsOnMissingUbiquitousDirIsEmpty(t *testing.T) {
 	}
 }
 
+// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-09/example/EX-06
+// The map is read by its opportunity's key and carries that key beside its name.
 func TestStoryMapReturnsActivitiesStepsCardsReleases(t *testing.T) {
 	cfg := newTestServer(t).cfg
-	sm, err := cfg.storyMap("デモマップ")
+	sm, err := cfg.storyMap("demo-map")
 	if err != nil {
 		t.Fatalf("storyMap: %v", err)
 	}
 
 	got := cfg.toStoryMapJSON(sm)
-	if got.Name != "デモマップ" {
-		t.Errorf("name = %q, want デモマップ", got.Name)
+	if got.OpportunityKey != "demo-map" || got.Name != "デモマップ" {
+		t.Errorf("key, name = %q, %q, want demo-map, デモマップ", got.OpportunityKey, got.Name)
 	}
 	if len(got.Releases) != 1 || got.Releases[0].ID != "mvp" || got.Releases[0].Name != "MVP" {
 		t.Fatalf("releases = %+v, want one mvp/MVP", got.Releases)
@@ -419,9 +419,15 @@ func TestStoryMapReturnsActivitiesStepsCardsReleases(t *testing.T) {
 	}
 }
 
-func TestStoryMapUnknownNameErrors(t *testing.T) {
-	if _, err := newTestServer(t).cfg.storyMap("なし"); err == nil {
-		t.Fatal("expected error for unknown story map name")
+// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-09/example/EX-08
+// A key no map is filed under is not found, and neither is the map's name: the
+// key is the only address. A key walking out of the directory is refused.
+func TestStoryMapUnknownKeyErrors(t *testing.T) {
+	cfg := newTestServer(t).cfg
+	for _, key := range []string{"nope", "デモマップ", "..", "../../etc/passwd"} {
+		if _, err := cfg.storyMap(key); err == nil {
+			t.Errorf("storyMap(%q) resolved", key)
+		}
 	}
 }
 

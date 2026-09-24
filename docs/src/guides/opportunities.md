@@ -146,8 +146,9 @@ opportunities/collaborative-discovery.md          # the opportunity
 discoveries/usm/collaborative-discovery.yaml      # the journey mapped for it
 ```
 
-No field connects them; the filename does, as everywhere else in livt. When the
-two match:
+No field connects them; the filename does, as everywhere else in livt. A
+directory holds a filename once, so an opportunity has one story map and a map
+serves one opportunity. When the two match:
 
 - The story map board and the opportunity's page link to each other
 - Every story on that map carries the **opportunity's** name on its chip, and the
