@@ -69,11 +69,11 @@ stdio needs the livt repository's path per repository (`LIVT_ROOT`, or `--root`)
 Reading the spec is the **build** station of the [delivery ring](../livt-delivery/README.md); this is the next one, **collect**. Telling the livt repository which rules your tests now cover is what keeps its board reporting the present instead of a guess, and no skill sits at the station — a machine can do it because nothing is being judged. The citation is a claim its author made while writing the test. A test makes it with a marker and a livt URI on a comment line above itself:
 
 ```go
-// livt:automates livt://mapping/checkout/rule/R-02/example/EX-01
+// livt:automates livt://mapping/{story-key}/rule/{rule-id}/example/{example-id}
 func TestAnExpiredCardIsRejected(t *testing.T) {
 ```
 
-The comment syntax is your language's — livt looks for the marker and the URI and never reads the structure around them. `livt automations <path>` walks a checkout and collects every such line into a report, and the livt repository's build derives each rule's status from the reports committed under `automations/`. A livt URI written without the marker is a reference, not a claim, and is not collected.
+The comment syntax is your language's — livt looks for the marker and the URI and never reads the structure around them. `livt automations <path>` walks a checkout and collects every such line into a report, and the livt repository's build derives each rule's status from the reports committed under `automations/`. A livt URI written without the marker is a reference, not a claim, and is not collected; neither is one written with placeholders, which is why the line above carries them rather than a story key — a concrete URI here would be collected as a claim about a story no livt repository has.
 
 The report goes back as a **pull request**, not a push: a pull request is where a citation can be checked. It lands at `automations/{owner}/{repo}.json` — one file and one branch per implementation repository, force-updated rather than accumulating, because a report is a snapshot and the open pull request should carry the latest one rather than a queue of them. The credential lives on your side, one token with write access to the livt repository; the livt repository holds none, which is what keeps joining the ring a change to your repository alone.
 
