@@ -22,10 +22,10 @@ func keyedBoard() *domain.ExampleMapping {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-03/example/EX-01 and
-// livt://mapping/trace-test-to-rule/rule/R-03/example/EX-02: rule, example and
-// question stickies alike show their own ID, and that badge is the trigger that
-// copies the sticky's own URL.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-03/example/EX-01
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-03/example/EX-02
+// Rule, example and question stickies alike show their own ID, and that badge
+// is the trigger that copies the sticky's own URL.
 func TestRenderMappingEveryStickyCarriesACopyableIDBadge(t *testing.T) {
 	var buf bytes.Buffer
 	if err := renderMapping(&buf, i18n.En, board{Mapping: keyedBoard().Active()}, "Story", "", nil, nil, nil); err != nil {
@@ -50,9 +50,10 @@ func TestRenderMappingEveryStickyCarriesACopyableIDBadge(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-03/example/EX-03: the badge stays
-// monochrome and tinted to its own sticky, because a dense board carries 30-40
-// of them and an emoji renders full-colour whatever the card around it does.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-03/example/EX-03
+// The badge stays monochrome and tinted to its own sticky, because a dense
+// board carries 30-40 of them and an emoji renders full-colour whatever the
+// card around it does.
 func TestRenderMappingIDBadgesAreTintedNotEmoji(t *testing.T) {
 	var buf bytes.Buffer
 	if err := renderMapping(&buf, i18n.En, board{Mapping: keyedBoard().Active()}, "Story", "", nil, nil, nil); err != nil {
@@ -70,9 +71,10 @@ func TestRenderMappingIDBadgesAreTintedNotEmoji(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-03/example/EX-01: an example sticky
-// is a link target like the other two, so arriving at one flashes the card
-// instead of leaving the reader to work out which one the URL meant.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-03/example/EX-01
+// An example sticky is a link target like the other two, so arriving at one
+// flashes the card instead of leaving the reader to work out which one the
+// URL meant.
 func TestRenderMappingFlashesEveryLinkableStickyKind(t *testing.T) {
 	var buf bytes.Buffer
 	if err := renderMapping(&buf, i18n.En, board{Mapping: keyedBoard().Active()}, "Story", "", nil, nil, nil); err != nil {
@@ -90,9 +92,11 @@ func TestRenderMappingFlashesEveryLinkableStickyKind(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-02/example/EX-02: EX-01 recurs under
-// every rule of a board, so an anchor keyed on the example ID alone would send
-// both links to whichever card happened to be rendered first.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-02/example/EX-02
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-02/example/EX-01
+// EX-01 recurs under every rule of a board, so an anchor keyed on the example
+// ID alone would send both links to whichever card happened to be rendered
+// first.
 func TestRenderMappingExampleAnchorsCarryTheirRule(t *testing.T) {
 	em := &domain.ExampleMapping{
 		Rules: []domain.Rule{
@@ -198,9 +202,9 @@ func TestIssueLabelFallsBackToHost(t *testing.T) {
 	}
 }
 
-// livt://mapping/overview-open-questions/rule/R-02/example/EX-02: a question
-// sticky is linkable, so the home page can send the reader to the exact red
-// card, not just the board.
+// livt:automates livt://mapping/overview-open-questions/rule/R-02/example/EX-02
+// A question sticky is linkable, so the home page can send the reader to the
+// exact red card, not just the board.
 func TestRenderMappingQuestionCarriesIDAnchor(t *testing.T) {
 	em := &domain.ExampleMapping{
 		Questions: []domain.Question{{ID: "Q-01", Text: "解決した疑問はどう扱うか"}, {Text: "An unkeyed question"}},
@@ -220,9 +224,10 @@ func TestRenderMappingQuestionCarriesIDAnchor(t *testing.T) {
 	}
 }
 
-// livt://mapping/overview-open-questions/rule/R-01 and its mirror in
-// overview-unautomated-rules: a mapping contributes its questions and only its
-// un-automated rules; automated rules are finished and stay off the list.
+// livt:automates livt://mapping/overview-open-questions/rule/R-01
+// And its mirror in overview-unautomated-rules: a mapping contributes its
+// questions and only its un-automated rules; automated rules are finished and
+// stay off the list.
 func TestCollectTasksSplitsQuestionsFromUnautomatedRules(t *testing.T) {
 	em := &domain.ExampleMapping{
 		StoryKey: domain.StoryKey{Value: "overview-open-questions"},
@@ -249,9 +254,9 @@ func TestCollectTasksSplitsQuestionsFromUnautomatedRules(t *testing.T) {
 	}
 }
 
-// livt://mapping/overview-open-questions/rule/R-02/example/EX-02 and its mirror
-// in overview-unautomated-rules: each item deep-links to its own sticky, using
-// that sticky's anchor scheme.
+// livt:automates livt://mapping/overview-open-questions/rule/R-02/example/EX-02
+// And its mirror in overview-unautomated-rules: each item deep-links to its
+// own sticky, using that sticky's anchor scheme.
 func TestCollectTasksLinksItemsToTheirStickies(t *testing.T) {
 	em := &domain.ExampleMapping{
 		StoryKey:  domain.StoryKey{Value: "checkout"},
@@ -273,10 +278,10 @@ func TestCollectTasksLinksItemsToTheirStickies(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02 and
-// livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-04: closed
-// stickies are off the board, whichever kind they are — a retired rule, a
-// retired example under a live rule, and a retired question alike.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02
+// livt:automates livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-04
+// Closed stickies are off the board, whichever kind they are — a retired
+// rule, a retired example under a live rule, and a retired question alike.
 func TestRenderMappingOmitsRetiredStickies(t *testing.T) {
 	em := &domain.ExampleMapping{
 		Rules: []domain.Rule{
@@ -314,9 +319,9 @@ func TestRenderMappingOmitsRetiredStickies(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02: a board whose only
-// question is retired carries no Questions column at all — an empty one would
-// read as an open question scrolled out of sight.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02
+// A board whose only question is retired carries no Questions column at all —
+// an empty one would read as an open question scrolled out of sight.
 func TestRenderMappingDropsQuestionsColumnWhenEveryQuestionIsRetired(t *testing.T) {
 	em := &domain.ExampleMapping{
 		Questions: []domain.Question{{ID: "Q-01", Text: "退役した疑問", Retired: true}},
@@ -333,10 +338,11 @@ func TestRenderMappingDropsQuestionsColumnWhenEveryQuestionIsRetired(t *testing.
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02 and
-// livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-04: closed
-// items are not unfinished work. A retired question left in "open questions"
-// could never be closed by a conversation, nor a retired rule by a test.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02
+// livt:automates livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-04
+// Closed items are not unfinished work. A retired question left in "open
+// questions" could never be closed by a conversation, nor a retired rule by a
+// test.
 func TestCollectTasksSkipsRetiredItems(t *testing.T) {
 	em := &domain.ExampleMapping{
 		StoryKey: domain.StoryKey{Value: "trace-test-to-rule"},
@@ -371,9 +377,10 @@ func stickyClass(t *testing.T, html, id string) string {
 	return class
 }
 
-// livt://mapping/propose-rule-before-agreement/rule/R-02: a proposed rule and
-// its examples are drawn pale beside an agreed pair, and the rule is stamped so
-// telling them apart never rests on colour alone. The legend explains the look.
+// livt:automates livt://mapping/propose-rule-before-agreement/rule/R-02
+// A proposed rule and its examples are drawn pale beside an agreed pair, and
+// the rule is stamped so telling them apart never rests on colour alone. The
+// legend explains the look.
 func TestRenderMappingSetsProposedRulesApart(t *testing.T) {
 	em := &domain.ExampleMapping{
 		Rules: []domain.Rule{
@@ -406,11 +413,11 @@ func TestRenderMappingSetsProposedRulesApart(t *testing.T) {
 	}
 }
 
-// livt://mapping/propose-rule-before-agreement/rule/R-03/example/EX-01 and
+// livt:automates livt://mapping/propose-rule-before-agreement/rule/R-03/example/EX-01
 // EX-02: agreement is what closes a proposal, so it is listed apart from the
 // un-automated rules even once a test covers it. A rejected one has closed on
-// the same axis and is off the page
-// (livt://mapping/propose-rule-before-agreement/rule/R-05).
+// the same axis and is off the page (livt://mapping/propose-rule-before-
+// agreement/rule/R-05).
 func TestCollectTasksListsProposedRulesApart(t *testing.T) {
 	em := &domain.ExampleMapping{
 		StoryKey: domain.StoryKey{Value: "checkout"},
@@ -511,8 +518,8 @@ func renderFoldedBoard(t *testing.T) string {
 	return buf.String()
 }
 
-// livt://mapping/review-example-mapping-as-list/rule/R-01/example/EX-01: a
-// mapping opens on the board, with the list one press away.
+// livt:automates livt://mapping/review-example-mapping-as-list/rule/R-01/example/EX-01
+// A mapping opens on the board, with the list one press away.
 func TestRenderMappingOpensOnTheBoardWithAListToSwitchTo(t *testing.T) {
 	html := renderFoldedBoard(t)
 
@@ -529,9 +536,9 @@ func TestRenderMappingOpensOnTheBoardWithAListToSwitchTo(t *testing.T) {
 	}
 }
 
-// livt://mapping/review-example-mapping-as-list/rule/R-02/example/EX-01 and
-// EX-02: what the list shows on a rule's one row is all on the rule's own card,
-// ahead of the examples folded under it.
+// livt:automates livt://mapping/review-example-mapping-as-list/rule/R-02/example/EX-01
+// EX-02: what the list shows on a rule's one row is all on the rule's own
+// card, ahead of the examples folded under it.
 func TestRenderMappingRuleRowCarriesItsWholeLine(t *testing.T) {
 	html := renderFoldedBoard(t)
 
@@ -548,8 +555,8 @@ func TestRenderMappingRuleRowCarriesItsWholeLine(t *testing.T) {
 	}
 }
 
-// livt://mapping/review-example-mapping-as-list/rule/R-02/example/EX-03:
-// questions come after every rule, one row each.
+// livt:automates livt://mapping/review-example-mapping-as-list/rule/R-02/example/EX-03
+// Questions come after every rule, one row each.
 func TestRenderMappingListsQuestionsAfterTheRules(t *testing.T) {
 	html := renderFoldedBoard(t)
 
@@ -558,9 +565,9 @@ func TestRenderMappingListsQuestionsAfterTheRules(t *testing.T) {
 	}
 }
 
-// livt://mapping/review-example-mapping-as-list/rule/R-03/example/EX-01 and
-// EX-03: a rule's examples sit inside the block its fold controls, which starts
-// closed; a rule with no examples has nothing to fold.
+// livt:automates livt://mapping/review-example-mapping-as-list/rule/R-03/example/EX-01
+// EX-03: a rule's examples sit inside the block its fold controls, which
+// starts closed; a rule with no examples has nothing to fold.
 func TestRenderMappingFoldsExamplesUnderTheirRule(t *testing.T) {
 	html := renderFoldedBoard(t)
 
@@ -578,9 +585,10 @@ func TestRenderMappingFoldsExamplesUnderTheirRule(t *testing.T) {
 	}
 }
 
-// livt://mapping/review-example-mapping-as-list/rule/R-04/example/EX-02: the
-// list re-lays the board's stickies rather than repeating them, so each anchor,
-// and the copy-link aimed at it, exists once whichever view is showing.
+// livt:automates livt://mapping/review-example-mapping-as-list/rule/R-04/example/EX-02
+// The list re-lays the board's stickies rather than repeating them, so each
+// anchor, and the copy-link aimed at it, exists once whichever view is
+// showing.
 func TestRenderMappingKeepsOneStickyPerAnchorAcrossViews(t *testing.T) {
 	html := renderFoldedBoard(t)
 
@@ -617,9 +625,9 @@ func TestResolveStoryNameFallsBackToTheKey(t *testing.T) {
 	}
 }
 
-// livt://mapping/review-example-mapping-as-list/rule/R-02/example/EX-03: the
-// list heads its rules and its questions the way the Tasks page heads the two
-// lists it makes of the same items.
+// livt:automates livt://mapping/review-example-mapping-as-list/rule/R-02/example/EX-03
+// The list heads its rules and its questions the way the Tasks page heads the
+// two lists it makes of the same items.
 func TestRenderMappingHeadsTheListsSections(t *testing.T) {
 	html := renderFoldedBoard(t)
 

@@ -42,9 +42,10 @@ func TestParseExampleMappingReadsRuleIssues(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-05/example/EX-04: retirement is a
-// field on the item, so a structural edit of the YAML cannot lose it the way it
-// would lose a commented-out block — and the retired body stays readable (EX-03).
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-05/example/EX-04
+// Retirement is a field on the item, so a structural edit of the YAML cannot
+// lose it the way it would lose a commented-out block — and the retired body
+// stays readable (EX-03).
 func TestParseExampleMappingReadsRetired(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "story.yaml")
 	data := []byte("rules:\n" +
@@ -88,9 +89,9 @@ func TestParseExampleMappingReadsRetired(t *testing.T) {
 	}
 }
 
-// livt://mapping/propose-rule-before-agreement/rule/R-01: the one axis carries
-// all four, and a rule written without it is accepted, as every rule was before
-// the field existed (EX-01, EX-02).
+// livt:automates livt://mapping/propose-rule-before-agreement/rule/R-01
+// The one axis carries all four, and a rule written without it is accepted,
+// as every rule was before the field existed (EX-01, EX-02).
 func TestParseExampleMappingReadsStatus(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "story.yaml")
 	data := []byte("rules:\n" +
@@ -132,10 +133,10 @@ func TestParseExampleMappingReadsStatus(t *testing.T) {
 	}
 }
 
-// livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-06: the old
-// spelling is no longer a rule field, so the line says nothing about where the
-// rule stands — status is the whole of that, and a rule still carrying retired
-// reads as one written without a status.
+// livt:automates livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-06
+// The old spelling is no longer a rule field, so the line says nothing about
+// where the rule stands — status is the whole of that, and a rule still
+// carrying retired reads as one written without a status.
 func TestParseExampleMappingIgnoresRuleRetired(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "story.yaml")
 	data := []byte("rules:\n" +
@@ -163,9 +164,9 @@ func TestParseExampleMappingIgnoresRuleRetired(t *testing.T) {
 	}
 }
 
-// livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-03: a status
-// livt does not know fails the parse. Read as accepted, a mistyped "proposed"
-// would put an unagreed rule on the board as spec.
+// livt:automates livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-03
+// A status livt does not know fails the parse. Read as accepted, a mistyped
+// "proposed" would put an unagreed rule on the board as spec.
 func TestParseExampleMappingRejectsAnUnknownStatus(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "story.yaml")
 	data := []byte("rules:\n" +
@@ -202,9 +203,10 @@ func TestParseExampleMappingReadsReferencedTerms(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-09/example/EX-01 and EX-03: a
-// retired rule, example, or question names where the spec went, as a list so an
-// item that split into two can name both successors.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-09/example/EX-01
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-09/example/EX-03
+// A retired rule, example, or question names where the spec went, as a list
+// so an item that split into two can name both successors.
 func TestParseExampleMappingReadsSupersededBy(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "story.yaml")
 	data := []byte("rules:\n" +

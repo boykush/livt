@@ -253,9 +253,9 @@ func TestRenderStoryMapKeyedCardCarriesIDAnchorAndCopyLink(t *testing.T) {
 			t.Fatalf("expected a one-click copy-link trigger on story card %s", key)
 		}
 	}
-	// livt://mapping/trace-test-to-rule/rule/R-03/example/EX-03: the same badge
-	// the mapping board carries, labelled with the card's story key, so one
-	// expression covers every sticky on every board.
+	// livt:automates livt://mapping/trace-test-to-rule/rule/R-03/example/EX-03
+	// The same badge the mapping board carries, labelled with the card's story
+	// key, so one expression covers every sticky on every board.
 	if !strings.Contains(html, ">#detailed-card</a>") {
 		t.Fatal("expected the story card to show its key as the copyable badge")
 	}
@@ -324,9 +324,9 @@ func TestStoryMapHeaderLinksBackToStoryMapsIndex(t *testing.T) {
 	}
 }
 
-// livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-02 at the
-// source: a story key that appears on two maps collects an opportunity ref per
-// map, so its card can carry a chip for each.
+// livt:automates livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-02
+// At the source: a story key that appears on two maps collects an opportunity
+// ref per map, so its card can carry a chip for each.
 func TestBuildStoryMapsCollectsMultipleOpportunitiesPerStory(t *testing.T) {
 	usmDir := t.TempDir()
 	mapYAML := func(name string) string {

@@ -43,10 +43,10 @@ func committedRepo(t *testing.T) string {
 	return root
 }
 
-// livt://mapping/review-diff-between-revisions/rule/R-01/example/EX-03: one
-// revision compares against the working tree, which is the shape a review takes
-// — you are on the branch that makes the change. The head has no hash to print
-// because it is not a revision.
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-01/example/EX-03
+// One revision compares against the working tree, which is the shape a review
+// takes — you are on the branch that makes the change. The head has no hash
+// to print because it is not a revision.
 func TestComputeDiffsARevisionAgainstTheWorkingTree(t *testing.T) {
 	root := committedRepo(t)
 	write(t, filepath.Join(root, relDirs.Mappings, "checkout.yaml"), strings.Replace(oneRule, "name: first", "name: second", 1))
@@ -67,7 +67,7 @@ func TestComputeDiffsARevisionAgainstTheWorkingTree(t *testing.T) {
 	}
 }
 
-// livt://mapping/review-diff-between-revisions/rule/R-05/example/EX-01 and
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-05/example/EX-01
 // EX-02: a URI the site holds is linked to the page it lands on, and one it
 // does not hold is left unlinked rather than pointed at a page nobody built.
 func TestComputeLinksOnlyWhatTheSiteHolds(t *testing.T) {
@@ -107,9 +107,9 @@ func TestComputeReadsARevisionMissingWholeDirectories(t *testing.T) {
 	}
 }
 
-// livt://mapping/review-diff-between-revisions/rule/R-01/example/EX-04: both
-// ways a diff can be asked for something unreadable stop the build, and each
-// says the thing that fixes it.
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-01/example/EX-04
+// Both ways a diff can be asked for something unreadable stop the build, and
+// each says the thing that fixes it.
 func TestComputeFailsWhenThereIsNothingToRead(t *testing.T) {
 	root := committedRepo(t)
 	for _, tc := range []struct {

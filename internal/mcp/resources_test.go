@@ -28,8 +28,8 @@ func readResource[T any](t *testing.T, h func(context.Context, *mcpsdk.ReadResou
 	return out
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02: an example resolves
-// through the rule that numbers it.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02
+// An example resolves through the rule that numbers it.
 func TestReadExampleReturnsSingleExample(t *testing.T) {
 	s := newTestServer(t)
 	resURI := uri.Example("demo", "R-01", "EX-01")
@@ -43,8 +43,8 @@ func TestReadExampleReturnsSingleExample(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-01/example/EX-03: a question resolves
-// off the mapping, without a rule in the address.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-01/example/EX-03
+// A question resolves off the mapping, without a rule in the address.
 func TestReadQuestionReturnsSingleQuestion(t *testing.T) {
 	s := newTestServer(t)
 	resURI := uri.Question("demo", "Q-01")
@@ -58,9 +58,9 @@ func TestReadQuestionReturnsSingleQuestion(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02: a rule URI and an
-// example URI address different things, so neither handler answers for the
-// other's shape.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02
+// A rule URI and an example URI address different things, so neither handler
+// answers for the other's shape.
 func TestRuleAndExampleHandlersRejectEachOthersURIs(t *testing.T) {
 	s := newTestServer(t)
 
@@ -103,9 +103,10 @@ func TestReadExampleAndQuestionNotFound(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-01/example/EX-01 and EX-03: the
-// examples and questions listed inside a mapping carry the URIs that address
-// them on their own.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-01/example/EX-01
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-01/example/EX-03
+// The examples and questions listed inside a mapping carry the URIs that
+// address them on their own.
 func TestMappingLinksExamplesAndQuestions(t *testing.T) {
 	s := newTestServer(t)
 
@@ -146,9 +147,11 @@ func newRetiredTestServer(t *testing.T) *Server {
 	return NewServer(Config{Root: root}, "test")
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-05/example/EX-01 and EX-03: a retired
-// rule, example, and question each resolve by URI — saying they closed, text
-// intact — rather than 404ing, which is what a reference elsewhere follows.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-05/example/EX-01
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-05/example/EX-03
+// A retired rule, example, and question each resolve by URI — saying they
+// closed, text intact — rather than 404ing, which is what a reference
+// elsewhere follows.
 func TestReadRetiredItemsResolveAsRetired(t *testing.T) {
 	s := newRetiredTestServer(t)
 
@@ -171,9 +174,10 @@ func TestReadRetiredItemsResolveAsRetired(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-05: the mapping resource is the
-// structural record its ids are numbered from, so it keeps retired entries —
-// flagged, so a consumer can drop them, but never making a taken id look free.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-05
+// The mapping resource is the structural record its ids are numbered from, so
+// it keeps retired entries — flagged, so a consumer can drop them, but never
+// making a taken id look free.
 func TestMappingKeepsRetiredEntriesFlagged(t *testing.T) {
 	s := newRetiredTestServer(t)
 
@@ -214,10 +218,10 @@ func TestLiveItemsOmitRetiredFromJSON(t *testing.T) {
 	}
 }
 
-// livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-07: a rule
-// closes through status alone. A second field saying the same thing is a second
-// axis for a consumer to reconcile — and the one that can disagree with the
-// status beside it.
+// livt:automates livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-07
+// A rule closes through status alone. A second field saying the same thing is
+// a second axis for a consumer to reconcile — and the one that can disagree
+// with the status beside it.
 func TestRulesCloseThroughStatusAlone(t *testing.T) {
 	s := newRetiredTestServer(t)
 
@@ -238,10 +242,10 @@ func readReq(resURI string) *mcpsdk.ReadResourceRequest {
 	return &mcpsdk.ReadResourceRequest{Params: &mcpsdk.ReadResourceParams{URI: resURI}}
 }
 
-// livt://mapping/propose-rule-before-agreement/rule/R-04/example/EX-01 and
-// EX-02: every rule carries its status, one written without it included, so an
-// agent choosing what to automate can pass over a proposal without knowing the
-// default.
+// livt:automates livt://mapping/propose-rule-before-agreement/rule/R-04/example/EX-01
+// EX-02: every rule carries its status, one written without it included, so
+// an agent choosing what to automate can pass over a proposal without knowing
+// the default.
 func TestRulesAlwaysCarryTheirStatus(t *testing.T) {
 	root := t.TempDir()
 	writeFile(t, filepath.Join(root, "discoveries", "example-mappings", "demo.yaml"),
@@ -300,10 +304,11 @@ func newSupersededTestServer(t *testing.T) *Server {
 	return NewServer(Config{Root: root}, "test")
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-09/example/EX-01, EX-02 and EX-03: a
-// reference that lands on a retired item reads on to its successors, which are
-// livt URIs — so one of them can live in another mapping, and a split can name
-// both.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-09/example/EX-01
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-09/example/EX-02
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-09/example/EX-03
+// A reference landing on a retired item reads on to its successors, which are
+// livt URIs — so one can live in another mapping, and a split can name both.
 func TestReadRetiredItemsCarrySuccessors(t *testing.T) {
 	s := newSupersededTestServer(t)
 
@@ -322,9 +327,9 @@ func TestReadRetiredItemsCarrySuccessors(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-09/example/EX-06: the successor
-// travels as a URI and nothing more. Inlining what it says would spend the
-// caller's context on a hop most of them never take.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-09/example/EX-06
+// The successor travels as a URI and nothing more. Inlining what it says
+// would spend the caller's context on a hop most of them never take.
 func TestSuccessorsTravelAsURIsNotText(t *testing.T) {
 	s := newSupersededTestServer(t)
 
@@ -337,9 +342,9 @@ func TestSuccessorsTravelAsURIsNotText(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-09/example/EX-04: a rule the spec
-// simply stopped asking for is retired with nothing to point at, so the field
-// is absent rather than empty.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-09/example/EX-04
+// A rule the spec simply stopped asking for is retired with nothing to point
+// at, so the field is absent rather than empty.
 func TestRetiredWithoutSuccessorOmitsSupersededBy(t *testing.T) {
 	s := newRetiredTestServer(t)
 

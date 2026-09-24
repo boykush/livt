@@ -5,10 +5,10 @@ import (
 	"testing"
 )
 
-// livt://mapping/trace-test-to-rule/rule/R-02/example/EX-02: the derivation from
-// a livt URI to its anchor on the page is written down in
-// docs/src/reference/uri.md, and this is the one implementation the SSG and the
-// CLI both read it through, so neither can drift off the table.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-02/example/EX-02
+// The derivation from a livt URI to its anchor on the page is written down in
+// docs/src/reference/uri.md, and this is the one implementation the SSG and
+// the CLI both read it through, so neither can drift off the table.
 func TestPagesFollowTheDocumentedScheme(t *testing.T) {
 	cases := []struct {
 		uri  string
@@ -32,19 +32,21 @@ func TestPagesFollowTheDocumentedScheme(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02: an example id is
-// numbered within its rule, so one board holds an EX-01 under every rule. The
-// anchor carries the rule for the same reason the URI does.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-01/example/EX-02
+// An example id is numbered within its rule, so one board holds an EX-01
+// under every rule. The anchor carries the rule for the same reason the URI
+// does.
 func TestExampleAnchorsSeparateTheSameIDUnderDifferentRules(t *testing.T) {
 	if ExampleAnchor("R-01", "EX-01") == ExampleAnchor("R-02", "EX-01") {
 		t.Fatal("EX-01 under two rules collapsed onto a single anchor")
 	}
 }
 
-// livt://mapping/scope-terms-by-context/rule/R-03/example/EX-03: the glossary is
-// one table, so two rows sharing a key have to be told apart by their anchors
-// alone. Joining a context to a key with anything a kebab-case key can hold
-// would let a scoped term land on a context-free one that reads the same.
+// livt:automates livt://mapping/scope-terms-by-context/rule/R-03/example/EX-03
+// The glossary is one table, so two rows sharing a key have to be told apart
+// by their anchors alone. Joining a context to a key with anything a kebab-
+// case key can hold would let a scoped term land on a context-free one that
+// reads the same.
 func TestTermAnchorsSeparateTheSameKeyAcrossContexts(t *testing.T) {
 	if TermAnchor("billing", "invoice") == TermAnchor("shipping", "invoice") {
 		t.Fatal("one key under two contexts collapsed onto a single anchor")
@@ -54,10 +56,11 @@ func TestTermAnchorsSeparateTheSameKeyAcrossContexts(t *testing.T) {
 	}
 }
 
-// livt://mapping/trace-test-to-rule/rule/R-02/example/EX-01: what the livt repository
-// stores is the livt URI, and the deployment URL is prefixed onto it only at
-// render time — so no page here may resolve to a host or an absolute path on
-// its own, or the livt repository would be carrying a deployment it cannot know.
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-02/example/EX-01
+// What the livt repository stores is the livt URI, and the deployment URL is
+// prefixed onto it only at render time — so no page here may resolve to a
+// host or an absolute path on its own, or the livt repository would be
+// carrying a deployment it cannot know.
 func TestPagesCarryNoDeployment(t *testing.T) {
 	for _, got := range []string{
 		MappingPage("checkout"),

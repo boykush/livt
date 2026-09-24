@@ -36,10 +36,10 @@ func renderedDiff(t *testing.T, result *diff.Result) string {
 	return string(out)
 }
 
-// livt://mapping/review-diff-between-revisions/rule/R-01/example/EX-01: a build
-// given no revisions renders the site it always did. The page is not merely
-// unlinked — it is not there, so an output directory reused from a diff build
-// cannot go on serving a comparison nobody asked for.
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-01/example/EX-01
+// A build given no revisions renders the site it always did. The page is not
+// merely unlinked — it is not there, so an output directory reused from a
+// diff build cannot go on serving a comparison nobody asked for.
 func TestBuildWithoutRevisionsLeavesNoDiffPage(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	stale := filepath.Join(b.OutDir, diffPage)
@@ -61,9 +61,9 @@ func TestBuildWithoutRevisionsLeavesNoDiffPage(t *testing.T) {
 	}
 }
 
-// livt://mapping/review-diff-between-revisions/rule/R-01/example/EX-02: the
-// page says which revisions it was built between, since the range was given to
-// the build and is nowhere else on the site.
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-01/example/EX-02
+// The page says which revisions it was built between, since the range was
+// given to the build and is nowhere else on the site.
 func TestBuildDiffNamesTheRevisionsItCompared(t *testing.T) {
 	page := renderedDiff(t, &diff.Result{Base: "abc1234", Changes: []diff.Change{ruleChange("R-01", diff.BecameAdded)}, Added: 1})
 
@@ -72,10 +72,10 @@ func TestBuildDiffNamesTheRevisionsItCompared(t *testing.T) {
 	}
 }
 
-// livt://mapping/review-diff-between-revisions/rule/R-05/example/EX-04: the
-// diff takes no entry in the nav. It is not a kind of thing the livt repository
-// holds — it is something said about the things it does — and an entry beside
-// the five resource types would read as a sixth.
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-05/example/EX-04
+// The diff takes no entry in the nav. It is not a kind of thing the livt
+// repository holds — it is something said about the things it does — and an
+// entry beside the five resource types would read as a sixth.
 func TestBuildDiffTakesNoSidebarEntry(t *testing.T) {
 	page := renderedDiff(t, &diff.Result{Base: "abc1234", Changes: []diff.Change{ruleChange("R-01", diff.BecameAdded)}, Added: 1})
 
@@ -85,9 +85,9 @@ func TestBuildDiffTakesNoSidebarEntry(t *testing.T) {
 	}
 }
 
-// livt://mapping/review-diff-between-revisions/rule/R-05/example/EX-03: the way
-// into the diff is the thing that changed. Reading a board, you want to know
-// whether this rule is new — and from there, what it used to say.
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-05/example/EX-03
+// The way into the diff is the thing that changed. Reading a board, you want
+// to know whether this rule is new — and from there, what it used to say.
 func TestAChangedRuleIsMarkedOnItsBoardAndLeadsIntoTheDiff(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	if err := b.resetGeneratedDirs(); err != nil {
@@ -134,10 +134,10 @@ func TestABoardCarriesNoMarksWithoutADiff(t *testing.T) {
 	}
 }
 
-// livt://mapping/review-diff-between-revisions/rule/R-02/example/EX-05: rules,
-// examples and questions gather under the mapping they hang off. A mapping
-// whose own fields did not change is listed once, as the heading for the ones
-// that did — not once per child.
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-02/example/EX-05
+// Rules, examples and questions gather under the mapping they hang off. A
+// mapping whose own fields did not change is listed once, as the heading for
+// the ones that did — not once per child.
 func TestBuildDiffGathersMappingChildrenUnderOneMapping(t *testing.T) {
 	page := renderedDiff(t, &diff.Result{
 		Base: "abc1234",
@@ -158,8 +158,8 @@ func TestBuildDiffGathersMappingChildrenUnderOneMapping(t *testing.T) {
 	}
 }
 
-// livt://mapping/review-diff-between-revisions/rule/R-05/example/EX-02: a
-// removed URI has nowhere to go. The site holds no page for it, so it is
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-05/example/EX-02
+// A removed URI has nowhere to go. The site holds no page for it, so it is
 // rendered as text rather than as a link that would land on a 404.
 func TestBuildDiffLeavesARemovedURIUnlinked(t *testing.T) {
 	removed := ruleChange("R-01", diff.BecameWithdrawn)
@@ -174,9 +174,9 @@ func TestBuildDiffLeavesARemovedURIUnlinked(t *testing.T) {
 	}
 }
 
-// livt://mapping/review-diff-between-revisions/rule/R-02/example/EX-04: with
-// nothing between the revisions, the page says so rather than rendering an
-// empty frame a reader would take for a build that went wrong.
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-02/example/EX-04
+// With nothing between the revisions, the page says so rather than rendering
+// an empty frame a reader would take for a build that went wrong.
 func TestBuildDiffSaysWhenNothingChanged(t *testing.T) {
 	page := renderedDiff(t, &diff.Result{Base: "abc1234"})
 
@@ -185,10 +185,10 @@ func TestBuildDiffSaysWhenNothingChanged(t *testing.T) {
 	}
 }
 
-// livt://mapping/review-diff-between-revisions/rule/R-06/example/EX-02: what
-// livt spells in a file — a status, an automation — reaches the page in the
-// words the site already uses for it, in the site's own language. "accepted" is
-// how the file is written, not how the rule is read.
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-06/example/EX-02
+// What livt spells in a file — a status, an automation — reaches the page in
+// the words the site already uses for it, in the site's own language.
+// "accepted" is how the file is written, not how the rule is read.
 func TestBuildDiffPutsTheSitesOwnWordsOnLivtsFields(t *testing.T) {
 	changed := ruleChange("R-01", diff.BecameChanged)
 	changed.Lines = []diff.Line{
@@ -219,10 +219,10 @@ func TestBuildDiffPutsTheSitesOwnWordsOnLivtsFields(t *testing.T) {
 	}
 }
 
-// livt://mapping/review-diff-between-revisions/rule/R-05/example/EX-05: what
-// left the board goes back on it, in the language the board already has for a
-// sticky that is not spec. A count says something went and nothing about what it
-// said, which is the reviewer's actual question.
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-05/example/EX-05
+// What left the board goes back on it, in the language the board already has
+// for a sticky that is not spec. A count says something went and nothing
+// about what it said, which is the reviewer's actual question.
 func TestABoardPutsBackWhatLeftItInThisDiff(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	if err := b.resetGeneratedDirs(); err != nil {
@@ -293,9 +293,9 @@ func TestABoardWithoutADiffPutsNothingBack(t *testing.T) {
 	}
 }
 
-// livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-07: the
-// entry's colour comes from its lines, because its lines now follow the spec
-// too. Nothing is painted on top of them.
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-07
+// The entry's colour comes from its lines, because its lines now follow the
+// spec too. Nothing is painted on top of them.
 func TestAWithdrawnEntryReadsRedFromItsOwnLines(t *testing.T) {
 	withdrawn := ruleChange("R-01", diff.BecameWithdrawn)
 	withdrawn.Lines = []diff.Line{{Op: diff.OpDel, Field: diff.Field{Value: "the statement that stops holding"}}}

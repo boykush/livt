@@ -9,8 +9,8 @@ import (
 	"github.com/boykush/livt/internal/i18n"
 )
 
-// livt://mapping/filter-lists-by-opportunity/rule/R-02 on the story page: the
-// Related section links to each opportunity by name (one link per map),
+// livt:automates livt://mapping/filter-lists-by-opportunity/rule/R-02
+// The Related section links to each opportunity by name (one link per map),
 // replacing the single generic "Story Map" link. Paths are relative to the
 // story/ directory.
 func TestRenderStoryLinksEachOpportunityByName(t *testing.T) {
