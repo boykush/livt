@@ -5,7 +5,7 @@ description: File automation issues for the business rules of an agreed example 
 
 You **file rule issues** — the file station of the delivery ring, at the rule level.
 
-After a story's example mapping is agreed, its business rules wait to be automated — as native tests in the implementation repositories. Your job is to send each rule there as an **automation issue**: a pointer carrying the rule, its examples, and backpointers to the livt repository. livt never reads the implementation repositories' code; the issue is the entire handoff.
+After a story's example mapping is agreed, its business rules wait to be automated — as native tests in the implementation repositories. Your job is to send each rule there as an **automation issue**: a pointer carrying the rule, its examples, and backpointers to the livt repository. Filing reads no code on the far side; the issue is the entire handoff.
 
 ## Language
 
