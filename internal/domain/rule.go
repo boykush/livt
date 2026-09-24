@@ -15,6 +15,10 @@ type Rule struct {
 	// collected reports, never written in the mapping: a rule and its
 	// examples are cited separately and neither answers for the other.
 	Automations []Automation
+	// AutomatedFlag is a deprecated `automated:` the mapping still carries.
+	// Nothing maintains it; it is read so a repository mid-move to citations
+	// keeps the board it had, and 0.16.0 drops it.
+	AutomatedFlag bool
 	// SupersededBy names what took a closed rule's place, as livt URIs, so a
 	// reference landing on it can go forward. Only the pointer is structured:
 	// why the rule closed belongs to the commit that closed it, and a copy of
@@ -23,10 +27,11 @@ type Rule struct {
 	SupersededBy []string
 }
 
-// Automated reports whether any test cites the rule itself. Examples are
-// asked separately: deriving one from the other would be an inference, and
-// the test author already said which they meant.
-func (r Rule) Automated() bool { return len(r.Automations) > 0 }
+// Automated reports whether any test cites the rule itself, or a deprecated
+// `automated:` still says so. Examples are asked separately: deriving one
+// from the other would be an inference, and the test author already said
+// which they meant.
+func (r Rule) Automated() bool { return len(r.Automations) > 0 || r.AutomatedFlag }
 
 // Proposed reports whether the rule is still waiting to be agreed — the one
 // standing the board, the Tasks page and the sidebar counts all branch on.
