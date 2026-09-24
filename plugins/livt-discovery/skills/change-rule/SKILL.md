@@ -24,7 +24,7 @@ When there is no fresh session and the ask is "this rule changed / a new rule wa
 
 - **The synchronous lane** — people around a board at the same time, then `record-example-mapping` and `formulate-example-mapping`. This is Example Mapping as designed: a structured conversation.
 - **The asynchronous lane (you)** — a proposal lands on the board pale and dashed, the Tasks page lists it under Proposed Rules ("closed by agreement"), and the review accepts it, reworks it, or turns it down. In Ron Jeffries' three Cs the proposal is the card, the review thread — wherever your team holds it — is the conversation, and the one-line acceptance is the confirmation.
-- **Where proposals come from** — `inspect-automation` finding a rule the implementation has drifted from; an agent in an implementation repository reading the spec through `livt-automation` and noticing a gap; a person between sessions. Record all of these as proposals unless the user says the business already agreed.
+- **Where proposals come from** — an agent in an implementation repository reading the spec through `livt-automation` and noticing a gap; a person between sessions. Record all of these as proposals unless the user says the business already agreed.
 - **When the lane stalls** — a proposal nobody agrees to asynchronously stays on the Tasks page, beside the open questions, as the agenda of the next session. The two lanes do not compete: the asynchronous one runs ahead, the synchronous one catches what it leaves.
 
 ## Change Philosophy
@@ -40,7 +40,7 @@ When there is no fresh session and the ask is "this rule changed / a new rule wa
 2. Capture the change from the user: which rule, what changed, and why — and whether it is agreed or only put forward. Don't invent or extrapolate.
 3. Apply the minimal rule-level edit (IDs throughout follow the ID Contract):
    - **Added rule** — append it with the next rule ID, with the examples agreed alongside it.
-   - **Changed rule** — update its `name`, and bring its examples in line with the new meaning in the same commit (an example illustrating the old rule is now wrong). Retire the ones that no longer illustrate it and add the replacements as new examples, pointing each retired one at its replacement with `superseded_by:`; don't rewrite an example into a different one under the same ID. If the rule carries `automated:`, remove the flag in the same commit — the recorded automation covered the old meaning, and it is set again once the implementation catches up.
+   - **Changed rule** — update its `name`, and bring its examples in line with the new meaning in the same commit (an example illustrating the old rule is now wrong). Retire the ones that no longer illustrate it and add the replacements as new examples, pointing each retired one at its replacement with `superseded_by:`; don't rewrite an example into a different one under the same ID. Tests that cite the rule go on citing it — a citation names the rule, not its wording — so a reworded rule keeps reading as automated until the tests catch up. Nothing unsets that for you: say so in the commit body, where the review will see it.
    - **Retired rule** — set `status: retired`, and mark every one of its examples `retired: true`: the status does not cascade, so an unflagged example under a retired rule still resolves as live. Nothing is deleted. Where another rule took over, add `superseded_by:`; where the business simply stopped asking, leave it off.
    - **Proposed rule** — append it like an added rule, with `status: proposed` beside its `name`. It is a candidate, not spec: it goes on the board pale and waits for agreement.
    - **Accepted proposal** — change its `status: proposed` to `status: accepted`. If the agreement reworded it, the new wording lands in the same commit, as for a changed rule.
@@ -61,7 +61,7 @@ This is the canonical statement. `record-example-mapping` and `formulate-example
 
 ## Commit Contract
 
-This is the canonical statement. `record-story-map`, `record-example-mapping`, `formulate-example-mapping`, `write-story-card`, and `inspect-automation` repeat these bullets verbatim — a skill loads on its own, so every skill that writes a commit has to carry them. Change one, change all.
+This is the canonical statement. `record-story-map`, `record-example-mapping`, `formulate-example-mapping`, and `write-story-card` repeat these bullets verbatim — a skill loads on its own, so every skill that writes a commit has to carry them. Change one, change all.
 
 - **The commit is livt's unit.** One decision per commit — a rule-level change, a record's baseline, the structural edit on top of it, a story's card. It is the smallest thing a reviewer can weigh on its own, and the only split livt asks for.
 - **Never fold two decisions into one commit.** That is the one thing no later grouping can undo: a reviewer reading a combined diff cannot tell which change carried which reason, and neither can the history.
