@@ -64,6 +64,22 @@ The expert skills are the **knowledge backend** the record and formulation skill
 /plugin install livt-discovery@livt-claude-code-plugins
 ```
 
+## Coming from 4.x
+
+`/record-story-map` and `/write-story-card` file a story map under its opportunity's key, not under the map's own name:
+
+| Was | Now |
+|-----|-----|
+| `discoveries/usm/{map-name}.yaml` | `discoveries/usm/{opportunity-key}.yaml` |
+
+livt joins a map to its opportunity by filename, so a map filed under its own name was joined to nothing — and in livt 0.15.0 the map's URI and its page moved to the key as well. Rename a map already on file to its opportunity's key once; its name stays its title. Where no opportunity file exists yet, the key is agreed with you and names the opportunity.
+
+A story and its mapping are kept to one name. A mapping can name its own board and livt never compares that name with its story's, so the skills are the only place the two can be held together: a card names its story, a story with no card is named by its mapping, and where both are named they are one string. The skills that read a story also stop requiring one — a board whose story has no card records fine, and its yellow sticky becomes the mapping's `name:`.
+
+New story keys are minted at four words or more. A key already on file keeps its words, since renaming it would break every URI citing it. It is short keys that collide over years: a two-word key fits every story on its topic, the first card takes it, and it goes on claiming the topic after the others arrive.
+
+`automated:` left the record contract with `/inspect-automation`, which is gone from [livt-delivery](../livt-delivery/README.md). No skill writes the flag any more. livt still reads one a mapping carries, and 0.16.0 drops it, so delete the line as each rule gains its citation. When a rule is reworded nothing unsets its automation for you — the tests go on citing it — and `/change-rule` asks you to say so in the commit body, where the review reads it.
+
 ## Coming from 3.x
 
 `/record-example-mapping` now ships the baseline and stops. The structural edit it used to commit on top is `/formulate-example-mapping`:

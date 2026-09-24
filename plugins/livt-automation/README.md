@@ -199,6 +199,14 @@ The comparison that follows is on the claims, not on the bytes. A report never m
 
 livt still ships no test framework, no CI recipe, and no definition of done. The workflow above is a worked example of that one step, not part of the plugin — the only parts of it livt owns are the two commands.
 
+## Coming from 4.x
+
+Nothing an implementation repository holds breaks. Only a rule's or an example's citation is ever attached to a board, and an agent reads each payload as it comes back, so the reshaping below costs a session nothing.
+
+One case is worth checking. `list_stories` and `list_example_mappings` match `opportunity` against the key `list_opportunities` hands out, where they matched a story map's display name. A name written into a filter that outlives a session — your own `AGENTS.md`, a skill, a saved prompt — now returns nothing rather than failing, which is the one way this goes quiet instead of loud.
+
+The rest is shape, and reaches only a URI or a payload written down somewhere. `livt://story-map/` takes an opportunity key where it took a percent-encoded display name, an opportunity carries `story_map` as one object where it carried a `story_maps` list, and each opportunities ref gains `key`. All of it needs livt 0.15.0 or later, as the two `livt automations` commands above do.
+
 ## Coming from 3.x
 
 Nothing here changed. The three plugins carry one version between them, so this one moves when either of the others breaks — [livt-discovery](../livt-discovery/README.md) 4.0 split the formulation station out of the record, and [livt-delivery](../livt-delivery/README.md) 4.0 dropped the plan station.
