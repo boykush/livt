@@ -283,9 +283,10 @@ with binary files: other people's code makes no claims about your spec.
 | `--forge` | | inferred from `origin` | Code host to build line URLs for: `github` or `gitlab` |
 | `--url-template` | | — | Line URL template for a host livt does not know, e.g. `{base}/src/commit/{rev}/{path}#L{line}` |
 
-A URI's **shape** is what the walk checks, never its target, so collecting needs
-no access to the livt repository at all — [`livt resolve`](#livt-resolve) is what
-answers whether a citation lands on something that exists. A URI written with
+A URI's **shape** is what the walk checks, never its target, so the walk never
+resolves a citation and the spec need not be at hand to collect one —
+[`livt resolve`](#livt-resolve) is what answers whether a citation lands on
+something that exists. A URI written with
 placeholders, as the guide writes it, is documentation rather than a claim and is
 not collected: that is what lets the marker be written about.
 
@@ -361,12 +362,22 @@ report patched: the question decides whether to walk, never what the report says
 
 `--out` is what lands it at `automations/{owner}/{repo}.json` in a checkout of
 the livt repository, where it is committed through a pull request rather than
-pushed. Which repositories collect, and what their CI runs, is the implementation
-side's to decide rather than livt's: the
-[`livt-automation` plugin](https://github.com/boykush/livt/tree/main/plugins/livt-automation#sending-automations-back)
-carries a workflow to copy, and livt's own
-[`.github/workflows/automations.yml`](https://github.com/boykush/livt/blob/main/.github/workflows/automations.yml)
-is that shape for a repository that is its own implementation repository.
+pushed — and the run that writes it is the livt repository's own. An
+implementation repository does not scan itself. It reports the revision it
+merged, and livt fetches that one revision and reads it, so every report is
+produced by one livt rather than by whichever version each participant happened
+to install, and nothing about where a report lands crosses the boundary.
+
+livt ships both halves as actions to pin by commit SHA —
+[`actions/notify`](https://github.com/boykush/livt/blob/main/actions/notify/action.yml)
+for the implementation repository, which gates on
+[`changed`](#livt-automations-changed) and dispatches, and
+[`actions/collect`](https://github.com/boykush/livt/blob/main/actions/collect/action.yml)
+for the livt repository, which fetches, scans and opens the pull request. livt's
+own [workflows](https://github.com/boykush/livt/tree/main/.github/workflows) wire
+the two together, since it is its own implementation repository. Which
+repositories take part is still the implementation side's to decide rather than
+livt's.
 
 ## `livt version`
 

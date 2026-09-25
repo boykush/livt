@@ -1,0 +1,43 @@
+name: automations-notify
+
+# livt is its own implementation repository and takes part the way any other
+# does, through the action it ships. Merging a report does not start the cycle
+# again: the gate inside the action reads this range, finds no livt:automates
+# line in it, and sends nothing.
+on:
+  push:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  notify:
+    name: notify
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # checkout, and fetch the base the gate reads
+      id-token: write # assume the signing role, see the token step
+    steps:
+      - name: Checkout
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # GITHUB_TOKEN cannot send the dispatch: an event it signs starts no
+      # workflow run, so the collector would never wake. An implementation
+      # repository keeps this as a secret of its own; this repository mints
+      # one, scoped to itself — no owner input.
+      - name: Generate the repo-writer App token
+        id: app-token
+        uses: boykush/workflows/.github/actions/github-app-token@e5b631cdd9393a157988232df304e07fba35fb79
+        with:
+          app: repo-writer
+          permission-contents: write
+
+      # The released livt, not the one in this checkout: every participant runs
+      # the same build, and this repository is a participant like the others.
+      - name: Notify
+        uses: $/actions/notify
+        with:
+          livt-repository: ${{ github.repository }}
+          token: ${{ steps.app-token.outputs.token }}
