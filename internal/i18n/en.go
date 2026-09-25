@@ -13,6 +13,23 @@ var en = Catalog{
 	"nav.tasks":            "Tasks",
 	"nav.diff":             "Diff",
 
+	// What this build was made from. Not a nav entry beside the resource
+	// types: none of it is spec or a view of spec, and the sidebar carries it
+	// at the foot, where a version is carried.
+	"build.title":        "Build",
+	"build.livt":         "livt",
+	"build.spec":         "Spec",
+	"build.built":        "Built",
+	"build.unknown":      "unknown",
+	"build.reports":      "Automation reports read",
+	"build.reports-lead": "The automation the boards show is derived from these.",
+	"build.repo":         "Implementation repository",
+	"build.rev":          "Revision",
+	"build.collected":    "Collected",
+	"build.citations":    "Citations",
+	"build.empty":        "No report has been collected.",
+	"build.empty-hint":   "Until an implementation repository sends what it scanned, the boards say nothing about automation.",
+
 	// Sticky kinds, shared by the board legends, the filter bars and the
 	// chips — one word each, so the same key serves wherever it appears.
 	"label.story":           "Story",
