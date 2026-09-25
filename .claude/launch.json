@@ -6,6 +6,12 @@
       "runtimeExecutable": "zsh",
       "runtimeArgs": ["-lc", "go run . serve"],
       "port": 3000
+    },
+    {
+      "name": "docs-site",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "3001", "--directory", "docs/site"],
+      "port": 3001
     }
   ]
 }
