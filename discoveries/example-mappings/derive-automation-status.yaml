@@ -96,6 +96,19 @@ rules:
       - id: EX-03
         name: 本文が変わったルールへの引用も同じ扱いになるが、見分ける手立てはまだ無い（Q-03）
         retired: true
+  - id: R-08
+    name: 引用が古い意味を検証し続けないのは、意味が変わったルールが別のIDを取るから
+    examples:
+      - id: EX-01
+        name: 言い回しだけの変更ではIDが変わらず、引用はそのまま有効（結び目はlivt URIで、テストケース名を本文に追従させる必要はない）
+      - id: EX-02
+        name: 意味が変わったルールは退役し、後継が新しいIDを取る（具体例を書き換えずに差し替えるのと同じ作法）
+      - id: EX-03
+        name: 旧IDへの引用は退役したルールを指すので、ルール軸の母数から外れる
+      - id: EX-04
+        name: 後継は引用を持たないので、未自動化のルールとしてTasksページに並ぶ
+      - id: EX-05
+        name: livtは意味が変わったかを判定しない（判断は書き手のもので、機械が代行すれば定式化のたびにボードが嘘をつく）
 
 questions:
   - id: Q-01
@@ -110,6 +123,9 @@ questions:
       - livt://mapping/derive-automation-status/rule/R-02
   - id: Q-03
     text: ルールの本文が変わったとき、古い意味を検証している引用をどう扱うか（引用はlivt URIなので書き換えを素通りし、ボードは自動化済みと言い続ける。フラグの頃はchange-ruleが同じコミットで外させていたが、外す先が無くなった）
+    retired: true
+    superseded_by:
+      - livt://mapping/derive-automation-status/rule/R-08
 
 ubiquitous:
   - livt-uri
