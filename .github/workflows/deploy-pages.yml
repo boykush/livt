@@ -42,14 +42,19 @@ jobs:
         with:
           go-version-file: go.mod
 
-      - name: Setup mdBook
-        uses: peaceiris/actions-mdbook@ee69d230fe19748b7abf22df32acaa93833fad08 # v2.0.0
+      # mdBook and its gettext plugins at the versions .mise.toml pins. Cache is
+      # disabled: restoring a cache into a job whose output gets published is a
+      # cache-poisoning vector (zizmor: cache-poisoning).
+      - name: Setup mise
+        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
         with:
-          mdbook-version: latest
+          install_args: aqua:rust-lang/mdBook cargo:mdbook-i18n-helpers
+          cache: false
 
-      # mdBook docs -> site root (https://boykush.github.io/livt/)
+      # mdBook docs -> site root (https://boykush.github.io/livt/), with the
+      # Japanese translation beneath it (https://boykush.github.io/livt/ja/)
       - name: Build docs
-        run: mdbook build docs
+        run: mise run docs:build
 
       # livt build -> /demo subpath (https://boykush.github.io/livt/demo/)
       - name: Build livt site
