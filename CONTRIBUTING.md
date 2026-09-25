@@ -12,26 +12,36 @@ cd livt
 mise install
 ```
 
-`mise install` installs the pinned toolchain (Go, golangci-lint, ...) and, via the `postinstall` hook, the [hk](https://hk.jdx.dev/) pre-commit hooks — so the same checks run locally and in CI.
+`mise install` installs the pinned toolchain (Go, golangci-lint, ...) and, via the `postinstall` hook, the [hk](https://hk.jdx.dev/) pre-commit hooks — so the same checks run locally and in CI. One of the docs tools, mdbook-i18n-helpers, is built from source by cargo, so have [Rust](https://rustup.rs/) installed first.
 
 ## Checks and tests
 
 Every CI check is a mise task (see `.mise.toml`):
 
 ```bash
-mise run check   # fmt + vet + lint + tidy + build + test
+mise run check   # fmt + vet + lint + tidy + build + test + docs:check
 mise run test    # go test -race ./...
 ```
 
 ## Docs
 
-The documentation site (`docs/`) is built with mdBook:
+The documentation site (`docs/`) is built with mdBook, in English and in Japanese:
 
 ```bash
 mdbook serve docs
 ```
 
+```bash
+MDBOOK_BOOK__LANGUAGE=ja mdbook serve docs
+```
+
 It says why livt exists and when it fits. Every other detail has a home of its own, beside what it describes; [Reference](docs/src/reference.md) says where.
+
+The English under `docs/src/` is the source. The Japanese is `docs/po/ja.po`, a gettext catalog that translates it passage by passage through [mdbook-i18n-helpers](https://github.com/google/mdbook-i18n-helpers); a passage the catalog does not translate yet shows in English rather than in an outdated translation.
+
+After you change `docs/src/`, run `mise run docs:po` and translate what it leaves empty or marks `fuzzy`, dropping the `#, fuzzy` line once the translation fits. `mise run check` fails until you have.
+
+A heading that a link points at pins its anchor, as in `## Where livt stops {#where-livt-stops}`: the Japanese book derives its anchors from the translated headings.
 
 ## Commits and pull requests
 

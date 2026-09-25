@@ -6,6 +6,10 @@ language = "en"
 
 [build]
 build-dir = "book"
+extra-watch-dirs = ["po"]
+
+[preprocessor.gettext]
+after = ["links"]
 
 # Published release notes link these pages. What they held now lives where it
 # cannot drift: the install steps in the README, the rest where Reference says.
