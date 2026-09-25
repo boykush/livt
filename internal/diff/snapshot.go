@@ -12,6 +12,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/boykush/livt/internal/automation"
 	"github.com/boykush/livt/internal/domain"
 	"github.com/boykush/livt/internal/parser"
 	"github.com/boykush/livt/internal/uri"
@@ -29,10 +30,13 @@ type Dirs struct {
 	Stories       string
 	USM           string
 	Ubiquitous    string
+	// Automations holds the collected reports. Empty reads none: a reports
+	// directory the repository does not hold has no revisions to read.
+	Automations string
 }
 
 func (d Dirs) under(root string) Dirs {
-	return Dirs{
+	rebased := Dirs{
 		Opportunities: filepath.Join(root, d.Opportunities),
 		Canvases:      filepath.Join(root, d.Canvases),
 		Mappings:      filepath.Join(root, d.Mappings),
@@ -40,11 +44,19 @@ func (d Dirs) under(root string) Dirs {
 		USM:           filepath.Join(root, d.USM),
 		Ubiquitous:    filepath.Join(root, d.Ubiquitous),
 	}
+	if d.Automations != "" {
+		rebased.Automations = filepath.Join(root, d.Automations)
+	}
+	return rebased
 }
 
 // paths lists the directories as the repository holds them, for git to export.
 func (d Dirs) paths() []string {
-	return []string{d.Opportunities, d.Canvases, d.Mappings, d.Stories, d.USM, d.Ubiquitous}
+	paths := []string{d.Opportunities, d.Canvases, d.Mappings, d.Stories, d.USM, d.Ubiquitous}
+	if d.Automations != "" {
+		paths = append(paths, d.Automations)
+	}
+	return paths
 }
 
 // Field is one line of an entry: a value, and what the thing holding it is
@@ -64,6 +76,7 @@ type Field struct {
 // something, that word is reused rather than a second one minted here.
 const (
 	LabelStatus       = "diff.field.status"
+	LabelAutomated    = "mapping.automated-title"
 	LabelIssue        = "diff.field.issue"
 	LabelSupersededBy = "diff.field.superseded-by"
 	LabelRetired      = "diff.field.retired"
@@ -150,6 +163,10 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 	if err != nil {
 		return err
 	}
+	automations, err := loadAutomations(dirs.Automations)
+	if err != nil {
+		return err
+	}
 	for _, em := range mappings {
 		key := em.StoryKey.Value
 		mappingURI := uri.Mapping(key)
@@ -171,16 +188,16 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 		// and an agreement are exactly the changes a reviewer came for, and
 		// Active() is what hides them.
 		for _, r := range byID(em.Rules, func(r domain.Rule) string { return r.ID }) {
-			s.add(Entry{
+			s.add(withAutomation(Entry{
 				URI:    uri.Rule(key, r.ID),
 				Kind:   uri.KindRule,
 				Parent: mappingURI,
 				Title:  r.ID,
 				Fields: ruleFields(r),
 				Live:   r.Status.Active(),
-			})
+			}, automations))
 			for _, ex := range byID(r.Examples, func(ex domain.Example) string { return ex.ID }) {
-				s.add(Entry{
+				s.add(withAutomation(Entry{
 					URI:    uri.Example(key, r.ID, ex.ID),
 					Kind:   uri.KindExample,
 					Parent: mappingURI,
@@ -189,7 +206,7 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 					// An example under a closed rule went with it: the statement
 					// it illustrates is no longer one the spec makes.
 					Live: !ex.Retired && r.Status.Active(),
-				})
+				}, automations))
 			}
 		}
 		for _, q := range byID(em.Questions, func(q domain.Question) string { return q.ID }) {
@@ -260,6 +277,33 @@ func itemFields(body string, retired bool, supersededBy []string) []Field {
 		fields = append(fields, flag(LabelRetired))
 	}
 	return append(fields, listed(LabelSupersededBy, supersededBy)...)
+}
+
+// loadAutomations reads the revision's reports. No directory named reads as
+// nothing collected, the same as a directory the revision does not hold.
+func loadAutomations(dir string) (*automation.Index, error) {
+	if dir == "" {
+		return nil, nil
+	}
+	return automation.Load(dir)
+}
+
+// withAutomation lines up the implementation repositories whose tests cite the
+// entry, each once. Whether a repository cites it is what a report's pull
+// request is opened over; which test, on which line, moves on every scan. An
+// entry that is not spec gets none: the board counts it nowhere, and one
+// retired in both revisions must stay out of the diff whatever its tests do.
+func withAutomation(e Entry, idx *automation.Index) Entry {
+	if !e.Live {
+		return e
+	}
+	var repos []string
+	for _, a := range idx.For(e.URI) {
+		repos = append(repos, a.Repo)
+	}
+	slices.Sort(repos)
+	e.Fields = append(e.Fields, listed(LabelAutomated, slices.Compact(repos))...)
+	return e
 }
 
 func scanOpportunities(s *Snapshot, dirs Dirs) error {

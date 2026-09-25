@@ -78,7 +78,7 @@ func (b *Builder) automationIndex() (*automation.Index, error) {
 // Builder's own: the site and the diff must not drift into reading different
 // places.
 func (b *Builder) diffDirs() diff.Dirs {
-	return diff.Dirs{
+	dirs := diff.Dirs{
 		Opportunities: b.OpportunitiesDir,
 		Canvases:      b.CanvasesDir,
 		Mappings:      b.MappingsDir,
@@ -86,6 +86,12 @@ func (b *Builder) diffDirs() diff.Dirs {
 		USM:           b.USMDir,
 		Ubiquitous:    b.UbiquitousDir,
 	}
+	// --reports can name a directory outside the livt repository, and git has
+	// no revisions of one to read, so the diff leaves such reports out.
+	if filepath.IsLocal(b.AutomationsDir) {
+		dirs.Automations = b.AutomationsDir
+	}
+	return dirs
 }
 
 // root is where git is asked about revisions, defaulting to the directory the
