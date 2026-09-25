@@ -45,6 +45,12 @@ type Builder struct {
 	// automations is the run's report index. `livt serve` rebuilds on every
 	// edit, so it is reloaded per build rather than held across them.
 	automations *automation.Index
+	// LivtVersion and SpecVersion are what this build was made from: the
+	// binary's own version and the livt repository's revision. Passed in
+	// rather than read here, so the builder shells out to nothing and a test
+	// can say what a page should show.
+	LivtVersion string
+	SpecVersion string
 	// automationKnown is whether anything at all has spoken about automation:
 	// a report was collected, or a mapping still carries the deprecated flag.
 	// With nothing said, the axis is left off the pages built after the
@@ -166,6 +172,9 @@ func (b *Builder) sidebar(active, prefix string) (Sidebar, error) {
 	sb := Sidebar{
 		Prefix:        prefix,
 		Active:        active,
+		LivtVersion:   b.LivtVersion,
+		SpecVersion:   b.SpecVersion,
+		Built:         stamp(now()),
 		Opportunities: c.opportunities,
 		Tasks:         c.tasks,
 		Mappings:      c.mappings,
@@ -307,6 +316,10 @@ func (b *Builder) Build() error {
 	fmt.Printf("  index.html\n")
 
 	if err := b.buildTasks(open, distinctOpportunityNames(openOpportunitySets), b.automationKnown); err != nil {
+		return err
+	}
+
+	if err := b.buildInfo(); err != nil {
 		return err
 	}
 	fmt.Printf("  tasks.html\n")

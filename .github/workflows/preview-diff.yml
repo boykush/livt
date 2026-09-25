@@ -52,7 +52,8 @@ jobs:
           BASE: ${{ github.event.pull_request.base.sha }}
         run: |
           base=$(git merge-base "$BASE" HEAD)
-          go run . build -o dist --diff "$base..HEAD"
+          go build -o "$RUNNER_TEMP/livt" .
+          "$RUNNER_TEMP/livt" build -o dist --diff "$base..HEAD"
 
       - name: Upload the site
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

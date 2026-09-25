@@ -294,6 +294,35 @@ type Sidebar struct {
 	StoryMaps int
 	Stories   int
 	Terms     int
+	// LivtVersion, SpecVersion and Built are what the foot of every page says
+	// this build was made from, and the link there leads to the rest of it.
+	// They sit below the nav rather than in it: none of the three is spec or a
+	// view of spec, and the foot is where a version is looked for.
+	LivtVersion string
+	SpecVersion string
+	Built       string
+}
+
+// buildInfoView is the build page: what made this site, and the reports it
+// read. Every other page shows what was derived from them; this one says whose
+// answer it was and when it was given.
+type buildInfoView struct {
+	Sidebar     Sidebar
+	LivtVersion string
+	SpecVersion string
+	Built       string
+	Reports     []buildReportRow
+}
+
+// buildReportRow is one implementation repository's report. Neither the
+// repository nor the revision is a link: a report names no forge, so a URL
+// built from either would be a guess.
+type buildReportRow struct {
+	Repo      string
+	Rev       string
+	Short     string
+	Collected string
+	Citations int
 }
 
 type mappingTile struct {
@@ -602,6 +631,10 @@ type mappingView struct {
 
 func renderTasks(w io.Writer, lang i18n.Lang, view tasksView) error {
 	return templates(lang).ExecuteTemplate(w, "tasks.html", view)
+}
+
+func renderBuildInfo(w io.Writer, lang i18n.Lang, view buildInfoView) error {
+	return templates(lang).ExecuteTemplate(w, "build.html", view)
 }
 
 func renderMappingsIndex(w io.Writer, lang i18n.Lang, view mappingsIndexView) error {

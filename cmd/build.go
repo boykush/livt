@@ -7,6 +7,7 @@ import (
 	"github.com/boykush/livt/internal/builder"
 	"github.com/boykush/livt/internal/config"
 	"github.com/boykush/livt/internal/diff"
+	"github.com/boykush/livt/internal/gitrev"
 	"github.com/boykush/livt/internal/i18n"
 	"github.com/spf13/cobra"
 )
@@ -56,6 +57,11 @@ func newBuilder(outDir string) (*builder.Builder, error) {
 		OutDir:           outDir,
 		Lang:             cfg.Lang,
 		Diff:             revisions,
+		// What the site foots with. The binary knows its own version, and the
+		// livt repository is the working directory the paths above are
+		// relative to.
+		LivtVersion: livtVersion(),
+		SpecVersion: gitrev.Short("."),
 	}, nil
 }
 

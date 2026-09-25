@@ -36,5 +36,25 @@
       <span class="w-2.5 h-2.5 rounded-sm border border-gray-300"></span>{{t "nav.tasks"}}<span class="ml-auto text-xs text-gray-400">{{.Tasks}}</span>
     </a>
   </nav>
+  {{/*
+  What this build was made from, at the foot rather than in the nav above:
+  none of it is spec or a view of spec, and the foot is where a version is
+  looked for. The build time rides every page, so a board that nobody has
+  refreshed says so wherever it is read.
+  */}}
+  <div class="px-3 py-3 border-t border-gray-100">
+    <a href="{{.Prefix}}build.html" class="block rounded-lg px-2 py-1.5 {{if eq .Active "build"}}bg-gray-100{{else}}hover:bg-gray-50{{end}}">
+      <div class="flex items-baseline gap-2">
+        <span class="text-xs font-medium text-gray-600">livt</span>
+        {{/*
+        Truncated rather than wrapped: a release name fits whole, and what a
+        pseudo-version loses off the end is the commit, which the line below
+        already carries. The whole string is on the page this links to.
+        */}}
+        <span class="ml-auto min-w-0 text-[11px] font-mono text-gray-400 truncate" title="{{.LivtVersion}}">{{.LivtVersion}}</span>
+      </div>
+      <div class="text-[11px] text-gray-400 font-mono mt-0.5">{{with .SpecVersion}}{{.}} · {{end}}{{.Built}}</div>
+    </a>
+  </div>
 </aside>
 {{end}}

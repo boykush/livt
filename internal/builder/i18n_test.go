@@ -76,6 +76,7 @@ var pages = []string{
 	"stories.html",
 	"ubiquitous.html",
 	"tasks.html",
+	"build.html",
 	filepath.Join("opportunity", "shopping.html"),
 	filepath.Join("opportunity-canvas", "shopping.html"),
 	filepath.Join("opportunity-progress", "shopping.html"),

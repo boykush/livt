@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="{{t "lang.code"}}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>livt - {{t "build.title"}}</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="flex min-h-screen">
+{{template "sidebar" .Sidebar}}
+<div class="flex-1 min-w-0">
+  <header class="bg-white border-b border-gray-200 px-8 py-4">
+    <h2 class="text-lg font-semibold text-gray-800">{{t "build.title"}}</h2>
+  </header>
+  <main class="px-8 py-8 max-w-3xl">
+  {{/*
+  The build time sits beside the reports because a static page has no other
+  reference to call one old by: a relative age would be written once and wrong
+  from then on, and a threshold would draw a line nothing here decides.
+  */}}
+  <div class="grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-sm mb-8">
+    <span class="text-gray-500">{{t "build.livt"}}</span>
+    <span class="font-mono text-gray-800 break-all">{{if .LivtVersion}}{{.LivtVersion}}{{else}}{{t "build.unknown"}}{{end}}</span>
+    <span class="text-gray-500">{{t "build.spec"}}</span>
+    <span class="font-mono text-gray-800">{{if .SpecVersion}}{{.SpecVersion}}{{else}}{{t "build.unknown"}}{{end}}</span>
+    <span class="text-gray-500">{{t "build.built"}}</span>
+    <span class="font-mono text-gray-800">{{.Built}} UTC</span>
+  </div>
+
+  <h3 class="text-sm font-semibold text-gray-800 mb-2">{{t "build.reports"}}</h3>
+  {{if .Reports}}
+  <p class="text-xs text-gray-400 mb-2">{{t "build.reports-lead"}}</p>
+  <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+  <table class="w-full text-left border-collapse">
+    <thead>
+      <tr class="border-b border-gray-200 bg-gray-50 text-xs font-semibold uppercase tracking-wide text-gray-500">
+        <th class="px-4 py-2.5">{{t "build.repo"}}</th>
+        <th class="px-4 py-2.5">{{t "build.rev"}}</th>
+        <th class="px-4 py-2.5">{{t "build.collected"}} <span class="text-gray-400">UTC</span></th>
+        <th class="px-4 py-2.5 text-right">{{t "build.citations"}}</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{range .Reports}}
+      <tr class="border-b border-gray-100 last:border-0 align-top hover:bg-gray-50">
+        <td class="px-4 py-2.5 border-l-4 border-blue-300 text-sm font-medium text-gray-900">{{.Repo}}</td>
+        <td class="px-4 py-2.5 font-mono text-xs text-gray-600" title="{{.Rev}}">{{.Short}}</td>
+        <td class="px-4 py-2.5 font-mono text-xs text-gray-600 whitespace-nowrap">{{.Collected}}</td>
+        <td class="px-4 py-2.5 font-mono text-xs text-gray-600 text-right">{{.Citations}}</td>
+      </tr>
+      {{end}}
+    </tbody>
+  </table>
+  </div>
+  {{else}}
+  <p class="text-gray-400 text-sm">{{t "build.empty"}}</p>
+  <p class="text-gray-400 text-xs mt-2">{{t "build.empty-hint"}}</p>
+  {{end}}
+  </main>
+</div>
+</div>
+</body>
+</html>
