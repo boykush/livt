@@ -78,7 +78,7 @@ A story and its mapping are kept to one name. A mapping can name its own board a
 
 New story keys are minted at four words or more. A key already on file keeps its words, since renaming it would break every URI citing it. It is short keys that collide over years: a two-word key fits every story on its topic, the first card takes it, and it goes on claiming the topic after the others arrive.
 
-`automated:` left the record contract with `/inspect-automation`, which is gone from [livt-delivery](../livt-delivery/README.md). No skill writes the flag any more. livt still reads one a mapping carries, and 0.16.0 drops it, so delete the line as each rule gains its citation. When a rule is reworded nothing unsets its automation for you — the tests go on citing it — and `/change-rule` asks you to say so in the commit body, where the review reads it.
+`automated:` left the record contract with `/inspect-automation`, which is gone from [livt-delivery](../livt-delivery/README.md). No skill writes the flag any more. livt still reads one a mapping carries, and will until the derived status can carry a board without it, so delete the line as each rule gains its citation. When a rule is reworded nothing unsets its automation for you — the tests go on citing it — and `/change-rule` asks you to say so in the commit body, where the review reads it.
 
 ## Coming from 3.x
 
