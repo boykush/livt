@@ -36,6 +36,24 @@ jobs:
       - name: Check
         run: mise run check
 
+      # gomod.proxy builds the module as the proxy serves it, and a version the
+      # proxy has served once stays pinned to that commit. A tag moved after its
+      # first fetch therefore publishes the old code under the new name, with
+      # every check here passing on the new.
+      - name: Verify the proxy serves this tag's commit
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          module=$(go list -m)
+          want=$(git rev-parse "${TAG}^{commit}")
+          # The query the build makes, so what it answers is what gets built.
+          got=$(go list -m -f '{{with .Origin}}{{.Hash}}{{end}}' "${module}@${TAG}")
+          if [ "$got" != "$want" ]; then
+            echo "::error::the proxy serves $TAG as ${got:-a commit it will not name}, not $want. Release a new version; a moved tag cannot be re-served"
+            exit 1
+          fi
+
       - name: Build and publish release
         run: goreleaser release --clean
         env:
