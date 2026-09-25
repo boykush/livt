@@ -11,6 +11,8 @@ import (
 	"github.com/boykush/livt/internal/parser"
 	"github.com/boykush/livt/internal/uri"
 	mcpsdk "github.com/modelcontextprotocol/go-sdk/mcp"
+
+	"github.com/boykush/livt/internal/gitrev"
 )
 
 // registerTools wires the discovery tools. The spec reads (opportunities and
@@ -81,7 +83,7 @@ func (s *Server) listTerms(_ context.Context, _ *mcpsdk.CallToolRequest, _ listT
 }
 
 func (s *Server) versioned() versioned {
-	return versioned{SpecVersion: specVersion(s.cfg.Root)}
+	return versioned{SpecVersion: gitrev.Short(s.cfg.Root)}
 }
 
 // --- data access on Config (pure; shared by the tool and the resource handlers) ---

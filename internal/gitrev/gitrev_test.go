@@ -1,17 +1,17 @@
-package mcp
+package gitrev
 
 import (
 	"os/exec"
 	"testing"
 )
 
-func TestSpecVersionNonGitIsEmpty(t *testing.T) {
-	if got := specVersion(t.TempDir()); got != "" {
-		t.Fatalf("specVersion of non-git dir = %q, want empty", got)
+func TestShortOfANonGitDirIsEmpty(t *testing.T) {
+	if got := Short(t.TempDir()); got != "" {
+		t.Fatalf("Short of a non-git dir = %q, want empty", got)
 	}
 }
 
-func TestSpecVersionInGitRepoReturnsRevision(t *testing.T) {
+func TestShortInAGitRepoReturnsTheRevision(t *testing.T) {
 	if _, err := exec.LookPath("git"); err != nil {
 		t.Skip("git not available")
 	}
@@ -25,7 +25,7 @@ func TestSpecVersionInGitRepoReturnsRevision(t *testing.T) {
 			t.Skipf("git setup failed (%v): %s", err, out)
 		}
 	}
-	if got := specVersion(dir); got == "" {
-		t.Fatal("specVersion in git repo = empty, want a revision")
+	if got := Short(dir); got == "" {
+		t.Fatal("Short in a git repo = empty, want a revision")
 	}
 }
