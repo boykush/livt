@@ -64,6 +64,14 @@ The expert skills are the **knowledge backend** the record and formulation skill
 /plugin install livt-discovery@livt-claude-code-plugins
 ```
 
+## Coming from 5.x
+
+livt 0.16.0 removed `automated:`. A rule is automated when a test cites it, and nothing else says so.
+
+Nothing fails the day you upgrade: livt ignores a field it does not know, so a mapping still carrying the line parses exactly as before. The line counts for nothing, which is the point — a flag with no citation behind it was claiming a board it had no evidence for. Delete the lines as you next touch those mappings.
+
+A board can show fewer automated rules afterwards. That is the flag's absence, not a regression: what those rules had was the line, and what they need is a test citing them.
+
 ## Coming from 4.x
 
 `/record-story-map` and `/write-story-card` file a story map under its opportunity's key, not under the map's own name:
@@ -78,7 +86,7 @@ A story and its mapping are kept to one name. A mapping can name its own board a
 
 New story keys are minted at four words or more. A key already on file keeps its words, since renaming it would break every URI citing it. It is short keys that collide over years: a two-word key fits every story on its topic, the first card takes it, and it goes on claiming the topic after the others arrive.
 
-`automated:` left the record contract with `/inspect-automation`, which is gone from [livt-delivery](../livt-delivery/README.md). No skill writes the flag any more. livt still reads one a mapping carries, and 0.16.0 drops it, so delete the line as each rule gains its citation. When a rule is reworded nothing unsets its automation for you — the tests go on citing it — and `/change-rule` asks you to say so in the commit body, where the review reads it.
+`automated:` left the record contract with `/inspect-automation`, which is gone from [livt-delivery](../livt-delivery/README.md). No skill writes the flag any more, and livt has since removed the field — see [Coming from 5.x](#coming-from-5x). When a rule is reworded nothing unsets its automation for you — the tests go on citing it — and `/change-rule` asks you to say so in the commit body, where the review reads it.
 
 ## Coming from 3.x
 

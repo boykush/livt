@@ -37,7 +37,7 @@ ubiquitous:
 - IDs must be unique within their rule or question list
 - `ubiquitous` is optional: each entry is a [ubiquitous language](./ubiquitous-language.md) term key, rendered as a pink sticky linking to `ubiquitous.html#{term-key}`. A key with no matching term file renders as a plain pink card.
 - `issues` is optional: the rule's automation Issue URLs on implementation repos (Issue URLs only). The livt repository records the links; their state lives at the URL target. A rule without `issues` is unlinked.
-- Whether a rule is automated is not a field. The tests that automate it say so, and livt reads it from them — see [Automating a rule](#automating-a-rule). A deprecated `automated:` is still read where a mapping carries one, until 0.16.0.
+- Whether a rule is automated is not a field. The tests that automate it say so, and livt reads it from them — see [Automating a rule](#automating-a-rule).
 - `status` is optional and applies to a rule: `proposed` while the rule is put forward but not yet agreed, `accepted` once it is, `rejected` when the proposal was turned down, `retired` when spec it once was stopped holding. Absent means accepted, and any other value fails the build. See [Proposing a rule](#proposing-a-rule).
 - `retired` is optional and applies to an example or a question: it records that the item is no longer part of the spec. Absent means live. It is not a rule field — a rule closes through `status`; see [Retiring an item](#retiring-an-item).
 - `superseded_by` is optional and goes with a closed rule or a retired example or question: the [livt URIs](../reference/uri.md) of whatever took its place. Absent means nothing did.
@@ -100,7 +100,7 @@ On the board, a rule or an example that a test cites is stamped ✓ *automated* 
 
 Setting this up in an implementation repository — the CI step that collects the report and opens its pull request — is covered by the [livt-automation plugin](https://github.com/boykush/livt/blob/main/plugins/livt-automation/README.md#sending-automations-back).
 
-`automated: true` on a rule once recorded all of this as a judgment written into the mapping. It is deprecated rather than gone: a rule still carrying the line reads as automated, so a repository keeps the board it had while its rules gain their citations. Nothing maintains the flag any more — no skill writes it and no command moves it — so it stays where a citation would have been withdrawn. Delete the line as each rule is cited from the test that automates it; livt stops reading it in 0.16.0.
+`automated: true` on a rule once recorded all of this as a judgment written into the mapping. 0.16.0 removed the field. A mapping still carrying the line parses — livt ignores what it does not know — and the line counts for nothing, so delete it and let the test's citation say what it used to.
 
 ## Retiring an item
 

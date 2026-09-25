@@ -8,7 +8,7 @@ import (
 	"github.com/boykush/livt/internal/domain"
 )
 
-func TestParseExampleMappingReadsRuleIssuesAndTheDeprecatedFlag(t *testing.T) {
+func TestParseExampleMappingReadsRuleIssues(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "story.yaml")
 	data := []byte("rules:\n" +
 		"  - id: R-01\n" +
@@ -32,8 +32,10 @@ func TestParseExampleMappingReadsRuleIssuesAndTheDeprecatedFlag(t *testing.T) {
 	if len(recorded.Issues) != 2 || recorded.Issues[0] != "https://github.com/boykush/livt/issues/25" {
 		t.Fatalf("got issues %v, want the two recorded URLs", recorded.Issues)
 	}
-	if !recorded.Automated() {
-		t.Fatal("a mapping still carrying automated: keeps the board it had")
+	// The fixture keeps the line a 0.15.x mapping carries: the field is gone,
+	// so it has to parse and count for nothing.
+	if recorded.Automated() {
+		t.Fatal("only a citation automates a rule; the removed automated: cannot")
 	}
 
 	bare := em.Rules[1]
