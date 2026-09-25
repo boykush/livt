@@ -85,13 +85,17 @@ rules:
         name: livtリポジトリ自身が唯一の実装リポジトリなので、これらは本番のサイトには現れない
   - id: R-07
     name: 退役したルールを引用しているテストは、埋めるべきものとしてボードに現れる
+    status: retired
     examples:
       - id: EX-01
         name: 退役したルールを引用しているテストがあると、Tasksページにその旨が並ぶ
+        retired: true
       - id: EX-02
         name: 誤りとしては扱わない（退役は仕様側の決定で、テストはいまも動いて通っている）
+        retired: true
       - id: EX-03
         name: 本文が変わったルールへの引用も同じ扱いになるが、見分ける手立てはまだ無い（Q-03）
+        retired: true
 
 questions:
   - id: Q-01
