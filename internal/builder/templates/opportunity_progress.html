@@ -73,7 +73,7 @@ the split as well as within it.
     <span class="text-xs text-gray-400">{{t "opportunity.burn-down-hint"}}</span>
   </div>
   <div class="grid gap-3 sm:grid-cols-3">
-    {{template "opportunity-meter" meter (t "opportunity.unautomated-rules") .Progress.Unautomated .Progress.Rules "bg-gray-500" true (t "nav.tasks") .Progress.UnautomatedPath}}
+    {{if .Progress.AutomationKnown}}{{template "opportunity-meter" meter (t "opportunity.unautomated-rules") .Progress.Unautomated .Progress.Rules "bg-gray-500" true (t "nav.tasks") .Progress.UnautomatedPath}}{{end}}
     {{template "opportunity-meter" meter (t "opportunity.proposed-rules") .Progress.Proposed .Progress.Rules "bg-blue-300" true (t "nav.tasks") .Progress.ProposedPath}}
     {{template "opportunity-meter" meter (t "opportunity.open-questions") .Progress.Questions .Progress.QuestionsAsked "bg-red-400" true (t "nav.tasks") .Progress.QuestionsPath}}
   </div>
@@ -112,12 +112,14 @@ without it a row reads as a name and two numbers with no unit.
       {{if .Unscoped}}{{t "opportunity.unscoped-release"}}{{else}}{{.Name}}{{end}}
     </h3>
     {{if not .Unscoped}}<span class="font-mono text-[11px] text-gray-400">{{.ID}}</span>{{end}}
+    {{if .AutomationKnown}}
     <span class="ml-auto flex items-center gap-2.5 shrink-0">
       <span class="block w-16 h-1.5 rounded-sm bg-gray-200 overflow-hidden" aria-hidden="true">
         <span class="block h-full bg-blue-500" style="width: {{percent .Automated .Rules}}%"></span>
       </span>
       <span class="font-mono text-xs text-gray-500 whitespace-nowrap">{{.Automated}}<span class="text-gray-400">/{{.Rules}}</span></span>
     </span>
+    {{end}}
   </div>
   {{end}}
   <div class="space-y-2">

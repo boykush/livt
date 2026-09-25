@@ -97,7 +97,7 @@ func TestBuildTasksListsOpenQuestionsAndUnautomatedRules(t *testing.T) {
 		StoryKey: "overview-unautomated-rules", MappingName: "未自動化のルールを横断で見渡す",
 		StoryPath: "story/overview-unautomated-rules.html", MappingPath: "mapping/overview-unautomated-rules.html#rule-R-01",
 	}}
-	if err := b.buildTasks(taskSet{Questions: questions, UnautomatedRules: rules}, nil); err != nil {
+	if err := b.buildTasks(taskSet{Questions: questions, UnautomatedRules: rules}, nil, true); err != nil {
 		t.Fatal(err)
 	}
 	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
@@ -122,7 +122,7 @@ func TestBuildTasksListsOpenQuestionsAndUnautomatedRules(t *testing.T) {
 // repository read differently.
 func TestBuildTasksEmptyStatesReadPerList(t *testing.T) {
 	b := emptyDirsBuilder(t)
-	if err := b.buildTasks(taskSet{}, nil); err != nil {
+	if err := b.buildTasks(taskSet{}, nil, true); err != nil {
 		t.Fatal(err)
 	}
 	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
@@ -130,6 +130,32 @@ func TestBuildTasksEmptyStatesReadPerList(t *testing.T) {
 	for _, want := range []string{"No open questions.", "No proposed rules.", "Every accepted rule is automated."} {
 		if !strings.Contains(html, want) {
 			t.Fatalf("tasks.html missing empty state %q", want)
+		}
+	}
+}
+
+// livt:automates livt://mapping/derive-automation-status/rule/R-01/example/EX-02
+// Nothing collected is not the same answer as collected and found nothing: the
+// un-automated list would otherwise print every accepted rule as work to do on
+// a livt repository nobody has pointed an implementation at, and its empty
+// state would congratulate one that has no rules.
+func TestBuildTasksLeavesAutomationOffWhenNothingWasCollected(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	if err := b.buildTasks(oneOfEachTask(nil), nil, false); err != nil {
+		t.Fatal(err)
+	}
+	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
+
+	for _, gone := range []string{"Un-automated Rules", "Every accepted rule is automated.", "A rule"} {
+		if strings.Contains(html, gone) {
+			t.Fatalf("tasks.html still shows %q with nothing collected", gone)
+		}
+	}
+	// The other two lists close by a conversation and by agreement, and neither
+	// waits on a report.
+	for _, want := range []string{"Open Questions", "A question", "Proposed Rules", "A proposal"} {
+		if !strings.Contains(html, want) {
+			t.Fatalf("tasks.html dropped %q, which does not depend on a report", want)
 		}
 	}
 }
@@ -150,7 +176,7 @@ func oneOfEachTask(opp []opportunityRef) taskSet {
 func TestBuildTasksFilterCoversEveryList(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	opp := []opportunityRef{{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"}}
-	if err := b.buildTasks(oneOfEachTask(opp), []string{"協働ディスカバリー"}); err != nil {
+	if err := b.buildTasks(oneOfEachTask(opp), []string{"協働ディスカバリー"}, true); err != nil {
 		t.Fatal(err)
 	}
 	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
@@ -182,7 +208,7 @@ func TestBuildTasksFilterCoversEveryList(t *testing.T) {
 func TestBuildTasksSectionsStayHonestWhenAFilterEmptiesThem(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	opp := []opportunityRef{{Name: "協働ディスカバリー", Path: "story-map/協働ディスカバリー.html"}}
-	if err := b.buildTasks(oneOfEachTask(opp), []string{"協働ディスカバリー"}); err != nil {
+	if err := b.buildTasks(oneOfEachTask(opp), []string{"協働ディスカバリー"}, true); err != nil {
 		t.Fatal(err)
 	}
 	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
@@ -228,7 +254,7 @@ func TestBuildTasksSectionsStayHonestWhenAFilterEmptiesThem(t *testing.T) {
 func TestBuildTasksItemWithoutStoryPageStillNamesItsStory(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	questions := []taskItem{{Kind: "question", Text: "A question", MappingName: "orphan-story"}}
-	if err := b.buildTasks(taskSet{Questions: questions}, nil); err != nil {
+	if err := b.buildTasks(taskSet{Questions: questions}, nil, true); err != nil {
 		t.Fatal(err)
 	}
 	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
@@ -466,7 +492,7 @@ func TestBuildTasksListsProposedRulesApart(t *testing.T) {
 		Kind: "proposed-rule", ID: "R-02", Text: "提案中のルール",
 		StoryKey: "checkout", MappingName: "Checkout", MappingPath: "mapping/checkout.html#rule-R-02",
 	}}
-	if err := b.buildTasks(taskSet{ProposedRules: proposed}, nil); err != nil {
+	if err := b.buildTasks(taskSet{ProposedRules: proposed}, nil, true); err != nil {
 		t.Fatal(err)
 	}
 	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))

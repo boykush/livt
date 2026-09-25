@@ -482,6 +482,10 @@ type tasksView struct {
 	ProposedRules       []taskItem
 	UnautomatedRules    []taskItem
 	FilterOpportunities []string
+	// AutomationKnown says whether the un-automated list is on the page at all.
+	// Empty because every rule is covered and empty because nothing has been
+	// collected are different answers, and only the first is worth printing.
+	AutomationKnown bool
 }
 
 // glossaryCard is one row of the glossary table. Anchor is the row's id — the
@@ -592,6 +596,8 @@ type mappingView struct {
 	// are rendered straight off the domain types, so the mark is looked up
 	// beside each rather than carried on it.
 	DiffMarks map[string]*diffMarkView
+	// AutomationKnown says whether the automation axis is drawn at all.
+	AutomationKnown bool
 }
 
 func renderTasks(w io.Writer, lang i18n.Lang, view tasksView) error {
@@ -643,6 +649,7 @@ func renderMapping(w io.Writer, lang i18n.Lang, bd board, name, storyPath string
 	return templates(lang).ExecuteTemplate(w, "mapping.html", mappingView{
 		Name: name, StoryPath: storyPath, Mapping: bd.Mapping,
 		Ubiquitous: ubiquitous, Diff: diff, Ghosts: bd.Ghosts, DiffMarks: marks,
+		AutomationKnown: bd.AutomationKnown,
 	})
 }
 

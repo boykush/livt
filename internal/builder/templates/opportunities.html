@@ -42,10 +42,12 @@
             <span class="w-2 h-2 rounded-sm bg-yellow-400" aria-hidden="true"></span>
             <span class="sr-only">{{t "opportunity.mapped-stories"}}</span>{{.Progress.MappedStories}}<span class="text-gray-400">/{{.Progress.TotalStories}}</span>
           </span>
+          {{if .Progress.AutomationKnown}}
           <span class="flex items-center gap-1.5 text-gray-600" title="{{t "opportunity.automated-rules"}}">
             <span class="w-2 h-2 rounded-sm bg-blue-500" aria-hidden="true"></span>
             <span class="sr-only">{{t "opportunity.automated-rules"}}</span>{{.Progress.Automated}}<span class="text-gray-400">/{{.Progress.Rules}}</span>
           </span>
+          {{end}}
         </span>
         <span class="text-orange-400 text-sm">&rarr;</span>
         {{else}}

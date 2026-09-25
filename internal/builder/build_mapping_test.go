@@ -148,7 +148,7 @@ func TestRenderMappingMarksAutomatedRules(t *testing.T) {
 	}
 
 	var buf bytes.Buffer
-	if err := renderMapping(&buf, i18n.En, board{Mapping: em.Active()}, "Story", "", nil, nil, nil); err != nil {
+	if err := renderMapping(&buf, i18n.En, board{Mapping: em.Active(), AutomationKnown: true}, "Story", "", nil, nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()
@@ -158,6 +158,43 @@ func TestRenderMappingMarksAutomatedRules(t *testing.T) {
 	}
 	if !strings.Contains(html, "Automated by a test") {
 		t.Fatal("expected the legend to explain the automated mark")
+	}
+}
+
+// livt:automates livt://mapping/derive-automation-status/rule/R-01/example/EX-02
+// The ✓ legend promises a mark on a board where no sticky can carry one, so it
+// goes with the rest of the axis when nothing has been collected.
+func TestRenderMappingDrawsNoAutomationLegendWhenNothingWasCollected(t *testing.T) {
+	em := &domain.ExampleMapping{Rules: []domain.Rule{{ID: "R-01", Name: "A rule"}}}
+
+	var buf bytes.Buffer
+	if err := renderMapping(&buf, i18n.En, board{Mapping: em.Active()}, "Story", "", nil, nil, nil); err != nil {
+		t.Fatal(err)
+	}
+	if html := buf.String(); strings.Contains(html, "Automated by a test") {
+		t.Fatal("the legend explains a mark nothing on this board can carry")
+	}
+}
+
+// livt:automates livt://mapping/derive-automation-status/rule/R-01/example/EX-02
+// End to end, because the axis is spread over pages that each decide on their
+// own: the board's legend, the Tasks list, and the opportunity figures.
+func TestBuildLeavesAutomationOffWhenNothingWasCollected(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	writeFile(t, filepath.Join(b.MappingsDir, "checkout.yaml"),
+		"rules:\n"+
+			"  - id: R-01\n"+
+			"    name: 締め切り後の注文は受け付けない\n")
+
+	if err := b.Build(); err != nil {
+		t.Fatal(err)
+	}
+
+	if html := readRendered(t, filepath.Join(b.OutDir, "mapping", "checkout.html")); strings.Contains(html, "Automated by a test") {
+		t.Fatal("the board explains an automated mark with no report behind it")
+	}
+	if html := readRendered(t, filepath.Join(b.OutDir, "tasks.html")); strings.Contains(html, "Un-automated Rules") {
+		t.Fatal("the Tasks page calls a rule un-automated on a repository nobody has looked at")
 	}
 }
 
@@ -266,7 +303,7 @@ func TestCollectTasksSplitsQuestionsFromUnautomatedRules(t *testing.T) {
 		Questions: []domain.Question{{ID: "Q-01", Text: "An open question"}},
 	}
 
-	out := collectTasks(em, "疑問を見渡す", "story/overview-open-questions.html")
+	out := collectTasks(em, "疑問を見渡す", "story/overview-open-questions.html", true)
 
 	if len(out.Questions) != 1 || out.Questions[0].Text != "An open question" {
 		t.Fatalf("questions = %+v, want the one open question", out.Questions)
@@ -292,7 +329,7 @@ func TestCollectTasksLinksItemsToTheirStickies(t *testing.T) {
 		Questions: []domain.Question{{ID: "Q-01", Text: "A question"}},
 	}
 
-	out := collectTasks(em, "Checkout", "story/checkout.html")
+	out := collectTasks(em, "Checkout", "story/checkout.html", true)
 
 	if got := out.Questions[0].MappingPath; got != "mapping/checkout.html#question-Q-01" {
 		t.Errorf("question link = %q, want the question sticky's anchor", got)
@@ -384,7 +421,7 @@ func TestCollectTasksSkipsRetiredItems(t *testing.T) {
 		},
 	}
 
-	out := collectTasks(em, "テストからルールを辿る", "story/trace-test-to-rule.html")
+	out := collectTasks(em, "テストからルールを辿る", "story/trace-test-to-rule.html", true)
 
 	if len(out.Questions) != 1 || out.Questions[0].ID != "Q-01" {
 		t.Errorf("questions = %+v, want only the live Q-01", out.Questions)
@@ -457,7 +494,7 @@ func TestCollectTasksListsProposedRulesApart(t *testing.T) {
 		},
 	}
 
-	out := collectTasks(em, "Checkout", "story/checkout.html")
+	out := collectTasks(em, "Checkout", "story/checkout.html", true)
 
 	if len(out.UnautomatedRules) != 1 || out.UnautomatedRules[0].ID != "R-01" {
 		t.Errorf("un-automated rules = %+v, want only the accepted R-01", out.UnautomatedRules)
@@ -717,6 +754,9 @@ func TestBuildNamesABoardByItsOwnNameThenItsStorysThenItsKey(t *testing.T) {
 func TestBuildCallsAStorylessMappingByItsNameEverywhere(t *testing.T) {
 	const name = "全角スペースでログインできない"
 	b := emptyDirsBuilder(t)
+	// The Tasks chip this asserts on is an un-automated rule, which is only a
+	// task once something has looked.
+	writeAutomations(t, b)
 	writeFile(t, filepath.Join(b.MappingsDir, "fix-login.yaml"),
 		"name: "+name+"\n"+
 			"rules:\n"+

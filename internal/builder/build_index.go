@@ -9,8 +9,10 @@ import (
 
 // buildTasks renders tasks.html: what the livt repository leaves unfinished —
 // open questions, proposed rules, and un-automated rules. filterOpportunities
-// are the opportunity axes every list can be filtered by.
-func (b *Builder) buildTasks(open taskSet, filterOpportunities []string) error {
+// are the opportunity axes every list can be filtered by, and automationKnown
+// whether anything has spoken about automation at all — with nothing said, the
+// un-automated list is left off rather than printed as complete.
+func (b *Builder) buildTasks(open taskSet, filterOpportunities []string, automationKnown bool) error {
 	sb, err := b.sidebar("task", "")
 	if err != nil {
 		return err
@@ -26,6 +28,7 @@ func (b *Builder) buildTasks(open taskSet, filterOpportunities []string) error {
 		ProposedRules:       open.ProposedRules,
 		UnautomatedRules:    open.UnautomatedRules,
 		FilterOpportunities: filterOpportunities,
+		AutomationKnown:     automationKnown,
 	})
 }
 

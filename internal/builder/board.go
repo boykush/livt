@@ -21,13 +21,17 @@ import (
 type board struct {
 	Mapping *domain.ExampleMapping
 	Ghosts  map[string]bool
+	// AutomationKnown says whether to draw the automation axis at all. False is
+	// a board nothing has spoken about, where the ✓ legend would promise a mark
+	// no sticky can carry.
+	AutomationKnown bool
 }
 
 // boardFor builds the board for one mapping. With no diff it is the active view
 // and nothing more, which is every build that was given no revisions.
-func (b *Builder) boardFor(em *domain.ExampleMapping) board {
+func (b *Builder) boardFor(em *domain.ExampleMapping, automationKnown bool) board {
 	if b.diffResult == nil {
-		return board{Mapping: em.Active()}
+		return board{Mapping: em.Active(), AutomationKnown: automationKnown}
 	}
 	out := &domain.ExampleMapping{StoryKey: em.StoryKey, Name: em.Name, Ubiquitous: em.Ubiquitous}
 	ghosts := make(map[string]bool)
@@ -72,7 +76,7 @@ func (b *Builder) boardFor(em *domain.ExampleMapping) board {
 	}
 
 	b.addDeleted(out, ghosts, em.StoryKey)
-	return board{Mapping: out, Ghosts: ghosts}
+	return board{Mapping: out, Ghosts: ghosts, AutomationKnown: automationKnown}
 }
 
 func (b *Builder) changed(u string) bool {
