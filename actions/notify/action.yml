@@ -12,7 +12,7 @@ inputs:
     description: A token that can send a repository dispatch to livt-repository (Contents write). GITHUB_TOKEN cannot stand in — a dispatch it signs starts no workflow run
     required: true
   livt-version:
-    description: The livt release to install, e.g. v0.15.0
+    description: The livt release to install, e.g. v0.16.0. It has to carry `livt automations changed`, which the gate below runs
     required: false
     default: latest
 
@@ -65,7 +65,12 @@ runs:
       run: |
         set -euo pipefail
         git fetch --no-tags --depth=1 "$REMOTE" "$BEFORE" 2>/dev/null || true
-        echo "collect=$("$RUNNER_TEMP/livt" automations changed "$BEFORE")" >> "$GITHUB_OUTPUT"
+        # Assigned rather than inlined into the echo: there, a livt that cannot
+        # answer exits under the echo's own status, so the step stays green and
+        # the empty output reads as a no — the one wrong skip this gate must not
+        # make silently.
+        collect=$("$RUNNER_TEMP/livt" automations changed "$BEFORE")
+        echo "collect=$collect" >> "$GITHUB_OUTPUT"
 
     # Two facts and no artifact. The livt repository reads the revision itself,
     # so nothing here carries a report across the boundary.
