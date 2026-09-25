@@ -130,6 +130,9 @@ func (b *Builder) computeCounts() (sidebarCounts, error) {
 	if err != nil {
 		return sidebarCounts{}, err
 	}
+	// The un-automated half is only listed where a report was collected, so the
+	// badge has to ask the same question the page does.
+	automationKnown := !automations.Empty()
 	tasks := 0
 	for _, em := range mappings {
 		// Counted off the active view, so the badge matches what the Tasks page
@@ -138,7 +141,7 @@ func (b *Builder) computeCounts() (sidebarCounts, error) {
 		tasks += len(active.Questions)
 		for _, r := range active.Rules {
 			// A proposed rule is listed until it is agreed, automated or not.
-			if r.Proposed() || !r.Automated() {
+			if r.Proposed() || (automationKnown && !r.Automated()) {
 				tasks++
 			}
 		}
