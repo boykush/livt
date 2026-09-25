@@ -33,7 +33,7 @@ One server backs every repository on your machine: no per-repo checkout of the l
    /plugin install livt-automation@livt-claude-code-plugins
    ```
 
-The agent can then call `list_stories` / `list_example_mappings` / `list_story_maps` / `list_terms` and read resources such as `livt://story-map/{opportunity_key}`, `livt://story/{story_key}`, `livt://mapping/{story_key}`, and `livt://ubiquitous/{term_key}`. See the [`livt mcp` command reference](https://github.com/boykush/livt/blob/main/docs/src/reference/commands.md) for the full tool and resource list. A rule whose `status` is `proposed` is a candidate awaiting agreement, not spec to automate yet.
+The agent can then read the livt repository through the server's tools and resources, which the server lists and describes itself, so the agent needs nothing beyond the connection. A rule whose `status` is `proposed` is a candidate awaiting agreement, not spec to automate yet.
 
 ## Configuration
 
