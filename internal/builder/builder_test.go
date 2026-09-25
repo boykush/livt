@@ -70,11 +70,42 @@ func TestBuildKeepsUnrelatedFilesInOutDir(t *testing.T) {
 	}
 }
 
+// livt:automates livt://mapping/derive-automation-status/rule/R-01/example/EX-02
+// The badge counts what the page lists, and the page stopped listing
+// un-automated rules where nothing has been collected — so the badge has to
+// stop counting them, or it advertises a list the reader cannot find.
+func TestComputeCountsDropsUnautomatedRulesWhenNothingWasCollected(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	writeFile(t, filepath.Join(b.MappingsDir, "demo.yaml"),
+		"rules:\n"+
+			"  - id: R-01\n"+
+			"    name: 未自動化のルール\n"+
+			"  - id: R-02\n"+
+			"    name: 合意前の提案\n"+
+			"    status: proposed\n"+
+			"questions:\n"+
+			"  - id: Q-01\n"+
+			"    text: 開いた疑問\n")
+
+	counts, err := b.computeCounts()
+	if err != nil {
+		t.Fatal(err)
+	}
+	// The proposal waits on agreement and the question on a conversation;
+	// neither waits on a report.
+	if counts.tasks != 2 {
+		t.Fatalf("tasks = %d, want 2 (the question and the proposal, not the un-automated rule)", counts.tasks)
+	}
+}
+
 // livt:automates livt://mapping/trace-test-to-rule/rule/R-05/example/EX-02
 // The sidebar's Tasks badge counts what the Tasks page lists, so a retired
 // question or rule is out of the number as well as out of the list.
 func TestComputeCountsLeavesRetiredItemsOutOfTasks(t *testing.T) {
 	b := emptyDirsBuilder(t)
+	// The un-automated half of the count is only listed once something has
+	// looked, and this case is about retirement rather than about that.
+	writeAutomations(t, b)
 	writeFile(t, filepath.Join(b.MappingsDir, "demo.yaml"),
 		"rules:\n"+
 			"  - id: R-01\n"+
