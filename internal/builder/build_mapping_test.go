@@ -2,7 +2,9 @@ package builder
 
 import (
 	"bytes"
+	"html"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"testing"
 
@@ -251,6 +253,44 @@ func TestRenderMappingLinksRuleIssues(t *testing.T) {
 	}
 	if got := strings.Count(html, `target="_blank"`); got != 2 {
 		t.Fatalf("outbound links rendered %d times, want 2 (only on the linked rule)", got)
+	}
+}
+
+// livt:automates livt://mapping/show-automation-status-per-rule/rule/R-01/example/EX-05
+// A sticky links each test that automates it by repository, file and line, on
+// the ✓ its stamp wears. An automation issue beside it keeps the ↗: both lead
+// off the site, and off GitHub an issue's label is nothing but its host.
+func TestRenderMappingTellsATestFromAnAutomationIssue(t *testing.T) {
+	em := &domain.ExampleMapping{
+		Rules: []domain.Rule{{
+			ID: "R-01", Name: "A rule with a test and an issue",
+			Automations: []domain.Automation{{
+				Repo: "acme/impl", File: "internal/x_test.go", Line: 12,
+				URL: "https://github.com/acme/impl/blob/abc1234/internal/x_test.go#L12",
+			}},
+			Issues: []string{"https://tracker.example.com/tickets/9"},
+		}},
+	}
+
+	var buf bytes.Buffer
+	if err := renderMapping(&buf, i18n.En, board{Mapping: em.Active(), AutomationKnown: true}, "Story", "", nil, nil, nil); err != nil {
+		t.Fatal(err)
+	}
+	page := html.UnescapeString(buf.String())
+
+	for _, link := range []struct{ href, text, title string }{
+		{"https://github.com/acme/impl/blob/abc1234/internal/x_test.go#L12", "✓ impl: x_test.go:12", "Automated by tests"},
+		{"https://tracker.example.com/tickets/9", "↗ tracker.example.com", "Automation issue"},
+	} {
+		anchor := regexp.MustCompile(`<a href="` + regexp.QuoteMeta(link.href) + `"[^>]*title="([^"]*)"[^>]*>` + regexp.QuoteMeta(link.text) + `</a>`)
+		m := anchor.FindStringSubmatch(page)
+		if m == nil {
+			t.Errorf("no link to %s reads %q", link.href, link.text)
+			continue
+		}
+		if m[1] != link.title {
+			t.Errorf("%q is titled %q, want %q", link.text, m[1], link.title)
+		}
 	}
 }
 
