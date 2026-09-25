@@ -74,7 +74,7 @@ Every skill here is a plain [Agent Skill](https://agentskills.io) — no subagen
 
 ## Coming from 4.x
 
-`/inspect-automation` is gone, and nothing maintains the `automated:` flag it kept. A rule is automated when a test cites it, livt collects the citations from the implementation repository and derives the status, and there is no longer a record here for a skill to propose changes to. The flag itself is deprecated rather than removed: livt still reads one a mapping carries, so a board does not go dark while its rules gain citations, and 0.16.0 drops it.
+`/inspect-automation` is gone, and nothing maintains the `automated:` flag it kept. A rule is automated when a test cites it, livt collects the citations from the implementation repository and derives the status, and there is no longer a record here for a skill to propose changes to. The flag itself is deprecated rather than removed: livt still reads one a mapping carries, so a board does not go dark while its rules gain citations, and it goes when the derived status no longer needs the fallback.
 
 The judgment did not disappear; it moved to where it can be made. Whether a test really covers the rule it names is a question for the review that lands the test, in the repository that holds it — not for someone reading an issue's state from a distance, which is all the old station could see.
 
