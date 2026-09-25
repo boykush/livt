@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>livt and BDD - livt - Living Text</title>
+        <title>Reference - livt - Living Text</title>
 
 
         <!-- Custom HTML head -->
@@ -174,64 +174,33 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="livt-and-bdd"><a class="header" href="#livt-and-bdd">livt and BDD</a></h1>
-<p>livt renders practices it did not invent. This page says which parts are the community’s, which parts livt added, where livt departs on purpose, and what livt deliberately leaves alone.</p>
-<p>If you arrived from the BDD community, the short version: <strong>livt is not an alternative to Cucumber.</strong> It runs no tests. It keeps what a Discovery session decided, so the decision is still readable — and still quotable — when someone implements it months later.</p>
-<h2 id="what-livt-takes"><a class="header" href="#what-livt-takes">What livt takes</a></h2>
-<ul>
-<li><strong>Behaviour-Driven Development</strong> — Dan North, <a href="https://dannorth.net/introducing-bdd/">Introducing BDD</a> (2006). The three phases livt organizes around, Discovery / Formulation / Automation, are the community’s own framing: <a href="https://cucumber.io/docs/bdd/">Cucumber’s BDD docs</a>.</li>
-<li><strong>Example Mapping</strong> — Matt Wynne, <a href="https://cucumber.io/blog/bdd/example-mapping-introduction/">Introducing Example Mapping</a> (2015). The four cards, their colours, the timebox, and reading the board back as a signal about the story. livt’s board is that format, rendered from a file.</li>
-<li><strong>Ubiquitous language</strong> — Eric Evans’ term from Domain-Driven Design, and a thread through BDD’s Formulation. livt keeps it as a glossary beside the artifacts that use it.</li>
-<li><strong>Opportunity Canvas and User Story Mapping</strong> — Jeff Patton, <a href="https://jpattonassociates.com/opportunity-canvas/">Opportunity Canvas</a> and <a href="https://jpattonassociates.com/story-mapping/">story mapping</a>. Not BDD, but under the same rule.</li>
-</ul>
-<h2 id="what-livt-adds"><a class="header" href="#what-livt-adds">What livt adds</a></h2>
-<p>None of this is in the practice. It is livt’s, and it moves when livt moves:</p>
-<ul>
-<li><strong>A file instead of a photograph.</strong> The mapping is YAML in the repository, versioned alongside the code it specifies.</li>
-<li><strong>Identity.</strong> Every rule, example, and question has an ID that is stable once filed, numbered past retired ones, and addressable as a livt URI — so a rule quoted from an Issue or a test comment cannot silently come to mean something else.</li>
-<li><strong>A lifecycle.</strong> A rule is proposed, accepted, rejected, or retired, the way an <a href="https://adr.github.io/">architecture decision record</a> is, and a retired one says where the spec went.</li>
-<li><strong>An asynchronous lane.</strong> A rule can be proposed and agreed in a pull request review, between sessions, when the room does not need to meet for it.</li>
-<li><strong>Links outward.</strong> A rule records the Issues filed to automate it, and the tests that automate it cite it back by livt URI. livt collects those citations from the implementation repository — what each test claims to cover, not whether it passes — and the site rolls them up.</li>
-</ul>
-<h2 id="where-livt-departs"><a class="header" href="#where-livt-departs">Where livt departs</a></h2>
-<h3 id="an-example-mapping-is-supposed-to-be-disposable"><a class="header" href="#an-example-mapping-is-supposed-to-be-disposable">An Example Mapping is supposed to be disposable</a></h3>
-<p>This is the real departure, and it is worth naming rather than smuggling.</p>
-<p>Wynne’s Example Mapping is a twenty-five minute conversation whose product is shared understanding. The cards are a byproduct and a gauge: too many blue and the story is too big, too many red and it is not ready. Once they have said that, they have done their job. A team that photographs the board and never opens the photo again has not failed at the practice.</p>
-<p>livt keeps the map, because of the gap it was built for: the developer who needs the agreed rule six months later cannot query a photograph. But a durable artifact invites maintenance, and maintenance invites treating the map as a specification to be completed rather than a conversation to be had. That anti-pattern is real, and no tool can rule it out. livt’s structural answer is that the record is written after the room agrees and never changes what was agreed — the <a href="https://github.com/boykush/livt/tree/main/plugins/livt-discovery">record skills</a> write the board verbatim first, and only then a structural edit whose diff is what the review reads.</p>
-<p>So, plainly: <strong>if you have to choose, choose the conversation.</strong> A team that runs good sessions and keeps no record is doing BDD. A team with immaculate YAML and no session is not.</p>
-<h3 id="livt-takes-a-position-on-formulation-that-the-community-does-not-share"><a class="header" href="#livt-takes-a-position-on-formulation-that-the-community-does-not-share">livt takes a position on Formulation that the community does not share</a></h3>
-<p>Mainstream BDD treats the feature file as the shared artifact: the Gherkin is what the Three Amigos produce together, and it is the living documentation. livt’s position runs the other way — Discovery artifacts are the source of truth, and Gherkin would be generated output.</p>
-<p>Be clear about what that is worth today: <strong>livt does not generate Gherkin at all.</strong> Nothing in the tool depends on the position yet. It is a view under test, it is the part of livt most likely to be wrong, and it belongs in an argument rather than in a release note. If you think it is wrong, <a href="https://github.com/boykush/livt/issues">say so</a> — that is a more useful contribution than agreement.</p>
-<h2 id="what-livt-does-not-do"><a class="header" href="#what-livt-does-not-do">What livt does not do</a></h2>
-<ul>
-<li><strong>Run tests.</strong> livt is not an alternative to Cucumber, SpecFlow, Behave, or anything else that executes specifications. If it ever emits Gherkin, it will emit the standard syntax for those tools to run, never a dialect of its own.</li>
-<li><strong>Facilitate the session.</strong> No timer, no voting, no board. Live facilitation happens with people, on whatever board the room already uses; livt starts where the board ends.</li>
-<li><strong>Teach BDD.</strong> The practice is taught by the people below, and taught better.</li>
-<li><strong>Redefine the community’s words.</strong> Where a term is the practice’s — rule, example, question, discovery, formulation — it keeps the practice’s meaning. Where livt needed a term of its own, the name says so: livt repository, livt URI, implementation repository.</li>
-</ul>
-<h2 id="the-people-who-wrote-this-down"><a class="header" href="#the-people-who-wrote-this-down">The people who wrote this down</a></h2>
-<p>Most of what livt renders was worked out and published by a community that gives away the introduction and sells the depth, and whose maintainers have run on donations since 2023.</p>
-<ul>
-<li>Dan North — <a href="https://dannorth.net/introducing-bdd/">Introducing BDD</a></li>
-<li>Matt Wynne — <a href="https://cucumber.io/blog/bdd/example-mapping-introduction/">Introducing Example Mapping</a></li>
-<li>Seb Rose — <a href="https://cucumber.io/blog/bdd/keep-your-scenarios-brief/">Keep your scenarios BRIEF</a></li>
-<li>Gáspár Nagy and Seb Rose — <a href="https://bddbooks.com/">The BDD Books</a>: <em>Discovery</em> and <em>Formulation</em>, with Japanese editions on Leanpub</li>
-<li><a href="https://school.cucumber.io/">Cucumber School</a> — the courses, free and paid</li>
-<li><a href="https://opencollective.com/cucumber">Cucumber on Open Collective</a> — where the maintainers are funded</li>
-</ul>
-<p>If livt saved your team an argument it had already had, some of that is theirs.</p>
+                        <h1 id="reference"><a class="header" href="#reference">Reference</a></h1>
+<p>These docs keep no reference. A command reference, a guide to each file format, a table of what the MCP server returns — each would be a second copy of something the tool already says, and a copy goes stale unless someone remembers to update it. That is the failure livt exists to prevent, so livt does not ship one.</p>
+<p>Each detail is written once, where it cannot drift from what it describes, and where the reader who needs it — nowadays, usually a coding agent — already looks:</p>
+<div class="table-wrapper">
+<table>
+<thead>
+<tr><th>To know</th><th>Ask</th></tr>
+</thead>
+<tbody>
+<tr><td>What a command takes</td><td><code>livt &lt;command&gt; --help</code></td></tr>
+<tr><td>How to write your livt repository: its files, their formats, the rules for changing them</td><td>the skills that write it, under <a href="https://github.com/boykush/livt/tree/main/plugins">plugins</a></td></tr>
+<tr><td>How an agent reads your livt repository, and how it cites what it reads</td><td>the <code>livt mcp</code> server you run over it, which describes its own tools and resources</td></tr>
+<tr><td>What a livt URI in your livt repository points at</td><td><code>livt resolve &lt;uri&gt;</code></td></tr>
+<tr><td>What livt itself does, and why, rule by rule</td><td>livt’s own livt repository: its <a href="https://github.com/boykush/livt/tree/main/discoveries/example-mappings">example mappings</a>, rendered on the <a href="https://boykush.github.io/livt/demo/">live demo</a></td></tr>
+</tbody>
+</table>
+</div>
+<p>The last row is livt used on itself. livt keeps its own rules in a livt repository, so “what does livt do when…” is answered the way livt answers it for any team: by the rule that was agreed, with the reason in the commit that agreed it.</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="livt-and-bdd.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
-                            <a rel="next prefetch" href="reference.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
-                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -239,13 +208,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="livt-and-bdd.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
-                    <a rel="next prefetch" href="reference.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
-                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
-                    </a>
             </nav>
 
         </div>

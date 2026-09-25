@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Introduction - livt - Living Text</title>
+        <title>Why livt - livt - Living Text</title>
 
 
         <!-- Custom HTML head -->
@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-84367a6b.js";
+            window.path_to_searchindex_js = "searchindex-139903b5.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-a62fb9f7.js"></script>
+        <script src="toc-7aa131af.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -178,22 +178,13 @@
 <blockquote>
 <p>Collaborate on board. Make it living in text.</p>
 </blockquote>
-<h2 id="outcome"><a class="header" href="#outcome">Outcome</a></h2>
-<p>Collaborative outcomes evolve alongside the product as living text.</p>
-<h2 id="opportunities"><a class="header" href="#opportunities">Opportunities</a></h2>
-<ul>
-<li><strong>Stale Discovery</strong>: Discovery-phase artifacts are not persisted after synchronous collaboration sessions</li>
-<li><strong>Discovery-Development Gap</strong>: Persisted discovery artifacts are not leveraged in the development process</li>
-</ul>
-<h2 id="solutions"><a class="header" href="#solutions">Solutions</a></h2>
-<ul>
-<li>Provide a CLI tool that captures collaborative outcomes as text files (YAML, Markdown)</li>
-<li>Track consistency across artifacts via ID-based references with automated checks</li>
-<li>Treat Formulation artifacts (Gherkin scenarios) as generated output, not the source of truth — that lives in the Discovery artifacts. This one is a position rather than a settled design, and the community’s runs the other way: see <a href="./livt-and-bdd.html">livt and BDD</a></li>
-</ul>
-<h2 id="live-demo"><a class="header" href="#live-demo">Live Demo</a></h2>
-<p>livt dogfoods itself: its own discovery artifacts — stories, story maps, example mappings, and ubiquitous language — are published with <code>livt build</code> as a <a href="https://boykush.github.io/livt/demo/">live demo</a>. It shows exactly what the guides below describe.</p>
-<p>The demo reads in Japanese, which is what <code>lang: ja</code> in its <a href="reference/configuration.html">livt.yaml</a> does: this repository’s artifacts are written in Japanese, so the site is framed to match them. livt itself defaults to English — the screenshots in these guides show that default.</p>
+<p>A team that decides what to build around a board — an Example Mapping, say — leaves the room with an agreement. livt keeps that agreement as text in a repository, shows it as the board it came from, and serves it to the people and the coding agents who build it. It is after one outcome: <strong>collaborative outcomes evolve alongside the product as living text.</strong></p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/example-mapping.png" alt="An example mapping, as livt renders it"><span class="img-wrapper"><img src="images/example-mapping.png" alt="An example mapping, as livt renders it"></span></label></p>
+<h2 id="why-and-when-it-fits"><a class="header" href="#why-and-when-it-fits">Why, and when it fits</a></h2>
+<p>livt keeps its own reasons the way it asks a team to keep theirs. The problems it is built against are its <a href="https://boykush.github.io/livt/demo/opportunities.html">opportunities</a>, and what a team does with livt about them is drawn in its <a href="https://boykush.github.io/livt/demo/story-maps.html">story maps</a>. Those are the record; this page points at them rather than keeping a copy that could fall behind.</p>
+<p>They live on the live demo, which is livt’s own livt repository, rebuilt by <code>livt build</code> on every change. It reads in Japanese; <a href="https://github.com/boykush/livt/blob/main/livt.yaml">livt.yaml</a> says why.</p>
+<h2 id="where-livt-stops"><a class="header" href="#where-livt-stops">Where livt stops</a></h2>
+<p>What livt leaves to others, and where it departs from the practice it renders, is <a href="./livt-and-bdd.html">livt and BDD</a>. To start using it, see the <a href="https://github.com/boykush/livt#getting-started">README</a>.</p>
 
                     </main>
 
