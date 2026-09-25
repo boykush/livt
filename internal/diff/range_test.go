@@ -17,6 +17,7 @@ var relDirs = Dirs{
 	Stories:       "stories",
 	USM:           filepath.Join("discoveries", "usm"),
 	Ubiquitous:    "ubiquitous",
+	Automations:   "automations",
 }
 
 func git(t *testing.T, dir string, args ...string) {
@@ -129,5 +130,30 @@ func TestComputeFailsWhenThereIsNothingToRead(t *testing.T) {
 		if !strings.Contains(err.Error(), tc.wants) {
 			t.Errorf("%s: error = %q, want it to mention %q", tc.name, err, tc.wants)
 		}
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-07
+// Each revision is read with the reports it held, so the collect station's
+// pull request — a report committed and nothing else — reads as the rules it
+// automates rather than as a file rewritten top to bottom.
+func TestComputeReadsTheReportsEachRevisionHeld(t *testing.T) {
+	const rule = "livt://mapping/checkout/rule/R-01"
+	root := committedRepo(t)
+	reports := filepath.Join(root, relDirs.Automations)
+	writeReport(t, reports, report("acme/api", "aaaaaaa"))
+	git(t, root, "add", ".")
+	git(t, root, "commit", "-m", "collect")
+	writeReport(t, reports, report("acme/api", "bbbbbbb", cite(rule, "checkout_test.go", 10)))
+	git(t, root, "add", ".")
+	git(t, root, "commit", "-m", "collect again")
+
+	result, err := Range{Base: "HEAD~1", Head: "HEAD"}.Compute(root, relDirs)
+	if err != nil {
+		t.Fatal(err)
+	}
+	change := only(t, result.Changes)
+	if change.URI != rule || result.Changed != 1 {
+		t.Errorf("got %s with %d changed, want the rule the report now cites", change.URI, result.Changed)
 	}
 }

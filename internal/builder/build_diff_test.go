@@ -194,6 +194,7 @@ func TestBuildDiffPutsTheSitesOwnWordsOnLivtsFields(t *testing.T) {
 	changed.Lines = []diff.Line{
 		{Op: diff.OpDel, Field: diff.Field{Label: diff.LabelStatus, Translate: true, Value: "diff.status.proposed"}},
 		{Op: diff.OpAdd, Field: diff.Field{Label: diff.LabelStatus, Translate: true, Value: "diff.status.accepted"}},
+		{Op: diff.OpAdd, Field: diff.Field{Label: diff.LabelAutomated, Translate: true, Value: "acme/api"}},
 	}
 	result := &diff.Result{Base: "abc1234", Changes: []diff.Change{changed}, Changed: 1}
 
@@ -209,13 +210,32 @@ func TestBuildDiffPutsTheSitesOwnWordsOnLivtsFields(t *testing.T) {
 	}
 	page := string(out)
 
-	for _, want := range []string{"状態: 提案中", "状態: 合意済み"} {
+	for _, want := range []string{"状態: 提案中", "状態: 合意済み", "テストで自動化済み: acme/api"} {
 		if !strings.Contains(page, want) {
 			t.Errorf("the page does not read %q", want)
 		}
 	}
-	if strings.Contains(page, "diff.status.") || strings.Contains(page, "status: accepted") {
+	if strings.Contains(page, "diff.status.") || strings.Contains(page, diff.LabelAutomated) || strings.Contains(page, "status: accepted") {
 		t.Error("the page shows a message key or the file's own spelling")
+	}
+}
+
+// A reports directory the livt repository holds is read at both revisions.
+// One --reports points elsewhere has no revisions for git to export, and read
+// under an export it would name a path that is not there.
+func TestTheDiffReadsOnlyReportsTheRepositoryHolds(t *testing.T) {
+	for _, tc := range []struct {
+		reports string
+		want    string
+	}{
+		{"automations", "automations"},
+		{filepath.Join(t.TempDir(), "automations"), ""},
+		{filepath.Join("..", "automations"), ""},
+	} {
+		b := Builder{AutomationsDir: tc.reports}
+		if got := b.diffDirs().Automations; got != tc.want {
+			t.Errorf("--reports %s: the diff reads %q, want %q", tc.reports, got, tc.want)
+		}
 	}
 }
 

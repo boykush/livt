@@ -1,11 +1,15 @@
 package diff
 
 import (
+	"encoding/json"
 	"os"
 	"path/filepath"
+	"strconv"
 	"strings"
 	"testing"
+	"time"
 
+	"github.com/boykush/livt/internal/automation"
 	"github.com/boykush/livt/internal/uri"
 )
 
@@ -19,6 +23,7 @@ func repoDirs(root string) Dirs {
 		Stories:       filepath.Join(root, "stories"),
 		USM:           filepath.Join(root, "discoveries", "usm"),
 		Ubiquitous:    filepath.Join(root, "ubiquitous"),
+		Automations:   filepath.Join(root, "automations"),
 	}
 }
 
@@ -476,5 +481,151 @@ func TestCompareReadsARenamedMappingAsAChangeToIt(t *testing.T) {
 	}
 	if change.Title != "新しい名前" {
 		t.Errorf("title = %q, want the name it has now", change.Title)
+	}
+}
+
+// scanned writes one example mapping beside the reports implementation
+// repositories sent, and snapshots the repository holding them all.
+func scanned(t *testing.T, key, yaml string, reports ...automation.Report) *Snapshot {
+	t.Helper()
+	dirs := repoDirs(t.TempDir())
+	write(t, filepath.Join(dirs.Mappings, key+".yaml"), yaml)
+	for _, r := range reports {
+		writeReport(t, dirs.Automations, r)
+	}
+	snapshot, err := Scan(dirs)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return snapshot
+}
+
+// writeReport lays a report where the collect station commits it: one file
+// per implementation repository, named after it.
+func writeReport(t *testing.T, dir string, r automation.Report) {
+	t.Helper()
+	data, err := json.Marshal(r)
+	if err != nil {
+		t.Fatal(err)
+	}
+	write(t, filepath.Join(dir, r.Repo+".json"), string(data))
+}
+
+// report is one scan of an implementation repository, each citation's URL
+// pinned to the revision scanned, as `livt automations` pins it.
+func report(repo, rev string, cites ...automation.Citation) automation.Report {
+	pinned := make([]automation.Citation, 0, len(cites))
+	for _, c := range cites {
+		c.URL = "https://github.com/" + repo + "/blob/" + rev + "/" + c.File + "#L" + strconv.Itoa(c.Line)
+		pinned = append(pinned, c)
+	}
+	return automation.Report{Repo: repo, Rev: rev, Citations: pinned}
+}
+
+func cite(u, file string, line int) automation.Citation {
+	return automation.Citation{URI: u, File: file, Line: line}
+}
+
+func automatedIn(repo string) string {
+	return LabelAutomated + ": " + repo
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-07/example/EX-01
+// A rule and an example a test starts citing each gain the repository that
+// now automates them, as a line of their own. Neither answers for the other,
+// the same way the board answers them.
+func TestCompareReadsANewCitationAsTheRepositoryNowAutomatingIt(t *testing.T) {
+	const rule = "livt://mapping/checkout/rule/R-01"
+	const example = "livt://mapping/checkout/rule/R-01/example/EX-01"
+	base := scanned(t, "checkout", oneRule, report("acme/api", "aaaaaaa"))
+	head := scanned(t, "checkout", oneRule, report("acme/api", "bbbbbbb",
+		cite(rule, "checkout_test.go", 10),
+		cite(example, "checkout_test.go", 20),
+	))
+
+	changes := Compare(base, head)
+	if got, want := uris(changes), []string{rule, example}; !equal(got, want) {
+		t.Fatalf("changes = %v, want %v", got, want)
+	}
+	for _, c := range changes {
+		if c.Became != BecameChanged {
+			t.Errorf("%s became %q, want %q", c.URI, c.Became, BecameChanged)
+		}
+	}
+	if got, want := lineTexts(changes[0].Lines), []string{" first", " " + status("accepted"), "+" + automatedIn("acme/api")}; !equal(got, want) {
+		t.Errorf("rule lines = %v, want %v", got, want)
+	}
+	if got, want := lineTexts(changes[1].Lines), []string{" an example", "+" + automatedIn("acme/api")}; !equal(got, want) {
+		t.Errorf("example lines = %v, want %v", got, want)
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-07/example/EX-02
+// A repository whose tests all stopped citing the rule is the line taken away.
+// One still citing it stays as context, so the reader sees where the rule is
+// still automated as well as where it no longer is.
+func TestCompareReadsARepositoryThatStoppedCitingAsItsLineRemoved(t *testing.T) {
+	const rule = "livt://mapping/checkout/rule/R-01"
+	base := scanned(t, "checkout", oneRule,
+		report("acme/api", "aaaaaaa", cite(rule, "checkout_test.go", 10)),
+		report("acme/web", "ccccccc", cite(rule, "checkout.spec.ts", 5)),
+	)
+	head := scanned(t, "checkout", oneRule,
+		report("acme/api", "bbbbbbb"),
+		report("acme/web", "ccccccc", cite(rule, "checkout.spec.ts", 5)),
+	)
+
+	change := only(t, Compare(base, head))
+	want := []string{" first", " " + status("accepted"), "-" + automatedIn("acme/api"), " " + automatedIn("acme/web")}
+	if got := lineTexts(change.Lines); !equal(got, want) {
+		t.Errorf("lines = %v, want %v", got, want)
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-07/example/EX-03
+// Every scan names a new revision and time and pins every URL to that
+// revision, so the report file is rewritten top to bottom each time. None of
+// that is a claim about the spec.
+func TestCompareLeavesOutWhatMovesOnEveryScan(t *testing.T) {
+	const rule = "livt://mapping/checkout/rule/R-01"
+	before := report("acme/api", "aaaaaaa", cite(rule, "checkout_test.go", 10))
+	before.GeneratedAt = time.Date(2026, 9, 1, 0, 0, 0, 0, time.UTC)
+	after := report("acme/api", "bbbbbbb", cite(rule, "checkout_test.go", 10))
+	after.GeneratedAt = time.Date(2026, 9, 2, 0, 0, 0, 0, time.UTC)
+
+	if changes := Compare(scanned(t, "checkout", oneRule, before), scanned(t, "checkout", oneRule, after)); len(changes) != 0 {
+		t.Errorf("got %v, want nothing — only the scan itself moved", uris(changes))
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-07/example/EX-04
+// The repository is the claim. A test that moved, or a second one joining it,
+// leaves the rule automated where it was — and a report's pull request would
+// not open over it either.
+func TestCompareLeavesOutATestThatMovedOrWasJoinedByAnother(t *testing.T) {
+	const rule = "livt://mapping/checkout/rule/R-01"
+	base := scanned(t, "checkout", oneRule, report("acme/api", "aaaaaaa", cite(rule, "checkout_test.go", 10)))
+	head := scanned(t, "checkout", oneRule, report("acme/api", "bbbbbbb",
+		cite(rule, "order_test.go", 3),
+		cite(rule, "order_test.go", 40),
+	))
+
+	if changes := Compare(base, head); len(changes) != 0 {
+		t.Errorf("got %v, want nothing — acme/api automates the rule in both", uris(changes))
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-04/example/EX-03
+// A rule retired before the range is not this diff's news, whatever its tests
+// do: the board counts it nowhere, so a test citing it or ceasing to changes
+// nothing a reader can see.
+func TestCompareLeavesOutTheCitationsOfAnItemRetiredInBothRevisions(t *testing.T) {
+	const rule = "livt://mapping/checkout/rule/R-01"
+	retired := strings.Replace(oneRule, "name: first", "name: first\n    status: retired", 1)
+	base := scanned(t, "checkout", retired, report("acme/api", "aaaaaaa", cite(rule, "checkout_test.go", 10)))
+	head := scanned(t, "checkout", retired, report("acme/api", "bbbbbbb"))
+
+	if changes := Compare(base, head); len(changes) != 0 {
+		t.Errorf("got %v, want nothing — the rule was retired in both revisions", uris(changes))
 	}
 }

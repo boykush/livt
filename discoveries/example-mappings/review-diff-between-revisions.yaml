@@ -77,6 +77,17 @@ rules:
         name: 状態や自動化のようなlivtが持つ項目は、サイトが使っている言葉で並ぶ
       - id: EX-03
         name: 文言が変わった行は、行のどこが変わったかが中で際立つ
+  - id: R-07
+    name: 集めたレポートの変化は、引用されたルールや具体例の変更として差分に映る
+    examples:
+      - id: EX-01
+        name: テストが新たに引用したルールや具体例には、それを自動化した実装リポジトリの行が緑で増える
+      - id: EX-02
+        name: ある実装リポジトリからの引用がすべて消えると、その行が赤で並ぶ
+      - id: EX-03
+        name: rev・生成時刻・revから組むURLのように、走査のたびに動くものは差分に出ない
+      - id: EX-04
+        name: テストの移動や改名、同じ実装リポジトリの中で引用するテストが増減しただけでは差分に出ない（PRを出すかを決めるのと同じく、引用の集合で比べる）
 
 questions:
   - id: Q-01
@@ -90,8 +101,11 @@ questions:
       - livt://mapping/review-diff-between-revisions/rule/R-01
   - id: Q-04
     text: 付箋の並び替えだけの変更を差分として映すか（livt URIは変わらないが、ボードの見えは変わる）
+  - id: Q-05
+    text: ルールにも具体例にも付かない引用（解決しないURIなど）が増減したとき、差分にどう映すか（付く先が無いので映らず、レポートのPRが開いても差分は空になりうる）
 
 ubiquitous:
   - livt-uri
   - livt-repository
+  - implementation-repository
   - example-mapping
