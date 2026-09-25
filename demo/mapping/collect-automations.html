@@ -395,7 +395,7 @@
       
       
       
-      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>5</span>
+      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>6</span>
       
     </div>
     
@@ -433,13 +433,13 @@
     
     
     
-    <div id="rule-R-03-example-EX-05" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+    <div id="rule-R-03-example-EX-08" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
       
 
-<a href="#rule-R-03-example-EX-05" data-copy-link title="リンクをコピー"
-   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-05</a>
+<a href="#rule-R-03-example-EX-08" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-08</a>
 
-      <span class="sticky-text">実装リポジトリは自分自身を走査するので、参加はその1ステップをCIに足すかどうかで決まる</span>
+      <span class="sticky-text">実装リポジトリは走査せず、マージしたrevを通知するだけで、そのrevをfetchして走査するのはlivtリポジトリ側</span>
       
       
       
@@ -448,13 +448,13 @@
     
     
     
-    <div id="rule-R-03-example-EX-06" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+    <div id="rule-R-03-example-EX-09" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
       
 
-<a href="#rule-R-03-example-EX-06" data-copy-link title="リンクをコピー"
-   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-06</a>
+<a href="#rule-R-03-example-EX-09" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-09</a>
 
-      <span class="sticky-text">資格情報は実装リポジトリ側がlivtリポジトリへのwriteを1本持ち、livtリポジトリは何も持たない</span>
+      <span class="sticky-text">参加は実装リポジトリのCIにlivtが配るactionを1つ足すことで決まり、走査の作法を写す必要はない</span>
       
       
       
@@ -463,13 +463,28 @@
     
     
     
-    <div id="rule-R-03-example-EX-07" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+    <div id="rule-R-03-example-EX-10" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
       
 
-<a href="#rule-R-03-example-EX-07" data-copy-link title="リンクをコピー"
-   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-07</a>
+<a href="#rule-R-03-example-EX-10" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-10</a>
 
-      <span class="sticky-text">livtリポジトリ自身が実装リポジトリを兼ねる場合は、既定のGITHUB_TOKENで足りる</span>
+      <span class="sticky-text">資格情報は実装リポジトリ側がlivtリポジトリへdispatchを送る1本と、livtリポジトリ側が実装リポジトリを読む1本（publicなら後者は要らない）</span>
+      
+      
+      
+      
+    </div>
+    
+    
+    
+    <div id="rule-R-03-example-EX-11" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-03-example-EX-11" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-11</a>
+
+      <span class="sticky-text">livtリポジトリ自身が実装リポジトリを兼ねる場合も、既定のGITHUB_TOKENでは足りない（それが署名したdispatchはworkflowを起動しない）</span>
       
       
       
@@ -596,7 +611,7 @@
       
       
       
-      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>7</span>
+      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>8</span>
       
     </div>
     
@@ -664,21 +679,6 @@
     
     
     
-    <div id="rule-R-05-example-EX-09" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
-      
-
-<a href="#rule-R-05-example-EX-09" data-copy-link title="リンクをコピー"
-   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-09</a>
-
-      <span class="sticky-text">実装リポジトリのCIが、デフォルトブランチへのマージ時に走査してlivtリポジトリへPRを出す</span>
-      
-      
-      
-      
-    </div>
-    
-    
-    
     <div id="rule-R-05-example-EX-10" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
       
 
@@ -701,6 +701,36 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-11</a>
 
       <span class="sticky-text">内容が変わったときだけPRを出し、ブランチは実装リポジトリごとに1本を更新する</span>
+      
+      
+      
+      
+    </div>
+    
+    
+    
+    <div id="rule-R-05-example-EX-13" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-05-example-EX-13" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-13</a>
+
+      <span class="sticky-text">実装リポジトリのCIはマージしたrevを通知するだけで、走査もPR作成もlivtリポジトリ側が行う</span>
+      
+      
+      
+      
+    </div>
+    
+    
+    
+    <div id="rule-R-05-example-EX-14" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-05-example-EX-14" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-14</a>
+
+      <span class="sticky-text">置き場・ブランチ名・コミット・PR本文を知るのはlivtリポジトリ側だけで、実装リポジトリは通知先しか知らない</span>
       
       
       

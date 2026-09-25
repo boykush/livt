@@ -35,7 +35,7 @@
             const path_to_root = "../";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "../searchindex-f5c97459.js";
+            window.path_to_searchindex_js = "../searchindex-04a88944.js";
         </script>
         <!-- Start loading toc.js asap -->
         <script src="../toc-a62fb9f7.js"></script>
@@ -442,9 +442,10 @@ with binary files: other people’s code makes no claims about your spec.</p>
 </tbody>
 </table>
 </div>
-<p>A URI’s <strong>shape</strong> is what the walk checks, never its target, so collecting needs
-no access to the livt repository at all — <a href="#livt-resolve"><code>livt resolve</code></a> is what
-answers whether a citation lands on something that exists. A URI written with
+<p>A URI’s <strong>shape</strong> is what the walk checks, never its target, so the walk never
+resolves a citation and the spec need not be at hand to collect one —
+<a href="#livt-resolve"><code>livt resolve</code></a> is what answers whether a citation lands on
+something that exists. A URI written with
 placeholders, as the guide writes it, is documentation rather than a claim and is
 not collected: that is what lets the marker be written about.</p>
 <h3 id="the-report"><a class="header" href="#the-report">The report</a></h3>
@@ -517,12 +518,21 @@ report patched: the question decides whether to walk, never what the report says
 <h3 id="where-the-report-goes"><a class="header" href="#where-the-report-goes">Where the report goes</a></h3>
 <p><code>--out</code> is what lands it at <code>automations/{owner}/{repo}.json</code> in a checkout of
 the livt repository, where it is committed through a pull request rather than
-pushed. Which repositories collect, and what their CI runs, is the implementation
-side’s to decide rather than livt’s: the
-<a href="https://github.com/boykush/livt/tree/main/plugins/livt-automation#sending-automations-back"><code>livt-automation</code> plugin</a>
-carries a workflow to copy, and livt’s own
-<a href="https://github.com/boykush/livt/blob/main/.github/workflows/automations.yml"><code>.github/workflows/automations.yml</code></a>
-is that shape for a repository that is its own implementation repository.</p>
+pushed — and the run that writes it is the livt repository’s own. An
+implementation repository does not scan itself. It reports the revision it
+merged, and livt fetches that one revision and reads it, so every report is
+produced by one livt rather than by whichever version each participant happened
+to install, and nothing about where a report lands crosses the boundary.</p>
+<p>livt ships both halves as actions to pin by commit SHA —
+<a href="https://github.com/boykush/livt/blob/main/actions/notify/action.yml"><code>actions/notify</code></a>
+for the implementation repository, which gates on
+<a href="#livt-automations-changed"><code>changed</code></a> and dispatches, and
+<a href="https://github.com/boykush/livt/blob/main/actions/collect/action.yml"><code>actions/collect</code></a>
+for the livt repository, which fetches, scans and opens the pull request. livt’s
+own <a href="https://github.com/boykush/livt/tree/main/.github/workflows">workflows</a> wire
+the two together, since it is its own implementation repository. Which
+repositories take part is still the implementation side’s to decide rather than
+livt’s.</p>
 <h2 id="livt-version"><a class="header" href="#livt-version"><code>livt version</code></a></h2>
 <p>Print the version of livt.</p>
 <pre><code class="language-bash">livt version
