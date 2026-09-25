@@ -1,6 +1,6 @@
 # AGENTS.md
 
-livt turns a livt repository — story maps, example mappings, ubiquitous language — into a living document (static site, CLI, MCP server). The repo dogfoods itself: `discoveries/`, `stories/`, and `ubiquitous/` hold a real livt repository describing livt, rendered by livt.
+livt turns a livt repository — opportunities, story maps, example mappings, ubiquitous language — into a living document (static site, CLI, MCP server). The repo dogfoods itself: `opportunities/`, `discoveries/`, `stories/`, and `ubiquitous/` hold a real livt repository describing livt, rendered by livt.
 
 Setup, checks, and the conventional-commit rule are in [CONTRIBUTING.md](CONTRIBUTING.md); this file adds only what is specific to working here. Run `mise run check` before pushing.
 
@@ -16,6 +16,7 @@ Two languages, split by what the text *is* — not by who wrote it.
 
 **Japanese** — the prose of the livt repository itself:
 
+- `opportunities/*.md` — `name:` and the opportunity's statement
 - `stories/*.md` — `name:` and the user-story body
 - `discoveries/**/*.yaml` — `name:` and `text:`
 - `ubiquitous/*.md` — `name:` and the definition
@@ -33,7 +34,7 @@ Two consequences worth stating:
 
 ## Commits and PRs
 
-- livt repository changes (`discoveries/`, `stories/`, `ubiquitous/`) ship as `docs:`. The branch prefix mirrors the type: `docs/…`, `feat/…`, `fix/…`.
+- livt repository changes (`opportunities/`, `discoveries/`, `stories/`, `ubiquitous/`) ship as `docs:`. The branch prefix mirrors the type: `docs/…`, `feat/…`, `fix/…`.
 - The body explains **why** the change is right — the diff already says what changed. Wrap at ~80 columns.
 - One rule-level change per commit: `docs: add rule R-11 to file-automation-issues-to-impl-repos`. The ID and commit contracts live in [change-rule/SKILL.md](plugins/livt-discovery/skills/change-rule/SKILL.md) — a filed rule ID is immutable.
 - How those commits are grouped into a PR is this repository's call, not livt's: a session's worth of work ships as one PR on one branch, however many commits it took. Never fold two decisions into one commit to make that grouping tidier.
