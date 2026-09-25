@@ -172,6 +172,10 @@ type opportunityProgress struct {
 	QuestionsPath   string
 	ProposedPath    string
 	UnautomatedPath string
+	// AutomationKnown says whether this opportunity's automation figures are
+	// drawn: the coverage on the list, the un-automated meter on the dashboard,
+	// and the bars beside each slice and story.
+	AutomationKnown bool
 }
 
 // opportunityReleaseRow is one release slice on the progress page, carrying its
@@ -184,6 +188,8 @@ type opportunityReleaseRow struct {
 	MappedStories int
 	Rules         int
 	Automated     int
+	// AutomationKnown says whether the slice's coverage bar is drawn.
+	AutomationKnown bool
 }
 
 // Unscoped reports whether this is the remainder rather than a stage of the
@@ -199,6 +205,8 @@ type opportunityStoryRow struct {
 	Mapped    bool
 	Rules     int
 	Automated int
+	// AutomationKnown says whether the row's coverage bar is drawn.
+	AutomationKnown bool
 }
 
 // progressOf sums one opportunity's stories. storyKeys is the opportunity's own
@@ -209,6 +217,7 @@ func (b *Builder) progressOf(o *domain.Opportunity, slices []opportunityReleaseS
 	narrow := "?" + opportunityFilterParam + "=" + url.QueryEscape(o.DisplayName())
 	tasks := "../tasks.html" + narrow + "#"
 	p := opportunityProgress{
+		AutomationKnown: b.automationKnown,
 		StoriesPath:     "../stories.html" + narrow,
 		MappingsPath:    "../index.html" + narrow,
 		QuestionsPath:   tasks + tasksQuestionsAnchor,
@@ -216,15 +225,16 @@ func (b *Builder) progressOf(o *domain.Opportunity, slices []opportunityReleaseS
 		UnautomatedPath: tasks + tasksRulesAnchor,
 	}
 	for _, slice := range slices {
-		row := opportunityReleaseRow{ID: slice.ID, Name: slice.Name}
+		row := opportunityReleaseRow{ID: slice.ID, Name: slice.Name, AutomationKnown: b.automationKnown}
 		for _, key := range slice.Keys {
 			storyKey := domain.StoryKey{Value: key}
 			t, mapped := tallies[key]
 			story := opportunityStoryRow{
-				Name:      b.resolveStoryName(storyKey),
-				Mapped:    mapped,
-				Rules:     t.Rules,
-				Automated: t.Automated,
+				Name:            b.resolveStoryName(storyKey),
+				Mapped:          mapped,
+				Rules:           t.Rules,
+				Automated:       t.Automated,
+				AutomationKnown: b.automationKnown,
 			}
 			switch {
 			case mapped:

@@ -45,6 +45,13 @@ type Builder struct {
 	// automations is the run's report index. `livt serve` rebuilds on every
 	// edit, so it is reloaded per build rather than held across them.
 	automations *automation.Index
+	// automationKnown is whether anything at all has spoken about automation:
+	// a report was collected, or a mapping still carries the deprecated flag.
+	// With nothing said, the axis is left off the pages built after the
+	// mappings rather than drawn as every rule un-automated, which would
+	// answer a question nobody asked. Accumulated by buildMappings, which runs
+	// before every page that reads it.
+	automationKnown bool
 }
 
 // automationIndex loads the reports once per build. Every surface that asks
@@ -296,7 +303,7 @@ func (b *Builder) Build() error {
 	}
 	fmt.Printf("  index.html\n")
 
-	if err := b.buildTasks(open, distinctOpportunityNames(openOpportunitySets)); err != nil {
+	if err := b.buildTasks(open, distinctOpportunityNames(openOpportunitySets), b.automationKnown); err != nil {
 		return err
 	}
 	fmt.Printf("  tasks.html\n")

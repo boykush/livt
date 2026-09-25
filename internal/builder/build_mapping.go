@@ -50,6 +50,7 @@ func (b *Builder) buildMappings() ([]mappingTile, taskSet, map[string]mappingTal
 	if err != nil {
 		return nil, taskSet{}, nil, err
 	}
+	b.automationKnown = !automations.Empty()
 
 	var tiles []mappingTile
 	var open taskSet
@@ -70,7 +71,7 @@ func (b *Builder) buildMappings() ([]mappingTile, taskSet, map[string]mappingTal
 		ubiquitous := b.resolveTermCards(em.Ubiquitous)
 
 		outPath := filepath.Join(b.OutDir, "mapping", em.StoryKey.Value+".html")
-		if err := b.buildMapping(outPath, em, name, storyPath, ubiquitous); err != nil {
+		if err := b.buildMapping(outPath, em, name, storyPath, ubiquitous, b.automationKnown); err != nil {
 			return nil, taskSet{}, nil, err
 		}
 		fmt.Printf("  %s\n", strings.TrimPrefix(outPath, b.OutDir+"/"))
@@ -78,8 +79,8 @@ func (b *Builder) buildMappings() ([]mappingTile, taskSet, map[string]mappingTal
 		tiles = append(tiles, mappingTile{Key: em.StoryKey.Value, Name: name})
 		// The Tasks page renders at the output root, so its links resolve from
 		// there, not from the mapping/ directory.
-		open.add(collectTasks(em, name, strings.TrimPrefix(storyPath, "../")))
-		t := tally(em)
+		open.add(collectTasks(em, name, strings.TrimPrefix(storyPath, "../"), b.automationKnown))
+		t := tally(em, b.automationKnown)
 		t.Name = name
 		tallies[em.StoryKey.Value] = t
 	}
@@ -88,8 +89,9 @@ func (b *Builder) buildMappings() ([]mappingTile, taskSet, map[string]mappingTal
 }
 
 // tally counts one mapping's live rules, questions, and the two standings an
-// opportunity reports on.
-func tally(em *domain.ExampleMapping) mappingTally {
+// opportunity reports on. With nothing known about automation the two stay at
+// zero, and the surfaces that read them are not drawn.
+func tally(em *domain.ExampleMapping, known bool) mappingTally {
 	active := em.Active()
 	t := mappingTally{
 		Rules:          len(active.Rules),
@@ -99,6 +101,9 @@ func tally(em *domain.ExampleMapping) mappingTally {
 	for _, r := range active.Rules {
 		if r.Proposed() {
 			t.Proposed++
+		}
+		if !known {
+			continue
 		}
 		if r.Automated() {
 			t.Automated++
@@ -128,7 +133,7 @@ func (o *taskSet) add(other taskSet) {
 // collectTasks lifts one mapping's open questions, proposed rules, and
 // un-automated rules onto the Tasks page, each deep-linked to its own sticky on
 // the board through the same derivation the board itself anchors by.
-func collectTasks(em *domain.ExampleMapping, mappingName, storyPath string) taskSet {
+func collectTasks(em *domain.ExampleMapping, mappingName, storyPath string, known bool) taskSet {
 	// Retired items are not unfinished work: a retired question is not open, and
 	// a retired rule is not waiting for a test. Left in, they would sit on this
 	// page forever, since nothing can happen to close them.
@@ -165,7 +170,7 @@ func collectTasks(em *domain.ExampleMapping, mappingName, storyPath string) task
 		switch {
 		case r.Proposed():
 			out.ProposedRules = append(out.ProposedRules, item("proposed-rule", r.ID, r.Name, sticky(r.ID, uri.RulePage)))
-		case !r.Automated():
+		case known && !r.Automated():
 			out.UnautomatedRules = append(out.UnautomatedRules, item("rule", r.ID, r.Name, sticky(r.ID, uri.RulePage)))
 		}
 	}
@@ -176,13 +181,13 @@ func (b *Builder) resolveStoryName(key domain.StoryKey) string {
 	return parser.FindStoryByKey(b.StoriesDir, key).DisplayName()
 }
 
-func (b *Builder) buildMapping(path string, em *domain.ExampleMapping, name, storyPath string, ubiquitous []termCard) error {
+func (b *Builder) buildMapping(path string, em *domain.ExampleMapping, name, storyPath string, ubiquitous []termCard, known bool) error {
 	f, err := os.Create(path)
 	if err != nil {
 		return err
 	}
 	defer f.Close()
 	// The board is one level down, so the diff it points back to is too.
-	return renderMapping(f, b.Lang, b.boardFor(em), name, storyPath, ubiquitous,
+	return renderMapping(f, b.Lang, b.boardFor(em, known), name, storyPath, ubiquitous,
 		b.diffMark("../", uri.Mapping(em.StoryKey.Value)), b.diffMarks("../"))
 }

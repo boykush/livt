@@ -59,6 +59,7 @@
     <p data-filter-empty style="display: none" class="text-gray-400 text-sm">{{t "tasks.proposed-empty-filtered"}}</p>
   </section>
 
+  {{if .AutomationKnown}}
   <section id="{{index $anchors "rules"}}" data-filter-scope class="scroll-mt-6">
     <div class="flex items-baseline gap-2 mb-3">
       <span class="w-2.5 h-2.5 rounded-sm bg-blue-400"></span>
@@ -73,6 +74,7 @@
     {{end}}
     <p data-filter-empty style="display: none" class="text-gray-400 text-sm">{{t "tasks.rules-empty-filtered"}}</p>
   </section>
+  {{end}}
   </main>
 </div>
 </div>
