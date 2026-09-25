@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ルールが自動化されているかを一目で映す - livt</title>
+<script src="https://cdn.tailwindcss.com"></script>
+
+<script>
+  try {
+    if (window.self === window.top && localStorage.getItem("livt.mapping-view") === "list") {
+      document.documentElement.setAttribute("data-view", "list");
+    }
+  } catch (e) {}
+</script>
+<style>
+  .rule-card:target, .example-card:target, .question-card:target {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 5px #7c3aed;
+    animation: ruleFlash 1.1s ease-out 1;
+  }
+  @keyframes ruleFlash {
+    0%       { box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(124, 58, 237, 0); }
+    30%, 65% { box-shadow: 0 0 0 2px #fff, 0 0 0 9px rgba(124, 58, 237, 0.9); }
+    100%     { box-shadow: 0 0 0 2px #fff, 0 0 0 5px #7c3aed; }
+  }
+
+  .mapping { display: grid; grid-auto-flow: column; grid-auto-columns: 180px; gap: 0.5rem 1rem; min-width: max-content; }
+  .rule-group, .question-group { display: contents; }
+  .rule-card, .question-head { grid-row: 1; }
+  .example-stack, .question-stack { grid-row: 2; align-self: start; display: flex; flex-direction: column; gap: 0.5rem; }
+  .rule-fold, .example-count, .list-head { display: none; }
+  .rule-fold .chevron { display: inline-block; transition: transform 0.15s; }
+  .rule-fold[aria-expanded="true"] .chevron { transform: rotate(90deg); }
+  html:not([data-view="list"]) [data-view-toggle="board"],
+  html[data-view="list"] [data-view-toggle="list"] { background-color: #4b5563; border-color: #4b5563; color: #fff; }
+
+  
+  [data-view="list"] .mapping { display: flex; flex-direction: column; gap: 0.75rem; min-width: 0; max-width: 48rem; }
+  [data-view="list"] .rule-group, [data-view="list"] .question-group { display: block; }
+  [data-view="list"] .list-head { display: flex; }
+  [data-view="list"] .question-group .list-head { margin-top: 1.5rem; }
+  [data-view="list"] .question-head { display: none; }
+  [data-view="list"] :is(.rule-card, .example-card, .question-card) {
+    display: flex; align-items: baseline; gap: 0.5rem; padding: 1rem 1.25rem;
+    background-color: #fff; border-width: 1px 1px 1px 4px; border-radius: 0.5rem;
+    border-top-color: #e5e7eb; border-right-color: #e5e7eb; border-bottom-color: #e5e7eb;
+  }
+  [data-view="list"] :is(.rule-card, .example-card, .question-card):not(:target) { box-shadow: none; }
+  [data-view="list"] [data-foldable] > .rule-card:hover { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+  
+  [data-view="list"] .proposed, [data-view="list"] .ghost { border-style: solid solid solid dashed; }
+  
+  .ghost .sticky-text { text-decoration: line-through; text-decoration-color: #9ca3af; }
+  [data-view="list"] :is(.rule-card, .question-card):not(.proposed) { color: #111827; }
+  [data-view="list"] .question-card { font-size: 1rem; }
+  [data-view="list"] .example-card { padding: 0.625rem 1.25rem; }
+  [data-view="list"] .mapping [data-copy-link],
+  [data-view="list"] .automated-badge,
+  [data-view="list"] .proposed-badge { position: static; flex-shrink: 0; box-shadow: none; }
+  [data-view="list"] .mapping [data-copy-link], [data-view="list"] .rule-issues { font-size: 0.75rem; }
+  [data-view="list"] .automated-badge { background-color: #eff6ff; border: 1px solid #bfdbfe; color: #1d4ed8; font-size: 0.75rem; padding: 0.125rem 0.5rem; }
+  [data-view="list"] .proposed-badge { font-size: 0.75rem; padding: 0.125rem 0.5rem; }
+  [data-view="list"] .rule-name { flex: 1; min-width: 0; }
+  [data-view="list"] .rule-issues { margin-top: 0; }
+  [data-view="list"] .rule-fold, [data-view="list"] .example-count { display: inline-flex; }
+  [data-view="list"] [data-foldable] > .rule-card { cursor: pointer; }
+  [data-view="list"] .example-stack { display: none; margin: 0.5rem 0 0 1.75rem; gap: 0.5rem; }
+  [data-view="list"] [data-open] > .example-stack { display: flex; }
+  [data-view="list"] .question-stack { margin-top: 0.75rem; display: flex; flex-direction: column; gap: 0.75rem; }
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<header class="bg-white border-b border-gray-200">
+  <div class="max-w-full mx-auto px-6 py-4 flex items-center gap-3">
+    <a href="../index.html" class="text-sm text-gray-400 hover:text-gray-600">&larr; 実例マッピング</a>
+    <span class="text-gray-300">|</span>
+    <span class="text-xl font-bold text-gray-900 tracking-tight">livt</span>
+  </div>
+</header>
+
+<main class="max-w-full mx-auto px-6 py-8">
+<div class="flex flex-wrap items-center gap-4 text-xs text-gray-500 mb-4">
+  <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-yellow-100 border-l-2 border-yellow-400 rounded-sm"></span>ストーリー</span>
+  <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-blue-100 border-l-2 border-blue-400 rounded-sm"></span>ルール</span>
+  <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-blue-50 border border-dashed border-blue-400 rounded-sm"></span>提案中のルール</span>
+  <span class="flex items-center gap-1"><span class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-blue-600 text-white text-[9px] font-semibold leading-none">✓</span>テストが自動化している</span>
+  <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm"></span>具体例</span>
+  <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-red-100 border-l-2 border-red-400 rounded-sm"></span>疑問点</span>
+  <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-pink-100 border-l-2 border-pink-400 rounded-sm"></span>ユビキタス言語</span>
+  
+  <div role="group" aria-labelledby="view-label" class="ml-auto flex items-center gap-1">
+    <span id="view-label" class="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">表示</span>
+    <button type="button" data-view-toggle="board" aria-pressed="true" class="text-xs text-gray-700 bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-full px-3 py-1 transition">ボード</button>
+    <button type="button" data-view-toggle="list" aria-pressed="false" class="text-xs text-gray-700 bg-gray-50 border border-gray-200 hover:bg-gray-100 rounded-full px-3 py-1 transition">リスト</button>
+  </div>
+</div>
+
+<a href="../story/show-automation-status-per-rule.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow font-bold text-gray-800 w-[180px] mb-6 hover:bg-yellow-200 transition">
+  <span>ルールが自動化されているかを一目で映す</span><span>&rarr;</span>
+</a>
+
+
+
+<div class="overflow-x-auto pt-3 px-3 pb-4">
+
+<div class="mapping">
+
+<div class="list-head items-baseline gap-2">
+  <span class="w-2.5 h-2.5 rounded-sm bg-blue-400"></span>
+  <h2 class="text-sm font-semibold text-gray-800">ルール</h2>
+  <span class="text-xs text-gray-400">2</span>
+</div>
+
+
+  <div class="rule-group" data-rule-group data-foldable>
+    
+    
+    <div id="rule-R-01" class="rule-card relative bg-blue-100 border-blue-400 shadow text-gray-800 border-l-4 px-3 pt-3 pb-6 rounded font-semibold scroll-mt-24">
+      
+      <button type="button" data-fold aria-expanded="false" aria-controls="examples-0" aria-label="具体例" class="rule-fold w-4 shrink-0 justify-center text-gray-400"><span class="chevron" aria-hidden="true">&#9656;</span></button>
+      
+      
+
+<a href="#rule-R-01" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-01</a>
+
+      <span class="rule-name sticky-text">ルールと具体例は、それぞれ自分の付箋で自動化を見分けられる</span>
+      
+      
+      
+      
+      
+      
+      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>5</span>
+      
+    </div>
+    
+    <div id="examples-0" class="example-stack">
+    
+    
+    
+    <div id="rule-R-01-example-EX-02" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-01-example-EX-02" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
+
+      <span class="sticky-text">凡例が見分け方を説明する</span>
+      
+      
+      
+      
+    </div>
+    
+    
+    
+    <div id="rule-R-01-example-EX-03" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-01-example-EX-03" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
+
+      <span class="sticky-text">引用のあるルールの付箋には、角に印が付く（色だけに頼らない）</span>
+      
+      
+      
+      
+    </div>
+    
+    
+    
+    <div id="rule-R-01-example-EX-04" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-01-example-EX-04" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
+
+      <span class="sticky-text">具体例の付箋も自分の引用だけで印を持ち、ルールの印とは連動しない</span>
+      
+      
+      
+      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
+      
+      
+      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+        
+        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_mapping_test.go#L201" target="_blank" rel="noopener" class="text-blue-600 hover:underline">&#8599; livt: build_mapping_test.go:201</a>
+        
+      </div>
+      
+    </div>
+    
+    
+    
+    <div id="rule-R-01-example-EX-05" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-01-example-EX-05" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-05</a>
+
+      <span class="sticky-text">印のそばに、それを自動化しているテストへのリンクが並ぶ（実装リポジトリとファイル・行）</span>
+      
+      
+      
+      
+    </div>
+    
+    
+    
+    <div id="rule-R-01-example-EX-06" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-01-example-EX-06" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-06</a>
+
+      <span class="sticky-text">付箋が言うのは引用があるかどうかだけで、来るはずのレポートが何かは問わない</span>
+      
+      
+      
+      
+    </div>
+    
+    </div>
+    
+  </div>
+
+  <div class="rule-group" data-rule-group data-foldable>
+    
+    
+    <div id="rule-R-02" class="rule-card relative bg-blue-100 border-blue-400 shadow text-gray-800 border-l-4 px-3 pt-3 pb-6 rounded font-semibold scroll-mt-24">
+      
+      <button type="button" data-fold aria-expanded="false" aria-controls="examples-1" aria-label="具体例" class="rule-fold w-4 shrink-0 justify-center text-gray-400"><span class="chevron" aria-hidden="true">&#9656;</span></button>
+      
+      
+
+<a href="#rule-R-02" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-02</a>
+
+      <span class="rule-name sticky-text">表示はlivtリポジトリの記録だけから導出され、buildはネットワークに出ない</span>
+      
+      
+      
+      
+      
+      
+      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>1</span>
+      
+    </div>
+    
+    <div id="examples-1" class="example-stack">
+    
+    
+    
+    <div id="rule-R-02-example-EX-02" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-02-example-EX-02" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
+
+      <span class="sticky-text">SSGは集められたレポートとruleのissuesのみを読み、forgeにもトラッカーにも問い合わせない</span>
+      
+      
+      
+      
+    </div>
+    
+    </div>
+    
+  </div>
+
+
+</div>
+</div>
+
+
+<div class="mt-8">
+  <div class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">ユビキタス言語</div>
+  <div class="flex flex-wrap gap-2">
+  
+
+
+<a href="../ubiquitous.html#livt-repository" class="inline-flex items-center gap-2 bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-pink-200 transition">
+  <span class="flex flex-col items-start"><span>livtリポジトリ</span></span><span>&rarr;</span>
+</a>
+
+
+
+
+<a href="../ubiquitous.html#example-mapping" class="inline-flex items-center gap-2 bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-pink-200 transition">
+  <span class="flex flex-col items-start"><span>実例マッピング</span></span><span>&rarr;</span>
+</a>
+
+
+
+
+<a href="../ubiquitous.html#story" class="inline-flex items-center gap-2 bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-pink-200 transition">
+  <span class="flex flex-col items-start"><span>ストーリー</span></span><span>&rarr;</span>
+</a>
+
+
+
+
+<a href="../ubiquitous.html#discovery" class="inline-flex items-center gap-2 bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-pink-200 transition">
+  <span class="flex flex-col items-start"><span>ディスカバリー</span></span><span>&rarr;</span>
+</a>
+
+
+  </div>
+</div>
+
+</main>
+
+<script>
+  document.querySelectorAll('a[data-copy-link]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      if (!navigator.clipboard) return;
+      var url = location.href.split('#')[0] + a.getAttribute('href');
+      navigator.clipboard.writeText(url).then(function () {
+        var label = a.textContent;
+        a.textContent = "✓ コピーしました";
+        setTimeout(function () { a.textContent = label; }, 1200);
+      });
+    });
+  });
+</script>
+
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var foldable = document.querySelectorAll("[data-foldable]");
+
+  function listing() {
+    return root.getAttribute("data-view") === "list";
+  }
+
+  function show(view) {
+    if (view === "list") root.setAttribute("data-view", "list");
+    else root.removeAttribute("data-view");
+    document.querySelectorAll("[data-view-toggle]").forEach(function (b) {
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-view-toggle") === view));
+    });
+  }
+
+  function fold(group, open) {
+    if (open) group.setAttribute("data-open", "");
+    else group.removeAttribute("data-open");
+    group.querySelector("[data-fold]").setAttribute("aria-expanded", String(open));
+  }
+
+  
+  
+  function reveal() {
+    var id = location.hash.slice(1);
+    try { id = decodeURIComponent(id); } catch (e) {}
+    var target = id && document.getElementById(id);
+    var group = target && target.closest(".example-stack") && target.closest("[data-foldable]");
+    if (!group || group.hasAttribute("data-open")) return;
+    fold(group, true);
+    target.scrollIntoView();
+  }
+
+  document.querySelectorAll("[data-view-toggle]").forEach(function (b) {
+    b.addEventListener("click", function () {
+      var view = b.getAttribute("data-view-toggle");
+      show(view);
+      try { localStorage.setItem("livt.mapping-view", view); } catch (e) {}
+    });
+  });
+
+  
+  
+  foldable.forEach(function (group) {
+    group.querySelector(".rule-card").addEventListener("click", function (e) {
+      if (!listing() || e.target.closest("a") || String(window.getSelection())) return;
+      fold(group, !group.hasAttribute("data-open"));
+    });
+  });
+
+  window.addEventListener("hashchange", reveal);
+  show(listing() ? "list" : "board");
+  reveal();
+})();
+</script>
+</body>
+</html>

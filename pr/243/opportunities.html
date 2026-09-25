@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>livt - オポチュニティ</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+   
+  .thumb { position: relative; overflow: hidden; background: #fff; }
+  .thumb iframe { position: absolute; left: 0; border: 0; pointer-events: none; transform-origin: top left;
+    width: 200%; height: 1400px; transform: scale(0.5); top: -34px; }
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="flex min-h-screen">
+
+<aside class="w-60 shrink-0 bg-white border-r border-gray-200 flex flex-col sticky top-0 h-screen">
+  <div class="px-5 py-4 border-b border-gray-100">
+    <a href="index.html" class="text-xl font-bold text-gray-900 tracking-tight">livt</a>
+    
+    <p class="text-[11px] text-gray-400 mt-0.5 leading-snug">Collaborate on board.<br>Make it living in text.</p>
+  </div>
+  <nav class="flex-1 px-3 py-4 space-y-1 text-sm">
+    <a href="index.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-green-400"></span>実例マッピング<span class="ml-auto text-xs text-gray-400">20</span>
+    </a>
+    <a href="opportunities.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-orange-50 text-orange-900 font-medium">
+      <span class="w-2.5 h-2.5 rounded-sm bg-orange-400"></span>オポチュニティ<span class="ml-auto text-xs text-gray-400">3</span>
+    </a>
+    <a href="story-maps.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-purple-400"></span>ストーリーマップ<span class="ml-auto text-xs text-gray-400">3</span>
+    </a>
+    <a href="stories.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-yellow-400"></span>ストーリー<span class="ml-auto text-xs text-gray-400">29</span>
+    </a>
+    <a href="ubiquitous.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-pink-400"></span>ユビキタス言語<span class="ml-auto text-xs text-gray-400">15</span>
+    </a>
+    
+    <a href="tasks.html" class="flex items-center gap-2.5 px-3 py-2 mt-3 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm border border-gray-300"></span>タスク<span class="ml-auto text-xs text-gray-400">106</span>
+    </a>
+  </nav>
+  
+  <div class="px-3 py-3 border-t border-gray-100">
+    <a href="build.html" class="block rounded-lg px-2 py-1.5 hover:bg-gray-50">
+      <div class="flex items-baseline gap-2">
+        <span class="text-xs font-medium text-gray-600">livt</span>
+        
+        <span class="ml-auto min-w-0 text-[11px] font-mono text-gray-400 truncate" title="v0.15.2-0.20260925121115-a6d07bd44196">v0.15.2-0.20260925121115-a6d07bd44196</span>
+      </div>
+      <div class="text-[11px] text-gray-400 font-mono mt-0.5">a6d07bd · 2026-09-25 12:12</div>
+    </a>
+  </div>
+</aside>
+
+<div class="flex-1 min-w-0">
+  <header class="bg-white border-b border-gray-200 px-8 py-4">
+    <h2 class="text-lg font-semibold text-gray-800">オポチュニティ</h2>
+  </header>
+  <main class="px-8 py-8 space-y-6 max-w-4xl">
+  
+  
+    <div class="rounded-xl border border-orange-200 bg-white shadow-sm overflow-hidden">
+      <a href="opportunity/collaborative-discovery.html" class="flex items-center gap-2 px-4 py-2.5 border-b border-orange-100 bg-orange-50 hover:bg-orange-100 transition">
+        <span class="w-2.5 h-2.5 rounded-sm bg-orange-400"></span>
+        <span class="text-sm font-semibold text-orange-900">揮発するディスカバリー</span>
+        
+        
+        <span class="ml-auto flex items-center gap-3 font-mono text-xs">
+          <span class="flex items-center gap-1.5 text-gray-600" title="実例マッピング済みのストーリー">
+            <span class="w-2 h-2 rounded-sm bg-yellow-400" aria-hidden="true"></span>
+            <span class="sr-only">実例マッピング済みのストーリー</span>5<span class="text-gray-400">/14</span>
+          </span>
+          
+          <span class="flex items-center gap-1.5 text-gray-600" title="自動化済みのルール">
+            <span class="w-2 h-2 rounded-sm bg-blue-500" aria-hidden="true"></span>
+            <span class="sr-only">自動化済みのルール</span>8<span class="text-gray-400">/20</span>
+          </span>
+          
+        </span>
+        <span class="text-orange-400 text-sm">&rarr;</span>
+        
+      </a>
+      
+      <p class="px-4 py-3 text-sm text-gray-700 whitespace-pre-line leading-relaxed">ディスカバリーの成果はボードに置かれたまま古びていく。素のままの記録は粗く、バージョン管理も整合性チェックも効かない。
+記録し、ルールが変わるたびに更新し続けられるようにすると、
+同じ議論をやり直さずに済み、協働結果がそのまま仕様として使えるようになる。</p>
+      
+      <div class="px-4 pb-3 flex items-center gap-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">collaborative-discovery</span>
+        <a href="story-map/collaborative-discovery.html" class="text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-2 py-0.5 hover:bg-purple-100 transition">ストーリーマップ</a>
+        
+      </div>
+      
+      <a href="opportunity-canvas/collaborative-discovery.html" class="block border-t border-orange-100 hover:opacity-90 transition">
+        <div class="thumb" style="height: 370px;">
+          <iframe src="opportunity-canvas/collaborative-discovery.html" scrolling="no" loading="lazy"></iframe>
+        </div>
+      </a>
+      
+    </div>
+  
+    <div class="rounded-xl border border-orange-200 bg-white shadow-sm overflow-hidden">
+      <a href="opportunity/decision-bottleneck.html" class="flex items-center gap-2 px-4 py-2.5 border-b border-orange-100 bg-orange-50 hover:bg-orange-100 transition">
+        <span class="w-2.5 h-2.5 rounded-sm bg-orange-400"></span>
+        <span class="text-sm font-semibold text-orange-900">律速する意思決定</span>
+        
+        
+        <span class="ml-auto text-orange-400 text-sm">&rarr;</span>
+        
+      </a>
+      
+      <p class="px-4 py-3 text-sm text-gray-700 whitespace-pre-line leading-relaxed">AI開発が進むほど、仕様の意思決定がボトルネックになっていく。
+フロー効率を重視してスピードを上げたいが、AIが絡むのは記録からで、
+決める工程が人間だけで回っているかぎりスピードは上がらない。
+これからの時代は、AIにも協働セッションに参加してもらわないといけない。</p>
+      
+      <div class="px-4 pb-3 flex items-center gap-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">decision-bottleneck</span>
+        <a href="story-map/decision-bottleneck.html" class="text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-2 py-0.5 hover:bg-purple-100 transition">ストーリーマップ</a>
+        
+      </div>
+      
+      <a href="opportunity-canvas/decision-bottleneck.html" class="block border-t border-orange-100 hover:opacity-90 transition">
+        <div class="thumb" style="height: 370px;">
+          <iframe src="opportunity-canvas/decision-bottleneck.html" scrolling="no" loading="lazy"></iframe>
+        </div>
+      </a>
+      
+    </div>
+  
+    <div class="rounded-xl border border-orange-200 bg-white shadow-sm overflow-hidden">
+      <a href="opportunity/discovery-development-gap.html" class="flex items-center gap-2 px-4 py-2.5 border-b border-orange-100 bg-orange-50 hover:bg-orange-100 transition">
+        <span class="w-2.5 h-2.5 rounded-sm bg-orange-400"></span>
+        <span class="text-sm font-semibold text-orange-900">ディスカバリーと開発のギャップ</span>
+        
+        
+        <span class="ml-auto flex items-center gap-3 font-mono text-xs">
+          <span class="flex items-center gap-1.5 text-gray-600" title="実例マッピング済みのストーリー">
+            <span class="w-2 h-2 rounded-sm bg-yellow-400" aria-hidden="true"></span>
+            <span class="sr-only">実例マッピング済みのストーリー</span>9<span class="text-gray-400">/10</span>
+          </span>
+          
+          <span class="flex items-center gap-1.5 text-gray-600" title="自動化済みのルール">
+            <span class="w-2 h-2 rounded-sm bg-blue-500" aria-hidden="true"></span>
+            <span class="sr-only">自動化済みのルール</span>2<span class="text-gray-400">/62</span>
+          </span>
+          
+        </span>
+        <span class="text-orange-400 text-sm">&rarr;</span>
+        
+      </a>
+      
+      <p class="px-4 py-3 text-sm text-gray-700 whitespace-pre-line leading-relaxed">合意した仕様がディスカバリー側に留まり、実装リポジトリの開発者が読みに来ない。
+ルール単位で仕様を引けて、テストから仕様の一点へ戻れるようにすると、
+「実装したつもり」の取り違えが減り、仕様が生き続けるドキュメントとして機能する。</p>
+      
+      <div class="px-4 pb-3 flex items-center gap-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">discovery-development-gap</span>
+        <a href="story-map/discovery-development-gap.html" class="text-xs text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-2 py-0.5 hover:bg-purple-100 transition">ストーリーマップ</a>
+        
+      </div>
+      
+      <a href="opportunity-canvas/discovery-development-gap.html" class="block border-t border-orange-100 hover:opacity-90 transition">
+        <div class="thumb" style="height: 370px;">
+          <iframe src="opportunity-canvas/discovery-development-gap.html" scrolling="no" loading="lazy"></iframe>
+        </div>
+      </a>
+      
+    </div>
+  
+  </main>
+</div>
+</div>
+</body>
+</html>
