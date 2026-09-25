@@ -57,8 +57,12 @@ jobs:
         run: mise run docs:build
 
       # livt build -> /demo subpath (https://boykush.github.io/livt/demo/)
+      # Built rather than `go run`: the version the site's build page names is
+      # stamped from the tag or commit, and `go run` leaves it "(devel)".
       - name: Build livt site
-        run: go run . build -o dist
+        run: |
+          go build -o "$RUNNER_TEMP/livt" .
+          "$RUNNER_TEMP/livt" build -o dist
 
       - name: Assemble site
         run: |
