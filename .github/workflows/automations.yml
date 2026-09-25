@@ -81,15 +81,13 @@ jobs:
       # it, the pull request it opens starts no workflow, so the checks the
       # ruleset requires never report and it can never merge. Minted only when
       # there is a pull request to open, and scoped to this repository: no
-      # owner: input, as in approve-pr.yml.
+      # owner input.
       - name: Generate the repo-writer App token
         id: app-token
         if: steps.compare.outputs.changed == 'true'
-        uses: suzuki-shunsuke/create-github-app-token-aws-kms@b4a29a5f1cd6ea2b633d6ee6d9806dbce26493cf # v0.0.3
+        uses: boykush/workflows/.github/actions/github-app-token@e5b631cdd9393a157988232df304e07fba35fb79
         with:
-          client-id: Iv23li08SMJuhhwV0lBk
-          kms-key-id: arn:aws:kms:ap-northeast-1:509266991346:alias/github-app-repo-writer
-          role-to-assume: arn:aws:iam::509266991346:role/github-actions-github-app-repo-writer
+          app: repo-writer
           permission-contents: write
           permission-pull-requests: write
 
