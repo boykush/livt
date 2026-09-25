@@ -1,6 +1,6 @@
 # AGENTS.md
 
-livt turns a livt repository — story maps, example mappings, ubiquitous language — into a living document (static site, CLI, MCP server). The repo dogfoods itself: `discoveries/`, `stories/`, and `ubiquitous/` hold a real livt repository describing livt, rendered by livt.
+livt turns a livt repository — opportunities, story maps, example mappings, ubiquitous language — into a living document (static site, CLI, MCP server). The repo dogfoods itself: `opportunities/`, `discoveries/`, `stories/`, and `ubiquitous/` hold a real livt repository describing livt, rendered by livt.
 
 Setup, checks, and the conventional-commit rule are in [CONTRIBUTING.md](CONTRIBUTING.md); this file adds only what is specific to working here. Run `mise run check` before pushing.
 
@@ -16,6 +16,7 @@ Two languages, split by what the text *is* — not by who wrote it.
 
 **Japanese** — the prose of the livt repository itself:
 
+- `opportunities/*.md` — `name:` and the opportunity's statement
 - `stories/*.md` — `name:` and the user-story body
 - `discoveries/**/*.yaml` — `name:` and `text:`
 - `ubiquitous/*.md` — `name:` and the definition
@@ -31,9 +32,15 @@ Two consequences worth stating:
 
 [CONTRIBUTING.md](CONTRIBUTING.md) welcomes issues and pull requests "in English or Japanese". That is an invitation to human contributors, and it stands. The rules above govern agents working in this repo.
 
+## Documentation
+
+- **`docs/` never restates what livt already says elsewhere.** Each kind of detail has one home, beside what it describes — [Reference](docs/src/reference.md) says where — and a change in behaviour updates that home in the same diff, never a page in `docs/`.
+- **`docs/` says why livt exists and when it fits by pointing at the record.** livt's reasons are its opportunities and story maps, and the introduction links them on the live demo instead of summarising them: a summary there fell behind once, still listing two opportunities after a third was taken on.
+- **Explaining what livt does starts from the example mapping that decided it** — the files, or `go run . resolve livt://mapping/{story-key}` — cited by livt URI. Code that disagrees with it is a gap to report, not a document to update.
+
 ## Commits and PRs
 
-- livt repository changes (`discoveries/`, `stories/`, `ubiquitous/`) ship as `docs:`. The branch prefix mirrors the type: `docs/…`, `feat/…`, `fix/…`.
+- livt repository changes (`opportunities/`, `discoveries/`, `stories/`, `ubiquitous/`) ship as `docs:`. The branch prefix mirrors the type: `docs/…`, `feat/…`, `fix/…`.
 - The body explains **why** the change is right — the diff already says what changed. Wrap at ~80 columns.
 - One rule-level change per commit: `docs: add rule R-11 to file-automation-issues-to-impl-repos`. The ID and commit contracts live in [change-rule/SKILL.md](plugins/livt-discovery/skills/change-rule/SKILL.md) — a filed rule ID is immutable.
 - How those commits are grouped into a PR is this repository's call, not livt's: a session's worth of work ships as one PR on one branch, however many commits it took. Never fold two decisions into one commit to make that grouping tidier.

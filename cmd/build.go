@@ -7,6 +7,7 @@ import (
 	"github.com/boykush/livt/internal/builder"
 	"github.com/boykush/livt/internal/config"
 	"github.com/boykush/livt/internal/diff"
+	"github.com/boykush/livt/internal/i18n"
 	"github.com/spf13/cobra"
 )
 
@@ -75,6 +76,13 @@ func diffRangeFlag() (*diff.Range, error) {
 var buildCmd = &cobra.Command{
 	Use:   "build",
 	Short: "Build static HTML from artifacts",
+	// The languages are read from the catalogs, so the help cannot offer one
+	// that livt.yaml would refuse.
+	Long: fmt.Sprintf(`Build the livt repository in the current directory as a static site.
+
+An optional livt.yaml beside it sets lang, the language of the labels livt
+adds to the site. What the livt repository itself says is rendered as
+written. lang is %s unless set, and one of: %s.`, i18n.Default, i18n.List()),
 	RunE: func(cmd *cobra.Command, args []string) error {
 		b, err := newBuilder(outDir)
 		if err != nil {

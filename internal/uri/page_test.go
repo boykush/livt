@@ -6,9 +6,9 @@ import (
 )
 
 // livt:automates livt://mapping/trace-test-to-rule/rule/R-02/example/EX-02
-// The derivation from a livt URI to its anchor on the page is written down in
-// docs/src/reference/uri.md, and this is the one implementation the SSG and
-// the CLI both read it through, so neither can drift off the table.
+// The cases below write down the derivation from a livt URI to its anchor on
+// the page, and this is the one implementation the SSG and the CLI both read
+// it through, so neither can drift off the table.
 func TestPagesFollowTheDocumentedScheme(t *testing.T) {
 	cases := []struct {
 		uri  string

@@ -31,6 +31,8 @@ The documentation site (`docs/`) is built with mdBook:
 mdbook serve docs
 ```
 
+It says why livt exists and when it fits. Every other detail has a home of its own, beside what it describes; [Reference](docs/src/reference.md) says where.
+
 ## Commits and pull requests
 
 - Use conventional-commit style titles (`feat:`, `fix:`, `docs:`, ...) — the release changelog is grouped by them.

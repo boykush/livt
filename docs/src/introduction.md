@@ -2,23 +2,16 @@
 
 > Collaborate on board. Make it living in text.
 
-## Outcome
+A team that decides what to build around a board — an Example Mapping, say — leaves the room with an agreement. livt keeps that agreement as text in a repository, shows it as the board it came from, and serves it to the people and the coding agents who build it. It is after one outcome: **collaborative outcomes evolve alongside the product as living text.**
 
-Collaborative outcomes evolve alongside the product as living text.
+![An example mapping, as livt renders it](images/example-mapping.png)
 
-## Opportunities
+## Why, and when it fits
 
-- **Stale Discovery**: Discovery-phase artifacts are not persisted after synchronous collaboration sessions
-- **Discovery-Development Gap**: Persisted discovery artifacts are not leveraged in the development process
+livt keeps its own reasons the way it asks a team to keep theirs. The problems it is built against are its [opportunities](https://boykush.github.io/livt/demo/opportunities.html), and what a team does with livt about them is drawn in its [story maps](https://boykush.github.io/livt/demo/story-maps.html). Those are the record; this page points at them rather than keeping a copy that could fall behind.
 
-## Solutions
+They live on the live demo, which is livt's own livt repository, rebuilt by `livt build` on every change. It reads in Japanese; [livt.yaml](https://github.com/boykush/livt/blob/main/livt.yaml) says why.
 
-- Provide a CLI tool that captures collaborative outcomes as text files (YAML, Markdown)
-- Track consistency across artifacts via ID-based references with automated checks
-- Treat Formulation artifacts (Gherkin scenarios) as generated output, not the source of truth — that lives in the Discovery artifacts. This one is a position rather than a settled design, and the community's runs the other way: see [livt and BDD](./livt-and-bdd.md)
+## Where livt stops
 
-## Live Demo
-
-livt dogfoods itself: its own discovery artifacts — stories, story maps, example mappings, and ubiquitous language — are published with `livt build` as a [live demo](https://boykush.github.io/livt/demo/). It shows exactly what the guides below describe.
-
-The demo reads in Japanese, which is what `lang: ja` in its [livt.yaml](reference/configuration.md) does: this repository's artifacts are written in Japanese, so the site is framed to match them. livt itself defaults to English — the screenshots in these guides show that default.
+What livt leaves to others, and where it departs from the practice it renders, is [livt and BDD](./livt-and-bdd.md). To start using it, see the [README](https://github.com/boykush/livt#getting-started).
