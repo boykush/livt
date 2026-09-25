@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ユビキタス言語 - livt</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="flex min-h-screen">
+
+<aside class="w-60 shrink-0 bg-white border-r border-gray-200 flex flex-col sticky top-0 h-screen">
+  <div class="px-5 py-4 border-b border-gray-100">
+    <a href="index.html" class="text-xl font-bold text-gray-900 tracking-tight">livt</a>
+    
+    <p class="text-[11px] text-gray-400 mt-0.5 leading-snug">Collaborate on board.<br>Make it living in text.</p>
+  </div>
+  <nav class="flex-1 px-3 py-4 space-y-1 text-sm">
+    <a href="index.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-green-400"></span>実例マッピング<span class="ml-auto text-xs text-gray-400">20</span>
+    </a>
+    <a href="opportunities.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-orange-400"></span>オポチュニティ<span class="ml-auto text-xs text-gray-400">3</span>
+    </a>
+    <a href="story-maps.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-purple-400"></span>ストーリーマップ<span class="ml-auto text-xs text-gray-400">3</span>
+    </a>
+    <a href="stories.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-yellow-400"></span>ストーリー<span class="ml-auto text-xs text-gray-400">29</span>
+    </a>
+    <a href="ubiquitous.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-pink-50 text-pink-900 font-medium">
+      <span class="w-2.5 h-2.5 rounded-sm bg-pink-400"></span>ユビキタス言語<span class="ml-auto text-xs text-gray-400">15</span>
+    </a>
+    
+    <a href="tasks.html" class="flex items-center gap-2.5 px-3 py-2 mt-3 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm border border-gray-300"></span>タスク<span class="ml-auto text-xs text-gray-400">108</span>
+    </a>
+  </nav>
+  
+  <div class="px-3 py-3 border-t border-gray-100">
+    <a href="build.html" class="block rounded-lg px-2 py-1.5 hover:bg-gray-50">
+      <div class="flex items-baseline gap-2">
+        <span class="text-xs font-medium text-gray-600">livt</span>
+        
+        <span class="ml-auto min-w-0 text-[11px] font-mono text-gray-400 truncate" title="v0.15.2-0.20260925131648-667771ff55c2">v0.15.2-0.20260925131648-667771ff55c2</span>
+      </div>
+      <div class="text-[11px] text-gray-400 font-mono mt-0.5">667771f · 2026-09-25 13:18</div>
+    </a>
+  </div>
+</aside>
+
+<div class="flex-1 min-w-0">
+  <header class="bg-white border-b border-gray-200 px-8 py-4">
+    <h2 class="text-lg font-semibold text-gray-800">ユビキタス言語</h2>
+  </header>
+  <main class="px-8 py-8">
+  
+  
+
+
+<style>
+  .filter-chip { cursor: pointer; }
+  [data-filter-bar] .filter-chip[aria-pressed="true"] { background-color: #db2777; border-color: #db2777; color: #fff; }
+</style>
+<div class="mb-6 flex items-center gap-2 flex-wrap" data-filter-bar data-filter-param="context">
+  <span class="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">文脈</span>
+  <button type="button" data-filter-value="" aria-pressed="true"
+    class="filter-chip text-xs text-pink-700 bg-pink-50 border border-pink-200 hover:bg-pink-100 rounded-full px-3 py-1 transition">すべて</button>
+  
+  <button type="button" data-filter-value="bdd" aria-pressed="false"
+    class="filter-chip text-xs text-pink-700 bg-pink-50 border border-pink-200 hover:bg-pink-100 rounded-full px-3 py-1 transition">bdd</button>
+  
+</div>
+
+
+  
+  
+  <div class="overflow-x-auto bg-white rounded-lg border border-gray-200">
+  <table class="w-full text-left border-collapse">
+    <thead>
+      <tr class="border-b border-gray-200 bg-gray-50 text-xs font-semibold uppercase tracking-wide text-gray-500">
+        <th class="px-5 py-3 w-1/5">用語</th>
+        <th class="px-5 py-3 w-1/5">キー</th>
+        <th class="px-5 py-3">定義</th>
+      </tr>
+    </thead>
+    <tbody>
+    
+      <tr id="context" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
+        <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
+          <div class="flex flex-wrap items-baseline gap-2">文脈</div>
+        </td>
+        <td class="px-5 py-3">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-xs font-mono text-pink-600">context</span>
+            
+          </div>
+        </td>
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">その用語の意味が通じる範囲。DDDの境界づけられたコンテキストにあたる。
+livt では `ubiquitous/{ctx}/` のディレクトリとして切り、同じ言葉が範囲ごとに違う意味を持つことを表す。
+文脈を切らない用語は、範囲を跨いで共通の意味を指す。</td>
+      </tr>
+    
+      <tr id="discovery" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
+        <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
+          <div class="flex flex-wrap items-baseline gap-2">ディスカバリー</div>
+        </td>
+        <td class="px-5 py-3">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-xs font-mono text-pink-600">discovery</span>
+            
+          </div>
+        </td>
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">何を作るべきかをチームで探索する協働活動。
+livt はその結果を living text として残し、開発成果物との橋渡しをする。</td>
+      </tr>
+    
+      <tr id="example-mapping" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
+        <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
+          <div class="flex flex-wrap items-baseline gap-2">実例マッピング</div>
+        </td>
+        <td class="px-5 py-3">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-xs font-mono text-pink-600">example-mapping</span>
+            
+          </div>
+        </td>
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">1つのストーリーについて、ルール・具体例・疑問点を色分け付箋で整理する手法。
+詳細ディスカバリーで仕様を具体化するために使う。</td>
+      </tr>
+    
+      <tr id="formulation" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
+        <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
+          <div class="flex flex-wrap items-baseline gap-2">定式化</div>
+        </td>
+        <td class="px-5 py-3">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-xs font-mono text-pink-600">formulation</span>
+            
+          </div>
+        </td>
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">記録した素のマッピングを、ルールは言い切りに、具体例はその名前だけで何の話か分かる形にして、チームの誰が読んでも同じ振る舞いを思い浮かべられる文書に整える工程。実装は見ず、変えてよいのは表現と構造だけで、その差分がレビューの対象になる。
+BDD の Formulation にあたり、Gherkin を書く行為に相当するのが実例マッピングの書き換え。Gherkin はそこから起こす生成物で、正となるのはマッピングのほう。</td>
+      </tr>
+    
+      <tr id="implementation-repository" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
+        <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
+          <div class="flex flex-wrap items-baseline gap-2">実装リポジトリ</div>
+        </td>
+        <td class="px-5 py-3">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-xs font-mono text-pink-600">implementation-repository</span>
+            
+          </div>
+        </td>
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">livtリポジトリのルールを、自プロダクトのテストとして自動化する側のリポジトリ。ストーリーの `repos:` で宣言する。
+外へ渡るのはIssueとlivt URIというポインタだけで、戻るのはテストが何を自動化しているかの引用。コードを読むのは実装リポジトリの中で走る走査であって、livtリポジトリのビルドはその結果しか読まない。
+livtリポジトリと同一のリポジトリでも成立するが、それは両者が別々であるという一般形の特殊ケース。本リポジトリ自身がその特殊ケースにあたるため、同一である前提が暗黙に紛れ込みやすい。</td>
+      </tr>
+    
+      <tr id="livt-repository" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
+        <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
+          <div class="flex flex-wrap items-baseline gap-2">livtリポジトリ</div>
+        </td>
+        <td class="px-5 py-3">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-xs font-mono text-pink-600">livt-repository</span>
+            
+          </div>
+        </td>
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">ディスカバリーで合意し記録した成果物（ストーリー・ストーリーマップ・実例マッピング・ユビキタス言語）を収める置き場で、全ての機能開発の起点。
+サイト・CLI・MCPの出力はすべてここからの導出物。livt URIはこの中の一点を指し、ルート（`--root` / `LIVT_ROOT`）は各環境における所在を指す。</td>
+      </tr>
+    
+      <tr id="livt-uri" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
+        <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
+          <div class="flex flex-wrap items-baseline gap-2">livt URI</div>
+        </td>
+        <td class="px-5 py-3">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-xs font-mono text-pink-600">livt-uri</span>
+            
+          </div>
+        </td>
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">livtリポジトリの一点（オポチュニティ・オポチュニティキャンバス・ストーリーマップ・ストーリー・実例マッピング・ルール・具体例・疑問点・用語）を指す安定した名前。
+`livt://` で始まり、MCP・CLI・SSGが同じ形を使う。デプロイ先のURLには依存しない。</td>
+      </tr>
+    
+      <tr id="opportunity-canvas" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
+        <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
+          <div class="flex flex-wrap items-baseline gap-2">オポチュニティキャンバス</div>
+        </td>
+        <td class="px-5 py-3">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-xs font-mono text-pink-600">opportunity-canvas</span>
+            
+          </div>
+        </td>
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">オポチュニティを1枚で記述するキャンバス。検証できる事実・解決策・価値についての仮定を10個のボックスに分けて並べる。
+「作るか」を決める前に埋めるもので、埋まっていないボックスはそのまま未回答の問いとして残る。</td>
+      </tr>
+    
+      <tr id="opportunity" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
+        <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
+          <div class="flex flex-wrap items-baseline gap-2">オポチュニティ</div>
+        </td>
+        <td class="px-5 py-3">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-xs font-mono text-pink-600">opportunity</span>
+            
+          </div>
+        </td>
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">プロダクトで取り組みうる機会。あるユーザーの課題と、それを解決したときに生まれる事業上の便益を、ひとつの検討単位として捉えたもの。
+`opportunities/{key}.md` に1文で書き、同じkeyのストーリーマップがそのオポチュニティに引いたジャーニーになる。各一覧の絞り込み軸になる。</td>
+      </tr>
+    
+      <tr id="record" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
+        <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
+          <div class="flex flex-wrap items-baseline gap-2">記録</div>
+        </td>
+        <td class="px-5 py-3">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-xs font-mono text-pink-600">record</span>
+            
+          </div>
+        </td>
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">会話で決めたことを、解釈も改善も加えず、ボードのままテキストへ残す工程。
+Patton の「話して記録」にあたり、ここで残した素のマッピングが定式化のベースラインになる。</td>
+      </tr>
+    
+      <tr id="release-slice" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
+        <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
+          <div class="flex flex-wrap items-baseline gap-2">リリーススライス</div>
+        </td>
+        <td class="px-5 py-3">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-xs font-mono text-pink-600">release-slice</span>
+            
+          </div>
+        </td>
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">ストーリーマップを横方向に区切り、どのストーリーをどの順序でリリースするかを示すまとまり。
+リリース未指定のストーリーは未スコープ行にまとまる。</td>
+      </tr>
+    
+      <tr id="story-map" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
+        <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
+          <div class="flex flex-wrap items-baseline gap-2">ストーリーマップ</div>
+        </td>
+        <td class="px-5 py-3">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-xs font-mono text-pink-600">story-map</span>
+            
+          </div>
+        </td>
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">アクティビティ・ユーザータスク・ストーリーをリリーススライスと共に俯瞰するボード。
+全体のストーリーを組み立て、ブラッシュアップするために使う。
+livt ではオポチュニティ1つにつき1枚で、そのオポチュニティと同じキーのファイル（`discoveries/usm/{key}.yaml`）に置く。</td>
+      </tr>
+    
+      <tr id="story" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
+        <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
+          <div class="flex flex-wrap items-baseline gap-2">ストーリー</div>
+        </td>
+        <td class="px-5 py-3">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-xs font-mono text-pink-600">story</span>
+            
+          </div>
+        </td>
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">ユーザーにとって価値のある振る舞いの単位。
+3つのC のカードとして `stories/{story-key}.md` に書かれ、ストーリーマップや実例マッピングから参照される。</td>
+      </tr>
+    
+      <tr id="ubiquitous-language" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
+        <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
+          <div class="flex flex-wrap items-baseline gap-2">ユビキタス言語</div>
+        </td>
+        <td class="px-5 py-3">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-xs font-mono text-pink-600">ubiquitous-language</span>
+            
+          </div>
+        </td>
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">チームが協働と実装で共通して使う用語。
+livt では用語ごとに Markdown ファイルとして管理し、一覧をテーブルとして閲覧する。</td>
+      </tr>
+    
+      <tr id="bdd/discovery" data-filter-values="[&#34;bdd&#34;]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
+        <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
+          <div class="flex flex-wrap items-baseline gap-2">発見</div>
+        </td>
+        <td class="px-5 py-3">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-xs font-mono text-pink-600">discovery</span>
+            <span class="text-[11px] text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-2 py-0.5">bdd</span>
+          </div>
+        </td>
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">具体例を出しながらストーリーの振る舞いを洗い出し、ルールを立て、決めきれないものを疑問点として残す協働。実例マッピングがその手法。
+BDD の Discovery にあたり、探索全体の傘であるディスカバリーとは別に、ストーリー1つ分のセッションを指す。部屋に誰がいるか——人間だけか、AIを招くか——は定義に入らない。</td>
+      </tr>
+    
+    </tbody>
+  </table>
+  </div>
+  
+  </main>
+</div>
+</div>
+
+
+<script>
+(function () {
+  var bar = document.querySelector('[data-filter-bar]');
+  if (!bar) return;
+  var cards = document.querySelectorAll('[data-filter-values]');
+  var chips = bar.querySelectorAll('[data-filter-value]');
+  var PARAM = bar.getAttribute('data-filter-param') || 'filter';
+
+  function valuesOf(card) {
+    try { return JSON.parse(card.getAttribute('data-filter-values') || '[]'); }
+    catch (e) { return []; }
+  }
+
+  function apply(selected) {
+    cards.forEach(function (card) {
+      var show = !selected || valuesOf(card).indexOf(selected) !== -1;
+      card.style.display = show ? '' : 'none';
+    });
+    chips.forEach(function (chip) {
+      var on = (chip.getAttribute('data-filter-value') || '') === selected;
+      chip.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    
+    
+    
+    
+    
+    document.querySelectorAll('[data-filter-scope]').forEach(function (scope) {
+      var scoped = scope.querySelectorAll('[data-filter-values]');
+      var shown = 0;
+      scoped.forEach(function (card) { if (card.style.display !== 'none') shown++; });
+      var count = scope.querySelector('[data-filter-count]');
+      if (count) count.textContent = shown;
+      var empty = scope.querySelector('[data-filter-empty]');
+      if (empty) empty.style.display = (shown === 0 && scoped.length > 0) ? '' : 'none';
+    });
+  }
+
+  function fromURL() {
+    return new URLSearchParams(location.search).get(PARAM) || '';
+  }
+
+  function toURL(selected) {
+    var params = new URLSearchParams(location.search);
+    if (selected) params.set(PARAM, selected);
+    else params.delete(PARAM);
+    var qs = params.toString();
+    history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
+  }
+
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var value = chip.getAttribute('data-filter-value') || '';
+      apply(value);
+      toURL(value);
+    });
+  });
+
+  apply(fromURL());
+})();
+</script>
+
+</body>
+</html>

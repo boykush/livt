@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>livt - 差分</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  
+  .diff-line { display: grid; grid-template-columns: 1.25rem 1fr; gap: 0.5rem; padding: 0.125rem 0.75rem; }
+  .diff-line > .sign { color: #9ca3af; user-select: none; text-align: center; }
+  .diff-add { background-color: #dcfce7; }
+  .diff-add > .sign { color: #15803d; }
+  .diff-del { background-color: #fee2e2; }
+  .diff-del > .sign { color: #b91c1c; }
+  
+  .diff-add .moved { background-color: #86efac; border-radius: 0.125rem; }
+  .diff-del .moved { background-color: #fca5a5; border-radius: 0.125rem; }
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="flex min-h-screen">
+
+<aside class="w-60 shrink-0 bg-white border-r border-gray-200 flex flex-col sticky top-0 h-screen">
+  <div class="px-5 py-4 border-b border-gray-100">
+    <a href="index.html" class="text-xl font-bold text-gray-900 tracking-tight">livt</a>
+    
+    <p class="text-[11px] text-gray-400 mt-0.5 leading-snug">Collaborate on board.<br>Make it living in text.</p>
+  </div>
+  <nav class="flex-1 px-3 py-4 space-y-1 text-sm">
+    <a href="index.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-green-400"></span>実例マッピング<span class="ml-auto text-xs text-gray-400">20</span>
+    </a>
+    <a href="opportunities.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-orange-400"></span>オポチュニティ<span class="ml-auto text-xs text-gray-400">3</span>
+    </a>
+    <a href="story-maps.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-purple-400"></span>ストーリーマップ<span class="ml-auto text-xs text-gray-400">3</span>
+    </a>
+    <a href="stories.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-yellow-400"></span>ストーリー<span class="ml-auto text-xs text-gray-400">29</span>
+    </a>
+    <a href="ubiquitous.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-pink-400"></span>ユビキタス言語<span class="ml-auto text-xs text-gray-400">15</span>
+    </a>
+    
+    <a href="tasks.html" class="flex items-center gap-2.5 px-3 py-2 mt-3 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm border border-gray-300"></span>タスク<span class="ml-auto text-xs text-gray-400">108</span>
+    </a>
+  </nav>
+  
+  <div class="px-3 py-3 border-t border-gray-100">
+    <a href="build.html" class="block rounded-lg px-2 py-1.5 hover:bg-gray-50">
+      <div class="flex items-baseline gap-2">
+        <span class="text-xs font-medium text-gray-600">livt</span>
+        
+        <span class="ml-auto min-w-0 text-[11px] font-mono text-gray-400 truncate" title="v0.15.2-0.20260925131648-667771ff55c2">v0.15.2-0.20260925131648-667771ff55c2</span>
+      </div>
+      <div class="text-[11px] text-gray-400 font-mono mt-0.5">667771f · 2026-09-25 13:18</div>
+    </a>
+  </div>
+</aside>
+
+<div class="flex-1 min-w-0">
+  <header class="bg-white border-b border-gray-200 px-8 py-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+    <h2 class="text-lg font-semibold text-gray-800">差分</h2>
+    <span class="text-sm font-mono text-gray-500">834f3af &rarr; 667771f</span>
+    <div class="ml-auto flex items-center gap-2 text-xs">
+      <span class="rounded-full px-2.5 py-1 bg-green-50 text-green-700 border border-green-200">追加 6</span>
+      <span class="rounded-full px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200">変更 1</span>
+      <span class="rounded-full px-2.5 py-1 bg-red-50 text-red-700 border border-red-200">廃止 0</span>
+    </div>
+  </header>
+  <main class="px-8 py-8 max-w-4xl">
+  
+  
+  <section class="mb-8">
+    <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">実例マッピング</h3>
+    
+    
+    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
+      
+<div id="mapping/review-diff-between-revisions" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">リビジョン間の差分をlivt URI単位で読む</span>
+    
+    
+    <a href="mapping/review-diff-between-revisions.html" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/review-diff-between-revisions</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: livt-uri</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: livt-repository</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">ユビキタス言語: implementation-repository</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: example-mapping</span></div>
+    
+  </div>
+  
+</div>
+
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/review-diff-between-revisions/rule/R-07" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-07</span>
+    
+    
+    <a href="mapping/review-diff-between-revisions.html#rule-R-07" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/review-diff-between-revisions/rule/R-07</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">集めたレポートの変化は、引用されたルールや具体例の変更として差分に映る</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">状態: 合意済み</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/review-diff-between-revisions/rule/R-07/example/EX-01" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-07 EX-01</span>
+    
+    
+    <a href="mapping/review-diff-between-revisions.html#rule-R-07-example-EX-01" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/review-diff-between-revisions/rule/R-07/example/EX-01</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">テストが新たに引用したルールや具体例には、それを自動化した実装リポジトリの行が緑で増える</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/review-diff-between-revisions/rule/R-07/example/EX-02" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-07 EX-02</span>
+    
+    
+    <a href="mapping/review-diff-between-revisions.html#rule-R-07-example-EX-02" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/review-diff-between-revisions/rule/R-07/example/EX-02</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">ある実装リポジトリからの引用がすべて消えると、その行が赤で並ぶ</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/review-diff-between-revisions/rule/R-07/example/EX-03" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-07 EX-03</span>
+    
+    
+    <a href="mapping/review-diff-between-revisions.html#rule-R-07-example-EX-03" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/review-diff-between-revisions/rule/R-07/example/EX-03</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">rev・生成時刻・revから組むURLのように、走査のたびに動くものは差分に出ない</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/review-diff-between-revisions/rule/R-07/example/EX-04" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-07 EX-04</span>
+    
+    
+    <a href="mapping/review-diff-between-revisions.html#rule-R-07-example-EX-04" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/review-diff-between-revisions/rule/R-07/example/EX-04</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">テストの移動や改名、同じ実装リポジトリの中で引用するテストが増減しただけでは差分に出ない（PRを出すかを決めるのと同じく、引用の集合で比べる）</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/review-diff-between-revisions/question/Q-05" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">Q-05</span>
+    
+    
+    <a href="mapping/review-diff-between-revisions.html#question-Q-05" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/review-diff-between-revisions/question/Q-05</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">ルールにも具体例にも付かない引用（解決しないURIなど）が増減したとき、差分にどう映すか（付く先が無いので映らず、レポートのPRが開いても差分は空になりうる）</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+    </div>
+    
+  </section>
+  
+  
+  </main>
+</div>
+</div>
+</body>
+</html>
+
+
