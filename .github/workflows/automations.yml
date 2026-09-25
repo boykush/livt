@@ -23,6 +23,9 @@ jobs:
     permissions:
       contents: read # checkout, and read the committed report the claims are compared against
       id-token: write # assume the signing role, see the token step
+    outputs:
+      pull-request: ${{ steps.collect.outputs.pull-request }}
+      commit: ${{ steps.collect.outputs.commit }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -46,8 +49,23 @@ jobs:
       # passed; a private one would hand the action a read-token and nothing
       # about the rest of this job would change.
       - name: Collect
+        id: collect
         uses: $/actions/collect
         with:
           repository: ${{ github.event.client_payload.repository }}
           rev: ${{ github.event.client_payload.rev }}
           token: ${{ steps.app-token.outputs.token }}
+
+  # A report is the machine's own record of what the tests cite, and its pull
+  # request is read on the diff preview if anyone wants to. Waiting for a person
+  # to press merge added nothing but the lag before the board caught up.
+  approve:
+    needs: collect
+    if: needs.collect.outputs.pull-request != ''
+    permissions:
+      pull-requests: read # read the pull request before approving it
+      id-token: write # assume the signing roles, see the called workflow
+    uses: $/.github/workflows/approve-report.yml
+    with:
+      pull-request: ${{ needs.collect.outputs.pull-request }}
+      commit: ${{ needs.collect.outputs.commit }}

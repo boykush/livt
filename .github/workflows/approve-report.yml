@@ -1,0 +1,88 @@
+name: approve-report
+
+# The one approval the default branch's ruleset asks for, given to a collected
+# report as the pr-approver App: repo-writer opened the pull request and cannot
+# approve its own, and ai-review reads only the owner's. Called from automations
+# rather than woken by the pull request, so the copy of this file that decides
+# what gets approved is always main's, never one a branch has rewritten.
+on:
+  workflow_call:
+    inputs:
+      pull-request:
+        description: The report's pull request, as its number
+        type: string
+        required: true
+      commit:
+        description: The commit the collect run pushed to it, which is what gets approved
+        type: string
+        required: true
+
+permissions: {}
+
+jobs:
+  approve:
+    name: approve
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read # read the pull request before approving it
+      id-token: write # assume the signing roles, see the token steps
+    steps:
+      # Checked here rather than taken on the caller's word: the approval goes
+      # only to a pull request repo-writer opened from this repository, still at
+      # the commit collect pushed, and changing nothing but reports.
+      - name: Check it is a report's pull request
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR: ${{ inputs.pull-request }}
+          COMMIT: ${{ inputs.commit }}
+        run: |
+          set -euo pipefail
+          fail() { echo "::error::#$PR is not a report to approve: $1"; exit 1; }
+          pr=$(gh api "repos/$GITHUB_REPOSITORY/pulls/$PR")
+          author=$(jq -r .user.login <<<"$pr")
+          [ "$author" = 'boykush-repo-writer[bot]' ] || fail "it was opened by $author"
+          [ "$(jq -r .head.repo.full_name <<<"$pr")" = "$GITHUB_REPOSITORY" ] || fail "its branch lives in another repository"
+          [ "$(jq -r .state <<<"$pr")" = open ] || fail "it is no longer open"
+          [ "$(jq -r .head.sha <<<"$pr")" = "$COMMIT" ] || fail "its branch has moved past $COMMIT"
+          outside=$(gh api --paginate "repos/$GITHUB_REPOSITORY/pulls/$PR/files" \
+            --jq '.[].filename | select(startswith("automations/") | not)')
+          [ -z "$outside" ] || fail "it also changes $(tr '\n' ' ' <<<"$outside")"
+
+      - name: Generate the pr-approver App token
+        id: approver
+        uses: boykush/workflows/.github/actions/github-app-token@3894c6635a206c357bb1cbf35c99460f8773c54f
+        with:
+          app: pr-approver
+          permission-pull-requests: write
+
+      # Pinned to the commit checked above, so the approval cannot land on
+      # whatever the branch holds by the time it arrives.
+      - name: Approve
+        env:
+          GH_TOKEN: ${{ steps.approver.outputs.token }}
+          PR: ${{ inputs.pull-request }}
+          COMMIT: ${{ inputs.commit }}
+        run: |
+          gh api "repos/$GITHUB_REPOSITORY/pulls/$PR/reviews" --method POST \
+            -f event=APPROVE -f commit_id="$COMMIT" > /dev/null
+
+      # Not GITHUB_TOKEN: a merge it enabled lands on main without starting a
+      # workflow, so the board would go on showing the automation it had.
+      - name: Generate the repo-writer App token
+        id: writer
+        uses: boykush/workflows/.github/actions/github-app-token@3894c6635a206c357bb1cbf35c99460f8773c54f
+        with:
+          app: repo-writer
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: Merge once the required checks pass
+        env:
+          GH_TOKEN: ${{ steps.writer.outputs.token }}
+          PR: ${{ inputs.pull-request }}
+        run: |
+          set -euo pipefail
+          if [ "$(gh pr view "$PR" --repo "$GITHUB_REPOSITORY" --json autoMergeRequest --jq '.autoMergeRequest != null')" = true ]; then
+            exit 0
+          fi
+          gh pr merge "$PR" --repo "$GITHUB_REPOSITORY" --auto --merge
