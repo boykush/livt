@@ -8,9 +8,6 @@ hk = "latest"
 pkl = "latest"
 golangci-lint = "2.13.1"
 goreleaser = "2.18.2"
-"aqua:rust-lang/mdBook" = "0.5.4"
-"cargo:mdbook-i18n-helpers" = "0.4.0"
-"conda:gettext-tools" = "0.25.1"
 
 # Check commands shared by CI (.github/workflows/ci.yml) and the hk pre-commit
 # hooks (hk.pkl) — one definition, no drift. Run them all with `mise run check`.
@@ -49,45 +46,7 @@ run = "go test -race ./..."
 
 [tasks.check]
 description = "Run all CI checks"
-depends = ["fmt", "vet", "lint", "tidy", "build", "test", "docs:check"]
-
-# The docs are written in English under docs/src. Each translation is a gettext
-# catalog, docs/po/{lang}.po, keyed by the English passages it translates.
-[tasks."docs:build"]
-description = "Build the docs: English into docs/book, Japanese into docs/book/ja"
-# English first: its build empties docs/book, the Japanese book included.
-run = [
-  "mdbook build docs",
-  "MDBOOK_BOOK__LANGUAGE=ja mdbook build docs -d docs/book/ja",
-]
-
-[tasks."docs:pot"]
-description = "Extract the English docs' passages into docs/po/messages.pot"
-# Sources without line numbers, so moving an English line leaves ja.po alone.
-env = { MDBOOK_OUTPUT = '{"xgettext": {"granularity": 0}}' }
-run = "mdbook build docs -d docs/po"
-
-[tasks."docs:po"]
-description = "Merge the English docs' current passages into docs/po/ja.po"
-depends = ["docs:pot"]
-# The template's creation date is dropped, so a merge that changes nothing
-# leaves ja.po untouched.
-run = '''
-grep -v '^"POT-Creation-Date:' docs/po/messages.pot |
-  msgmerge --quiet --previous --no-wrap --update --backup=none docs/po/ja.po -
-msgattrib --no-obsolete --no-wrap -o docs/po/ja.po docs/po/ja.po
-'''
-
-[tasks."docs:check"]
-description = "Check docs/po/ja.po translates every passage the English docs have"
-depends = ["docs:pot"]
-run = '''
-if ! msgcmp docs/po/ja.po docs/po/messages.pot ||
-   ! msgcmp --use-untranslated docs/po/messages.pot docs/po/ja.po; then
-  echo "Out of date (run: mise run docs:po, then translate what it leaves empty or fuzzy)"
-  exit 1
-fi
-'''
+depends = ["fmt", "vet", "lint", "tidy", "build", "test"]
 
 [tasks.snapshot]
 description = "Dry-run the goreleaser release build locally (no publish)"

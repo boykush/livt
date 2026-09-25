@@ -42,20 +42,6 @@ jobs:
         with:
           go-version-file: go.mod
 
-      # mdBook and its gettext plugins at the versions .mise.toml pins. Cache is
-      # disabled: restoring a cache into a job whose output gets published is a
-      # cache-poisoning vector (zizmor: cache-poisoning).
-      - name: Setup mise
-        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
-        with:
-          install_args: aqua:rust-lang/mdBook cargo:mdbook-i18n-helpers
-          cache: false
-
-      # mdBook docs -> site root (https://boykush.github.io/livt/), with the
-      # Japanese translation beneath it (https://boykush.github.io/livt/ja/)
-      - name: Build docs
-        run: mise run docs:build
-
       # livt build -> /demo subpath (https://boykush.github.io/livt/demo/)
       # Built rather than `go run`: the version the site's build page names is
       # stamped from the tag or commit, and `go run` leaves it "(devel)".
@@ -64,10 +50,12 @@ jobs:
           go build -o "$RUNNER_TEMP/livt" .
           "$RUNNER_TEMP/livt" build -o dist
 
+      # docs/site is committed HTML, published as it is: the site root
+      # (https://boykush.github.io/livt/), Japanese beneath it at /ja/.
       - name: Assemble site
         run: |
           mkdir -p _site/demo
-          cp -r docs/book/. _site/
+          cp -r docs/site/. _site/
           cp -r dist/. _site/demo/
 
       - name: Upload the site
