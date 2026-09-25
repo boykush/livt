@@ -12,36 +12,28 @@ cd livt
 mise install
 ```
 
-`mise install` installs the pinned toolchain (Go, golangci-lint, ...) and, via the `postinstall` hook, the [hk](https://hk.jdx.dev/) pre-commit hooks — so the same checks run locally and in CI. One of the docs tools, mdbook-i18n-helpers, is built from source by cargo, so have [Rust](https://rustup.rs/) installed first.
+`mise install` installs the pinned toolchain (Go, golangci-lint, ...) and, via the `postinstall` hook, the [hk](https://hk.jdx.dev/) pre-commit hooks — so the same checks run locally and in CI.
 
 ## Checks and tests
 
 Every CI check is a mise task (see `.mise.toml`):
 
 ```bash
-mise run check   # fmt + vet + lint + tidy + build + test + docs:check
+mise run check   # fmt + vet + lint + tidy + build + test
 mise run test    # go test -race ./...
 ```
 
 ## Docs
 
-The documentation site (`docs/`) is built with mdBook, in English and in Japanese:
+The documentation site is plain HTML in `docs/site/`, in English and in Japanese, and Pages publishes it as it is. It says why livt exists and when it fits. Every other detail has a home of its own, beside what it describes; [Reference](docs/content/en/reference.md) says where.
+
+What the site says is its text: one Markdown file per page in `docs/content/en/` and `docs/content/ja/`, each language written in its own language rather than translated from the other. A change edits the text, then renders the HTML from it with the [render-site](.apm/skills/render-site/SKILL.md) skill, and the two go in one commit. `mise run check` fails when a page no longer shows its text.
+
+To look at the site:
 
 ```bash
-mdbook serve docs
+python3 -m http.server --directory docs/site
 ```
-
-```bash
-MDBOOK_BOOK__LANGUAGE=ja mdbook serve docs
-```
-
-It says why livt exists and when it fits. Every other detail has a home of its own, beside what it describes; [Reference](docs/src/reference.md) says where.
-
-The English under `docs/src/` is the source. The Japanese is `docs/po/ja.po`, a gettext catalog that translates it passage by passage through [mdbook-i18n-helpers](https://github.com/google/mdbook-i18n-helpers); a passage the catalog does not translate yet shows in English rather than in an outdated translation.
-
-After you change `docs/src/`, run `mise run docs:po` and translate what it leaves empty or marks `fuzzy`, dropping the `#, fuzzy` line once the translation fits. `mise run check` fails until you have.
-
-A heading that a link points at pins its anchor, as in `## Where livt stops {#where-livt-stops}`: the Japanese book derives its anchors from the translated headings.
 
 ## Commits and pull requests
 
