@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
-<html lang="en" class="light sidebar-visible" dir="ltr">
+<html lang="ja" class="light sidebar-visible" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Reference - livt - Living Text</title>
+        <title>なぜ livt か - livt - Living Text</title>
 
 
         <!-- Custom HTML head -->
@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-139903b5.js";
+            window.path_to_searchindex_js = "searchindex-2bed3517.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-7aa131af.js"></script>
+        <script src="toc-0713217f.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -174,33 +174,26 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="reference"><a class="header" href="#reference">Reference</a></h1>
-<p>These docs keep no reference. A command reference, a guide to each file format, a table of what the MCP server returns — each would be a second copy of something the tool already says, and a copy goes stale unless someone remembers to update it. That is the failure livt exists to prevent, so livt does not ship one.</p>
-<p>Each detail is written once, where it cannot drift from what it describes, and where the reader who needs it — nowadays, usually a coding agent — already looks:</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>To know</th><th>Ask</th></tr>
-</thead>
-<tbody>
-<tr><td>What a command takes</td><td><code>livt &lt;command&gt; --help</code></td></tr>
-<tr><td>How to write your livt repository: its files, their formats, the rules for changing them</td><td>the skills that write it, under <a href="https://github.com/boykush/livt/tree/main/plugins">plugins</a></td></tr>
-<tr><td>How an agent reads your livt repository, and how it cites what it reads</td><td>the <code>livt mcp</code> server you run over it, which describes its own tools and resources</td></tr>
-<tr><td>What a livt URI in your livt repository points at</td><td><code>livt resolve &lt;uri&gt;</code></td></tr>
-<tr><td>What livt itself does, and why, rule by rule</td><td>livt’s own livt repository: its <a href="https://github.com/boykush/livt/tree/main/discoveries/example-mappings">example mappings</a>, rendered on the <a href="https://boykush.github.io/livt/demo/">live demo</a></td></tr>
-</tbody>
-</table>
-</div>
-<p>The last row is livt used on itself. livt keeps its own rules in a livt repository, so “what does livt do when…” is answered the way livt answers it for any team: by the rule that was agreed, with the reason in the commit that agreed it.</p>
+                        <h1 id="livt---living-text"><a class="header" href="#livt---living-text">livt - Living Text</a></h1>
+<blockquote>
+<p>Collaborate on board. Make it living in text.</p>
+</blockquote>
+<p>何を作るかをボードを囲んで決めるチーム（たとえば実例マッピングで）は、合意を手にして部屋を出る。livt はその合意をリポジトリのテキストとして残し、それが生まれたボードの形で見せ、それを作る人とコーディングエージェントに届ける。livt が目指す成果はひとつ。<strong>協働の成果が、living text としてプロダクトとともに育っていくこと</strong>だ。</p>
+<p><label class="checkbox-label"><input class="checkbox-img" type="checkbox"><img src="images/example-mapping.png" alt="livt が描いた実例マッピング"><span class="img-wrapper"><img src="images/example-mapping.png" alt="livt が描いた実例マッピング"></span></label></p>
+<h2 id="なぜ-livt-がありいつ向いているか"><a class="header" href="#なぜ-livt-がありいつ向いているか">なぜ livt があり、いつ向いているか</a></h2>
+<p>livt は自分の理由を、チームに理由を残してもらうのと同じやり方で残している。livt が立ち向かう課題はその<a href="https://boykush.github.io/livt/demo/opportunities.html">オポチュニティ</a>であり、チームがそれに対して livt で何をするかは、その<a href="https://boykush.github.io/livt/demo/story-maps.html">ストーリーマップ</a>に描かれている。それらが記録であり、このページは、遅れをとりかねない写しを持つのではなく、それらを指し示す。</p>
+<p>それらはライブデモにある。ライブデモは livt 自身の livtリポジトリで、変更のたびに <code>livt build</code> で再ビルドされる。デモは日本語で表示される。その理由は <a href="https://github.com/boykush/livt/blob/main/livt.yaml">livt.yaml</a> にある。</p>
+<h2 id="livt-の境界"><a class="header" href="#livt-の境界">livt の境界</a></h2>
+<p>livt が何をほかに任せ、描いているプラクティスからどこで離れるかは、<a href="./livt-and-bdd.html">livt と BDD</a> にまとめてある。使い始めるには <a href="https://github.com/boykush/livt#getting-started">README</a> を参照。</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="livt-and-bdd.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
-                            </a>
 
+                            <a rel="next prefetch" href="livt-and-bdd.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -208,10 +201,10 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="livt-and-bdd.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
-                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
-                    </a>
 
+                    <a rel="next prefetch" href="livt-and-bdd.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
             </nav>
 
         </div>

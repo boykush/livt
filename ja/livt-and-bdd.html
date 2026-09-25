@@ -1,9 +1,9 @@
 <!DOCTYPE HTML>
-<html lang="en" class="light sidebar-visible" dir="ltr">
+<html lang="ja" class="light sidebar-visible" dir="ltr">
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Reference - livt - Living Text</title>
+        <title>livt と BDD - livt - Living Text</title>
 
 
         <!-- Custom HTML head -->
@@ -35,10 +35,10 @@
             const path_to_root = "";
             const default_light_theme = "light";
             const default_dark_theme = "navy";
-            window.path_to_searchindex_js = "searchindex-139903b5.js";
+            window.path_to_searchindex_js = "searchindex-2bed3517.js";
         </script>
         <!-- Start loading toc.js asap -->
-        <script src="toc-7aa131af.js"></script>
+        <script src="toc-0713217f.js"></script>
     </head>
     <body>
     <div id="mdbook-help-container">
@@ -174,33 +174,64 @@
 
                 <div id="mdbook-content" class="content">
                     <main>
-                        <h1 id="reference"><a class="header" href="#reference">Reference</a></h1>
-<p>These docs keep no reference. A command reference, a guide to each file format, a table of what the MCP server returns — each would be a second copy of something the tool already says, and a copy goes stale unless someone remembers to update it. That is the failure livt exists to prevent, so livt does not ship one.</p>
-<p>Each detail is written once, where it cannot drift from what it describes, and where the reader who needs it — nowadays, usually a coding agent — already looks:</p>
-<div class="table-wrapper">
-<table>
-<thead>
-<tr><th>To know</th><th>Ask</th></tr>
-</thead>
-<tbody>
-<tr><td>What a command takes</td><td><code>livt &lt;command&gt; --help</code></td></tr>
-<tr><td>How to write your livt repository: its files, their formats, the rules for changing them</td><td>the skills that write it, under <a href="https://github.com/boykush/livt/tree/main/plugins">plugins</a></td></tr>
-<tr><td>How an agent reads your livt repository, and how it cites what it reads</td><td>the <code>livt mcp</code> server you run over it, which describes its own tools and resources</td></tr>
-<tr><td>What a livt URI in your livt repository points at</td><td><code>livt resolve &lt;uri&gt;</code></td></tr>
-<tr><td>What livt itself does, and why, rule by rule</td><td>livt’s own livt repository: its <a href="https://github.com/boykush/livt/tree/main/discoveries/example-mappings">example mappings</a>, rendered on the <a href="https://boykush.github.io/livt/demo/">live demo</a></td></tr>
-</tbody>
-</table>
-</div>
-<p>The last row is livt used on itself. livt keeps its own rules in a livt repository, so “what does livt do when…” is answered the way livt answers it for any team: by the rule that was agreed, with the reason in the commit that agreed it.</p>
+                        <h1 id="livt-と-bdd"><a class="header" href="#livt-と-bdd">livt と BDD</a></h1>
+<p>livt が描き出すのは、livt が発明したのではないプラクティスだ。このページでは、どこがコミュニティのもので、どこを livt が加え、どこで livt が意図して離れ、何に livt があえて手を出さないのかを述べる。</p>
+<p>BDD コミュニティから来た人に手短に言えば、<strong>livt は Cucumber の代替ではない</strong>。テストは実行しない。発見のセッションで決めたことを残し、何か月も後に誰かがそれを実装するときにも、その決定を読めて、引用もできる状態に保つ。</p>
+<h2 id="livt-が受け継いだもの"><a class="header" href="#livt-が受け継いだもの">livt が受け継いだもの</a></h2>
+<ul>
+<li><strong>振る舞い駆動開発（BDD）</strong> — Dan North、<a href="https://dannorth.net/introducing-bdd/">Introducing BDD</a>（2006年）。livt が拠り所にしている3つのフェーズ、発見・定式化・自動化は、コミュニティ自身の枠組みだ。<a href="https://cucumber.io/docs/bdd/">Cucumber の BDD ドキュメント</a>を参照。</li>
+<li><strong>実例マッピング</strong> — Matt Wynne、<a href="https://cucumber.io/blog/bdd/example-mapping-introduction/">Introducing Example Mapping</a>（2015年）。4種類のカードとその色、タイムボックス、そしてボードを読み返してストーリーについてのシグナルとして受け取ること。livt のボードはその形式を、ファイルから描いたものだ。</li>
+<li><strong>ユビキタス言語</strong> — Eric Evans がドメイン駆動設計で用いた言葉で、BDD の定式化にも通じている。livt はそれを、使う側の成果物のそばに用語集として置く。</li>
+<li><strong>オポチュニティキャンバスとユーザーストーリーマッピング</strong> — Jeff Patton、<a href="https://jpattonassociates.com/opportunity-canvas/">Opportunity Canvas</a> と <a href="https://jpattonassociates.com/story-mapping/">story mapping</a>。BDD ではないが、扱いは同じだ。</li>
+</ul>
+<h2 id="livt-が加えたもの"><a class="header" href="#livt-が加えたもの">livt が加えたもの</a></h2>
+<p>以下はどれもプラクティスには含まれていない。livt のものであり、livt が変われば変わる：</p>
+<ul>
+<li><strong>写真ではなくファイル</strong>。マッピングはリポジトリの中の YAML で、それが仕様を定めるコードと一緒にバージョン管理される。</li>
+<li><strong>同一性</strong>。ルール・具体例・疑問点にはそれぞれ ID があり、一度付けたら変わらず、退役したものを飛ばして番号が振られ、livt URI で指せる。だから Issue やテストのコメントから引用したルールが、知らないうちに別の意味になることはない。</li>
+<li><strong>ライフサイクル</strong>。ルールは<a href="https://adr.github.io/">アーキテクチャ決定記録</a>と同じように、提案され、合意され、却下され、あるいは退役する。退役したルールは、仕様の行き先を示す。</li>
+<li><strong>非同期のレーン</strong>。わざわざ集まるまでもないルールなら、セッションの合間に、プルリクエストのレビューで提案して合意できる。</li>
+<li><strong>外へのリンク</strong>。ルールは自身を自動化するために起票された Issue を記録し、それを自動化するテストは livt URI でそのルールを引用し返す。livt はその引用を実装リポジトリから集め（集めるのは各テストが何をカバーすると主張しているかであって、テストが通るかどうかではない）、サイトがそれを集計する。</li>
+</ul>
+<h2 id="livt-が離れるところ"><a class="header" href="#livt-が離れるところ">livt が離れるところ</a></h2>
+<h3 id="実例マッピングは使い捨てのはずのもの"><a class="header" href="#実例マッピングは使い捨てのはずのもの">実例マッピングは使い捨てのはずのもの</a></h3>
+<p>これが本当の意味での逸脱であり、こっそり持ち込むのではなく、はっきり名指ししておく価値がある。</p>
+<p>Wynne の実例マッピングは25分間の会話であり、その産物は共通理解だ。カードは副産物であり、計器でもある。青が多すぎればストーリーが大きすぎ、赤が多すぎればまだ準備ができていない。それを告げた時点で、カードは役目を終えている。ボードを写真に撮り、二度とその写真を開かないチームも、プラクティスに失敗したわけではない。</p>
+<p>それでも livt がマップを残すのは、livt が埋めようとしているギャップのためだ。合意したルールを半年後に必要とする開発者は、写真に問い合わせることができない。とはいえ、残り続ける成果物は保守を招き、保守は、マップを交わすべき会話ではなく完成させるべき仕様として扱うことを招く。このアンチパターンは現実のもので、どんなツールもそれを排除できない。livt の構造上の答えは、記録は部屋が合意したあとに書かれ、合意した内容を決して変えないということだ。<a href="https://github.com/boykush/livt/tree/main/plugins/livt-discovery">記録のスキル</a>は、まずボードをそのまま書き写し、そのあとで初めて構造を整える編集を行う。レビューが読むのはその差分だ。</p>
+<p>だからはっきり言っておく。<strong>どちらかを選ぶなら、会話を選ぶこと</strong>。よいセッションを開き、記録を何も残さないチームは BDD をやっている。完璧な YAML があってもセッションのないチームは、そうではない。</p>
+<h3 id="livt-は定式化についてコミュニティと共有していない立場をとる"><a class="header" href="#livt-は定式化についてコミュニティと共有していない立場をとる">livt は定式化について、コミュニティと共有していない立場をとる</a></h3>
+<p>主流の BDD は、フィーチャーファイルを共有の成果物として扱う。Gherkin はスリーアミーゴスが一緒に生み出すものであり、それがリビングドキュメントになる。livt の立場はその逆をいく。発見の成果物が正であり、Gherkin はそこからの生成物になるはずのものだ。</p>
+<p>それが今どれほどの意味を持つのかは、はっきりさせておく。<strong>livt は Gherkin をまったく生成しない</strong>。ツールのどこも、まだこの立場に依存していない。これは検証中の見解であり、livt の中で最も間違っている可能性が高い部分であって、リリースノートではなく議論の場に置かれるべきものだ。間違っていると思うなら、<a href="https://github.com/boykush/livt/issues">そう言ってほしい</a>。同意よりもずっと役に立つ貢献になる。</p>
+<h2 id="livt-がしないこと"><a class="header" href="#livt-がしないこと">livt がしないこと</a></h2>
+<ul>
+<li><strong>テストの実行</strong>。livt は Cucumber、SpecFlow、Behave をはじめ、仕様を実行するどのツールの代替でもない。いつか Gherkin を出力することがあっても、それはそれらのツールが実行できる標準の構文であり、独自の方言には決してしない。</li>
+<li><strong>セッションのファシリテーション</strong>。タイマーも投票もボードもない。その場のファシリテーションは人が行い、その部屋がすでに使っているボードの上で進む。livt が始まるのは、ボードが終わるところからだ。</li>
+<li><strong>BDD を教えること</strong>。プラクティスは下に挙げる人たちが教えていて、そちらのほうがずっとうまく教えている。</li>
+<li><strong>コミュニティの言葉の再定義</strong>。ルール、具体例、疑問点、発見、定式化のようにプラクティスの用語であるものは、プラクティスでの意味のまま使う。livt が独自の用語を必要とした場合は、名前がそれを示している。livtリポジトリ、livt URI、実装リポジトリがそうだ。</li>
+</ul>
+<h2 id="これを書き残した人たち"><a class="header" href="#これを書き残した人たち">これを書き残した人たち</a></h2>
+<p>livt が描くものの大半は、あるコミュニティが練り上げて公開してきたものだ。そのコミュニティは入門を無償で配り、踏み込んだ内容を販売していて、メンテナーは2023年から寄付で活動を続けている。</p>
+<ul>
+<li>Dan North — <a href="https://dannorth.net/introducing-bdd/">Introducing BDD</a></li>
+<li>Matt Wynne — <a href="https://cucumber.io/blog/bdd/example-mapping-introduction/">Introducing Example Mapping</a></li>
+<li>Seb Rose — <a href="https://cucumber.io/blog/bdd/keep-your-scenarios-brief/">Keep your scenarios BRIEF</a></li>
+<li>Gáspár Nagy と Seb Rose — <a href="https://bddbooks.com/">The BDD Books</a>：<em>Discovery</em> と <em>Formulation</em>。Leanpub に日本語版がある</li>
+<li><a href="https://school.cucumber.io/">Cucumber School</a> — 無料と有料のコース</li>
+<li><a href="https://opencollective.com/cucumber">Cucumber on Open Collective</a> — メンテナーの活動資金の窓口</li>
+</ul>
+<p>livt のおかげで、チームが一度済ませた議論をやり直さずに済んだのなら、その功績の一部は彼らのものだ。</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="livt-and-bdd.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="introduction.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                             </a>
 
+                            <a rel="next prefetch" href="reference.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                            </a>
 
                         <div style="clear: both"></div>
                     </nav>
@@ -208,10 +239,13 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="livt-and-bdd.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="introduction.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"/></svg></span>
                     </a>
 
+                    <a rel="next prefetch" href="reference.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"/></svg></span>
+                    </a>
             </nav>
 
         </div>
