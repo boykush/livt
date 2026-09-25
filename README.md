@@ -5,107 +5,34 @@
 </p>
 
 <p align="center">
-  <a href="https://boykush.github.io/livt/">Documentation</a> |
-  <a href="https://boykush.github.io/livt/getting-started.html">Getting Started</a> |
-  <a href="https://boykush.github.io/livt/guides/stories.html">Guides</a> |
-  <a href="https://boykush.github.io/livt/reference/commands.html">Commands</a>
+  <a href="https://boykush.github.io/livt/">Why livt</a> |
+  <a href="#getting-started">Getting Started</a> |
+  <a href="https://boykush.github.io/livt/demo/">Live Demo</a>
 </p>
 
 ## What is livt?
 
-livt is a CLI tool that captures collaborative discovery outcomes as living text. It bridges the gap between synchronous discovery sessions (like [Opportunity Canvas](https://boykush.github.io/livt/guides/opportunities.html), [User Story Mapping](https://boykush.github.io/livt/guides/story-maps.html) and [Example Mapping](https://boykush.github.io/livt/guides/example-mappings.html)) and development artifacts.
-
-Discovery outcomes are written as plain text files (YAML, Markdown) and visualized as boards:
+livt keeps what a discovery session agreed as text in a repository, shows it as the board it came from, and serves it to the coding agents that build it — so the agreement is still readable, and still quotable, when someone implements it months later.
 
 ![Story Map board](docs/src/images/story-map.png)
 
-## Features
+[Why livt](https://boykush.github.io/livt/) says which problems it is built against and when it is the right tool.
 
-- **Opportunities** -- Say why the work is worth doing, and hold it on an Opportunity Canvas rendered as a single sheet
-- **Stories as Markdown** -- Write stories with YAML frontmatter, keep them alongside your code
-- **Story Maps** -- Visualize activities, user tasks, and stories with release slices on a board
-- **Example Mappings** -- Render rules, examples, and questions as color-coded sticky notes, or read them back as a list with each rule's examples folded under it
-- **Ubiquitous Language** -- Keep shared terms as Markdown files and browse them as a glossary table
-- **Static HTML output** -- `livt build` generates a standalone site, no runtime required
-- **Local dev server** -- `livt serve` builds and serves with one command
-- **English or Japanese** -- pick the site's language in `livt.yaml`; your own prose is rendered as written
+## Getting started
 
-## Installation
-
-See the [Installation guide](https://boykush.github.io/livt/installation.html) for details on how release artifacts are verified.
-
-### Prebuilt binaries
-
-Download the archive for your platform from [GitHub Releases](https://github.com/boykush/livt/releases).
-
-Every artifact is listed in `checksums.txt` (SHA-256) and carries a Sigstore-signed [build provenance attestation](https://github.com/boykush/livt/attestations), so you can verify it was built by this repository's release workflow before running it:
-
-```bash
-gh attestation verify livt_<version>_<os>_<arch>.tar.gz --repo boykush/livt
-```
-
-### mise
+Install livt. [mise](https://mise.jdx.dev/) checks the release's build provenance before installing it:
 
 ```bash
 mise use "github:boykush/livt@<version>"
 ```
 
-The [`github` backend](https://mise.jdx.dev/dev-tools/backends/github.html) downloads the release binary and, by default, verifies its GitHub artifact attestation (Sigstore build provenance). With [`lockfile = true`](https://mise.jdx.dev/dev-tools/mise-lock.html), the checksum and provenance are also pinned in `mise.lock`.
+A binary from [GitHub Releases](https://github.com/boykush/livt/releases), or `go install github.com/boykush/livt@<version>`, works as well; [SECURITY.md](SECURITY.md#release-integrity) says how each release is built and how to verify it.
 
-To build from source instead, use the [`go` backend](https://mise.jdx.dev/dev-tools/backends/go.html) (requires Go; verified by the [Go checksum database](https://sum.golang.org/)):
+Then give your coding agent the skills that write a livt repository. Each plugin under [plugins/](plugins) says in its README what it is for and how to install it; [livt-discovery](plugins/livt-discovery/README.md) is where a team starts.
 
-```bash
-mise use "go:github.com/boykush/livt@<version>"
-```
+After a session, give your agent the board — a photo, an export, or the stickies pasted as text — and ask it to record it. In the repository it wrote to, `livt serve` shows the result at http://localhost:3000.
 
-### go install
-
-```bash
-go install github.com/boykush/livt@<version>
-```
-
-## Quick Start
-
-```bash
-# Create the directory structure
-mkdir -p opportunities stories discoveries/opportunity-canvases discoveries/usm discoveries/example-mappings ubiquitous
-
-# Create your first story
-cat <<'EOF' > stories/my-first-story.md
----
-name: My first story
----
-
-As a user
-I want to do something
-So that I get value
-EOF
-
-# Build and serve
-livt serve
-```
-
-Open http://localhost:3000 in your browser.
-
-See the [Getting Started guide](https://boykush.github.io/livt/getting-started.html) for more details.
-
-## File Structure
-
-```
-opportunities/
-  {opportunity-key}.md               # Opportunity files
-stories/
-  {story-key}.md                     # Story files
-discoveries/
-  opportunity-canvases/
-    {opportunity-key}.yaml           # Opportunity canvas files
-  usm/
-    {opportunity-key}.yaml           # Story map files
-  example-mappings/
-    {story-key}.yaml                 # Example mapping files
-```
-
-See [File Structure reference](https://boykush.github.io/livt/reference/file-structure.html) for output details.
+There is no command or format reference to read: each detail lives where it cannot drift, and [Reference](https://boykush.github.io/livt/reference.html) says where.
 
 ## Contributing
 
@@ -113,9 +40,7 @@ Issues and pull requests are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Acknowledgements
 
-livt renders practices it did not invent. Example Mapping is [Matt Wynne's](https://cucumber.io/blog/bdd/example-mapping-introduction/), the three phases it organizes around are the [BDD community's](https://cucumber.io/docs/bdd/), and Opportunity Canvas and User Story Mapping are [Jeff Patton's](https://jpattonassociates.com/). What livt borrowed, what it added, and where it departs on purpose is [livt and BDD](https://boykush.github.io/livt/livt-and-bdd.html).
-
-Cucumber's maintainers run on donations at [Open Collective](https://opencollective.com/cucumber). If livt saved your team an argument it had already had, some of that is theirs.
+livt renders practices it did not invent. [livt and BDD](https://boykush.github.io/livt/livt-and-bdd.html) credits the people who wrote them down, says what livt added and where it departs on purpose, and links where their maintainers are funded.
 
 ## License
 
