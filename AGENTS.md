@@ -32,6 +32,12 @@ Two consequences worth stating:
 
 [CONTRIBUTING.md](CONTRIBUTING.md) welcomes issues and pull requests "in English or Japanese". That is an invitation to human contributors, and it stands. The rules above govern agents working in this repo.
 
+## Documentation
+
+- **`docs/` never restates what livt already says elsewhere.** Each kind of detail has one home, beside what it describes — [Reference](docs/src/reference.md) says where — and a change in behaviour updates that home in the same diff, never a page in `docs/`.
+- **`docs/` says why livt exists and when it fits by pointing at the record.** livt's reasons are its opportunities and story maps, and the introduction links them on the live demo instead of summarising them: a summary there fell behind once, still listing two opportunities after a third was taken on.
+- **Explaining what livt does starts from the example mapping that decided it** — the files, or `go run . resolve livt://mapping/{story-key}` — cited by livt URI. Code that disagrees with it is a gap to report, not a document to update.
+
 ## Commits and PRs
 
 - livt repository changes (`opportunities/`, `discoveries/`, `stories/`, `ubiquitous/`) ship as `docs:`. The branch prefix mirrors the type: `docs/…`, `feat/…`, `fix/…`.
