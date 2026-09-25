@@ -19,6 +19,8 @@ func init() {
 var serveCmd = &cobra.Command{
 	Use:   "serve",
 	Short: "Build and start a local server to view artifacts as sticky notes",
+	Long: `Build the site as livt build does, serve it, and rebuild it — reloading the
+open page — whenever one of its inputs or livt.yaml changes.`,
 	RunE: func(cmd *cobra.Command, args []string) error {
 		b, err := newBuilder(outDir)
 		if err != nil {
