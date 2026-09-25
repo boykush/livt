@@ -8,6 +8,10 @@ on:
       - "stories/**"
       - "discoveries/**"
       - "ubiquitous/**"
+      # The collect station's output. A merged report changes nothing else, so
+      # without this the board goes on showing the automation status it had
+      # until some unrelated push happens to rebuild it.
+      - "automations/**"
       - "**.go"
       - "go.mod"
       - "go.sum"
