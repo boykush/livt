@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ディスカバリーと開発のギャップ - livt</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  .story-card:target {
+    box-shadow: 0 0 0 2px #fff, 0 0 0 5px #7c3aed;
+    animation: storyFlash 1.1s ease-out 1;
+  }
+  @keyframes storyFlash {
+    0%       { box-shadow: 0 0 0 2px #fff, 0 0 0 4px rgba(124, 58, 237, 0); }
+    30%, 65% { box-shadow: 0 0 0 2px #fff, 0 0 0 9px rgba(124, 58, 237, 0.9); }
+    100%     { box-shadow: 0 0 0 2px #fff, 0 0 0 5px #7c3aed; }
+  }
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<header class="bg-white border-b border-gray-200">
+  <div class="max-w-full mx-auto px-6 py-4 flex items-center gap-3">
+    <a href="../story-maps.html" class="text-sm text-gray-400 hover:text-gray-600">&larr; ストーリーマップ</a>
+    <span class="text-gray-300">|</span>
+    <span class="text-xl font-bold text-gray-900 tracking-tight">livt</span>
+    
+<a href="../diff.html#story-map/discovery-development-gap" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-100">変更</a>
+
+  </div>
+</header>
+
+<main class="max-w-full mx-auto px-6 py-8">
+<div class="flex items-center gap-4 text-xs text-gray-500 mb-4">
+  <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-purple-100 border-l-2 border-purple-400 rounded-sm"></span>ストーリーマップ</span>
+  <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-indigo-100 border-l-2 border-indigo-400 rounded-sm"></span>アクティビティ</span>
+  <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-blue-100 border-l-2 border-blue-400 rounded-sm"></span>ユーザータスク</span>
+  <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-yellow-100 border-l-2 border-yellow-400 rounded-sm"></span>ストーリー</span>
+  <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-pink-100 border-l-2 border-pink-400 rounded-sm"></span>ユビキタス言語</span>
+</div>
+<div class="flex items-center gap-3 mb-6 flex-wrap">
+  <div class="bg-purple-100 border-l-4 border-purple-400 p-3 rounded shadow font-bold text-gray-800 w-[180px]">
+    ディスカバリーと開発のギャップ
+  </div>
+  
+  
+  <a href="../opportunity/discovery-development-gap.html" class="inline-flex items-center gap-1.5 bg-orange-50 text-orange-700 text-sm font-medium px-4 py-2 rounded-lg border border-orange-200 hover:bg-orange-100 transition">
+    オポチュニティ &rarr;
+  </a>
+  
+</div>
+
+<div class="overflow-x-auto pb-4">
+<div class="min-w-max">
+<div class="flex gap-8 items-start">
+
+  <div class="flex flex-col gap-2">
+    <div class="bg-indigo-100 border-l-4 border-indigo-400 p-3 rounded shadow font-semibold text-gray-800 w-[180px]">
+      実装リポジトリでギャップを埋める
+    </div>
+    <div class="flex gap-2">
+    
+      <div class="bg-blue-100 border-l-4 border-blue-400 p-3 rounded shadow text-sm font-semibold text-gray-800 w-[180px]">
+        次に埋めるギャップを選ぶ
+      </div>
+    
+      <div class="bg-blue-100 border-l-4 border-blue-400 p-3 rounded shadow text-sm font-semibold text-gray-800 w-[180px]">
+        ストーリーごとにIssueを起票する
+      </div>
+    
+      <div class="bg-blue-100 border-l-4 border-blue-400 p-3 rounded shadow text-sm font-semibold text-gray-800 w-[180px]">
+        ルールごとに自動化Issueを起票する
+      </div>
+    
+      <div class="bg-blue-100 border-l-4 border-blue-400 p-3 rounded shadow text-sm font-semibold text-gray-800 w-[180px]">
+        livtリポジトリの所在を宣言する
+      </div>
+    
+      <div class="bg-blue-100 border-l-4 border-blue-400 p-3 rounded shadow text-sm font-semibold text-gray-800 w-[180px]">
+        実装リポジトリ側で自動化する
+      </div>
+    
+    </div>
+  </div>
+
+  <div class="flex flex-col gap-2">
+    <div class="bg-indigo-100 border-l-4 border-indigo-400 p-3 rounded shadow font-semibold text-gray-800 w-[180px]">
+      自動化の状況を映す
+    </div>
+    <div class="flex gap-2">
+    
+      <div class="bg-blue-100 border-l-4 border-blue-400 p-3 rounded shadow text-sm font-semibold text-gray-800 w-[180px]">
+        テストから自動化を集める
+      </div>
+    
+      <div class="bg-blue-100 border-l-4 border-blue-400 p-3 rounded shadow text-sm font-semibold text-gray-800 w-[180px]">
+        レポートからルールの状況を導く
+      </div>
+    
+      <div class="bg-blue-100 border-l-4 border-blue-400 p-3 rounded shadow text-sm font-semibold text-gray-800 w-[180px]">
+        ルールごとに自動化の状況を映す
+      </div>
+    
+      <div class="bg-blue-100 border-l-4 border-blue-400 p-3 rounded shadow text-sm font-semibold text-gray-800 w-[180px]">
+        ルールから対応テストを辿る
+      </div>
+    
+      <div class="bg-blue-100 border-l-4 border-blue-400 p-3 rounded shadow text-sm font-semibold text-gray-800 w-[180px]">
+        テストからルールを辿る
+      </div>
+    
+      <div class="bg-blue-100 border-l-4 border-blue-400 p-3 rounded shadow text-sm font-semibold text-gray-800 w-[180px]">
+        ストーリー・リリース単位で自動化の状況を映す
+      </div>
+    
+    </div>
+  </div>
+
+</div>
+
+<div class="flex gap-8 items-start mt-2">
+
+  <div class="flex gap-2 items-start">
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+      
+
+
+<div class="block bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow text-sm text-gray-700">
+  実装リポジトリがlivtリポジトリの所在を宣言する
+</div>
+
+
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+      
+
+
+<div id="story-automate-from-master-in-impl-repos" class="story-card relative scroll-mt-24">
+  
+  <a href="../story/automate-from-master-in-impl-repos.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 pb-6 rounded shadow text-sm text-gray-700 hover:bg-yellow-200 transition">
+    <span>実装リポジトリがlivtリポジトリを見てテスト駆動で自動化する</span><span>&rarr;</span>
+  </a>
+  
+  
+
+<a href="#story-automate-from-master-in-impl-repos" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-yellow-600/70 hover:text-yellow-700 hover:underline cursor-pointer select-none">#automate-from-master-in-impl-repos</a>
+
+</div>
+
+
+      
+    </div>
+  
+  </div>
+
+  <div class="flex gap-2 items-start">
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+  </div>
+
+</div>
+<div class="border-t-2 border-gray-400 mt-3 relative">
+  <span class="absolute -top-3 left-0 bg-gray-50 pr-2 text-xs font-semibold text-gray-500">実装リポジトリが仕様を読める</span>
+</div>
+
+<div class="flex gap-8 items-start mt-2">
+
+  <div class="flex gap-2 items-start">
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+      
+
+
+<div id="story-file-story-issues-to-impl-repos" class="story-card relative scroll-mt-24">
+  
+  <a href="../story/file-story-issues-to-impl-repos.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 pb-6 rounded shadow text-sm text-gray-700 hover:bg-yellow-200 transition">
+    <span>livt経由でストーリー単位のIssueを起票する</span><span>&rarr;</span>
+  </a>
+  
+  
+
+<a href="#story-file-story-issues-to-impl-repos" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-yellow-600/70 hover:text-yellow-700 hover:underline cursor-pointer select-none">#file-story-issues-to-impl-repos</a>
+
+</div>
+
+
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+      
+
+
+<div id="story-file-automation-issues-to-impl-repos" class="story-card relative scroll-mt-24">
+  
+  <a href="../story/file-automation-issues-to-impl-repos.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 pb-6 rounded shadow text-sm text-gray-700 hover:bg-yellow-200 transition">
+    <span>livt経由で各実装リポジトリに自動化Issueを起票する</span><span>&rarr;</span>
+  </a>
+  
+  
+
+<a href="#story-file-automation-issues-to-impl-repos" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-yellow-600/70 hover:text-yellow-700 hover:underline cursor-pointer select-none">#file-automation-issues-to-impl-repos</a>
+
+</div>
+
+
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+  </div>
+
+  <div class="flex gap-2 items-start">
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+  </div>
+
+</div>
+<div class="border-t-2 border-gray-400 mt-3 relative">
+  <span class="absolute -top-3 left-0 bg-gray-50 pr-2 text-xs font-semibold text-gray-500">Issueで協調できる</span>
+</div>
+
+<div class="flex gap-8 items-start mt-2">
+
+  <div class="flex gap-2 items-start">
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+  </div>
+
+  <div class="flex gap-2 items-start">
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+      
+
+
+<div id="story-show-automation-status-per-rule" class="story-card relative scroll-mt-24">
+  
+  <a href="../story/show-automation-status-per-rule.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 pb-6 rounded shadow text-sm text-gray-700 hover:bg-yellow-200 transition">
+    <span>ルールが自動化されているかを一目で映す</span><span>&rarr;</span>
+  </a>
+  
+  
+
+<a href="#story-show-automation-status-per-rule" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-yellow-600/70 hover:text-yellow-700 hover:underline cursor-pointer select-none">#show-automation-status-per-rule</a>
+
+</div>
+
+
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+      
+
+
+<div id="story-trace-rule-to-tests" class="story-card relative scroll-mt-24">
+  
+  <a href="../story/trace-rule-to-tests.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 pb-6 rounded shadow text-sm text-gray-700 hover:bg-yellow-200 transition">
+    <span>ルール付箋から対応Issue・テストへ辿る</span><span>&rarr;</span>
+  </a>
+  
+  
+
+<a href="#story-trace-rule-to-tests" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-yellow-600/70 hover:text-yellow-700 hover:underline cursor-pointer select-none">#trace-rule-to-tests</a>
+
+</div>
+
+
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+      
+
+
+<div id="story-trace-test-to-rule" class="story-card relative scroll-mt-24">
+  
+  <a href="../story/trace-test-to-rule.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 pb-6 rounded shadow text-sm text-gray-700 hover:bg-yellow-200 transition">
+    <span>テストからルール・具体例へ辿る</span><span>&rarr;</span>
+  </a>
+  
+  
+
+<a href="#story-trace-test-to-rule" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-yellow-600/70 hover:text-yellow-700 hover:underline cursor-pointer select-none">#trace-test-to-rule</a>
+
+</div>
+
+
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+  </div>
+
+</div>
+<div class="border-t-2 border-gray-400 mt-3 relative">
+  <span class="absolute -top-3 left-0 bg-gray-50 pr-2 text-xs font-semibold text-gray-500">自動化の状態が映る</span>
+</div>
+
+<div class="flex gap-8 items-start mt-2">
+
+  <div class="flex gap-2 items-start">
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+  </div>
+
+  <div class="flex gap-2 items-start">
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+      
+
+
+<div id="story-collect-automations" class="story-card relative scroll-mt-24">
+  
+  <a href="../story/collect-automations.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 pb-6 rounded shadow text-sm text-gray-700 hover:bg-yellow-200 transition">
+    <span>実装リポジトリのテストから自動化を集めてレポートにする</span><span>&rarr;</span>
+  </a>
+  
+  
+
+<a href="#story-collect-automations" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-yellow-600/70 hover:text-yellow-700 hover:underline cursor-pointer select-none">#collect-automations</a>
+
+</div>
+
+
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+      
+
+
+<div id="story-derive-automation-status" class="story-card relative scroll-mt-24">
+  
+  <a href="../story/derive-automation-status.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 pb-6 rounded shadow text-sm text-gray-700 hover:bg-yellow-200 transition">
+    <span>自動化レポートからルールごとの状況を導く</span><span>&rarr;</span>
+  </a>
+  
+  
+
+<a href="#story-derive-automation-status" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-yellow-600/70 hover:text-yellow-700 hover:underline cursor-pointer select-none">#derive-automation-status</a>
+
+</div>
+
+
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+  </div>
+
+</div>
+<div class="border-t-2 border-gray-400 mt-3 relative">
+  <span class="absolute -top-3 left-0 bg-gray-50 pr-2 text-xs font-semibold text-gray-500">テストから自動化の状態が導かれる</span>
+</div>
+
+
+<div class="flex gap-8 items-start mt-2">
+
+  <div class="flex gap-2 items-start">
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+      
+
+
+<div id="story-overview-unautomated-rules" class="story-card relative scroll-mt-24">
+  
+  <a href="../story/overview-unautomated-rules.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 pb-6 rounded shadow text-sm text-gray-700 hover:bg-yellow-200 transition">
+    <span>未自動化のルールを横断で見渡す</span><span>&rarr;</span>
+  </a>
+  
+  
+
+<a href="#story-overview-unautomated-rules" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-yellow-600/70 hover:text-yellow-700 hover:underline cursor-pointer select-none">#overview-unautomated-rules</a>
+
+</div>
+
+
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+  </div>
+
+  <div class="flex gap-2 items-start">
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+    </div>
+  
+    <div class="flex flex-col gap-2 w-[180px]">
+      
+      
+
+
+<div id="story-show-automation-coverage-rollup" class="story-card relative scroll-mt-24">
+  
+  <a href="../story/show-automation-coverage-rollup.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 pb-6 rounded shadow text-sm text-gray-700 hover:bg-yellow-200 transition">
+    <span>自動化カバレッジをストーリー・リリースで見渡す</span><span>&rarr;</span>
+  </a>
+  
+  
+
+<a href="#story-show-automation-coverage-rollup" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-yellow-600/70 hover:text-yellow-700 hover:underline cursor-pointer select-none">#show-automation-coverage-rollup</a>
+
+</div>
+
+
+      
+    </div>
+  
+  </div>
+
+</div>
+
+</div>
+</div>
+
+
+<div class="mt-8">
+  <div class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-2">ユビキタス言語</div>
+  <div class="flex flex-wrap gap-2">
+  
+
+
+<a href="../ubiquitous.html#discovery" class="inline-flex items-center gap-2 bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-pink-200 transition">
+  <span class="flex flex-col items-start"><span>ディスカバリー</span></span><span>&rarr;</span>
+</a>
+
+
+
+
+<a href="../ubiquitous.html#example-mapping" class="inline-flex items-center gap-2 bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-pink-200 transition">
+  <span class="flex flex-col items-start"><span>実例マッピング</span></span><span>&rarr;</span>
+</a>
+
+
+
+
+<a href="../ubiquitous.html#story" class="inline-flex items-center gap-2 bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-pink-200 transition">
+  <span class="flex flex-col items-start"><span>ストーリー</span></span><span>&rarr;</span>
+</a>
+
+
+
+
+<a href="../ubiquitous.html#livt-uri" class="inline-flex items-center gap-2 bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-pink-200 transition">
+  <span class="flex flex-col items-start"><span>livt URI</span></span><span>&rarr;</span>
+</a>
+
+
+
+
+<a href="../ubiquitous.html#livt-repository" class="inline-flex items-center gap-2 bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-pink-200 transition">
+  <span class="flex flex-col items-start"><span>livtリポジトリ</span></span><span>&rarr;</span>
+</a>
+
+
+
+
+<a href="../ubiquitous.html#automation" class="inline-flex items-center gap-2 bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-pink-200 transition">
+  <span class="flex flex-col items-start"><span>自動化</span></span><span>&rarr;</span>
+</a>
+
+
+  </div>
+</div>
+
+</main>
+
+<script>
+  document.querySelectorAll('a[data-copy-link]').forEach(function (a) {
+    a.addEventListener('click', function () {
+      if (!navigator.clipboard) return;
+      var url = location.href.split('#')[0] + a.getAttribute('href');
+      navigator.clipboard.writeText(url).then(function () {
+        var label = a.textContent;
+        a.textContent = "✓ コピーしました";
+        setTimeout(function () { a.textContent = label; }, 1200);
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
