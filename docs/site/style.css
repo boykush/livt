@@ -249,8 +249,9 @@ html[lang="ja"] .block-title h2 { font-size: 1.12rem; line-height: 1.5; }
 .adds li, .nots li { display: grid; gap: 4px; }
 .adds .eg { justify-self: start; max-width: 100%; margin-top: 4px; padding: 2px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--wall); color: var(--ink-2); font-size: .78rem; line-height: 1.6; overflow-wrap: anywhere; }
 .nots { gap: 16px; }
+.bdd-why .copy { display: grid; gap: 14px; max-width: 46em; }
+.bdd-why p { color: var(--ink-2); font-size: 1.02rem; }
 .departs .cols article { display: grid; gap: 12px; align-content: start; }
-.departs .stack { display: grid; gap: 36px; align-content: start; }
 .departs h3 { margin: 0; font-size: 1.02rem; font-weight: 600; line-height: 1.45; }
 .departs p { color: var(--ink-2); font-size: .98rem; }
 .credits-intro { color: var(--ink-2); font-size: .95rem; margin-bottom: 18px; max-width: 34em; }
