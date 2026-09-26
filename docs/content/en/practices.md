@@ -36,7 +36,6 @@ livt takes the Example Mapping, not a feature file, as the source, and keeps its
 ## What livt does not do
 
 - **Run tests.** Tests stay in your repositories and run with the tools you already use.
-- **Facilitate the conversation.** No timer, no voting, no board. Have it on the whiteboard your team already uses, online or in the room. livt picks up after it.
 - **Teach BDD.** The people listed here teach it.
 - **Redefine terms.** Rule, example, question, discovery and formulation keep the meaning the practice gives them.
 
