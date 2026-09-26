@@ -141,11 +141,16 @@ func TestRenderMappingExampleUnderUnkeyedRuleOmitsAnchor(t *testing.T) {
 	}
 }
 
+// livt:automates livt://mapping/show-automation-status-per-rule/rule/R-01/example/EX-07
+// The chip of a citing test is the sticky's mark, and no corner stamp repeats
+// it. A rule the deprecated flag alone calls automated has no test to name,
+// and keeps a chip so it does not lose the mark it had.
 func TestRenderMappingMarksAutomatedRules(t *testing.T) {
 	em := &domain.ExampleMapping{
 		Rules: []domain.Rule{
 			{ID: "R-01", Name: "An automated rule", Automations: []domain.Automation{{Repo: "acme/impl", File: "x_test.go", Line: 1}}},
 			{ID: "R-02", Name: "A rule not yet automated"},
+			{ID: "R-03", Name: "A rule only the flag calls automated", AutomatedFlag: true},
 		},
 	}
 
@@ -155,8 +160,11 @@ func TestRenderMappingMarksAutomatedRules(t *testing.T) {
 	}
 	html := buf.String()
 
-	if got := strings.Count(html, "✓ automated"); got != 1 {
-		t.Fatalf("automated badge rendered %d times, want once (only on the automated rule)", got)
+	if got := strings.Count(html, `class="test-chip `); got != 2 {
+		t.Fatalf("test chips rendered %d times, want 2: the cited rule and the flagged one", got)
+	}
+	if strings.Contains(html, "automated-badge") {
+		t.Fatal("a corner stamp repeats what the chips already say")
 	}
 	if !strings.Contains(html, "Automated by a test") {
 		t.Fatal("expected the legend to explain the automated mark")
@@ -223,8 +231,8 @@ func TestRenderMappingMarksEachAxisOnItsOwn(t *testing.T) {
 	}
 	html := buf.String()
 
-	if got := strings.Count(html, "✓ automated"); got != 2 {
-		t.Fatalf("automated badge rendered %d times, want 2: the cited rule and the cited example", got)
+	if got := strings.Count(html, `class="test-chip `); got != 2 {
+		t.Fatalf("test chips rendered %d times, want 2: the cited rule and the cited example", got)
 	}
 }
 
@@ -256,10 +264,12 @@ func TestRenderMappingLinksRuleIssues(t *testing.T) {
 	}
 }
 
-// livt:automates livt://mapping/show-automation-status-per-rule/rule/R-01/example/EX-05
+// livt:automates livt://mapping/show-automation-status-per-rule/rule/R-01/example/EX-07
+// livt:automates livt://mapping/show-automation-status-per-rule/rule/R-01/example/EX-08
 // A sticky links each test that automates it by repository, file and line, on
-// the ✓ its stamp wears. An automation issue beside it keeps the ↗: both lead
-// off the site, and off GitHub an issue's label is nothing but its host.
+// a filled chip with the executable-specification icon. An automation issue
+// beside it is an outlined, dashed chip with an icon of its own: off GitHub
+// an issue's label is nothing but its host, so the two must part by shape.
 func TestRenderMappingTellsATestFromAnAutomationIssue(t *testing.T) {
 	em := &domain.ExampleMapping{
 		Rules: []domain.Rule{{
@@ -278,18 +288,73 @@ func TestRenderMappingTellsATestFromAnAutomationIssue(t *testing.T) {
 	}
 	page := html.UnescapeString(buf.String())
 
-	for _, link := range []struct{ href, text, title string }{
-		{"https://github.com/acme/impl/blob/abc1234/internal/x_test.go#L12", "✓ impl: x_test.go:12", "Automated by tests"},
-		{"https://tracker.example.com/tickets/9", "↗ tracker.example.com", "Automation issue"},
-	} {
-		anchor := regexp.MustCompile(`<a href="` + regexp.QuoteMeta(link.href) + `"[^>]*title="([^"]*)"[^>]*>` + regexp.QuoteMeta(link.text) + `</a>`)
+	type chip struct{ title, class, icon, text string }
+	chipOf := func(href string) (chip, bool) {
+		anchor := regexp.MustCompile(`<a href="` + regexp.QuoteMeta(href) + `"[^>]*title="([^"]*)" class="([^"]*)">(<svg.*?</svg>)<span[^>]*>([^<]*)</span></a>`)
 		m := anchor.FindStringSubmatch(page)
 		if m == nil {
-			t.Errorf("no link to %s reads %q", link.href, link.text)
-			continue
+			return chip{}, false
 		}
-		if m[1] != link.title {
-			t.Errorf("%q is titled %q, want %q", link.text, m[1], link.title)
+		return chip{m[1], m[2], m[3], m[4]}, true
+	}
+
+	test, ok := chipOf("https://github.com/acme/impl/blob/abc1234/internal/x_test.go#L12")
+	if !ok {
+		t.Fatal("no chip links the citing test")
+	}
+	issue, ok := chipOf("https://tracker.example.com/tickets/9")
+	if !ok {
+		t.Fatal("no chip links the automation issue")
+	}
+
+	if test.text != "impl: x_test.go:12" || test.title != "Automated by tests" {
+		t.Errorf("test chip reads %q titled %q", test.text, test.title)
+	}
+	if issue.text != "tracker.example.com" || issue.title != "Automation issue" {
+		t.Errorf("issue chip reads %q titled %q", issue.text, issue.title)
+	}
+	if test.icon == issue.icon {
+		t.Error("a test and an issue wear the same icon")
+	}
+	if !strings.Contains(issue.class, "border-dashed") || strings.Contains(issue.class, "bg-") {
+		t.Errorf("issue chip %q is not an unfilled dashed outline", issue.class)
+	}
+	if !strings.Contains(test.class, "bg-") || strings.Contains(test.class, "border-dashed") {
+		t.Errorf("test chip %q is not a filled chip", test.class)
+	}
+	if !strings.Contains(page, "Automation issue</span>") {
+		t.Error("the legend does not explain the issue chip")
+	}
+}
+
+// livt:automates livt://mapping/show-automation-status-per-rule/rule/R-01/example/EX-09
+// livt:automates livt://mapping/show-automation-status-per-rule/rule/R-01/example/EX-10
+// One test chip for both axes, the sticky saying which it sits on, and in none
+// of the colours a test runner spends on results: livt knows a test cites the
+// sticky, not whether it passes.
+func TestRenderMappingPaintsTestChipsOneColourOffTheResults(t *testing.T) {
+	cited := []domain.Automation{{Repo: "acme/impl", File: "x_test.go", Line: 1}}
+	em := &domain.ExampleMapping{
+		Rules: []domain.Rule{{ID: "R-01", Name: "Cited rule", Automations: cited, Examples: []domain.Example{
+			{ID: "EX-01", Name: "Cited example", Automations: cited},
+		}}},
+	}
+
+	var buf bytes.Buffer
+	if err := renderMapping(&buf, i18n.En, board{Mapping: em.Active(), AutomationKnown: true}, "Story", "", nil, nil, nil); err != nil {
+		t.Fatal(err)
+	}
+
+	classes := regexp.MustCompile(`class="(test-chip [^"]*)"`).FindAllStringSubmatch(buf.String(), -1)
+	if len(classes) != 2 {
+		t.Fatalf("test chips rendered %d times, want 2: the rule and the example", len(classes))
+	}
+	if classes[0][1] != classes[1][1] {
+		t.Errorf("the rule's chip %q and the example's %q differ", classes[0][1], classes[1][1])
+	}
+	for _, result := range []string{"green", "red", "yellow", "amber", "emerald", "lime", "cyan"} {
+		if strings.Contains(classes[0][1], result) {
+			t.Errorf("test chip %q wears %s, a colour runners spend on results", classes[0][1], result)
 		}
 	}
 }
@@ -653,7 +718,7 @@ func TestRenderMappingRuleRowCarriesItsWholeLine(t *testing.T) {
 		t.Fatalf("expected R-01's card ahead of its examples (card at %d, examples at %d)", start, end)
 	}
 	row := html[start:end]
-	for _, want := range []string{">#R-01</a>", "A rule with examples", "✓ automated", "livt#25", "Examples</span>2</span>"} {
+	for _, want := range []string{">#R-01</a>", "A rule with examples", `class="test-chip `, "livt#25", "Examples</span>2</span>"} {
 		if !strings.Contains(row, want) {
 			t.Errorf("expected R-01's row to carry %q", want)
 		}
