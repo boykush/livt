@@ -20,20 +20,20 @@ Read the spec over the livt MCP server before citing: the rule's resource lists 
 
 ## Where Citations Go
 
-The snippets below are illustrations, not a language this skill is for: the convention is the same in any language and framework, with the line written in that language's comment syntax. They write livt URIs with `{placeholders}`, which livt never collects; in a real test each is the `uri` the server returned. Rules and examples are claimed separately. Citing a rule says a test checks the rule itself; citing an example says a test checks that example. Neither stands for the other on livt's side: the scan and the board never count a rule as automated because its examples are.
+The snippets below are in Go only for illustration: the convention is the same in any language and framework, with the line written in that language's comment syntax. They write livt URIs with `{placeholders}`, which livt never collects; in a real test each is the `uri` the server returned. Rules and examples are claimed separately. Citing a rule says a test checks the rule itself; citing an example says a test checks that example. Neither stands for the other on livt's side: the scan and the board never count a rule as automated because its examples are.
 
 ### Nested tests — every level carries its citation
 
-When the framework lets a block wrap a rule's cases (`describe`/`it`, `t.Run`, nested classes, `context` blocks, …), cite the rule on the block and each example on its case — here in TypeScript:
+When the framework lets a block wrap a rule's cases (`describe`/`it`, `t.Run`, nested classes, `context` blocks, …), cite the rule on the block and each example on its case:
 
-```ts
+```go
 // livt:automates livt://mapping/{story_key}/rule/{rule_id}
-describe("late orders are refused", () => {
-  // livt:automates livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}
-  it("refuses an order after the deadline", () => { … });
-  // livt:automates livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}
-  it("accepts an order at the deadline", () => { … });
-});
+func TestLateOrdersAreRefused(t *testing.T) {
+	// livt:automates livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}
+	t.Run("an order after the deadline is refused", func(t *testing.T) { … })
+	// livt:automates livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}
+	t.Run("an order at the deadline is accepted", func(t *testing.T) { … })
+}
 ```
 
 ### Flat tests — the rule once all its examples are cited
@@ -42,16 +42,16 @@ When each test stands alone with no block around a rule's cases, there is nowher
 
 1. Read the rule over MCP and list its **live** examples — retired ones do not count, and a rule whose `status` is `proposed` is not spec yet, so it is not cited at all.
 2. Find which of those examples **this repository's** tests cite, by their marker lines. Citations reported from other implementation repositories are theirs; a rule line here claims that the tests here cover it.
-3. When every live example is cited here, add the rule's citation to **each** test that cites one of them — one more line beside the example's, here in Python:
+3. When every live example is cited here, add the rule's citation to **each** test that cites one of them — one more line beside the example's:
 
-```python
-# livt:automates livt://mapping/{story_key}/rule/{rule_id}
-# livt:automates livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}
-def test_an_order_after_the_deadline_is_refused(): ...
+```go
+// livt:automates livt://mapping/{story_key}/rule/{rule_id}
+// livt:automates livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}
+func TestAnOrderAfterTheDeadlineIsRefused(t *testing.T) { … }
 
-# livt:automates livt://mapping/{story_key}/rule/{rule_id}
-# livt:automates livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}
-def test_an_order_at_the_deadline_is_accepted(): ...
+// livt:automates livt://mapping/{story_key}/rule/{rule_id}
+// livt:automates livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}
+func TestAnOrderAtTheDeadlineIsAccepted(t *testing.T) { … }
 ```
 
 Every test that makes up the rule then leads back to it, and deleting one of them does not take the rule's citation with it.
