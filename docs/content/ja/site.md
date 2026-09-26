@@ -4,7 +4,7 @@
 
 - livt
 - ライブデモ
-- livt とプラクティス
+- livt と BDD
 - リファレンス
 - GitHub
 

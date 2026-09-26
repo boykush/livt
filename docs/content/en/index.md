@@ -26,7 +26,7 @@ An excerpt of livt's own example mapping, translated from Japanese. The test bel
 - [Example Mapping](https://boykush.github.io/livt/demo/ubiquitous.html#example-mapping) — how it should behave
 - [Ubiquitous Language](https://boykush.github.io/livt/demo/ubiquitous.html#ubiquitous-language) — which words to use
 
-The people behind each practice are credited on [livt and the practices](practices.html).
+The people behind each practice are credited on [livt and BDD](livt-and-bdd.html).
 
 ## Why livt
 
