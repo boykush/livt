@@ -6,11 +6,11 @@ title: livt と BDD - livt
 
 livt はテストを実行しません。Cucumber の代わりでもありません。
 
-ディスカバリーでチームが協働して決めたことを残して、何か月か後に実装する人が読んだり引用したりできるようにするためのツールです。
+発見でチームが協働して決めたことを残して、何か月か後に実装する人が読んだり引用したりできるようにするためのツールです。
 
 ## 土台にしたプラクティス
 
-- **振る舞い駆動開発（BDD）** — Dan North「[Introducing BDD](https://dannorth.net/introducing-bdd/)」（2006）。livt が軸にしているディスカバリー・定式化・自動化の 3 フェーズは、コミュニティ自身の整理です（[Cucumber の BDD ドキュメント](https://cucumber.io/docs/bdd/)）。
+- **振る舞い駆動開発（BDD）** — Dan North「[Introducing BDD](https://dannorth.net/introducing-bdd/)」（2006）。livt が軸にしている発見・定式化・自動化の 3 フェーズは、コミュニティ自身の整理です（[Cucumber の BDD ドキュメント](https://cucumber.io/docs/bdd/)）。
 - **実例マッピング** — Matt Wynne「[Introducing Example Mapping](https://cucumber.io/blog/bdd/example-mapping-introduction/)」（2015）。4 種類のカードと色、タイムボックス、ボードの様子からストーリーの状態を読むこと。livt のボードは、この形式をファイルから描いたものです。
 - **ユーザーストーリーマッピング** — Jeff Patton「[story mapping](https://jpattonassociates.com/story-mapping/)」。
 - **オポチュニティキャンバス** — Jeff Patton「[Opportunity Canvas](https://jpattonassociates.com/opportunity-canvas/)」。
@@ -32,7 +32,7 @@ Matt Wynne の実例マッピングでは、カードは 25 分の会話の副�
 
 ### 定式化についての立場
 
-主流の BDD では、スリーアミーゴスが一緒に書く Gherkin のフィーチャーファイルが共有の成果物です。livt は逆の立場で、ディスカバリーの成果物を正とし、Gherkin はそこから生成するものと考えています。
+主流の BDD では、スリーアミーゴスが一緒に書く Gherkin のフィーチャーファイルが共有の成果物です。livt は逆の立場で、発見の成果物を正とし、Gherkin はそこから生成するものと考えています。
 
 ただ、今の livt は Gherkin を生成しませんし、この立場に依存する機能もまだありません。livt の中でいちばん間違っている可能性が高い部分なので、違うと思ったら [Issue](https://github.com/boykush/livt/issues) で教えてください。
 
@@ -41,7 +41,7 @@ Matt Wynne の実例マッピングでは、カードは 25 分の会話の副�
 - **テストの実行**　Cucumber、SpecFlow、Behave の代わりにはなりません。Gherkin を出力することがあっても、それらのツールがそのまま実行できる標準の構文にします。
 - **協働の進行**　タイマーも投票もボードもありません。協働は、チームがいつも使っているオンラインホワイトボードなどで進めてください。livt の出番はそのあとです。
 - **BDD を教えること**　ここに挙げた人たちの資料で学べます。
-- **用語の再定義**　ルール、具体例、疑問点、ディスカバリー、定式化は、プラクティスでの意味のまま使います。
+- **用語の再定義**　ルール、具体例、疑問点、発見、定式化は、プラクティスでの意味のまま使います。
 
 ## BDD を学ぶなら
 
