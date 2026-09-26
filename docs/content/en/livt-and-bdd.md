@@ -8,11 +8,11 @@ title: livt and BDD - livt
 
 ### Formulation: the Example Mapping is the source
 
-In mainstream BDD, developers and testers write the rules and examples up as Gherkin, and that feature file becomes the source of the specification. In livt, a YAML file in Example Mapping's own format is the source, and [formulation](https://boykush.github.io/livt/demo/ubiquitous.html#formulation) is rewriting that file. Gherkin, where a team wants it, would be generated from it, which livt does not do yet.
+In mainstream BDD, developers and testers write the rules and examples up as a feature file (Gherkin), and that file becomes the source of the specification. In livt, a YAML file in Example Mapping's own format is the source, and [formulation](https://boykush.github.io/livt/demo/ubiquitous.html#formulation) is rewriting that file. A feature file, where a team wants one, would be generated from it, which livt does not do yet.
 
 Because the format stays Example Mapping's, product managers and designers can take part in answering its questions and changing its rules afterwards. All anyone needs to know is Example Mapping, so there is less to learn.
 
-<!-- figure: The practice above, livt below. Practice: Example Mapping → (written up by developers and testers) → feature file (the source; developers, testers); the feature file stays with development and testing. livt: Example Mapping → (recorded, then rewritten) → YAML in Example Mapping's format (the source; the three amigos), with a dashed line on to Gherkin (generated if wanted); product managers and designers join in answering its questions and changing its rules. -->
+<!-- figure: The practice above, livt below. Practice: Example Mapping → (written up by developers and testers) → feature file (Gherkin) (the source; developers, testers); the feature file stays with development and testing. livt: Example Mapping → (recorded, then rewritten) → YAML in Example Mapping's format (the source; the three amigos), with a dashed line on to a feature file (generated if wanted); product managers and designers join in answering its questions and changing its rules. -->
 
 ### Automation: coding agents take it on
 
