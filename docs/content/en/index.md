@@ -19,7 +19,7 @@ An excerpt of livt's own example mapping, translated from Japanese. The test bel
 
 ## BDD, now that coding agents write the code
 
-The BDD community has long said that having conversations matters more than capturing them, and capturing them more than automating them. It also keeps what a team agreed as one consistent specification.
+The BDD community has long said that discovery matters more than formulation, and formulation more than automation. It also keeps what a team agreed as one consistent specification.
 
 An Example Mapping does not end with the conversation, though. Its rules change and its questions get answered all through development, and a formulated feature file alone cannot follow that. livt records the Example Mapping itself, in its own format: it holds what a feature file would, and lets every role follow questions being answered and rules changing, designers and product owners as much as developers.
 
