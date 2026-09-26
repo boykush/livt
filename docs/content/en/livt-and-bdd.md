@@ -35,12 +35,6 @@ livt keeps the map anyway. A kept map can turn into a spec that someone fills in
 
 livt takes the Example Mapping, not a feature file, as the source, and keeps its format so that every role owns it. In livt, formulation means rewriting that mapping. Gherkin, where a team wants it, would be generated from it, though livt does not generate it today.
 
-## What livt does not do
-
-- **Run tests.** Tests stay in your repositories and run with the tools you already use.
-- **Teach BDD.** The people listed here teach it.
-- **Redefine terms.** Rule, example, question, discovery and formulation keep the meaning the practice gives them.
-
 ## Learn it from the people who wrote it down
 
 Most of what livt renders was worked out and published by the BDD community.
