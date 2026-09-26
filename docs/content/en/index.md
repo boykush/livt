@@ -30,7 +30,7 @@ Coding agents have changed the situation. Automating an agreed rule is now work 
 ### Problems
 
 - There is no place to carry an Example Mapping with open questions through to completion.
-- Formulated specifications tend to stay with developers and testers, and rarely reach other roles such as product managers and designers.
+- Rule changes belong to every role, but feature files tend to stay with developers and testers.
 - Automation spreads across layers and languages, and it is hard to tell which rule is automated where.
 
 ### Customers & Users
