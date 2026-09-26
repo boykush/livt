@@ -27,7 +27,7 @@ BDD has always aimed at one flow: find the rules together, formulate them, and a
 
 - Someone writes and maintains the layer that interprets Gherkin into code, such as Cucumber's step definitions.
 - A team that follows the test pyramid cannot turn every scenario into an end-to-end (large) test.
-- So automation spreads across the implementation repositories, such as a backend and a frontend, and nobody can tell which rule is automated where.
+- So automation spreads across the implementation repositories, such as a backend and a frontend, and it is hard to tell which rule is automated where.
 
 ### Customers & Users
 
