@@ -30,7 +30,7 @@ Coding agents have changed the situation. Automating an agreed rule is now work 
 ### Problems
 
 - What becomes of an Example Mapping afterwards, its questions resolved and its rules changed, is more than a formulated feature file alone can follow.
-- What a team agreed is hard to share across roles.
+- Formulated specifications tend to stay with developers and testers, and rarely reach other roles such as product managers and designers.
 - Automation spreads across layers and repositories, and it is hard to tell which rule is automated where.
 
 ### Customers & Users
