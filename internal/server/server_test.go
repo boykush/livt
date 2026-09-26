@@ -1,5 +1,7 @@
 package server
 
+// livt:automates livt://mapping/reflect-every-artifact-edit-in-preview/rule/R-04
+
 import (
 	"bufio"
 	"bytes"

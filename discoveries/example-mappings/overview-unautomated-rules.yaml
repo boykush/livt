@@ -4,10 +4,15 @@ rules:
     examples:
       - id: EX-01
         name: automatedが立っていないルールだけが、複数のマッピングを横断して1か所に集まる
+        retired: true
+        superseded_by:
+          - livt://mapping/overview-unautomated-rules/rule/R-01/example/EX-04
       - id: EX-02
         name: 自動化済みのルールは一覧に現れない
       - id: EX-03
         name: livtリポジトリ全体のルールが全て自動化済みなら、その旨が分かる
+      - id: EX-04
+        name: 自動化の状況が未自動化と導かれたルールだけが、複数のマッピングを横断して1か所に集まる（導き方はderive-automation-statusのもの）
 
   - id: R-02
     name: 各ルールはどのストーリーのものか分かり、その付箋まで辿れる
@@ -39,3 +44,4 @@ ubiquitous:
   - story
   - opportunity
   - release-slice
+  - automation

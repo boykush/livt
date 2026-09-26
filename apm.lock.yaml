@@ -129,7 +129,7 @@ deployments:
   owners:
   - .
   active_owner: .
-  content_hash: sha256:7ca6b4b44a737ec3999ddcbaeb2c6c9230b71c882baf3b179dc39bb872e5b119
+  content_hash: sha256:f3ee0f7b39edabaec1c6610885c8fb64741a89b93acbd58c6565f97270829844
 - kind: project-relative
   target: claude
   value: .claude/skills/render-site
@@ -237,7 +237,7 @@ deployments:
   owners:
   - .
   active_owner: .
-  content_hash: sha256:7ca6b4b44a737ec3999ddcbaeb2c6c9230b71c882baf3b179dc39bb872e5b119
+  content_hash: sha256:f3ee0f7b39edabaec1c6610885c8fb64741a89b93acbd58c6565f97270829844
 - kind: project-relative
   target: legacy
   value: .agents/skills/render-site
@@ -327,7 +327,7 @@ local_deployed_files:
 - .claude/skills/render-site
 - .claude/skills/render-site/SKILL.md
 local_deployed_file_hashes:
-  .agents/skills/enrich-release-notes/SKILL.md: sha256:7ca6b4b44a737ec3999ddcbaeb2c6c9230b71c882baf3b179dc39bb872e5b119
+  .agents/skills/enrich-release-notes/SKILL.md: sha256:f3ee0f7b39edabaec1c6610885c8fb64741a89b93acbd58c6565f97270829844
   .agents/skills/render-site/SKILL.md: sha256:8f3f94fb9b260973719066585cbb8a3e290263380993e22484c14016672a9e2f
-  .claude/skills/enrich-release-notes/SKILL.md: sha256:7ca6b4b44a737ec3999ddcbaeb2c6c9230b71c882baf3b179dc39bb872e5b119
+  .claude/skills/enrich-release-notes/SKILL.md: sha256:f3ee0f7b39edabaec1c6610885c8fb64741a89b93acbd58c6565f97270829844
   .claude/skills/render-site/SKILL.md: sha256:8f3f94fb9b260973719066585cbb8a3e290263380993e22484c14016672a9e2f

@@ -1,5 +1,7 @@
 package cmd
 
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-04
+
 import (
 	"bytes"
 	"encoding/json"

@@ -17,7 +17,7 @@ type Rule struct {
 	Automations []Automation
 	// AutomatedFlag is a deprecated `automated:` the mapping still carries.
 	// Nothing maintains it; it is read so a repository mid-move to citations
-	// keeps the board it had, and 0.16.0 drops it.
+	// keeps the board it had, until the derived status can carry one alone.
 	AutomatedFlag bool
 	// SupersededBy names what took a closed rule's place, as livt URIs, so a
 	// reference landing on it can go forward. Only the pointer is structured:

@@ -46,10 +46,10 @@ Describe the release at `$tag`. What `main` gained since belongs to the next rel
 Above `## Changelog`, in this order:
 
 1. **One or two sentences** on what the release is about.
-2. **A table** — `| If you use | What changed | What to do |` — with a row for the binary and one per plugin. A deliverable that did not change gets a row saying `Nothing`, so no reader has to infer it from an absence.
-3. **`## Highlights`** — a `###` per change a reader will notice, breaking changes first. The heading names the change in the reader's terms — `/plan-story` is removed — not in the commit's. A renamed, split, or removed command gets a before/after table. Close each with a `More:` link to the README section that covers it, or to the page on the live demo that shows it.
-4. **`### Also in this release`** — a short bullet per smaller change a reader can see: a new option, a fix to behaviour they may have hit, a new docs page.
-5. **`## Upgrading`** — `### The livt binary` and `### Plugins`, each with its steps or `Nothing to do`.
+2. **A table** — `| If you use | What changed | What to do |` — with a row for the binary, one for the reader's livt repository, and one per plugin. A deliverable that did not change gets a row saying `Nothing`, so no reader has to infer it from an absence. Each row opens with its deliverable's mark — 🛠️ the binary, 📁 the reader's livt repository, 🧩 a plugin — and each `What to do` with ⬆️ for an update or ✅ for nothing to do.
+3. **`## ✨ Highlights`** — a `###` per change a reader will notice, breaking changes first. The heading names the change in the reader's terms — `/plan-story` is removed — not in the commit's, and opens with one emoji for what the change is about; a breaking change's is ⚠️. A renamed, split, or removed command gets a before/after table. Close each with a `More:` link to the README section that covers it, or to the page on the live demo that shows it.
+4. **`### 🎁 Also in this release`** — a short bullet per smaller change a reader can see, each opening with an emoji of its own: a new option, a fix to behaviour they may have hit, a new docs page.
+5. **`## ⬆️ Upgrading`** — `### 🛠️ The livt binary` and `### 🧩 Plugins`, each with its steps or `Nothing to do`.
    - Binary: link the README's [Getting started](https://github.com/boykush/livt/blob/$tag/README.md#getting-started) rather than repeating it, and give every change to the reader's livt repository as a before/after table.
    - Plugins: the commands below, then a restart of Claude Code; `claude plugin list` shows the version to expect. Name each plugin as the CLI does, `<plugin>@<marketplace>`, where `<marketplace>` is the `name` in `.claude-plugin/marketplace.json`.
 
@@ -59,8 +59,9 @@ Above `## Changelog`, in this order:
      ```
 
    - Then what the reader changes in their own workflow: a command to stop calling, a new one to run after another.
+6. **`**Full Changelog**: https://github.com/boykush/livt/compare/$prev...$tag`**, as the last line above `## Changelog`.
 
-`gh release view v0.14.0` is a worked example of the shape.
+`gh release view v0.16.0` is a worked example of the shape.
 
 ### Style
 
@@ -69,6 +70,7 @@ Above `## Changelog`, in this order:
 - **Spell things as they are typed**: commands, fields, and files in code spans, exactly.
 - **Lead with what to do.** The why is a sentence; the commit bodies and the READMEs hold the rest, and the notes link to them.
 - **Only what you can trace.** Every claim comes from a commit, a diff, or a README at `$tag` — never from a subject line alone.
+- **Emojis mark; the words say.** One at the start of a heading, a cell, or a bullet, never inside a sentence or a code span, and every heading still reads whole with its emoji taken away. The changelog below carries its own, from the group titles in `.goreleaser.yaml`.
 
 ## Check
 

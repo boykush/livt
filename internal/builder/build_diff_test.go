@@ -1,5 +1,9 @@
 package builder
 
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-01
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-02
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-06
+
 import (
 	"os"
 	"path/filepath"
