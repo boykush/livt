@@ -21,7 +21,7 @@ An excerpt of livt's own example mapping, translated from Japanese. The test bel
 
 The BDD community has long said that discovery matters more than formulation, and formulation more than automation. It also keeps what a team agreed as one consistent specification.
 
-An Example Mapping does not end with the conversation, though. Its rules change and its questions get answered all through development, and a formulated feature file alone cannot follow that. livt records the Example Mapping itself, in its own format: it holds what a feature file would, and lets every role follow questions being answered and rules changing, designers and product managers as much as developers.
+An Example Mapping does not end with the conversation, though. Its open questions get answered during development, and its rules change. livt records the Example Mapping itself, in its own format: it holds what a feature file would, and lets every role follow it through to completion, designers and product managers as much as developers.
 
 Coding agents have changed the situation. Automating an agreed rule is now work an agent can take on. Following the test pyramid, an Example Mapping's rules and examples end up automated at different layers and in different languages. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins, and works through what those differences bring with it. Teams that want their specification executed as written have Cucumber for that.
 
@@ -29,7 +29,7 @@ Coding agents have changed the situation. Automating an agreed rule is now work 
 
 ### Problems
 
-- What becomes of an Example Mapping afterwards, its questions resolved and its rules changed, is more than a formulated feature file alone can follow.
+- There is no place to carry an Example Mapping with open questions through to completion.
 - Formulated specifications tend to stay with developers and testers, and rarely reach other roles such as product managers and designers.
 - Automation spreads across layers and languages, and it is hard to tell which rule is automated where.
 
