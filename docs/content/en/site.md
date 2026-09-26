@@ -4,7 +4,7 @@
 
 - livt
 - Live demo
-- livt and BDD
+- livt and the practices
 - Reference
 - GitHub
 

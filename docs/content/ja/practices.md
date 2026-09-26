@@ -1,8 +1,8 @@
 ---
-title: livt と BDD - livt
+title: livt とプラクティス - livt
 ---
 
-# livt と BDD
+# livt とプラクティス
 
 livt はテストを実行しません。Cucumber の代わりでもありません。
 

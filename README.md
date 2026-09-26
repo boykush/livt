@@ -40,7 +40,7 @@ Issues and pull requests are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Acknowledgements
 
-livt renders practices it did not invent. [livt and BDD](https://boykush.github.io/livt/livt-and-bdd.html) credits the people who wrote them down, says what livt added and where it departs on purpose, and links where their maintainers are funded.
+livt renders practices it did not invent. [livt and the practices](https://boykush.github.io/livt/practices.html) credits the people who wrote them down, says what livt added and where it departs on purpose, and links where their maintainers are funded.
 
 ## License
 

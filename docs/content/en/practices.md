@@ -1,8 +1,8 @@
 ---
-title: livt and BDD - livt
+title: livt and the practices - livt
 ---
 
-# livt and BDD
+# livt and the practices
 
 livt runs no tests, and it is not an alternative to Cucumber.
 

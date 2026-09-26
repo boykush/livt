@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>livt and the practices - livt</title>
+<link rel="alternate" hreflang="en" href="https://boykush.github.io/livt/practices.html">
+<link rel="alternate" hreflang="ja" href="https://boykush.github.io/livt/ja/practices.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="mark" href="index.html">livt</a>
+    <nav class="top-nav" aria-label="Site">
+      <a href="https://boykush.github.io/livt/demo/">Live demo</a>
+      <a href="practices.html" aria-current="page">livt and the practices</a>
+      <a href="reference.html">Reference</a>
+      <a href="https://github.com/boykush/livt">GitHub</a>
+      <span class="lang" aria-label="Language"><span aria-current="true">English</span><a href="ja/practices.html" hreflang="ja" lang="ja">日本語</a></span>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap page-head">
+    <div class="crumb"><a href="index.html">livt</a> /</div>
+    <h1 class="page-title">livt and the practices</h1>
+  </div>
+
+  <div class="wrap page-body">
+    <div class="bdd-lead">
+      <p class="big">livt runs no tests, and it is not an alternative to Cucumber.</p>
+      <p>It keeps what a team agreed in a discovery conversation, so the decision can still be read and cited when someone implements it months later.</p>
+    </div>
+
+    <div class="bdd-body">
+      <div class="cols">
+        <section>
+          <div class="block-title"><h2>What it builds on</h2></div>
+          <ul class="items">
+            <li><i class="mk none"></i><div>
+              <b>Behaviour-Driven Development</b>
+              <span class="who">Dan North, <a href="https://dannorth.net/introducing-bdd/">Introducing BDD</a> (2006)</span>
+              <p>The three phases livt is organised around, Discovery, Formulation and Automation, are the community's own framing, as in <a href="https://cucumber.io/docs/bdd/">Cucumber's BDD docs</a>.</p>
+            </div></li>
+            <li><i class="mk map"></i><div>
+              <b>Example Mapping</b>
+              <span class="who">Matt Wynne, <a href="https://cucumber.io/blog/bdd/example-mapping-introduction/">Introducing Example Mapping</a> (2015)</span>
+              <p>The four cards, their colours, the timebox, and reading the board as a signal about the story. livt's board is that format, drawn from a file.</p>
+            </div></li>
+            <li><i class="mk usm"></i><div>
+              <b>User Story Mapping</b>
+              <span class="who">Jeff Patton, <a href="https://jpattonassociates.com/story-mapping/">story mapping</a></span>
+            </div></li>
+            <li><i class="mk opp"></i><div>
+              <b>Opportunity Canvas</b>
+              <span class="who">Jeff Patton, <a href="https://jpattonassociates.com/opportunity-canvas/">Opportunity Canvas</a></span>
+            </div></li>
+            <li><i class="mk term"></i><div>
+              <b>Ubiquitous Language</b>
+              <span class="who">Eric Evans, Domain-Driven Design</span>
+              <p>It runs through BDD's Formulation as well. livt keeps it as a glossary next to the boards that use its terms.</p>
+            </div></li>
+          </ul>
+        </section>
+
+        <section>
+          <div class="block-title"><h2>What livt adds</h2></div>
+          <ul class="adds">
+            <li>
+              <b>A file, not a photo</b>
+              <p>The mapping is YAML in the repository, versioned with the code it specifies.</p>
+            </li>
+            <li>
+              <b>IDs that stay put</b>
+              <p>Every rule, example and question gets an ID that never changes once filed, and a URI that points at it. A rule quoted in an issue or a test keeps meaning the same thing.</p>
+            </li>
+            <li>
+              <b>Questions kept beside the rules</b>
+              <p>An open question keeps its place and an ID, and once resolved it points to the rule that settled it.</p>
+            </li>
+            <li>
+              <b>Automation, reported from the tests</b>
+              <p>A rule records the issues filed to automate it. The tests that automate it mark it with its URI, and livt collects those marks into an automation report that shows, rule by rule, which tests claim to cover it. Whether they pass stays with your test reports.</p>
+            </li>
+          </ul>
+        </section>
+      </div>
+
+      <section class="departs">
+        <div class="block-title"><h2>Where livt departs from the practice</h2></div>
+        <div class="cols">
+          <article>
+            <h3>It keeps the Example Mapping</h3>
+            <p>In Matt Wynne's Example Mapping, the cards serve a 25-minute conversation and show whether the story is ready. Afterwards two of the amigos draft the Gherkin for the product person to review, so the rules and examples move into Gherkin, and a team that never looks at the board again has done nothing wrong.</p>
+            <p>livt keeps the map anyway, because an Example Mapping does not end with the conversation: its rules change and its questions get answered all through development. livt keeps that in a form every role can follow, questions included. A kept map can turn into a spec that someone fills in alone, so livt writes a mapping only after the team agrees: <a href="https://github.com/boykush/livt/tree/main/plugins/livt-discovery">the recording skills</a> first copy the board as it was, then restructure it in a separate diff for review. The conversation still comes first. livt keeps its outcome and does not replace it.</p>
+          </article>
+          <article>
+            <h3>Its view of Formulation</h3>
+            <p>Mainstream BDD treats the Gherkin feature file as the shared artifact: a developer and a tester draft it, the product person reviews it, and Cucumber runs it, which keeps the specification alive. livt takes the discovery artifact, the Example Mapping, as the source instead, and keeps its format so that every role owns it. Gherkin, where a team wants it, would be generated from it.</p>
+            <p>livt does not generate Gherkin today, and it does not execute the mapping either: a test's citation says which rule the test claims to automate, not that the rule holds. Teams that want their specification executed have Cucumber, and livt is no alternative to it. This is the part of livt most likely to be wrong. If you think it is, <a href="https://github.com/boykush/livt/issues">open an issue</a>.</p>
+          </article>
+        </div>
+      </section>
+
+      <div class="cols">
+        <section>
+          <div class="block-title"><h2>What livt does not do</h2></div>
+          <ul class="nots">
+            <li>
+              <b>Run tests</b>
+              <p>It is not an alternative to Cucumber, SpecFlow or Behave. If livt ever outputs Gherkin, it will be the standard syntax those tools run.</p>
+            </li>
+            <li>
+              <b>Facilitate the conversation</b>
+              <p>No timer, no voting, no board. Have it on the whiteboard your team already uses, online or in the room. livt picks up after it.</p>
+            </li>
+            <li>
+              <b>Teach BDD</b>
+              <p>The people listed here teach it.</p>
+            </li>
+            <li>
+              <b>Redefine the community's words</b>
+              <p>Rule, example, question, discovery and formulation keep the meaning the practice gives them.</p>
+            </li>
+          </ul>
+        </section>
+
+        <section>
+          <div class="block-title"><h2>Learn it from the people who wrote it down</h2></div>
+          <p class="credits-intro">Most of what livt renders was worked out and published by the BDD community. Cucumber returned to community ownership in 2024 and runs on its supporters, through Tidelift, Open Collective and others (<a href="https://cucumber.io/blog/open-source/cucumber-in-2025-year-in-review/">its 2025 year in review</a>).</p>
+          <ul class="credits">
+            <li><span class="by">Dan North</span><span class="what"><a href="https://dannorth.net/introducing-bdd/">Introducing BDD</a></span></li>
+            <li><span class="by">Matt Wynne</span><span class="what"><a href="https://cucumber.io/blog/bdd/example-mapping-introduction/">Introducing Example Mapping</a></span></li>
+            <li><span class="by">Seb Rose</span><span class="what"><a href="https://cucumber.io/blog/bdd/keep-your-scenarios-brief/">Keep your scenarios BRIEF</a></span></li>
+            <li><span class="by">Gáspár Nagy, Seb Rose</span><span class="what"><a href="https://bddbooks.com/">The BDD Books</a>: Discovery, Formulation (Japanese editions on Leanpub)</span></li>
+            <li><span class="by">Cucumber</span><span class="what"><a href="https://school.cucumber.io/">Cucumber School</a>, free and paid courses</span></li>
+            <li><span class="by">Cucumber</span><span class="what"><a href="https://opencollective.com/cucumber">Open Collective</a>, one way to fund the maintainers</span></li>
+          </ul>
+        </section>
+      </div>
+    </div>
+
+    <nav class="page-end" aria-label="Pages">
+      <a href="index.html">← livt</a>
+      <a href="reference.html">Reference →</a>
+    </nav>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>livt · <a href="https://github.com/boykush/livt/blob/main/LICENSE">MIT License</a></span>
+    <nav aria-label="Project">
+      <a href="https://github.com/boykush/livt">GitHub</a>
+      <a href="https://github.com/boykush/livt/blob/main/CONTRIBUTING.md">Contributing</a>
+      <a href="https://github.com/boykush/livt/blob/main/SECURITY.md">Security</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
