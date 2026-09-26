@@ -101,7 +101,6 @@ var en = Catalog{
 	"story.description": "Description",
 
 	"mapping.automated-legend": "Automated by a test",
-	"mapping.automated-badge":  "✓ automated",
 	"mapping.automated-title":  "Automated by tests",
 	"mapping.proposed-legend":  "Proposed rule",
 	"mapping.proposed-badge":   "proposed",
