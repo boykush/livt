@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>livt - Living Text</title>
-<meta name="description" content="BDD for teams whose code is written by coding agents. livt keeps what your team agreed on the board as text in your repository.">
+<meta name="description" content="BDD for teams whose code is written by coding agents. livt keeps what your team agreed on the board in Example Mapping&#x27;s own format, owned by every role on the team.">
 <link rel="alternate" hreflang="en" href="https://boykush.github.io/livt/">
 <link rel="alternate" hreflang="ja" href="https://boykush.github.io/livt/ja/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,7 +32,7 @@
 
     <div class="hero-grid">
       <div>
-        <p class="lead">Teams decide what to build on a whiteboard, often an online one such as Miro or FigJam. livt keeps what they agreed as text in your repository. Coding agents read that text and carry it through the flow BDD has always aimed at: discovery, formulation and automation.</p>
+        <p class="lead">Teams decide what to build on a whiteboard, often an online one such as Miro or FigJam. livt keeps what they agreed in the repository, in Example Mapping's own format, so that every role on the team owns it. Coding agents read it and carry it through the flow BDD has always aimed at: discovery, formulation and automation.</p>
         <div class="ctas">
           <a class="btn primary" href="https://boykush.github.io/livt/demo/">Open the live demo</a>
           <a class="btn" href="https://github.com/boykush/livt#getting-started">Get started</a>
@@ -114,7 +114,11 @@
   <section class="sec wrap" id="why">
     <div class="sec-intro">
       <h2>BDD, now that coding agents write the code</h2>
-      <p>BDD has always aimed at one flow: find the rules together, formulate them, and automate them as tests. Between formulation and automation stood an interpreter written by hand, turning Gherkin into code. Now that a coding agent can write the test straight from the rule, perhaps that interpreter is no longer needed at all. livt gives the agent a shape to follow through that flow, as a CLI and plugins for coding agents.</p>
+      <div class="copy">
+        <p>The BDD community has long said that having conversations matters more than capturing them, and capturing them more than automating them. It also keeps what a team agreed as one consistent specification.</p>
+        <p>An Example Mapping does not end with the conversation, though. Its rules change and its questions get answered all through development, and a formulated feature file alone cannot follow that. livt records the Example Mapping itself, in its own format: it holds what a feature file would, and lets every role follow questions being answered and rules changing, designers and product owners as much as developers.</p>
+        <p>Coding agents have changed the situation. Writing the tests for an agreed rule is now work an agent can take on. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins, and works through the rest with it: rules automated at different layers and in different languages, and a test pyramid that keeps its shape. Teams that want their specification executed as written have Cucumber for that.</p>
+      </div>
     </div>
 
     <div class="canvas">
@@ -122,23 +126,25 @@
         <section class="box">
           <h3>Problems</h3>
           <ul>
-            <li>While rules stay on a board, their history is hard to trace when one changes.</li>
-            <li>Someone writes and maintains the layer that interprets Gherkin into code, such as Cucumber's step definitions.</li>
-            <li>A team that follows the test pyramid cannot turn every scenario into an end-to-end (large) test.</li>
-            <li>So automation spreads across the implementation repositories, such as a backend and a frontend, and it is hard to tell which rule is automated where.</li>
+            <li>Rules keep changing and questions keep getting answered all through development, and on a board that history is hard to trace.</li>
+            <li>A formulated feature file has no place for open questions, and cannot follow how an Example Mapping moves on.</li>
+            <li>Once an open question goes to a designer or someone else, it is hard to tell whether it was resolved.</li>
+            <li>Keeping Gherkin executable means writing and maintaining step definitions by hand.</li>
+            <li>Automating as far down the test pyramid as the community advises puts one story's rules in tests at different layers, in different repositories and languages.</li>
+            <li>Across repositories, it is hard to tell which rule is automated where.</li>
           </ul>
         </section>
         <section class="box">
           <h3>Customers &amp; Users</h3>
           <ul>
-            <li>Development teams that want to practise BDD</li>
+            <li>Every role on a team that practises BDD: product owners, designers, developers, testers</li>
             <li>Engineers who leave implementation to coding agents</li>
           </ul>
         </section>
         <section class="box">
           <h3>Solutions Today</h3>
           <ul>
-            <li>Bind Gherkin to step definitions with Cucumber and run it as tests</li>
+            <li>Formulate rules and examples as Gherkin, keep it in version control, and automate it with Cucumber as an executable specification</li>
             <li>Copy the agreement into tickets, and stop syncing from there</li>
           </ul>
         </section>
@@ -147,10 +153,12 @@
         <section class="box">
           <h3>Solution Idea</h3>
           <ul>
-            <li>Rules live as text in the repository, and each change to a rule is a commit of its own</li>
-            <li>No interpreter in between: a coding agent writes the test straight from the rule</li>
+            <li>Record the Example Mapping itself, in its own format: it holds what a feature file would, and every role owns it</li>
+            <li>Rules live as text in the repository, each change to a rule a commit of its own, and everyone can read which rule changed and how</li>
+            <li>A resolved question points to the rule that settled it</li>
+            <li>A coding agent writes the tests straight from the agreed rules</li>
             <li>Every rule and example has a URI, and a test cites the URI of what it automates</li>
-            <li>Tests can sit at any layer in any repository; livt collects their citations mechanically and shows each rule's status</li>
+            <li>Tests can sit at any layer, in any repository or language; livt collects their citations and shows which tests cite each rule, while whether they pass stays with your test reports</li>
             <li>The flow from discovery through formulation to automation ships as a CLI and plugins for coding agents</li>
           </ul>
         </section>
@@ -161,6 +169,7 @@
           <ul>
             <li>Hand an agreed rule to a coding agent, and have it automated as a test at the layer that fits</li>
             <li>See which rules are not automated yet, and pick the next one to close</li>
+            <li>Follow questions being answered and rules changing in one place, whatever their role</li>
           </ul>
         </section>
       </div>

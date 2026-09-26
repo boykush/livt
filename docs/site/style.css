@@ -188,6 +188,7 @@ html[lang="ja"] h3 { font-size: 1.12rem; line-height: 1.5; }
 h4 { margin: 0 0 10px; font-size: 1.02rem; font-weight: 600; line-height: 1.45; }
 .sec-intro { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 16px clamp(32px, 4.5vw, 64px); align-items: start; margin-bottom: clamp(32px, 4.5vw, 56px); }
 .sec-intro p { color: var(--ink-2); max-width: 36em; font-size: 1.05rem; }
+.sec-intro .copy { display: grid; gap: 14px; }
 
 /* livt's own opportunity canvas, in the three zones the demo gives a canvas */
 .canvas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 2px solid var(--canvas-edge); border-radius: 10px; overflow: hidden; background: var(--surface); }
