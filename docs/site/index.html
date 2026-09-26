@@ -114,7 +114,7 @@
   <section class="sec wrap" id="why">
     <div class="sec-intro">
       <h2>BDD, now that coding agents write the code</h2>
-      <p>BDD has always aimed at one flow: find the rules together, formulate them, and automate them as tests. The step between formulation and automation used to be interpretation written by hand, and a coding agent can now do it. livt gives the agent a shape to follow through that flow, as a CLI and plugins for coding agents.</p>
+      <p>BDD has always aimed at one flow: find the rules together, formulate them, and automate them as tests. Between formulation and automation stood an interpreter written by hand, turning Gherkin into code. Now that a coding agent can write the test straight from the rule, perhaps that interpreter is no longer needed at all. livt gives the agent a shape to follow through that flow, as a CLI and plugins for coding agents.</p>
     </div>
 
     <div class="canvas">
@@ -148,7 +148,7 @@
           <h3>Solution Idea</h3>
           <ul>
             <li>Rules live as text in the repository, and each change to a rule is a commit of its own</li>
-            <li>A coding agent does the interpreting that step definitions used to do</li>
+            <li>No interpreter in between: a coding agent writes the test straight from the rule</li>
             <li>Every rule and example has a URI, and a test cites the URI of what it automates</li>
             <li>Tests can sit at any layer in any repository; livt collects their citations mechanically and shows each rule's status</li>
             <li>The flow from discovery through formulation to automation ships as a CLI and plugins for coding agents</li>
