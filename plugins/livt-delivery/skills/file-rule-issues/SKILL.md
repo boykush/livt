@@ -25,7 +25,7 @@ This is the canonical statement. `file-story-issue` repeats the bullets it needs
 
 Three things are yours — the contract above, applied:
 
-- **Backpointers** — the livt URIs of the rule and its examples, and the `spec_version`, go in the body, so the issue can be followed back to the exact points in the spec it was cut from.
+- **Backpointers** — the livt URIs of the rule and its examples, and the `spec_version`, go in the body, so the issue can be followed back to the exact points in the livt repository they were cut from.
 - **Write-back** — the created URL lands in the rule's `issues:`.
 - **Dedupe** — against that record, and nothing else.
 
@@ -43,7 +43,7 @@ This skill ships no tracker knowledge on purpose: one team's answer shipped as e
 
 1. Read `discoveries/example-mappings/{story-key}.yaml` and `stories/{story-key}.md`. Resolve the destination(s) from the story's `repos:`, or from what the user named. A story with no card has no `repos:` to read, so ask for the destination.
 2. Select the rules to file (rule-id → that one; story-key only → all), keeping only rules with `status: accepted`: a `proposed` rule is not asked for yet, and a `rejected` or `retired` one is not asked for any more, so neither has anything to automate. Then dedupe each **rule × destination** pair against the record. A link to one destination never blocks filing to another.
-3. Record the spec rev of the livt repository: `git rev-parse --short HEAD`.
+3. Record the revision of the livt repository: `git rev-parse --short HEAD`.
 4. Compose each issue (see Issue Content) and file it with the tool the team uses — a tracker's CLI or MCP server. Never check out the target repository. With no tool that reaches the destination, hand the composed body to the user and take the created URL back; the record treats it exactly as one you filed.
 5. Where the story records a story issue and the tracker supports parent/child links, attach the new issue under it (see Parent Linking).
 6. Write the created URL back to the rule's `issues:` — append to the list, creating it if absent. Touch nothing else in the file.

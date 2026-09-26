@@ -26,7 +26,7 @@ One thing at the story level is yours alone: the singular `issue:` some stories 
 
 Three things are yours — the contract above, applied:
 
-- **Backpointers** — the livt URI of the story and the `spec_version` go in the body, so the issue can be followed back to the point in the spec it was cut from.
+- **Backpointers** — the livt URI of the story and the `spec_version` go in the body, so the issue can be followed back to the point in the livt repository it was cut from.
 - **Write-back** — the created URL lands in the story's `issues:`.
 - **Dedupe** — against that record, and nothing else.
 
@@ -43,7 +43,7 @@ This skill ships no tracker knowledge on purpose: one team's answer shipped as e
 
 1. Read `stories/{story-key}.md` — frontmatter and body — and `discoveries/example-mappings/{story-key}.yaml` if it exists (you'll need its rules' `issues:` for adoption).
 2. Dedupe per **story × destination** against the record. A link to one destination never blocks filing to another.
-3. Record the spec rev of the livt repository: `git rev-parse --short HEAD`.
+3. Record the revision of the livt repository: `git rev-parse --short HEAD`.
 4. Compose the issue (see Issue Content) and file it with the tool the team uses — a tracker's CLI or MCP server. Never check out the target repository. With no tool that reaches the destination, hand the composed body to the user and take the created URL back; the record treats it exactly as one you filed.
 5. **Adopt existing rule issues** where the tracker supports a parent/child link (see Parent Linking): every issue URL in the mapping's rules' `issues:` becomes a child of the new story issue, save those whose own destination already records a story issue — that nearer story issue is their parent. Parenthood does not depend on filing order — rule issues filed earlier are adopted now; rule issues filed later attach themselves (`file-rule-issues`'s job). A tracker without such links, or one that refuses this one, skips the step; the record needs none of it.
 6. Write the created URL back to the story's frontmatter `issues:` — append to the list, creating it if absent. Touch nothing else in the file.
