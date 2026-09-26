@@ -37,7 +37,7 @@ Consequences worth stating:
 ## Documentation
 
 - **`docs/` never restates what livt already says elsewhere.** Each kind of detail has one home, beside what it describes — [Reference](docs/content/en/reference.md) says where — and a change in behaviour updates that home in the same diff, never a page in `docs/`.
-- **The top page holds the why of livt as a whole, and points at the record for the rest.** Its canvas is the one place that why is written. The problems under it are recorded one at a time as opportunities, each with its canvas and story map, and the page links them on the live demo rather than listing them: a list there fell behind once, still naming two opportunities after a third was taken on.
+- **The top page holds the why of livt as a whole.** Its canvas is the one place that why is written. The problems under it are recorded one at a time as opportunities, each with its canvas and story map, and the page does not list them: a list there fell behind once, still naming two opportunities after a third was taken on.
 - **`docs/site/` is rendered from `docs/content/`.** A change to what the site says is a change to the text, rendered by the [render-site](.apm/skills/render-site/SKILL.md) skill in the same commit.
 - **Explaining what livt does starts from the example mapping that decided it** — the files, or `go run . resolve livt://mapping/{story-key}` — cited by livt URI. Code that disagrees with it is a gap to report, not a document to update.
 
