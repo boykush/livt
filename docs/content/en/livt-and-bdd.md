@@ -1,8 +1,8 @@
 ---
-title: livt and the practices - livt
+title: livt and BDD - livt
 ---
 
-# livt and the practices
+# livt and BDD
 
 livt keeps what a team agreed in a discovery conversation, so the decision can still be read and cited when someone implements it months later.
 

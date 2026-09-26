@@ -26,7 +26,7 @@ livt 自身の実例マッピングからの抜粋です。下のテストは R-
 - [実例マッピング](https://boykush.github.io/livt/demo/ubiquitous.html#example-mapping)　どう振る舞うのか
 - [ユビキタス言語](https://boykush.github.io/livt/demo/ubiquitous.html#ubiquitous-language)　どの言葉で話すのか
 
-各プラクティスの出どころは、[livt とプラクティス](practices.html)にまとめています。
+各プラクティスの出どころは、[livt と BDD](livt-and-bdd.html)にまとめています。
 
 ## なぜ livt か
 
