@@ -80,8 +80,12 @@
               <p>ルール・具体例・疑問点には、一度付いたら変わらない ID と、そこを指す URI が付きます。Issue やテストで引用したルールが、あとから別の意味になることはありません。</p>
             </li>
             <li>
+              <b>疑問点もルールと並べて</b>
+              <p>疑問点も ID を持って残り、解消したら、決着したルールを指します。</p>
+            </li>
+            <li>
               <b>テストから集める自動化レポート</b>
-              <p>ルールには、自動化のために起票した Issue が記録されます。テストの側はコメントにルールの URI を書いて、どのルールを自動化したかを示します。livt はそれを集めて自動化レポートにし、ルールごとの自動化の状況をそこから導きます。テストが通るかどうかは見ません。</p>
+              <p>ルールには、自動化のために起票した Issue が記録されます。テストの側はコメントにルールの URI を書いて、どのルールを自動化したかを示します。livt はそれを集めて自動化レポートにし、ルールごとにどのテストが引用しているかを示します。テストが通ったかどうかは、テストのレポートに任せます。</p>
             </li>
           </ul>
         </section>
@@ -92,13 +96,13 @@
         <div class="cols">
           <article>
             <h3>実例マッピングを残す</h3>
-            <p>Matt Wynne の実例マッピングでは、カードは 25 分の会話の副産物です。ストーリーの準備ができているかを示した時点で役目を終えるので、ボードを二度と見返さないチームも間違ってはいません。</p>
-            <p>それでも livt がマップを残すのは、半年後に合意済みのルールを確かめたい開発者が、写真からは探せないからです。ただ、残したマップは一人で埋めていく仕様書になりがちです。そこで livt は、チームが合意したあとにだけ書き起こします。<a href="https://github.com/boykush/livt/tree/main/plugins/livt-discovery">書き起こし用の skill</a> がまずボードをそのまま写し、構造を整える変更は別の差分にしてレビューします。大事なのはあくまで協働で、livt はその結果を残すだけです。</p>
+            <p>Matt Wynne の実例マッピングでは、カードは 25 分の会話のための道具で、ストーリーの準備ができているかも示します。会話のあとは二人が Gherkin を下書きし、プロダクト担当がレビューします。ルールと具体例が Gherkin に移るので、ボードを二度と見返さないチームも間違ってはいません。</p>
+            <p>それでも livt がマップを残すのは、実例マッピングが会話の場で終わらないからです。ルールは変わり、疑問点は開発のあいだに解消されていきます。その移り変わりを、疑問点も含めて全職能で追える形で残します。ただ、残したマップは一人で埋めていく仕様書になりがちです。そこで livt は、チームが合意したあとにだけ書き起こします。<a href="https://github.com/boykush/livt/tree/main/plugins/livt-discovery">書き起こし用の skill</a> がまずボードをそのまま写し、構造を整える変更は別の差分にしてレビューします。大事なのはあくまで協働で、livt はその結果を残すだけです。</p>
           </article>
           <article>
             <h3>定式化についての立場</h3>
-            <p>主流の BDD では、スリーアミーゴスが一緒に書く Gherkin のフィーチャーファイルが共有の成果物です。livt は逆の立場で、発見の成果物を正とし、Gherkin はそこから生成するものと考えています。</p>
-            <p>ただ、今の livt は Gherkin を生成しませんし、この立場に依存する機能もまだありません。livt の中でいちばん間違っている可能性が高い部分なので、違うと思ったら <a href="https://github.com/boykush/livt/issues">Issue</a> で教えてください。</p>
+            <p>主流の BDD では、Gherkin のフィーチャーファイルが共有の成果物です。開発者とテスターが下書きし、プロダクト担当がレビューし、Cucumber で実行されることで、仕様が生き続けます。livt は、発見の成果物である実例マッピングを正とし、その形式のまま全職能の持ち物にします。Gherkin は、要るならそこから生成するものと考えています。</p>
+            <p>今の livt は Gherkin を生成しませんし、実例マッピングを実行して検証することもしません。テストからの引用は、どのテストがどのルールを自動化していると言っているかを示すだけです。仕様を実行して検証したいチームには Cucumber があり、livt はその代わりではありません。livt の中でいちばん間違っている可能性が高い部分なので、違うと思ったら <a href="https://github.com/boykush/livt/issues">Issue</a> で教えてください。</p>
           </article>
         </div>
       </section>
@@ -128,14 +132,14 @@
 
         <section>
           <div class="block-title"><h2>BDD を学ぶなら</h2></div>
-          <p class="credits-intro">livt が描いているものの多くは、BDD コミュニティが練り上げて公開してきたものです。メンテナーは 2023 年から寄付で活動しています。</p>
+          <p class="credits-intro">livt が描いているものの多くは、BDD コミュニティが練り上げて公開してきたものです。Cucumber は 2024 年にコミュニティの所有に戻り、Tidelift や Open Collective などを通じた支援で運営されています（<a href="https://cucumber.io/blog/open-source/cucumber-in-2025-year-in-review/">2025 年の振り返り</a>）。</p>
           <ul class="credits">
             <li><span class="by">Dan North</span><span class="what"><a href="https://dannorth.net/introducing-bdd/">Introducing BDD</a></span></li>
             <li><span class="by">Matt Wynne</span><span class="what"><a href="https://cucumber.io/blog/bdd/example-mapping-introduction/">Introducing Example Mapping</a></span></li>
             <li><span class="by">Seb Rose</span><span class="what"><a href="https://cucumber.io/blog/bdd/keep-your-scenarios-brief/">Keep your scenarios BRIEF</a></span></li>
             <li><span class="by">Gáspár Nagy、Seb Rose</span><span class="what"><a href="https://bddbooks.com/">The BDD Books</a>：Discovery、Formulation（Leanpub に日本語版あり）</span></li>
             <li><span class="by">Cucumber</span><span class="what"><a href="https://school.cucumber.io/">Cucumber School</a>、無料と有料のコース</span></li>
-            <li><span class="by">Cucumber</span><span class="what"><a href="https://opencollective.com/cucumber">Open Collective</a>、メンテナーへの寄付の窓口</span></li>
+            <li><span class="by">Cucumber</span><span class="what"><a href="https://opencollective.com/cucumber">Open Collective</a>、メンテナーへの寄付の窓口のひとつ</span></li>
           </ul>
         </section>
       </div>
