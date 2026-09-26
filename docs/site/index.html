@@ -127,8 +127,8 @@
           <h3>Problems</h3>
           <ul>
             <li>What becomes of an Example Mapping afterwards is more than a formulated feature file alone can follow.</li>
-            <li>Keeping Gherkin executable means writing and maintaining step definitions by hand.</li>
-            <li>Automation that follows the test pyramid spreads across layers and repositories, and it is hard to tell which rule is automated where.</li>
+            <li>What a team agreed is hard to share across roles.</li>
+            <li>Automation spreads across layers and repositories, and it is hard to tell which rule is automated where.</li>
           </ul>
         </section>
         <section class="box">
@@ -141,8 +141,9 @@
         <section class="box">
           <h3>Solutions Today</h3>
           <ul>
-            <li>Formulate rules and examples as Gherkin, keep it in version control, and automate it with Cucumber as an executable specification</li>
-            <li>Copy the agreement into tickets, and stop syncing from there</li>
+            <li>Formulate rules and examples as Gherkin, and automate them with Cucumber as an executable specification</li>
+            <li>Copy the agreement into tickets or documents, and stop syncing from there</li>
+            <li>Keep the board as it was, and look back at it later</li>
           </ul>
         </section>
       </div>
@@ -150,12 +151,9 @@
         <section class="box">
           <h3>Solution Idea</h3>
           <ul>
-            <li>Record the Example Mapping itself, in its own format: it holds what a feature file would, and every role owns it</li>
-            <li>The Example Mapping lives as text in the repository, each change a commit of its own, so everyone can read how its rules changed and its questions were resolved</li>
-            <li>Automating the agreed rules is left to coding agents</li>
-            <li>Every rule and example has a URI, and a test cites the URI of what it automates</li>
-            <li>Tests can sit at any layer, in any repository or language; livt collects their citations and shows which tests cite each rule, while whether they pass stays with your test reports</li>
-            <li>The flow from discovery through formulation to automation ships as a CLI and plugins for coding agents</li>
+            <li>Keep recording the Example Mapping itself, as something every role owns</li>
+            <li>Leave automation to coding agents, and give them a shape and tools as a CLI and plugins</li>
+            <li>Tests cite the rules they automate, and livt gathers which rule is automated where</li>
           </ul>
         </section>
       </div>
@@ -163,9 +161,9 @@
         <section class="box">
           <h3>What Will Users Do To Get Value?</h3>
           <ul>
-            <li>Hand an agreed rule to a coding agent, and have it automated as a test at the layer that fits</li>
-            <li>See which rules are not automated yet, and pick the next one to close</li>
+            <li>Hand an agreed rule to a coding agent, and have it automated</li>
             <li>Follow questions being answered and rules changing in one place, whatever their role</li>
+            <li>See which rules are not automated yet, and pick the next one to close</li>
           </ul>
         </section>
       </div>

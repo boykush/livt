@@ -30,8 +30,8 @@ Coding agents have changed the situation. Automating an agreed rule is now work 
 ### Problems
 
 - What becomes of an Example Mapping afterwards is more than a formulated feature file alone can follow.
-- Keeping Gherkin executable means writing and maintaining step definitions by hand.
-- Automation that follows the test pyramid spreads across layers and repositories, and it is hard to tell which rule is automated where.
+- What a team agreed is hard to share across roles.
+- Automation spreads across layers and repositories, and it is hard to tell which rule is automated where.
 
 ### Customers & Users
 
@@ -40,23 +40,21 @@ Coding agents have changed the situation. Automating an agreed rule is now work 
 
 ### Solutions Today
 
-- Formulate rules and examples as Gherkin, keep it in version control, and automate it with Cucumber as an executable specification
-- Copy the agreement into tickets, and stop syncing from there
+- Formulate rules and examples as Gherkin, and automate them with Cucumber as an executable specification
+- Copy the agreement into tickets or documents, and stop syncing from there
+- Keep the board as it was, and look back at it later
 
 ### Solution Idea
 
-- Record the Example Mapping itself, in its own format: it holds what a feature file would, and every role owns it
-- The Example Mapping lives as text in the repository, each change a commit of its own, so everyone can read how its rules changed and its questions were resolved
-- Automating the agreed rules is left to coding agents
-- Every rule and example has a URI, and a test cites the URI of what it automates
-- Tests can sit at any layer, in any repository or language; livt collects their citations and shows which tests cite each rule, while whether they pass stays with your test reports
-- The flow from discovery through formulation to automation ships as a CLI and plugins for coding agents
+- Keep recording the Example Mapping itself, as something every role owns
+- Leave automation to coding agents, and give them a shape and tools as a CLI and plugins
+- Tests cite the rules they automate, and livt gathers which rule is automated where
 
 ### What Will Users Do To Get Value?
 
-- Hand an agreed rule to a coding agent, and have it automated as a test at the layer that fits
-- See which rules are not automated yet, and pick the next one to close
+- Hand an agreed rule to a coding agent, and have it automated
 - Follow questions being answered and rules changing in one place, whatever their role
+- See which rules are not automated yet, and pick the next one to close
 
 <!-- Link the opportunities rather than list them: a list here falls behind the day one is added. -->
 
