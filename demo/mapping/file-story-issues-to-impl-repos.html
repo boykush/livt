@@ -56,10 +56,9 @@
   [data-view="list"] .example-card { padding: 0.625rem 1.25rem; }
   [data-view="list"] .mapping [data-copy-link],
   [data-view="list"] .proposed-badge { position: static; flex-shrink: 0; box-shadow: none; }
-  [data-view="list"] .mapping [data-copy-link], [data-view="list"] .rule-issues { font-size: 0.75rem; }
+  [data-view="list"] .mapping [data-copy-link], [data-view="list"] :is(.rule-automations, .rule-issues, .example-automations) { font-size: 0.75rem; }
   [data-view="list"] .proposed-badge { font-size: 0.75rem; padding: 0.125rem 0.5rem; }
-  [data-view="list"] .rule-name { flex: 1; min-width: 0; }
-  [data-view="list"] .rule-issues { margin-top: 0; }
+  [data-view="list"] :is(.rule-body, .example-body) { flex: 1; min-width: 0; }
   [data-view="list"] .rule-fold, [data-view="list"] .example-count { display: inline-flex; }
   [data-view="list"] [data-foldable] > .rule-card { cursor: pointer; }
   [data-view="list"] .example-stack { display: none; margin: 0.5rem 0 0 1.75rem; gap: 0.5rem; }
@@ -124,13 +123,16 @@
 <a href="#rule-R-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-01</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">ストーリーマップメンテナーはストーリーを指定して、対象実装リポジトリへストーリー単位のIssueを起票できる</span>
       
       
       
       
       
-      
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
       
@@ -146,10 +148,12 @@
 <a href="#rule-R-01-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">story-keyと対象リポジトリを指定すると、ストーリーの本文を含むIssueが1件起票される</span>
       
       
       
+      </div>
     </div>
     
     
@@ -160,10 +164,12 @@
 <a href="#rule-R-01-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">Issueの本文はlivtリポジトリへのバックポインタ（story-key）と起票時点のspec_versionを運ぶ</span>
       
       
       
+      </div>
     </div>
     
     </div>
@@ -182,13 +188,16 @@
 <a href="#rule-R-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-02</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">起票したIssueのURLは、スキルがストーリーのfrontmatterのissuesに書き戻す</span>
       
       
       
       
       
-      
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
@@ -204,10 +213,12 @@
 <a href="#rule-R-02-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">起票に成功すると、frontmatterのissues（URLのリスト）にそのURLが追記される</span>
       
       
       
+      </div>
     </div>
     
     
@@ -218,10 +229,12 @@
 <a href="#rule-R-02-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">書き戻しがそのまま紐づけになり、手作業を要しない</span>
       
       
       
+      </div>
     </div>
     
     
@@ -232,10 +245,12 @@
 <a href="#rule-R-02-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">既存の任意メタissue（単数）はissuesとは別物で、移行せずそのまま残す</span>
       
       
       
+      </div>
     </div>
     
     </div>
@@ -254,13 +269,16 @@
 <a href="#rule-R-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-03</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">dedupeはlivtリポジトリ側の記録で判定し、同じストーリー×対象リポジトリに二重起票しない</span>
       
       
       
       
       
-      
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
       
@@ -276,10 +294,12 @@
 <a href="#rule-R-03-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">ストーリーに対象リポジトリのIssueが既に記録されていればスキップする</span>
       
       
       
+      </div>
     </div>
     
     
@@ -290,10 +310,12 @@
 <a href="#rule-R-03-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">別の実装リポジトリへの起票は、既存の紐づけがあっても妨げない</span>
       
       
       
+      </div>
     </div>
     
     </div>
@@ -312,13 +334,16 @@
 <a href="#rule-R-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-04</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">ストーリー単位のIssueはルールIssueなしでも成立し、両方あるときだけ親子になる</span>
       
       
       
       
       
-      
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
@@ -334,10 +359,12 @@
 <a href="#rule-R-04-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">ルールIssueが1件もないストーリーでも、ストーリー単位のIssueは単独で起票できる</span>
       
       
       
+      </div>
     </div>
     
     
@@ -348,10 +375,12 @@
 <a href="#rule-R-04-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">同じストーリー・同じリポジトリにルールIssueがあれば、sub-issueとして束ねられる（起票の順序に依存しない）</span>
       
       
       
+      </div>
     </div>
     
     
@@ -362,10 +391,12 @@
 <a href="#rule-R-04-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">以後のルールIssueは起票時にこのIssueへ紐づく（file-automation-issues-to-impl-repos側のルール）</span>
       
       
       
+      </div>
     </div>
     
     </div>
@@ -384,13 +415,16 @@
 <a href="#rule-R-05" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-05</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">本ストーリーはAIスキルとして提供し、livtのCLIコマンドやMCPツールは追加しない</span>
       
       
       
       
       
-      
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
@@ -406,10 +440,12 @@
 <a href="#rule-R-05-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">スキルはlivtリポジトリを読み、gh CLI（既存の認証）で対象リポジトリへ起票する</span>
       
       
       
+      </div>
     </div>
     
     
@@ -420,10 +456,12 @@
 <a href="#rule-R-05-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">書き戻しはワーキングツリーの編集までとし、コミットやPRは通常のレビューフローに委ねる</span>
       
       
       
+      </div>
     </div>
     
     
@@ -434,10 +472,12 @@
 <a href="#rule-R-05-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">ストーリー単位の起票はルールIssue起票とは別スキルとし、USと1:1で対応させる</span>
       
       
       
+      </div>
     </div>
     
     </div>
@@ -456,13 +496,16 @@
 <a href="#rule-R-06" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-06</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">対象実装リポジトリの宣言はfile-automation-issues-to-impl-reposと共通で、ストーリーのfrontmatterのreposを参照する</span>
       
       
       
       
       
-      
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>1</span>
       
@@ -478,10 +521,12 @@
 <a href="#rule-R-06-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">同じreposの宣言が、ストーリー単位のIssueとルールIssueの両方の起票先になる</span>
       
       
       
+      </div>
     </div>
     
     </div>

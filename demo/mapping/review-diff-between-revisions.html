@@ -56,10 +56,9 @@
   [data-view="list"] .example-card { padding: 0.625rem 1.25rem; }
   [data-view="list"] .mapping [data-copy-link],
   [data-view="list"] .proposed-badge { position: static; flex-shrink: 0; box-shadow: none; }
-  [data-view="list"] .mapping [data-copy-link], [data-view="list"] .rule-issues { font-size: 0.75rem; }
+  [data-view="list"] .mapping [data-copy-link], [data-view="list"] :is(.rule-automations, .rule-issues, .example-automations) { font-size: 0.75rem; }
   [data-view="list"] .proposed-badge { font-size: 0.75rem; padding: 0.125rem 0.5rem; }
-  [data-view="list"] .rule-name { flex: 1; min-width: 0; }
-  [data-view="list"] .rule-issues { margin-top: 0; }
+  [data-view="list"] :is(.rule-body, .example-body) { flex: 1; min-width: 0; }
   [data-view="list"] .rule-fold, [data-view="list"] .example-count { display: inline-flex; }
   [data-view="list"] [data-foldable] > .rule-card { cursor: pointer; }
   [data-view="list"] .example-stack { display: none; margin: 0.5rem 0 0 1.75rem; gap: 0.5rem; }
@@ -124,8 +123,10 @@
 <a href="#rule-R-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-01</a>
 
-      <span class="rule-name sticky-text">差分は、リビジョンを渡したビルドのときだけ現れる</span>
       
+      
+      <div class="rule-body min-w-0">
+      <span class="rule-name sticky-text">差分は、リビジョンを渡したビルドのときだけ現れる</span>
       
       
       
@@ -144,6 +145,7 @@
       </div>
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
       
@@ -159,6 +161,7 @@
 <a href="#rule-R-01-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">リビジョンを渡さないビルドは、これまでと同じサイトを出す</span>
       
       
@@ -170,6 +173,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -180,6 +184,7 @@
 <a href="#rule-R-01-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">2つのリビジョンを渡すと差分のページが増える</span>
       
       
@@ -191,6 +196,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -201,6 +207,7 @@
 <a href="#rule-R-01-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">リビジョンが1つなら、そのリビジョンと手元の作業ツリーの差分になる</span>
       
       
@@ -215,6 +222,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -225,6 +233,7 @@
 <a href="#rule-R-01-example-EX-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">gitリポジトリでない場所や解決できないリビジョンを渡すと、ビルドはその場で失敗する</span>
       
       
@@ -236,6 +245,7 @@
 
       </div>
       
+      </div>
     </div>
     
     </div>
@@ -254,8 +264,10 @@
 <a href="#rule-R-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-02</a>
 
-      <span class="rule-name sticky-text">差分の単位はlivt URIで、リソースの種類ごとにまとまって並ぶ</span>
       
+      
+      <div class="rule-body min-w-0">
+      <span class="rule-name sticky-text">差分の単位はlivt URIで、リソースの種類ごとにまとまって並ぶ</span>
       
       
       
@@ -271,6 +283,7 @@
       </div>
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>6</span>
       
@@ -286,6 +299,7 @@
 <a href="#rule-R-02-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">ルールの文言が変わると、そのルールのURIが1件として並ぶ</span>
       
       
@@ -297,6 +311,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -307,6 +322,7 @@
 <a href="#rule-R-02-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">ルールが1件増えると、そのURIが1件として並び、親の実例マッピングは重ねて並ばない</span>
       
       
@@ -318,6 +334,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -328,6 +345,7 @@
 <a href="#rule-R-02-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">オポチュニティからユビキタス言語の用語まで、どの種類のURIも同じように並ぶ</span>
       
       
@@ -339,6 +357,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -349,6 +368,7 @@
 <a href="#rule-R-02-example-EX-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">どちらのリビジョンでも変わっていないURIは並ばない</span>
       
       
@@ -363,6 +383,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -373,6 +394,7 @@
 <a href="#rule-R-02-example-EX-05" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-05</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">ルール・具体例・疑問点は、属する実例マッピングの下にまとまる</span>
       
       
@@ -384,6 +406,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -394,6 +417,7 @@
 <a href="#rule-R-02-example-EX-06" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-06</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">実例マッピングの下では、ルールも具体例もIDの順に並ぶ（ファイルに書いた順ではないので、同じルールの廃止と追加が並んで読める）</span>
       
       
@@ -405,6 +429,7 @@
 
       </div>
       
+      </div>
     </div>
     
     </div>
@@ -423,13 +448,16 @@
 <a href="#rule-R-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-03</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">差分は追加・変更・廃止の3通りで、git diffの赤緑で読める。ただし赤緑が言うのはファイルではなく仕様</span>
       
       
       
       
       
-      
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>8</span>
       
@@ -445,10 +473,12 @@
 <a href="#rule-R-03-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">追加されたURIは緑、廃止されたURIは赤で並ぶ</span>
       
       
       
+      </div>
     </div>
     
     
@@ -459,6 +489,7 @@
 <a href="#rule-R-03-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">文言が変わったURIは、変わった行だけが赤と緑の対で並ぶ</span>
       
       
@@ -470,6 +501,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -480,10 +512,12 @@
 <a href="#rule-R-03-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">変わっていない行は、前後の地として同じ場所に残る</span>
       
       
       
+      </div>
     </div>
     
     
@@ -494,10 +528,12 @@
 <a href="#rule-R-03-example-EX-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">ページの先頭に、追加・変更・廃止がそれぞれ何件かが出る</span>
       
       
       
+      </div>
     </div>
     
     
@@ -508,10 +544,12 @@
 <a href="#rule-R-03-example-EX-05" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-05</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">ファイルごと消えたものも退役したものも、同じ廃止として読める（読む側にはどちらも「もう仕様ではない」で同じ）</span>
       
       
       
+      </div>
     </div>
     
     
@@ -522,10 +560,12 @@
 <a href="#rule-R-03-example-EX-06" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-06</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">1つの付箋に付く印は1つだけ（退役は機械的にはstatusの変更だが、その付箋に起きたことは廃止のひとつ）</span>
       
       
       
+      </div>
     </div>
     
     
@@ -536,6 +576,7 @@
 <a href="#rule-R-03-example-EX-07" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-07</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">廃止された項目は、記録上どう書かれていても赤い「-」で並ぶ（退役はファイル上「退役」の行が増えるが、仕様としては削除と同じく「この文が無くなった」）</span>
       
       
@@ -550,6 +591,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -560,10 +602,12 @@
 <a href="#rule-R-03-example-EX-08" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-08</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">退役したことを書いた行そのもの（「退役」やstatusの変更）は出ない。それは廃止という印が言っている。後継だけが残る</span>
       
       
       
+      </div>
     </div>
     
     </div>
@@ -582,8 +626,10 @@
 <a href="#rule-R-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-04</a>
 
-      <span class="rule-name sticky-text">ボードが隠している変更も、差分には映る</span>
       
+      
+      <div class="rule-body min-w-0">
+      <span class="rule-name sticky-text">ボードが隠している変更も、差分には映る</span>
       
       
       
@@ -596,6 +642,7 @@
       </div>
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
@@ -611,6 +658,7 @@
 <a href="#rule-R-04-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">ルールが退役すると廃止として並び、そのURIは解決し続ける（ボードから消えても、IDは解放されていない）</span>
       
       
@@ -622,6 +670,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -632,6 +681,7 @@
 <a href="#rule-R-04-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">提案中のルールが合意されると、statusの1行の変更として並ぶ</span>
       
       
@@ -643,6 +693,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -653,6 +704,7 @@
 <a href="#rule-R-04-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">どちらのリビジョンでも退役したままの項目は、差分に出ない</span>
       
       
@@ -667,6 +719,7 @@
 
       </div>
       
+      </div>
     </div>
     
     </div>
@@ -685,13 +738,16 @@
 <a href="#rule-R-05" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-05</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">差分とそのURIのページは、互いに辿れる</span>
       
       
       
       
       
-      
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>6</span>
       
@@ -707,6 +763,7 @@
 <a href="#rule-R-05-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">追加・変更されたURIは、そのURIが着地するページへ辿る</span>
       
       
@@ -718,6 +775,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -728,6 +786,7 @@
 <a href="#rule-R-05-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">ファイルごと消えたURIは、辿る先を持たない</span>
       
       
@@ -739,6 +798,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -749,6 +809,7 @@
 <a href="#rule-R-05-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">変わったURIのページにはその場で印が付き、差分の該当箇所へ着地する</span>
       
       
@@ -760,6 +821,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -770,6 +832,7 @@
 <a href="#rule-R-05-example-EX-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">差分はサイドバーに項目を持たない（リソースの種別ではなく、リソースに付く注釈だから）</span>
       
       
@@ -781,6 +844,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -791,6 +855,7 @@
 <a href="#rule-R-05-example-EX-05" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-05</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">廃止された付箋は、提案中のルールと同じ淡い破線で戻され、廃止の印が付く</span>
       
       
@@ -802,6 +867,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -812,10 +878,12 @@
 <a href="#rule-R-05-example-EX-06" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-06</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">ページごと無くなったものは、それが載っていた一覧が件数で告げる</span>
       
       
       
+      </div>
     </div>
     
     </div>
@@ -834,8 +902,10 @@
 <a href="#rule-R-06" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-06</a>
 
-      <span class="rule-name sticky-text">差分はYAMLの綴りではなく、仕様の言葉で読める</span>
       
+      
+      <div class="rule-body min-w-0">
+      <span class="rule-name sticky-text">差分はYAMLの綴りではなく、仕様の言葉で読める</span>
       
       
       
@@ -851,6 +921,7 @@
       </div>
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
@@ -866,6 +937,7 @@
 <a href="#rule-R-06-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">ルール・具体例・疑問点・用語の本文は、キーを伴わずその文だけが並ぶ</span>
       
       
@@ -877,6 +949,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -887,6 +960,7 @@
 <a href="#rule-R-06-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">状態や自動化のようなlivtが持つ項目は、サイトが使っている言葉で並ぶ</span>
       
       
@@ -898,6 +972,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -908,6 +983,7 @@
 <a href="#rule-R-06-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">文言が変わった行は、行のどこが変わったかが中で際立つ</span>
       
       
@@ -919,6 +995,7 @@
 
       </div>
       
+      </div>
     </div>
     
     </div>
@@ -937,8 +1014,10 @@
 <a href="#rule-R-07" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-07</a>
 
-      <span class="rule-name sticky-text">集めたレポートの変化は、引用されたルールや具体例の変更として差分に映る</span>
       
+      
+      <div class="rule-body min-w-0">
+      <span class="rule-name sticky-text">集めたレポートの変化は、引用されたルールや具体例の変更として差分に映る</span>
       
       
       
@@ -951,6 +1030,7 @@
       </div>
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
       
@@ -966,6 +1046,7 @@
 <a href="#rule-R-07-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">テストが新たに引用したルールや具体例には、それを自動化した実装リポジトリの行が緑で増える</span>
       
       
@@ -977,6 +1058,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -987,6 +1069,7 @@
 <a href="#rule-R-07-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">ある実装リポジトリからの引用がすべて消えると、その行が赤で並ぶ</span>
       
       
@@ -998,6 +1081,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -1008,6 +1092,7 @@
 <a href="#rule-R-07-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">rev・生成時刻・revから組むURLのように、走査のたびに動くものは差分に出ない</span>
       
       
@@ -1019,6 +1104,7 @@
 
       </div>
       
+      </div>
     </div>
     
     
@@ -1029,6 +1115,7 @@
 <a href="#rule-R-07-example-EX-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">テストの移動や改名、同じ実装リポジトリの中で引用するテストが増減しただけでは差分に出ない（PRを出すかを決めるのと同じく、引用の集合で比べる）</span>
       
       
@@ -1040,6 +1127,7 @@
 
       </div>
       
+      </div>
     </div>
     
     </div>
