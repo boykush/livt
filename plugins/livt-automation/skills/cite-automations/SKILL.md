@@ -66,7 +66,7 @@ A test that checks it cites it directly, nested or flat.
 
 Counting a rule as automated because its examples all are is a judgment, and it is yours: you make it and write it down as a citation, where a reviewer sees it in the diff. livt never makes it for you. Don't ask for the scan to infer it, and don't count a rule automated on the board's behalf.
 
-When a rule you once cited this way has gained an example no test here cites, the record has not settled whether its citation should come off (livt://mapping/collect-automations/question/Q-03). Don't decide it on your own: tell the user which rule and which example, and leave the lines as they are.
+When a rule you once cited this way has gained an example no test here cites, leave the rule's citation where it is: taking it off would make you chase every later change to the mapping, and you only see this repository. The gap stays visible anyway, because the new example's sticky on the livt repository's board carries no citation of its own. Cite the new example when a test covers it, and mention the gap in your report.
 
 ## What NOT to Do
 
@@ -77,4 +77,4 @@ When a rule you once cited this way has gained an example no test here cites, th
 
 ## Output
 
-Test files whose marker lines follow the convention above, in the working tree for the repository's normal review. Report the rules you newly cited, and any rule that has lost full coverage since it was cited.
+Test files whose marker lines follow the convention above, in the working tree for the repository's normal review. Report the rules you newly cited, and any cited rule with an example no test here covers yet.
