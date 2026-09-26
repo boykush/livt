@@ -36,7 +36,7 @@ var resolveCmd = &cobra.Command{
 	Use:   "resolve <uri>",
 	Short: "Resolve a livt URI against the livt repository",
 	Long: `Resolve a livt URI -- the deployment-independent name for one point of the
-spec -- without running an MCP client.
+livt repository -- without running an MCP client.
 
 A rule, example, or question cited in a test comment, an Issue, or a commit
 message can then be read back by whoever needs it: CI, an editor, or an agent

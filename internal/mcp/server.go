@@ -24,7 +24,7 @@ const httpPath = "/mcp"
 // instructions rides the MCP handshake, so it reaches the consuming agent on
 // every session. It carries the one practice the payloads cannot teach on their
 // own: how to cite the livt repository in artifacts that outlive the connection.
-const instructions = `livt serves the livt repository: opportunities and their canvases, story maps, stories, example mappings, and ubiquitous language. It is the agreed spec, read-only.
+const instructions = `livt serves the livt repository: opportunities and their canvases, story maps, stories, example mappings, and ubiquitous language. It is the team's decision log — what the team has agreed on the opportunities it is working on, not a specification of everything the product already does — and it is read-only.
 
 Cite the livt repository by livt URI. Whenever a rule, example, or question is referenced outside the livt repository — a test comment, an issue body, a commit message, a PR description — copy the "uri" from the result verbatim, and never write a bare "id". Ids are unique only within one mapping file, so R-02 exists in every mapping and identifies nothing on its own.
 
