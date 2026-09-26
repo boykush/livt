@@ -1,6 +1,6 @@
 ---
 title: livt - Living Text
-description: BDD for teams whose code is written by coding agents. livt keeps what your team agreed on its boards, each in its own format, owned by every role on the team.
+description: livt keeps what your team agreed on its boards, each in its own format, owned by every role on the team. Coding agents read it and carry it through to automation.
 ---
 
 # Collaborate on board. Make it living in text.

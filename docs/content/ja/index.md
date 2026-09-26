@@ -1,6 +1,6 @@
 ---
 title: livt - Living Text
-description: AI エージェントが実装するチームのための BDD。livt は、ボードで合意したことをその形のままリポジトリに残し、チームの全職能の持ち物にします。
+description: livt は、ボードで合意したことをその形のままリポジトリに残し、チームの全職能の持ち物にします。AI エージェントはそれを読み、自動化までつなげます。
 ---
 
 # Collaborate on board. Make it living in text.
