@@ -56,14 +56,6 @@ Coding agents have changed the situation. Automating an agreed rule is now work 
 - Follow questions being answered and rules changing in one place, whatever their role
 - See which rules are not automated yet, and pick the next one to close
 
-<!-- Link the opportunities rather than list them: a list here falls behind the day one is added. -->
-
-## Each problem, recorded as an opportunity
-
-These problems are recorded one by one as opportunities in livt's own repository. Each has its own canvas and story map, which the live demo shows.
-
-[See the opportunities](https://boykush.github.io/livt/demo/opportunities.html)
-
 ## Get started
 
 Install livt and add its plugins to your coding agent. The README has the steps.
