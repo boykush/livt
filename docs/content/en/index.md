@@ -19,7 +19,7 @@ An excerpt of livt's own example mapping, translated from Japanese. The test bel
 
 ## BDD, now that coding agents write the code
 
-BDD has always aimed at one flow: find the rules together, formulate them, and automate them as tests. The step between formulation and automation used to be interpretation written by hand, and a coding agent can now do it. livt gives the agent a shape to follow through that flow, as a CLI and plugins for coding agents.
+BDD has always aimed at one flow: find the rules together, formulate them, and automate them as tests. Between formulation and automation stood an interpreter written by hand, turning Gherkin into code. Now that a coding agent can write the test straight from the rule, perhaps that interpreter is no longer needed at all. livt gives the agent a shape to follow through that flow, as a CLI and plugins for coding agents.
 
 <!-- The boxes below are livt's own opportunity canvas, for livt as a whole. Their headings are the labels the demo gives a canvas's boxes. -->
 
@@ -43,7 +43,7 @@ BDD has always aimed at one flow: find the rules together, formulate them, and a
 ### Solution Idea
 
 - Rules live as text in the repository, and each change to a rule is a commit of its own
-- A coding agent does the interpreting that step definitions used to do
+- No interpreter in between: a coding agent writes the test straight from the rule
 - Every rule and example has a URI, and a test cites the URI of what it automates
 - Tests can sit at any layer in any repository; livt collects their citations mechanically and shows each rule's status
 - The flow from discovery through formulation to automation ships as a CLI and plugins for coding agents
