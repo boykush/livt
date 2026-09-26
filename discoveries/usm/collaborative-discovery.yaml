@@ -4,7 +4,7 @@ ubiquitous:
   - example-mapping
   - story
   - discovery
-  - story-discovery
+  - bdd/discovery
   - record
   - formulation
   - ubiquitous-language
