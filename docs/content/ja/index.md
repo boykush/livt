@@ -3,7 +3,7 @@ title: livt - Living Text
 description: livt は、ボードで合意したことをその形のままリポジトリに残し、チームの全職能の持ち物にします。AI エージェントはそれを読み、自動化までつなげます。
 ---
 
-# Collaborate on board. Make it living in text.
+# Your team's product decisions, living in text — context for AI.
 
 livt は、オンラインホワイトボード（Miro や FigJam など）でチームが決めたことを、ボードの形のままリポジトリに残し、チームの全職能の持ち物にするツールです。AI エージェントはそれを読み、オポチュニティからテストまでを一続きにたどれます。
 

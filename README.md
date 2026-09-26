@@ -1,7 +1,7 @@
 <h1 align="center">livt</h1>
 
 <p align="center">
-  <b>Collaborate on board. Make it living in text.</b>
+  <b>Your team's product decisions, living in text — context for AI.</b>
 </p>
 
 <p align="center">
