@@ -49,7 +49,7 @@
         <article class="phase">
           <div class="phase-text">
             <h3>Automation: coding agents take it on</h3>
-            <p>Coding agents can now take on automating what a team agreed. Following the test pyramid, one Example Mapping's rules and examples end up automated at different layers and in different languages. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins.</p>
+            <p>Coding agents can now take on automating what a team agreed. Following the test pyramid, one Example Mapping's rules and examples end up automated at different layers and in different languages. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins, and collects the tests' citations into an automation report.</p>
           </div>
           <figure class="fig fan">
             <div class="fan-end"><span class="node map">Example Mapping</span><span class="fan-ids">R-01 · R-02 · EX-02</span></div>
@@ -60,7 +60,9 @@
               <div class="test"><span class="layer">End-to-end</span><code>// livt:automates …/rule/R-02</code></div>
             </div>
             <div class="fan-arrow" aria-hidden="true">↓</div>
-            <div class="fan-end"><span class="node report">Automation report</span><span class="fan-note">Which tests cite each rule and example</span></div>
+            <div class="fan-end"><span class="node livt"><span class="nm">livt automations</span><span class="roles">Collects the tests' citations and writes the report</span></span></div>
+            <div class="fan-arrow" aria-hidden="true">↓</div>
+            <div class="fan-end"><span class="node report"><span class="nm">Automation report</span></span><span class="fan-note">Which tests cite each rule and example</span></div>
           </figure>
         </article>
       </section>

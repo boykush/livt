@@ -16,9 +16,9 @@ Product managers and designers can go on answering its questions and changing it
 
 ### Automation: coding agents take it on
 
-Coding agents can now take on automating what a team agreed. Following the test pyramid, one Example Mapping's rules and examples end up automated at different layers and in different languages. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins.
+Coding agents can now take on automating what a team agreed. Following the test pyramid, one Example Mapping's rules and examples end up automated at different layers and in different languages. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins, and collects the tests' citations into an automation report.
 
-<!-- figure: One Example Mapping's rules and examples, cited with `livt:automates` by a backend test (Go), a frontend test (TypeScript) and an end-to-end test, the citations gathered into the automation report. The tests are made up for the example. -->
+<!-- figure: One Example Mapping's rules and examples, cited with `livt:automates` by a backend test (Go), a frontend test (TypeScript) and an end-to-end test; livt (`livt automations`) collects the citations and writes them out as the automation report. The tests are made up for the example. -->
 
 ## Learn it from the people who wrote it down
 

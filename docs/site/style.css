@@ -247,6 +247,8 @@ html[lang="ja"] .block-title h2 { font-size: 1.12rem; line-height: 1.5; }
 .node.map { background: var(--rule); border-color: var(--rule-edge); color: var(--sticky-ink); }
 .node.done, .node.report { background: var(--ex); border-color: var(--ex-edge); color: var(--sticky-ink); }
 .node.gherkin { border-color: var(--ink-3); }
+.node.livt { background: var(--code-bg); border-color: var(--src-badge); color: var(--code-ink); }
+.node.livt .nm { font-family: var(--font-mono); font-size: .8rem; }
 .node.maybe { border-left-style: dashed; opacity: .75; }
 .node .src { padding: 0 5px; border-radius: 3px; background: var(--src-badge); color: #FFFFFF; font-size: .68rem; font-weight: 600; }
 .edge { display: inline-flex; align-items: center; gap: 6px; color: var(--ink-3); font-size: .78rem; }
