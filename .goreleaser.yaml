@@ -45,13 +45,16 @@ checksum:
 changelog:
   sort: asc
   groups:
-    - title: Features
+    - title: "✨ Features"
       regexp: '^feat(\(.*\))?!?:'
       order: 0
-    - title: Bug fixes
+    - title: "🐛 Bug fixes"
       regexp: '^fix(\(.*\))?!?:'
       order: 1
-    - title: Other changes
+    - title: "📚 Documentation"
+      regexp: '^docs(\(.*\))?!?:'
+      order: 2
+    - title: "🔧 Maintenance"
       order: 999
   filters:
     exclude:
