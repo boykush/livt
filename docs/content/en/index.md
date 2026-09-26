@@ -31,8 +31,7 @@ Coding agents have changed the situation. Writing the tests for an agreed rule i
 
 - What becomes of an Example Mapping afterwards is more than a formulated feature file alone can follow.
 - Keeping Gherkin executable means writing and maintaining step definitions by hand.
-- Automating as far down the test pyramid as the community advises puts an Example Mapping's rules and examples in tests at different layers, in different repositories and languages.
-- Across repositories, it is hard to tell which rule is automated where.
+- Automation that follows the test pyramid spreads across layers and repositories, and it is hard to tell which rule is automated where.
 
 ### Customers & Users
 
