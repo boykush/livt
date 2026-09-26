@@ -29,8 +29,7 @@ Coding agents have changed the situation. Writing the tests for an agreed rule i
 
 ### Problems
 
-- Rules keep changing and questions keep getting answered all through development, and on a board that history is hard to trace.
-- A formulated feature file has no place for open questions, and cannot follow how an Example Mapping moves on.
+- What becomes of an Example Mapping afterwards is more than a formulated feature file alone can follow.
 - Once an open question goes to a designer or someone else, it is hard to tell whether it was resolved.
 - Keeping Gherkin executable means writing and maintaining step definitions by hand.
 - Automating as far down the test pyramid as the community advises puts one story's rules in tests at different layers, in different repositories and languages.
