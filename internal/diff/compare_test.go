@@ -1,5 +1,11 @@
 package diff
 
+// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-09
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-01
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-02
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-04
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-06
+
 import (
 	"encoding/json"
 	"os"

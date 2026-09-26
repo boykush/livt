@@ -1,5 +1,8 @@
 package uri
 
+// livt:automates livt://mapping/scope-terms-by-context/rule/R-03
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-01
+
 import (
 	"strings"
 	"testing"

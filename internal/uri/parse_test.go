@@ -1,5 +1,7 @@
 package uri
 
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-04
+
 import "testing"
 
 // livt:automates livt://mapping/trace-test-to-rule/rule/R-04/example/EX-01

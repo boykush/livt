@@ -1,5 +1,8 @@
 package builder
 
+// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-09
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-03
+
 import (
 	"bytes"
 	"os"

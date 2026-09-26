@@ -1,5 +1,8 @@
 package mcp
 
+// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-09
+// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-13
+
 import (
 	"context"
 	"os"
