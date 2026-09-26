@@ -12,17 +12,6 @@ An Example Mapping does not end with the conversation, though. Its open question
 
 Coding agents have changed the situation. Automating an agreed rule is now work an agent can take on. Following the test pyramid, an Example Mapping's rules and examples end up automated at different layers and in different languages. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins, and works through what those differences bring with it.
 
-## What livt adds
-
-- **A file, not a photo.** Each board becomes YAML, versioned in a repository.
-  `discoveries/example-mappings/collect-automations.yaml`
-- **IDs that stay put.** An ID never changes once filed, and a URI points at it from anywhere.
-  `livt://mapping/collect-automations/rule/R-01`
-- **Questions kept beside the rules.** A question stays in view until resolved, whoever holds it, then points to the rule that settled it.
-  `Q-01 → R-08`
-- **Automation, reported from the tests.** Put a rule's URI in a test comment, and livt gathers the tests rule by rule.
-  `// livt:automates livt://mapping/collect-automations/rule/R-01`
-
 ## Where livt departs from the practice
 
 ### It keeps the Example Mapping

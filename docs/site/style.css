@@ -232,13 +232,7 @@ html[lang="ja"] .page-title { font-size: clamp(2rem, 4.6vw, 3.2rem); line-height
 .block-title { padding-bottom: 12px; margin-bottom: 20px; border-bottom: 1px solid var(--line); }
 .block-title h2 { font-size: 1.22rem; line-height: 1.3; letter-spacing: -.01em; }
 html[lang="ja"] .block-title h2 { font-size: 1.12rem; line-height: 1.5; }
-.adds, .credits { list-style: none; margin: 0; padding: 0; display: grid; }
-.adds p { color: var(--ink-2); font-size: .95rem; }
-.adds b { font-weight: 600; color: var(--ink); }
-.adds { gap: 22px; }
-.adds-wide .adds { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(32px, 4.5vw, 64px); }
-.adds li { display: grid; gap: 4px; }
-.adds .eg { justify-self: start; max-width: 100%; margin-top: 4px; padding: 2px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--wall); color: var(--ink-2); font-size: .78rem; line-height: 1.6; overflow-wrap: anywhere; }
+.credits { list-style: none; margin: 0; padding: 0; display: grid; }
 .bdd-why .copy { display: grid; gap: 14px; max-width: 46em; }
 .bdd-why p { color: var(--ink-2); font-size: 1.02rem; }
 .departs .cols article { display: grid; gap: 12px; align-content: start; }
@@ -272,7 +266,6 @@ footer { border-top: 1px solid var(--line); }
 @media (max-width: 960px) {
   .practices li { grid-template-columns: 10px minmax(0, 1fr); }
   .practices .role, .practices .who { grid-column: 2; }
-  .adds-wide .adds { grid-template-columns: minmax(0, 1fr); }
   .hero-grid, .sec-intro, .onward { grid-template-columns: minmax(0, 1fr); }
   .canvas { grid-template-columns: minmax(0, 1fr); }
   .panel + .panel { border-left: 0; border-top: 1px solid var(--line); }
