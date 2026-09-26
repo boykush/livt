@@ -55,10 +55,8 @@
   [data-view="list"] .question-card { font-size: 1rem; }
   [data-view="list"] .example-card { padding: 0.625rem 1.25rem; }
   [data-view="list"] .mapping [data-copy-link],
-  [data-view="list"] .automated-badge,
   [data-view="list"] .proposed-badge { position: static; flex-shrink: 0; box-shadow: none; }
   [data-view="list"] .mapping [data-copy-link], [data-view="list"] .rule-issues { font-size: 0.75rem; }
-  [data-view="list"] .automated-badge { background-color: #eff6ff; border: 1px solid #bfdbfe; color: #1d4ed8; font-size: 0.75rem; padding: 0.125rem 0.5rem; }
   [data-view="list"] .proposed-badge { font-size: 0.75rem; padding: 0.125rem 0.5rem; }
   [data-view="list"] .rule-name { flex: 1; min-width: 0; }
   [data-view="list"] .rule-issues { margin-top: 0; }
@@ -83,7 +81,9 @@
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-yellow-100 border-l-2 border-yellow-400 rounded-sm"></span>ストーリー</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-blue-100 border-l-2 border-blue-400 rounded-sm"></span>ルール</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-blue-50 border border-dashed border-blue-400 rounded-sm"></span>提案中のルール</span>
-  <span class="flex items-center gap-1"><span class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-blue-600 text-white text-[9px] font-semibold leading-none">✓</span>テストが自動化している</span>
+  <span class="flex items-center gap-1"><span class="inline-flex items-center rounded-sm px-0.5 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg></span>テストが自動化している</span>
+  
+  
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm"></span>具体例</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-red-100 border-l-2 border-red-400 rounded-sm"></span>疑問点</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-pink-100 border-l-2 border-pink-400 rounded-sm"></span>ユビキタス言語</span>
@@ -131,6 +131,7 @@
       
       
       
+      
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
       
     </div>
@@ -149,15 +150,14 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L106" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: resources_test.go:106</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/uri/uri_test.go#L5" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: uri_test.go:5</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L106" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resources_test.go:106</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/uri/uri_test.go#L5" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: uri_test.go:5</span></a>
+
       </div>
       
     </div>
@@ -174,23 +174,26 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/integration_test.go#L167" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: integration_test.go:167</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L31" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: resources_test.go:31</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L61" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: resources_test.go:61</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/uri/page_test.go#L35" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: page_test.go:35</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/uri/uri_test.go#L29" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: uri_test.go:29</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/uri/uri_test.go#L59" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: uri_test.go:59</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/integration_test.go#L167" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: integration_test.go:167</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L31" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resources_test.go:31</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L61" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resources_test.go:61</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/uri/page_test.go#L35" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: page_test.go:35</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/uri/uri_test.go#L29" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: uri_test.go:29</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/uri/uri_test.go#L59" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: uri_test.go:59</span></a>
+
       </div>
       
     </div>
@@ -207,19 +210,20 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/integration_test.go#L183" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: integration_test.go:183</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L46" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: resources_test.go:46</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L107" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: resources_test.go:107</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/uri/uri_test.go#L80" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: uri_test.go:80</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/integration_test.go#L183" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: integration_test.go:183</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L46" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resources_test.go:46</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L107" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resources_test.go:107</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/uri/uri_test.go#L80" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: uri_test.go:80</span></a>
+
       </div>
       
     </div>
@@ -236,13 +240,11 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/uri/uri_test.go#L106" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: uri_test.go:106</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/uri/uri_test.go#L106" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: uri_test.go:106</span></a>
+
       </div>
       
     </div>
@@ -270,6 +272,7 @@
       
       
       
+      
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
     </div>
@@ -288,15 +291,14 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_mapping_test.go#L96" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: build_mapping_test.go:96</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/uri/page_test.go#L59" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: page_test.go:59</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_mapping_test.go#L96" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_mapping_test.go:96</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/uri/page_test.go#L59" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: page_test.go:59</span></a>
+
       </div>
       
     </div>
@@ -313,15 +315,14 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_mapping_test.go#L95" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: build_mapping_test.go:95</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/uri/page_test.go#L8" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: page_test.go:8</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_mapping_test.go#L95" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_mapping_test.go:95</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/uri/page_test.go#L8" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: page_test.go:8</span></a>
+
       </div>
       
     </div>
@@ -335,7 +336,6 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
       <span class="sticky-text">人が共有するURLはボードから、成果物に残すlivt URIはCLIから取る</span>
-      
       
       
       
@@ -364,6 +364,7 @@
       
       
       
+      
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
     </div>
@@ -382,15 +383,14 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_mapping_test.go#L25" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: build_mapping_test.go:25</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_mapping_test.go#L74" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: build_mapping_test.go:74</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_mapping_test.go#L25" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_mapping_test.go:25</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_mapping_test.go#L74" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_mapping_test.go:74</span></a>
+
       </div>
       
     </div>
@@ -407,13 +407,11 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_mapping_test.go#L26" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: build_mapping_test.go:26</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_mapping_test.go#L26" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_mapping_test.go:26</span></a>
+
       </div>
       
     </div>
@@ -430,15 +428,14 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_mapping_test.go#L53" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: build_mapping_test.go:53</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_story_map_test.go#L256" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: build_story_map_test.go:256</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_mapping_test.go#L53" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_mapping_test.go:53</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_story_map_test.go#L256" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_story_map_test.go:256</span></a>
+
       </div>
       
     </div>
@@ -466,6 +463,7 @@
       
       
       
+      
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
     </div>
@@ -484,17 +482,17 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/cmd/resolve_test.go#L53" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: resolve_test.go:53</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resolve_test.go#L76" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: resolve_test.go:76</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/uri/parse_test.go#L5" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: parse_test.go:5</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/cmd/resolve_test.go#L53" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resolve_test.go:53</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resolve_test.go#L76" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resolve_test.go:76</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/uri/parse_test.go#L5" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: parse_test.go:5</span></a>
+
       </div>
       
     </div>
@@ -511,13 +509,11 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resolve_test.go#L28" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: resolve_test.go:28</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resolve_test.go#L28" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resolve_test.go:28</span></a>
+
       </div>
       
     </div>
@@ -534,13 +530,11 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/cmd/resolve_test.go#L91" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: resolve_test.go:91</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/cmd/resolve_test.go#L91" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resolve_test.go:91</span></a>
+
       </div>
       
     </div>
@@ -565,14 +559,13 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-blue-600 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
       
       
-      
-      <div class="rule-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="rule-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L177" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: resources_test.go:177</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L177" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resources_test.go:177</span></a>
+
       </div>
       
       
@@ -595,15 +588,14 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/cmd/resolve_test.go#L178" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: resolve_test.go:178</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L150" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: resources_test.go:150</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/cmd/resolve_test.go#L178" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resolve_test.go:178</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L150" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resources_test.go:150</span></a>
+
       </div>
       
     </div>
@@ -620,19 +612,20 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_mapping_test.go#L346" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: build_mapping_test.go:346</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_mapping_test.go#L387" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: build_mapping_test.go:387</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_mapping_test.go#L406" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: build_mapping_test.go:406</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/builder_test.go#L73" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: builder_test.go:73</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_mapping_test.go#L346" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_mapping_test.go:346</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_mapping_test.go#L387" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_mapping_test.go:387</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_mapping_test.go#L406" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_mapping_test.go:406</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/builder_test.go#L73" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: builder_test.go:73</span></a>
+
       </div>
       
     </div>
@@ -649,13 +642,11 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L151" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: resources_test.go:151</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L151" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resources_test.go:151</span></a>
+
       </div>
       
     </div>
@@ -672,13 +663,11 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/parser/example_mapping_test.go#L45" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: example_mapping_test.go:45</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/parser/example_mapping_test.go#L45" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: example_mapping_test.go:45</span></a>
+
       </div>
       
     </div>
@@ -706,6 +695,7 @@
       
       
       
+      
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
       
     </div>
@@ -724,7 +714,6 @@
       
       
       
-      
     </div>
     
     
@@ -736,7 +725,6 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <span class="sticky-text">ルール・具体例・疑問点のいずれも同じ規則</span>
-      
       
       
       
@@ -765,6 +753,7 @@
       
       
       
+      
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
     </div>
@@ -783,7 +772,6 @@
       
       
       
-      
     </div>
     
     
@@ -798,7 +786,6 @@
       
       
       
-      
     </div>
     
     
@@ -810,7 +797,6 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
       <span class="sticky-text">Issue起票の有無は関係ない（MCPのURI・ボードのリンク・テストのコメントも参照元）</span>
-      
       
       
       
@@ -839,6 +825,7 @@
       
       
       
+      
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
     </div>
@@ -857,7 +844,6 @@
       
       
       
-      
     </div>
     
     
@@ -872,7 +858,6 @@
       
       
       
-      
     </div>
     
     
@@ -884,7 +869,6 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
       <span class="sticky-text">第1セグメントは予約語（mapping・story・story-map・ubiquitous）で、将来エイリアスを第1セグメントに置く拡張の席を空けてある</span>
-      
       
       
       
@@ -913,6 +897,7 @@
       
       
       
+      
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>6</span>
       
     </div>
@@ -931,15 +916,14 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L307" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: resources_test.go:307</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/parser/example_mapping_test.go#L206" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: example_mapping_test.go:206</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L307" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resources_test.go:307</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/parser/example_mapping_test.go#L206" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: example_mapping_test.go:206</span></a>
+
       </div>
       
     </div>
@@ -956,13 +940,11 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L308" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: resources_test.go:308</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L308" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resources_test.go:308</span></a>
+
       </div>
       
     </div>
@@ -979,15 +961,14 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L309" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: resources_test.go:309</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/parser/example_mapping_test.go#L207" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: example_mapping_test.go:207</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L309" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resources_test.go:309</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/parser/example_mapping_test.go#L207" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: example_mapping_test.go:207</span></a>
+
       </div>
       
     </div>
@@ -1004,13 +985,11 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L345" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: resources_test.go:345</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L345" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resources_test.go:345</span></a>
+
       </div>
       
     </div>
@@ -1024,7 +1003,6 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-05</a>
 
       <span class="sticky-text">退役の経緯はYAMLに書かず、コミット・PR本文に残す（構造にするのは代替先だけ）</span>
-      
       
       
       
@@ -1042,13 +1020,11 @@
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L330" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: resources_test.go:330</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/resources_test.go#L330" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resources_test.go:330</span></a>
+
       </div>
       
     </div>

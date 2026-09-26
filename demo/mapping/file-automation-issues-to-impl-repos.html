@@ -55,10 +55,8 @@
   [data-view="list"] .question-card { font-size: 1rem; }
   [data-view="list"] .example-card { padding: 0.625rem 1.25rem; }
   [data-view="list"] .mapping [data-copy-link],
-  [data-view="list"] .automated-badge,
   [data-view="list"] .proposed-badge { position: static; flex-shrink: 0; box-shadow: none; }
   [data-view="list"] .mapping [data-copy-link], [data-view="list"] .rule-issues { font-size: 0.75rem; }
-  [data-view="list"] .automated-badge { background-color: #eff6ff; border: 1px solid #bfdbfe; color: #1d4ed8; font-size: 0.75rem; padding: 0.125rem 0.5rem; }
   [data-view="list"] .proposed-badge { font-size: 0.75rem; padding: 0.125rem 0.5rem; }
   [data-view="list"] .rule-name { flex: 1; min-width: 0; }
   [data-view="list"] .rule-issues { margin-top: 0; }
@@ -83,7 +81,9 @@
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-yellow-100 border-l-2 border-yellow-400 rounded-sm"></span>ストーリー</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-blue-100 border-l-2 border-blue-400 rounded-sm"></span>ルール</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-blue-50 border border-dashed border-blue-400 rounded-sm"></span>提案中のルール</span>
-  <span class="flex items-center gap-1"><span class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-blue-600 text-white text-[9px] font-semibold leading-none">✓</span>テストが自動化している</span>
+  <span class="flex items-center gap-1"><span class="inline-flex items-center rounded-sm px-0.5 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg></span>テストが自動化している</span>
+  
+  
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm"></span>具体例</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-red-100 border-l-2 border-red-400 rounded-sm"></span>疑問点</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-pink-100 border-l-2 border-pink-400 rounded-sm"></span>ユビキタス言語</span>
@@ -131,6 +131,7 @@
       
       
       
+      
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
       
     </div>
@@ -149,7 +150,6 @@
       
       
       
-      
     </div>
     
     
@@ -161,7 +161,6 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <span class="sticky-text">story-keyのみ指定すると、そのストーリーの未起票ルール全件が起票される</span>
-      
       
       
       
@@ -190,6 +189,7 @@
       
       
       
+      
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
       
     </div>
@@ -208,7 +208,6 @@
       
       
       
-      
     </div>
     
     
@@ -220,7 +219,6 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <span class="sticky-text">書き戻しがそのままlivtリポジトリへの記録（record-rule-automation）になり、手作業を要しない</span>
-      
       
       
       
@@ -249,6 +247,7 @@
       
       
       
+      
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
       
     </div>
@@ -267,7 +266,6 @@
       
       
       
-      
     </div>
     
     
@@ -279,7 +277,6 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <span class="sticky-text">別の実装リポジトリへの起票は、既存の紐づけがあっても妨げない</span>
-      
       
       
       
@@ -308,6 +305,7 @@
       
       
       
+      
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
       
     </div>
@@ -326,7 +324,6 @@
       
       
       
-      
     </div>
     
     
@@ -338,7 +335,6 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <span class="sticky-text">バックポインタとしてstory-key・rule-idと、リビングドキュメントのルールアンカー（#rule-{ID}）へのリンクを含む</span>
-      
       
       
       
@@ -356,7 +352,6 @@
       
       
       
-      
     </div>
     
     
@@ -368,7 +363,6 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
       <span class="sticky-text">バックポインタが指すルールIDは起票後も不変で、記録・ルール変更のAIスキル共通ポリシーとして担保する</span>
-      
       
       
       
@@ -397,6 +391,7 @@
       
       
       
+      
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
       
     </div>
@@ -415,7 +410,6 @@
       
       
       
-      
     </div>
     
     
@@ -427,7 +421,6 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <span class="sticky-text">US Issueがなくてもルール単位の起票は成立する</span>
-      
       
       
       
@@ -456,6 +449,7 @@
       
       
       
+      
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>1</span>
       
     </div>
@@ -471,7 +465,6 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
       <span class="sticky-text">起票は対象リポジトリのチェックアウトを必要としない</span>
-      
       
       
       
@@ -500,6 +493,7 @@
       
       
       
+      
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
       
     </div>
@@ -518,7 +512,6 @@
       
       
       
-      
     </div>
     
     
@@ -530,7 +523,6 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <span class="sticky-text">書き戻しはワーキングツリーの編集までとし、コミットやPRは通常のレビューフローに委ねる</span>
-      
       
       
       
@@ -559,6 +551,7 @@
       
       
       
+      
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
     </div>
@@ -577,7 +570,6 @@
       
       
       
-      
     </div>
     
     
@@ -592,7 +584,6 @@
       
       
       
-      
     </div>
     
     
@@ -604,7 +595,6 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
       <span class="sticky-text">issuesのないruleは未紐づけとして扱われる</span>
-      
       
       
       
@@ -633,6 +623,7 @@
       
       
       
+      
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
       
     </div>
@@ -651,7 +642,6 @@
       
       
       
-      
     </div>
     
     
@@ -663,7 +653,6 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <span class="sticky-text">livt経由でないIssueも、URLをruleに貼れば同じ紐づけになる</span>
-      
       
       
       
@@ -692,6 +681,7 @@
       
       
       
+      
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
     </div>
@@ -710,7 +700,6 @@
       
       
       
-      
     </div>
     
     
@@ -725,7 +714,6 @@
       
       
       
-      
     </div>
     
     
@@ -737,7 +725,6 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
       <span class="sticky-text">livtリポジトリ自身もreposに宣言でき、自リポジトリへの起票も同じ手順で成立する</span>
-      
       
       
       
@@ -766,6 +753,7 @@
       
       
       
+      
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
     </div>
@@ -784,7 +772,6 @@
       
       
       
-      
     </div>
     
     
@@ -799,7 +786,6 @@
       
       
       
-      
     </div>
     
     
@@ -811,7 +797,6 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
       <span class="sticky-text">他リポジトリのIssueは後から直せないので、デプロイ先に依存させない</span>
-      
       
       
       
