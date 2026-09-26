@@ -189,13 +189,12 @@ h4 { margin: 0 0 10px; font-size: 1.02rem; font-weight: 600; line-height: 1.45; 
 .sec-intro { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 16px clamp(32px, 4.5vw, 64px); align-items: start; margin-bottom: clamp(32px, 4.5vw, 56px); }
 .sec-intro p { color: var(--ink-2); max-width: 36em; font-size: 1.05rem; }
 .sec-intro .copy { display: grid; gap: 14px; }
-.artifacts { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
-.artifacts a { display: grid; align-content: start; gap: 6px; height: 100%; padding: 18px 18px 20px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: inherit; text-decoration: none; box-shadow: var(--shadow); }
-.artifacts a:hover { border-color: var(--ink-3); }
-.artifacts .mk { margin-bottom: 6px; }
-.artifacts b { font-weight: 600; color: var(--ink); }
-.artifacts span { color: var(--ink-2); font-size: .95rem; }
-.artifacts-note { margin-top: 18px; color: var(--ink-3); font-size: .9rem; }
+.practices { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+.practices li { display: grid; grid-template-columns: 10px minmax(0, 15em) minmax(0, 16em) minmax(0, 1fr); align-items: center; gap: 4px 20px; padding-block: 16px; border-bottom: 1px solid var(--line); }
+.practices .name { font-weight: 600; color: var(--ink); text-decoration: none; }
+.practices .name:hover { text-decoration: underline; }
+.practices .role { color: var(--ink-2); }
+.practices .who { color: var(--ink-3); font-size: .88rem; }
 
 /* livt's own opportunity canvas, in the three zones the demo gives a canvas */
 .canvas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 2px solid var(--canvas-edge); border-radius: 10px; overflow: hidden; background: var(--surface); }
@@ -233,15 +232,11 @@ html[lang="ja"] .page-title { font-size: clamp(2rem, 4.6vw, 3.2rem); line-height
 .block-title { padding-bottom: 12px; margin-bottom: 20px; border-bottom: 1px solid var(--line); }
 .block-title h2 { font-size: 1.22rem; line-height: 1.3; letter-spacing: -.01em; }
 html[lang="ja"] .block-title h2 { font-size: 1.12rem; line-height: 1.5; }
-.items, .adds, .nots, .credits { list-style: none; margin: 0; padding: 0; display: grid; }
-.items { gap: 20px; }
-.items li { display: grid; grid-template-columns: 10px minmax(0, 1fr); gap: 14px; }
-.items li .mk { margin-top: .55em; }
-.items li > div { display: grid; gap: 4px; }
-.items .who { font-size: .88rem; color: var(--ink-3); }
-.items p, .adds p, .nots p { color: var(--ink-2); font-size: .95rem; }
-.items b, .adds b, .nots b { font-weight: 600; color: var(--ink); }
+.adds, .nots, .credits { list-style: none; margin: 0; padding: 0; display: grid; }
+.adds p, .nots p { color: var(--ink-2); font-size: .95rem; }
+.adds b, .nots b { font-weight: 600; color: var(--ink); }
 .adds { gap: 22px; }
+.adds-wide .adds { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: clamp(32px, 4.5vw, 64px); }
 .adds li, .nots li { display: grid; gap: 4px; }
 .adds .eg { justify-self: start; max-width: 100%; margin-top: 4px; padding: 2px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--wall); color: var(--ink-2); font-size: .78rem; line-height: 1.6; overflow-wrap: anywhere; }
 .nots { gap: 16px; }
@@ -259,7 +254,6 @@ html[lang="ja"] .block-title h2 { font-size: 1.12rem; line-height: 1.5; }
 .mk.opp { background: var(--mk-opp); }
 .mk.usm { background: var(--mk-usm); }
 .mk.term { background: var(--mk-term); }
-.mk.none { border: 1px solid var(--ink-3); border-radius: 50%; }
 
 .look { display: grid; border-top: 1px solid var(--line); margin: 0; }
 .look > div { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 6px clamp(32px, 4.5vw, 64px); padding-block: 18px; border-bottom: 1px solid var(--line); }
@@ -277,7 +271,9 @@ footer { border-top: 1px solid var(--line); }
   .btn, .st, .lang a { transition: background-color .15s, border-color .15s, box-shadow .15s, opacity .15s, color .15s; }
 }
 @media (max-width: 960px) {
-  .artifacts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .practices li { grid-template-columns: 10px minmax(0, 1fr); }
+  .practices .role, .practices .who { grid-column: 2; }
+  .adds-wide .adds { grid-template-columns: minmax(0, 1fr); }
   .hero-grid, .sec-intro, .onward { grid-template-columns: minmax(0, 1fr); }
   .canvas { grid-template-columns: minmax(0, 1fr); }
   .panel + .panel { border-left: 0; border-top: 1px solid var(--line); }

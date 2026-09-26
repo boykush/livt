@@ -42,62 +42,31 @@
         </div>
       </section>
 
-      <div class="cols">
-        <section>
-          <div class="block-title"><h2>土台にしたプラクティス</h2></div>
-          <ul class="items">
-            <li><i class="mk none"></i><div>
-              <b>振る舞い駆動開発（BDD）</b>
-              <span class="who">Dan North「<a href="https://dannorth.net/introducing-bdd/">Introducing BDD</a>」（2006）</span>
-              <p>livt が軸にしている発見・定式化・自動化の 3 フェーズは、Gáspár Nagy と Seb Rose が <a href="https://bddbooks.com/">The BDD Books</a> で整理したものです。</p>
-            </div></li>
-            <li><i class="mk map"></i><div>
-              <b>実例マッピング</b>
-              <span class="who">Matt Wynne「<a href="https://cucumber.io/blog/bdd/example-mapping-introduction/">Introducing Example Mapping</a>」（2015）</span>
-              <p>4 種類のカードと色、タイムボックス、ボードの様子からストーリーの状態を読むこと。livt のボードは、この形式をファイルから描いたものです。</p>
-            </div></li>
-            <li><i class="mk usm"></i><div>
-              <b>ユーザーストーリーマッピング</b>
-              <span class="who">Jeff Patton「<a href="https://jpattonassociates.com/story-mapping/">story mapping</a>」</span>
-            </div></li>
-            <li><i class="mk opp"></i><div>
-              <b>オポチュニティキャンバス</b>
-              <span class="who">Jeff Patton「<a href="https://jpattonassociates.com/opportunity-canvas/">Opportunity Canvas</a>」</span>
-            </div></li>
-            <li><i class="mk term"></i><div>
-              <b>ユビキタス言語</b>
-              <span class="who">Eric Evans『ドメイン駆動設計』</span>
-              <p>BDD の定式化にも通じる考え方です。livt では、用語を使っているボードのすぐそばに用語集として置きます。</p>
-            </div></li>
-          </ul>
-        </section>
-
-        <section>
-          <div class="block-title"><h2>livt が足したもの</h2></div>
-          <ul class="adds">
-            <li>
-              <b>写真ではなくファイル</b>
-              <p>ボードを YAML にして、リポジトリでバージョン管理する</p>
-              <code class="eg">discoveries/example-mappings/collect-automations.yaml</code>
-            </li>
-            <li>
-              <b>変わらない ID</b>
-              <p>一度付いた ID は変わらず、URI でどこからでも指せる</p>
-              <code class="eg">livt://mapping/collect-automations/rule/R-01</code>
-            </li>
-            <li>
-              <b>疑問点もルールと並べて</b>
-              <p>誰が持っていても解消まで追え、解消したら決着したルールを指す</p>
-              <code class="eg">Q-01 → R-08</code>
-            </li>
-            <li>
-              <b>テストから集める自動化レポート</b>
-              <p>テストのコメントに URI を書くと、ルールごとに集まる</p>
-              <code class="eg">// livt:automates livt://mapping/collect-automations/rule/R-01</code>
-            </li>
-          </ul>
-        </section>
-      </div>
+      <section class="adds-wide">
+        <div class="block-title"><h2>livt が足したもの</h2></div>
+        <ul class="adds">
+          <li>
+            <b>写真ではなくファイル</b>
+            <p>ボードを YAML にして、リポジトリでバージョン管理する</p>
+            <code class="eg">discoveries/example-mappings/collect-automations.yaml</code>
+          </li>
+          <li>
+            <b>変わらない ID</b>
+            <p>一度付いた ID は変わらず、URI でどこからでも指せる</p>
+            <code class="eg">livt://mapping/collect-automations/rule/R-01</code>
+          </li>
+          <li>
+            <b>疑問点もルールと並べて</b>
+            <p>誰が持っていても解消まで追え、解消したら決着したルールを指す</p>
+            <code class="eg">Q-01 → R-08</code>
+          </li>
+          <li>
+            <b>テストから集める自動化レポート</b>
+            <p>テストのコメントに URI を書くと、ルールごとに集まる</p>
+            <code class="eg">// livt:automates livt://mapping/collect-automations/rule/R-01</code>
+          </li>
+        </ul>
+      </section>
 
       <section class="departs">
         <div class="block-title"><h2>プラクティスと違うところ</h2></div>

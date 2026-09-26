@@ -12,14 +12,6 @@ An Example Mapping does not end with the conversation, though. Its open question
 
 Coding agents have changed the situation. Automating an agreed rule is now work an agent can take on. Following the test pyramid, an Example Mapping's rules and examples end up automated at different layers and in different languages. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins, and works through what those differences bring with it.
 
-## What it builds on
-
-- **Behaviour-Driven Development** — Dan North, [Introducing BDD](https://dannorth.net/introducing-bdd/) (2006). The three phases livt is organised around, Discovery, Formulation and Automation, are those Gáspár Nagy and Seb Rose set out in [The BDD Books](https://bddbooks.com/).
-- **Example Mapping** — Matt Wynne, [Introducing Example Mapping](https://cucumber.io/blog/bdd/example-mapping-introduction/) (2015). The four cards, their colours, the timebox, and reading the board as a signal about the story. livt's board is that format, drawn from a file.
-- **User Story Mapping** — Jeff Patton, [story mapping](https://jpattonassociates.com/story-mapping/).
-- **Opportunity Canvas** — Jeff Patton, [Opportunity Canvas](https://jpattonassociates.com/opportunity-canvas/).
-- **Ubiquitous Language** — Eric Evans, Domain-Driven Design. It runs through BDD's Formulation as well. livt keeps it as a glossary next to the boards that use its terms.
-
 ## What livt adds
 
 - **A file, not a photo.** Each board becomes YAML, versioned in a repository.

@@ -12,14 +12,6 @@ BDD では、合意した仕様を1つの一貫した形で持ち続けます。
 
 AI エージェントの進化で、状況が変わりました。合意したルールの自動化は、エージェントに任せられます。テストピラミッドに沿って自動化すると、実例マッピングのルールや具体例が、別々のレイヤや言語のテストで自動化されます。livt は、そのための型とツールを CLI と AI プラグインとして渡し、レイヤや言語の違いから来る課題を、エージェントと一緒に解きます。
 
-## 土台にしたプラクティス
-
-- **振る舞い駆動開発（BDD）** — Dan North「[Introducing BDD](https://dannorth.net/introducing-bdd/)」（2006）。livt が軸にしている発見・定式化・自動化の 3 フェーズは、Gáspár Nagy と Seb Rose が [The BDD Books](https://bddbooks.com/) で整理したものです。
-- **実例マッピング** — Matt Wynne「[Introducing Example Mapping](https://cucumber.io/blog/bdd/example-mapping-introduction/)」（2015）。4 種類のカードと色、タイムボックス、ボードの様子からストーリーの状態を読むこと。livt のボードは、この形式をファイルから描いたものです。
-- **ユーザーストーリーマッピング** — Jeff Patton「[story mapping](https://jpattonassociates.com/story-mapping/)」。
-- **オポチュニティキャンバス** — Jeff Patton「[Opportunity Canvas](https://jpattonassociates.com/opportunity-canvas/)」。
-- **ユビキタス言語** — Eric Evans『ドメイン駆動設計』。BDD の定式化にも通じる考え方です。livt では、用語を使っているボードのすぐそばに用語集として置きます。
-
 ## livt が足したもの
 
 - **写真ではなくファイル**　ボードを YAML にして、リポジトリでバージョン管理する

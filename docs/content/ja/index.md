@@ -17,16 +17,14 @@ livt 自身の実例マッピングからの抜粋です。下のテストは R-
 
 [ボード全体を見る](https://boykush.github.io/livt/demo/mapping/collect-automations.html)
 
-## livt が扱う成果物
+## 土台にしたプラクティス
 
-<!-- 定義は用語集が持つので、ここは流れの中での役割だけを書き、名前を用語集の項目へつなぐ。 -->
+<!-- 各プラクティスが何かは用語集が持つので、ここには流れの中での役割と出どころだけを書き、名前を用語集へつなぐ。 -->
 
-- [オポチュニティキャンバス](https://boykush.github.io/livt/demo/ubiquitous.html#opportunity-canvas)　なぜ作るのか
-- [ストーリーマップ](https://boykush.github.io/livt/demo/ubiquitous.html#story-map)　何を作るのか
-- [実例マッピング](https://boykush.github.io/livt/demo/ubiquitous.html#example-mapping)　どう振る舞うのか
-- [ユビキタス言語](https://boykush.github.io/livt/demo/ubiquitous.html#ubiquitous-language)　どの言葉で話すのか
-
-各プラクティスの出どころは、[livt と BDD](livt-and-bdd.html)にまとめています。
+- [オポチュニティキャンバス](https://boykush.github.io/livt/demo/ubiquitous.html#opportunity-canvas)　なぜ作るのか。Jeff Patton「[Opportunity Canvas](https://jpattonassociates.com/opportunity-canvas/)」
+- [ユーザーストーリーマッピング](https://boykush.github.io/livt/demo/ubiquitous.html#story-map)　何を作るのか。Jeff Patton「[story mapping](https://jpattonassociates.com/story-mapping/)」
+- [実例マッピング](https://boykush.github.io/livt/demo/ubiquitous.html#example-mapping)　どう振る舞うのか。Matt Wynne「[Introducing Example Mapping](https://cucumber.io/blog/bdd/example-mapping-introduction/)」（2015）
+- [ユビキタス言語](https://boykush.github.io/livt/demo/ubiquitous.html#ubiquitous-language)　どの言葉で話すのか。Eric Evans『ドメイン駆動設計』
 
 ## なぜ livt か
 
