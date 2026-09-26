@@ -1,0 +1,70 @@
+---
+title: livt - Living Text
+description: livt は、ボードで合意したことをその形のままリポジトリに残し、チームの全職能の持ち物にします。AI エージェントはそれを読み、自動化までつなげます。
+---
+
+# Collaborate on board. Make it living in text.
+
+livt は、オンラインホワイトボード（Miro や FigJam など）でチームが決めたことを、ボードの形のままリポジトリに残し、チームの全職能の持ち物にするツールです。AI エージェントはそれを読み、オポチュニティからテストまでを一続きにたどれます。
+
+[ライブデモを見る](https://boykush.github.io/livt/demo/)
+
+[使い始める](https://github.com/boykush/livt#getting-started)
+
+<!-- board: livt://mapping/collect-automations — ストーリー、ルール R-01 と具体例 EX-01・EX-03、ルール R-02 と具体例 EX-01・EX-02、疑問点 Q-01、R-01 を引用しているテストの行。付箋は記録からそのまま引く。 -->
+
+livt 自身の実例マッピングからの抜粋です。下のテストは R-01 を自動化の対象として示していて、livt はこうした印をレポートに集めます。付箋の「自動化済み」はそこから出ています。
+
+[ボード全体を見る](https://boykush.github.io/livt/demo/mapping/collect-automations.html)
+
+## 土台にしたプラクティス
+
+livt の考え方は、Gáspár Nagy と Seb Rose が『[The BDD Books](https://bddbooks.com/)』で整理した BDD と、Jeff Patton の『ユーザーストーリーマッピング』に根ざしています。BDD との関係は [livt と BDD](livt-and-bdd.html) にまとめています。
+
+<!-- 各プラクティスが何かは用語集が持つので、ここには流れの中での役割と出どころだけを書き、名前を用語集へつなぐ。 -->
+
+- [オポチュニティキャンバス](https://boykush.github.io/livt/demo/ubiquitous.html#opportunity-canvas)　なぜ作るのか。Jeff Patton「[Opportunity Canvas](https://jpattonassociates.com/opportunity-canvas/)」
+- [ユーザーストーリーマッピング](https://boykush.github.io/livt/demo/ubiquitous.html#story-map)　何を作るのか。Jeff Patton『ユーザーストーリーマッピング』
+- [実例マッピング](https://boykush.github.io/livt/demo/ubiquitous.html#example-mapping)　どう振る舞うのか。Matt Wynne「[Introducing Example Mapping](https://cucumber.io/blog/bdd/example-mapping-introduction/)」（2015）
+- [ユビキタス言語](https://boykush.github.io/livt/demo/ubiquitous.html#ubiquitous-language)　どの言葉で話すのか。Eric Evans『ドメイン駆動設計』
+
+## なぜ livt か
+
+<!-- 以下の箱は、livt 全体についての livt 自身のオポチュニティキャンバス。見出しはデモがキャンバスの箱に付けるラベルと揃える。 -->
+
+### 課題
+
+- ディスカバリーで決めたことは開発のあいだも変わるが、ボードに置かれたまま古びていく
+- オポチュニティ、ストーリー、ルールがボードごとに分かれ、つながりをたどれない
+- 決めたことが実装の側から読まれず、どこまで実装・自動化されたかも追いづらい
+
+### 顧客とユーザー
+
+- ディスカバリーから開発までを一緒に進めるチームの全職能（PdM、デザイナー、開発者、テスター）
+- AI エージェントに実装を任せているエンジニア
+
+### 現在の解決手段
+
+- ボードをそのまま残し、URL を共有してあとから見返す
+- 決めたことをチケットやドキュメントに書き写し、そこから先は同期しない
+- 実装・自動化したかどうかは、人がチケットやフラグで示す
+
+### 解決策のアイデア
+
+- 各プラクティスのボードを、その形のままリポジトリに記録し、変更を差分として重ねる
+- オポチュニティからストーリーマップ、実例マッピングまでを URI でつなぐ
+- 自動化は AI エージェントに任せ、テストが引用したルールを集めて、オポチュニティごとの現況まで示す
+
+### ユーザーは価値を得るために何をするか
+
+- ボードで決めたことを AI エージェントに記録させ、変更も同じ場所で追う
+- オポチュニティから実例マッピングまでを、同じサイトでたどる
+- オポチュニティごとの現況を見て、次に手を入れる場所を選ぶ
+
+## 使い始める
+
+livt をインストールして、AI エージェントにプラグインを入れます。手順は README にあります。
+
+[README を読む](https://github.com/boykush/livt#getting-started)
+
+[Releases](https://github.com/boykush/livt/releases)
