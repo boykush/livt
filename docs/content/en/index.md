@@ -23,32 +23,32 @@ An excerpt of livt's own example mapping, translated from Japanese. The test bel
 
 ### Problems
 
-- There is no place to carry an Example Mapping with open questions through to completion.
-- Rule changes belong to every role, but feature files tend to stay with developers and testers.
-- Automation spreads across layers and languages, and it is hard to tell which rule is automated where.
+- Decisions made in discovery keep changing during development, yet stay on the board and go stale.
+- Opportunities, stories and rules sit on separate boards, with no way to follow one to the next.
+- What was decided goes unread from the implementation side, and how much of it is implemented and automated is hard to tell.
 
 ### Customers & Users
 
-- Every role on a team that practises BDD: product managers, designers, developers, testers
+- Every role on a team that runs discovery through development together: product managers, designers, developers, testers
 - Engineers who leave implementation to coding agents
 
 ### Solutions Today
 
-- Formulate rules and examples as Gherkin, and automate them as an executable specification
-- Copy the agreement into tickets or documents, and stop syncing from there
-- Keep the board as it was, and look back at it later
+- Keep the board as it was, share its URL, and look back at it later
+- Copy the decisions into tickets or documents, and stop syncing from there
+- Have people mark in tickets or flags whether something is implemented or automated
 
 ### Solution Idea
 
-- Record the Example Mapping itself, and give every role one place to follow it until its questions are resolved
-- Keep rule changes as diffs of the Example Mapping, readable by every role
-- Leave automation to coding agents, and gather the rules their tests cite to show which rule is automated where
+- Record each practice's board in the repository in its own format, and layer changes on it as diffs
+- Link opportunities to their story maps and Example Mappings with URIs
+- Leave automation to coding agents, gather the rules their tests cite, and show where each opportunity stands
 
 ### What Will Users Do To Get Value?
 
-- Hand an agreed rule to a coding agent, and have it automated
-- Follow questions being answered and rules changing in one place, whatever their role
-- See which rules are not automated yet, and pick the next one to close
+- Have a coding agent record what the board decided, and follow changes in the same place
+- Follow an opportunity down to its Example Mappings on one site
+- See where each opportunity stands, and pick the next place to work on
 
 ## Get started
 
