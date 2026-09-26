@@ -76,7 +76,7 @@ rules:
         name: 第1セグメントは予約語（mapping・story・story-map・ubiquitous）で、将来エイリアスを第1セグメントに置く拡張の席を空けてある
 
   - id: R-09
-    name: 退役した項目は代替先をlivt URIで示し、そこから現行の仕様へ辿り直せる
+    name: 退役した項目は代替先をlivt URIで示し、そこから現行の決定へ辿り直せる
     examples:
       - id: EX-01
         name: ルール・具体例・疑問点のいずれもsuperseded_byで代替先を示せる
