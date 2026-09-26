@@ -19,6 +19,8 @@ An excerpt of livt's own example mapping, translated from Japanese. The test bel
 
 ## What livt builds on
 
+The core that shapes livt most is BDD. [livt and BDD](livt-and-bdd.html) covers how the two relate.
+
 <!-- The glossary owns what each practice is, so this gives only its part in the flow and where it comes from, linking the name to the glossary. -->
 
 - [Opportunity Canvas](https://boykush.github.io/livt/demo/ubiquitous.html#opportunity-canvas) — why to build. Jeff Patton, [Opportunity Canvas](https://jpattonassociates.com/opportunity-canvas/)

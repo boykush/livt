@@ -19,6 +19,8 @@ livt 自身の実例マッピングからの抜粋です。下のテストは R-
 
 ## 土台にしたプラクティス
 
+livt が最も影響を受けている核は、BDD です。BDD との関係は [livt と BDD](livt-and-bdd.html) にまとめています。
+
 <!-- 各プラクティスが何かは用語集が持つので、ここには流れの中での役割と出どころだけを書き、名前を用語集へつなぐ。 -->
 
 - [オポチュニティキャンバス](https://boykush.github.io/livt/demo/ubiquitous.html#opportunity-canvas)　なぜ作るのか。Jeff Patton「[Opportunity Canvas](https://jpattonassociates.com/opportunity-canvas/)」
