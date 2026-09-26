@@ -55,13 +55,10 @@
   [data-view="list"] .question-card { font-size: 1rem; }
   [data-view="list"] .example-card { padding: 0.625rem 1.25rem; }
   [data-view="list"] .mapping [data-copy-link],
-  [data-view="list"] .automated-badge,
   [data-view="list"] .proposed-badge { position: static; flex-shrink: 0; box-shadow: none; }
-  [data-view="list"] .mapping [data-copy-link], [data-view="list"] .rule-issues { font-size: 0.75rem; }
-  [data-view="list"] .automated-badge { background-color: #eff6ff; border: 1px solid #bfdbfe; color: #1d4ed8; font-size: 0.75rem; padding: 0.125rem 0.5rem; }
+  [data-view="list"] .mapping [data-copy-link], [data-view="list"] :is(.rule-automations, .rule-issues, .example-automations) { font-size: 0.75rem; }
   [data-view="list"] .proposed-badge { font-size: 0.75rem; padding: 0.125rem 0.5rem; }
-  [data-view="list"] .rule-name { flex: 1; min-width: 0; }
-  [data-view="list"] .rule-issues { margin-top: 0; }
+  [data-view="list"] :is(.rule-body, .example-body) { flex: 1; min-width: 0; }
   [data-view="list"] .rule-fold, [data-view="list"] .example-count { display: inline-flex; }
   [data-view="list"] [data-foldable] > .rule-card { cursor: pointer; }
   [data-view="list"] .example-stack { display: none; margin: 0.5rem 0 0 1.75rem; gap: 0.5rem; }
@@ -83,7 +80,9 @@
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-yellow-100 border-l-2 border-yellow-400 rounded-sm"></span>ストーリー</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-blue-100 border-l-2 border-blue-400 rounded-sm"></span>ルール</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-blue-50 border border-dashed border-blue-400 rounded-sm"></span>提案中のルール</span>
-  <span class="flex items-center gap-1"><span class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-blue-600 text-white text-[9px] font-semibold leading-none">✓</span>テストが自動化している</span>
+  <span class="flex items-center gap-1"><span class="inline-flex items-center rounded-sm px-0.5 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg></span>テストが自動化している</span>
+  
+  <span class="flex items-center gap-1"><span class="inline-flex items-center rounded-sm px-0.5 border border-dashed border-current text-gray-500"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6.1"/><circle cx="8" cy="8" r="1.4" fill="currentColor" stroke="none"/></svg></span>自動化Issue</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm"></span>具体例</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-red-100 border-l-2 border-red-400 rounded-sm"></span>疑問点</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-pink-100 border-l-2 border-pink-400 rounded-sm"></span>ユビキタス言語</span>
@@ -124,12 +123,16 @@
 <a href="#rule-R-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-01</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">livtはlivtリポジトリをMCPサーバーとして公開し、消費側はlivtのソースを読まずに仕様を取得する</span>
       
       
       
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
       
@@ -145,11 +148,12 @@
 <a href="#rule-R-01-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">livt mcp コマンドでstdioのMCPサーバーが起動する</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -160,11 +164,12 @@
 <a href="#rule-R-01-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">消費側エージェントはツール/リソース経由で実例マッピング・ルールを取得する</span>
       
       
       
-      
+      </div>
     </div>
     
     </div>
@@ -183,12 +188,16 @@
 <a href="#rule-R-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-02</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">実装リポジトリは別ディレクトリにあるlivtリポジトリの場所を指定できる</span>
       
       
       
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
@@ -204,11 +213,12 @@
 <a href="#rule-R-02-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">環境変数 LIVT_ROOT でlivtリポジトリのルートディレクトリを指定する</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -219,11 +229,12 @@
 <a href="#rule-R-02-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">CLI引数 --root が環境変数より優先される</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -234,11 +245,12 @@
 <a href="#rule-R-02-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">いずれも未指定ならカレントディレクトリをルートとする</span>
       
       
       
-      
+      </div>
     </div>
     
     </div>
@@ -257,12 +269,16 @@
 <a href="#rule-R-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-03</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">各レスポンス（ツール・リソース）はlivtリポジトリのバージョン（gitリビジョン）を返し、仕様のズレを防ぐ</span>
       
       
       
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
       
@@ -278,11 +294,12 @@
 <a href="#rule-R-03-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">出力に spec_version としてlivtリポジトリのgit HEAD（rev-parse --short の短縮リビジョン）が含まれる</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -293,11 +310,12 @@
 <a href="#rule-R-03-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">livtリポジトリがgit管理でない場合 spec_version は空になる</span>
       
       
       
-      
+      </div>
     </div>
     
     </div>
@@ -316,12 +334,16 @@
 <a href="#rule-R-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-04</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">実装リポジトリはストーリー単位で実例マッピングをリソースとして取得できる</span>
       
       
       
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
@@ -337,11 +359,12 @@
 <a href="#rule-R-04-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">resources/templates/list に livt://mapping/{story_key} が現れる</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -352,11 +375,12 @@
 <a href="#rule-R-04-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">resources/read livt://mapping/{story_key} でルール・具体例・疑問点を取得する</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -367,11 +391,12 @@
 <a href="#rule-R-04-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">各ルールは自分のリソースURI（livt://mapping/{story_key}/rule/{rule_id}）を持つ</span>
       
       
       
-      
+      </div>
     </div>
     
     </div>
@@ -390,12 +415,16 @@
 <a href="#rule-R-05" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-05</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">実装リポジトリはルール単位で仕様をリソースとして取得できる</span>
       
       
       
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
       
@@ -411,11 +440,12 @@
 <a href="#rule-R-05-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">resources/read livt://mapping/{story_key}/rule/{rule_id} で単一ルールと具体例を取得する</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -426,11 +456,12 @@
 <a href="#rule-R-05-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">存在しないキーやルールIDのURIは not found を返す</span>
       
       
       
-      
+      </div>
     </div>
     
     </div>
@@ -449,12 +480,16 @@
 <a href="#rule-R-06" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-06</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">実装リポジトリは利用可能なストーリーの一覧を取得できる</span>
       
       
       
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
       
@@ -470,11 +505,12 @@
 <a href="#rule-R-06-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">list_stories で全ストーリーのキーと名前を取得する</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -485,11 +521,12 @@
 <a href="#rule-R-06-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">各エントリは実例マッピングがあれば、そのリソースURI（livt://mapping/{key}）を示す</span>
       
       
       
-      
+      </div>
     </div>
     
     </div>
@@ -508,12 +545,16 @@
 <a href="#rule-R-07" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-07</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">消費側は stdio で livt mcp をサブプロセスとして起動し、消費者ごとに1対1で接続する</span>
       
       
       
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
@@ -529,11 +570,12 @@
 <a href="#rule-R-07-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">クライアントが livt mcp をサブプロセスとして spawn し、標準入出力で接続する</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -544,11 +586,12 @@
 <a href="#rule-R-07-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">livtリポジトリの場所は --root / LIVT_ROOT で指す（消費側に別チェックアウトが要る）</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -559,11 +602,12 @@
 <a href="#rule-R-07-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">1消費者につき1プロセスで、サーバーは共有しない</span>
       
       
       
-      
+      </div>
     </div>
     
     </div>
@@ -582,12 +626,16 @@
 <a href="#rule-R-08" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-08</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">消費側は常駐する1つの livt mcp --http サーバーをURL参照で共有する</span>
       
       
       
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
@@ -603,11 +651,12 @@
 <a href="#rule-R-08-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">livtリポジトリ側で livt mcp --http localhost:5488 を常駐起動する</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -618,11 +667,12 @@
 <a href="#rule-R-08-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">複数リポジトリが http://localhost:5488/mcp を共有参照し、per-repo の LIVT_ROOT は不要</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -633,11 +683,12 @@
 <a href="#rule-R-08-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">ステートレス・読み取り専用なので1プロセスで複数クライアントを捌く</span>
       
       
       
-      
+      </div>
     </div>
     
     </div>
@@ -656,12 +707,29 @@
 <a href="#rule-R-09" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-09</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">実装リポジトリはストーリーマップをリソースとして取得できる</span>
       
       
       
       
+      <div class="rule-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
+        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/builder/build_story_map_test.go#L3" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_story_map_test.go:3</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/diff/compare_test.go#L3" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: compare_test.go:3</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/mcp/tools_test.go#L3" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: tools_test.go:3</span></a>
+
+      </div>
       
+      
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
       
@@ -677,19 +745,19 @@
 <a href="#rule-R-09-example-EX-05" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-05</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">list_story_maps で全ストーリーマップのキー・名前とリソースURI（livt://story-map/{opportunity_key}）を取得する</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/tools_test.go#L323" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: tools_test.go:323</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/mcp/tools_test.go#L326" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: tools_test.go:326</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -700,19 +768,19 @@
 <a href="#rule-R-09-example-EX-06" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-06</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">resources/read livt://story-map/{opportunity_key} でアクティビティ・ユーザータスク・ストーリーカード・リリースを取得する</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/tools_test.go#L390" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: tools_test.go:390</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/mcp/tools_test.go#L393" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: tools_test.go:393</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -723,21 +791,22 @@
 <a href="#rule-R-09-example-EX-07" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-07</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">マップはオポチュニティのキー（ファイル名）で番地付けされ、名前を変えてもURIとビルド出力（story-map/{opportunity_key}.html）は変わらない</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/builder/build_story_map_test.go#L438" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: build_story_map_test.go:438</a>
-        
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/diff/compare_test.go#L163" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: compare_test.go:163</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/builder/build_story_map_test.go#L441" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_story_map_test.go:441</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/diff/compare_test.go#L174" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: compare_test.go:174</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -748,19 +817,19 @@
 <a href="#rule-R-09-example-EX-08" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-08</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">存在しないキーは not found を返す</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/tools_test.go#L422" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: tools_test.go:422</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/mcp/tools_test.go#L425" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: tools_test.go:425</span></a>
+
       </div>
       
+      </div>
     </div>
     
     </div>
@@ -779,12 +848,16 @@
 <a href="#rule-R-10" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-10</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">実装リポジトリはストーリー本文をリソースとして取得できる</span>
       
       
       
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
       
@@ -800,11 +873,12 @@
 <a href="#rule-R-10-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">resources/read livt://story/{story_key} でストーリーの名前・本文・frontmatterメタ（例 issue）を取得する</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -815,11 +889,12 @@
 <a href="#rule-R-10-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">list_stories の各エントリとストーリーマップ内のストーリーカードは、ストーリーのリソースURI（livt://story/{story_key}）を示す</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -830,11 +905,12 @@
 <a href="#rule-R-10-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">実例マッピングがあるストーリーは、そのリソースURI（livt://mapping/{story_key}）も示す</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -845,11 +921,12 @@
 <a href="#rule-R-10-example-EX-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">存在しないストーリーキーは not found を返す</span>
       
       
       
-      
+      </div>
     </div>
     
     </div>
@@ -868,12 +945,16 @@
 <a href="#rule-R-11" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-11</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">実装リポジトリはユビキタス言語の用語をリソースとして取得できる</span>
       
       
       
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
       
@@ -889,11 +970,12 @@
 <a href="#rule-R-11-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">resources/read livt://ubiquitous/{term_key} で用語の名前と定義本文を取得する</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -904,11 +986,12 @@
 <a href="#rule-R-11-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">実例マッピング・ストーリーマップのレスポンスは ubiquitous の各用語キーに解決済みの名前とリソースURIを添える（既存の ubiquitous フィールドはそのまま維持する）</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -919,11 +1002,12 @@
 <a href="#rule-R-11-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">用語ファイルがないキーはURIなしでキーのみを示す</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -934,11 +1018,12 @@
 <a href="#rule-R-11-example-EX-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">存在しない用語キーは not found を返す</span>
       
       
       
-      
+      </div>
     </div>
     
     </div>
@@ -957,12 +1042,16 @@
 <a href="#rule-R-12" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-12</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">公開対象の一覧はツールとリソーステンプレートで提供し、concrete resources と変更通知には広げない</span>
       
       
       
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
@@ -978,11 +1067,12 @@
 <a href="#rule-R-12-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">resources/templates/list に全リソーステンプレート（mapping・rule・story-map・story・ubiquitous）が現れる</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -993,11 +1083,12 @@
 <a href="#rule-R-12-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">resources/list への concrete resources 掲載や subscribe は提供せず、毎リクエスト読みのステートレスを保つ</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -1008,11 +1099,12 @@
 <a href="#rule-R-12-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">消費側はlivtリポジトリの更新を spec_version の変化で検知する</span>
       
       
       
-      
+      </div>
     </div>
     
     </div>
@@ -1031,18 +1123,30 @@
 <a href="#rule-R-13" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-13</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">実装リポジトリはストーリーの一覧をオポチュニティで絞り込める</span>
       
       
       
       
-      
-      <div class="rule-issues mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="rule-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/issues/82" target="_blank" rel="noopener" title="自動化Issue" class="text-blue-600 hover:underline">&#8599; livt#82</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/mcp/tools_test.go#L4" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: tools_test.go:4</span></a>
+
       </div>
       
+      
+      <div class="rule-issues mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
+        
+
+<a href="https://github.com/boykush/livt/issues/82" target="_blank" rel="noopener" title="自動化Issue" class="issue-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 border border-dashed border-current text-gray-500 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="6.1"/><circle cx="8" cy="8" r="1.4" fill="currentColor" stroke="none"/></svg><span class="min-w-0 break-all">livt#82</span></a>
+
+      </div>
+      
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>5</span>
       
@@ -1058,19 +1162,19 @@
 <a href="#rule-R-13-example-EX-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">livt://story/{story_key} リソースも所属オポチュニティを示す</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/tools_test.go#L471" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: tools_test.go:471</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/mcp/tools_test.go#L474" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: tools_test.go:474</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -1081,19 +1185,19 @@
 <a href="#rule-R-13-example-EX-05" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-05</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">list_stories の各エントリは所属オポチュニティをキー・名前・リソースURIで示し、無所属なら空になる</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/tools_test.go#L195" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: tools_test.go:195</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/mcp/tools_test.go#L198" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: tools_test.go:198</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -1104,19 +1208,19 @@
 <a href="#rule-R-13-example-EX-06" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-06</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">オポチュニティのファイルがないストーリーマップでは、キーはそのままに、名前とURIをマップのものが兼ねる</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/tools_test.go#L214" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: tools_test.go:214</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/mcp/tools_test.go#L217" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: tools_test.go:217</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -1127,19 +1231,19 @@
 <a href="#rule-R-13-example-EX-07" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-07</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">list_stories に opportunity パラメータ（オポチュニティのキー）を指定すると、そのオポチュニティのストーリーマップに載るストーリーだけが返る</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/tools_test.go#L239" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: tools_test.go:239</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/mcp/tools_test.go#L242" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: tools_test.go:242</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -1150,19 +1254,19 @@
 <a href="#rule-R-13-example-EX-08" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-08</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">存在しないオポチュニティのキーの指定は空の一覧を返す</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/tools_test.go#L264" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: tools_test.go:264</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/mcp/tools_test.go#L267" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: tools_test.go:267</span></a>
+
       </div>
       
+      </div>
     </div>
     
     </div>
@@ -1181,12 +1285,16 @@
 <a href="#rule-R-14" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-14</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">livtリポジトリの参照を成果物に残すときは、IDではなくlivt URIで引用する</span>
       
       
       
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>5</span>
       
@@ -1202,19 +1310,19 @@
 <a href="#rule-R-14-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">MCPサーバは接続時にこの引用作法を指示する</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/integration_test.go#L36" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: integration_test.go:36</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/mcp/integration_test.go#L38" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: integration_test.go:38</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -1225,11 +1333,12 @@
 <a href="#rule-R-14-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">テストコメント・Issue本文・コミットメッセージが対象</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -1240,11 +1349,12 @@
 <a href="#rule-R-14-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">裸のR-13 EX-01は、どのマッピングの話か復元できない</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -1255,11 +1365,12 @@
 <a href="#rule-R-14-example-EX-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">デプロイ済みサイトのURLを一次の引用形にしない</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -1270,19 +1381,19 @@
 <a href="#rule-R-14-example-EX-05" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-05</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">接続時の指示は、自動化の主張（マーカー付き）と参照（裸のURI）を区別する</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/mcp/integration_test.go#L44" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: integration_test.go:44</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/mcp/integration_test.go#L46" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: integration_test.go:46</span></a>
+
       </div>
       
+      </div>
     </div>
     
     </div>
@@ -1301,12 +1412,16 @@
 <a href="#rule-R-15" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-15</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">livtリポジトリの所在は、消費側workspaceにコミットされる宣言で供給する</span>
       
       
       
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
       
@@ -1322,11 +1437,12 @@
 <a href="#rule-R-15-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">束縛の契約は環境変数 LIVT_ROOT で、mise・direnv などコミットされるworkspace設定から供給する</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -1337,11 +1453,12 @@
 <a href="#rule-R-15-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">MCPのspawnは mise exec -- livt mcp のようにランチャー経由にし、shell外の起動でも同じ宣言が効く</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -1352,11 +1469,12 @@
 <a href="#rule-R-15-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">CIはlivtリポジトリをcheckoutし、そのパスをLIVT_ROOTに束縛する（宣言はworkflowにコミットされる）</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -1367,11 +1485,12 @@
 <a href="#rule-R-15-example-EX-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">値は {{config_root}}/../ のような相対参照で書け、隣接checkoutの配置規約ごと機械非依存にコミットできる</span>
       
       
       
-      
+      </div>
     </div>
     
     </div>
@@ -1390,12 +1509,16 @@
 <a href="#rule-R-16" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-16</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">実装リポジトリはユビキタス言語の用語の一覧を取得できる</span>
       
       
       
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
       
@@ -1411,11 +1534,12 @@
 <a href="#rule-R-16-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">list_terms で全用語のキーと表示名を取得する</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -1426,11 +1550,12 @@
 <a href="#rule-R-16-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">各エントリは自分のリソースURI（livt://ubiquitous/{term-ref}）を示す</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -1441,11 +1566,12 @@
 <a href="#rule-R-16-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">文脈を持つ用語はその文脈も示し、同じキーを持つ別の用語と見分けられる</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -1456,11 +1582,12 @@
 <a href="#rule-R-16-example-EX-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">どのボードからも参照されていない用語も一覧に現れる</span>
       
       
       
-      
+      </div>
     </div>
     
     </div>
@@ -1567,6 +1694,13 @@
 
 <a href="../ubiquitous.html#livt-repository" class="inline-flex items-center gap-2 bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-pink-200 transition">
   <span class="flex flex-col items-start"><span>livtリポジトリ</span></span><span>&rarr;</span>
+</a>
+
+
+
+
+<a href="../ubiquitous.html#automation" class="inline-flex items-center gap-2 bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-pink-200 transition">
+  <span class="flex flex-col items-start"><span>自動化</span></span><span>&rarr;</span>
 </a>
 
 

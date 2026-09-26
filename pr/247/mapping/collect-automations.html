@@ -55,13 +55,10 @@
   [data-view="list"] .question-card { font-size: 1rem; }
   [data-view="list"] .example-card { padding: 0.625rem 1.25rem; }
   [data-view="list"] .mapping [data-copy-link],
-  [data-view="list"] .automated-badge,
   [data-view="list"] .proposed-badge { position: static; flex-shrink: 0; box-shadow: none; }
-  [data-view="list"] .mapping [data-copy-link], [data-view="list"] .rule-issues { font-size: 0.75rem; }
-  [data-view="list"] .automated-badge { background-color: #eff6ff; border: 1px solid #bfdbfe; color: #1d4ed8; font-size: 0.75rem; padding: 0.125rem 0.5rem; }
+  [data-view="list"] .mapping [data-copy-link], [data-view="list"] :is(.rule-automations, .rule-issues, .example-automations) { font-size: 0.75rem; }
   [data-view="list"] .proposed-badge { font-size: 0.75rem; padding: 0.125rem 0.5rem; }
-  [data-view="list"] .rule-name { flex: 1; min-width: 0; }
-  [data-view="list"] .rule-issues { margin-top: 0; }
+  [data-view="list"] :is(.rule-body, .example-body) { flex: 1; min-width: 0; }
   [data-view="list"] .rule-fold, [data-view="list"] .example-count { display: inline-flex; }
   [data-view="list"] [data-foldable] > .rule-card { cursor: pointer; }
   [data-view="list"] .example-stack { display: none; margin: 0.5rem 0 0 1.75rem; gap: 0.5rem; }
@@ -83,7 +80,9 @@
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-yellow-100 border-l-2 border-yellow-400 rounded-sm"></span>ストーリー</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-blue-100 border-l-2 border-blue-400 rounded-sm"></span>ルール</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-blue-50 border border-dashed border-blue-400 rounded-sm"></span>提案中のルール</span>
-  <span class="flex items-center gap-1"><span class="inline-flex items-center justify-center w-3 h-3 rounded-full bg-blue-600 text-white text-[9px] font-semibold leading-none">✓</span>テストが自動化している</span>
+  <span class="flex items-center gap-1"><span class="inline-flex items-center rounded-sm px-0.5 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg></span>テストが自動化している</span>
+  
+  
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm"></span>具体例</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-red-100 border-l-2 border-red-400 rounded-sm"></span>疑問点</span>
   <span class="flex items-center gap-1"><span class="inline-block w-3 h-3 bg-pink-100 border-l-2 border-pink-400 rounded-sm"></span>ユビキタス言語</span>
@@ -108,7 +107,7 @@
 <div class="list-head items-baseline gap-2">
   <span class="w-2.5 h-2.5 rounded-sm bg-blue-400"></span>
   <h2 class="text-sm font-semibold text-gray-800">ルール</h2>
-  <span class="text-xs text-gray-400">7</span>
+  <span class="text-xs text-gray-400">8</span>
 </div>
 
 
@@ -124,21 +123,23 @@
 <a href="#rule-R-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-01</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">テストは自動化する対象を、マーカー付きのlivt URIで示す</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-blue-600 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
       
-      
-      
-      <div class="rule-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="rule-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/scan_test.go#L112" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: scan_test.go:112</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/automation/scan_test.go#L114" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: scan_test.go:114</span></a>
+
       </div>
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>6</span>
       
@@ -154,19 +155,19 @@
 <a href="#rule-R-01-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">コメント行に livt:automates と1つのlivt URIを並べて書く</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/scan_test.go#L44" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: scan_test.go:44</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/automation/scan_test.go#L46" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: scan_test.go:46</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -177,19 +178,19 @@
 <a href="#rule-R-01-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">コメントの書き方は各言語の構文に従い、livtは言語を知らない</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/scan_test.go#L64" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: scan_test.go:64</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/automation/scan_test.go#L66" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: scan_test.go:66</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -200,19 +201,19 @@
 <a href="#rule-R-01-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">マーカーのない裸のlivt URIはただの参照で、自動化として数えない</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/scan_test.go#L83" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: scan_test.go:83</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/automation/scan_test.go#L85" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: scan_test.go:85</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -223,19 +224,19 @@
 <a href="#rule-R-01-example-EX-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">1つのテストが複数を自動化するなら、1行1URIで並べる</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/scan_test.go#L95" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: scan_test.go:95</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/automation/scan_test.go#L97" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: scan_test.go:97</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -246,11 +247,12 @@
 <a href="#rule-R-01-example-EX-05" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-05</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">プレースホルダを含むURIは引用として数えない（マーカーの書き方をドキュメントに示せる）</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -261,11 +263,12 @@
 <a href="#rule-R-01-example-EX-06" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-06</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">マーカーはあるがURIが1つに読めない行は、黙って落とさず警告する</span>
       
       
       
-      
+      </div>
     </div>
     
     </div>
@@ -284,12 +287,16 @@
 <a href="#rule-R-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-02</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">走査はルールと具体例を独立に拾い、構造を推論しない</span>
       
       
       
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
       
@@ -305,19 +312,19 @@
 <a href="#rule-R-02-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">ルールのURIを引用すればルールが、具体例のURIを引用すればその具体例が自動化済みになる</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/scan_test.go#L127" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: scan_test.go:127</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/automation/scan_test.go#L129" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: scan_test.go:129</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -328,11 +335,12 @@
 <a href="#rule-R-02-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">具体例が全て引用されていても、ルール自身は自動化済みにならない</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -343,19 +351,19 @@
 <a href="#rule-R-02-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">ルールを囲むブロックに具体例のケースを入れ子にするのは書き手の作法で、走査は行とURIしか見ない</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/scan_test.go#L142" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: scan_test.go:142</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/automation/scan_test.go#L144" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: scan_test.go:144</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -366,11 +374,12 @@
 <a href="#rule-R-02-example-EX-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">構造を読まないから、テストフレームワークごとの知識を持たずに済む</span>
       
       
       
-      
+      </div>
     </div>
     
     </div>
@@ -389,12 +398,16 @@
 <a href="#rule-R-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-03</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">どの実装リポジトリが参加するかは実装側のCIが決め、livtリポジトリは宣言を持たない</span>
       
       
       
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>7</span>
       
@@ -410,11 +423,12 @@
 <a href="#rule-R-03-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">livt automations &lt;path&gt; がそのチェックアウトを走査してレポートを出す</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -425,11 +439,12 @@
 <a href="#rule-R-03-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">livtリポジトリはsubmoduleを持たない（ピン留めは投影の鮮度を殺す）</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -440,11 +455,12 @@
 <a href="#rule-R-03-example-EX-08" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-08</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">実装リポジトリは走査せず、マージしたrevを通知するだけで、そのrevをfetchして走査するのはlivtリポジトリ側</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -455,11 +471,12 @@
 <a href="#rule-R-03-example-EX-09" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-09</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">参加は実装リポジトリのCIにlivtが配るactionを1つ足すことで決まり、走査の作法を写す必要はない</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -470,11 +487,12 @@
 <a href="#rule-R-03-example-EX-10" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-10</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">資格情報は実装リポジトリ側がlivtリポジトリへdispatchを送る1本と、livtリポジトリ側が実装リポジトリを読む1本（publicなら後者は要らない）</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -485,11 +503,12 @@
 <a href="#rule-R-03-example-EX-11" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-11</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">livtリポジトリ自身が実装リポジトリを兼ねる場合も、既定のGITHUB_TOKENでは足りない（それが署名したdispatchはworkflowを起動しない）</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -500,11 +519,12 @@
 <a href="#rule-R-03-example-EX-12" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-12</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">参加には段階があり、通知を組む前に手元の走査から始められる（レポートの型が同じなので、後でCIに移しても同じものが出る）</span>
       
       
       
-      
+      </div>
     </div>
     
     </div>
@@ -523,12 +543,16 @@
 <a href="#rule-R-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-04</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">レポートは引用の事実だけを運び、判断を持たない</span>
       
       
       
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
       
@@ -544,11 +568,12 @@
 <a href="#rule-R-04-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">各エントリはlivt URIとファイル・行を示す</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -559,11 +584,12 @@
 <a href="#rule-R-04-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">レポートは実装リポジトリの識別子・rev・生成時刻を名乗る</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -574,11 +600,12 @@
 <a href="#rule-R-04-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">自動化済みかどうかの判断は書かない（導出はderive-automation-status側）</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -589,19 +616,19 @@
 <a href="#rule-R-04-example-EX-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">汚れた作業ツリーではrevを名乗らない（走査は作業ツリーを読むので、HEADを名乗ると行がズレる）</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/git_test.go#L63" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: git_test.go:63</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/automation/git_test.go#L65" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: git_test.go:65</span></a>
+
       </div>
       
+      </div>
     </div>
     
     </div>
@@ -620,12 +647,16 @@
 <a href="#rule-R-05" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-05</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">レポートはlivtリポジトリにコミットし、書き戻しは機械だけが行う</span>
       
       
       
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>8</span>
       
@@ -641,11 +672,12 @@
 <a href="#rule-R-05-example-EX-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">レポートは生成物としてディスカバリーの成果物の外に置き、人は手で編集しない</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -656,11 +688,22 @@
 <a href="#rule-R-05-example-EX-06" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-06</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">レポートは生成時刻を名乗り、古いレポートは古いものとして映る</span>
       
       
       
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
+        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/builder/build_info_test.go#L37" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_info_test.go:37</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/builder/build_info_test.go#L74" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_info_test.go:74</span></a>
+
+      </div>
       
+      </div>
     </div>
     
     
@@ -671,11 +714,12 @@
 <a href="#rule-R-05-example-EX-07" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-07</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">読み手はlivtリポジトリの権限だけで状況を読め、実装リポジトリへの権限は要らない</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -686,11 +730,12 @@
 <a href="#rule-R-05-example-EX-08" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-08</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">artifactや外部サービスには置かない（読むのに同じ権限が要り、期限で消え、過去のリビジョンで引けない）</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -701,11 +746,12 @@
 <a href="#rule-R-05-example-EX-10" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-10</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">置き場は automations/{owner}/{repo}.json で、実装リポジトリごとに1ファイル</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -716,11 +762,12 @@
 <a href="#rule-R-05-example-EX-11" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-11</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">内容が変わったときだけPRを出し、ブランチは実装リポジトリごとに1本を更新する</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -731,11 +778,12 @@
 <a href="#rule-R-05-example-EX-13" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-13</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">実装リポジトリのCIはマージしたrevを通知するだけで、走査もPR作成もlivtリポジトリ側が行う</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -746,11 +794,12 @@
 <a href="#rule-R-05-example-EX-14" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-14</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">置き場・ブランチ名・コミット・PR本文を知るのはlivtリポジトリ側だけで、実装リポジトリは通知先しか知らない</span>
       
       
       
-      
+      </div>
     </div>
     
     </div>
@@ -769,12 +818,26 @@
 <a href="#rule-R-06" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-06</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">テストの所在はforgeのURLとして運べるが、無くても自動化の判定は変わらない</span>
       
       
       
       
+      <div class="rule-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
+        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/automation/git_test.go#L3" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: git_test.go:3</span></a>
+
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/automation/scan_test.go#L3" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: scan_test.go:3</span></a>
+
+      </div>
       
+      
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
       
@@ -790,19 +853,19 @@
 <a href="#rule-R-06-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">既定で知るのは github.com と gitlab.com のURL形だけ</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/git_test.go#L5" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: git_test.go:5</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/automation/git_test.go#L7" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: git_test.go:7</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -813,19 +876,19 @@
 <a href="#rule-R-06-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">セルフホストはホスト名で見分けられないので、forgeかテンプレートをCIが宣言する</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/git_test.go#L25" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: git_test.go:25</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/automation/git_test.go#L27" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: git_test.go:27</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -836,19 +899,19 @@
 <a href="#rule-R-06-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">URLはrevで固定し、走査した時点のコードを指す</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/scan_test.go#L174" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: scan_test.go:174</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/automation/scan_test.go#L176" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: scan_test.go:176</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -859,19 +922,19 @@
 <a href="#rule-R-06-example-EX-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">URLを組み立てられないときはファイルと行をそのまま示し、リンクにしない</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/scan_test.go#L191" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: scan_test.go:191</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/automation/scan_test.go#L193" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: scan_test.go:193</span></a>
+
       </div>
       
+      </div>
     </div>
     
     </div>
@@ -890,12 +953,16 @@
 <a href="#rule-R-07" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-07</a>
 
+      
+      
+      <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">走査もPRも、引用の集合が変わったかだけで決める</span>
       
       
       
       
       
+      </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>7</span>
       
@@ -911,19 +978,19 @@
 <a href="#rule-R-07-example-EX-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">pushの差分がマーカー行を足すか消したときだけ走査する</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/changed_test.go#L69" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: changed_test.go:69</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/automation/changed_test.go#L69" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: changed_test.go:69</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -934,19 +1001,19 @@
 <a href="#rule-R-07-example-EX-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">マーカー行の削除も走査の理由になる（テストが消えたのに自動化済みのまま残ると、ボードは現在について嘘をつく）</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/changed_test.go#L81" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: changed_test.go:81</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/automation/changed_test.go#L81" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: changed_test.go:81</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -957,19 +1024,19 @@
 <a href="#rule-R-07-example-EX-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">行の移動やファイルの改名では走査しない（レポートはrevで固定した時点のスナップショットで、後の移動はリンクを壊さない）</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/changed_test.go#L109" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: changed_test.go:109</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/automation/changed_test.go#L109" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: changed_test.go:109</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -980,11 +1047,12 @@
 <a href="#rule-R-07-example-EX-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">走査するときは差分を当てず、リポジトリ全体のレポートを作り直す</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -995,19 +1063,19 @@
 <a href="#rule-R-07-example-EX-05" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-05</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">比べる基点が無いpushは走査する（新しいブランチやforce pushでは差分を読めない）</span>
       
       
       
-      <span title="テストで自動化済み" class="automated-badge absolute -top-2 -right-2 rounded-full bg-green-700 text-white text-[10px] font-semibold px-1.5 py-0.5 shadow select-none">✓ 自動化済み</span>
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-x-2 gap-y-0.5 font-mono text-[10px] font-normal">
+      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         
-        <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/cmd/automations_test.go#L9" target="_blank" rel="noopener" title="テストで自動化済み" class="text-blue-600 hover:underline">&#10003; livt: automations_test.go:9</a>
-        
+
+<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/cmd/automations_test.go#L9" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: automations_test.go:9</span></a>
+
       </div>
       
+      </div>
     </div>
     
     
@@ -1018,11 +1086,12 @@
 <a href="#rule-R-07-example-EX-06" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-06</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">PRを出すかは引用の集合で比べる（rev・生成時刻・revから組むURLは走行ごとに動く）</span>
       
       
       
-      
+      </div>
     </div>
     
     
@@ -1033,11 +1102,125 @@
 <a href="#rule-R-07-example-EX-07" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-07</a>
 
+      <div class="example-body min-w-0">
       <span class="sticky-text">判定はlivtのコマンドが持ち、CIは答えを受けて分岐するだけ（マーカーの綴りはlivtのもので、CIに写すと二重定義になる）</span>
       
       
       
+      </div>
+    </div>
+    
+    </div>
+    
+  </div>
+
+  <div class="rule-group" data-rule-group data-foldable>
+    
+    
+    <div id="rule-R-08" class="rule-card relative bg-blue-100 border-blue-400 shadow text-gray-800 border-l-4 px-3 pt-3 pb-6 rounded font-semibold scroll-mt-24">
       
+      <button type="button" data-fold aria-expanded="false" aria-controls="examples-7" aria-label="具体例" class="rule-fold w-4 shrink-0 justify-center text-gray-400"><span class="chevron" aria-hidden="true">&#9656;</span></button>
+      
+      
+
+<a href="#rule-R-08" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-08</a>
+
+      
+      
+      <div class="rule-body min-w-0">
+      <span class="rule-name sticky-text">ルールをどこで引用するかは実装リポジトリで働くAIスキルが導き、走査は推論しない</span>
+      
+      
+      
+      
+      
+      </div>
+      
+      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>5</span>
+      
+    </div>
+    
+    <div id="examples-7" class="example-stack">
+    
+    
+    
+    <div id="rule-R-08-example-EX-01" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-08-example-EX-01" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">ルールを囲むブロックがあるテストでは、ブロックにルールを、中の各ケースに具体例を引用する</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-08-example-EX-03" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-08-example-EX-03" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">具体例がすべて自動化されたからルールも自動化とみなすのはスキルの判断で、走査と導出は具体例の引用からルールを導かない</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-08-example-EX-04" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-08-example-EX-04" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">ルールを引用した後に具体例が増えても、スキルはルールの引用を外さず、増えた具体例に引用が無いことはサイトのボードで気付ける（ルールと具体例を独立に扱う以上、ルールの印だけでは崩れを言えない）</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-08-example-EX-07" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-08-example-EX-07" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-07</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">具体例はそれぞれ自分のテストケースを持ち、その引用はケースの直上に置く（入れ子でもフラットでも同じ）</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-08-example-EX-08" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-08-example-EX-08" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-08</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">囲むブロックのないフラットなテストでは、ルールの具体例がすべて引用されたときにルールの引用を足すが、具体例のURIがすでにルールを示すので近くで何度も繰り返さない（ファイルに1行はその一例で、置き方は決めない）</span>
+      
+      
+      
+      </div>
     </div>
     
     </div>
@@ -1049,24 +1232,12 @@
     <div class="list-head items-baseline gap-2">
       <span class="w-2.5 h-2.5 rounded-sm bg-red-400"></span>
       <h2 class="text-sm font-semibold text-gray-800">疑問点</h2>
-      <span class="text-xs text-gray-400">2</span>
+      <span class="text-xs text-gray-400">1</span>
     </div>
     <div class="question-head bg-red-50 border-l-4 border-red-300 p-3 rounded text-xs font-semibold text-red-400 uppercase tracking-wide">
       疑問点
     </div>
     <div class="question-stack">
-    
-    
-    
-    <div id="question-Q-01" class="question-card relative bg-red-100 border-red-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
-      
-
-<a href="#question-Q-01" data-copy-link title="リンクをコピー"
-   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-red-400/70 hover:text-red-600 hover:underline cursor-pointer select-none">#Q-01</a>
-
-      <span class="sticky-text">囲むブロックを持たないフラットなテストで、ルールのlivt URIをどこに引用するか（本リポジトリは259個のトップレベル関数でt.Runは1ファイルのみ。入れ子の作法がそのまま当てはまらない）</span>
-      
-    </div>
     
     
     
@@ -1123,6 +1294,13 @@
 
 <a href="../ubiquitous.html#story" class="inline-flex items-center gap-2 bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-pink-200 transition">
   <span class="flex flex-col items-start"><span>ストーリー</span></span><span>&rarr;</span>
+</a>
+
+
+
+
+<a href="../ubiquitous.html#automation" class="inline-flex items-center gap-2 bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-pink-200 transition">
+  <span class="flex flex-col items-start"><span>自動化</span></span><span>&rarr;</span>
 </a>
 
 
