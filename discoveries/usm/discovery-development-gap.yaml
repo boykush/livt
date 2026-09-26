@@ -5,6 +5,7 @@ ubiquitous:
   - story
   - livt-uri
   - livt-repository
+  - automation
 activities:
   - key: fill-unautomated-gap
     name: 実装リポジトリでギャップを埋める
