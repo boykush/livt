@@ -4,8 +4,6 @@ title: livt and BDD - livt
 
 # livt and BDD
 
-livt keeps what a team agreed in a discovery conversation, so the decision can still be read and cited when someone implements it months later.
-
 ## BDD, now that coding agents write the code
 
 In BDD, a team keeps what it agreed as one consistent specification.
