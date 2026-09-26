@@ -42,6 +42,7 @@ BDD has always aimed at one flow: find the rules together, formulate them, and a
 
 ### Solution Idea
 
+- Rules live as text in the repository, and each change to a rule is a commit of its own
 - A coding agent does the interpreting that step definitions used to do
 - Every rule and example has a URI, and a test cites the URI of what it automates
 - Tests can sit at any layer in any repository; livt collects their citations mechanically and shows each rule's status
