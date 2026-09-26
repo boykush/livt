@@ -1,5 +1,7 @@
 package builder
 
+// livt:automates livt://mapping/scope-terms-by-context/rule/R-03
+
 import (
 	"os"
 	"path/filepath"

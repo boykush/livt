@@ -1,5 +1,7 @@
 package diff
 
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-01
+
 import (
 	"os/exec"
 	"path/filepath"

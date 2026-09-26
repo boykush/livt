@@ -1,5 +1,7 @@
 package builder
 
+// livt:automates livt://mapping/overview-open-questions/rule/R-02
+
 import (
 	"encoding/json"
 

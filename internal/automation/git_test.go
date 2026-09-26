@@ -1,5 +1,7 @@
 package automation
 
+// livt:automates livt://mapping/collect-automations/rule/R-06
+
 import "testing"
 
 // livt:automates livt://mapping/collect-automations/rule/R-06/example/EX-01

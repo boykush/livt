@@ -1,5 +1,7 @@
 package mcp
 
+// livt:automates livt://mapping/trace-test-to-rule/rule/R-01
+
 import (
 	"context"
 	"encoding/json"
