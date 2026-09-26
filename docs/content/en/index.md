@@ -17,13 +17,7 @@ An excerpt of livt's own example mapping, translated from Japanese. The test bel
 
 [See the whole board](https://boykush.github.io/livt/demo/mapping/collect-automations.html)
 
-## BDD, now that coding agents write the code
-
-In BDD, a team keeps what it agreed as one consistent specification.
-
-An Example Mapping does not end with the conversation, though. Its open questions get answered during development, and its rules change. livt records the Example Mapping itself, in its own format: it holds what a feature file would, and lets every role follow it through to completion, designers and product managers as much as developers.
-
-Coding agents have changed the situation. Automating an agreed rule is now work an agent can take on. Following the test pyramid, an Example Mapping's rules and examples end up automated at different layers and in different languages. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins, and works through what those differences bring with it.
+## Why livt
 
 <!-- The boxes below are livt's own opportunity canvas, for livt as a whole. Their headings are the labels the demo gives a canvas's boxes. -->
 

@@ -37,6 +37,10 @@ livt keeps the map anyway, because an Example Mapping does not end with the conv
 
 livt takes the Example Mapping, not a feature file, as the source, and keeps its format so that every role owns it. In livt, formulation means rewriting that mapping. Gherkin, where a team wants it, would be generated from it, though livt does not generate it today.
 
+### It leaves automation to agents
+
+Coding agents have changed the situation. Automating an agreed rule is now work an agent can take on. Following the test pyramid, an Example Mapping's rules and examples end up automated at different layers and in different languages. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins, and works through what those differences bring with it.
+
 ## What livt does not do
 
 - **Run tests.** Tests stay in your repositories and run with the tools you already use.
