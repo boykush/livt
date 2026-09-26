@@ -49,15 +49,15 @@
         <article class="phase">
           <div class="phase-text">
             <h3>自動化：AI エージェントに任せる</h3>
-            <p>AI エージェントの進化で、合意したルールの自動化はエージェントに任せられるようになりました。テストピラミッドに沿うと、1つの実例マッピングのルールや具体例が、別々のレイヤや言語のテストで自動化されます。livt はそのための型とツールを CLI と AI プラグインとして渡し、テストからの引用を集めて自動化レポートに出力します。</p>
+            <p>AI エージェントの進化で、合意したルールの自動化はエージェントに任せられるようになりました。テストピラミッドに沿うと、1つの実例マッピングのルールや具体例が、別々のレイヤや言語のテストで自動化されます。livt はそのための型とツールを CLI と AI プラグインとして渡します。テストはルールや具体例を <a href="https://boykush.github.io/livt/demo/ubiquitous.html#livt-uri">livt URI</a> で引用し、livt がその引用を集めて自動化レポートに出力します。</p>
           </div>
           <figure class="fig fan">
             <div class="fan-end"><span class="node map">実例マッピング</span><span class="fan-ids">R-01 · R-02 · EX-02</span></div>
             <div class="fan-arrow" aria-hidden="true">↓</div>
             <div class="fan-tests">
-              <div class="test"><span class="layer">バックエンド（Go）</span><code>// livt:automates …/rule/R-01</code></div>
-              <div class="test"><span class="layer">フロントエンド（TypeScript）</span><code>// livt:automates …/rule/R-01/example/EX-02</code></div>
-              <div class="test"><span class="layer">E2E</span><code>// livt:automates …/rule/R-02</code></div>
+              <div class="test"><span class="layer">バックエンド（Go）</span><code>// livt:automates livt://…/rule/R-01</code></div>
+              <div class="test"><span class="layer">フロントエンド（TypeScript）</span><code>// livt:automates livt://…/rule/R-01/example/EX-02</code></div>
+              <div class="test"><span class="layer">E2E</span><code>// livt:automates livt://…/rule/R-02</code></div>
             </div>
             <div class="fan-arrow" aria-hidden="true">↓</div>
             <div class="fan-end"><span class="node livt"><span class="nm">livt automations</span><span class="roles">テストの引用を集めて出力</span></span></div>
