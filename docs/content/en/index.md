@@ -46,9 +46,9 @@ Coding agents have changed the situation. Automating an agreed rule is now work 
 
 ### Solution Idea
 
-- Keep recording the Example Mapping itself, as something every role owns
-- Leave automation to coding agents, and give them a shape and tools as a CLI and plugins
-- Tests cite the rules they automate, and livt gathers which rule is automated where
+- Record the Example Mapping itself, and give every role one place to follow it until its questions are resolved
+- Keep rule changes as diffs of the Example Mapping, readable by every role
+- Leave automation to coding agents, and gather the rules their tests cite to show which rule is automated where
 
 ### What Will Users Do To Get Value?
 
