@@ -296,8 +296,8 @@ type Sidebar struct {
 	Terms     int
 	// LivtVersion, SpecVersion and Built are what the foot of every page says
 	// this build was made from, and the link there leads to the rest of it.
-	// They sit below the nav rather than in it: none of the three is spec or a
-	// view of spec, and the foot is where a version is looked for.
+	// They sit below the nav rather than in it: none of the three is a decision or
+	// a view of one, and the foot is where a version is looked for.
 	LivtVersion string
 	SpecVersion string
 	Built       string
@@ -619,7 +619,7 @@ type mappingView struct {
 	Diff       *diffMarkView
 	// Ghosts marks the stickies the board is only showing because they were
 	// withdrawn in this diff. What became of them is on their own mark; this
-	// only says to draw them as no longer spec.
+	// only says to draw them as no longer agreed.
 	Ghosts map[string]bool
 	// DiffMarks is every changed URI on this board, keyed by URI: the stickies
 	// are rendered straight off the domain types, so the mark is looked up
@@ -677,7 +677,7 @@ func renderStory(w io.Writer, lang i18n.Lang, story *domain.Story, mappingPath s
 
 // renderMapping draws the board from the mapping's active view: a retired
 // sticky is off the wall, whichever kind it is, so the board shows what the
-// spec asks for today.
+// team has agreed today.
 func renderMapping(w io.Writer, lang i18n.Lang, bd board, name, storyPath string, ubiquitous []termCard, diff *diffMarkView, marks map[string]*diffMarkView) error {
 	return templates(lang).ExecuteTemplate(w, "mapping.html", mappingView{
 		Name: name, StoryPath: storyPath, Mapping: bd.Mapping,

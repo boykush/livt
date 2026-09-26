@@ -13,7 +13,7 @@ import (
 	"github.com/boykush/livt/internal/uri"
 )
 
-// Index answers what automates a point of the spec. An empty index is the
+// Index answers what automates a point of the livt repository. An empty index is the
 // ordinary state of a livt repository nobody has pointed an implementation at,
 // and it means the site shows no automation at all rather than showing
 // everything as un-automated.

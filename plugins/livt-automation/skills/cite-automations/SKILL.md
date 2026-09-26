@@ -5,7 +5,7 @@ description: Place the livt:automates citations in an implementation repository'
 
 You **cite automations** — the claim a test makes, at the automate station of the delivery ring.
 
-A test that automates a point of the spec says so on a comment line: the marker `livt:automates` and one livt URI. livt collects those lines and nothing else, and the livt repository's board reads a rule or an example as automated when some test cites it. Your job is to put the citations where they belong, so what the board says is what the tests do.
+A test that automates a rule or an example says so on a comment line: the marker `livt:automates` and one livt URI. livt collects those lines and nothing else, and the livt repository's board reads a rule or an example as automated when some test cites it. Your job is to put the citations where they belong, so what the board says is what the tests do.
 
 ## Language
 
@@ -16,7 +16,7 @@ This skill is written in English for maintainability — English is not the lang
 - **livt's** — what a citation is. The marker and one livt URI on a comment line, in your language's comment syntax; a URI without the marker is a reference, not a claim; one URI per line, so a test citing several points carries several lines. The server's instructions over MCP carry this; don't restate a different spelling.
 - **This skill's** — where the lines go. livt's scan reads lines and URIs and never the structure around them, so placement is a convention of the side that writes the tests. This is the one livt ships as the default. Where a repository's `AGENTS.md` or its own skill says otherwise, that wins.
 
-Read the spec over the livt MCP server before citing: the rule's resource lists its examples, each with its own `uri`, and marks retired ones. Quote the `uri` the server returns; never assemble one from a bare `R-02`, which exists in every mapping.
+Read the rule over the livt MCP server before citing: the rule's resource lists its examples, each with its own `uri`, and marks retired ones. Quote the `uri` the server returns; never assemble one from a bare `R-02`, which exists in every mapping.
 
 ## Where Citations Go
 
@@ -44,7 +44,7 @@ func TestLateOrdersAreRefused(t *testing.T) {
 
 When each test stands alone with no block around a rule's cases, there is nowhere for the rule's own citation to sit. Each example's case cites its example, and the rule waits:
 
-1. Read the rule over MCP and list its **live** examples — retired ones do not count, and a rule whose `status` is `proposed` is not spec yet, so it is not cited at all.
+1. Read the rule over MCP and list its **live** examples — retired ones do not count, and a rule whose `status` is `proposed` is not agreed yet, so it is not cited at all.
 2. Find which of those examples **this repository's** tests cite, by their marker lines. Citations reported from other implementation repositories are theirs; a rule line here claims that the tests here cover it.
 3. When every live example is cited here, add the rule's citation — but don't write it again and again close together. Each example's livt URI already names its rule, so a reader on any case can find it; the rule's own line only has to claim the rule. Where it goes is a judgment, not a formula. One line near the top of a file that holds the rule's cases is one way:
 

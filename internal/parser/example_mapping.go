@@ -30,7 +30,7 @@ type ruleYAML struct {
 	// means accepted, and it is the whole of a rule's standing: nothing else
 	// closes a rule.
 	Status string `yaml:"status"`
-	// SupersededBy carries the retirement's other half: where the spec went.
+	// SupersededBy carries the retirement's other half: what replaced it.
 	// It is livt URIs rather than bare ids so a successor in another mapping is
 	// sayable, and it is a list so a rule that split into two can name both.
 	SupersededBy []string `yaml:"superseded_by"`
@@ -38,7 +38,7 @@ type ruleYAML struct {
 
 // status reads the rule's status, defaulting an omitted one. An unknown
 // value fails the parse: read as the default, a mistyped "proposed" would put
-// an unagreed rule on the board as spec, with nothing there to say so.
+// an unagreed rule on the board as agreed, with nothing there to say so.
 func (r ruleYAML) status() (domain.RuleStatus, error) {
 	status := domain.RuleStatusDefault
 	if r.Status != "" {

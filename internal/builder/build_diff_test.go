@@ -245,7 +245,7 @@ func TestTheDiffReadsOnlyReportsTheRepositoryHolds(t *testing.T) {
 
 // livt:automates livt://mapping/review-diff-between-revisions/rule/R-05/example/EX-05
 // What left the board goes back on it, in the language the board already has
-// for a sticky that is not spec. A count says something went and nothing
+// for a sticky that is not agreed. A count says something went and nothing
 // about what it said, which is the reviewer's actual question.
 func TestABoardPutsBackWhatLeftItInThisDiff(t *testing.T) {
 	b := emptyDirsBuilder(t)
@@ -296,7 +296,7 @@ func TestABoardPutsBackWhatLeftItInThisDiff(t *testing.T) {
 }
 
 // A build given no revisions draws the active view and nothing else: the board
-// says what the spec asks for today, and a retired rule is not part of that.
+// says what the team has agreed today, and a retired rule is not part of that.
 func TestABoardWithoutADiffPutsNothingBack(t *testing.T) {
 	b := emptyDirsBuilder(t)
 	if err := b.resetGeneratedDirs(); err != nil {
@@ -319,7 +319,7 @@ func TestABoardWithoutADiffPutsNothingBack(t *testing.T) {
 
 // livt:automates livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-07
 // The entry's colour comes from its lines, because its lines now follow the
-// spec too. Nothing is painted on top of them.
+// decision too. Nothing is painted on top of them.
 func TestAWithdrawnEntryReadsRedFromItsOwnLines(t *testing.T) {
 	withdrawn := ruleChange("R-01", diff.BecameWithdrawn)
 	withdrawn.Lines = []diff.Line{{Op: diff.OpDel, Field: diff.Field{Value: "the statement that stops holding"}}}

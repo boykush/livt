@@ -18,7 +18,7 @@ var ja = Catalog{
 
 	"build.title":        "ビルド情報",
 	"build.livt":         "livt",
-	"build.spec":         "仕様",
+	"build.spec":         "リビジョン",
 	"build.built":        "ビルド",
 	"build.unknown":      "不明",
 	"build.reports":      "読んだ自動化レポート",

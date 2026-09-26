@@ -1,11 +1,11 @@
 ---
 title: livt - Living Text
-description: livt keeps what your team agreed on its boards, each in its own format, owned by every role on the team. Coding agents read it and carry it through to automation.
+description: livt keeps the decisions your team makes on its boards as a decision log of the opportunities it is working on, each board in its own format. Coding agents read it as context and carry it through to automation.
 ---
 
 # Your team's product decisions, living in text — context for AI.
 
-Teams decide what to build on a whiteboard, often an online one such as Miro or FigJam. livt keeps what they agreed in the repository, each board in its own format, so that every role on the team owns it. Coding agents read it and follow it as one thread, from the opportunity to the tests.
+Teams decide what to build on a whiteboard, often an online one such as Miro or FigJam. livt keeps those decisions in the repository as a log of the opportunities the team is working on, not a specification of everything the product already does. Each board keeps its own format, so that every role on the team owns it. Coding agents read it as context and follow it as one thread, from the opportunity to the tests.
 
 [Open the live demo](https://boykush.github.io/livt/demo/)
 

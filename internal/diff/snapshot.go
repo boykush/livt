@@ -1,7 +1,7 @@
 // Package diff says what changed between two revisions of a livt repository,
 // one livt URI at a time. The unit is the URI rather than the file or the line
 // because that is the address a reader already has for a rule, an example, or a
-// term: a reviewer reading a YAML diff has to rebuild the spec from indentation
+// term: a reviewer reading a YAML diff has to rebuild the decisions from indentation
 // and quoting before the change means anything.
 package diff
 
@@ -105,9 +105,9 @@ type Entry struct {
 	Parent string
 	Title  string
 	Fields []Field
-	// Live is whether the entry is spec in this revision. A rule closed and an
+	// Live is whether the entry is agreed in this revision. A rule closed and an
 	// example or question retired are still on file, and still have to be read
-	// back by their URI, but the spec has stopped asking for them.
+	// back by their URI, but they no longer hold.
 	Live bool
 }
 
@@ -204,7 +204,7 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 					Title:  r.ID + " " + ex.ID,
 					Fields: itemFields(ex.Name, ex.Retired, ex.SupersededBy),
 					// An example under a closed rule went with it: the statement
-					// it illustrates is no longer one the spec makes.
+					// it illustrates is no longer one the team agrees to.
 					Live: !ex.Retired && r.Status.Active(),
 				}, automations))
 			}
@@ -291,7 +291,7 @@ func loadAutomations(dir string) (*automation.Index, error) {
 // withAutomation lines up the implementation repositories whose tests cite the
 // entry, each once. Whether a repository cites it is what a report's pull
 // request is opened over; which test, on which line, moves on every scan. An
-// entry that is not spec gets none: the board counts it nowhere, and one
+// entry that is not agreed gets none: the board counts it nowhere, and one
 // retired in both revisions must stay out of the diff whatever its tests do.
 func withAutomation(e Entry, idx *automation.Index) Entry {
 	if !e.Live {
@@ -491,7 +491,7 @@ func metaFields(meta []domain.MetaField) []Field {
 
 // bodyFields keeps prose line by line, so a reworded sentence diffs to that
 // sentence. Blank lines at either end are dropped: they are how the file is
-// laid out, not anything the spec says.
+// laid out, not anything the record says.
 func bodyFields(body string) []Field {
 	trimmed := strings.Trim(body, "\n")
 	if trimmed == "" {

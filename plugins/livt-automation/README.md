@@ -1,6 +1,6 @@
 # livt-automation
 
-Connect an implementation repository's coding agent to a locally running livt MCP server, so it can read the spec — story maps, stories, example mappings, rules, and the ubiquitous language — straight from the livt repository and cite it by livt URI while automating rules as tests.
+Connect an implementation repository's coding agent to a locally running livt MCP server, so it can read the team's decision log — story maps, stories, example mappings, rules, and the ubiquitous language — straight from the livt repository and cite it by livt URI while automating rules as tests.
 
 ## Where it sits
 
@@ -24,7 +24,7 @@ One server backs every repository on your machine: no per-repo checkout of the l
    livt mcp --http localhost:5488
    ```
 
-   Keep `git pull` current on that checkout — the spec and its `spec_version` are read per request, so updates are served live.
+   Keep `git pull` current on that checkout — the livt repository and its `spec_version` are read per request, so updates are served live.
 
 2. **Install this plugin** in each implementation repository, adding livt's marketplace first if you haven't already:
 
@@ -33,7 +33,7 @@ One server backs every repository on your machine: no per-repo checkout of the l
    /plugin install livt-automation@livt-claude-code-plugins
    ```
 
-The agent can then read the livt repository through the server's tools and resources, which the server lists and describes itself, so the agent needs nothing beyond the connection. A rule whose `status` is `proposed` is a candidate awaiting agreement, not spec to automate yet.
+The agent can then read the livt repository through the server's tools and resources, which the server lists and describes itself, so the agent needs nothing beyond the connection. A rule whose `status` is `proposed` is a candidate awaiting agreement, not a decision to automate yet.
 
 ## Configuration
 
@@ -66,7 +66,7 @@ stdio needs the livt repository's path per repository (`LIVT_ROOT`, or `--root`)
 
 ## Sending automations back
 
-Reading the spec is the **build** station of the [delivery ring](../livt-delivery/README.md); this is the next one, **collect**. Telling the livt repository which rules your tests now cover is what keeps its board reporting the present instead of a guess, and no skill sits at the station — a machine can do it because nothing is being judged. The citation is a claim its author made while writing the test. A test makes it with a marker and a livt URI on a comment line above itself:
+Reading the livt repository is the **build** station of the [delivery ring](../livt-delivery/README.md); this is the next one, **collect**. Telling the livt repository which rules your tests now cover is what keeps its board reporting the present instead of a guess, and no skill sits at the station — a machine can do it because nothing is being judged. The citation is a claim its author made while writing the test. A test makes it with a marker and a livt URI on a comment line above itself:
 
 ```go
 // livt:automates livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}

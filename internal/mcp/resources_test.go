@@ -273,8 +273,8 @@ func TestRulesAlwaysCarryTheirStatus(t *testing.T) {
 	}
 }
 
-// newSupersededTestServer lays out a livt repository whose retired items name where the
-// spec went: R-01 split into R-02 here and a rule in another mapping, EX-01 was
+// newSupersededTestServer lays out a livt repository whose retired items name what
+// replaced them: R-01 split into R-02 here and a rule in another mapping, EX-01 was
 // replaced by EX-02 under the same rule, and Q-01 was settled by R-02.
 func newSupersededTestServer(t *testing.T) *Server {
 	t.Helper()
@@ -345,7 +345,7 @@ func TestSuccessorsTravelAsURIsNotText(t *testing.T) {
 }
 
 // livt:automates livt://mapping/trace-test-to-rule/rule/R-09/example/EX-04
-// A rule the spec simply stopped asking for is retired with nothing to point
+// A rule the team simply stopped agreeing to is retired with nothing to point
 // at, so the field is absent rather than empty.
 func TestRetiredWithoutSuccessorOmitsSupersededBy(t *testing.T) {
 	s := newRetiredTestServer(t)

@@ -14,7 +14,7 @@ livt repository ─▶ file ─▶ build ─▶ collect ─▶ review ─▶ liv
 The boundary with the [discovery ring](../livt-discovery/README.md) is the **record**: no discovery skill reads code, and nothing here decides what the mapping says. Delivery starts when an agreed record is handed outward, and the implementation is first read on the far side of that hand-off, in the implementation repository. Each **station** keeps its name whether or not a skill sits at it:
 
 - **File** — hand the agreed rules, and the story's context, to where the team tracks its work, as issues carrying livt URI backpointers. The created URLs are written back; the livt repository, not the tracker, is the record of what is filed where.
-- **Build** — the implementation repository's own station: test-driven automation of the rules, citing the spec by livt URI. That end of the ring is [livt-automation](../livt-automation/README.md).
+- **Build** — the implementation repository's own station: test-driven automation of the rules, citing the rules by livt URI. That end of the ring is [livt-automation](../livt-automation/README.md).
 - **Collect** — what the tests say they automate, read out of the implementation repository and carried back as a report. No skill sits here: `livt automations` runs in that repository's CI and opens a pull request when the citations change. A machine can do it because nothing is being judged — the citation is a claim its author made while writing the test.
 - **Review** — the human station. The coverage is read here, and what the team learns goes back round as rule changes. Whether a test really covers the rule it names is judged in the review that lands the test, over in the implementation repository, not from a distance here.
 

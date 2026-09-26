@@ -12,7 +12,7 @@
 
 ## What is livt?
 
-livt keeps what a discovery session agreed as text in a repository, shows it as the board it came from, and serves it to the coding agents that build it — so the agreement is still readable, and still quotable, when someone implements it months later.
+livt is your team's decision log for the opportunities it is working on. It keeps what a discovery session decided as text in a repository, shows it as the board it came from, and serves it as context to the coding agents that build it — so the decision is still readable, and still quotable, when someone implements it months later. It is not a specification of everything the product already does.
 
 ![Story Map board](docs/images/story-map.png)
 

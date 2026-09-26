@@ -6,13 +6,13 @@ import (
 	"github.com/boykush/livt/internal/uri"
 )
 
-// The board draws the active view: what the spec asks for today. During a diff
-// it also draws what the spec stopped asking in that range, because that is the
+// The board draws the active view: what the team has agreed today. During a diff
+// it also draws what stopped being agreed in that range, because that is the
 // one reading a review is for — and a count of what went says nothing about
 // what it said.
 //
 // Such a sticky goes back in the language the board already has for one that is
-// not spec: a proposal is pale, dashed and stamped because it is not spec yet,
+// not agreed: a proposal is pale, dashed and stamped because it is not agreed yet,
 // and this is the same statement inverted.
 
 // board is what a mapping page renders, and which of its stickies are only
@@ -54,7 +54,7 @@ func (b *Builder) boardFor(em *domain.ExampleMapping, automationKnown bool) boar
 				continue
 			}
 			// An example under a closed rule went with the rule: the statement
-			// it illustrates is no longer one the spec makes.
+			// it illustrates is no longer one the team agrees to.
 			if ex.Retired || !live {
 				ghosts[exURI] = true
 			}

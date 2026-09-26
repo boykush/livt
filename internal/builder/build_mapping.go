@@ -13,7 +13,7 @@ import (
 
 // mappingTally is one mapping's live counts, keyed by story so an opportunity
 // can sum the stories it took on. Taken off the active view, like the Tasks
-// page and the sidebar badge: a retired rule is not spec anyone is still
+// page and the sidebar badge: a retired rule is not a decision anyone is still
 // waiting on, so counting it would make an opportunity read as less finished
 // than it is.
 type mappingTally struct {

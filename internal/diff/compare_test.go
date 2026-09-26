@@ -310,7 +310,7 @@ func TestCompareDrawsAWithdrawalAsARemoval(t *testing.T) {
 	}
 }
 
-// Where the spec went is what a reader does want from a withdrawal, so the
+// What replaced it is what a reader does want from a withdrawal, so the
 // successor survives the pruning that drops the rest of the bookkeeping.
 func TestCompareKeepsTheSuccessorOfAWithdrawnItem(t *testing.T) {
 	const successor = "livt://mapping/checkout/rule/R-02"
@@ -591,7 +591,7 @@ func TestCompareReadsARepositoryThatStoppedCitingAsItsLineRemoved(t *testing.T) 
 // livt:automates livt://mapping/review-diff-between-revisions/rule/R-07/example/EX-03
 // Every scan names a new revision and time and pins every URL to that
 // revision, so the report file is rewritten top to bottom each time. None of
-// that is a claim about the spec.
+// that is a claim about what the team decided.
 func TestCompareLeavesOutWhatMovesOnEveryScan(t *testing.T) {
 	const rule = "livt://mapping/checkout/rule/R-01"
 	before := report("acme/api", "aaaaaaa", cite(rule, "checkout_test.go", 10))

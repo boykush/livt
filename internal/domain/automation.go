@@ -1,7 +1,7 @@
 package domain
 
 // Automation is one test claiming, in the implementation repository, that it
-// automates this point of the spec. It is derived from the collected reports
+// automates this point of the livt repository. It is derived from the collected reports
 // at build time and never written into a mapping: which tests cover what is
 // the implementation's state, and the livt repository records decisions.
 type Automation struct {

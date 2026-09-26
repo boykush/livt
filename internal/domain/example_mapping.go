@@ -21,7 +21,7 @@ func (em *ExampleMapping) DisplayName(story *Story) string {
 }
 
 // Active returns the mapping without its closed rules and its retired examples
-// and questions — what the spec still asks for. They stay in the livt repository so
+// and questions — what the team still agrees to. They stay in the livt repository so
 // their ids stay taken and their text stays readable, but they are no longer on
 // a board and no longer anything the livt repository calls unfinished.
 func (em *ExampleMapping) Active() *ExampleMapping {

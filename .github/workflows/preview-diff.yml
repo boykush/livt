@@ -1,7 +1,7 @@
 name: Preview diff
 
 # On GitHub a pull request against the livt repository reads as a YAML diff;
-# `livt build --diff` reads the same change as the spec. Publishing that build
+# `livt build --diff` reads the same change as the board. Publishing that build
 # puts it one link from the review, for as long as the review stays open.
 on:
   pull_request:

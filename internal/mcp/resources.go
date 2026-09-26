@@ -10,7 +10,7 @@ import (
 )
 
 // registerResources exposes the livt repository as addressable resources, so a client
-// reads the spec by URI (opportunity -> story map -> story -> mapping -> rule ->
+// reads the livt repository by URI (opportunity -> story map -> story -> mapping -> rule ->
 // example, with the canvas, questions, and ubiquitous terms linked alongside)
 // rather than calling a tool.
 // Only resource templates are advertised — no concrete resources and no
@@ -26,7 +26,7 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "rule",
 		Title:       "Rule",
-		Description: "A single rule, its status, its examples, and its automation record (issues, automated) from a story's example mapping. status is proposed while the rule is put forward but not yet agreed — a candidate to discuss, not spec to automate — accepted once it is, and rejected or retired once it has closed. Rule ids restart in every mapping, so the whole uri — story key included — is what addresses this rule. A closed rule resolves too, carrying retired: true and, when something took its place, superseded_by: the uris to read next.",
+		Description: "A single rule, its status, its examples, and its automation record (issues, automated) from a story's example mapping. status is proposed while the rule is put forward but not yet agreed — a candidate to discuss, not a decision to automate — accepted once it is, and rejected or retired once it has closed. Rule ids restart in every mapping, so the whole uri — story key included — is what addresses this rule. A closed rule resolves too, carrying retired: true and, when something took its place, superseded_by: the uris to read next.",
 		MIMEType:    "application/json",
 		URITemplate: uri.RuleTemplate,
 	}, s.readRule)

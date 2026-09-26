@@ -10,11 +10,11 @@ import "time"
 // line counts as automation.
 const Marker = "livt:automates"
 
-// Citation is one line of one test claiming it automates a point of the spec.
+// Citation is one line of one test claiming it automates a point of the livt repository.
 // File is relative to the scanned repository's root, so the same report reads
 // the same wherever it is checked out.
 type Citation struct {
-	// URI is the point of the spec the test claims. It is spelled out in the
+	// URI is the point of the livt repository the test claims. It is spelled out in the
 	// report because the browsable URL sits beside it, and "uri" next to
 	// "url" is one letter apart from the wrong field.
 	URI  string `json:"livt_uri"`

@@ -14,11 +14,11 @@ var en = Catalog{
 	"nav.diff":             "Diff",
 
 	// What this build was made from. Not a nav entry beside the resource
-	// types: none of it is spec or a view of spec, and the sidebar carries it
+	// types: none of it is a decision or a view of one, and the sidebar carries it
 	// at the foot, where a version is carried.
 	"build.title":        "Build",
 	"build.livt":         "livt",
-	"build.spec":         "Spec",
+	"build.spec":         "Revision",
 	"build.built":        "Built",
 	"build.unknown":      "unknown",
 	"build.reports":      "Automation reports read",
