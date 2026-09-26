@@ -19,7 +19,7 @@ An excerpt of livt's own example mapping, translated from Japanese. The test bel
 
 ## What livt builds on
 
-The core that shapes livt most is BDD, as Gáspár Nagy and Seb Rose set it out in [The BDD Books](https://bddbooks.com/). [livt and BDD](livt-and-bdd.html) covers how the two relate.
+The ideas behind livt come from BDD, as Gáspár Nagy and Seb Rose set it out in [The BDD Books](https://bddbooks.com/), and from Jeff Patton's User Story Mapping. [livt and BDD](livt-and-bdd.html) covers how livt relates to BDD.
 
 <!-- The glossary owns what each practice is, so this gives only its part in the flow and where it comes from, linking the name to the glossary. -->
 

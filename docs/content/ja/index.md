@@ -19,7 +19,7 @@ livt 自身の実例マッピングからの抜粋です。下のテストは R-
 
 ## 土台にしたプラクティス
 
-livt が最も影響を受けている核は、Gáspár Nagy と Seb Rose が『[The BDD Books](https://bddbooks.com/)』で整理した BDD です。BDD との関係は [livt と BDD](livt-and-bdd.html) にまとめています。
+livt の考え方は、Gáspár Nagy と Seb Rose が『[The BDD Books](https://bddbooks.com/)』で整理した BDD と、Jeff Patton の『ユーザーストーリーマッピング』に根ざしています。BDD との関係は [livt と BDD](livt-and-bdd.html) にまとめています。
 
 <!-- 各プラクティスが何かは用語集が持つので、ここには流れの中での役割と出どころだけを書き、名前を用語集へつなぐ。 -->
 
