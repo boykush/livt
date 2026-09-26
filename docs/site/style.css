@@ -189,6 +189,13 @@ h4 { margin: 0 0 10px; font-size: 1.02rem; font-weight: 600; line-height: 1.45; 
 .sec-intro { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 16px clamp(32px, 4.5vw, 64px); align-items: start; margin-bottom: clamp(32px, 4.5vw, 56px); }
 .sec-intro p { color: var(--ink-2); max-width: 36em; font-size: 1.05rem; }
 .sec-intro .copy { display: grid; gap: 14px; }
+.artifacts { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.artifacts a { display: grid; align-content: start; gap: 6px; height: 100%; padding: 18px 18px 20px; border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: inherit; text-decoration: none; box-shadow: var(--shadow); }
+.artifacts a:hover { border-color: var(--ink-3); }
+.artifacts .mk { margin-bottom: 6px; }
+.artifacts b { font-weight: 600; color: var(--ink); }
+.artifacts span { color: var(--ink-2); font-size: .95rem; }
+.artifacts-note { margin-top: 18px; color: var(--ink-3); font-size: .9rem; }
 
 /* livt's own opportunity canvas, in the three zones the demo gives a canvas */
 .canvas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border: 2px solid var(--canvas-edge); border-radius: 10px; overflow: hidden; background: var(--surface); }
@@ -273,6 +280,7 @@ footer { border-top: 1px solid var(--line); }
   .btn, .st, .lang a { transition: background-color .15s, border-color .15s, box-shadow .15s, opacity .15s, color .15s; }
 }
 @media (max-width: 960px) {
+  .artifacts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hero-grid, .sec-intro, .onward { grid-template-columns: minmax(0, 1fr); }
   .canvas { grid-template-columns: minmax(0, 1fr); }
   .panel + .panel { border-left: 0; border-top: 1px solid var(--line); }

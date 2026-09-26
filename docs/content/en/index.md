@@ -17,6 +17,17 @@ An excerpt of livt's own example mapping, translated from Japanese. The test bel
 
 [See the whole board](https://boykush.github.io/livt/demo/mapping/collect-automations.html)
 
+## What livt keeps
+
+<!-- The glossary owns what each one is, so this says only its part in the flow and links the name to the glossary's entry. -->
+
+- [Opportunity Canvas](https://boykush.github.io/livt/demo/ubiquitous.html#opportunity-canvas) — why to build
+- [Story Map](https://boykush.github.io/livt/demo/ubiquitous.html#story-map) — what to build
+- [Example Mapping](https://boykush.github.io/livt/demo/ubiquitous.html#example-mapping) — how it should behave
+- [Ubiquitous Language](https://boykush.github.io/livt/demo/ubiquitous.html#ubiquitous-language) — which words to use
+
+The people behind each practice are credited on [livt and the practices](practices.html).
+
 ## Why livt
 
 <!-- The boxes below are livt's own opportunity canvas, for livt as a whole. Their headings are the labels the demo gives a canvas's boxes. -->
