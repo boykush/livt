@@ -39,6 +39,12 @@ outputs:
   report:
     description: Path the report was written to, relative to this repository
     value: ${{ steps.read.outputs.report }}
+  pull-request:
+    description: The number of the report's pull request, opened or updated by this run; empty when the claims did not change
+    value: ${{ steps.open.outputs.pull-request }}
+  commit:
+    description: The commit this run pushed to that pull request's branch; empty when the claims did not change
+    value: ${{ steps.open.outputs.commit }}
 
 runs:
   using: composite
@@ -172,6 +178,7 @@ runs:
     # snapshot, so the open pull request carries the latest one rather than a
     # queue of them.
     - name: Open the report's pull request
+      id: open
       if: steps.compare.outputs.changed == 'true'
       shell: bash
       env:
@@ -195,12 +202,12 @@ runs:
         read at $REV and rescanned whole. Collected by $RUN_URL.
         EOF
         git push --force "$REMOTE" "HEAD:refs/heads/$branch"
-        if [ -n "$(gh pr list --head "$branch" --state open --json number --jq '.[].number')" ]; then
-          exit 0
-        fi
-        gh pr create --head "$branch" \
-          --title "chore: collect automations from $REPOSITORY" \
-          --body "$(cat <<EOF
+        echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+        number=$(gh pr list --head "$branch" --state open --json number --jq '.[0].number // empty')
+        if [ -z "$number" ]; then
+          url=$(gh pr create --head "$branch" \
+            --title "chore: collect automations from $REPOSITORY" \
+            --body "$(cat <<EOF
         Collected from $REPOSITORY at $REV.
 
         $REPOSITORY reported the revision it merged, and livt read that revision
@@ -211,4 +218,7 @@ runs:
 
         Opened by $RUN_URL.
         EOF
-        )"
+          )")
+          number=${url##*/}
+        fi
+        echo "pull-request=$number" >> "$GITHUB_OUTPUT"
