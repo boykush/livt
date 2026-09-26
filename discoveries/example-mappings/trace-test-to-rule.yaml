@@ -1,6 +1,6 @@
 rules:
   - id: R-01
-    name: 仕様の一点はlivt URIで一意に指せる
+    name: livtリポジトリの一点はlivt URIで一意に指せる
     examples:
       - id: EX-01
         name: ルールは livt://mapping/{story-key}/rule/{rule-id}
