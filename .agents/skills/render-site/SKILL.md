@@ -35,7 +35,7 @@ If a sticky the comment names has been retired or rewritten, draw what the recor
 
 ## Redirects
 
-`docs/site` also holds redirect pages for addresses the mdBook site served, which published release notes link: `installation.html`, `getting-started.html`, `introduction.html`, `livt-and-bdd.html`, and the pages under `guides/` and `reference/`. Leave them alone. A page you rename or remove needs one of its own, in the same form.
+`docs/site` also holds redirect pages for addresses the mdBook site served, which published release notes link: `installation.html`, `getting-started.html`, `introduction.html`, and the pages under `guides/` and `reference/`. Leave them alone. A page you rename or remove needs one of its own, in the same form.
 
 ## Check
 
