@@ -32,7 +32,7 @@ rules:
       - id: EX-03
         name: 各ルールは自分のリソースURI（livt://mapping/{story_key}/rule/{rule_id}）を持つ
   - id: R-05
-    name: 実装リポジトリはルール単位で仕様をリソースとして取得できる
+    name: 実装リポジトリはルール単位で決定をリソースとして取得できる
     examples:
       - id: EX-01
         name: resources/read livt://mapping/{story_key}/rule/{rule_id} で単一ルールと具体例を取得する
