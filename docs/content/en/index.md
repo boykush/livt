@@ -19,12 +19,12 @@ An excerpt of livt's own example mapping, translated from Japanese. The test bel
 
 ## What livt builds on
 
-The core that shapes livt most is BDD. [livt and BDD](livt-and-bdd.html) covers how the two relate.
+The core that shapes livt most is BDD, as Gáspár Nagy and Seb Rose set it out in [The BDD Books](https://bddbooks.com/). [livt and BDD](livt-and-bdd.html) covers how the two relate.
 
 <!-- The glossary owns what each practice is, so this gives only its part in the flow and where it comes from, linking the name to the glossary. -->
 
 - [Opportunity Canvas](https://boykush.github.io/livt/demo/ubiquitous.html#opportunity-canvas) — why to build. Jeff Patton, [Opportunity Canvas](https://jpattonassociates.com/opportunity-canvas/)
-- [User Story Mapping](https://boykush.github.io/livt/demo/ubiquitous.html#story-map) — what to build. Jeff Patton, [story mapping](https://jpattonassociates.com/story-mapping/)
+- [User Story Mapping](https://boykush.github.io/livt/demo/ubiquitous.html#story-map) — what to build. Jeff Patton, User Story Mapping
 - [Example Mapping](https://boykush.github.io/livt/demo/ubiquitous.html#example-mapping) — how it should behave. Matt Wynne, [Introducing Example Mapping](https://cucumber.io/blog/bdd/example-mapping-introduction/) (2015)
 - [Ubiquitous Language](https://boykush.github.io/livt/demo/ubiquitous.html#ubiquitous-language) — which words to use. Eric Evans, Domain-Driven Design
 
