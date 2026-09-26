@@ -1,11 +1,11 @@
 ---
 title: livt - Living Text
-description: BDD for teams whose code is written by coding agents. livt keeps what your team agreed on the board in Example Mapping's own format, owned by every role on the team.
+description: BDD for teams whose code is written by coding agents. livt keeps what your team agreed on its boards, each in its own format, owned by every role on the team.
 ---
 
 # Collaborate on board. Make it living in text.
 
-Teams decide what to build on a whiteboard, often an online one such as Miro or FigJam. livt keeps what they agreed in the repository, in Example Mapping's own format, so that every role on the team owns it. Coding agents read it and carry it through the flow BDD has always aimed at: discovery, formulation and automation.
+Teams decide what to build on a whiteboard, often an online one such as Miro or FigJam. livt keeps what they agreed in the repository, each board in its own format, so that every role on the team owns it. Coding agents read it and carry it through the flow BDD has always aimed at: discovery, formulation and automation.
 
 [Open the live demo](https://boykush.github.io/livt/demo/)
 
