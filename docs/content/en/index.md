@@ -5,7 +5,7 @@ description: livt keeps what your team agreed on its boards, each in its own for
 
 # Collaborate on board. Make it living in text.
 
-Teams decide what to build on a whiteboard, often an online one such as Miro or FigJam. livt keeps what they agreed in the repository, each board in its own format, so that every role on the team owns it. Coding agents read it and carry it through the flow BDD has always aimed at: discovery, formulation and automation.
+Teams decide what to build on a whiteboard, often an online one such as Miro or FigJam. livt keeps what they agreed in the repository, each board in its own format, so that every role on the team owns it. Coding agents read it and follow it as one thread, from the opportunity to the tests.
 
 [Open the live demo](https://boykush.github.io/livt/demo/)
 
