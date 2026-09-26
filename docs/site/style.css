@@ -234,10 +234,7 @@ html[lang="ja"] .page-title { font-size: clamp(2rem, 4.6vw, 3.2rem); line-height
 .block-title h2 { font-size: 1.22rem; line-height: 1.3; letter-spacing: -.01em; }
 html[lang="ja"] .block-title h2 { font-size: 1.12rem; line-height: 1.5; }
 .credits { list-style: none; margin: 0; padding: 0; display: grid; }
-.bdd-why .copy { display: grid; gap: 14px; max-width: 46em; }
-.bdd-why p { color: var(--ink-2); font-size: 1.02rem; }
 .fig { margin: 0; padding: 16px 18px; border: 1px solid var(--line); border-radius: 10px; background: var(--wall); }
-.bdd-why .fig { margin-top: 22px; max-width: 46em; }
 .flow { display: grid; gap: 16px; }
 .flow-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
 .flow-who { flex: 0 0 100%; font-family: var(--font-mono); font-size: .72rem; color: var(--ink-3); }
@@ -262,7 +259,9 @@ html[lang="ja"] .block-title h2 { font-size: 1.12rem; line-height: 1.5; }
 .fan-tests .layer { color: var(--code-dim); font-size: .76rem; }
 .fan-tests code { color: var(--code-ink); font-size: .72rem; overflow-wrap: anywhere; }
 .fan-note { color: var(--ink-2); font-size: .8rem; }
-.departs .cols article { display: grid; gap: 12px; align-content: start; }
+.phase { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 20px clamp(28px, 4vw, 56px); align-items: start; padding-block: 28px; border-top: 1px solid var(--line); }
+.departs .block-title + .phase { padding-top: 4px; border-top: 0; }
+.phase-text { display: grid; gap: 12px; align-content: start; }
 .departs h3 { margin: 0; font-size: 1.02rem; font-weight: 600; line-height: 1.45; }
 .departs p { color: var(--ink-2); font-size: .98rem; }
 .credits-intro { color: var(--ink-2); font-size: .95rem; margin-bottom: 18px; max-width: 34em; }
@@ -291,6 +290,7 @@ footer { border-top: 1px solid var(--line); }
   .btn, .st, .lang a { transition: background-color .15s, border-color .15s, box-shadow .15s, opacity .15s, color .15s; }
 }
 @media (max-width: 960px) {
+  .phase { grid-template-columns: minmax(0, 1fr); }
   .practices li { grid-template-columns: 10px minmax(0, 1fr); }
   .practices .role, .practices .who { grid-column: 2; }
   .hero-grid, .sec-intro, .onward { grid-template-columns: minmax(0, 1fr); }

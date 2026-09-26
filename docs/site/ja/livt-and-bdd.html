@@ -33,45 +33,46 @@
 
   <div class="wrap page-body">
     <div class="bdd-body">
-      <section class="bdd-why">
-        <div class="block-title"><h2>AI 時代の BDD</h2></div>
-        <div class="copy">
-          <p>AI エージェントの進化で、合意したルールの自動化はエージェントに任せられるようになりました。テストピラミッドに沿うと、1つの実例マッピングのルールや具体例が、別々のレイヤや言語のテストで自動化されます。livt はそのための型とツールを、CLI と AI プラグインとして渡します。</p>
-        </div>
-        <figure class="fig fan">
-          <div class="fan-end"><span class="node map">実例マッピング</span><span class="fan-ids">R-01 · R-02 · EX-02</span></div>
-          <div class="fan-arrow" aria-hidden="true">↓</div>
-          <div class="fan-tests">
-            <div class="test"><span class="layer">バックエンド（Go）</span><code>// livt:automates …/rule/R-01</code></div>
-            <div class="test"><span class="layer">フロントエンド（TypeScript）</span><code>// livt:automates …/rule/R-01/example/EX-02</code></div>
-            <div class="test"><span class="layer">E2E</span><code>// livt:automates …/rule/R-02</code></div>
-          </div>
-          <div class="fan-arrow" aria-hidden="true">↓</div>
-          <div class="fan-end"><span class="node report">自動化レポート</span><span class="fan-note">ルールと具体例ごとに、どのテストが引用しているか</span></div>
-        </figure>
-      </section>
-
       <section class="departs">
         <div class="block-title"><h2>プラクティスと違うところ</h2></div>
-        <div class="cols">
-          <article>
-            <h3>実例マッピングを残す</h3>
-            <figure class="fig flow">
-              <div class="flow-row"><span class="flow-who">プラクティス</span><span class="node board">付箋のボード</span><span class="edge">25 分の会話</span><span class="node gherkin">Gherkin</span><span class="flow-note">ボードは役目を終える</span></div>
-              <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node board">付箋のボード</span><span class="edge">合意</span><span class="node map">実例マッピング</span><span class="edge">疑問点の解消・ルールの変更</span><span class="node done">完了</span><span class="flow-note">全職能が同じマップを追う</span></div>
-            </figure>
+        <article class="phase">
+          <div class="phase-text">
+            <h3>発見：実例マッピングを残す</h3>
             <p>Matt Wynne の実例マッピングでは、カードは 25 分の会話のための道具です。会話のあと、ルールと具体例は Gherkin に移ります。</p>
             <p>livt は、実例マッピングそのものを残します。疑問点の解消やルールの変更は開発のあいだも続き、デザイナーを含む全職能が担うからです。</p>
-          </article>
-          <article>
-            <h3>定式化についての立場</h3>
-            <figure class="fig flow">
-              <div class="flow-row"><span class="flow-who">プラクティス</span><span class="node map">実例マッピング</span><span class="edge">書き写す</span><span class="node gherkin">feature file<b class="src">正</b></span></div>
-              <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node map">実例マッピング<b class="src">正</b></span><span class="edge">書き換える</span><span class="node map">実例マッピング</span><span class="edge maybe">要るなら生成</span><span class="node gherkin maybe">Gherkin</span></div>
-            </figure>
+          </div>
+          <figure class="fig flow">
+            <div class="flow-row"><span class="flow-who">プラクティス</span><span class="node board">付箋のボード</span><span class="edge">25 分の会話</span><span class="node gherkin">Gherkin</span><span class="flow-note">ボードは役目を終える</span></div>
+            <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node board">付箋のボード</span><span class="edge">合意</span><span class="node map">実例マッピング</span><span class="edge">疑問点の解消・ルールの変更</span><span class="node done">完了</span><span class="flow-note">全職能が同じマップを追う</span></div>
+          </figure>
+        </article>
+        <article class="phase">
+          <div class="phase-text">
+            <h3>定式化：実例マッピングを正にする</h3>
             <p>主流の BDD では feature file が仕様の正ですが、livt では実例マッピングが正です。livt の<a href="https://boykush.github.io/livt/demo/ubiquitous.html#formulation">定式化</a>は、そのマッピングを書き換えることです。Gherkin は要るならそこから生成するもので、今の livt はまだ生成しません。</p>
-          </article>
-        </div>
+          </div>
+          <figure class="fig flow">
+            <div class="flow-row"><span class="flow-who">プラクティス</span><span class="node map">実例マッピング</span><span class="edge">書き写す</span><span class="node gherkin">feature file<b class="src">正</b></span></div>
+            <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node map">実例マッピング<b class="src">正</b></span><span class="edge">書き換える</span><span class="node map">実例マッピング</span><span class="edge maybe">要るなら生成</span><span class="node gherkin maybe">Gherkin</span></div>
+          </figure>
+        </article>
+        <article class="phase">
+          <div class="phase-text">
+            <h3>自動化：AI エージェントに任せる</h3>
+            <p>AI エージェントの進化で、合意したルールの自動化はエージェントに任せられるようになりました。テストピラミッドに沿うと、1つの実例マッピングのルールや具体例が、別々のレイヤや言語のテストで自動化されます。livt はそのための型とツールを、CLI と AI プラグインとして渡します。</p>
+          </div>
+          <figure class="fig fan">
+            <div class="fan-end"><span class="node map">実例マッピング</span><span class="fan-ids">R-01 · R-02 · EX-02</span></div>
+            <div class="fan-arrow" aria-hidden="true">↓</div>
+            <div class="fan-tests">
+              <div class="test"><span class="layer">バックエンド（Go）</span><code>// livt:automates …/rule/R-01</code></div>
+              <div class="test"><span class="layer">フロントエンド（TypeScript）</span><code>// livt:automates …/rule/R-01/example/EX-02</code></div>
+              <div class="test"><span class="layer">E2E</span><code>// livt:automates …/rule/R-02</code></div>
+            </div>
+            <div class="fan-arrow" aria-hidden="true">↓</div>
+            <div class="fan-end"><span class="node report">自動化レポート</span><span class="fan-note">ルールと具体例ごとに、どのテストが引用しているか</span></div>
+          </figure>
+        </article>
       </section>
 
       <section>

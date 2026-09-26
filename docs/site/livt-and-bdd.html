@@ -33,45 +33,46 @@
 
   <div class="wrap page-body">
     <div class="bdd-body">
-      <section class="bdd-why">
-        <div class="block-title"><h2>BDD, now that coding agents write the code</h2></div>
-        <div class="copy">
-          <p>Coding agents can now take on automating what a team agreed. Following the test pyramid, one Example Mapping's rules and examples end up automated at different layers and in different languages. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins.</p>
-        </div>
-        <figure class="fig fan">
-          <div class="fan-end"><span class="node map">Example Mapping</span><span class="fan-ids">R-01 · R-02 · EX-02</span></div>
-          <div class="fan-arrow" aria-hidden="true">↓</div>
-          <div class="fan-tests">
-            <div class="test"><span class="layer">Backend (Go)</span><code>// livt:automates …/rule/R-01</code></div>
-            <div class="test"><span class="layer">Frontend (TypeScript)</span><code>// livt:automates …/rule/R-01/example/EX-02</code></div>
-            <div class="test"><span class="layer">End-to-end</span><code>// livt:automates …/rule/R-02</code></div>
-          </div>
-          <div class="fan-arrow" aria-hidden="true">↓</div>
-          <div class="fan-end"><span class="node report">Automation report</span><span class="fan-note">Which tests cite each rule and example</span></div>
-        </figure>
-      </section>
-
       <section class="departs">
         <div class="block-title"><h2>Where livt departs from the practice</h2></div>
-        <div class="cols">
-          <article>
-            <h3>It keeps the Example Mapping</h3>
-            <figure class="fig flow">
-              <div class="flow-row"><span class="flow-who">The practice</span><span class="node board">Board of stickies</span><span class="edge">a 25-minute conversation</span><span class="node gherkin">Gherkin</span><span class="flow-note">The board has done its job.</span></div>
-              <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node board">Board of stickies</span><span class="edge">agreement</span><span class="node map">Example Mapping</span><span class="edge">questions answered, rules changed</span><span class="node done">Done</span><span class="flow-note">Every role follows the same map.</span></div>
-            </figure>
+        <article class="phase">
+          <div class="phase-text">
+            <h3>Discovery: it keeps the Example Mapping</h3>
             <p>In Matt Wynne's Example Mapping, the cards serve a 25-minute conversation. Afterwards the rules and examples move into Gherkin.</p>
             <p>livt keeps the Example Mapping itself, because answering its questions and changing its rules go on through development, and fall to every role, designers included.</p>
-          </article>
-          <article>
-            <h3>Its view of Formulation</h3>
-            <figure class="fig flow">
-              <div class="flow-row"><span class="flow-who">The practice</span><span class="node map">Example Mapping</span><span class="edge">copied into</span><span class="node gherkin">feature file<b class="src">source</b></span></div>
-              <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node map">Example Mapping<b class="src">source</b></span><span class="edge">rewritten</span><span class="node map">Example Mapping</span><span class="edge maybe">generated if wanted</span><span class="node gherkin maybe">Gherkin</span></div>
-            </figure>
+          </div>
+          <figure class="fig flow">
+            <div class="flow-row"><span class="flow-who">The practice</span><span class="node board">Board of stickies</span><span class="edge">a 25-minute conversation</span><span class="node gherkin">Gherkin</span><span class="flow-note">The board has done its job.</span></div>
+            <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node board">Board of stickies</span><span class="edge">agreement</span><span class="node map">Example Mapping</span><span class="edge">questions answered, rules changed</span><span class="node done">Done</span><span class="flow-note">Every role follows the same map.</span></div>
+          </figure>
+        </article>
+        <article class="phase">
+          <div class="phase-text">
+            <h3>Formulation: the Example Mapping is the source</h3>
             <p>In mainstream BDD the feature file is the source of the specification; in livt the Example Mapping is. livt's <a href="https://boykush.github.io/livt/demo/ubiquitous.html#formulation">formulation</a> is rewriting that mapping. Gherkin, where a team wants it, would be generated from it, which livt does not do yet.</p>
-          </article>
-        </div>
+          </div>
+          <figure class="fig flow">
+            <div class="flow-row"><span class="flow-who">The practice</span><span class="node map">Example Mapping</span><span class="edge">copied into</span><span class="node gherkin">feature file<b class="src">source</b></span></div>
+            <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node map">Example Mapping<b class="src">source</b></span><span class="edge">rewritten</span><span class="node map">Example Mapping</span><span class="edge maybe">generated if wanted</span><span class="node gherkin maybe">Gherkin</span></div>
+          </figure>
+        </article>
+        <article class="phase">
+          <div class="phase-text">
+            <h3>Automation: coding agents take it on</h3>
+            <p>Coding agents can now take on automating what a team agreed. Following the test pyramid, one Example Mapping's rules and examples end up automated at different layers and in different languages. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins.</p>
+          </div>
+          <figure class="fig fan">
+            <div class="fan-end"><span class="node map">Example Mapping</span><span class="fan-ids">R-01 · R-02 · EX-02</span></div>
+            <div class="fan-arrow" aria-hidden="true">↓</div>
+            <div class="fan-tests">
+              <div class="test"><span class="layer">Backend (Go)</span><code>// livt:automates …/rule/R-01</code></div>
+              <div class="test"><span class="layer">Frontend (TypeScript)</span><code>// livt:automates …/rule/R-01/example/EX-02</code></div>
+              <div class="test"><span class="layer">End-to-end</span><code>// livt:automates …/rule/R-02</code></div>
+            </div>
+            <div class="fan-arrow" aria-hidden="true">↓</div>
+            <div class="fan-end"><span class="node report">Automation report</span><span class="fan-note">Which tests cite each rule and example</span></div>
+          </figure>
+        </article>
       </section>
 
       <section>
