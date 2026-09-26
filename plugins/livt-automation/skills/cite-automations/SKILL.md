@@ -22,6 +22,10 @@ Read the spec over the livt MCP server before citing: the rule's resource lists 
 
 The snippets below are in Go only for illustration: the convention is the same in any language and framework, with the line written in that language's comment syntax. They write livt URIs with `{placeholders}`, which livt never collects; in a real test each is the `uri` the server returned. Rules and examples are claimed separately. Citing a rule says a test checks the rule itself; citing an example says a test checks that example. Neither stands for the other on livt's side: the scan and the board never count a rule as automated because its examples are.
 
+### One test case per example
+
+Each example gets a test case of its own, and its citation sits on the line directly above that case. The case's name is yours to choose; the citation, not the name, is what ties it to the example. So from the board, an example's chip leads to the one case that checks it, and from the test file, the line above a case names the one example it checks. livt's scan would accept one test citing several examples; this convention does not use that.
+
 ### Nested tests — every level carries its citation
 
 When the framework lets a block wrap a rule's cases (`describe`/`it`, `t.Run`, nested classes, `context` blocks, …), cite the rule on the block and each example on its case:
@@ -38,11 +42,11 @@ func TestLateOrdersAreRefused(t *testing.T) {
 
 ### Flat tests — the rule once all its examples are cited
 
-When each test stands alone with no block around a rule's cases, there is nowhere for the rule's own citation to sit. Each test cites the examples it checks, and the rule waits:
+When each test stands alone with no block around a rule's cases, there is nowhere for the rule's own citation to sit. Each example's case cites its example, and the rule waits:
 
 1. Read the rule over MCP and list its **live** examples — retired ones do not count, and a rule whose `status` is `proposed` is not spec yet, so it is not cited at all.
 2. Find which of those examples **this repository's** tests cite, by their marker lines. Citations reported from other implementation repositories are theirs; a rule line here claims that the tests here cover it.
-3. When every live example is cited here, add the rule's citation to **each** test that cites one of them — one more line beside the example's:
+3. When every live example is cited here, add the rule's citation to **each** of their cases — one more line above the case, beside the example's:
 
 ```go
 // livt:automates livt://mapping/{story_key}/rule/{rule_id}
@@ -70,6 +74,7 @@ When a rule you once cited this way has gained an example no test here cites, le
 
 ## What NOT to Do
 
+- Don't let one test case cite several examples; give each its own case.
 - Don't cite a rule in a flat test before every live example of it is cited in this repository.
 - Don't cite a proposed rule, or a retired rule or example.
 - Don't write a bare ID or a deployed URL where the livt URI goes, and don't put two URIs on one line.
