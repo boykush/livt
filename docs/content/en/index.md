@@ -17,16 +17,14 @@ An excerpt of livt's own example mapping, translated from Japanese. The test bel
 
 [See the whole board](https://boykush.github.io/livt/demo/mapping/collect-automations.html)
 
-## What livt keeps
+## What livt builds on
 
-<!-- The glossary owns what each one is, so this says only its part in the flow and links the name to the glossary's entry. -->
+<!-- The glossary owns what each practice is, so this gives only its part in the flow and where it comes from, linking the name to the glossary. -->
 
-- [Opportunity Canvas](https://boykush.github.io/livt/demo/ubiquitous.html#opportunity-canvas) — why to build
-- [Story Map](https://boykush.github.io/livt/demo/ubiquitous.html#story-map) — what to build
-- [Example Mapping](https://boykush.github.io/livt/demo/ubiquitous.html#example-mapping) — how it should behave
-- [Ubiquitous Language](https://boykush.github.io/livt/demo/ubiquitous.html#ubiquitous-language) — which words to use
-
-The people behind each practice are credited on [livt and BDD](livt-and-bdd.html).
+- [Opportunity Canvas](https://boykush.github.io/livt/demo/ubiquitous.html#opportunity-canvas) — why to build. Jeff Patton, [Opportunity Canvas](https://jpattonassociates.com/opportunity-canvas/)
+- [User Story Mapping](https://boykush.github.io/livt/demo/ubiquitous.html#story-map) — what to build. Jeff Patton, [story mapping](https://jpattonassociates.com/story-mapping/)
+- [Example Mapping](https://boykush.github.io/livt/demo/ubiquitous.html#example-mapping) — how it should behave. Matt Wynne, [Introducing Example Mapping](https://cucumber.io/blog/bdd/example-mapping-introduction/) (2015)
+- [Ubiquitous Language](https://boykush.github.io/livt/demo/ubiquitous.html#ubiquitous-language) — which words to use. Eric Evans, Domain-Driven Design
 
 ## Why livt
 
