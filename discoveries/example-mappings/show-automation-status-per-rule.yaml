@@ -11,12 +11,26 @@ rules:
         name: 凡例が見分け方を説明する
       - id: EX-03
         name: 引用のあるルールの付箋には、角に印が付く（色だけに頼らない）
+        retired: true
+        superseded_by:
+          - livt://mapping/show-automation-status-per-rule/rule/R-01/example/EX-07
       - id: EX-04
         name: 具体例の付箋も自分の引用だけで印を持ち、ルールの印とは連動しない
       - id: EX-05
         name: 印のそばに、それを自動化しているテストへのリンクが並ぶ（実装リポジトリとファイル・行）
+        retired: true
+        superseded_by:
+          - livt://mapping/show-automation-status-per-rule/rule/R-01/example/EX-07
       - id: EX-06
         name: 付箋が言うのは引用があるかどうかだけで、来るはずのレポートが何かは問わない
+      - id: EX-07
+        name: 引用のある付箋には、それを自動化しているテストへのリンクがチップとして並び、そのチップが印を兼ねる（実装リポジトリとファイル・行）
+      - id: EX-08
+        name: テストのチップと自動化Issueのチップは、アイコンと形（塗りか破線の枠か）で見分けられ、色だけに頼らない
+      - id: EX-09
+        name: テストのチップの色はルールと具体例で共通で、どちらの付箋かは付箋の色が言う
+      - id: EX-10
+        name: テストのチップはテストの結果を表す色（通過の緑・失敗の赤など）を使わない（livtが知るのは引用の有無で、テストが通ったかではない）
   - id: R-02
     name: 表示はlivtリポジトリの記録だけから導出され、buildはネットワークに出ない
     examples:
