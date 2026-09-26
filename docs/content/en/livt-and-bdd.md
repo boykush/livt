@@ -6,7 +6,7 @@ title: livt and BDD - livt
 
 livt runs no tests, and it is not an alternative to Cucumber.
 
-It keeps what a discovery session decided, so the decision can still be read and cited when someone implements it months later.
+It keeps what a team agreed in a discovery conversation, so the decision can still be read and cited when someone implements it months later.
 
 ## What it builds on
 
@@ -28,7 +28,7 @@ It keeps what a discovery session decided, so the decision can still be read and
 
 In Matt Wynne's Example Mapping, the cards are a by-product of a 25-minute conversation. Once they have shown whether the story is ready, they have done their job, and a team that never looks at the board again has done nothing wrong.
 
-livt keeps the map because a developer who needs an agreed rule six months later cannot search a photo. A kept map can turn into a spec that someone fills in alone, so livt writes a mapping only after the team agrees: [the recording skills](https://github.com/boykush/livt/tree/main/plugins/livt-discovery) first copy the board as it was, then restructure it in a separate diff for review. The session still comes first. livt keeps its outcome and does not replace it.
+livt keeps the map because a developer who needs an agreed rule six months later cannot search a photo. A kept map can turn into a spec that someone fills in alone, so livt writes a mapping only after the team agrees: [the recording skills](https://github.com/boykush/livt/tree/main/plugins/livt-discovery) first copy the board as it was, then restructure it in a separate diff for review. The conversation still comes first. livt keeps its outcome and does not replace it.
 
 ### Its view of Formulation
 
@@ -39,7 +39,7 @@ livt does not generate Gherkin today, and nothing in it depends on this position
 ## What livt does not do
 
 - **Run tests.** It is not an alternative to Cucumber, SpecFlow or Behave. If livt ever outputs Gherkin, it will be the standard syntax those tools run.
-- **Facilitate the session.** No timer, no voting, no board. Run the session on the whiteboard your team already uses, online or in the room. livt picks up after it.
+- **Facilitate the conversation.** No timer, no voting, no board. Have it on the whiteboard your team already uses, online or in the room. livt picks up after it.
 - **Teach BDD.** The people listed here teach it.
 - **Redefine the community's words.** Rule, example, question, discovery and formulation keep the meaning the practice gives them.
 
