@@ -23,7 +23,7 @@ The BDD community has long said that discovery matters more than formulation, an
 
 An Example Mapping does not end with the conversation, though. Its rules change and its questions get answered all through development, and a formulated feature file alone cannot follow that. livt records the Example Mapping itself, in its own format: it holds what a feature file would, and lets every role follow questions being answered and rules changing, designers and product managers as much as developers.
 
-Coding agents have changed the situation. Writing the tests for an agreed rule is now work an agent can take on. Following the test pyramid, one story's rules end up automated at different layers and in different languages. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins, and works through what those differences bring with it. Teams that want their specification executed as written have Cucumber for that.
+Coding agents have changed the situation. Writing the tests for an agreed rule is now work an agent can take on. Following the test pyramid, an Example Mapping's rules and examples end up automated at different layers and in different languages. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins, and works through what those differences bring with it. Teams that want their specification executed as written have Cucumber for that.
 
 <!-- The boxes below are livt's own opportunity canvas, for livt as a whole. Their headings are the labels the demo gives a canvas's boxes. -->
 
@@ -32,7 +32,7 @@ Coding agents have changed the situation. Writing the tests for an agreed rule i
 - What becomes of an Example Mapping afterwards is more than a formulated feature file alone can follow.
 - Once an open question goes to a designer or someone else, it is hard to tell whether it was resolved.
 - Keeping Gherkin executable means writing and maintaining step definitions by hand.
-- Automating as far down the test pyramid as the community advises puts one story's rules in tests at different layers, in different repositories and languages.
+- Automating as far down the test pyramid as the community advises puts an Example Mapping's rules and examples in tests at different layers, in different repositories and languages.
 - Across repositories, it is hard to tell which rule is automated where.
 
 ### Customers & Users
