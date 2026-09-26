@@ -8,9 +8,9 @@ title: livt and BDD - livt
 
 ### Formulation: the Example Mapping is the source
 
-In mainstream BDD, developers and testers write the rules and examples up as Gherkin, and that feature file becomes the source of the specification. In livt the Example Mapping is the source, and [formulation](https://boykush.github.io/livt/demo/ubiquitous.html#formulation) is rewriting it. Gherkin, where a team wants it, would be generated from it, which livt does not do yet.
+In mainstream BDD, developers and testers write the rules and examples up as Gherkin, and that feature file becomes the source of the specification. In livt, a YAML file in Example Mapping's own format is the source, and [formulation](https://boykush.github.io/livt/demo/ubiquitous.html#formulation) is rewriting that file. Gherkin, where a team wants it, would be generated from it, which livt does not do yet.
 
-<!-- figure: The practice above, livt below. Practice: Example Mapping → (written up by developers and testers) → feature file (the source; developers, testers); the feature file stays with development and testing. livt: Example Mapping (the source; the three amigos) → (rewritten) → Example Mapping, with a dashed line on to Gherkin (generated if wanted). -->
+<!-- figure: The practice above, livt below. Practice: Example Mapping → (written up by developers and testers) → feature file (the source; developers, testers); the feature file stays with development and testing. livt: Example Mapping → (recorded, then rewritten) → YAML in Example Mapping's format (the source; the three amigos), with a dashed line on to Gherkin (generated if wanted). -->
 
 ### Automation: coding agents take it on
 

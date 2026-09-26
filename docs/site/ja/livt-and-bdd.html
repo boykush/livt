@@ -38,11 +38,11 @@
         <article class="phase">
           <div class="phase-text">
             <h3>定式化：実例マッピングを正にする</h3>
-            <p>主流の BDD では、開発者とテスターがルールと具体例を Gherkin に書き起こし、その feature file が仕様の正になります。livt では実例マッピングが正で、<a href="https://boykush.github.io/livt/demo/ubiquitous.html#formulation">定式化</a>はそのマッピングを書き換えることです。Gherkin は要るならそこから生成するもので、今の livt はまだ生成しません。</p>
+            <p>主流の BDD では、開発者とテスターがルールと具体例を Gherkin に書き起こし、その feature file が仕様の正になります。livt では実例マッピング形式の YAML ファイルが正で、<a href="https://boykush.github.io/livt/demo/ubiquitous.html#formulation">定式化</a>はそのファイルを書き換えることです。Gherkin は要るならそこから生成するもので、今の livt はまだ生成しません。</p>
           </div>
           <figure class="fig flow">
             <div class="flow-row"><span class="flow-who">プラクティス</span><span class="node map"><span class="nm">実例マッピング</span></span><span class="edge">開発者とテスターが書き起こす</span><span class="node gherkin"><span class="nm">feature file<b class="src">正</b></span><span class="roles">開発者・テスター</span></span><span class="flow-note">feature file は開発とテストの手元に置かれる</span></div>
-            <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node map"><span class="nm">実例マッピング<b class="src">正</b></span><span class="roles">スリーアミーゴス</span></span><span class="edge">書き換える</span><span class="node map"><span class="nm">実例マッピング</span></span><span class="edge maybe">要るなら生成</span><span class="node gherkin maybe"><span class="nm">Gherkin</span></span></div>
+            <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node map"><span class="nm">実例マッピング</span></span><span class="edge">記録して書き換える</span><span class="node map"><span class="nm">実例マッピング形式の YAML<b class="src">正</b></span><span class="roles">スリーアミーゴス</span></span><span class="edge maybe">要るなら生成</span><span class="node gherkin maybe"><span class="nm">Gherkin</span></span></div>
           </figure>
         </article>
         <article class="phase">

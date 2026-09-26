@@ -38,11 +38,11 @@
         <article class="phase">
           <div class="phase-text">
             <h3>Formulation: the Example Mapping is the source</h3>
-            <p>In mainstream BDD, developers and testers write the rules and examples up as Gherkin, and that feature file becomes the source of the specification. In livt the Example Mapping is the source, and <a href="https://boykush.github.io/livt/demo/ubiquitous.html#formulation">formulation</a> is rewriting it. Gherkin, where a team wants it, would be generated from it, which livt does not do yet.</p>
+            <p>In mainstream BDD, developers and testers write the rules and examples up as Gherkin, and that feature file becomes the source of the specification. In livt, a YAML file in Example Mapping's own format is the source, and <a href="https://boykush.github.io/livt/demo/ubiquitous.html#formulation">formulation</a> is rewriting that file. Gherkin, where a team wants it, would be generated from it, which livt does not do yet.</p>
           </div>
           <figure class="fig flow">
             <div class="flow-row"><span class="flow-who">The practice</span><span class="node map"><span class="nm">Example Mapping</span></span><span class="edge">written up by developers and testers</span><span class="node gherkin"><span class="nm">feature file<b class="src">source</b></span><span class="roles">Developers, testers</span></span><span class="flow-note">The feature file stays with development and testing.</span></div>
-            <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node map"><span class="nm">Example Mapping<b class="src">source</b></span><span class="roles">The three amigos</span></span><span class="edge">rewritten</span><span class="node map"><span class="nm">Example Mapping</span></span><span class="edge maybe">generated if wanted</span><span class="node gherkin maybe"><span class="nm">Gherkin</span></span></div>
+            <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node map"><span class="nm">Example Mapping</span></span><span class="edge">recorded, then rewritten</span><span class="node map"><span class="nm">YAML in Example Mapping's format<b class="src">source</b></span><span class="roles">The three amigos</span></span><span class="edge maybe">generated if wanted</span><span class="node gherkin maybe"><span class="nm">Gherkin</span></span></div>
           </figure>
         </article>
         <article class="phase">
