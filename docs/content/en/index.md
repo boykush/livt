@@ -3,7 +3,7 @@ title: livt - Living Text
 description: livt keeps what your team agreed on its boards, each in its own format, owned by every role on the team. Coding agents read it and carry it through to automation.
 ---
 
-# Collaborate on board. Make it living in text.
+# Your team's product decisions, living in text — context for AI.
 
 Teams decide what to build on a whiteboard, often an online one such as Miro or FigJam. livt keeps what they agreed in the repository, each board in its own format, so that every role on the team owns it. Coding agents read it and follow it as one thread, from the opportunity to the tests.
 
