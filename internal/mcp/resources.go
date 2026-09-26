@@ -10,7 +10,7 @@ import (
 )
 
 // registerResources exposes the livt repository as addressable resources, so a client
-// reads the spec by URI (opportunity -> story map -> story -> mapping -> rule ->
+// reads the livt repository by URI (opportunity -> story map -> story -> mapping -> rule ->
 // example, with the canvas, questions, and ubiquitous terms linked alongside)
 // rather than calling a tool.
 // Only resource templates are advertised — no concrete resources and no

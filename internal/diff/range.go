@@ -51,7 +51,7 @@ type Result struct {
 	Base    string
 	Head    string
 	Changes []Change
-	// Counted by what became of each item as spec, which is what the page says.
+	// Counted by what became of each item as a decision, which is what the page says.
 	Added     int
 	Changed   int
 	Withdrawn int

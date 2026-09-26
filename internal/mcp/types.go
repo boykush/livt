@@ -209,7 +209,7 @@ type exampleJSON struct {
 	// numbered within their rule, so the address carries the rule.
 	URI  string `json:"uri"`
 	Name string `json:"name"`
-	// Retired says the example is no longer part of the spec. Omitted when
+	// Retired says the example is no longer agreed. Omitted when
 	// false: it marks the exception, and every live example carrying
 	// "retired": false would drown the flag in noise. A rule closes through
 	// status instead, which is the whole of where a rule stands.
@@ -222,7 +222,7 @@ type exampleJSON struct {
 	Automations []automationJSON `json:"automations,omitempty"`
 }
 
-// automationJSON is one test citing this point of the spec, named by the
+// automationJSON is one test citing this point of the livt repository, named by the
 // repository that reported it so a consumer knows whose answer it is reading.
 type automationJSON struct {
 	Repo string `json:"repo,omitempty"`
@@ -260,7 +260,7 @@ type ruleJSON struct {
 	// Automations are the tests that cite it, so a consumer can go to the
 	// code rather than take the flag on trust. Omitted when there are none.
 	Automations []automationJSON `json:"automations,omitempty"`
-	// SupersededBy is where the spec went, as livt URIs, so a stale reference
+	// SupersededBy is what replaced it, as livt URIs, so a stale reference
 	// leads forward instead of stopping. It stays a URI: the successor is one
 	// read away for a caller who needs it, and inlining its text would spend
 	// context on a hop most callers never take. Omitted when nothing replaced

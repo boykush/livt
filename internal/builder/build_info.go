@@ -16,7 +16,7 @@ var now = time.Now
 // Seconds are noise at the distance the two are apart.
 func stamp(t time.Time) string { return t.UTC().Format("2006-01-02 15:04") }
 
-// buildInfo renders build.html: the version, the spec revision and the time
+// buildInfo renders build.html: the version, the livt repository's revision and the time
 // this site was made from, and the reports it read. Every other surface shows
 // what was derived; this one says whose answer it is and how old, which is what
 // tells a board that is current from one nobody has refreshed.

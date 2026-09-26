@@ -8,7 +8,7 @@ import (
 // RuleStatus is where a rule stands on the one axis an ADR's status also
 // carries: proposed while it waits for agreement, accepted once it has it, and
 // the two ways it closes — rejected when the proposal was turned down, retired
-// when spec it once was stopped holding. A closed rule stays in the livt
+// when the decision it once was stopped holding. A closed rule stays in the livt
 // repository so its id is never handed to another rule.
 type RuleStatus string
 

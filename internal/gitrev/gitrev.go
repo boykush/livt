@@ -1,6 +1,6 @@
 // Package gitrev reads the livt repository's own revision. Two surfaces name
 // it — the MCP payload's spec_version and the site's build page — and one
-// reading keeps them from disagreeing about what the spec was.
+// reading keeps them from disagreeing about which revision they were made from.
 package gitrev
 
 import (

@@ -1,5 +1,5 @@
 // Package uri builds and parses livt URIs — the deployment-independent way to
-// address one point of the spec: an opportunity, its canvas, a story map, a
+// address one point of the livt repository: an opportunity, its canvas, a story map, a
 // story, an example mapping, a rule, an example, a question, or a ubiquitous
 // language term. The MCP server,
 // the CLI, and the site build all have to agree on the form, so it lives here

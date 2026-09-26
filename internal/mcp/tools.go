@@ -15,7 +15,7 @@ import (
 	"github.com/boykush/livt/internal/gitrev"
 )
 
-// registerTools wires the discovery tools. The spec reads (opportunities and
+// registerTools wires the discovery tools. Reads of the livt repository (opportunities and
 // their canvases, story maps, stories, example mappings, rules, ubiquitous
 // terms) are exposed as resources instead — see registerResources; the tools
 // only list what exists and hand out URIs.

@@ -166,7 +166,7 @@ func TestParseExampleMappingIgnoresRuleRetired(t *testing.T) {
 
 // livt:automates livt://mapping/propose-rule-before-agreement/rule/R-01/example/EX-03
 // A status livt does not know fails the parse. Read as accepted, a mistyped
-// "proposed" would put an unagreed rule on the board as spec.
+// "proposed" would put an unagreed rule on the board as agreed.
 func TestParseExampleMappingRejectsAnUnknownStatus(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "story.yaml")
 	data := []byte("rules:\n" +
@@ -205,7 +205,7 @@ func TestParseExampleMappingReadsReferencedTerms(t *testing.T) {
 
 // livt:automates livt://mapping/trace-test-to-rule/rule/R-09/example/EX-01
 // livt:automates livt://mapping/trace-test-to-rule/rule/R-09/example/EX-03
-// A retired rule, example, or question names where the spec went, as a list
+// A retired rule, example, or question names what replaced it, as a list
 // so an item that split into two can name both successors.
 func TestParseExampleMappingReadsSupersededBy(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "story.yaml")

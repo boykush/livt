@@ -1,7 +1,7 @@
 // Package mcp serves the livt repository (opportunities and their canvases,
 // story maps, stories, example mappings, ubiquitous language) over the Model
 // Context Protocol so
-// implementation repos can fetch the spec for a story or rule without reading
+// implementation repos can fetch what was decided for a story or rule without reading
 // livt's source. The livt repository usually lives in a separate checkout from the
 // consumer, so Config.Root locates it explicitly.
 package mcp
@@ -97,7 +97,7 @@ func (s *Server) Run(ctx context.Context) error {
 // cancelled. The livt repository is read-only and identical for every client, so the
 // handler is stateless: each request is served from a temporary session with no
 // retained per-client state, which lets one local server back many repos.
-// Responses are plain JSON -- the spec server never pushes server-initiated
+// Responses are plain JSON -- the server never pushes server-initiated
 // notifications, so it needs no event stream.
 func (s *Server) RunHTTP(ctx context.Context, addr string) error {
 	httpSrv := &http.Server{Addr: addr, Handler: s.httpHandler()}

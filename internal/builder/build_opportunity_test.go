@@ -368,7 +368,7 @@ func progressBuilder(t *testing.T) Builder {
 
 // livt:automates livt://mapping/show-opportunity-progress/rule/R-02
 // The two gauges are the reading, and neither may count what the board has
-// closed: a retired rule is not spec anyone is waiting on, so counting it would
+// closed: a retired rule is not a decision anyone is waiting on, so counting it would
 // make the opportunity read as less finished than it is.
 func TestOpportunityProgressCountsStoriesAndLiveRules(t *testing.T) {
 	b := progressBuilder(t)

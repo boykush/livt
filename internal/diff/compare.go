@@ -34,7 +34,7 @@ type Part struct {
 
 // Status is what happened to a URI's record: a URI the head does not hold, one
 // the base did not, and one both hold differently. It is not what happened to
-// the spec — for that, see Became.
+// the decision — for that, see Became.
 type Status string
 
 const (
@@ -43,7 +43,7 @@ const (
 	StatusModified Status = "modified"
 )
 
-// Became is what the change did to the item as spec, which is the reading the
+// Became is what the change did to the item as a decision, which is the reading the
 // site shows. It is not Status: retiring a rule keeps its entry and edits one
 // field, deleting takes the entry away, and to a reader both mean the rule
 // stopped being asked for. Deletion is no category of its own — the ID contract
@@ -58,7 +58,7 @@ const (
 )
 
 // became reads the two revisions' standing, not their records. An item that was
-// spec and is not was withdrawn, however that was written down.
+// agreed and is not was withdrawn, however that was written down.
 func became(wasSpec, isSpec bool) Became {
 	switch {
 	case wasSpec && !isSpec:
@@ -82,7 +82,7 @@ type Change struct {
 	ParentTitle string
 	Title       string
 	Status      Status
-	// Became is what the change did to the item as spec. Every surface that
+	// Became is what the change did to the item as a decision. Every surface that
 	// names a change to a reader names this one, so that one sticky wears one
 	// word: a retired rule is a modified record, and what happened to it is
 	// that it was withdrawn.
@@ -157,7 +157,7 @@ func lines(b Became, before, after Entry) []Line {
 	return diffFields(before.Fields, after.Fields)
 }
 
-// withdrawn is the statement that stopped holding, and where the spec went. The
+// withdrawn is the statement that stopped holding, and what replaced it. The
 // line recording the withdrawal is left out — the change says that once already,
 // and saying it again as an addition is what made a retirement look like the
 // opposite of a deletion when both are the same thing to a reader.
