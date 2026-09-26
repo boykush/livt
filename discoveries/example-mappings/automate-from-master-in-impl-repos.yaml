@@ -16,7 +16,7 @@ rules:
       - id: EX-03
         name: いずれも未指定ならカレントディレクトリをルートとする
   - id: R-03
-    name: 各レスポンス（ツール・リソース）はlivtリポジトリのバージョン（gitリビジョン）を返し、仕様のズレを防ぐ
+    name: 各レスポンス（ツール・リソース）はlivtリポジトリのバージョン（gitリビジョン）を返し、読んだ版のズレを防ぐ
     examples:
       - id: EX-01
         name: 出力に spec_version としてlivtリポジトリのgit HEAD（rev-parse --short の短縮リビジョン）が含まれる
