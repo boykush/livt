@@ -17,6 +17,17 @@ livt 自身の実例マッピングからの抜粋です。下のテストは R-
 
 [ボード全体を見る](https://boykush.github.io/livt/demo/mapping/collect-automations.html)
 
+## livt が扱う成果物
+
+<!-- 定義は用語集が持つので、ここは流れの中での役割だけを書き、名前を用語集の項目へつなぐ。 -->
+
+- [オポチュニティキャンバス](https://boykush.github.io/livt/demo/ubiquitous.html#opportunity-canvas)　なぜ作るのか
+- [ストーリーマップ](https://boykush.github.io/livt/demo/ubiquitous.html#story-map)　何を作るのか
+- [実例マッピング](https://boykush.github.io/livt/demo/ubiquitous.html#example-mapping)　どう振る舞うのか
+- [ユビキタス言語](https://boykush.github.io/livt/demo/ubiquitous.html#ubiquitous-language)　どの言葉で話すのか
+
+各プラクティスの出どころは、[livt とプラクティス](practices.html)にまとめています。
+
 ## なぜ livt か
 
 <!-- 以下の箱は、livt 全体についての livt 自身のオポチュニティキャンバス。見出しはデモがキャンバスの箱に付けるラベルと揃える。 -->
