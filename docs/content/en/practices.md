@@ -6,6 +6,14 @@ title: livt and the practices - livt
 
 livt keeps what a team agreed in a discovery conversation, so the decision can still be read and cited when someone implements it months later.
 
+## BDD, now that coding agents write the code
+
+In BDD, a team keeps what it agreed as one consistent specification.
+
+An Example Mapping does not end with the conversation, though. Its open questions get answered during development, and its rules change. livt records the Example Mapping itself, in its own format: it holds what a feature file would, and lets every role follow it through to completion, designers and product managers as much as developers.
+
+Coding agents have changed the situation. Automating an agreed rule is now work an agent can take on. Following the test pyramid, an Example Mapping's rules and examples end up automated at different layers and in different languages. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins, and works through what those differences bring with it.
+
 ## What it builds on
 
 - **Behaviour-Driven Development** — Dan North, [Introducing BDD](https://dannorth.net/introducing-bdd/) (2006). The three phases livt is organised around, Discovery, Formulation and Automation, are those Gáspár Nagy and Seb Rose set out in [The BDD Books](https://bddbooks.com/).
@@ -31,15 +39,11 @@ livt keeps what a team agreed in a discovery conversation, so the decision can s
 
 In Matt Wynne's Example Mapping, the cards serve a 25-minute conversation and show whether the story is ready. Afterwards the rules and examples move into Gherkin, and the board has done its job.
 
-livt keeps the map anyway, because an Example Mapping does not end with the conversation: its rules change and its questions get answered all through development. livt keeps that in a form every role can follow, questions included. A kept map can turn into a spec that someone fills in alone, so livt writes a mapping only after the team agrees: [the recording skills](https://github.com/boykush/livt/tree/main/plugins/livt-discovery) first copy the board as it was, then restructure it in a separate diff for review. The conversation still comes first. livt keeps its outcome and does not replace it.
+livt keeps the map anyway. A kept map can turn into a spec that someone fills in alone, so livt writes a mapping only after the team agrees: [the recording skills](https://github.com/boykush/livt/tree/main/plugins/livt-discovery) first copy the board as it was, then restructure it in a separate diff for review. The conversation still comes first. livt keeps its outcome and does not replace it.
 
 ### Its view of Formulation
 
 livt takes the Example Mapping, not a feature file, as the source, and keeps its format so that every role owns it. In livt, formulation means rewriting that mapping. Gherkin, where a team wants it, would be generated from it, though livt does not generate it today.
-
-### It leaves automation to agents
-
-Coding agents have changed the situation. Automating an agreed rule is now work an agent can take on. Following the test pyramid, an Example Mapping's rules and examples end up automated at different layers and in different languages. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins, and works through what those differences bring with it.
 
 ## What livt does not do
 
