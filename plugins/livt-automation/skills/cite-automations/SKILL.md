@@ -46,7 +46,7 @@ When each test stands alone with no block around a rule's cases, there is nowher
 
 1. Read the rule over MCP and list its **live** examples — retired ones do not count, and a rule whose `status` is `proposed` is not spec yet, so it is not cited at all.
 2. Find which of those examples **this repository's** tests cite, by their marker lines. Citations reported from other implementation repositories are theirs; a rule line here claims that the tests here cover it.
-3. When every live example is cited here, add the rule's citation **once per file** that holds its example cases — a single line near the top, not one above each case:
+3. When every live example is cited here, add the rule's citation — but don't write it again and again close together. Each example's livt URI already names its rule, so a reader on any case can find it; the rule's own line only has to claim the rule. Where it goes is a judgment, not a formula. One line near the top of a file that holds the rule's cases is one way:
 
 ```go
 package checkout
@@ -60,7 +60,7 @@ func TestAnOrderAfterTheDeadlineIsRefused(t *testing.T) { … }
 func TestAnOrderAtTheDeadlineIsAccepted(t *testing.T) { … }
 ```
 
-Repeating the rule above every case would add nothing: each example's livt URI already names its rule, so a reader on any case can find it. The rule's own line is there to claim the rule, and one per file does that. When the rule's examples are spread over several files, each of those files carries its one line.
+A line above the group of the rule's cases, when they sit together, is another. What to avoid is the same URI above every case, or several times within a few lines of itself. When the rule's cases are spread over files, cite it where each group lives.
 
 Until then, leave the rule uncited — a rule with one example uncovered is not automated, and the board should say so.
 
