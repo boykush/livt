@@ -24,7 +24,7 @@ The snippets below are in Go only for illustration: the convention is the same i
 
 ### One test case per example
 
-Each example gets a test case of its own, and its citation sits on the line directly above that case. The case's name is yours to choose; the citation, not the name, is what ties it to the example. So from the board, an example's chip leads to the one case that checks it, and from the test file, the line above a case names the one example it checks. livt's scan would accept one test citing several examples; this convention does not use that.
+Each example gets a test case of its own, and its citation sits on the line directly above that case, nested or flat. The case's name is yours to choose; the citation, not the name, is what ties it to the example. So from the board, an example's chip leads to the one case that checks it, and from the test file, the line above a case names the one example it checks. livt's scan would accept one test citing several examples; this convention does not use that.
 
 ### Nested tests — every level carries its citation
 
@@ -46,19 +46,21 @@ When each test stands alone with no block around a rule's cases, there is nowher
 
 1. Read the rule over MCP and list its **live** examples — retired ones do not count, and a rule whose `status` is `proposed` is not spec yet, so it is not cited at all.
 2. Find which of those examples **this repository's** tests cite, by their marker lines. Citations reported from other implementation repositories are theirs; a rule line here claims that the tests here cover it.
-3. When every live example is cited here, add the rule's citation to **each** of their cases — one more line above the case, beside the example's:
+3. When every live example is cited here, add the rule's citation **once per file** that holds its example cases — a single line near the top, not one above each case:
 
 ```go
+package checkout
+
 // livt:automates livt://mapping/{story_key}/rule/{rule_id}
+
 // livt:automates livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}
 func TestAnOrderAfterTheDeadlineIsRefused(t *testing.T) { … }
 
-// livt:automates livt://mapping/{story_key}/rule/{rule_id}
 // livt:automates livt://mapping/{story_key}/rule/{rule_id}/example/{example_id}
 func TestAnOrderAtTheDeadlineIsAccepted(t *testing.T) { … }
 ```
 
-Every test that makes up the rule then leads back to it, and deleting one of them does not take the rule's citation with it.
+Repeating the rule above every case would add nothing: each example's livt URI already names its rule, so a reader on any case can find it. The rule's own line is there to claim the rule, and one per file does that. When the rule's examples are spread over several files, each of those files carries its one line.
 
 Until then, leave the rule uncited — a rule with one example uncovered is not automated, and the board should say so.
 
