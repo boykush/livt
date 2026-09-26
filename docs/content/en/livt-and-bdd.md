@@ -6,14 +6,6 @@ title: livt and BDD - livt
 
 ## Where livt departs from the practice
 
-### Discovery: it keeps the Example Mapping
-
-In Matt Wynne's Example Mapping, the cards serve a 25-minute conversation, and their job ends with it.
-
-livt keeps the Example Mapping itself. Its questions get answered and its rules change all through development, so the three amigos who met for the conversation carry on with the same map until it is done.
-
-<!-- figure: The practice above, livt below. Practice: Example Mapping (the three amigos, 25 minutes); its job ends with the conversation. livt: Example Mapping (the three amigos) → (questions answered, rules changed) → done; the same three amigos follow the same map to the end. -->
-
 ### Formulation: the Example Mapping is the source
 
 In mainstream BDD, developers and testers write the rules and examples up as Gherkin, and that feature file becomes the source of the specification. In livt the Example Mapping is the source, and [formulation](https://boykush.github.io/livt/demo/ubiquitous.html#formulation) is rewriting it. Gherkin, where a team wants it, would be generated from it, which livt does not do yet.
