@@ -22,6 +22,6 @@ livt には別冊のマニュアルはありません。知りたいことは次
 
 `livt resolve <uri>`
 
-## livt の各機能と、その理由
+## livt 自身について合意したルールと、その理由
 
 ライブデモにある livt 自身の[実例マッピング](https://boykush.github.io/livt/demo/)

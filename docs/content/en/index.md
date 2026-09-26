@@ -53,11 +53,11 @@ BDD has always aimed at one flow: find the rules together, formulate them, and a
 
 <!-- Link the opportunities rather than list them: a list here falls behind the day one is added. -->
 
-## One opportunity at a time
+## Each problem, recorded as an opportunity
 
-livt takes these problems on one opportunity at a time. Each has its own canvas and story map, kept in livt's own repository and shown on the live demo.
+These problems are recorded one by one as opportunities in livt's own repository. Each has its own canvas and story map, which the live demo shows.
 
-[See livt's opportunities](https://boykush.github.io/livt/demo/opportunities.html)
+[See the opportunities](https://boykush.github.io/livt/demo/opportunities.html)
 
 ## Get started
 

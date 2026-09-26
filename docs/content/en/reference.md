@@ -22,6 +22,6 @@ The skills that write them, under [plugins/](https://github.com/boykush/livt/tre
 
 `livt resolve <uri>`
 
-## What livt itself does, and why, rule by rule
+## The rules agreed for livt itself, and why
 
 livt's own [example mappings](https://boykush.github.io/livt/demo/) on the live demo
