@@ -23,7 +23,7 @@ The BDD community has long said that discovery matters more than formulation, an
 
 An Example Mapping does not end with the conversation, though. Its rules change and its questions get answered all through development, and a formulated feature file alone cannot follow that. livt records the Example Mapping itself, in its own format: it holds what a feature file would, and lets every role follow questions being answered and rules changing, designers and product managers as much as developers.
 
-Coding agents have changed the situation. Writing the tests for an agreed rule is now work an agent can take on. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins, and works through the rest with it: rules automated at different layers and in different languages, and a test pyramid that keeps its shape. Teams that want their specification executed as written have Cucumber for that.
+Coding agents have changed the situation. Writing the tests for an agreed rule is now work an agent can take on. Following the test pyramid, one rule's tests end up at different layers and in different languages. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins, and works through what those differences bring with it. Teams that want their specification executed as written have Cucumber for that.
 
 <!-- The boxes below are livt's own opportunity canvas, for livt as a whole. Their headings are the labels the demo gives a canvas's boxes. -->
 
