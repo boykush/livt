@@ -74,8 +74,8 @@ activities:
       - key: show-status-rollup
         name: ストーリー・リリース単位で自動化の状況を映す
         stories:
-          - name: 自動化カバレッジをストーリー・リリースで見渡す
-            key: show-automation-coverage-rollup
+          - name: オポチュニティごとに現況を映す
+            key: show-opportunity-progress
 releases:
   - id: read-spec
     name: 実装リポジトリが仕様を読める
