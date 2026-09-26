@@ -21,7 +21,7 @@ An excerpt of livt's own example mapping, translated from Japanese. The test bel
 
 The BDD community has long said that discovery matters more than formulation, and formulation more than automation. It also keeps what a team agreed as one consistent specification.
 
-An Example Mapping does not end with the conversation, though. Its rules change and its questions get answered all through development, and a formulated feature file alone cannot follow that. livt records the Example Mapping itself, in its own format: it holds what a feature file would, and lets every role follow questions being answered and rules changing, designers and product owners as much as developers.
+An Example Mapping does not end with the conversation, though. Its rules change and its questions get answered all through development, and a formulated feature file alone cannot follow that. livt records the Example Mapping itself, in its own format: it holds what a feature file would, and lets every role follow questions being answered and rules changing, designers and product managers as much as developers.
 
 Coding agents have changed the situation. Writing the tests for an agreed rule is now work an agent can take on. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins, and works through the rest with it: rules automated at different layers and in different languages, and a test pyramid that keeps its shape. Teams that want their specification executed as written have Cucumber for that.
 
@@ -38,7 +38,7 @@ Coding agents have changed the situation. Writing the tests for an agreed rule i
 
 ### Customers & Users
 
-- Every role on a team that practises BDD: product owners, designers, developers, testers
+- Every role on a team that practises BDD: product managers, designers, developers, testers
 - Engineers who leave implementation to coding agents
 
 ### Solutions Today
