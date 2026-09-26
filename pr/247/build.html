@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>livt - ビルド情報</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="flex min-h-screen">
+
+<aside class="w-60 shrink-0 bg-white border-r border-gray-200 flex flex-col sticky top-0 h-screen">
+  <div class="px-5 py-4 border-b border-gray-100">
+    <a href="index.html" class="text-xl font-bold text-gray-900 tracking-tight">livt</a>
+    
+    <p class="text-[11px] text-gray-400 mt-0.5 leading-snug">Collaborate on board.<br>Make it living in text.</p>
+  </div>
+  <nav class="flex-1 px-3 py-4 space-y-1 text-sm">
+    <a href="index.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-green-400"></span>実例マッピング<span class="ml-auto text-xs text-gray-400">20</span>
+    </a>
+    <a href="opportunities.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-orange-400"></span>オポチュニティ<span class="ml-auto text-xs text-gray-400">3</span>
+    </a>
+    <a href="story-maps.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-purple-400"></span>ストーリーマップ<span class="ml-auto text-xs text-gray-400">3</span>
+    </a>
+    <a href="stories.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-yellow-400"></span>ストーリー<span class="ml-auto text-xs text-gray-400">29</span>
+    </a>
+    <a href="ubiquitous.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-pink-400"></span>ユビキタス言語<span class="ml-auto text-xs text-gray-400">15</span>
+    </a>
+    
+    <a href="tasks.html" class="flex items-center gap-2.5 px-3 py-2 mt-3 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm border border-gray-300"></span>タスク<span class="ml-auto text-xs text-gray-400">108</span>
+    </a>
+  </nav>
+  
+  <div class="px-3 py-3 border-t border-gray-100">
+    <a href="build.html" class="block rounded-lg px-2 py-1.5 bg-gray-100">
+      <div class="flex items-baseline gap-2">
+        <span class="text-xs font-medium text-gray-600">livt</span>
+        
+        <span class="ml-auto min-w-0 text-[11px] font-mono text-gray-400 truncate" title="v0.15.2-0.20260926012734-e780756661fd">v0.15.2-0.20260926012734-e780756661fd</span>
+      </div>
+      <div class="text-[11px] text-gray-400 font-mono mt-0.5">e780756 · 2026-09-26 01:28</div>
+    </a>
+  </div>
+</aside>
+
+<div class="flex-1 min-w-0">
+  <header class="bg-white border-b border-gray-200 px-8 py-4">
+    <h2 class="text-lg font-semibold text-gray-800">ビルド情報</h2>
+  </header>
+  <main class="px-8 py-8 max-w-3xl">
+  
+  <div class="grid grid-cols-[auto_1fr] gap-x-6 gap-y-1 text-sm mb-8">
+    <span class="text-gray-500">livt</span>
+    <span class="font-mono text-gray-800 break-all">v0.15.2-0.20260926012734-e780756661fd</span>
+    <span class="text-gray-500">仕様</span>
+    <span class="font-mono text-gray-800">e780756</span>
+    <span class="text-gray-500">ビルド</span>
+    <span class="font-mono text-gray-800">2026-09-26 01:28 UTC</span>
+  </div>
+
+  <h3 class="text-sm font-semibold text-gray-800 mb-2">読んだ自動化レポート</h3>
+  
+  <p class="text-xs text-gray-400 mb-2">ボードの自動化はこれらから導いています。</p>
+  <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+  <table class="w-full text-left border-collapse">
+    <thead>
+      <tr class="border-b border-gray-200 bg-gray-50 text-xs font-semibold uppercase tracking-wide text-gray-500">
+        <th class="px-4 py-2.5">実装リポジトリ</th>
+        <th class="px-4 py-2.5">リビジョン</th>
+        <th class="px-4 py-2.5">収集時刻 <span class="text-gray-400">UTC</span></th>
+        <th class="px-4 py-2.5 text-right">引用</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+      <tr class="border-b border-gray-100 last:border-0 align-top hover:bg-gray-50">
+        <td class="px-4 py-2.5 border-l-4 border-blue-300 text-sm font-medium text-gray-900">boykush/livt</td>
+        <td class="px-4 py-2.5 font-mono text-xs text-gray-600" title="07f8ad43a9c50564fd6b55883bf25ebe92123266">07f8ad4</td>
+        <td class="px-4 py-2.5 font-mono text-xs text-gray-600 whitespace-nowrap">2026-09-25 08:26</td>
+        <td class="px-4 py-2.5 font-mono text-xs text-gray-600 text-right">182</td>
+      </tr>
+      
+    </tbody>
+  </table>
+  </div>
+  
+  </main>
+</div>
+</div>
+</body>
+</html>
