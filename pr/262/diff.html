@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>livt - 差分</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  
+  .diff-line { display: grid; grid-template-columns: 1.25rem 1fr; gap: 0.5rem; padding: 0.125rem 0.75rem; }
+  .diff-line > .sign { color: #9ca3af; user-select: none; text-align: center; }
+  .diff-add { background-color: #dcfce7; }
+  .diff-add > .sign { color: #15803d; }
+  .diff-del { background-color: #fee2e2; }
+  .diff-del > .sign { color: #b91c1c; }
+  
+  .diff-add .moved { background-color: #86efac; border-radius: 0.125rem; }
+  .diff-del .moved { background-color: #fca5a5; border-radius: 0.125rem; }
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="flex min-h-screen">
+
+<aside class="w-60 shrink-0 bg-white border-r border-gray-200 flex flex-col sticky top-0 h-screen">
+  <div class="px-5 py-4 border-b border-gray-100">
+    <a href="index.html" class="text-xl font-bold text-gray-900 tracking-tight">livt</a>
+    
+    <p class="text-[11px] text-gray-400 mt-0.5 leading-snug">Your team's product decisions,<br>living in text — context for AI.</p>
+  </div>
+  <nav class="flex-1 px-3 py-4 space-y-1 text-sm">
+    <a href="index.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-green-400"></span>実例マッピング<span class="ml-auto text-xs text-gray-400">20</span>
+    </a>
+    <a href="opportunities.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-orange-400"></span>オポチュニティ<span class="ml-auto text-xs text-gray-400">3</span>
+    </a>
+    <a href="story-maps.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-purple-400"></span>ストーリーマップ<span class="ml-auto text-xs text-gray-400">3</span>
+    </a>
+    <a href="stories.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-yellow-400"></span>ストーリー<span class="ml-auto text-xs text-gray-400">28</span>
+    </a>
+    <a href="ubiquitous.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-pink-400"></span>ユビキタス言語<span class="ml-auto text-xs text-gray-400">16</span>
+    </a>
+    
+    <a href="tasks.html" class="flex items-center gap-2.5 px-3 py-2 mt-3 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm border border-gray-300"></span>タスク<span class="ml-auto text-xs text-gray-400">94</span>
+    </a>
+  </nav>
+  
+  <div class="px-3 py-3 border-t border-gray-100">
+    <a href="build.html" class="block rounded-lg px-2 py-1.5 hover:bg-gray-50">
+      <div class="flex items-baseline gap-2">
+        <span class="text-xs font-medium text-gray-600">livt</span>
+        
+        <span class="ml-auto min-w-0 text-[11px] font-mono text-gray-400 truncate" title="v0.16.1-0.20260926131202-7f14cedfab74">v0.16.1-0.20260926131202-7f14cedfab74</span>
+      </div>
+      <div class="text-[11px] text-gray-400 font-mono mt-0.5">7f14ced · 2026-09-26 13:12</div>
+    </a>
+  </div>
+</aside>
+
+<div class="flex-1 min-w-0">
+  <header class="bg-white border-b border-gray-200 px-8 py-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+    <h2 class="text-lg font-semibold text-gray-800">差分</h2>
+    <span class="text-sm font-mono text-gray-500">2e3049b &rarr; 7f14ced</span>
+    <div class="ml-auto flex items-center gap-2 text-xs">
+      <span class="rounded-full px-2.5 py-1 bg-green-50 text-green-700 border border-green-200">追加 0</span>
+      <span class="rounded-full px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200">変更 19</span>
+      <span class="rounded-full px-2.5 py-1 bg-red-50 text-red-700 border border-red-200">廃止 0</span>
+    </div>
+  </header>
+  <main class="px-8 py-8 max-w-4xl">
+  
+  
+  <section class="mb-8">
+    <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">実例マッピング</h3>
+    
+    
+    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
+      
+<div id="mapping/automate-from-master-in-impl-repos" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    
+    <span class="font-medium text-gray-900">実装リポジトリがlivtリポジトリを見てテスト駆動で自動化する</span>
+    
+    
+    <span class="text-xs font-mono text-gray-400 break-all">livt://mapping/automate-from-master-in-impl-repos</span>
+    
+  </div>
+  
+</div>
+
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/automate-from-master-in-impl-repos/rule/R-01" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">R-01</span>
+    
+    
+    <a href="mapping/automate-from-master-in-impl-repos.html#rule-R-01" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/automate-from-master-in-impl-repos/rule/R-01</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">livtはlivtリポジトリをMCPサーバーとして公開し、消費側はlivtのソースを読まずに<span class="moved">仕様</span>を取得する</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">livtはlivtリポジトリをMCPサーバーとして公開し、消費側はlivtのソースを読まずに<span class="moved">決定</span>を取得する</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">状態: 合意済み</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/automate-from-master-in-impl-repos/rule/R-03" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">R-03</span>
+    
+    
+    <a href="mapping/automate-from-master-in-impl-repos.html#rule-R-03" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/automate-from-master-in-impl-repos/rule/R-03</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">各レスポンス（ツール・リソース）はlivtリポジトリのバージョン（gitリビジョン）を返し、<span class="moved">仕様</span>のズレを防ぐ</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">各レスポンス（ツール・リソース）はlivtリポジトリのバージョン（gitリビジョン）を返し、<span class="moved">読んだ版</span>のズレを防ぐ</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">状態: 合意済み</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/automate-from-master-in-impl-repos/rule/R-05" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">R-05</span>
+    
+    
+    <a href="mapping/automate-from-master-in-impl-repos.html#rule-R-05" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/automate-from-master-in-impl-repos/rule/R-05</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">実装リポジトリはルール単位で<span class="moved">仕様</span>をリソースとして取得できる</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">実装リポジトリはルール単位で<span class="moved">決定</span>をリソースとして取得できる</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">状態: 合意済み</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+    </div>
+    
+    
+    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
+      
+<div id="mapping/derive-automation-status" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    
+    <span class="font-medium text-gray-900">自動化レポートからルールごとの状況を導く</span>
+    
+    
+    <span class="text-xs font-mono text-gray-400 break-all">livt://mapping/derive-automation-status</span>
+    
+  </div>
+  
+</div>
+
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/derive-automation-status/rule/R-07/example/EX-02" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">R-07 EX-02</span>
+    
+    
+    <a href="mapping/derive-automation-status.html#rule-R-07-example-EX-02" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/derive-automation-status/rule/R-07/example/EX-02</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">誤りとしては扱わない（退役は<span class="moved">仕様</span>側の決定で、テストはいまも動いて通っている）</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">誤りとしては扱わない（退役は<span class="moved">livtリポジトリ</span>側の決定で、テストはいまも動いて通っている）</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">退役</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+    </div>
+    
+    
+    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
+      
+<div id="mapping/review-diff-between-revisions" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    
+    <span class="font-medium text-gray-900">リビジョン間の差分をlivt URI単位で読む</span>
+    
+    
+    <span class="text-xs font-mono text-gray-400 break-all">livt://mapping/review-diff-between-revisions</span>
+    
+  </div>
+  
+</div>
+
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/review-diff-between-revisions/rule/R-03" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">R-03</span>
+    
+    
+    <a href="mapping/review-diff-between-revisions.html#rule-R-03" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/review-diff-between-revisions/rule/R-03</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">差分は追加・変更・廃止の3通りで、git diffの赤緑で読める。ただし赤緑が言うのはファイルではなく<span class="moved">仕様</span></span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">差分は追加・変更・廃止の3通りで、git diffの赤緑で読める。ただし赤緑が言うのはファイルではなく<span class="moved">決定</span></span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">状態: 合意済み</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/review-diff-between-revisions/rule/R-03/example/EX-05" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">R-03 EX-05</span>
+    
+    
+    <a href="mapping/review-diff-between-revisions.html#rule-R-03-example-EX-05" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-05</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">ファイルごと消えたものも退役したものも、同じ廃止として読める（読む側にはどちらも「もう<span class="moved">仕様では</span>ない」で同じ）</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">ファイルごと消えたものも退役したものも、同じ廃止として読める（読む側にはどちらも「もう<span class="moved">合意されてい</span>ない」で同じ）</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/review-diff-between-revisions/rule/R-03/example/EX-07" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">R-03 EX-07</span>
+    
+    
+    <a href="mapping/review-diff-between-revisions.html#rule-R-03-example-EX-07" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-07</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">廃止された項目は、記録上どう書かれていても赤い「-」で並ぶ（退役はファイル上「退役」の行が増えるが、<span class="moved">仕様</span>としては削除と同じく「この文が無くなった」）</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">廃止された項目は、記録上どう書かれていても赤い「-」で並ぶ（退役はファイル上「退役」の行が増えるが、<span class="moved">決定</span>としては削除と同じく「この文が無くなった」）</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">テストで自動化済み: boykush/livt</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/review-diff-between-revisions/rule/R-06" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">R-06</span>
+    
+    
+    <a href="mapping/review-diff-between-revisions.html#rule-R-06" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/review-diff-between-revisions/rule/R-06</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">差分はYAMLの綴りではなく、<span class="moved">仕様</span>の言葉で読める</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">差分はYAMLの綴りではなく、<span class="moved">ルールや具体例</span>の言葉で読める</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">状態: 合意済み</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">テストで自動化済み: boykush/livt</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+    </div>
+    
+    
+    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
+      
+<div id="mapping/trace-test-to-rule" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    
+    <span class="font-medium text-gray-900">テストからルール・具体例へ辿る</span>
+    
+    
+    <span class="text-xs font-mono text-gray-400 break-all">livt://mapping/trace-test-to-rule</span>
+    
+  </div>
+  
+</div>
+
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/trace-test-to-rule/rule/R-01" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">R-01</span>
+    
+    
+    <a href="mapping/trace-test-to-rule.html#rule-R-01" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/trace-test-to-rule/rule/R-01</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words"><span class="moved">仕様</span>の一点はlivt URIで一意に指せる</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words"><span class="moved">livtリポジトリ</span>の一点はlivt URIで一意に指せる</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">状態: 合意済み</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">テストで自動化済み: boykush/livt</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/trace-test-to-rule/rule/R-09" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">R-09</span>
+    
+    
+    <a href="mapping/trace-test-to-rule.html#rule-R-09" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/trace-test-to-rule/rule/R-09</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">退役した項目は代替先をlivt URIで示し、そこから現行の<span class="moved">仕様</span>へ辿り直せる</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">退役した項目は代替先をlivt URIで示し、そこから現行の<span class="moved">決定</span>へ辿り直せる</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">状態: 合意済み</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+    </div>
+    
+  </section>
+  
+  <section class="mb-8">
+    <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">オポチュニティ</h3>
+    
+    
+    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
+      
+<div id="opportunity/collaborative-discovery" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">揮発するディスカバリー</span>
+    
+    
+    <a href="opportunity/collaborative-discovery.html" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://opportunity/collaborative-discovery</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">揮発するディスカバリー</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ディスカバリーの成果はボードに置かれたまま古びていく。素のままの記録は粗く、バージョン管理も整合性チェックも効かない。</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">記録し、ルールが変わるたびに更新し続けられるようにすると、</span></div>
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">同じ議論をやり直さずに済み、協働結果がそのまま<span class="moved">仕様</span>として使えるようになる。</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">同じ議論をやり直さずに済み、協働結果がそのまま<span class="moved">決定の記録</span>として使えるようになる。</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">repos: boykush/livt</span></div>
+    
+  </div>
+  
+</div>
+
+      
+    </div>
+    
+    
+    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
+      
+<div id="opportunity/discovery-development-gap" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">ディスカバリーと開発のギャップ</span>
+    
+    
+    <a href="opportunity/discovery-development-gap.html" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://opportunity/discovery-development-gap</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ディスカバリーと開発のギャップ</span></div>
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">合意した仕様がディスカバリー側に留まり、実装リポジトリの開発者が読みに来ない。</span></div>
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">ルール単位で仕様を引けて、テストから仕様の一点へ戻れるようにすると、</span></div>
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">「実装したつもり」の取り違えが減り、仕様が生き続けるドキュメントとして機能する。</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">合意した決定がディスカバリー側に留まり、実装リポジトリの開発者が読みに来ない。</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">ルール単位で決定を引けて、テストからルールや具体例へ戻れるようにすると、</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">「実装したつもり」の取り違えが減り、決めたことが生き続けるドキュメントとして機能する。</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">repos: boykush/livt</span></div>
+    
+  </div>
+  
+</div>
+
+      
+    </div>
+    
+    
+    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
+      
+<div id="opportunity-canvas/discovery-development-gap" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">ディスカバリーと開発のギャップ</span>
+    
+    
+    <a href="opportunity-canvas/discovery-development-gap.html" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://opportunity-canvas/discovery-development-gap</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">解決策のアイデア: 仕様の一点をlivt URIで名指しし、テスト・Issue・コミットから引けるようにする</span></div>
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">解決策のアイデア: 実装リポジトリのエージェントがMCP経由で仕様を読む</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">解決策のアイデア: ルールや具体例をlivt URIで名指しし、テスト・Issue・コミットから引けるようにする</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">解決策のアイデア: 実装リポジトリのエージェントがMCP経由で決定を読む</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">解決策のアイデア: 自動化済みかは各実装リポジトリのテストから導き、livtは決定だけを持つ</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">解決策のアイデア: 解釈器を置かず、AIがルールから直接テストを書く</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">解決策のアイデア: テストはどの層・どのリポジトリに書いてもよく、引用を機械的に集めて追える</span></div>
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">課題: 合意した<span class="moved">仕様</span>がディスカバリー側に留まり、実装側から読まれない</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">課題: 合意した<span class="moved">決定</span>がディスカバリー側に留まり、実装側から読まれない</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">課題: テストを見てもどのルールを満たしているのか分からない</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">課題: ルールごとに自動化される実装リポジトリが違うのに、記録はどこで自動化されたかを言わない</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">課題: 定式化したGherkinを、実装のどの層で自動化するかが決まらない</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">課題: テストピラミッドに従うと、BDDの自動化をすべてE2E（Largeテスト）に起こすのは現実的でない</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">顧客とユーザー: 実装リポジトリの開発者</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">顧客とユーザー: 実装リポジトリで動くAIエージェント</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">顧客とユーザー: オポチュニティ推進者</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">顧客とユーザー: バックエンドとフロントエンドの2リポジトリに分かれて開発するチーム</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">現在の解決手段: 仕様を都度Slackで訊く</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">現在の解決手段: チケットに仕様を書き写し、そこから先は同期しない</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">現在の解決手段: コードコメントにルール番号だけ書くが、番号は他のマッピングにも存在する</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">現在の解決手段: 自動化済みかは人がフラグを立てて示し、確認はAIが実装のコードを読んで行う</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">現在の解決手段: Cucumberのステップ定義でGherkinを解釈し、テストとして実行する</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">事業上の課題: 仕様と実装の乖離が、時間とともに静かに広がる</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">事業上の課題: 何が未実装かを人手で数え直し、その手間はリポジトリの数だけ増える</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザーは価値を得るために何をするか: テストコメントのlivt URIから、ルールと具体例へ戻る</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザーは価値を得るために何をするか: ルール単位でIssueを起票し、実装リポジトリで自動化する</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザーは価値を得るために何をするか: どのルールがどの実装リポジトリで未着手かを見て、次に埋めるギャップを選ぶ</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">指標: livt URIを引用しているテスト・Issueの数</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">指標: ルール×実装リポジトリ単位の未自動化件数の推移</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">指標: livtの記録と実装の実態が食い違っている件数</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">採用の道筋: 実装リポジトリ向けのMCPプラグインとして配る</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">採用の道筋: 起票スキルが、backpointerを最初から本文に埋める</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">採用の道筋: 実装リポジトリはsubmodule等でlivtリポジトリ側に引き寄せる</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">事業へのインパクト: 仕様の取り違えに由来する手戻り件数</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">事業へのインパクト: 合意から全実装リポジトリに反映されるまでのリードタイム</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">予算: OSSとして個人の余暇で開発、外部コストは持たない</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: discovery</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: example-mapping</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: livt-uri</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: livt-repository</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: implementation-repository</span></div>
+    
+  </div>
+  
+</div>
+
+      
+    </div>
+    
+  </section>
+  
+  <section class="mb-8">
+    <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">ストーリーマップ</h3>
+    
+    
+    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
+      
+<div id="story-map/discovery-development-gap" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">ディスカバリーと開発のギャップ</span>
+    
+    
+    <a href="story-map/discovery-development-gap.html" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://story-map/discovery-development-gap</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ディスカバリーと開発のギャップ</span></div>
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">リリース: 実装リポジトリが<span class="moved">仕様</span>を読める</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">リリース: 実装リポジトリが<span class="moved">決定</span>を読める</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">リリース: Issueで協調できる</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">リリース: 自動化の状態が映る</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">リリース: テストから自動化の状態が導かれる</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">アクティビティ: 実装リポジトリでギャップを埋める</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: 次に埋めるギャップを選ぶ</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ストーリー: 未自動化のルールを横断で見渡す</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: ストーリーごとにIssueを起票する</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ストーリー: livt経由でストーリー単位のIssueを起票する (coordinate-with-issues)</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: ルールごとに自動化Issueを起票する</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ストーリー: livt経由で各実装リポジトリに自動化Issueを起票する (coordinate-with-issues)</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: livtリポジトリの所在を宣言する</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ストーリー: 実装リポジトリがlivtリポジトリの所在を宣言する (read-spec)</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: 実装リポジトリ側で自動化する</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ストーリー: 実装リポジトリがlivtリポジトリを見てテスト駆動で自動化する (read-spec)</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">アクティビティ: 自動化の状況を映す</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: テストから自動化を集める</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ストーリー: 実装リポジトリのテストから自動化を集めてレポートにする (project-from-tests)</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: レポートからルールの状況を導く</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ストーリー: 自動化レポートからルールごとの状況を導く (project-from-tests)</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: ルールごとに自動化の状況を映す</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ストーリー: ルールが自動化されているかを一目で映す (reflect-status)</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: ルールから対応テストを辿る</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ストーリー: ルール付箋から対応Issue・テストへ辿る (reflect-status)</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: テストからルールを辿る</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ストーリー: テストからルール・具体例へ辿る (reflect-status)</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: ストーリー・リリース単位で自動化の状況を映す</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ストーリー: オポチュニティごとに現況を映す</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: discovery</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: example-mapping</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: story</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: livt-uri</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: livt-repository</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: automation</span></div>
+    
+  </div>
+  
+</div>
+
+      
+    </div>
+    
+  </section>
+  
+  <section class="mb-8">
+    <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">ストーリー</h3>
+    
+    
+    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
+      
+<div id="story/automate-from-master-in-impl-repos" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">実装リポジトリがlivtリポジトリを見てテスト駆動で自動化する</span>
+    
+    
+    <a href="story/automate-from-master-in-impl-repos.html" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://story/automate-from-master-in-impl-repos</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">実装リポジトリがlivtリポジトリを見てテスト駆動で自動化する</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">実装リポジトリの開発者として</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">livtリポジトリの実例マッピングを参照してテスト駆動で自動化したい</span></div>
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">そうすればルールを各レイヤのネイティブテストで満たし、<span class="moved">仕様を</span>実装<span class="moved">に</span>追従させられる</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">そうすればルールを各レイヤのネイティブテストで満たし、<span class="moved">決めたことに</span>実装<span class="moved">を</span>追従させられる</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">issue: https://github.com/boykush/livt/issues/26</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">repos: boykush/livt</span></div>
+    
+  </div>
+  
+</div>
+
+      
+    </div>
+    
+    
+    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
+      
+<div id="story/propose-rule-before-agreement" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">合意前のルールを提案中として実例マッピングに載せる</span>
+    
+    
+    <a href="story/propose-rule-before-agreement.html" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://story/propose-rule-before-agreement</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">合意前のルールを提案中として実例マッピングに載せる</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">実例マッピングメンテナーとして</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">まだ合意されていないルールを、提案中として実例マッピングに載せたい</span></div>
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">そうすれば具体例付きの叩き台で合意を取りに行きながら、読み手に合意済みの<span class="moved">仕様</span>と取り違えさせずに済む</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">そうすれば具体例付きの叩き台で合意を取りに行きながら、読み手に合意済みの<span class="moved">ルール</span>と取り違えさせずに済む</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">repos: boykush/livt</span></div>
+    
+  </div>
+  
+</div>
+
+      
+    </div>
+    
+    
+    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
+      
+<div id="story/review-diff-between-revisions" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">リビジョン間の差分をlivt URI単位で読む</span>
+    
+    
+    <a href="story/review-diff-between-revisions.html" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://story/review-diff-between-revisions</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">リビジョン間の差分をlivt URI単位で読む</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">livtリポジトリのレビュアーとして</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">2つのリビジョンの差分を、livt URI単位の赤緑で読みたい</span></div>
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">そうすればYAMLの行ではなく<span class="moved">仕様</span>として何が変わったかを見て、PRで合意を判断できる</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">そうすればYAMLの行ではなく<span class="moved">決定</span>として何が変わったかを見て、PRで合意を判断できる</span></div>
+    
+  </div>
+  
+</div>
+
+      
+    </div>
+    
+    
+    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
+      
+<div id="story/trace-rule-to-tests" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">ルール付箋から対応Issue・テストへ辿る</span>
+    
+    
+    <a href="story/trace-rule-to-tests.html" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://story/trace-rule-to-tests</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ルール付箋から対応Issue・テストへ辿る</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">リビングドキュメントの読者として</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ルール付箋から対応するIssue・テストへ辿りたい</span></div>
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">そうすれば<span class="moved">仕様</span>から実際の自動化の根拠まで追跡できる</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">そうすれば<span class="moved">ルール</span>から実際の自動化の根拠まで追跡できる</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">issue: https://github.com/boykush/livt/issues/29</span></div>
+    
+  </div>
+  
+</div>
+
+      
+    </div>
+    
+    
+    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
+      
+<div id="story/trace-test-to-rule" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">テストからルール・具体例へ辿る</span>
+    
+    
+    <a href="story/trace-test-to-rule.html" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://story/trace-test-to-rule</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">テストからルール・具体例へ辿る</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">実装リポジトリの開発者として</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">テストから対応するルール・具体例へ辿りたい</span></div>
+    
+    
+    <div class="diff-line diff-del"><span class="sign">-</span><span class="whitespace-pre-wrap break-words">そうすれば自動化されたコードから<span class="moved">仕様</span>の一点に戻れる</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">そうすれば自動化されたコードから<span class="moved">決定</span>の一点に戻れる</span></div>
+    
+  </div>
+  
+</div>
+
+      
+    </div>
+    
+  </section>
+  
+  
+  </main>
+</div>
+</div>
+</body>
+</html>
+
+
