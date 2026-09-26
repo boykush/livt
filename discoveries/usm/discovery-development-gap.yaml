@@ -78,7 +78,7 @@ activities:
             key: show-opportunity-progress
 releases:
   - id: read-spec
-    name: 実装リポジトリが仕様を読める
+    name: 実装リポジトリが決定を読める
   - id: coordinate-with-issues
     name: Issueで協調できる
   - id: reflect-status
