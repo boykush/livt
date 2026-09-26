@@ -10,6 +10,9 @@ rules:
         name: issuesのないruleにはリンクが付かない
       - id: EX-04
         name: PR・テスト（真実）へはリンク先のIssueから辿る
+        retired: true
+        superseded_by:
+          - livt://mapping/show-automation-status-per-rule/rule/R-01/example/EX-07
   - id: R-02
     name: リンクはlivtリポジトリの記録をそのまま使い、buildはネットワークに出ない
     examples:
