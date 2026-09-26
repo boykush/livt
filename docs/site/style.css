@@ -240,7 +240,9 @@ html[lang="ja"] .block-title h2 { font-size: 1.12rem; line-height: 1.5; }
 .flow-who { flex: 0 0 100%; font-family: var(--font-mono); font-size: .72rem; color: var(--ink-3); }
 .flow-row.is-livt .flow-who { color: var(--ink); font-weight: 600; }
 .flow-note { flex: 0 0 100%; font-size: .8rem; color: var(--ink-2); }
-.node { display: inline-flex; align-items: center; gap: 6px; padding: 5px 10px; border-left: 4px solid; border-radius: 4px; background: var(--surface); color: var(--ink); font-size: .86rem; line-height: 1.4; box-shadow: var(--shadow); }
+.node { display: inline-grid; gap: 1px; padding: 5px 10px; border-left: 4px solid; border-radius: 4px; background: var(--surface); color: var(--ink); font-size: .86rem; line-height: 1.4; box-shadow: var(--shadow); }
+.node .nm { display: inline-flex; align-items: center; gap: 6px; }
+.node .roles { font-size: .68rem; opacity: .75; }
 .node.board { background: var(--story); border-color: var(--story-edge); color: var(--sticky-ink); }
 .node.map { background: var(--rule); border-color: var(--rule-edge); color: var(--sticky-ink); }
 .node.done, .node.report { background: var(--ex); border-color: var(--ex-edge); color: var(--sticky-ink); }
