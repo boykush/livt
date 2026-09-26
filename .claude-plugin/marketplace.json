@@ -5,7 +5,7 @@
     "email": "boykush315@gmail.com"
   },
   "metadata": {
-    "description": "Claude Code plugins for livt, one per ring: livt-discovery records what the conversations decide, livt-delivery carries the agreed record to the implementation and brings the result back, and livt-automation lets an implementation repo's agent read and cite the spec over MCP",
+    "description": "Claude Code plugins for livt, one per ring: livt-discovery records what the conversations decide, livt-delivery carries the agreed record to the implementation and brings the result back, and livt-automation lets an implementation repo's agent read the team's decision log over MCP and cite it",
     "version": "6.1.0"
   },
   "plugins": [
