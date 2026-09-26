@@ -42,9 +42,9 @@
       <div class="flex items-baseline gap-2">
         <span class="text-xs font-medium text-gray-600">livt</span>
         
-        <span class="ml-auto min-w-0 text-[11px] font-mono text-gray-400 truncate" title="v0.15.2-0.20260926035958-f00c9a146485">v0.15.2-0.20260926035958-f00c9a146485</span>
+        <span class="ml-auto min-w-0 text-[11px] font-mono text-gray-400 truncate" title="v0.15.2-0.20260926040249-9acb0e00f7d2">v0.15.2-0.20260926040249-9acb0e00f7d2</span>
       </div>
-      <div class="text-[11px] text-gray-400 font-mono mt-0.5">f00c9a1 · 2026-09-26 04:00</div>
+      <div class="text-[11px] text-gray-400 font-mono mt-0.5">9acb0e0 · 2026-09-26 04:03</div>
     </a>
   </div>
 </aside>
@@ -54,23 +54,13 @@
     <h2 class="text-lg font-semibold text-gray-800">ユビキタス言語</h2>
   </header>
   <main class="px-8 py-8">
-  
-  
-
-
-<style>
-  .filter-chip { cursor: pointer; }
-  [data-filter-bar] .filter-chip[aria-pressed="true"] { background-color: #db2777; border-color: #db2777; color: #fff; }
-</style>
-<div class="mb-6 flex items-center gap-2 flex-wrap" data-filter-bar data-filter-param="context">
-  <span class="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">文脈</span>
-  <button type="button" data-filter-value="" aria-pressed="true"
-    class="filter-chip text-xs text-pink-700 bg-pink-50 border border-pink-200 hover:bg-pink-100 rounded-full px-3 py-1 transition">すべて</button>
-  
-  <button type="button" data-filter-value="bdd" aria-pressed="false"
-    class="filter-chip text-xs text-pink-700 bg-pink-50 border border-pink-200 hover:bg-pink-100 rounded-full px-3 py-1 transition">bdd</button>
-  
+  <div class="mb-4">
+<a href="diff.html" class="inline-flex items-center gap-1.5 text-xs text-red-700 bg-red-50 border border-red-200 rounded-full px-3 py-1 hover:bg-red-100 transition">
+  <span class="font-semibold">1</span>件がここから消えました
+</a>
 </div>
+  
+
 
 
   
@@ -242,6 +232,22 @@ Patton の「話して記録」にあたり、ここで残した素のマッピ�
 リリース未指定のストーリーは未スコープ行にまとまる。</td>
       </tr>
     
+      <tr id="story-discovery" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
+        <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
+          <div class="flex flex-wrap items-baseline gap-2">発見
+<a href="diff.html#ubiquitous/story-discovery" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+</div>
+        </td>
+        <td class="px-5 py-3">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-xs font-mono text-pink-600">story-discovery</span>
+            
+          </div>
+        </td>
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">具体例を出しながらストーリーの振る舞いを洗い出し、ルールを立て、決めきれないものを疑問点として残す協働。実例マッピングがその手法。
+BDD の Discovery にあたり、探索全体の傘であるディスカバリーとは別に、ストーリー1つ分のセッションを指す。部屋に誰がいるか——人間だけか、AIを招くか——は定義に入らない。</td>
+      </tr>
+    
       <tr id="story-map" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
         <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
           <div class="flex flex-wrap items-baseline gap-2">ストーリーマップ</div>
@@ -283,20 +289,6 @@ livt ではオポチュニティ1つにつき1枚で、そのオポチュニテ�
         </td>
         <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">チームが協働と実装で共通して使う用語。
 livt では用語ごとに Markdown ファイルとして管理し、一覧をテーブルとして閲覧する。</td>
-      </tr>
-    
-      <tr id="bdd/discovery" data-filter-values="[&#34;bdd&#34;]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
-        <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
-          <div class="flex flex-wrap items-baseline gap-2">発見</div>
-        </td>
-        <td class="px-5 py-3">
-          <div class="flex flex-col items-start gap-1">
-            <span class="text-xs font-mono text-pink-600">discovery</span>
-            <span class="text-[11px] text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-2 py-0.5">bdd</span>
-          </div>
-        </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">具体例を出しながらストーリーの振る舞いを洗い出し、ルールを立て、決めきれないものを疑問点として残す協働。実例マッピングがその手法。
-BDD の Discovery にあたり、探索全体の傘であるディスカバリーとは別に、ストーリー1つ分のセッションを指す。部屋に誰がいるか——人間だけか、AIを招くか——は定義に入らない。</td>
       </tr>
     
     </tbody>
