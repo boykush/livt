@@ -14,7 +14,7 @@ livt には別冊のマニュアルはありません。知りたいことは次
 
 ファイルを書く skill（[plugins/](https://github.com/boykush/livt/tree/main/plugins)）
 
-## エージェントからの読み方と、引用の仕方
+## AI エージェントがリポジトリを読む方法と、引用の仕方
 
 `livt mcp` — サーバーが自分のツールとリソースを説明します
 

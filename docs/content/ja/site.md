@@ -15,6 +15,6 @@
 
 <!-- フッター。 -->
 
-- MIT ライセンス
-- コントリビューション
-- セキュリティ
+- MIT License
+- Contributing
+- Security

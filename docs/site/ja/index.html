@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>livt - Living Text</title>
-<meta name="description" content="コーディングエージェントが実装するチームのための BDD。livt は、ボードで合意したことをテキストにしてリポジトリに残します。">
+<meta name="description" content="AI エージェントが実装するチームのための BDD。livt は、ボードで合意したことをテキストにしてリポジトリに残します。">
 <link rel="alternate" hreflang="en" href="https://boykush.github.io/livt/">
 <link rel="alternate" hreflang="ja" href="https://boykush.github.io/livt/ja/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,7 +32,7 @@
 
     <div class="hero-grid">
       <div>
-        <p class="lead">livt は、オンラインホワイトボード（Miro や FigJam など）でチームが決めたことを、テキストにしてリポジトリに残すツールです。コーディングエージェントはそのテキストを読み、BDD が目指してきた発見・定式化・自動化の流れを最後までたどれます。</p>
+        <p class="lead">livt は、オンラインホワイトボード（Miro や FigJam など）でチームが決めたことを、テキストにしてリポジトリに残すツールです。AI エージェントはそのテキストを読み、BDD が目指してきた発見・定式化・自動化の流れを最後までたどれます。</p>
         <div class="ctas">
           <a class="btn primary" href="https://boykush.github.io/livt/demo/">ライブデモを見る</a>
           <a class="btn" href="https://github.com/boykush/livt#getting-started">使い始める</a>
@@ -113,8 +113,8 @@
 
   <section class="sec wrap" id="why">
     <div class="sec-intro">
-      <h2>コーディングエージェントの時代の BDD</h2>
-      <p>BDD が目指してきたのは、ルールをチームで見つけ、定式化し、テストとして自動化する一続きの流れです。定式化と自動化のあいだで人が担ってきた解釈は、いまはコーディングエージェントが代われます。livt は、エージェントがその流れをたどるための型を、CLI とコーディングエージェント用のプラグインとして提供します。</p>
+      <h2>AI 時代の BDD</h2>
+      <p>BDD が目指してきたのは、ルールをチームで見つけ、定式化し、テストとして自動化する一続きの流れです。定式化と自動化のあいだで人が担ってきた解釈は、いまは AI エージェントが代われます。livt は、エージェントがその流れをたどるための型を、CLI と AI プラグインとして提供します。</p>
     </div>
 
     <div class="canvas">
@@ -122,7 +122,7 @@
         <section class="box">
           <h3>課題</h3>
           <ul>
-            <li>Gherkin をコードにつなぐ解釈層（Cucumber のステップ定義など）を、人が書いて保守し続けてきた</li>
+            <li>Gherkin をコードにつなぐ解釈器（Cucumber のステップ定義など）を、人が書いて保守し続けてきた</li>
             <li>テストピラミッドに従うと、すべてのシナリオを E2E（Large テスト）にはできない</li>
             <li>そのため自動化はバックエンドやフロントエンドなど実装リポジトリの各所に散らばり、どのルールがどこで自動化されたかを追えない</li>
           </ul>
@@ -131,7 +131,7 @@
           <h3>顧客とユーザー</h3>
           <ul>
             <li>BDD を実践したい開発チーム</li>
-            <li>コーディングエージェントに実装を任せているエンジニア</li>
+            <li>AI エージェントに実装を任せているエンジニア</li>
           </ul>
         </section>
         <section class="box">
@@ -146,10 +146,10 @@
         <section class="box">
           <h3>解決策のアイデア</h3>
           <ul>
-            <li>ステップ定義が担っていた解釈は、コーディングエージェントが担う</li>
+            <li>ステップ定義が担っていた解釈は、AI エージェントが担う</li>
             <li>ルールと具体例には URI があり、テストは自動化した対象の URI を引用する</li>
             <li>テストはどの層・どのリポジトリにあってもよく、livt が引用を機械的に集めてルールごとの状況を示す</li>
-            <li>発見から定式化、自動化までの流れを、CLI とコーディングエージェント用のプラグインとして配る</li>
+            <li>発見から定式化、自動化までの流れを、CLI と AI プラグインとして配る</li>
           </ul>
         </section>
       </div>
@@ -157,7 +157,7 @@
         <section class="box">
           <h3>ユーザーは価値を得るために何をするか</h3>
           <ul>
-            <li>合意したルールをコーディングエージェントに渡し、合う層のテストとして自動化させる</li>
+            <li>合意したルールを AI エージェントに渡し、合う層のテストとして自動化させる</li>
             <li>まだ自動化されていないルールを見て、次に埋めるものを選ぶ</li>
           </ul>
         </section>
@@ -181,10 +181,10 @@
     <div class="onward">
       <h2>使い始める</h2>
       <div>
-        <p>livt をインストールして、コーディングエージェントにプラグインを入れます。手順は README にあります。</p>
+        <p>livt をインストールして、AI エージェントにプラグインを入れます。手順は README にあります。</p>
         <div class="ctas">
           <a class="btn primary" href="https://github.com/boykush/livt#getting-started">README を読む</a>
-          <a class="btn" href="https://github.com/boykush/livt/releases">リリース一覧</a>
+          <a class="btn" href="https://github.com/boykush/livt/releases">Releases</a>
         </div>
       </div>
     </div>
@@ -193,11 +193,11 @@
 
 <footer>
   <div class="wrap foot">
-    <span>livt · <a href="https://github.com/boykush/livt/blob/main/LICENSE">MIT ライセンス</a></span>
+    <span>livt · <a href="https://github.com/boykush/livt/blob/main/LICENSE">MIT License</a></span>
     <nav aria-label="プロジェクト">
       <a href="https://github.com/boykush/livt">GitHub</a>
-      <a href="https://github.com/boykush/livt/blob/main/CONTRIBUTING.md">コントリビューション</a>
-      <a href="https://github.com/boykush/livt/blob/main/SECURITY.md">セキュリティ</a>
+      <a href="https://github.com/boykush/livt/blob/main/CONTRIBUTING.md">Contributing</a>
+      <a href="https://github.com/boykush/livt/blob/main/SECURITY.md">Security</a>
     </nav>
   </div>
 </footer>
