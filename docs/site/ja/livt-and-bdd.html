@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>livt と BDD - livt</title>
+<link rel="alternate" hreflang="en" href="https://boykush.github.io/livt/livt-and-bdd.html">
+<link rel="alternate" hreflang="ja" href="https://boykush.github.io/livt/ja/livt-and-bdd.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="mark" href="index.html">livt</a>
+    <nav class="top-nav" aria-label="サイト">
+      <a href="https://boykush.github.io/livt/demo/">Live demo</a>
+      <a href="livt-and-bdd.html" aria-current="page">livt and BDD</a>
+      <a href="reference.html">Reference</a>
+      <a href="https://github.com/boykush/livt">GitHub</a>
+      <span class="lang" aria-label="言語"><a href="../livt-and-bdd.html" hreflang="en" lang="en">English</a><span aria-current="true">日本語</span></span>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap page-head">
+    <div class="crumb"><a href="index.html">livt</a> /</div>
+    <h1 class="page-title">livt と BDD</h1>
+  </div>
+
+  <div class="wrap page-body">
+    <div class="bdd-body">
+      <section class="departs">
+        <div class="block-title"><h2>プラクティスと違うところ</h2></div>
+        <article class="phase">
+          <div class="phase-text">
+            <h3>定式化：実例マッピングを正にする</h3>
+            <p>主流の BDD では、開発者とテスターがルールと具体例を feature file（Gherkin）に書き起こし、それが仕様の正になります。livt では実例マッピング形式の YAML ファイルが正で、<a href="https://boykush.github.io/livt/demo/ubiquitous.html#formulation">定式化</a>はそのファイルを書き換えることです。feature file は要るならそこから生成するもので、今の livt はまだ生成しません。</p>
+            <p>PdM やデザイナーも、その後の疑問点の解消やルールの変更に実例マッピングとして加われるので、学習コストが下がります。</p>
+          </div>
+          <figure class="fig flow">
+            <div class="flow-row"><span class="flow-who">プラクティス</span><span class="node map"><span class="nm">実例マッピング</span></span><span class="edge">開発者とテスターが書き起こす</span><span class="node gherkin"><span class="nm">feature file（Gherkin）<b class="src">正</b></span><span class="roles">開発者・テスター</span></span><span class="flow-note">feature file は開発とテストの手元に置かれる</span></div>
+            <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node map"><span class="nm">実例マッピング</span></span><span class="edge">記録して書き換える</span><span class="node map"><span class="nm">実例マッピング形式の YAML<b class="src">正</b></span><span class="roles">スリーアミーゴス</span></span><span class="edge maybe">要るなら生成</span><span class="node gherkin maybe"><span class="nm">feature file</span></span><span class="flow-note">PdM とデザイナーも、その後の疑問点の解消とルールの変更に加わる</span></div>
+          </figure>
+        </article>
+        <article class="phase">
+          <div class="phase-text">
+            <h3>自動化：AI エージェントに任せる</h3>
+            <p>AI エージェントの進化で、合意したルールの自動化はエージェントに任せられるようになりました。テストピラミッドに沿うと、1つの実例マッピングのルールや具体例が、別々のレイヤや言語のテストで自動化されます。livt はそのための型とツールを CLI と AI プラグインとして渡します。テストはルールや具体例を <a href="https://boykush.github.io/livt/demo/ubiquitous.html#livt-uri">livt URI</a> で引用し、livt がその引用を集めて自動化レポートに出力します。</p>
+          </div>
+          <figure class="fig fan">
+            <div class="fan-end"><span class="node map">実例マッピング</span><span class="fan-ids">R-01 · R-02 · EX-02</span></div>
+            <div class="fan-arrow" aria-hidden="true">↓</div>
+            <div class="fan-tests">
+              <div class="test"><span class="layer">バックエンド（Go）</span><code>// livt:automates livt://…/rule/R-01</code></div>
+              <div class="test"><span class="layer">フロントエンド（TypeScript）</span><code>// livt:automates livt://…/rule/R-01/example/EX-02</code></div>
+              <div class="test"><span class="layer">E2E</span><code>// livt:automates livt://…/rule/R-02</code></div>
+            </div>
+            <div class="fan-arrow" aria-hidden="true">↓</div>
+            <div class="fan-end"><span class="node livt"><span class="nm">livt automations</span><span class="roles">テストの引用を集めて出力</span></span></div>
+            <div class="fan-arrow" aria-hidden="true">↓</div>
+            <div class="fan-end"><span class="node report"><span class="nm">自動化レポート</span></span><span class="fan-note">ルールと具体例ごとに、どのテストが引用しているか</span></div>
+          </figure>
+        </article>
+      </section>
+
+      <section>
+        <div class="block-title"><h2>BDD を学ぶなら</h2></div>
+        <p class="credits-intro">livt が描いているものの多くは、BDD コミュニティが練り上げて公開してきたものです。</p>
+        <ul class="credits">
+          <li><span class="by">Dan North</span><span class="what"><a href="https://dannorth.net/introducing-bdd/">Introducing BDD</a></span></li>
+          <li><span class="by">Matt Wynne</span><span class="what"><a href="https://cucumber.io/blog/bdd/example-mapping-introduction/">Introducing Example Mapping</a></span></li>
+          <li><span class="by">Seb Rose</span><span class="what"><a href="https://cucumber.io/blog/bdd/keep-your-scenarios-brief/">Keep your scenarios BRIEF</a></span></li>
+          <li><span class="by">Gáspár Nagy、Seb Rose</span><span class="what"><a href="https://bddbooks.com/">The BDD Books</a>：Discovery、Formulation（Leanpub に日本語版あり）</span></li>
+        </ul>
+      </section>
+    </div>
+
+    <nav class="page-end" aria-label="ページ">
+      <a href="index.html">← livt</a>
+      <a href="reference.html">リファレンス →</a>
+    </nav>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>livt · <a href="https://github.com/boykush/livt/blob/main/LICENSE">MIT License</a></span>
+    <nav aria-label="プロジェクト">
+      <a href="https://github.com/boykush/livt">GitHub</a>
+      <a href="https://github.com/boykush/livt/blob/main/CONTRIBUTING.md">Contributing</a>
+      <a href="https://github.com/boykush/livt/blob/main/SECURITY.md">Security</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

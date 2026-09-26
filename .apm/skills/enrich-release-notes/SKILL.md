@@ -22,7 +22,7 @@ Each reader uses one or more of these, and the notes answer for each:
 - **The `livt` binary** — the CLI, the site it builds, and `livt mcp`, built from the tag. It changes only when `main.go`, `cmd/`, `internal/`, `go.mod`, or `go.sum` do.
 - **The reader's own livt repository** — the files the binary reads. A renamed field, a removed flag, or a new file layout breaks it even when every command still runs.
 - **The Claude Code plugins** — `livt-discovery`, `livt-delivery`, `livt-automation`, served from `main` by the marketplace in `.claude-plugin/marketplace.json`, by path rather than by tag. Their shared version is in `plugins/*/.claude-plugin/plugin.json`.
-- **The docs site** — `docs/src/`, deployed from `main`: why livt exists and when it fits. It keeps no reference, so a release rarely moves it.
+- **The docs site** — its text in `docs/content/`, published from `main`: why livt exists and when it fits. It keeps no reference, so a release rarely moves it.
 
 This repository's own livt repository (`discoveries/`, `stories/`, `ubiquitous/`, `opportunities/`) is livt describing itself: mention it only when a term the plugins speak moved with it. CI, agent config, and dependency bumps stay in the changelog alone.
 
@@ -36,7 +36,7 @@ Let `$prev` be the tag before `$tag`: `git describe --tags --abbrev=0 "$tag^"`.
    - binary — `git diff --stat "$prev..$tag" -- main.go cmd internal go.mod go.sum ':(exclude)*_test.go' ':(exclude)**/testdata/**'`. Empty means no code changed, and the notes say so.
    - the reader's livt repository — `BREAKING CHANGE:` footers that name a field, a file, or a flag, and the diff under `plugins/*/skills/`, where the formats it holds are written down.
    - plugins — `git diff --stat "$prev..$tag" -- plugins .claude-plugin`, and the version in each `plugin.json` at both tags. If `plugins/` changed and the version did not move, stop and tell the maintainer: by `AGENTS.md` it moves immediately before the tag, and the upgrade steps cannot promise a number the plugins do not carry.
-   - docs — `git diff --stat --diff-filter=A "$prev..$tag" -- docs/src`, for new pages worth a link.
+   - docs — `git diff --stat --diff-filter=A "$prev..$tag" -- docs/content/en`, for new pages worth a link.
 4. Read the migration notes the maintainers already wrote: each plugin README's `Coming from N.x` section at `$tag`. Link them rather than re-deriving them.
 
 Describe the release at `$tag`. What `main` gained since belongs to the next release's notes.

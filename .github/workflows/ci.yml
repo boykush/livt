@@ -27,7 +27,7 @@ jobs:
 
       # Installs Go and golangci-lint at the versions pinned in .mise.toml — the
       # same source of truth the local pre-commit hooks (hk) use. install_args
-      # limits the install to these two tools (not node/mdBook/pkl/hk), keeping
+      # limits the install to these two tools (not node/pkl/hk), keeping
       # the job lean. mise-action caches the installed tools across runs.
       - name: Setup mise
         uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
@@ -65,28 +65,3 @@ jobs:
       # go test -race — the gap the pre-commit hooks don't cover.
       - name: Test
         run: mise run test
-
-  docs:
-    name: docs
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read # checkout
-    steps:
-      - name: Checkout
-        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-        with:
-          persist-credentials: false
-
-      # cargo builds mdbook-i18n-helpers from source with the runner's Rust;
-      # mise-action caches the result, so that happens once per version.
-      - name: Setup mise
-        uses: jdx/mise-action@c2a87611a18de5b3828c5652fe268e992400cb5c # v4.3.0
-        with:
-          install_args: aqua:rust-lang/mdBook cargo:mdbook-i18n-helpers conda:gettext-tools
-
-      - name: Translation (docs/po)
-        run: mise run docs:check
-
-      # Otherwise the first build of a broken book is the deploy after merging.
-      - name: Build
-        run: mise run docs:build

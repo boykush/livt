@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>livt - Living Text</title>
+<meta name="description" content="livt は、ボードで合意したことをその形のままリポジトリに残し、チームの全職能の持ち物にします。AI エージェントはそれを読み、自動化までつなげます。">
+<link rel="alternate" hreflang="en" href="https://boykush.github.io/livt/">
+<link rel="alternate" hreflang="ja" href="https://boykush.github.io/livt/ja/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="mark" href="index.html">livt</a>
+    <nav class="top-nav" aria-label="サイト">
+      <a href="https://boykush.github.io/livt/demo/">Live demo</a>
+      <a href="livt-and-bdd.html">livt and BDD</a>
+      <a href="reference.html">Reference</a>
+      <a href="https://github.com/boykush/livt">GitHub</a>
+      <span class="lang" aria-label="言語"><a href="../index.html" hreflang="en" lang="en">English</a><span aria-current="true">日本語</span></span>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <h1 class="tagline" lang="en"><span class="line">Collaborate on <span class="on-board">board.</span></span> <span class="line">Make it living in <span class="in-text">text.</span></span></h1>
+
+    <div class="hero-grid">
+      <div>
+        <p class="lead">livt は、オンラインホワイトボード（Miro や FigJam など）でチームが決めたことを、ボードの形のままリポジトリに残し、チームの全職能の持ち物にするツールです。AI エージェントはそれを読み、オポチュニティからテストまでを一続きにたどれます。</p>
+        <div class="ctas">
+          <a class="btn primary" href="https://boykush.github.io/livt/demo/">ライブデモを見る</a>
+          <a class="btn" href="https://github.com/boykush/livt#getting-started">使い始める</a>
+        </div>
+      </div>
+
+      <figure class="specimen">
+        <div class="spec-bar">
+          <a class="spec-path" href="https://github.com/boykush/livt/blob/main/discoveries/example-mappings/collect-automations.yaml">discoveries/example-mappings/<b>collect-automations.yaml</b></a>
+        </div>
+        <div class="legend" aria-hidden="true">
+          <span><i class="l-story"></i>ストーリー</span>
+          <span><i class="l-rule"></i>ルール</span>
+          <span><i class="l-ex"></i>具体例</span>
+          <span><i class="l-q"></i>疑問点</span>
+        </div>
+        <div class="board-scroll">
+          <div class="board">
+            <a class="st story" href="https://boykush.github.io/livt/demo/story/collect-automations.html"><span>実装リポジトリのテストから自動化を集めてレポートにする</span><span aria-hidden="true">→</span></a>
+            <div class="mapping">
+              <div class="st rule cited">
+                <span class="auto">✓ 自動化済み</span>
+                テストは自動化する対象を、マーカー付きのlivt URIで示す
+                <a class="cite-link" href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/scan_test.go#L112" title="テストで自動化済み">✓ livt: scan_test.go:112</a>
+                <span class="id">#R-01</span>
+              </div>
+              <div class="stack">
+                <div class="st ex">
+                  <span class="auto">✓ 自動化済み</span>
+                  コメント行に livt:automates と1つのlivt URIを並べて書く
+                  <a class="cite-link" href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/scan_test.go#L44" title="テストで自動化済み">✓ livt: scan_test.go:44</a>
+                  <span class="id">#EX-01</span>
+                </div>
+                <div class="st ex">
+                  <span class="auto">✓ 自動化済み</span>
+                  マーカーのない裸のlivt URIはただの参照で、自動化として数えない
+                  <a class="cite-link" href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/scan_test.go#L83" title="テストで自動化済み">✓ livt: scan_test.go:83</a>
+                  <span class="id">#EX-03</span>
+                </div>
+              </div>
+              <div class="st rule">
+                走査はルールと具体例を独立に拾い、構造を推論しない
+                <span class="id">#R-02</span>
+              </div>
+              <div class="stack">
+                <div class="st ex">
+                  <span class="auto">✓ 自動化済み</span>
+                  ルールのURIを引用すればルールが、具体例のURIを引用すればその具体例が自動化済みになる
+                  <a class="cite-link" href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/scan_test.go#L127" title="テストで自動化済み">✓ livt: scan_test.go:127</a>
+                  <span class="id">#EX-01</span>
+                </div>
+                <div class="st ex">
+                  具体例が全て引用されていても、ルール自身は自動化済みにならない
+                  <span class="id">#EX-02</span>
+                </div>
+              </div>
+              <div class="qhead">疑問点</div>
+              <div class="stack">
+                <div class="st q">
+                  囲むブロックを持たないフラットなテストで、ルールのlivt URIをどこに引用するか（…）
+                  <span class="id">#Q-01</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="spec-cite">
+          <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/scan_test.go#L112">internal/automation/scan_test.go:112</a>
+          <code class="cite-line"><span class="c">// livt:automates</span> livt://mapping/collect-automations/rule/<b>R-01</b></code>
+        </div>
+        <figcaption>
+          <p>livt 自身の実例マッピングからの抜粋です。下のテストは R-01 を自動化の対象として示していて、livt はこうした印をレポートに集めます。付箋の「自動化済み」はそこから出ています。</p>
+          <a href="https://boykush.github.io/livt/demo/mapping/collect-automations.html">ボード全体を見る</a>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="practices">
+    <div class="sec-intro">
+      <h2>土台にしたプラクティス</h2>
+      <div class="copy">
+        <p>livt の考え方は、Gáspár Nagy と Seb Rose が『<a href="https://bddbooks.com/">The BDD Books</a>』で整理した BDD と、Jeff Patton の『ユーザーストーリーマッピング』に根ざしています。BDD との関係は <a href="livt-and-bdd.html">livt と BDD</a> にまとめています。</p>
+      </div>
+    </div>
+    <ul class="practices">
+      <li><i class="mk opp"></i><a class="name" href="https://boykush.github.io/livt/demo/ubiquitous.html#opportunity-canvas">オポチュニティキャンバス</a><span class="role">なぜ作るのか</span><span class="who">Jeff Patton「<a href="https://jpattonassociates.com/opportunity-canvas/">Opportunity Canvas</a>」</span></li>
+      <li><i class="mk usm"></i><a class="name" href="https://boykush.github.io/livt/demo/ubiquitous.html#story-map">ユーザーストーリーマッピング</a><span class="role">何を作るのか</span><span class="who">Jeff Patton『ユーザーストーリーマッピング』</span></li>
+      <li><i class="mk map"></i><a class="name" href="https://boykush.github.io/livt/demo/ubiquitous.html#example-mapping">実例マッピング</a><span class="role">どう振る舞うのか</span><span class="who">Matt Wynne「<a href="https://cucumber.io/blog/bdd/example-mapping-introduction/">Introducing Example Mapping</a>」（2015）</span></li>
+      <li><i class="mk term"></i><a class="name" href="https://boykush.github.io/livt/demo/ubiquitous.html#ubiquitous-language">ユビキタス言語</a><span class="role">どの言葉で話すのか</span><span class="who">Eric Evans『ドメイン駆動設計』</span></li>
+    </ul>
+  </section>
+
+  <section class="sec wrap" id="why">
+    <div class="sec-intro">
+      <h2>なぜ livt か</h2>
+    </div>
+
+    <div class="canvas">
+      <div class="panel facts">
+        <section class="box">
+          <h3>課題</h3>
+          <ul>
+            <li>ディスカバリーで決めたことは開発のあいだも変わるが、ボードに置かれたまま古びていく</li>
+            <li>オポチュニティ、ストーリー、ルールがボードごとに分かれ、つながりをたどれない</li>
+            <li>決めたことが実装の側から読まれず、どこまで実装・自動化されたかも追いづらい</li>
+          </ul>
+        </section>
+        <section class="box">
+          <h3>顧客とユーザー</h3>
+          <ul>
+            <li>ディスカバリーから開発までを一緒に進めるチームの全職能（PdM、デザイナー、開発者、テスター）</li>
+            <li>AI エージェントに実装を任せているエンジニア</li>
+          </ul>
+        </section>
+        <section class="box">
+          <h3>現在の解決手段</h3>
+          <ul>
+            <li>ボードをそのまま残し、URL を共有してあとから見返す</li>
+            <li>決めたことをチケットやドキュメントに書き写し、そこから先は同期しない</li>
+            <li>実装・自動化したかどうかは、人がチケットやフラグで示す</li>
+          </ul>
+        </section>
+      </div>
+      <div class="panel solution">
+        <section class="box">
+          <h3>解決策のアイデア</h3>
+          <ul>
+            <li>各プラクティスのボードを、その形のままリポジトリに記録し、変更を差分として重ねる</li>
+            <li>オポチュニティからストーリーマップ、実例マッピングまでを URI でつなぐ</li>
+            <li>自動化は AI エージェントに任せ、テストが引用したルールを集めて、オポチュニティごとの現況まで示す</li>
+          </ul>
+        </section>
+      </div>
+      <div class="panel value">
+        <section class="box">
+          <h3>ユーザーは価値を得るために何をするか</h3>
+          <ul>
+            <li>ボードで決めたことを AI エージェントに記録させ、変更も同じ場所で追う</li>
+            <li>オポチュニティから実例マッピングまでを、同じサイトでたどる</li>
+            <li>オポチュニティごとの現況を見て、次に手を入れる場所を選ぶ</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="start">
+    <div class="onward">
+      <h2>使い始める</h2>
+      <div>
+        <p>livt をインストールして、AI エージェントにプラグインを入れます。手順は README にあります。</p>
+        <div class="ctas">
+          <a class="btn primary" href="https://github.com/boykush/livt#getting-started">README を読む</a>
+          <a class="btn" href="https://github.com/boykush/livt/releases">Releases</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>livt · <a href="https://github.com/boykush/livt/blob/main/LICENSE">MIT License</a></span>
+    <nav aria-label="プロジェクト">
+      <a href="https://github.com/boykush/livt">GitHub</a>
+      <a href="https://github.com/boykush/livt/blob/main/CONTRIBUTING.md">Contributing</a>
+      <a href="https://github.com/boykush/livt/blob/main/SECURITY.md">Security</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

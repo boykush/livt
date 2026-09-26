@@ -1,7 +1,5 @@
 livt
 dist/
-docs/book/
-docs/po/messages.pot
 _site/
 .playwright-mcp/
 

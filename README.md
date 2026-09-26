@@ -14,7 +14,7 @@
 
 livt keeps what a discovery session agreed as text in a repository, shows it as the board it came from, and serves it to the coding agents that build it — so the agreement is still readable, and still quotable, when someone implements it months later.
 
-![Story Map board](docs/src/images/story-map.png)
+![Story Map board](docs/images/story-map.png)
 
 [Why livt](https://boykush.github.io/livt/) says which problems it is built against and when it is the right tool.
 
@@ -40,7 +40,7 @@ Issues and pull requests are welcome — see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Acknowledgements
 
-livt renders practices it did not invent. [livt and BDD](https://boykush.github.io/livt/livt-and-bdd.html) credits the people who wrote them down, says what livt added and where it departs on purpose, and links where their maintainers are funded.
+livt renders practices it did not invent. [livt and BDD](https://boykush.github.io/livt/livt-and-bdd.html) credits the people who wrote them down, and says what livt added and where it departs on purpose.
 
 ## License
 

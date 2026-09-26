@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>livt and BDD - livt</title>
+<link rel="alternate" hreflang="en" href="https://boykush.github.io/livt/livt-and-bdd.html">
+<link rel="alternate" hreflang="ja" href="https://boykush.github.io/livt/ja/livt-and-bdd.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="mark" href="index.html">livt</a>
+    <nav class="top-nav" aria-label="Site">
+      <a href="https://boykush.github.io/livt/demo/">Live demo</a>
+      <a href="livt-and-bdd.html" aria-current="page">livt and BDD</a>
+      <a href="reference.html">Reference</a>
+      <a href="https://github.com/boykush/livt">GitHub</a>
+      <span class="lang" aria-label="Language"><span aria-current="true">English</span><a href="ja/livt-and-bdd.html" hreflang="ja" lang="ja">日本語</a></span>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="wrap page-head">
+    <div class="crumb"><a href="index.html">livt</a> /</div>
+    <h1 class="page-title">livt and BDD</h1>
+  </div>
+
+  <div class="wrap page-body">
+    <div class="bdd-body">
+      <section class="departs">
+        <div class="block-title"><h2>Where livt departs from the practice</h2></div>
+        <article class="phase">
+          <div class="phase-text">
+            <h3>Formulation: the Example Mapping is the source</h3>
+            <p>In mainstream BDD, developers and testers write the rules and examples up as a feature file (Gherkin), and that file becomes the source of the specification. In livt, a YAML file in Example Mapping's own format is the source, and <a href="https://boykush.github.io/livt/demo/ubiquitous.html#formulation">formulation</a> is rewriting that file. A feature file, where a team wants one, would be generated from it, which livt does not do yet.</p>
+            <p>Product managers and designers can go on answering its questions and changing its rules in the Example Mapping they already know, so there is little new to learn.</p>
+          </div>
+          <figure class="fig flow">
+            <div class="flow-row"><span class="flow-who">The practice</span><span class="node map"><span class="nm">Example Mapping</span></span><span class="edge">written up by developers and testers</span><span class="node gherkin"><span class="nm">feature file (Gherkin)<b class="src">source</b></span><span class="roles">Developers, testers</span></span><span class="flow-note">The feature file stays with development and testing.</span></div>
+            <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node map"><span class="nm">Example Mapping</span></span><span class="edge">recorded, then rewritten</span><span class="node map"><span class="nm">YAML in Example Mapping's format<b class="src">source</b></span><span class="roles">The three amigos</span></span><span class="edge maybe">generated if wanted</span><span class="node gherkin maybe"><span class="nm">feature file</span></span><span class="flow-note">Product managers and designers join in answering questions and changing rules.</span></div>
+          </figure>
+        </article>
+        <article class="phase">
+          <div class="phase-text">
+            <h3>Automation: coding agents take it on</h3>
+            <p>Coding agents can now take on automating what a team agreed. Following the test pyramid, one Example Mapping's rules and examples end up automated at different layers and in different languages. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins. Tests cite rules and examples by their <a href="https://boykush.github.io/livt/demo/ubiquitous.html#livt-uri">livt URI</a>, and livt collects those citations into an automation report.</p>
+          </div>
+          <figure class="fig fan">
+            <div class="fan-end"><span class="node map">Example Mapping</span><span class="fan-ids">R-01 · R-02 · EX-02</span></div>
+            <div class="fan-arrow" aria-hidden="true">↓</div>
+            <div class="fan-tests">
+              <div class="test"><span class="layer">Backend (Go)</span><code>// livt:automates livt://…/rule/R-01</code></div>
+              <div class="test"><span class="layer">Frontend (TypeScript)</span><code>// livt:automates livt://…/rule/R-01/example/EX-02</code></div>
+              <div class="test"><span class="layer">End-to-end</span><code>// livt:automates livt://…/rule/R-02</code></div>
+            </div>
+            <div class="fan-arrow" aria-hidden="true">↓</div>
+            <div class="fan-end"><span class="node livt"><span class="nm">livt automations</span><span class="roles">Collects the tests' citations and writes the report</span></span></div>
+            <div class="fan-arrow" aria-hidden="true">↓</div>
+            <div class="fan-end"><span class="node report"><span class="nm">Automation report</span></span><span class="fan-note">Which tests cite each rule and example</span></div>
+          </figure>
+        </article>
+      </section>
+
+      <section>
+        <div class="block-title"><h2>Learn it from the people who wrote it down</h2></div>
+        <p class="credits-intro">Most of what livt renders was worked out and published by the BDD community.</p>
+        <ul class="credits">
+          <li><span class="by">Dan North</span><span class="what"><a href="https://dannorth.net/introducing-bdd/">Introducing BDD</a></span></li>
+          <li><span class="by">Matt Wynne</span><span class="what"><a href="https://cucumber.io/blog/bdd/example-mapping-introduction/">Introducing Example Mapping</a></span></li>
+          <li><span class="by">Seb Rose</span><span class="what"><a href="https://cucumber.io/blog/bdd/keep-your-scenarios-brief/">Keep your scenarios BRIEF</a></span></li>
+          <li><span class="by">Gáspár Nagy, Seb Rose</span><span class="what"><a href="https://bddbooks.com/">The BDD Books</a>: Discovery, Formulation (Japanese editions on Leanpub)</span></li>
+        </ul>
+      </section>
+    </div>
+
+    <nav class="page-end" aria-label="Pages">
+      <a href="index.html">← livt</a>
+      <a href="reference.html">Reference →</a>
+    </nav>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>livt · <a href="https://github.com/boykush/livt/blob/main/LICENSE">MIT License</a></span>
+    <nav aria-label="Project">
+      <a href="https://github.com/boykush/livt">GitHub</a>
+      <a href="https://github.com/boykush/livt/blob/main/CONTRIBUTING.md">Contributing</a>
+      <a href="https://github.com/boykush/livt/blob/main/SECURITY.md">Security</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>

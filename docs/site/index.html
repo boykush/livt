@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>livt - Living Text</title>
+<meta name="description" content="livt keeps what your team agreed on its boards, each in its own format, owned by every role on the team. Coding agents read it and carry it through to automation.">
+<link rel="alternate" hreflang="en" href="https://boykush.github.io/livt/">
+<link rel="alternate" hreflang="ja" href="https://boykush.github.io/livt/ja/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=JetBrains+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap top-in">
+    <a class="mark" href="index.html">livt</a>
+    <nav class="top-nav" aria-label="Site">
+      <a href="https://boykush.github.io/livt/demo/">Live demo</a>
+      <a href="livt-and-bdd.html">livt and BDD</a>
+      <a href="reference.html">Reference</a>
+      <a href="https://github.com/boykush/livt">GitHub</a>
+      <span class="lang" aria-label="Language"><span aria-current="true">English</span><a href="ja/index.html" hreflang="ja" lang="ja">日本語</a></span>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="hero wrap">
+    <h1 class="tagline"><span class="line">Collaborate on <span class="on-board">board.</span></span> <span class="line">Make it living in <span class="in-text">text.</span></span></h1>
+
+    <div class="hero-grid">
+      <div>
+        <p class="lead">Teams decide what to build on a whiteboard, often an online one such as Miro or FigJam. livt keeps what they agreed in the repository, each board in its own format, so that every role on the team owns it. Coding agents read it and follow it as one thread, from the opportunity to the tests.</p>
+        <div class="ctas">
+          <a class="btn primary" href="https://boykush.github.io/livt/demo/">Open the live demo</a>
+          <a class="btn" href="https://github.com/boykush/livt#getting-started">Get started</a>
+        </div>
+      </div>
+
+      <figure class="specimen">
+        <div class="spec-bar">
+          <a class="spec-path" href="https://github.com/boykush/livt/blob/main/discoveries/example-mappings/collect-automations.yaml">discoveries/example-mappings/<b>collect-automations.yaml</b></a>
+        </div>
+        <div class="legend" aria-hidden="true">
+          <span><i class="l-story"></i>Story</span>
+          <span><i class="l-rule"></i>Rule</span>
+          <span><i class="l-ex"></i>Example</span>
+          <span><i class="l-q"></i>Question</span>
+        </div>
+        <div class="board-scroll">
+          <div class="board">
+            <a class="st story" href="https://boykush.github.io/livt/demo/story/collect-automations.html"><span>Collect what the implementation repository's tests automate into a report</span><span aria-hidden="true">→</span></a>
+            <div class="mapping">
+              <div class="st rule cited">
+                <span class="auto">✓ automated</span>
+                A test shows what it automates with a livt URI behind a marker
+                <a class="cite-link" href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/scan_test.go#L112" title="Automated by tests">✓ livt: scan_test.go:112</a>
+                <span class="id">#R-01</span>
+              </div>
+              <div class="stack">
+                <div class="st ex">
+                  <span class="auto">✓ automated</span>
+                  A comment line puts livt:automates next to one livt URI
+                  <a class="cite-link" href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/scan_test.go#L44" title="Automated by tests">✓ livt: scan_test.go:44</a>
+                  <span class="id">#EX-01</span>
+                </div>
+                <div class="st ex">
+                  <span class="auto">✓ automated</span>
+                  A bare livt URI without the marker is only a reference, and does not count as automation
+                  <a class="cite-link" href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/scan_test.go#L83" title="Automated by tests">✓ livt: scan_test.go:83</a>
+                  <span class="id">#EX-03</span>
+                </div>
+              </div>
+              <div class="st rule">
+                The scan picks up rules and examples independently, and infers no structure
+                <span class="id">#R-02</span>
+              </div>
+              <div class="stack">
+                <div class="st ex">
+                  <span class="auto">✓ automated</span>
+                  Citing a rule's URI makes the rule automated; citing an example's URI makes that example automated
+                  <a class="cite-link" href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/scan_test.go#L127" title="Automated by tests">✓ livt: scan_test.go:127</a>
+                  <span class="id">#EX-01</span>
+                </div>
+                <div class="st ex">
+                  Even if every example is cited, the rule itself does not become automated
+                  <span class="id">#EX-02</span>
+                </div>
+              </div>
+              <div class="qhead">Questions</div>
+              <div class="stack">
+                <div class="st q">
+                  In a flat test with no enclosing block, where does the rule's livt URI go? (…)
+                  <span class="id">#Q-01</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="spec-cite">
+          <a href="https://github.com/boykush/livt/blob/07f8ad43a9c50564fd6b55883bf25ebe92123266/internal/automation/scan_test.go#L112">internal/automation/scan_test.go:112</a>
+          <code class="cite-line"><span class="c">// livt:automates</span> livt://mapping/collect-automations/rule/<b>R-01</b></code>
+        </div>
+        <figcaption>
+          <p>An excerpt of livt's own example mapping, translated from Japanese. The test below marks R-01 as the rule it automates. livt collects such marks into a report, and each sticky's ✓ comes from it.</p>
+          <a href="https://boykush.github.io/livt/demo/mapping/collect-automations.html">See the whole board</a>
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="practices">
+    <div class="sec-intro">
+      <h2>What livt builds on</h2>
+      <div class="copy">
+        <p>The ideas behind livt come from BDD, as Gáspár Nagy and Seb Rose set it out in <a href="https://bddbooks.com/">The BDD Books</a>, and from Jeff Patton's User Story Mapping. <a href="livt-and-bdd.html">livt and BDD</a> covers how livt relates to BDD.</p>
+      </div>
+    </div>
+    <ul class="practices">
+      <li><i class="mk opp"></i><a class="name" href="https://boykush.github.io/livt/demo/ubiquitous.html#opportunity-canvas">Opportunity Canvas</a><span class="role">why to build</span><span class="who">Jeff Patton, <a href="https://jpattonassociates.com/opportunity-canvas/">Opportunity Canvas</a></span></li>
+      <li><i class="mk usm"></i><a class="name" href="https://boykush.github.io/livt/demo/ubiquitous.html#story-map">User Story Mapping</a><span class="role">what to build</span><span class="who">Jeff Patton, User Story Mapping</span></li>
+      <li><i class="mk map"></i><a class="name" href="https://boykush.github.io/livt/demo/ubiquitous.html#example-mapping">Example Mapping</a><span class="role">how it should behave</span><span class="who">Matt Wynne, <a href="https://cucumber.io/blog/bdd/example-mapping-introduction/">Introducing Example Mapping</a> (2015)</span></li>
+      <li><i class="mk term"></i><a class="name" href="https://boykush.github.io/livt/demo/ubiquitous.html#ubiquitous-language">Ubiquitous Language</a><span class="role">which words to use</span><span class="who">Eric Evans, Domain-Driven Design</span></li>
+    </ul>
+  </section>
+
+  <section class="sec wrap" id="why">
+    <div class="sec-intro">
+      <h2>Why livt</h2>
+    </div>
+
+    <div class="canvas">
+      <div class="panel facts">
+        <section class="box">
+          <h3>Problems</h3>
+          <ul>
+            <li>Decisions made in discovery keep changing during development, yet stay on the board and go stale.</li>
+            <li>Opportunities, stories and rules sit on separate boards, with no way to follow one to the next.</li>
+            <li>What was decided goes unread from the implementation side, and how much of it is implemented and automated is hard to tell.</li>
+          </ul>
+        </section>
+        <section class="box">
+          <h3>Customers &amp; Users</h3>
+          <ul>
+            <li>Every role on a team that runs discovery through development together: product managers, designers, developers, testers</li>
+            <li>Engineers who leave implementation to coding agents</li>
+          </ul>
+        </section>
+        <section class="box">
+          <h3>Solutions Today</h3>
+          <ul>
+            <li>Keep the board as it was, share its URL, and look back at it later</li>
+            <li>Copy the decisions into tickets or documents, and stop syncing from there</li>
+            <li>Have people mark in tickets or flags whether something is implemented or automated</li>
+          </ul>
+        </section>
+      </div>
+      <div class="panel solution">
+        <section class="box">
+          <h3>Solution Idea</h3>
+          <ul>
+            <li>Record each practice's board in the repository in its own format, and layer changes on it as diffs</li>
+            <li>Link opportunities to their story maps and Example Mappings with URIs</li>
+            <li>Leave automation to coding agents, gather the rules their tests cite, and show where each opportunity stands</li>
+          </ul>
+        </section>
+      </div>
+      <div class="panel value">
+        <section class="box">
+          <h3>What Will Users Do To Get Value?</h3>
+          <ul>
+            <li>Have a coding agent record what the board decided, and follow changes in the same place</li>
+            <li>Follow an opportunity down to its Example Mappings on one site</li>
+            <li>See where each opportunity stands, and pick the next place to work on</li>
+          </ul>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec wrap" id="start">
+    <div class="onward">
+      <h2>Get started</h2>
+      <div>
+        <p>Install livt and add its plugins to your coding agent. The README has the steps.</p>
+        <div class="ctas">
+          <a class="btn primary" href="https://github.com/boykush/livt#getting-started">Read Getting started</a>
+          <a class="btn" href="https://github.com/boykush/livt/releases">Releases</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap foot">
+    <span>livt · <a href="https://github.com/boykush/livt/blob/main/LICENSE">MIT License</a></span>
+    <nav aria-label="Project">
+      <a href="https://github.com/boykush/livt">GitHub</a>
+      <a href="https://github.com/boykush/livt/blob/main/CONTRIBUTING.md">Contributing</a>
+      <a href="https://github.com/boykush/livt/blob/main/SECURITY.md">Security</a>
+    </nav>
+  </div>
+</footer>
+</body>
+</html>
