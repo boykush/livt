@@ -38,22 +38,22 @@
         <article class="phase">
           <div class="phase-text">
             <h3>発見：実例マッピングを残す</h3>
-            <p>Matt Wynne の実例マッピングでは、カードは 25 分の会話のための道具です。会話のあと、ルールと具体例は開発者とテスターが Gherkin に書き起こし、その手元に置かれます。</p>
-            <p>livt は、実例マッピングそのものを残します。疑問点の解消やルールの変更は開発のあいだも続き、デザイナーを含む全職能が担うからです。</p>
+            <p>Matt Wynne の実例マッピングでは、カードは 25 分の会話のための道具で、会話が終われば役目を終えます。</p>
+            <p>livt は、実例マッピングそのものを残します。疑問点の解消やルールの変更は開発のあいだも続くので、会話に集まったスリーアミーゴスがそのまま、同じマップで完了まで追います。</p>
           </div>
           <figure class="fig flow">
-            <div class="flow-row"><span class="flow-who">プラクティス</span><span class="node map"><span class="nm">実例マッピング</span><span class="roles">PdM・開発者・テスターで 25 分</span></span><span class="edge">開発者とテスターが書き起こす</span><span class="node gherkin"><span class="nm">Gherkin</span><span class="roles">開発者・テスター</span></span><span class="flow-note">実例マッピングは会話で役目を終え、Gherkin は開発とテストの手元に置かれる</span></div>
-            <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node map"><span class="nm">実例マッピング</span><span class="roles">全職能</span></span><span class="edge">疑問点の解消・ルールの変更</span><span class="node done"><span class="nm">完了</span></span><span class="flow-note">全職能が同じマップを完了まで追う</span></div>
+            <div class="flow-row"><span class="flow-who">プラクティス</span><span class="node map"><span class="nm">実例マッピング</span><span class="roles">スリーアミーゴスで 25 分</span></span><span class="flow-note">会話が終われば役目を終える</span></div>
+            <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node map"><span class="nm">実例マッピング</span><span class="roles">スリーアミーゴス</span></span><span class="edge">疑問点の解消・ルールの変更</span><span class="node done"><span class="nm">完了</span></span><span class="flow-note">スリーアミーゴスがそのまま、同じマップを完了まで追う</span></div>
           </figure>
         </article>
         <article class="phase">
           <div class="phase-text">
             <h3>定式化：実例マッピングを正にする</h3>
-            <p>主流の BDD では feature file が仕様の正ですが、livt では実例マッピングが正です。livt の<a href="https://boykush.github.io/livt/demo/ubiquitous.html#formulation">定式化</a>は、そのマッピングを書き換えることです。Gherkin は要るならそこから生成するもので、今の livt はまだ生成しません。</p>
+            <p>主流の BDD では、開発者とテスターがルールと具体例を Gherkin に書き起こし、その feature file が仕様の正になります。livt では実例マッピングが正で、<a href="https://boykush.github.io/livt/demo/ubiquitous.html#formulation">定式化</a>はそのマッピングを書き換えることです。Gherkin は要るならそこから生成するもので、今の livt はまだ生成しません。</p>
           </div>
           <figure class="fig flow">
-            <div class="flow-row"><span class="flow-who">プラクティス</span><span class="node map"><span class="nm">実例マッピング</span></span><span class="edge">開発者とテスターが書き写す</span><span class="node gherkin"><span class="nm">feature file<b class="src">正</b></span><span class="roles">開発者・テスター</span></span></div>
-            <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node map"><span class="nm">実例マッピング<b class="src">正</b></span><span class="roles">全職能</span></span><span class="edge">書き換える</span><span class="node map"><span class="nm">実例マッピング</span></span><span class="edge maybe">要るなら生成</span><span class="node gherkin maybe"><span class="nm">Gherkin</span></span></div>
+            <div class="flow-row"><span class="flow-who">プラクティス</span><span class="node map"><span class="nm">実例マッピング</span></span><span class="edge">開発者とテスターが書き起こす</span><span class="node gherkin"><span class="nm">feature file<b class="src">正</b></span><span class="roles">開発者・テスター</span></span><span class="flow-note">feature file は開発とテストの手元に置かれる</span></div>
+            <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node map"><span class="nm">実例マッピング<b class="src">正</b></span><span class="roles">スリーアミーゴス</span></span><span class="edge">書き換える</span><span class="node map"><span class="nm">実例マッピング</span></span><span class="edge maybe">要るなら生成</span><span class="node gherkin maybe"><span class="nm">Gherkin</span></span></div>
           </figure>
         </article>
         <article class="phase">

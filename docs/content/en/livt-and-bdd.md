@@ -8,17 +8,17 @@ title: livt and BDD - livt
 
 ### Discovery: it keeps the Example Mapping
 
-In Matt Wynne's Example Mapping, the cards serve a 25-minute conversation. Afterwards developers and testers write the rules and examples up as Gherkin, which stays with them.
+In Matt Wynne's Example Mapping, the cards serve a 25-minute conversation, and their job ends with it.
 
-livt keeps the Example Mapping itself, because answering its questions and changing its rules go on through development, and fall to every role, designers included.
+livt keeps the Example Mapping itself. Its questions get answered and its rules change all through development, so the three amigos who met for the conversation carry on with the same map until it is done.
 
-<!-- figure: The practice above, livt below. Practice: Example Mapping (a product manager, a developer and a tester, 25 minutes) → (written up by developers and testers) → Gherkin (developers, testers); the mapping has done its job at the conversation, and the Gherkin stays with development and testing. livt: Example Mapping (every role) → (questions answered, rules changed) → done; every role follows the same map to the end. -->
+<!-- figure: The practice above, livt below. Practice: Example Mapping (the three amigos, 25 minutes); its job ends with the conversation. livt: Example Mapping (the three amigos) → (questions answered, rules changed) → done; the same three amigos follow the same map to the end. -->
 
 ### Formulation: the Example Mapping is the source
 
-In mainstream BDD the feature file is the source of the specification; in livt the Example Mapping is. livt's [formulation](https://boykush.github.io/livt/demo/ubiquitous.html#formulation) is rewriting that mapping. Gherkin, where a team wants it, would be generated from it, which livt does not do yet.
+In mainstream BDD, developers and testers write the rules and examples up as Gherkin, and that feature file becomes the source of the specification. In livt the Example Mapping is the source, and [formulation](https://boykush.github.io/livt/demo/ubiquitous.html#formulation) is rewriting it. Gherkin, where a team wants it, would be generated from it, which livt does not do yet.
 
-<!-- figure: The practice above, livt below. Practice: Example Mapping → (copied in by developers and testers) → feature file (the source; developers, testers). livt: Example Mapping (the source; every role) → (rewritten) → Example Mapping, with a dashed line on to Gherkin (generated if wanted). -->
+<!-- figure: The practice above, livt below. Practice: Example Mapping → (written up by developers and testers) → feature file (the source; developers, testers); the feature file stays with development and testing. livt: Example Mapping (the source; the three amigos) → (rewritten) → Example Mapping, with a dashed line on to Gherkin (generated if wanted). -->
 
 ### Automation: coding agents take it on
 

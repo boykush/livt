@@ -38,22 +38,22 @@
         <article class="phase">
           <div class="phase-text">
             <h3>Discovery: it keeps the Example Mapping</h3>
-            <p>In Matt Wynne's Example Mapping, the cards serve a 25-minute conversation. Afterwards developers and testers write the rules and examples up as Gherkin, which stays with them.</p>
-            <p>livt keeps the Example Mapping itself, because answering its questions and changing its rules go on through development, and fall to every role, designers included.</p>
+            <p>In Matt Wynne's Example Mapping, the cards serve a 25-minute conversation, and their job ends with it.</p>
+            <p>livt keeps the Example Mapping itself. Its questions get answered and its rules change all through development, so the three amigos who met for the conversation carry on with the same map until it is done.</p>
           </div>
           <figure class="fig flow">
-            <div class="flow-row"><span class="flow-who">The practice</span><span class="node map"><span class="nm">Example Mapping</span><span class="roles">PM, developer, tester, 25 minutes</span></span><span class="edge">written up by developers and testers</span><span class="node gherkin"><span class="nm">Gherkin</span><span class="roles">Developers, testers</span></span><span class="flow-note">The mapping has done its job at the conversation, and the Gherkin stays with development and testing.</span></div>
-            <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node map"><span class="nm">Example Mapping</span><span class="roles">Every role</span></span><span class="edge">questions answered, rules changed</span><span class="node done"><span class="nm">Done</span></span><span class="flow-note">Every role follows the same map to the end.</span></div>
+            <div class="flow-row"><span class="flow-who">The practice</span><span class="node map"><span class="nm">Example Mapping</span><span class="roles">The three amigos, 25 minutes</span></span><span class="flow-note">Its job ends with the conversation.</span></div>
+            <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node map"><span class="nm">Example Mapping</span><span class="roles">The three amigos</span></span><span class="edge">questions answered, rules changed</span><span class="node done"><span class="nm">Done</span></span><span class="flow-note">The same three amigos follow the same map to the end.</span></div>
           </figure>
         </article>
         <article class="phase">
           <div class="phase-text">
             <h3>Formulation: the Example Mapping is the source</h3>
-            <p>In mainstream BDD the feature file is the source of the specification; in livt the Example Mapping is. livt's <a href="https://boykush.github.io/livt/demo/ubiquitous.html#formulation">formulation</a> is rewriting that mapping. Gherkin, where a team wants it, would be generated from it, which livt does not do yet.</p>
+            <p>In mainstream BDD, developers and testers write the rules and examples up as Gherkin, and that feature file becomes the source of the specification. In livt the Example Mapping is the source, and <a href="https://boykush.github.io/livt/demo/ubiquitous.html#formulation">formulation</a> is rewriting it. Gherkin, where a team wants it, would be generated from it, which livt does not do yet.</p>
           </div>
           <figure class="fig flow">
-            <div class="flow-row"><span class="flow-who">The practice</span><span class="node map"><span class="nm">Example Mapping</span></span><span class="edge">copied in by developers and testers</span><span class="node gherkin"><span class="nm">feature file<b class="src">source</b></span><span class="roles">Developers, testers</span></span></div>
-            <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node map"><span class="nm">Example Mapping<b class="src">source</b></span><span class="roles">Every role</span></span><span class="edge">rewritten</span><span class="node map"><span class="nm">Example Mapping</span></span><span class="edge maybe">generated if wanted</span><span class="node gherkin maybe"><span class="nm">Gherkin</span></span></div>
+            <div class="flow-row"><span class="flow-who">The practice</span><span class="node map"><span class="nm">Example Mapping</span></span><span class="edge">written up by developers and testers</span><span class="node gherkin"><span class="nm">feature file<b class="src">source</b></span><span class="roles">Developers, testers</span></span><span class="flow-note">The feature file stays with development and testing.</span></div>
+            <div class="flow-row is-livt"><span class="flow-who">livt</span><span class="node map"><span class="nm">Example Mapping<b class="src">source</b></span><span class="roles">The three amigos</span></span><span class="edge">rewritten</span><span class="node map"><span class="nm">Example Mapping</span></span><span class="edge maybe">generated if wanted</span><span class="node gherkin maybe"><span class="nm">Gherkin</span></span></div>
           </figure>
         </article>
         <article class="phase">
