@@ -16,6 +16,7 @@ The site's text follows `AGENTS.md`: English under `docs/content/en/`, Japanese 
 - Front matter `title:` is the page's `<title>`; `description:`, where given, is its description meta.
 - Every heading, paragraph and list item is shown on the page, word for word. Where it sits and how it is split across elements is the design's call: a canvas box, a sticky, a label beside its answer.
 - A comment (`<!-- … -->`) is a note to you, and is not shown. `<!-- board: … -->` names the board excerpt the top page draws.
+- `<!-- figure: … -->` describes a diagram to draw where the comment sits, in that page's language: its boxes, the words on its arrows, its notes. Draw it in HTML with the figure styles `style.css` already has, and put nothing in it the comment does not say.
 
 ## Keep the Design
 
