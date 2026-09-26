@@ -102,10 +102,16 @@
             <p>In Matt Wynne's Example Mapping, the cards serve a 25-minute conversation and show whether the story is ready. Afterwards the rules and examples move into Gherkin, and the board has done its job.</p>
             <p>livt keeps the map anyway, because an Example Mapping does not end with the conversation: its rules change and its questions get answered all through development. livt keeps that in a form every role can follow, questions included. A kept map can turn into a spec that someone fills in alone, so livt writes a mapping only after the team agrees: <a href="https://github.com/boykush/livt/tree/main/plugins/livt-discovery">the recording skills</a> first copy the board as it was, then restructure it in a separate diff for review. The conversation still comes first. livt keeps its outcome and does not replace it.</p>
           </article>
-          <article>
-            <h3>Its view of Formulation</h3>
-            <p>livt takes the Example Mapping, not a feature file, as the source, and keeps its format so that every role owns it. In livt, formulation means rewriting that mapping. Gherkin, where a team wants it, would be generated from it, though livt does not generate it today.</p>
-          </article>
+          <div class="stack">
+            <article>
+              <h3>Its view of Formulation</h3>
+              <p>livt takes the Example Mapping, not a feature file, as the source, and keeps its format so that every role owns it. In livt, formulation means rewriting that mapping. Gherkin, where a team wants it, would be generated from it, though livt does not generate it today.</p>
+            </article>
+            <article>
+              <h3>It leaves automation to agents</h3>
+              <p>Coding agents have changed the situation. Automating an agreed rule is now work an agent can take on. Following the test pyramid, an Example Mapping's rules and examples end up automated at different layers and in different languages. livt gives the agent a shape to follow and the tools to follow it, as a CLI and plugins, and works through what those differences bring with it.</p>
+            </article>
+          </div>
         </div>
       </section>
 
