@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>livt - ストーリー</title>
+<script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="flex min-h-screen">
+
+<aside class="w-60 shrink-0 bg-white border-r border-gray-200 flex flex-col sticky top-0 h-screen">
+  <div class="px-5 py-4 border-b border-gray-100">
+    <a href="index.html" class="text-xl font-bold text-gray-900 tracking-tight">livt</a>
+    
+    <p class="text-[11px] text-gray-400 mt-0.5 leading-snug">Your team's product decisions,<br>living in text — context for AI.</p>
+  </div>
+  <nav class="flex-1 px-3 py-4 space-y-1 text-sm">
+    <a href="index.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-green-400"></span>実例マッピング<span class="ml-auto text-xs text-gray-400">20</span>
+    </a>
+    <a href="opportunities.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-orange-400"></span>オポチュニティ<span class="ml-auto text-xs text-gray-400">3</span>
+    </a>
+    <a href="story-maps.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-purple-400"></span>ストーリーマップ<span class="ml-auto text-xs text-gray-400">3</span>
+    </a>
+    <a href="stories.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-yellow-50 text-yellow-900 font-medium">
+      <span class="w-2.5 h-2.5 rounded-sm bg-yellow-400"></span>ストーリー<span class="ml-auto text-xs text-gray-400">28</span>
+    </a>
+    <a href="ubiquitous.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-pink-400"></span>ユビキタス言語<span class="ml-auto text-xs text-gray-400">16</span>
+    </a>
+    
+    <a href="tasks.html" class="flex items-center gap-2.5 px-3 py-2 mt-3 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm border border-gray-300"></span>タスク<span class="ml-auto text-xs text-gray-400">94</span>
+    </a>
+  </nav>
+  
+  <div class="px-3 py-3 border-t border-gray-100">
+    <a href="build.html" class="block rounded-lg px-2 py-1.5 hover:bg-gray-50">
+      <div class="flex items-baseline gap-2">
+        <span class="text-xs font-medium text-gray-600">livt</span>
+        
+        <span class="ml-auto min-w-0 text-[11px] font-mono text-gray-400 truncate" title="v0.16.1-0.20260926135851-4ec7fae8a88b">v0.16.1-0.20260926135851-4ec7fae8a88b</span>
+      </div>
+      <div class="text-[11px] text-gray-400 font-mono mt-0.5">4ec7fae · 2026-09-26 13:59</div>
+    </a>
+  </div>
+</aside>
+
+<div class="flex-1 min-w-0">
+  <header class="bg-white border-b border-gray-200 px-8 py-4">
+    <h2 class="text-lg font-semibold text-gray-800">ストーリー</h2>
+  </header>
+  <main class="px-8 py-8 max-w-3xl">
+  
+  
+
+
+<style>
+  .filter-chip { cursor: pointer; }
+  [data-filter-bar] .filter-chip[aria-pressed="true"] { background-color: #ea580c; border-color: #ea580c; color: #fff; }
+</style>
+<div class="mb-6 flex items-center gap-2 flex-wrap" data-filter-bar data-filter-param="opportunity">
+  <span class="text-xs font-semibold uppercase tracking-wide text-gray-400 mr-1">オポチュニティ</span>
+  <button type="button" data-filter-value="" aria-pressed="true"
+    class="filter-chip text-xs text-orange-700 bg-orange-50 border border-orange-200 hover:bg-orange-100 rounded-full px-3 py-1 transition">すべて</button>
+  
+  <button type="button" data-filter-value="ディスカバリーと開発のギャップ" aria-pressed="false"
+    class="filter-chip text-xs text-orange-700 bg-orange-50 border border-orange-200 hover:bg-orange-100 rounded-full px-3 py-1 transition">ディスカバリーと開発のギャップ</button>
+  
+  <button type="button" data-filter-value="揮発するディスカバリー" aria-pressed="false"
+    class="filter-chip text-xs text-orange-700 bg-orange-50 border border-orange-200 hover:bg-orange-100 rounded-full px-3 py-1 transition">揮発するディスカバリー</button>
+  
+</div>
+
+
+  
+    
+    <div data-filter-values="[&#34;ディスカバリーと開発のギャップ&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/automate-from-master-in-impl-repos.html" class="absolute inset-0 z-10 rounded-lg" aria-label="実装リポジトリがlivtリポジトリを見てテスト駆動で自動化する"></a>
+      <span class="text-base font-medium text-gray-900">実装リポジトリがlivtリポジトリを見てテスト駆動で自動化する</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">automate-from-master-in-impl-repos</span>
+        <a href="opportunity/discovery-development-gap.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">ディスカバリーと開発のギャップ</a>
+        <span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">実例マッピング</span>
+        <span class="text-xs text-gray-600 bg-white border border-gray-200 rounded-full px-2 py-0.5">&#128279; issue</span>
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;ディスカバリーと開発のギャップ&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/collect-automations.html" class="absolute inset-0 z-10 rounded-lg" aria-label="実装リポジトリのテストから自動化を集めてレポートにする"></a>
+      <span class="text-base font-medium text-gray-900">実装リポジトリのテストから自動化を集めてレポートにする</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">collect-automations</span>
+        <a href="opportunity/discovery-development-gap.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">ディスカバリーと開発のギャップ</a>
+        <span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">実例マッピング</span>
+        
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;揮発するディスカバリー&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/commit-story-candidates-for-detailed-discovery.html" class="absolute inset-0 z-10 rounded-lg" aria-label="詳細ディスカバリー用にストーリー候補のカードを書く"></a>
+      <span class="text-base font-medium text-gray-900">詳細ディスカバリー用にストーリー候補のカードを書く</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">commit-story-candidates-for-detailed-discovery</span>
+        <a href="opportunity/collaborative-discovery.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">揮発するディスカバリー</a>
+        
+        
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;ディスカバリーと開発のギャップ&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/derive-automation-status.html" class="absolute inset-0 z-10 rounded-lg" aria-label="自動化レポートからルールごとの状況を導く"></a>
+      <span class="text-base font-medium text-gray-900">自動化レポートからルールごとの状況を導く</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">derive-automation-status</span>
+        <a href="opportunity/discovery-development-gap.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">ディスカバリーと開発のギャップ</a>
+        <span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">実例マッピング</span>
+        
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;ディスカバリーと開発のギャップ&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/file-automation-issues-to-impl-repos.html" class="absolute inset-0 z-10 rounded-lg" aria-label="livt経由で各実装リポジトリに自動化Issueを起票する"></a>
+      <span class="text-base font-medium text-gray-900">livt経由で各実装リポジトリに自動化Issueを起票する</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">file-automation-issues-to-impl-repos</span>
+        <a href="opportunity/discovery-development-gap.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">ディスカバリーと開発のギャップ</a>
+        <span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">実例マッピング</span>
+        <span class="text-xs text-gray-600 bg-white border border-gray-200 rounded-full px-2 py-0.5">&#128279; issue</span>
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;ディスカバリーと開発のギャップ&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/file-story-issues-to-impl-repos.html" class="absolute inset-0 z-10 rounded-lg" aria-label="livt経由でストーリー単位のIssueを起票する"></a>
+      <span class="text-base font-medium text-gray-900">livt経由でストーリー単位のIssueを起票する</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">file-story-issues-to-impl-repos</span>
+        <a href="opportunity/discovery-development-gap.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">ディスカバリーと開発のギャップ</a>
+        <span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">実例マッピング</span>
+        <span class="text-xs text-gray-600 bg-white border border-gray-200 rounded-full px-2 py-0.5">&#128279; issues</span>
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;揮発するディスカバリー&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/filter-lists-by-opportunity.html" class="absolute inset-0 z-10 rounded-lg" aria-label="一覧をオポチュニティで絞り込む"></a>
+      <span class="text-base font-medium text-gray-900">一覧をオポチュニティで絞り込む</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">filter-lists-by-opportunity</span>
+        <a href="opportunity/collaborative-discovery.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">揮発するディスカバリー</a>
+        <span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">実例マッピング</span>
+        <span class="text-xs text-gray-600 bg-white border border-gray-200 rounded-full px-2 py-0.5">&#128279; issues</span>
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;揮発するディスカバリー&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/look-up-terms-in-glossary.html" class="absolute inset-0 z-10 rounded-lg" aria-label="ユビキタス言語を用語集で引く"></a>
+      <span class="text-base font-medium text-gray-900">ユビキタス言語を用語集で引く</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">look-up-terms-in-glossary</span>
+        <a href="opportunity/collaborative-discovery.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">揮発するディスカバリー</a>
+        
+        
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;揮発するディスカバリー&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/overview-open-questions.html" class="absolute inset-0 z-10 rounded-lg" aria-label="未解決の疑問点を横断で見渡す"></a>
+      <span class="text-base font-medium text-gray-900">未解決の疑問点を横断で見渡す</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">overview-open-questions</span>
+        <a href="opportunity/collaborative-discovery.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">揮発するディスカバリー</a>
+        <span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">実例マッピング</span>
+        <span class="text-xs text-gray-600 bg-white border border-gray-200 rounded-full px-2 py-0.5">&#128279; issues</span>
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;ディスカバリーと開発のギャップ&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/overview-unautomated-rules.html" class="absolute inset-0 z-10 rounded-lg" aria-label="未自動化のルールを横断で見渡す"></a>
+      <span class="text-base font-medium text-gray-900">未自動化のルールを横断で見渡す</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">overview-unautomated-rules</span>
+        <a href="opportunity/discovery-development-gap.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">ディスカバリーと開発のギャップ</a>
+        <span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">実例マッピング</span>
+        
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;揮発するディスカバリー&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/preview-example-mapping-in-browser.html" class="absolute inset-0 z-10 rounded-lg" aria-label="ブラウザで実例マッピングをプレビューする"></a>
+      <span class="text-base font-medium text-gray-900">ブラウザで実例マッピングをプレビューする</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">preview-example-mapping-in-browser</span>
+        <a href="opportunity/collaborative-discovery.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">揮発するディスカバリー</a>
+        
+        
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;揮発するディスカバリー&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/preview-story-map-in-browser.html" class="absolute inset-0 z-10 rounded-lg" aria-label="ブラウザでストーリーマップをプレビューする"></a>
+      <span class="text-base font-medium text-gray-900">ブラウザでストーリーマップをプレビューする</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">preview-story-map-in-browser</span>
+        <a href="opportunity/collaborative-discovery.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">揮発するディスカバリー</a>
+        <span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">実例マッピング</span>
+        
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;揮発するディスカバリー&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/propose-rule-before-agreement.html" class="absolute inset-0 z-10 rounded-lg" aria-label="合意前のルールを提案中として実例マッピングに載せる"></a>
+      <span class="text-base font-medium text-gray-900">合意前のルールを提案中として実例マッピングに載せる</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">propose-rule-before-agreement</span>
+        <a href="opportunity/collaborative-discovery.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">揮発するディスカバリー</a>
+        <span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">実例マッピング</span>
+        
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/record-rule-automation.html" class="absolute inset-0 z-10 rounded-lg" aria-label="ルールの自動化をlivtリポジトリに記録する"></a>
+      <span class="text-base font-medium text-gray-900">ルールの自動化をlivtリポジトリに記録する</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">record-rule-automation</span>
+        
+        <span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">実例マッピング</span>
+        <span class="text-xs text-gray-600 bg-white border border-gray-200 rounded-full px-2 py-0.5">&#128279; issue</span>
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;揮発するディスカバリー&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/refine-example-mapping-with-bdd-expert.html" class="absolute inset-0 z-10 rounded-lg" aria-label="BDDエキスパートに相談して定式化のコミットを重ねる"></a>
+      <span class="text-base font-medium text-gray-900">BDDエキスパートに相談して定式化のコミットを重ねる</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">refine-example-mapping-with-bdd-expert</span>
+        <a href="opportunity/collaborative-discovery.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">揮発するディスカバリー</a>
+        
+        
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;揮発するディスカバリー&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/refine-story-map-with-usm-expert.html" class="absolute inset-0 z-10 rounded-lg" aria-label="USMエキスパートに相談して構造を整えるコミットを重ねる"></a>
+      <span class="text-base font-medium text-gray-900">USMエキスパートに相談して構造を整えるコミットを重ねる</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">refine-story-map-with-usm-expert</span>
+        <a href="opportunity/collaborative-discovery.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">揮発するディスカバリー</a>
+        
+        
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/reflect-every-artifact-edit-in-preview.html" class="absolute inset-0 z-10 rounded-lg" aria-label="どの成果物の編集も即座にプレビューへ反映する"></a>
+      <span class="text-base font-medium text-gray-900">どの成果物の編集も即座にプレビューへ反映する</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">reflect-every-artifact-edit-in-preview</span>
+        
+        <span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">実例マッピング</span>
+        
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/review-diff-between-revisions.html" class="absolute inset-0 z-10 rounded-lg" aria-label="リビジョン間の差分をlivt URI単位で読む"></a>
+      <span class="text-base font-medium text-gray-900">リビジョン間の差分をlivt URI単位で読む</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">review-diff-between-revisions</span>
+        
+        <span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">実例マッピング</span>
+        
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/review-example-mapping-as-list.html" class="absolute inset-0 z-10 rounded-lg" aria-label="実例マッピングをリストで見返す"></a>
+      <span class="text-base font-medium text-gray-900">実例マッピングをリストで見返す</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">review-example-mapping-as-list</span>
+        
+        <span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">実例マッピング</span>
+        
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;揮発するディスカバリー&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/scope-terms-by-context.html" class="absolute inset-0 z-10 rounded-lg" aria-label="用語を文脈で切り分ける"></a>
+      <span class="text-base font-medium text-gray-900">用語を文脈で切り分ける</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">scope-terms-by-context</span>
+        <a href="opportunity/collaborative-discovery.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">揮発するディスカバリー</a>
+        <span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">実例マッピング</span>
+        
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;揮発するディスカバリー&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/search-site-by-text.html" class="absolute inset-0 z-10 rounded-lg" aria-label="サイト内をテキストで検索する"></a>
+      <span class="text-base font-medium text-gray-900">サイト内をテキストで検索する</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">search-site-by-text</span>
+        <a href="opportunity/collaborative-discovery.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">揮発するディスカバリー</a>
+        
+        <span class="text-xs text-gray-600 bg-white border border-gray-200 rounded-full px-2 py-0.5">&#128279; issues</span>
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;ディスカバリーと開発のギャップ&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/show-automation-status-per-rule.html" class="absolute inset-0 z-10 rounded-lg" aria-label="ルールが自動化されているかを一目で映す"></a>
+      <span class="text-base font-medium text-gray-900">ルールが自動化されているかを一目で映す</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">show-automation-status-per-rule</span>
+        <a href="opportunity/discovery-development-gap.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">ディスカバリーと開発のギャップ</a>
+        <span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">実例マッピング</span>
+        <span class="text-xs text-gray-600 bg-white border border-gray-200 rounded-full px-2 py-0.5">&#128279; issue</span>
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;ディスカバリーと開発のギャップ&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/show-opportunity-progress.html" class="absolute inset-0 z-10 rounded-lg" aria-label="オポチュニティごとに現況を映す"></a>
+      <span class="text-base font-medium text-gray-900">オポチュニティごとに現況を映す</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">show-opportunity-progress</span>
+        <a href="opportunity/discovery-development-gap.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">ディスカバリーと開発のギャップ</a>
+        <span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">実例マッピング</span>
+        
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;ディスカバリーと開発のギャップ&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/trace-rule-to-tests.html" class="absolute inset-0 z-10 rounded-lg" aria-label="ルール付箋から対応Issue・テストへ辿る"></a>
+      <span class="text-base font-medium text-gray-900">ルール付箋から対応Issue・テストへ辿る</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">trace-rule-to-tests</span>
+        <a href="opportunity/discovery-development-gap.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">ディスカバリーと開発のギャップ</a>
+        <span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">実例マッピング</span>
+        <span class="text-xs text-gray-600 bg-white border border-gray-200 rounded-full px-2 py-0.5">&#128279; issue</span>
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;ディスカバリーと開発のギャップ&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/trace-test-to-rule.html" class="absolute inset-0 z-10 rounded-lg" aria-label="テストからルール・具体例へ辿る"></a>
+      <span class="text-base font-medium text-gray-900">テストからルール・具体例へ辿る</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">trace-test-to-rule</span>
+        <a href="opportunity/discovery-development-gap.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">ディスカバリーと開発のギャップ</a>
+        <span class="text-xs text-blue-700 bg-blue-50 border border-blue-200 rounded-full px-2 py-0.5">実例マッピング</span>
+        
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;揮発するディスカバリー&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/transcribe-example-mapping-from-board.html" class="absolute inset-0 z-10 rounded-lg" aria-label="ボードから実例マッピングYAMLを素のまま記録する"></a>
+      <span class="text-base font-medium text-gray-900">ボードから実例マッピングYAMLを素のまま記録する</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">transcribe-example-mapping-from-board</span>
+        <a href="opportunity/collaborative-discovery.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">揮発するディスカバリー</a>
+        
+        
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;揮発するディスカバリー&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/transcribe-story-map-with-ai-agent.html" class="absolute inset-0 z-10 rounded-lg" aria-label="AIエージェントでストーリーマップYAMLを起こす"></a>
+      <span class="text-base font-medium text-gray-900">AIエージェントでストーリーマップYAMLを起こす</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">transcribe-story-map-with-ai-agent</span>
+        <a href="opportunity/collaborative-discovery.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">揮発するディスカバリー</a>
+        
+        
+      </div>
+    </div>
+  
+    
+    <div data-filter-values="[&#34;揮発するディスカバリー&#34;]" class="relative bg-white rounded-lg border border-gray-200 border-l-4 border-l-yellow-400 px-5 py-4 mb-3 hover:shadow-sm hover:border-l-yellow-500 transition">
+      <a href="story/update-example-mapping-per-rule.html" class="absolute inset-0 z-10 rounded-lg" aria-label="ルール単位の細かいコミットで実例マッピングを更新する"></a>
+      <span class="text-base font-medium text-gray-900">ルール単位の細かいコミットで実例マッピングを更新する</span>
+      <div class="flex items-center gap-2 mt-2 flex-wrap">
+        <span class="font-mono text-xs text-gray-400">update-example-mapping-per-rule</span>
+        <a href="opportunity/collaborative-discovery.html" class="relative z-20 text-xs text-orange-700 bg-orange-50 border border-orange-200 rounded-full px-2 py-0.5 hover:bg-orange-100 transition">揮発するディスカバリー</a>
+        
+        
+      </div>
+    </div>
+  
+  </main>
+</div>
+</div>
+
+
+<script>
+(function () {
+  var bar = document.querySelector('[data-filter-bar]');
+  if (!bar) return;
+  var cards = document.querySelectorAll('[data-filter-values]');
+  var chips = bar.querySelectorAll('[data-filter-value]');
+  var PARAM = bar.getAttribute('data-filter-param') || 'filter';
+
+  function valuesOf(card) {
+    try { return JSON.parse(card.getAttribute('data-filter-values') || '[]'); }
+    catch (e) { return []; }
+  }
+
+  function apply(selected) {
+    cards.forEach(function (card) {
+      var show = !selected || valuesOf(card).indexOf(selected) !== -1;
+      card.style.display = show ? '' : 'none';
+    });
+    chips.forEach(function (chip) {
+      var on = (chip.getAttribute('data-filter-value') || '') === selected;
+      chip.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    
+    
+    
+    
+    
+    document.querySelectorAll('[data-filter-scope]').forEach(function (scope) {
+      var scoped = scope.querySelectorAll('[data-filter-values]');
+      var shown = 0;
+      scoped.forEach(function (card) { if (card.style.display !== 'none') shown++; });
+      var count = scope.querySelector('[data-filter-count]');
+      if (count) count.textContent = shown;
+      var empty = scope.querySelector('[data-filter-empty]');
+      if (empty) empty.style.display = (shown === 0 && scoped.length > 0) ? '' : 'none';
+    });
+  }
+
+  function fromURL() {
+    return new URLSearchParams(location.search).get(PARAM) || '';
+  }
+
+  function toURL(selected) {
+    var params = new URLSearchParams(location.search);
+    if (selected) params.set(PARAM, selected);
+    else params.delete(PARAM);
+    var qs = params.toString();
+    history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
+  }
+
+  chips.forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var value = chip.getAttribute('data-filter-value') || '';
+      apply(value);
+      toURL(value);
+    });
+  });
+
+  apply(fromURL());
+})();
+</script>
+
+</body>
+</html>
