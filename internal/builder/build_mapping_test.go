@@ -362,6 +362,44 @@ func TestRenderMappingPaintsTestChipsOneColourOffTheResults(t *testing.T) {
 	}
 }
 
+// livt:automates livt://mapping/review-example-mapping-as-list/rule/R-02/example/EX-01
+// The list lays a card out side by side, so the chips have to sit in the name's
+// column: beside it, a rule cited by several tests squeezes its own name into a
+// sliver. The same holds for an example's card.
+func TestRenderMappingKeepsChipsUnderTheName(t *testing.T) {
+	cited := []domain.Automation{{Repo: "acme/impl", File: "a_test.go", Line: 1}, {Repo: "acme/impl", File: "b_test.go", Line: 2}}
+	em := &domain.ExampleMapping{
+		Rules: []domain.Rule{{
+			ID: "R-01", Name: "A rule with several tests", Automations: cited,
+			Issues:   []string{"https://github.com/acme/impl/issues/1"},
+			Examples: []domain.Example{{ID: "EX-01", Name: "An example with several tests", Automations: cited}},
+		}},
+	}
+
+	var buf bytes.Buffer
+	if err := renderMapping(&buf, i18n.En, board{Mapping: em.Active(), AutomationKnown: true}, "Story", "", nil, nil, nil); err != nil {
+		t.Fatal(err)
+	}
+	page := buf.String()
+
+	for _, c := range []struct{ body, name, chips string }{
+		{`class="rule-body`, "A rule with several tests", `class="rule-issues`},
+		{`class="example-body`, "An example with several tests", `class="example-automations`},
+	} {
+		start := strings.Index(page, c.body)
+		if start < 0 {
+			t.Fatalf("no %s column", c.body)
+		}
+		// The column closes before the card does, so everything up to the
+		// next card is its content.
+		rest := page[start:]
+		name, chips := strings.Index(rest, c.name), strings.Index(rest, c.chips)
+		if name < 0 || chips < 0 || chips < name {
+			t.Errorf("%s does not hold the name followed by its chips", c.body)
+		}
+	}
+}
+
 func TestIssueLabelFallsBackToHost(t *testing.T) {
 	cases := map[string]string{
 		"https://github.com/boykush/livt/issues/25": "livt#25",
