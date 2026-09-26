@@ -46,8 +46,7 @@ Coding agents have changed the situation. Writing the tests for an agreed rule i
 ### Solution Idea
 
 - Record the Example Mapping itself, in its own format: it holds what a feature file would, and every role owns it
-- Rules live as text in the repository, each change to a rule a commit of its own, and everyone can read which rule changed and how
-- A resolved question points to the rule that settled it
+- The Example Mapping lives as text in the repository, each change a commit of its own, so everyone can read how its rules changed and its questions were resolved
 - A coding agent writes the tests straight from the agreed rules
 - Every rule and example has a URI, and a test cites the URI of what it automates
 - Tests can sit at any layer, in any repository or language; livt collects their citations and shows which tests cite each rule, while whether they pass stays with your test reports
