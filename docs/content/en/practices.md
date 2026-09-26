@@ -16,10 +16,14 @@ livt keeps what a team agreed in a discovery conversation, so the decision can s
 
 ## What livt adds
 
-- **A file, not a photo.** The mapping is YAML in the repository, versioned with the code it specifies.
-- **IDs that stay put.** Every rule, example and question gets an ID that never changes once filed, and a URI that points at it. A rule quoted in an issue or a test keeps meaning the same thing.
-- **Questions kept beside the rules.** An open question keeps its place and an ID, and once resolved it points to the rule that settled it.
-- **Automation, reported from the tests.** A rule records the issues filed to automate it. The tests that automate it mark it with its URI, and livt collects those marks into an automation report that shows, rule by rule, which tests claim to cover it. Whether they pass stays with your test reports.
+- **A file, not a photo.** Each board becomes YAML, versioned in a repository.
+  `discoveries/example-mappings/collect-automations.yaml`
+- **IDs that stay put.** An ID never changes once filed, and a URI points at it from anywhere.
+  `livt://mapping/collect-automations/rule/R-01`
+- **Questions kept beside the rules.** A question stays in view until resolved, whoever holds it, then points to the rule that settled it.
+  `Q-01 → R-08`
+- **Automation, reported from the tests.** Put a rule's URI in a test comment, and livt gathers the tests rule by rule.
+  `// livt:automates livt://mapping/collect-automations/rule/R-01`
 
 ## Where livt departs from the practice
 

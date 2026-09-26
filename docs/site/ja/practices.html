@@ -72,19 +72,23 @@
           <ul class="adds">
             <li>
               <b>写真ではなくファイル</b>
-              <p>マッピングはリポジトリの YAML ファイルで、対応するコードと一緒にバージョン管理されます。</p>
+              <p>ボードを YAML にして、リポジトリでバージョン管理する</p>
+              <code class="eg">discoveries/example-mappings/collect-automations.yaml</code>
             </li>
             <li>
               <b>変わらない ID</b>
-              <p>ルール・具体例・疑問点には、一度付いたら変わらない ID と、そこを指す URI が付きます。Issue やテストで引用したルールが、あとから別の意味になることはありません。</p>
+              <p>一度付いた ID は変わらず、URI でどこからでも指せる</p>
+              <code class="eg">livt://mapping/collect-automations/rule/R-01</code>
             </li>
             <li>
               <b>疑問点もルールと並べて</b>
-              <p>疑問点も ID を持って残り、解消したら、決着したルールを指します。</p>
+              <p>誰が持っていても解消まで追え、解消したら決着したルールを指す</p>
+              <code class="eg">Q-01 → R-08</code>
             </li>
             <li>
               <b>テストから集める自動化レポート</b>
-              <p>ルールには、自動化のために起票した Issue が記録されます。テストの側はコメントにルールの URI を書いて、どのルールを自動化したかを示します。livt はそれを集めて自動化レポートにし、ルールごとにどのテストが引用しているかを示します。テストが通ったかどうかは、テストのレポートに任せます。</p>
+              <p>テストのコメントに URI を書くと、ルールごとに集まる</p>
+              <code class="eg">// livt:automates livt://mapping/collect-automations/rule/R-01</code>
             </li>
           </ul>
         </section>

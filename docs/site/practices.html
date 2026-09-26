@@ -72,19 +72,23 @@
           <ul class="adds">
             <li>
               <b>A file, not a photo</b>
-              <p>The mapping is YAML in the repository, versioned with the code it specifies.</p>
+              <p>Each board becomes YAML, versioned in a repository.</p>
+              <code class="eg">discoveries/example-mappings/collect-automations.yaml</code>
             </li>
             <li>
               <b>IDs that stay put</b>
-              <p>Every rule, example and question gets an ID that never changes once filed, and a URI that points at it. A rule quoted in an issue or a test keeps meaning the same thing.</p>
+              <p>An ID never changes once filed, and a URI points at it from anywhere.</p>
+              <code class="eg">livt://mapping/collect-automations/rule/R-01</code>
             </li>
             <li>
               <b>Questions kept beside the rules</b>
-              <p>An open question keeps its place and an ID, and once resolved it points to the rule that settled it.</p>
+              <p>A question stays in view until resolved, whoever holds it, then points to the rule that settled it.</p>
+              <code class="eg">Q-01 → R-08</code>
             </li>
             <li>
               <b>Automation, reported from the tests</b>
-              <p>A rule records the issues filed to automate it. The tests that automate it mark it with its URI, and livt collects those marks into an automation report that shows, rule by rule, which tests claim to cover it. Whether they pass stays with your test reports.</p>
+              <p>Put a rule's URI in a test comment, and livt gathers the tests rule by rule.</p>
+              <code class="eg">// livt:automates livt://mapping/collect-automations/rule/R-01</code>
             </li>
           </ul>
         </section>
