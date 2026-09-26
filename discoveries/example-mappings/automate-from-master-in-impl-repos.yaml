@@ -1,6 +1,6 @@
 rules:
   - id: R-01
-    name: livtはlivtリポジトリをMCPサーバーとして公開し、消費側はlivtのソースを読まずに仕様を取得する
+    name: livtはlivtリポジトリをMCPサーバーとして公開し、消費側はlivtのソースを読まずに決定を取得する
     examples:
       - id: EX-01
         name: livt mcp コマンドでstdioのMCPサーバーが起動する
