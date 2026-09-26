@@ -129,7 +129,7 @@ deployments:
   owners:
   - .
   active_owner: .
-  content_hash: sha256:42afd20e56e4f5782beb619b5c0045eae1b8fca55e6f6e6a654d246ae0ccf852
+  content_hash: sha256:664a004b47b0f2a9034b71032127248582fe1eec7ef3058766a9860ababe1a16
 - kind: project-relative
   target: codex
   value: .agents/skills/ade-rule-dsl
@@ -219,7 +219,7 @@ deployments:
   owners:
   - .
   active_owner: .
-  content_hash: sha256:42afd20e56e4f5782beb619b5c0045eae1b8fca55e6f6e6a654d246ae0ccf852
+  content_hash: sha256:664a004b47b0f2a9034b71032127248582fe1eec7ef3058766a9860ababe1a16
 - kind: uri
   target: mcp
   value: adr
@@ -287,5 +287,5 @@ local_deployed_files:
 - .claude/skills/enrich-release-notes
 - .claude/skills/enrich-release-notes/SKILL.md
 local_deployed_file_hashes:
-  .agents/skills/enrich-release-notes/SKILL.md: sha256:42afd20e56e4f5782beb619b5c0045eae1b8fca55e6f6e6a654d246ae0ccf852
-  .claude/skills/enrich-release-notes/SKILL.md: sha256:42afd20e56e4f5782beb619b5c0045eae1b8fca55e6f6e6a654d246ae0ccf852
+  .agents/skills/enrich-release-notes/SKILL.md: sha256:664a004b47b0f2a9034b71032127248582fe1eec7ef3058766a9860ababe1a16
+  .claude/skills/enrich-release-notes/SKILL.md: sha256:664a004b47b0f2a9034b71032127248582fe1eec7ef3058766a9860ababe1a16
