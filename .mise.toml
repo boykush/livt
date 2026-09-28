@@ -6,7 +6,7 @@ go = "1.27.1"
 node = "24.21.0"
 hk = "latest"
 pkl = "latest"
-golangci-lint = "2.13.2"
+golangci-lint = "2.14.0"
 goreleaser = "2.18.2"
 
 # Check commands shared by CI (.github/workflows/ci.yml) and the hk pre-commit
