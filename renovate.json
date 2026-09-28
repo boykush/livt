@@ -2,5 +2,24 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "config:recommended"
+  ],
+  "packageRules": [
+    {
+      "description": "Automerge non-major golangci-lint updates. The required go check installs the version .mise.toml pins and runs it over the module, so the job a bad bump breaks is the one gating its merge. addLabels must pair with automerge: the approver App picks PRs by that label, and without it the required review never comes.",
+      "matchManagers": [
+        "mise"
+      ],
+      "matchDepNames": [
+        "golangci-lint"
+      ],
+      "matchUpdateTypes": [
+        "minor",
+        "patch"
+      ],
+      "automerge": true,
+      "addLabels": [
+        "automerge"
+      ]
+    }
   ]
 }
