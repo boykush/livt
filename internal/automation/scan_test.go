@@ -173,6 +173,21 @@ func TestScanSkipsPlaceholdersAndHiddenTrees(t *testing.T) {
 	}
 }
 
+// A minified bundle or an inlined fixture is one line nearly the size of its file.
+func TestScanReadsPastALineAsLongAsTheFile(t *testing.T) {
+	rest := "\n// " + Marker + " livt://mapping/checkout/rule/R-01\n"
+	root := repo(t, map[string]string{"a_test.go": strings.Repeat("x", maxFileSize-len(rest)) + rest})
+
+	report, warnings := scan(t, root, Options{})
+
+	if len(warnings) != 0 {
+		t.Fatalf("unexpected warnings: %v", warnings)
+	}
+	if len(report.Citations) != 1 || report.Citations[0].Line != 2 {
+		t.Fatalf("got %+v, want the citation on line 2", report.Citations)
+	}
+}
+
 // livt:automates livt://mapping/collect-automations/rule/R-06/example/EX-03
 func TestScanPinsLineURLsToTheScannedRevision(t *testing.T) {
 	root := repo(t, map[string]string{"a_test.go": "" +

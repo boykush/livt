@@ -1,9 +1,9 @@
 package automation
 
 import (
-	"bufio"
 	"bytes"
 	"fmt"
+	"io"
 	"io/fs"
 	"os"
 	"path/filepath"
@@ -114,13 +114,19 @@ func scanFile(path, rel string, opts Options, rev string) ([]Citation, []string,
 	if _, err := f.Seek(0, 0); err != nil {
 		return nil, nil, err
 	}
+	// Read whole, so the walk's size cap is the only limit: a minified bundle
+	// is one line as long as its file, and a line too long to read would stop
+	// the scan of every other file with it.
+	data, err := io.ReadAll(f)
+	if err != nil {
+		return nil, nil, fmt.Errorf("%s: %w", rel, err)
+	}
 
 	var found []Citation
 	var warnings []string
-	scanner := bufio.NewScanner(f)
-	scanner.Buffer(make([]byte, 0, 64*1024), 1<<20)
-	for line := 1; scanner.Scan(); line++ {
-		text := scanner.Text()
+	line := 0
+	for text := range strings.Lines(string(data)) {
+		line++
 		if !attempt.MatchString(text) {
 			continue
 		}
@@ -140,9 +146,6 @@ func scanFile(path, rel string, opts Options, rev string) ([]Citation, []string,
 			continue
 		}
 		found = append(found, Citation{URI: m[1], File: rel, Line: line, URL: lineURL(opts, rev, rel, line)})
-	}
-	if err := scanner.Err(); err != nil {
-		return nil, nil, fmt.Errorf("%s: %w", rel, err)
 	}
 	return found, warnings, nil
 }
