@@ -27,6 +27,7 @@ activities:
         name: 人間同士の合意が要るルールは提案中として置く
         stories:
           - name: ルールごとに合意が要る人を書く
+            key: name-decision-makers-per-rule
       - key: leave-questions-open
         name: 決めきれないものを疑問点に残す
   - key: close-within-the-session
