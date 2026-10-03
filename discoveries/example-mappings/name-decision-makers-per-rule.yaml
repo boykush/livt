@@ -1,0 +1,59 @@
+rules:
+  - id: R-01
+    name: ルールは、合意が要る人をdecision_makersとして持てる
+    examples:
+      - id: EX-01
+        name: 人はforgeのメンションの形で書く（@alice、@acme/design）。あとに続くactionが、forgeのIDへ機械的に結び付けられる
+      - id: EX-02
+        name: livtは書かれた文字列をそのまま運び、実在する人やチームかは確かめない
+      - id: EX-03
+        name: ルールのstatusに関わらず書ける（提案中のルールにも、合意済みのルールにも）
+  - id: R-02
+    name: decision_makersは任意で、書かれていないルールには何も求めない
+    examples:
+      - id: EX-01
+        name: decision_makersのない実例マッピングは、これまでどおりに読める
+      - id: EX-02
+        name: 提案中のルールにも書かなくてよい
+  - id: R-03
+    name: 合意が要る人は、statusに関わらずルールと一緒に示される
+    examples:
+      - id: EX-01
+        name: ボードのルール付箋に、合意が要る人が出る
+      - id: EX-02
+        name: 提案中のルールでも合意済みのルールでも、同じ出方をする
+      - id: EX-03
+        name: タスクページの提案中のルールにも、合意が要る人が並ぶ
+      - id: EX-04
+        name: decision_makersのないルールは、これまでどおりに出る（未定とは書かない）
+  - id: R-04
+    name: MCPとCLIは、decision_makersをルールに付けて返す
+    examples:
+      - id: EX-01
+        name: decision_makersのあるルールを読むと、書かれた順のまま返る
+      - id: EX-02
+        name: decision_makersのないルールには、項目そのものが載らない
+  - id: R-05
+    name: 合意が要る人の変更は、差分にそのルールの変更として出る
+    examples:
+      - id: EX-01
+        name: 提案中のままマージしたルールにあとから人を足すと、足した人が緑で並ぶ
+      - id: EX-02
+        name: 人を消すと、消した人が赤で並ぶ
+      - id: EX-03
+        name: 人だけが変わったルールは、IDも文言も変わらない
+
+questions:
+  - id: Q-01
+    text: 同じ人を全ルールに繰り返し書く手間をどうするか（実例マッピング全体の既定を1か所に書き、違うルールだけ上書きする形が考えられる）
+  - id: Q-02
+    text: 合意済みのルールに書かれた合意が要る人を、そのルールを変えるときにも合意が要る人として扱うか
+  - id: Q-03
+    text: GitHub以外のforgeでの書き方をどう扱うか（livtは文字列として運ぶだけだが、チェックとスキルは解釈する）
+  - id: Q-04
+    text: タスクページを合意が要る人で絞り込めるようにするか（自分を待っている提案だけを見たい。絞り込みの軸が1つ増えるので、別のストーリーになりそう）
+
+ubiquitous:
+  - example-mapping
+  - story
+  - livt-repository
