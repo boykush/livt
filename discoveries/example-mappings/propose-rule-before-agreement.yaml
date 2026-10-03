@@ -32,7 +32,6 @@ rules:
         name: 凡例が見分け方を説明する
   - id: R-03
     name: 提案中のルールは、テストではなく合意で閉じる仕事としてTasksページに並ぶ
-    status: proposed
     examples:
       - id: EX-01
         name: 提案中のルールは「提案中のルール」に並び、「未自動化のルール」には現れない
