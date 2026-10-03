@@ -41,7 +41,6 @@ rules:
         name: 提案中のルールだけが残っているとき、未自動化の一覧は「合意済みのルールはすべて自動化されています」と言う
   - id: R-04
     name: MCPとCLIは、どのルールにもstatusを付けて返す
-    status: proposed
     examples:
       - id: EX-01
         name: statusのないルールもacceptedとして返り、消費側は既定値を知らなくてよい
