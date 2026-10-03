@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>合意前のルールを提案中として実例マッピングに載せる - livt</title>
+<title>ルールごとに合意が要る人を書く - livt</title>
 <script src="https://cdn.tailwindcss.com"></script>
 
 <script>
@@ -94,8 +94,8 @@
   </div>
 </div>
 
-<a href="../story/propose-rule-before-agreement.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow font-bold text-gray-800 w-[180px] mb-6 hover:bg-yellow-200 transition">
-  <span>合意前のルールを提案中として実例マッピングに載せる</span><span>&rarr;</span>
+<a href="../story/name-decision-makers-per-rule.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow font-bold text-gray-800 w-[180px] mb-6 hover:bg-yellow-200 transition">
+  <span>ルールごとに合意が要る人を書く</span><span>&rarr;</span>
 </a>
 
 
@@ -126,22 +126,15 @@
       
       
       <div class="rule-body min-w-0">
-      <span class="rule-name sticky-text">ルールのstatusは、合意の段階と閉じ方を1つの軸で持つ（proposed・accepted・rejected・retired）</span>
+      <span class="rule-name sticky-text">ルールは、合意が要る人をdecision_makersとして持てる</span>
       
       
       
-      
-      <div class="rule-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
-        
-
-<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/parser/example_mapping_test.go#L92" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: example_mapping_test.go:92</span></a>
-
-      </div>
       
       
       </div>
       
-      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>6</span>
+      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
     </div>
     
@@ -156,7 +149,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">status: proposed のルールは提案中として読まれる</span>
+      <span class="sticky-text">人はforgeのメンションの形で書く（@alice、@acme/design）。あとに続くactionが、forgeのIDへ機械的に結び付けられる</span>
       
       
       
@@ -172,7 +165,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">statusのないルールは合意済みとして読まれ、既存の実例マッピングはそのまま読める</span>
+      <span class="sticky-text">livtは書かれた文字列をそのまま運び、実在する人やチームかは確かめない</span>
       
       
       
@@ -188,88 +181,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">4つ以外の値はビルドを失敗させる（打ち間違いが黙って合意済みに化けない）</span>
+      <span class="sticky-text">ルールのstatusに関わらず書ける（提案中のルールにも、合意済みのルールにも）</span>
       
       
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
-        
-
-<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/parser/example_mapping_test.go#L167" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: example_mapping_test.go:167</span></a>
-
-      </div>
-      
-      </div>
-    </div>
-    
-    
-    
-    <div id="rule-R-01-example-EX-04" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
-      
-
-<a href="#rule-R-01-example-EX-04" data-copy-link title="リンクをコピー"
-   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
-
-      <div class="example-body min-w-0">
-      <span class="sticky-text">rejectedとretiredのルールは、ボードにもTasksページにも出ない</span>
-      
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
-        
-
-<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/builder/build_mapping_test.go#L455" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_mapping_test.go:455</span></a>
-
-
-<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/builder/build_mapping_test.go#L515" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_mapping_test.go:515</span></a>
-
-      </div>
-      
-      </div>
-    </div>
-    
-    
-    
-    <div id="rule-R-01-example-EX-06" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
-      
-
-<a href="#rule-R-01-example-EX-06" data-copy-link title="リンクをコピー"
-   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-06</a>
-
-      <div class="example-body min-w-0">
-      <span class="sticky-text">旧来のretired: trueはもう読まれず、statusのないルールとして合意済みに戻る</span>
-      
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
-        
-
-<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/parser/example_mapping_test.go#L136" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: example_mapping_test.go:136</span></a>
-
-      </div>
-      
-      </div>
-    </div>
-    
-    
-    
-    <div id="rule-R-01-example-EX-07" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
-      
-
-<a href="#rule-R-01-example-EX-07" data-copy-link title="リンクをコピー"
-   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-07</a>
-
-      <div class="example-body min-w-0">
-      <span class="sticky-text">MCPとCLIのJSONもルールにretiredを持たず、閉じ方はstatusだけが言う</span>
-      
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
-        
-
-<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/mcp/resources_test.go#L223" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resources_test.go:223</span></a>
-
-      </div>
       
       </div>
     </div>
@@ -293,22 +207,15 @@
       
       
       <div class="rule-body min-w-0">
-      <span class="rule-name sticky-text">提案中のルールは、ボード上で合意済みのルールと一目で見分けられる</span>
+      <span class="rule-name sticky-text">decision_makersは任意で、書かれていないルールには何も求めない</span>
       
       
       
-      
-      <div class="rule-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
-        
-
-<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/builder/build_mapping_test.go#L553" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_mapping_test.go:553</span></a>
-
-      </div>
       
       
       </div>
       
-      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
+      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
       
     </div>
     
@@ -323,7 +230,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">提案中のルール付箋は、合意済みのものより淡く描かれる</span>
+      <span class="sticky-text">decision_makersのない実例マッピングは、これまでどおりに読める</span>
       
       
       
@@ -339,39 +246,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">色だけに頼らず、付箋に「提案中」のスタンプが付く</span>
-      
-      
-      
-      </div>
-    </div>
-    
-    
-    
-    <div id="rule-R-02-example-EX-03" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
-      
-
-<a href="#rule-R-02-example-EX-03" data-copy-link title="リンクをコピー"
-   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
-
-      <div class="example-body min-w-0">
-      <span class="sticky-text">提案中のルールの具体例も、ルールと一緒に淡く描かれる</span>
-      
-      
-      
-      </div>
-    </div>
-    
-    
-    
-    <div id="rule-R-02-example-EX-04" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
-      
-
-<a href="#rule-R-02-example-EX-04" data-copy-link title="リンクをコピー"
-   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
-
-      <div class="example-body min-w-0">
-      <span class="sticky-text">凡例が見分け方を説明する</span>
+      <span class="sticky-text">提案中のルールにも書かなくてよい</span>
       
       
       
@@ -397,22 +272,15 @@
       
       
       <div class="rule-body min-w-0">
-      <span class="rule-name sticky-text">提案中のルールは、テストではなく合意で閉じる仕事としてTasksページに並ぶ</span>
+      <span class="rule-name sticky-text">合意が要る人は、statusに関わらずルールと一緒に示される</span>
       
       
       
-      
-      <div class="rule-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
-        
-
-<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/builder/build_index_test.go#L488" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_index_test.go:488</span></a>
-
-      </div>
       
       
       </div>
       
-      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
+      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
       
     </div>
     
@@ -427,16 +295,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">提案中のルールは「提案中のルール」に並び、「未自動化のルール」には現れない</span>
+      <span class="sticky-text">ボードのルール付箋に、合意が要る人が出る</span>
       
       
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
-        
-
-<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/builder/build_mapping_test.go#L589" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_mapping_test.go:589</span></a>
-
-      </div>
       
       </div>
     </div>
@@ -450,7 +311,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">先にテストが書かれていても、合意されるまでは提案中のルールに並ぶ</span>
+      <span class="sticky-text">提案中のルールでも合意済みのルールでも、同じ出方をする</span>
       
       
       
@@ -466,16 +327,25 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">提案中のルールだけが残っているとき、未自動化の一覧は「合意済みのルールはすべて自動化されています」と言う</span>
+      <span class="sticky-text">タスクページの提案中のルールにも、合意が要る人が並ぶ</span>
       
       
       
-      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
-        
-
-<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/builder/build_index_test.go#L507" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_index_test.go:507</span></a>
-
       </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-03-example-EX-04" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-03-example-EX-04" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">decision_makersのないルールは、これまでどおりに出る（未定とは書かない）</span>
+      
+      
       
       </div>
     </div>
@@ -499,7 +369,7 @@
       
       
       <div class="rule-body min-w-0">
-      <span class="rule-name sticky-text">MCPとCLIは、どのルールにもstatusを付けて返す</span>
+      <span class="rule-name sticky-text">MCPとCLIは、decision_makersをルールに付けて返す</span>
       
       
       
@@ -522,16 +392,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">statusのないルールもacceptedとして返り、消費側は既定値を知らなくてよい</span>
+      <span class="sticky-text">decision_makersのあるルールを読むと、書かれた順のまま返る</span>
       
       
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
-        
-
-<a href="https://github.com/boykush/livt/blob/e4623c1eecaa66b1247279a40fae924878b00f7c/internal/mcp/resources_test.go#L247" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: resources_test.go:247</span></a>
-
-      </div>
       
       </div>
     </div>
@@ -545,7 +408,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">実装リポジトリのエージェントは、提案中のルールを自動化の対象から外せる</span>
+      <span class="sticky-text">decision_makersのないルールには、項目そのものが載らない</span>
       
       
       
@@ -571,7 +434,7 @@
       
       
       <div class="rule-body min-w-0">
-      <span class="rule-name sticky-text">提案はADRと同じ流れで閉じる — 合意されればaccepted、却下されればrejected</span>
+      <span class="rule-name sticky-text">合意が要る人の変更は、差分にそのルールの変更として出る</span>
       
       
       
@@ -579,7 +442,7 @@
       
       </div>
       
-      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
+      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
     </div>
     
@@ -594,7 +457,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">提案を採用するコミットは、statusの1行だけを変える</span>
+      <span class="sticky-text">提案中のままマージしたルールにあとから人を足すと、足した人が緑で並ぶ</span>
       
       
       
@@ -610,7 +473,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">却下された提案は削除せずrejectedにする（合意に至らなかった提案として読め、後から退役したルールと区別が付く）</span>
+      <span class="sticky-text">人を消すと、消した人が赤で並ぶ</span>
       
       
       
@@ -626,23 +489,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">提案中のルールには自動化Issueを起票しない</span>
-      
-      
-      
-      </div>
-    </div>
-    
-    
-    
-    <div id="rule-R-05-example-EX-04" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
-      
-
-<a href="#rule-R-05-example-EX-04" data-copy-link title="リンクをコピー"
-   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
-
-      <div class="example-body min-w-0">
-      <span class="sticky-text">提案が答えようとしている疑問点は、提案が合意されたコミットで退役させる</span>
+      <span class="sticky-text">人だけが変わったルールは、IDも文言も変わらない</span>
       
       
       
@@ -658,7 +505,7 @@
     <div class="list-head items-baseline gap-2">
       <span class="w-2.5 h-2.5 rounded-sm bg-red-400"></span>
       <h2 class="text-sm font-semibold text-gray-800">疑問点</h2>
-      <span class="text-xs text-gray-400">1</span>
+      <span class="text-xs text-gray-400">4</span>
     </div>
     <div class="question-head bg-red-50 border-l-4 border-red-300 p-3 rounded text-xs font-semibold text-red-400 uppercase tracking-wide">
       疑問点
@@ -673,7 +520,43 @@
 <a href="#question-Q-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-red-400/70 hover:text-red-600 hover:underline cursor-pointer select-none">#Q-01</a>
 
-      <span class="sticky-text">合意済みのルールをADRのようにイミュータブルに扱うか（現状はchange-ruleがルール本文の書き換えを許しており、変更を退役＋新ルールで表してはいない）</span>
+      <span class="sticky-text">同じ人を全ルールに繰り返し書く手間をどうするか（実例マッピング全体の既定を1か所に書き、違うルールだけ上書きする形が考えられる）</span>
+      
+    </div>
+    
+    
+    
+    <div id="question-Q-02" class="question-card relative bg-red-100 border-red-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#question-Q-02" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-red-400/70 hover:text-red-600 hover:underline cursor-pointer select-none">#Q-02</a>
+
+      <span class="sticky-text">合意済みのルールに書かれた合意が要る人を、そのルールを変えるときにも合意が要る人として扱うか</span>
+      
+    </div>
+    
+    
+    
+    <div id="question-Q-03" class="question-card relative bg-red-100 border-red-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#question-Q-03" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-red-400/70 hover:text-red-600 hover:underline cursor-pointer select-none">#Q-03</a>
+
+      <span class="sticky-text">GitHub以外のforgeでの書き方をどう扱うか（livtは文字列として運ぶだけだが、チェックとスキルは解釈する）</span>
+      
+    </div>
+    
+    
+    
+    <div id="question-Q-04" class="question-card relative bg-red-100 border-red-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#question-Q-04" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-red-400/70 hover:text-red-600 hover:underline cursor-pointer select-none">#Q-04</a>
+
+      <span class="sticky-text">タスクページを合意が要る人で絞り込めるようにするか（自分を待っている提案だけを見たい。絞り込みの軸が1つ増えるので、別のストーリーになりそう）</span>
       
     </div>
     
@@ -706,13 +589,6 @@
 
 <a href="../ubiquitous.html#livt-repository" class="inline-flex items-center gap-2 bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-pink-200 transition">
   <span class="flex flex-col items-start"><span>livtリポジトリ</span></span><span>&rarr;</span>
-</a>
-
-
-
-
-<a href="../ubiquitous.html#discovery" class="inline-flex items-center gap-2 bg-pink-100 border-l-4 border-pink-400 px-3 py-2 rounded shadow text-sm text-gray-700 hover:bg-pink-200 transition">
-  <span class="flex flex-col items-start"><span>ディスカバリー</span></span><span>&rarr;</span>
 </a>
 
 
