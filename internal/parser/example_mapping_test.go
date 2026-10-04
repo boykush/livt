@@ -8,7 +8,7 @@ import (
 	"github.com/boykush/livt/internal/domain"
 )
 
-func TestParseExampleMappingReadsRuleIssuesAndTheDeprecatedFlag(t *testing.T) {
+func TestParseExampleMappingReadsRuleIssues(t *testing.T) {
 	path := filepath.Join(t.TempDir(), "story.yaml")
 	data := []byte("rules:\n" +
 		"  - id: R-01\n" +
@@ -16,7 +16,6 @@ func TestParseExampleMappingReadsRuleIssuesAndTheDeprecatedFlag(t *testing.T) {
 		"    issues:\n" +
 		"      - https://github.com/boykush/livt/issues/25\n" +
 		"      - https://github.com/boykush/other/issues/7\n" +
-		"    automated: true\n" +
 		"  - id: R-02\n" +
 		"    name: 素のルール\n")
 	if err := os.WriteFile(path, data, 0o644); err != nil {
@@ -32,13 +31,34 @@ func TestParseExampleMappingReadsRuleIssuesAndTheDeprecatedFlag(t *testing.T) {
 	if len(recorded.Issues) != 2 || recorded.Issues[0] != "https://github.com/boykush/livt/issues/25" {
 		t.Fatalf("got issues %v, want the two recorded URLs", recorded.Issues)
 	}
-	if !recorded.Automated() {
-		t.Fatal("a mapping still carrying automated: keeps the board it had")
-	}
 
 	bare := em.Rules[1]
-	if len(bare.Issues) != 0 || bare.Automated() {
-		t.Fatalf("bare rule should default to unlinked and not automated, got issues=%v automated=%v", bare.Issues, bare.Automated())
+	if len(bare.Issues) != 0 {
+		t.Fatalf("bare rule should default to unlinked, got issues=%v", bare.Issues)
+	}
+}
+
+// livt:automates livt://mapping/derive-automation-status/rule/R-05/example/EX-08
+// The flag is no longer a rule field, so the line says nothing about whether
+// the rule is automated: a mapping still carrying it parses, and the rule
+// reads as one written without it until a test cites it.
+func TestParseExampleMappingIgnoresAutomated(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "story.yaml")
+	data := []byte("rules:\n" +
+		"  - id: R-01\n" +
+		"    name: 旧来のフラグを付けたままのルール\n" +
+		"    automated: true\n")
+	if err := os.WriteFile(path, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	em, err := ParseExampleMapping(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if em.Rules[0].Automated() {
+		t.Error("automation is collected from the tests, not read from the mapping")
 	}
 }
 

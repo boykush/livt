@@ -22,9 +22,6 @@ type ruleYAML struct {
 	Name     string        `yaml:"name"`
 	Examples []exampleYAML `yaml:"examples"`
 	Issues   []string      `yaml:"issues"`
-	// Automated is the deprecated flag, read for the mappings still carrying
-	// it so their boards do not go dark mid-move. Nothing writes it any more.
-	Automated bool `yaml:"automated"`
 	// Status reads as an ADR's does: proposed while the rule awaits agreement,
 	// accepted once it has it, rejected or retired once it has closed. Omitted
 	// means accepted, and it is the whole of a rule's standing: nothing else
@@ -87,7 +84,7 @@ func ParseExampleMapping(path string) (*domain.ExampleMapping, error) {
 		for _, ex := range r.Examples {
 			examples = append(examples, domain.Example{ID: ex.ID, Name: ex.Name, Retired: ex.Retired, SupersededBy: ex.SupersededBy})
 		}
-		rules = append(rules, domain.Rule{ID: r.ID, Name: r.Name, Examples: examples, Status: status, Issues: r.Issues, AutomatedFlag: r.Automated, SupersededBy: r.SupersededBy})
+		rules = append(rules, domain.Rule{ID: r.ID, Name: r.Name, Examples: examples, Status: status, Issues: r.Issues, SupersededBy: r.SupersededBy})
 	}
 
 	var questions []domain.Question
