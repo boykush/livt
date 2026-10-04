@@ -159,14 +159,7 @@ back up into one row.
       <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">{{$rule.Name}}</span>
       {{with index $.DiffMarks (ruleURI $.Mapping.StoryKey.Value $rule.ID)}}{{template "diff-mark" .}}{{end}}
-      {{/* No corner stamp: the chips of the tests that cite the sticky are its mark.
-      A rule automated only by the deprecated flag has no test to name, so it
-      gets the chip alone, lest it lose the one mark it had. */}}
-      {{if and $rule.Automated (not $rule.Automations)}}
-      <div class="rule-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
-        <span title="{{t "mapping.automated-title"}}" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200">{{template "icon-test"}}{{t "mapping.automated-title"}}</span>
-      </div>
-      {{end}}
+      {{/* No corner stamp: the chips of the tests that cite the sticky are its mark. */}}
       {{if $rule.Automations}}
       <div class="rule-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
         {{range $rule.Automations}}{{template "test-chip" .}}{{end}}

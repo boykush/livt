@@ -51,12 +51,11 @@ type Builder struct {
 	// can say what a page should show.
 	LivtVersion string
 	SpecVersion string
-	// automationKnown is whether anything at all has spoken about automation:
-	// a report was collected, or a mapping still carries the deprecated flag.
-	// With nothing said, the axis is left off the pages built after the
-	// mappings rather than drawn as every rule un-automated, which would
-	// answer a question nobody asked. Accumulated by buildMappings, which runs
-	// before every page that reads it.
+	// automationKnown is whether anything at all has spoken about automation,
+	// which only a collected report can. With nothing said, the axis is left
+	// off the pages built after the mappings rather than drawn as every rule
+	// un-automated, which would answer a question nobody asked. Set by
+	// buildMappings, which runs before every page that reads it.
 	automationKnown bool
 }
 

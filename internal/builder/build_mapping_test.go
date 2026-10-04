@@ -146,14 +146,12 @@ func TestRenderMappingExampleUnderUnkeyedRuleOmitsAnchor(t *testing.T) {
 
 // livt:automates livt://mapping/show-automation-status-per-rule/rule/R-01/example/EX-07
 // The chip of a citing test is the sticky's mark, and no corner stamp repeats
-// it. A rule the deprecated flag alone calls automated has no test to name,
-// and keeps a chip so it does not lose the mark it had.
+// it.
 func TestRenderMappingMarksAutomatedRules(t *testing.T) {
 	em := &domain.ExampleMapping{
 		Rules: []domain.Rule{
 			{ID: "R-01", Name: "An automated rule", Automations: []domain.Automation{{Repo: "acme/impl", File: "x_test.go", Line: 1}}},
 			{ID: "R-02", Name: "A rule not yet automated"},
-			{ID: "R-03", Name: "A rule only the flag calls automated", AutomatedFlag: true},
 		},
 	}
 
@@ -163,8 +161,8 @@ func TestRenderMappingMarksAutomatedRules(t *testing.T) {
 	}
 	html := buf.String()
 
-	if got := strings.Count(html, `class="test-chip `); got != 2 {
-		t.Fatalf("test chips rendered %d times, want 2: the cited rule and the flagged one", got)
+	if got := strings.Count(html, `class="test-chip `); got != 1 {
+		t.Fatalf("test chips rendered %d times, want once (only on the cited rule)", got)
 	}
 	if strings.Contains(html, "automated-badge") {
 		t.Fatal("a corner stamp repeats what the chips already say")
@@ -208,6 +206,34 @@ func TestBuildLeavesAutomationOffWhenNothingWasCollected(t *testing.T) {
 	}
 	if html := readRendered(t, filepath.Join(b.OutDir, "tasks.html")); strings.Contains(html, "Un-automated Rules") {
 		t.Fatal("the Tasks page calls a rule un-automated on a repository nobody has looked at")
+	}
+}
+
+// livt:automates livt://mapping/derive-automation-status/rule/R-05/example/EX-08
+// End to end, because the flag reached the board and the Tasks list by
+// separate roads: a rule still carrying it and cited by nothing has no chip,
+// and waits for a test like any other.
+func TestBuildReadsNoAutomationOffTheRetiredFlag(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	writeFile(t, filepath.Join(b.MappingsDir, "checkout.yaml"),
+		"rules:\n"+
+			"  - id: R-01\n"+
+			"    name: 引用のあるルール\n"+
+			"  - id: R-02\n"+
+			"    name: フラグだけが残ったルール\n"+
+			"    automated: true\n")
+	writeAutomations(t, b, "livt://mapping/checkout/rule/R-01")
+
+	if err := b.Build(); err != nil {
+		t.Fatal(err)
+	}
+
+	html := readRendered(t, filepath.Join(b.OutDir, "mapping", "checkout.html"))
+	if got := strings.Count(html, `class="test-chip `); got != 1 {
+		t.Fatalf("test chips rendered %d times, want once: the flag alone marks nothing", got)
+	}
+	if tasks := readRendered(t, filepath.Join(b.OutDir, "tasks.html")); !strings.Contains(tasks, "フラグだけが残ったルール") {
+		t.Fatal("the Tasks page leaves out a rule no test cites, on the word of a flag nothing reads")
 	}
 }
 

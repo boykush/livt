@@ -63,6 +63,9 @@ rules:
         name: YAMLスキーマとMCPペイロードの破壊的変更として、メジャーバージョンで切る
       - id: EX-04
         name: フラグは読まれるだけで誰も書かないので、投影と競う2つ目の記録にはならない
+        retired: true
+        superseded_by:
+          - livt://mapping/derive-automation-status/rule/R-05/example/EX-08
       - id: EX-05
         name: 読まれる期間はリリースをまたぎ、次のマイナーがスキーマごと消す
         retired: true
@@ -70,8 +73,13 @@ rules:
           - livt://mapping/derive-automation-status/rule/R-05/example/EX-07
       - id: EX-06
         name: 読み続けるのは移行が重いからで、フラグが正しいからではない（引用の無いフラグは古いままボードに残る）
+        retired: true
+        superseded_by:
+          - livt://mapping/derive-automation-status/rule/R-05/example/EX-08
       - id: EX-07
         name: 読まれる期間はリリース数で区切らない（投影に穴が残るうちに落とすと、フォールバックだけが消えて代わりが立たない）
+      - id: EX-08
+        name: automatedはもう読まれず、付けたままのruleも状況は引用だけで決まる（引用の無いフラグが残していた印はボードから消える）
   - id: R-06
     name: 走査と投影のテストは、ドッグフーディングでは現れない形を含む
     examples:
