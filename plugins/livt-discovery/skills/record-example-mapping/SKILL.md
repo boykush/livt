@@ -83,6 +83,7 @@ Canonical statement in `change-rule`; these bullets are verbatim from it. You mi
 - **Immutability** — an ID, once used, keeps pointing at the same thing. Never renumber, never reuse, and never move an item to where its ID would change. This holds whether or not an automation issue was filed: the item's livt URI is quoted by MCP consumers, by the board's copy-link, in test comments, and in commit messages, and the livt repository records none of those — there is no list of references to check before breaking one.
 - **Retire, don't delete** — a rule that no longer holds gets a closed `status` (`rejected` or `retired`) and an example or question gets `retired: true`; either way it stays in the file, its ID taken and its text readable. Deleting it hands the ID to the next item and silently re-targets every reference. Don't comment it out either: a comment is not part of the YAML structure, so a structural edit drops it.
 - **Say what replaced it** — when something took the closed item's place, add `superseded_by:` beside the status or the flag, listing the successors as **livt URIs** so a reference landing on the retired item reads on instead of stopping. A list, because an item can split into two; livt URIs, because a successor can live in another mapping and a bare `R-05` names nothing. Leave the field off when nothing replaced it. Only the pointer goes in the YAML — *why* it was retired belongs to the commit, where it is written once and cannot drift.
+- **A draft is rewritten, not retired** — the bullets above bind an ID once its item reaches the default branch: the branch the published site is built from and the implementation repositories read, and so the first place anything outside the review can point at it. An item this branch added and the default branch does not hold yet is a draft. It is edited like any other text in review — reworded past its meaning, moved, or deleted, a deleted draft giving its number back — and never retired: `retired` says a decision was agreed and then withdrawn, and on an item the default branch never held it writes the review's back-and-forth into the record as history. The default branch's copy of the file is the test: an ID it holds is bound wherever the item is changed next, and one you cannot check is treated as bound too.
 
 ## Name Contract
 
@@ -110,6 +111,7 @@ When the team reworks a board that has already been recorded, `discoveries/examp
 - A card that is new on the board takes the next ID.
 - A card that has left the board is closed where it sits — `status: retired` on a rule, `retired: true` on an example or a question — no longer agreed, still in the file. A rule that has gone takes each of its examples with it: neither spelling cascades, so an unflagged example still resolves as live.
 - An example the board moved under a different rule cannot keep its ID, since example IDs are rule-scoped. Retire it under the old rule and add it under the new one with a fresh ID, with `superseded_by:` on the retired one naming the new URI: the board's grouping is honoured, the old URI still resolves to the same text, and it says where the example went.
+- A card the default branch does not hold yet is a draft (see ID Contract), and the two bullets above do not reach it: one that left the board is deleted, and an example the board moved is moved, with nothing retired.
 
 ## Commit Contract
 
@@ -131,7 +133,7 @@ Before the baseline commit, verify the record is complete — not whether the ma
 - Every red card is preserved as a Question — none were silently answered.
 - Every pink card appears in `ubiquitous:`, and every term whose definition the board carried has its `ubiquitous/{term-key}.md`.
 - Wording matches the board; nothing was paraphrased away.
-- Re-recording only: every ID that was already on file still names the same card, and nothing was deleted to make room.
+- Re-recording only: every ID the default branch holds still names the same card, and nothing it holds was deleted to make room.
 
 ## Output
 
