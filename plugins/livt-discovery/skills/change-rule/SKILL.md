@@ -38,17 +38,18 @@ When there is no fresh session and the ask is "this rule changed / a new rule wa
 
 1. Identify the affected story and read `discoveries/example-mappings/{story-key}.yaml` and `stories/{story-key}.md` — a story with no card has only its mapping, scoped by the mapping's own `name:`. Ask the user which mapping if it is ambiguous.
 2. Capture the change from the user: which rule, what changed, and why — and whether it is agreed or only put forward. Don't invent or extrapolate.
-3. Apply the minimal rule-level edit (IDs throughout follow the ID Contract):
+3. Check whether what the change touches has merged: read the default branch's copy of the mapping (`git show {default-branch}:discoveries/example-mappings/{story-key}.yaml`). A rule, example, or question it does not hold was added on this branch and is still in review — a **draft**, which is never retired (see ID Contract); a mapping it does not have at all is draft throughout. Step 4 is written for items that have merged: on a draft, wherever it retires something, rewrite the item in place — under the ID it has, even where its meaning moved — or delete it, and write no `superseded_by:`.
+4. Apply the minimal rule-level edit (IDs throughout follow the ID Contract):
    - **Added rule** — append it with the next rule ID, with the examples agreed alongside it.
    - **Changed rule** — a rule keeps its ID while it means the same thing said better; a rule that comes to mean something else is a different rule, so retire it and add the successor under a new ID, the way an example is replaced rather than rewritten. Only you can tell the two apart and the boundary is yours: livt reads neither wording nor intent, and asking it to would make every rewording read as a change of mind. Where the ID stays, update its `name` and bring its examples in line in the same commit (an example illustrating the old wording is now wrong). Retire the ones that no longer illustrate it and add the replacements as new examples, pointing each retired one at its replacement with `superseded_by:`; don't rewrite an example into a different one under the same ID. Tests that cite the rule go on citing it — a citation names the rule, not its wording — and for a rewording that is right: the livt URI is what binds a test to the rule, and a test's own name need not follow the rule's.
    - **Retired rule** — set `status: retired`, and mark every one of its examples `retired: true`: the status does not cascade, so an unflagged example under a retired rule still resolves as live. Nothing is deleted. Where another rule took over, add `superseded_by:`; where the business simply stopped asking, leave it off.
    - **Proposed rule** — append it like an added rule, with `status: proposed` beside its `name`. It is a candidate, not yet agreed: it goes on the board pale and waits for agreement.
    - **Accepted proposal** — change its `status: proposed` to `status: accepted`. If the agreement reworded it, the new wording lands in the same commit, as for a changed rule.
-   - **Rejected proposal** — change its `status: proposed` to `status: rejected`, and mark its examples `retired: true` as for any closed rule. `rejected` rather than `retired` is what makes the record read as a proposal that was never agreed, not as a rule dropped later.
+   - **Rejected proposal** — change its `status: proposed` to `status: rejected`, and mark its examples `retired: true` as for any closed rule. `rejected` rather than `retired` is what makes the record read as a proposal that was never agreed, not as a rule dropped later. A draft proposal the review turns down is recorded the same way, examples and all: `rejected` says it was put forward and not agreed, which is a decision the review did make and not a retirement.
    - New open questions raised by the change take the next question ID; a question this change settles is retired, with the settled meaning landing as a rule — not as an answer scribbled onto the Question. Point the retired question at that rule with `superseded_by:`: the rule is where its answer lives. A proposal settles nothing yet: a question it would answer stays open until the proposal is accepted, and is retired in that commit.
-4. Re-read the diff: it must contain exactly the one change, nothing structural elsewhere.
-5. Commit it on its own (see Commit Contract).
-6. More than one rule changed? Repeat the flow — one commit each.
+5. Re-read the diff: it must contain exactly the one change, nothing structural elsewhere.
+6. Commit it on its own (see Commit Contract).
+7. More than one rule changed? Repeat the flow — one commit each.
 
 ## ID Contract
 
@@ -58,6 +59,7 @@ This is the canonical statement. `record-example-mapping` and `formulate-example
 - **Immutability** — an ID, once used, keeps pointing at the same thing. Never renumber, never reuse, and never move an item to where its ID would change. This holds whether or not an automation issue was filed: the item's livt URI is quoted by MCP consumers, by the board's copy-link, in test comments, and in commit messages, and the livt repository records none of those — there is no list of references to check before breaking one.
 - **Retire, don't delete** — a rule that no longer holds gets a closed `status` (`rejected` or `retired`) and an example or question gets `retired: true`; either way it stays in the file, its ID taken and its text readable. Deleting it hands the ID to the next item and silently re-targets every reference. Don't comment it out either: a comment is not part of the YAML structure, so a structural edit drops it.
 - **Say what replaced it** — when something took the closed item's place, add `superseded_by:` beside the status or the flag, listing the successors as **livt URIs** so a reference landing on the retired item reads on instead of stopping. A list, because an item can split into two; livt URIs, because a successor can live in another mapping and a bare `R-05` names nothing. Leave the field off when nothing replaced it. Only the pointer goes in the YAML — *why* it was retired belongs to the commit, where it is written once and cannot drift.
+- **A draft is rewritten, not retired** — the bullets above bind an ID once its item reaches the default branch: the branch the published site is built from and the implementation repositories read, and so the first place anything outside the review can point at it. An item this branch added and the default branch does not hold yet is a draft. It is edited like any other text in review — reworded past its meaning, moved, or deleted, a deleted draft giving its number back — and never retired: `retired` says a decision was agreed and then withdrawn, and on an item the default branch never held it writes the review's back-and-forth into the record as history. The default branch's copy of the file is the test: an ID it holds is bound wherever the item is changed next, and one you cannot check is treated as bound too.
 
 ## Commit Contract
 
@@ -70,7 +72,7 @@ This is the canonical statement. `record-story-map`, `record-example-mapping`, `
 
 For you, that unit is one rule-level change:
 
-- The commit message names the rule and the mapping, e.g. `Add rule R-04 to {story-key}`, `Update rule R-02 in {story-key}`, `Retire rule R-03 in {story-key}`, `Propose rule R-05 in {story-key}`, `Accept rule R-05 in {story-key}`.
+- The commit message names the rule and the mapping, e.g. `Add rule R-04 to {story-key}`, `Update rule R-02 in {story-key}`, `Retire rule R-03 in {story-key}`, `Propose rule R-05 in {story-key}`, `Accept rule R-05 in {story-key}`. A draft deleted before it merged is `Drop rule R-06 from {story-key}`: nothing was retired.
 - The body states the business reason for the change — that context is what a reviewer weighs, and for a proposal it is the opening of the conversation.
 
 ## What NOT to Do
