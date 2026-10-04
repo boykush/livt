@@ -1,6 +1,6 @@
 {
   "name": "livt-delivery",
-  "version": "6.1.2",
+  "version": "6.2.0",
   "description": "The delivery ring of a livt repository: file story and rule issues to the team's tracker with livt URI backpointers",
   "author": {
     "name": "boykush",
