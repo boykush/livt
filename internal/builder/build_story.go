@@ -20,11 +20,11 @@ func (b *Builder) hasExampleMapping(storyKey domain.StoryKey) bool {
 	return err == nil
 }
 
-func (b *Builder) buildStory(path string, story *domain.Story, mappingPath string, opportunities []opportunityRef) error {
+func (b *Builder) buildStory(path string, story *domain.Story, mappingPath string, opportunities []opportunityRef, storyCards []storyMapRef) error {
 	f, err := os.Create(path)
 	if err != nil {
 		return err
 	}
 	defer f.Close()
-	return renderStory(f, b.Lang, story, mappingPath, opportunities, b.diffMark("../", uri.Story(story.Key.Value)))
+	return renderStory(f, b.Lang, story, mappingPath, opportunities, storyCards, b.diffMark("../", uri.Story(story.Key.Value)))
 }

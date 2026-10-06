@@ -595,7 +595,9 @@ type storyView struct {
 	Meta          []metaFieldView
 	MappingPath   string
 	Opportunities []opportunityRef
-	Diff          *diffMarkView
+	// StoryCards are the story's own cards on the maps it sits on.
+	StoryCards []storyMapRef
+	Diff       *diffMarkView
 }
 
 // termCard is a referenced ubiquitous language term rendered as a pink sticky on
@@ -665,12 +667,13 @@ func renderStoriesIndex(w io.Writer, lang i18n.Lang, view storiesIndexView) erro
 	return templates(lang).ExecuteTemplate(w, "stories.html", view)
 }
 
-func renderStory(w io.Writer, lang i18n.Lang, story *domain.Story, mappingPath string, opportunities []opportunityRef, mark *diffMarkView) error {
+func renderStory(w io.Writer, lang i18n.Lang, story *domain.Story, mappingPath string, opportunities []opportunityRef, storyCards []storyMapRef, mark *diffMarkView) error {
 	return templates(lang).ExecuteTemplate(w, "story.html", storyView{
 		Story:         story,
 		Meta:          metaFieldViews(story.Meta),
 		MappingPath:   mappingPath,
 		Opportunities: opportunities,
+		StoryCards:    storyCards,
 		Diff:          mark,
 	})
 }

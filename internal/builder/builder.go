@@ -258,7 +258,7 @@ func (b *Builder) Build() error {
 		opportunities := storyToMaps[story.Key.Value]
 
 		storyOutPath := filepath.Join(b.OutDir, "story", story.Key.Value+".html")
-		if err := b.buildStory(storyOutPath, story, mappingPath, opportunities); err != nil {
+		if err := b.buildStory(storyOutPath, story, mappingPath, opportunities, maps.StoryCards[story.Key.Value]); err != nil {
 			return err
 		}
 		fmt.Printf("  %s\n", strings.TrimPrefix(storyOutPath, b.OutDir+"/"))

@@ -90,8 +90,9 @@ func QuestionAnchor(questionID string) string {
 }
 
 // StoryCardAnchor is the id of a story's card on a story map. A story's own
-// livt URI lands on its page, not here, so this anchor serves only a link
-// shared from the board.
+// livt URI lands on its page, not here, so this anchor serves only the links
+// the site itself draws: the one shared from the board, and the story page's
+// way back to its card.
 func StoryCardAnchor(storyKey string) string {
 	return "story-" + storyKey
 }

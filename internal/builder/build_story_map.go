@@ -16,8 +16,11 @@ import (
 // and the map drawn for each opportunity, by opportunity key.
 type storyMapBuild struct {
 	StoryOpportunities map[string][]opportunityRef
-	Tiles              []storyMapTile
-	MapByOpportunity   map[string]storyMapRef
+	// StoryCards is where each of a story's cards sits: one ref per map, in
+	// map order, leading to the card itself rather than the top of the board.
+	StoryCards       map[string][]storyMapRef
+	Tiles            []storyMapTile
+	MapByOpportunity map[string]storyMapRef
 	// StoriesByOpportunity is the reverse of StoryOpportunities: the keyed
 	// stories an opportunity took on, in its map's own release slices. Only
 	// keyed cards are in it, because a candidate with no card cannot have been
@@ -37,6 +40,7 @@ func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (
 
 	out := storyMapBuild{
 		StoryOpportunities:   make(map[string][]opportunityRef),
+		StoryCards:           make(map[string][]storyMapRef),
 		MapByOpportunity:     make(map[string]storyMapRef),
 		StoriesByOpportunity: make(map[string][]opportunityReleaseStories),
 	}
@@ -79,6 +83,10 @@ func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (
 					}
 					seen[sc.Key.Value] = true
 					out.StoryOpportunities[sc.Key.Value] = append(out.StoryOpportunities[sc.Key.Value], ref)
+					out.StoryCards[sc.Key.Value] = append(out.StoryCards[sc.Key.Value], storyMapRef{
+						Name: sm.DisplayName(),
+						Path: "../" + uri.StoryMapPage(key) + "#" + uri.StoryCardAnchor(sc.Key.Value),
+					})
 					if slices != nil {
 						slices.add(sc.Release, sc.Key.Value)
 					}

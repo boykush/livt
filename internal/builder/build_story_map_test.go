@@ -403,6 +403,52 @@ func TestBuildStoryMapsCollectsMultipleOpportunitiesPerStory(t *testing.T) {
 	}
 }
 
+// livt:automates livt://mapping/preview-story-map-in-browser/rule/R-06/example/EX-01
+// At the source: the ref a story page links is the id its card carries on the
+// built board, where the :target rule rings whichever card the link names.
+func TestBuildStoryMapsPointsEachStoryAtItsCard(t *testing.T) {
+	usmDir := t.TempDir()
+	mapYAML := "name: Map A\n" +
+		"activities:\n" +
+		"  - key: act\n" +
+		"    name: Act\n" +
+		"    steps:\n" +
+		"      - key: step\n" +
+		"        name: Step\n" +
+		"        stories:\n" +
+		"          - name: Some story\n" +
+		"            key: some-story\n"
+	if err := os.WriteFile(filepath.Join(usmDir, "map-a.yaml"), []byte(mapYAML), 0o644); err != nil {
+		t.Fatal(err)
+	}
+	outDir := t.TempDir()
+	if err := os.MkdirAll(filepath.Join(outDir, "story-map"), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	b := Builder{USMDir: usmDir, OutDir: outDir}
+
+	built, err := b.buildStoryMaps(nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	cards := built.StoryCards["some-story"]
+	if len(cards) != 1 || cards[0].Name != "Map A" {
+		t.Fatalf("got cards %+v, want one on Map A", cards)
+	}
+	page, anchor, _ := strings.Cut(cards[0].Path, "#")
+	if page != "../story-map/map-a.html" {
+		t.Fatalf("got page %q, want the story's map", page)
+	}
+	html := readFile(t, filepath.Join(outDir, "story-map", "map-a.html"))
+	if anchor == "" || !strings.Contains(html, `id="`+anchor+`"`) {
+		t.Fatalf("expected the link's anchor %q to be a card's id on the board", anchor)
+	}
+	if !strings.Contains(html, ".story-card:target") {
+		t.Fatal("expected the board to ring the card a link lands on")
+	}
+}
+
 func indexOf(t *testing.T, html, substr string) int {
 	t.Helper()
 	i := strings.Index(html, substr)
