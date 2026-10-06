@@ -8,6 +8,8 @@ rules:
         name: livtは書かれた文字列をそのまま運び、実在する人やチームかは確かめない
       - id: EX-03
         name: ルールのstatusに関わらず書ける（提案中のルールにも、合意済みのルールにも）
+      - id: EX-04
+        name: 誰を書くかは任意で、ルールを書いた本人も書ける
   - id: R-02
     name: decision_makersは任意で、書かれていないルールには何も求めない
     examples:
