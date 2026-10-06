@@ -137,7 +137,7 @@
       
       </div>
       
-      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>7</span>
+      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>8</span>
       
     </div>
     
@@ -152,7 +152,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">提案中のルールを合意済みに変えるPRは、合意が要る人の全員が承認するまでチェックが通らない</span>
+      <span class="sticky-text">合意済みと書かれたルールで、合意が要る人が1人でも欠けていれば、チェックは通らない</span>
       
 <a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-01/example/EX-01" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
@@ -170,7 +170,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">最初から合意済みで載せるルールも、同じ扱いになる</span>
+      <span class="sticky-text">全員が揃っていれば、チェックは通る</span>
       
 <a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-01/example/EX-02" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
@@ -188,7 +188,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">提案中のまま載せる変更は、承認を待たずに通る</span>
+      <span class="sticky-text">提案中のルールを合意済みに変えるPRでも、最初から合意済みで載せるPRでも、同じ扱いになる</span>
       
 <a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-01/example/EX-03" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
@@ -206,7 +206,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">decision_makersのないルールには、何も求めない</span>
+      <span class="sticky-text">提案中のまま載せる変更は、承認を待たずに通る</span>
       
 <a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-01/example/EX-04" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
@@ -224,7 +224,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-05</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">対象のないPRには「対象なし」として通る結果を付ける</span>
+      <span class="sticky-text">decision_makersのないルールには、何も求めない</span>
       
 <a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-01/example/EX-05" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
@@ -242,7 +242,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-06</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">PRの変更、承認、承認の取り消しのどれが起きても、確かめ直す</span>
+      <span class="sticky-text">対象のないPRには「対象なし」として通る結果を付ける</span>
       
 <a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-01/example/EX-06" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
@@ -260,9 +260,27 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-07</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">確かめるのは合意済みにする変更を含むPRだけで、mainにすでにある合意済みのルールは確かめ直さない</span>
+      <span class="sticky-text">PRの変更、承認、承認の取り消しのどれが起きても、確かめ直す</span>
       
 <a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-01/example/EX-07" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-01-example-EX-08" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-01-example-EX-08" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-08</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">確かめるのは合意済みにする変更を含むPRだけで、mainにすでにある合意済みのルールは確かめ直さない</span>
+      
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-01/example/EX-08" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
