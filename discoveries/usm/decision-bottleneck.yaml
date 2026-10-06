@@ -46,5 +46,6 @@ activities:
         name: 承認を合意として記録する
         stories:
           - name: 合意済みにする変更に、合意が要る人の承認を求める
+            key: require-decision-makers-approval-to-accept
       - key: close-proposals-without-agreement
         name: 合意に至らない提案を閉じる
