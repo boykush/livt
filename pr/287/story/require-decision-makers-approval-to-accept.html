@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>合意ファイルから、ルールごとの合意の状況を導く - livt</title>
+<title>合意済みにする変更に、合意が要る人の承認を求める - livt</title>
 <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body class="bg-gray-50 min-h-screen">
@@ -17,11 +17,11 @@
 
 <main class="max-w-3xl mx-auto px-6 py-8">
   <div class="bg-yellow-100 border-l-4 border-yellow-400 rounded shadow px-5 py-4">
-    <h1 class="text-2xl font-bold text-yellow-900 leading-snug">合意ファイルから、ルールごとの合意の状況を導く</h1>
+    <h1 class="text-2xl font-bold text-yellow-900 leading-snug">合意済みにする変更に、合意が要る人の承認を求める</h1>
     <div class="mt-2">
-<a href="../diff.html#story/derive-agreement-status-per-rule" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#story/require-decision-makers-approval-to-accept" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 </div>
-    <p class="font-mono text-xs text-yellow-700 mt-2">derive-agreement-status-per-rule</p>
+    <p class="font-mono text-xs text-yellow-700 mt-2">require-decision-makers-approval-to-accept</p>
   </div>
 
   
@@ -40,7 +40,16 @@
       </a>
     
     
-      <a href="../mapping/derive-agreement-status-per-rule.html" class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-sm font-medium px-4 py-2 rounded-lg border border-blue-200 hover:bg-blue-100 transition">
+    
+    
+      <a href="../story-map/decision-bottleneck.html#story-require-decision-makers-approval-to-accept" class="inline-flex items-center gap-1.5 bg-purple-50 text-purple-700 text-sm font-medium px-4 py-2 rounded-lg border border-purple-200 hover:bg-purple-100 transition">
+        
+        ユーザーストーリーマップ &rarr;
+        
+      </a>
+    
+    
+      <a href="../mapping/require-decision-makers-approval-to-accept.html" class="inline-flex items-center gap-1.5 bg-blue-50 text-blue-700 text-sm font-medium px-4 py-2 rounded-lg border border-blue-200 hover:bg-blue-100 transition">
         実例マッピング &rarr;
       </a>
     
@@ -52,9 +61,9 @@
   <section class="mt-7">
     <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">説明</h2>
     <div class="bg-white rounded-lg border border-gray-200 px-6 py-5">
-      <p class="text-sm text-gray-700 whitespace-pre-line leading-loose">livtリポジトリの読み手として
-ルールが合意済みか提案中かを、合意ファイルから導かれた形で見たい
-そうすれば誰かが書いた印ではなく、集まった承認にもとづいて状況を読める</p>
+      <p class="text-sm text-gray-700 whitespace-pre-line leading-loose">実例マッピングメンテナーとして
+ルールを合意済みにする変更に、合意が要る人の承認を求めたい
+そうすれば合意していないルールが、合意済みとして記録されずに済む</p>
     </div>
   </section>
   

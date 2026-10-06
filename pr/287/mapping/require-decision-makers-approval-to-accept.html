@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PR上の承認を集めて、合意ファイルに残す - livt</title>
+<title>合意済みにする変更に、合意が要る人の承認を求める - livt</title>
 <script src="https://cdn.tailwindcss.com"></script>
 
 <script>
@@ -94,12 +94,12 @@
   </div>
 </div>
 
-<a href="../story/collect-approvals-into-agreement-file.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow font-bold text-gray-800 w-[180px] mb-6 hover:bg-yellow-200 transition">
-  <span>PR上の承認を集めて、合意ファイルに残す</span><span>&rarr;</span>
+<a href="../story/require-decision-makers-approval-to-accept.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow font-bold text-gray-800 w-[180px] mb-6 hover:bg-yellow-200 transition">
+  <span>合意済みにする変更に、合意が要る人の承認を求める</span><span>&rarr;</span>
 </a>
 
 <div class="-mt-4 mb-6">
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 </div>
 
 <div class="overflow-x-auto pt-3 px-3 pb-4">
@@ -128,9 +128,9 @@
       
       
       <div class="rule-body min-w-0">
-      <span class="rule-name sticky-text">PRで集めるのは、差分にdecision_makersの書かれたルールへの変更があるときだけ</span>
+      <span class="rule-name sticky-text">decision_makersのあるルールを合意済みにする変更には、その全員の承認が要る</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-01" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-01" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -152,9 +152,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">decision_makersの書かれたルールが新しく足された</span>
+      <span class="sticky-text">提案中のルールを合意済みに変えるPRは、合意が要る人の全員が承認するまでチェックが通らない</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-01/example/EX-01" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-01/example/EX-01" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -170,9 +170,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">そのルールの名前か具体例が変わった</span>
+      <span class="sticky-text">最初から合意済みで載せるルールも、同じ扱いになる</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-01/example/EX-02" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-01/example/EX-02" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -188,9 +188,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">既存のルールにdecision_makersが足された、または書き換えられた</span>
+      <span class="sticky-text">提案中のまま載せる変更は、承認を待たずに通る</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-01/example/EX-03" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-01/example/EX-03" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -206,9 +206,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">合意ファイルの、そのルールの記録だけが変わったPRも対象になる（機械が開く合意用のPR）</span>
+      <span class="sticky-text">decision_makersのないルールには、何も求めない</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-01/example/EX-04" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-01/example/EX-04" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -224,9 +224,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-05</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">どれにも当たらないPRでは、何もしない</span>
+      <span class="sticky-text">対象のないPRには「対象なし」として通る結果を付ける</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-01/example/EX-05" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-01/example/EX-05" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -252,16 +252,16 @@
       
       
       <div class="rule-body min-w-0">
-      <span class="rule-name sticky-text">合意が要る人は、作者としても承認者としても、合意した人に数えられる</span>
+      <span class="rule-name sticky-text">合意が要る人は、作者としても承認者としても満たせる</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-02" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-02" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
       
       </div>
       
-      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>6</span>
+      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>5</span>
       
     </div>
     
@@ -276,9 +276,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">PRの作者がdecision_makersにいれば、記録が足された時点でaccepted_byに入る</span>
+      <span class="sticky-text">PRの作者がdecision_makersにいれば、書いたことをもって満たされる</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-02/example/EX-01" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-02/example/EX-01" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -294,9 +294,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">decision_makersにいる人が承認すると、accepted_byに入る</span>
+      <span class="sticky-text">作者でない人は、承認で満たす</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-02/example/EX-02" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-02/example/EX-02" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -312,9 +312,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">チームを書いた場合は、そのメンバーの誰か1人の承認で入る</span>
+      <span class="sticky-text">チームを書いた場合は、そのメンバーの誰か1人の承認で満たされる</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-02/example/EX-03" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-02/example/EX-03" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -330,9 +330,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">AIやbotのアカウントが開いたPRでは人は作者にならず、本人の承認で入る</span>
+      <span class="sticky-text">AIやbotのアカウントが開いたPRでは人は作者にならず、本人の承認で満たす</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-02/example/EX-04" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-02/example/EX-04" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -350,25 +350,7 @@
       <div class="example-body min-w-0">
       <span class="sticky-text">forgeが必須の承認に数えない人の承認も数える</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-02/example/EX-05" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
-
-      
-      
-      </div>
-    </div>
-    
-    
-    
-    <div id="rule-R-02-example-EX-06" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
-      
-
-<a href="#rule-R-02-example-EX-06" data-copy-link title="リンクをコピー"
-   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-06</a>
-
-      <div class="example-body min-w-0">
-      <span class="sticky-text">decision_makersにいない人の承認は、合意ファイルに入らない</span>
-      
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-02/example/EX-06" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-02/example/EX-05" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -394,16 +376,16 @@
       
       
       <div class="rule-body min-w-0">
-      <span class="rule-name sticky-text">合意ファイルは機械だけが書き、PRで集める仕組みが触るのはaccepted_byだけ</span>
+      <span class="rule-name sticky-text">チェックは、PRのいまの状態だけを見る</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-03" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-03" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
       
       </div>
       
-      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
+      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
       
     </div>
     
@@ -418,9 +400,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">記録は、ルールのlivt URIと、合意した人・その立場（作者か承認者か）・どのPRでかを持つ</span>
+      <span class="sticky-text">何度走らせても、同じ状態なら同じ結果になる</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-03/example/EX-01" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-03/example/EX-01" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -436,9 +418,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">機械は、合意ファイルのコミットをそのPRのブランチに続けて積む</span>
+      <span class="sticky-text">承認が付いた順にも、コミットが積まれた順にも左右されない</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-03/example/EX-02" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-03/example/EX-02" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -454,27 +436,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">pending_fromには触れない</span>
+      <span class="sticky-text">確かめるのは合意済みになる入口だけで、mainにすでにある合意済みのルールをあとから確かめ直さない</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-03/example/EX-03" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
-
-      
-      
-      </div>
-    </div>
-    
-    
-    
-    <div id="rule-R-03-example-EX-04" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
-      
-
-<a href="#rule-R-03-example-EX-04" data-copy-link title="リンクをコピー"
-   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
-
-      <div class="example-body min-w-0">
-      <span class="sticky-text">実例マッピングのYAMLは書き換えない</span>
-      
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-03/example/EX-04" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-03/example/EX-03" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -500,9 +464,9 @@
       
       
       <div class="rule-body min-w-0">
-      <span class="rule-name sticky-text">チェックは、合意ファイルが承認の事実と合っていることを確かめる</span>
+      <span class="rule-name sticky-text">承認の揃った提案は、同じコマンドで合意済みに書き換えられる</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-04" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-04" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -524,9 +488,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">accepted_byにいる人が作者でも承認者でもなければ、通らない（人が手で書き足しても通らない）</span>
+      <span class="sticky-text">書き換えを有効にしたときだけ、提案中のままで全員の承認が揃ったルールを合意済みにする</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-04/example/EX-01" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-04/example/EX-01" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -542,9 +506,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">対象でないPRには「対象なし」として通る結果を付ける</span>
+      <span class="sticky-text">書き換えたあとの状態は、同じコマンドのチェックを通る</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-04/example/EX-02" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-04/example/EX-02" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -560,9 +524,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">「揃うまでマージを止める」を有効にしたリポジトリでは、decision_makersの全員がaccepted_byに入るまで通らない</span>
+      <span class="sticky-text">書き換えるのは提案のPRのブランチの上だけで、mainに入ったあとは人が合意済みにするPRを出す</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-04/example/EX-03" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-04/example/EX-03" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -578,9 +542,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">判定にAIを使わない（PRの文面に承認済みと書かれていても、承認の記録だけを見る）</span>
+      <span class="sticky-text">書き換えを使わなくても、人が自分で合意済みに書き換えれば、同じチェックを通る</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-04/example/EX-04" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-04/example/EX-04" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -606,9 +570,9 @@
       
       
       <div class="rule-body min-w-0">
-      <span class="rule-name sticky-text">forgeに触れるのはactionだけで、判定と書き込みはlivtのCLIがgitとファイルだけで行う</span>
+      <span class="rule-name sticky-text">forgeに触れるのはactionだけで、判定と書き換えはlivtのCLIがgitとファイルだけで行う</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-05" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-05" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -630,9 +594,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">actionはforgeから承認の事実（誰が、どのPRで）を読み、CLIに渡す</span>
+      <span class="sticky-text">actionはforgeから承認の事実（誰が承認したか、PRの作者は誰か）を読み、CLIに渡す</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-05/example/EX-01" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-05/example/EX-01" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -648,9 +612,9 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">CLIは、どのルールが対象かと、誰をaccepted_byに足すかを決めて合意ファイルを書く</span>
+      <span class="sticky-text">判定にAIを使わない（PRの文面に承認済みと書かれていても、承認の記録だけを見る）</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-05/example/EX-02" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-05/example/EX-02" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -668,7 +632,7 @@
       <div class="example-body min-w-0">
       <span class="sticky-text">別のforgeは、同じ形の事実を出す部分だけを書けば、同じCLIを使える</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/rule/R-05/example/EX-03" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/rule/R-05/example/EX-03" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
       
       
@@ -699,9 +663,9 @@
 <a href="#question-Q-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-red-400/70 hover:text-red-600 hover:underline cursor-pointer select-none">#Q-01</a>
 
-      <span class="sticky-text">合意ファイルの置き場所と単位をどうするか（実例マッピングごとに1ファイルにする案がある）</span>
+      <span class="sticky-text">提案を却下する変更にも、合意が要る人の承認を求めるか</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/question/Q-01" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/question/Q-01" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
     </div>
     
@@ -713,9 +677,9 @@
 <a href="#question-Q-02" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-red-400/70 hover:text-red-600 hover:underline cursor-pointer select-none">#Q-02</a>
 
-      <span class="sticky-text">合意のあとで文言が変わったとき、古い合意をどう扱うか（当面は、意味が変わったルールが新しいIDを取ることに任せる。文言の指紋を記録に持てば、機械で見つけられる）</span>
+      <span class="sticky-text">合意のあとでルールの文言が変わったとき、合意を取り直すか（いまは、意味が変わったルールが新しいIDを取ることに任せている）</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/question/Q-02" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/question/Q-02" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
     </div>
     
@@ -727,9 +691,9 @@
 <a href="#question-Q-03" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-red-400/70 hover:text-red-600 hover:underline cursor-pointer select-none">#Q-03</a>
 
-      <span class="sticky-text">機械が人のブランチに積めないときの扱い（作者がforce pushして機械のコミットが消えた場合、forkからのPRの場合）</span>
+      <span class="sticky-text">機械が人のブランチに積めないときの扱い（作者がforce pushして書き換えのコミットが消えた場合、forkからのPRの場合）</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/question/Q-03" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/question/Q-03" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
     </div>
     
@@ -741,9 +705,9 @@
 <a href="#question-Q-04" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-red-400/70 hover:text-red-600 hover:underline cursor-pointer select-none">#Q-04</a>
 
-      <span class="sticky-text">チームのメンバーを照合する権限を、actionにどう渡すか</span>
+      <span class="sticky-text">機械のコミットがforgeの必須の承認を外すリポジトリで、どう通すか</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/question/Q-04" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/question/Q-04" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
     </div>
     
@@ -755,9 +719,9 @@
 <a href="#question-Q-05" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-red-400/70 hover:text-red-600 hover:underline cursor-pointer select-none">#Q-05</a>
 
-      <span class="sticky-text">機械のコミットがforgeの必須の承認を外すリポジトリで、どう通すか</span>
+      <span class="sticky-text">チームのメンバーを照合する権限を、actionにどう渡すか</span>
       
-<a href="../diff.html#mapping/collect-approvals-into-agreement-file/question/Q-05" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
+<a href="../diff.html#mapping/require-decision-makers-approval-to-accept/question/Q-05" class="shrink-0 inline-flex items-center text-[10px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 border transition bg-green-50 text-green-700 border-green-200 hover:bg-green-100">追加</a>
 
     </div>
     
