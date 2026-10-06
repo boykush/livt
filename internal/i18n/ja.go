@@ -3,14 +3,14 @@ package i18n
 // ja mirrors en key for key, in the words the Japanese practice uses: 具体例
 // and 疑問点 for the stickies. A term carries the ユーザー prefix only where
 // the bare word is ambiguous in the language — タスク is any task, while
-// アクティビティ and ストーリー are unmistakable beside ストーリーマップ.
+// アクティビティ and ストーリー are unmistakable beside ユーザーストーリーマップ.
 // These are this repository's ubiquitous language too; the two are one
 // vocabulary and must not drift apart.
 var ja = Catalog{
 	"lang.code": "ja",
 
 	"nav.example-mappings": "実例マッピング",
-	"nav.story-maps":       "ストーリーマップ",
+	"nav.story-maps":       "ユーザーストーリーマップ",
 	"nav.stories":          "ストーリー",
 	"nav.ubiquitous":       "ユビキタス言語",
 	"nav.tasks":            "タスク",
@@ -49,7 +49,7 @@ var ja = Catalog{
 	"badge.copied":    "✓ コピーしました",
 
 	"empty.example-mappings": "実例マッピングはまだありません。",
-	"empty.story-maps":       "ストーリーマップはまだありません。",
+	"empty.story-maps":       "ユーザーストーリーマップはまだありません。",
 	"empty.stories":          "ストーリーが見つかりません。",
 	"empty.terms":            "用語が見つかりません。",
 
@@ -102,7 +102,7 @@ var ja = Catalog{
 	"mapping.view-list":        "リスト",
 	"nav.opportunities":        "オポチュニティ",
 
-	"label.story-map":            "ストーリーマップ",
+	"label.story-map":            "ユーザーストーリーマップ",
 	"label.opportunity-canvas":   "オポチュニティキャンバス",
 	"label.opportunity-progress": "ダッシュボード",
 

@@ -24,14 +24,14 @@ activities:
     name: 全体ストーリーをブラッシュアップする
     steps:
       - key: confirm-story-map
-        name: ストーリーマップを確認する
+        name: ユーザーストーリーマップを確認する
         stories:
-          - name: AIエージェントでストーリーマップYAMLを起こす
+          - name: AIエージェントでユーザーストーリーマップYAMLを起こす
             key: transcribe-story-map-with-ai-agent
-          - name: ブラウザでストーリーマップをプレビューする
+          - name: ブラウザでユーザーストーリーマップをプレビューする
             key: preview-story-map-in-browser
       - key: refine-story-map-structure
-        name: ストーリーマップの構造をブラッシュアップする
+        name: ユーザーストーリーマップの構造をブラッシュアップする
         stories:
           - name: USMエキスパートに相談して構造を整えるコミットを重ねる
             key: refine-story-map-with-usm-expert

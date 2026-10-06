@@ -128,7 +128,7 @@ func TestBuildTranslatesTheChromeAndLeavesTheProseAlone(t *testing.T) {
 
 	for page, wants := range map[string][]string{
 		"index.html":                            {"実例マッピング"},
-		"story-maps.html":                       {"ストーリーマップ"},
+		"story-maps.html":                       {"ユーザーストーリーマップ"},
 		"stories.html":                          {"オポチュニティ", "すべて"},
 		"ubiquitous.html":                       {"用語", "キー", "定義", "文脈"},
 		"tasks.html":                            {"未解決の疑問", "会話で閉じる", "提案中のルール", "合意で閉じる", "未自動化のルール", "テストで閉じる"},

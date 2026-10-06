@@ -64,10 +64,10 @@ rules:
       - id: EX-03
         name: ステートレス・読み取り専用なので1プロセスで複数クライアントを捌く
   - id: R-09
-    name: 実装リポジトリはストーリーマップをリソースとして取得できる
+    name: 実装リポジトリはユーザーストーリーマップをリソースとして取得できる
     examples:
       - id: EX-01
-        name: list_story_maps で全ストーリーマップの名前とリソースURI（livt://story-map/{map_name}）を取得する
+        name: list_story_maps で全ユーザーストーリーマップの名前とリソースURI（livt://story-map/{map_name}）を取得する
         retired: true
         superseded_by:
           - livt://mapping/automate-from-master-in-impl-repos/rule/R-09/example/EX-05
@@ -87,7 +87,7 @@ rules:
         superseded_by:
           - livt://mapping/automate-from-master-in-impl-repos/rule/R-09/example/EX-08
       - id: EX-05
-        name: list_story_maps で全ストーリーマップのキー・名前とリソースURI（livt://story-map/{opportunity_key}）を取得する
+        name: list_story_maps で全ユーザーストーリーマップのキー・名前とリソースURI（livt://story-map/{opportunity_key}）を取得する
       - id: EX-06
         name: resources/read livt://story-map/{opportunity_key} でアクティビティ・ユーザータスク・ストーリーカード・リリースを取得する
       - id: EX-07
@@ -100,7 +100,7 @@ rules:
       - id: EX-01
         name: resources/read livt://story/{story_key} でストーリーの名前・本文・frontmatterメタ（例 issue）を取得する
       - id: EX-02
-        name: list_stories の各エントリとストーリーマップ内のストーリーカードは、ストーリーのリソースURI（livt://story/{story_key}）を示す
+        name: list_stories の各エントリとユーザーストーリーマップ内のストーリーカードは、ストーリーのリソースURI（livt://story/{story_key}）を示す
       - id: EX-03
         name: 実例マッピングがあるストーリーは、そのリソースURI（livt://mapping/{story_key}）も示す
       - id: EX-04
@@ -111,7 +111,7 @@ rules:
       - id: EX-01
         name: resources/read livt://ubiquitous/{term_key} で用語の名前と定義本文を取得する
       - id: EX-02
-        name: 実例マッピング・ストーリーマップのレスポンスは ubiquitous の各用語キーに解決済みの名前とリソースURIを添える（既存の ubiquitous フィールドはそのまま維持する）
+        name: 実例マッピング・ユーザーストーリーマップのレスポンスは ubiquitous の各用語キーに解決済みの名前とリソースURIを添える（既存の ubiquitous フィールドはそのまま維持する）
       - id: EX-03
         name: 用語ファイルがないキーはURIなしでキーのみを示す
       - id: EX-04
@@ -130,7 +130,7 @@ rules:
     name: 実装リポジトリはストーリーの一覧をオポチュニティで絞り込める
     examples:
       - id: EX-01
-        name: list_stories の各エントリは所属オポチュニティ（マップ名とストーリーマップのリソースURI）を示し、無所属なら空になる
+        name: list_stories の各エントリは所属オポチュニティ（マップ名とユーザーストーリーマップのリソースURI）を示し、無所属なら空になる
         retired: true
         superseded_by:
           - livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-05
@@ -150,9 +150,9 @@ rules:
       - id: EX-05
         name: list_stories の各エントリは所属オポチュニティをキー・名前・リソースURIで示し、無所属なら空になる
       - id: EX-06
-        name: オポチュニティのファイルがないストーリーマップでは、キーはそのままに、名前とURIをマップのものが兼ねる
+        name: オポチュニティのファイルがないユーザーストーリーマップでは、キーはそのままに、名前とURIをマップのものが兼ねる
       - id: EX-07
-        name: list_stories に opportunity パラメータ（オポチュニティのキー）を指定すると、そのオポチュニティのストーリーマップに載るストーリーだけが返る
+        name: list_stories に opportunity パラメータ（オポチュニティのキー）を指定すると、そのオポチュニティのユーザーストーリーマップに載るストーリーだけが返る
       - id: EX-08
         name: 存在しないオポチュニティのキーの指定は空の一覧を返す
     issues:
