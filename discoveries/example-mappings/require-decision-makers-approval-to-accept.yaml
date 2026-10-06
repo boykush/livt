@@ -1,25 +1,27 @@
 rules:
   - id: R-01
-    name: decision_makersのあるルールを合意済みにする変更には、その全員の承認が要る
+    name: decision_makersのあるルールをacceptedにする変更には、その全員の承認が要る
     examples:
       - id: EX-01
-        name: 合意済みと書かれたルールで、合意が要る人が1人でも欠けていれば、チェックは通らない
+        name: acceptedのルールで、decision_makersの誰か1人でも欠けていれば、チェックは通らない
       - id: EX-02
         name: 全員が揃っていれば、チェックは通る
       - id: EX-03
-        name: 提案中のルールを合意済みに変えるPRでも、最初から合意済みで載せるPRでも、同じ扱いになる
+        name: proposedをacceptedに変えるPRでも、最初からacceptedで載せるPRでも、同じ扱いになる
       - id: EX-04
-        name: 提案中のまま載せる変更は、承認を待たずに通る
+        name: statusのないルールもacceptedなので、decision_makersがあれば同じ扱いになる
       - id: EX-05
-        name: decision_makersのないルールには、何も求めない
+        name: proposedのまま載せる変更は、承認を待たずに通る
       - id: EX-06
-        name: 対象のないPRには「対象なし」として通る結果を付ける
+        name: decision_makersのないルールには、何も求めない
       - id: EX-07
-        name: PRの変更、承認、承認の取り消しのどれが起きても、確かめ直す
+        name: 対象のないPRには「対象なし」として通る結果を付ける
       - id: EX-08
-        name: 確かめるのは合意済みにする変更を含むPRだけで、mainにすでにある合意済みのルールは確かめ直さない
+        name: PRの変更、承認、承認の取り消しのどれが起きても、確かめ直す
+      - id: EX-09
+        name: 確かめるのはacceptedにする変更を含むPRだけで、mainにすでにあるacceptedのルールは確かめ直さない
   - id: R-02
-    name: 合意が要る人は、作者としても承認者としても満たせる
+    name: decision_makersの人は、作者としても承認者としても満たせる
     examples:
       - id: EX-01
         name: PRの作者がdecision_makersにいれば、書いたことをもって満たされる
@@ -35,28 +37,28 @@ rules:
     name: 承認は合意ファイルに残り、PRを跨いで引き継がれる
     examples:
       - id: EX-01
-        name: 合意が要る人が承認すると、ルールが提案中のままでも、機械がそのPRのブランチの合意ファイルに書く
+        name: decision_makersの人が承認すると、ルールがproposedのままでも、機械がそのPRのブランチの合意ファイルに書く
       - id: EX-02
         name: 合意ファイルに書かれている人は、あとのPRでも満たされている
       - id: EX-03
-        name: 提案のPRで承認した人は、mainに入ったあとで人が出す合意済みにするPRに、もう一度承認しなくてよい
+        name: proposedのPRで承認した人は、mainに入ったあとで人が出すacceptedにするPRに、もう一度承認しなくてよい
       - id: EX-04
         name: ルールの名前か具体例が変わるPRでは、そのルールの記録を消す（古い文言への承認を数えない）
       - id: EX-05
         name: そのPRで足された記録は、そのPRの作者か承認と合っていなければ通らない（人が手で書き足しても通らない）
       - id: EX-06
-        name: 記録は、ルールのlivt URIと、合意した人、どのPRでかを持つ
+        name: 記録は、ルールのlivt URIと、承認した人、どのPRでかを持つ
   - id: R-04
-    name: 承認の揃った提案は、同じコマンドで合意済みに書き換えられる
+    name: 承認の揃ったproposedのルールは、同じコマンドでacceptedに書き換えられる
     examples:
       - id: EX-01
-        name: 書き換えを有効にしたときだけ、提案中のままで全員が揃ったルールを合意済みにする
+        name: 書き換えを有効にしたときだけ、proposedのままで全員が揃ったルールをacceptedにする
       - id: EX-02
         name: 書き換えたあとの状態は、同じコマンドのチェックを通る
       - id: EX-03
-        name: 書き換えるのは提案のPRのブランチの上だけで、mainに入ったあとは人が合意済みにするPRを出す
+        name: 書き換えるのはproposedを載せたPRのブランチの上だけで、mainに入ったあとは人がacceptedにするPRを出す
       - id: EX-04
-        name: 書き換えを使わなくても、人が自分で合意済みに書き換えれば、同じチェックを通る
+        name: 書き換えを使わなくても、人が自分でacceptedに書き換えれば、同じチェックを通る
   - id: R-05
     name: forgeに触れるのはactionだけで、判定と書き込みはlivtのCLIがgitとファイルだけで行う
     examples:
@@ -69,7 +71,7 @@ rules:
 
 questions:
   - id: Q-01
-    text: 提案を却下する変更にも、合意が要る人の承認を求めるか
+    text: rejectedにする変更にも、decision_makersの承認を求めるか
   - id: Q-02
     text: 合意ファイルの置き場所と単位をどうするか（実例マッピングごとに1ファイルにする案がある）
   - id: Q-03
