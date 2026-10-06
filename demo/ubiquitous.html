@@ -23,7 +23,7 @@
       <span class="w-2.5 h-2.5 rounded-sm bg-orange-400"></span>オポチュニティ<span class="ml-auto text-xs text-gray-400">3</span>
     </a>
     <a href="story-maps.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
-      <span class="w-2.5 h-2.5 rounded-sm bg-purple-400"></span>ストーリーマップ<span class="ml-auto text-xs text-gray-400">3</span>
+      <span class="w-2.5 h-2.5 rounded-sm bg-purple-400"></span>ユーザーストーリーマップ<span class="ml-auto text-xs text-gray-400">3</span>
     </a>
     <a href="stories.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
       <span class="w-2.5 h-2.5 rounded-sm bg-yellow-400"></span>ストーリー<span class="ml-auto text-xs text-gray-400">29</span>
@@ -33,7 +33,7 @@
     </a>
     
     <a href="tasks.html" class="flex items-center gap-2.5 px-3 py-2 mt-3 rounded-lg text-gray-600 hover:bg-gray-50">
-      <span class="w-2.5 h-2.5 rounded-sm border border-gray-300"></span>タスク<span class="ml-auto text-xs text-gray-400">104</span>
+      <span class="w-2.5 h-2.5 rounded-sm border border-gray-300"></span>タスク<span class="ml-auto text-xs text-gray-400">105</span>
     </a>
   </nav>
   
@@ -42,9 +42,9 @@
       <div class="flex items-baseline gap-2">
         <span class="text-xs font-medium text-gray-600">livt</span>
         
-        <span class="ml-auto min-w-0 text-[11px] font-mono text-gray-400 truncate" title="v0.0.0-20261004142600-99ab2338fa4d">v0.0.0-20261004142600-99ab2338fa4d</span>
+        <span class="ml-auto min-w-0 text-[11px] font-mono text-gray-400 truncate" title="v0.0.0-20261006133930-e80809366676">v0.0.0-20261006133930-e80809366676</span>
       </div>
-      <div class="text-[11px] text-gray-400 font-mono mt-0.5">99ab233 · 2026-10-04 14:26</div>
+      <div class="text-[11px] text-gray-400 font-mono mt-0.5">e808093 · 2026-10-06 13:39</div>
     </a>
   </div>
 </aside>
@@ -182,7 +182,7 @@ livtリポジトリと同一のリポジトリでも成立するが、それは�
             
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">ディスカバリーで合意し記録した成果物（ストーリー・ストーリーマップ・実例マッピング・ユビキタス言語）を収める置き場で、全ての機能開発の起点。
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">ディスカバリーで合意し記録した成果物（ストーリー・ユーザーストーリーマップ・実例マッピング・ユビキタス言語）を収める置き場で、全ての機能開発の起点。
 サイト・CLI・MCPの出力はすべてここからの導出物。livt URIはこの中の一点を指し、ルート（`--root` / `LIVT_ROOT`）は各環境における所在を指す。</td>
       </tr>
     
@@ -196,7 +196,7 @@ livtリポジトリと同一のリポジトリでも成立するが、それは�
             
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">livtリポジトリの一点（オポチュニティ・オポチュニティキャンバス・ストーリーマップ・ストーリー・実例マッピング・ルール・具体例・疑問点・用語）を指す安定した名前。
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">livtリポジトリの一点（オポチュニティ・オポチュニティキャンバス・ユーザーストーリーマップ・ストーリー・実例マッピング・ルール・具体例・疑問点・用語）を指す安定した名前。
 `livt://` で始まり、MCP・CLI・SSGが同じ形を使う。デプロイ先のURLには依存しない。</td>
       </tr>
     
@@ -225,7 +225,7 @@ livtリポジトリと同一のリポジトリでも成立するが、それは�
           </div>
         </td>
         <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">プロダクトで取り組みうる機会。あるユーザーの課題と、それを解決したときに生まれる事業上の便益を、ひとつの検討単位として捉えたもの。
-`opportunities/{key}.md` に1文で書き、同じkeyのストーリーマップがそのオポチュニティに引いたジャーニーになる。各一覧の絞り込み軸になる。</td>
+`opportunities/{key}.md` に1文で書き、同じkeyのユーザーストーリーマップがそのオポチュニティに引いたジャーニーになる。各一覧の絞り込み軸になる。</td>
       </tr>
     
       <tr id="record" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
@@ -252,13 +252,13 @@ Patton の「話して記録」にあたり、ここで残した素のマッピ�
             
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">ストーリーマップを横方向に区切り、どのストーリーをどの順序でリリースするかを示すまとまり。
+        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">ユーザーストーリーマップを横方向に区切り、どのストーリーをどの順序でリリースするかを示すまとまり。
 リリース未指定のストーリーは未スコープ行にまとまる。</td>
       </tr>
     
       <tr id="story-map" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
         <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
-          <div class="flex flex-wrap items-baseline gap-2">ストーリーマップ</div>
+          <div class="flex flex-wrap items-baseline gap-2">ユーザーストーリーマップ</div>
         </td>
         <td class="px-5 py-3">
           <div class="flex flex-col items-start gap-1">
@@ -282,7 +282,7 @@ livt ではオポチュニティ1つにつき1枚で、そのオポチュニテ�
           </div>
         </td>
         <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">ユーザーにとって価値のある振る舞いの単位。
-3つのC のカードとして `stories/{story-key}.md` に書かれ、ストーリーマップや実例マッピングから参照される。</td>
+3つのC のカードとして `stories/{story-key}.md` に書かれ、ユーザーストーリーマップや実例マッピングから参照される。</td>
       </tr>
     
       <tr id="ubiquitous-language" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
