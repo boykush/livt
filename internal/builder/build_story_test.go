@@ -21,7 +21,7 @@ func TestRenderStoryLinksEachOpportunityByName(t *testing.T) {
 	}
 
 	var buf bytes.Buffer
-	if err := renderStory(&buf, i18n.En, story, "", opportunities, nil); err != nil {
+	if err := renderStory(&buf, i18n.En, story, "", opportunities, nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()
@@ -51,7 +51,7 @@ func TestRenderStoryOpportunityLinkSaysItsKind(t *testing.T) {
 
 	for _, opportunities := range [][]opportunityRef{{demo}, {demo, other}} {
 		var buf bytes.Buffer
-		if err := renderStory(&buf, i18n.En, story, "", opportunities, nil); err != nil {
+		if err := renderStory(&buf, i18n.En, story, "", opportunities, nil, nil); err != nil {
 			t.Fatal(err)
 		}
 		html := buf.String()
@@ -78,7 +78,7 @@ func TestRenderStoryWithoutOpportunitiesShowsNoMapLink(t *testing.T) {
 	story := &domain.Story{Key: domain.StoryKey{Value: "orphan"}, Name: "Orphan"}
 
 	var buf bytes.Buffer
-	if err := renderStory(&buf, i18n.En, story, "", nil, nil); err != nil {
+	if err := renderStory(&buf, i18n.En, story, "", nil, nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	if strings.Contains(buf.String(), "../story-map/") {
@@ -92,7 +92,7 @@ func TestRenderStoryWithoutNameShowsTheKey(t *testing.T) {
 	story := &domain.Story{Key: domain.StoryKey{Value: "unnamed-story"}}
 
 	var buf bytes.Buffer
-	if err := renderStory(&buf, i18n.En, story, "", nil, nil); err != nil {
+	if err := renderStory(&buf, i18n.En, story, "", nil, nil, nil); err != nil {
 		t.Fatal(err)
 	}
 	html := buf.String()
@@ -102,5 +102,42 @@ func TestRenderStoryWithoutNameShowsTheKey(t *testing.T) {
 	}
 	if !strings.Contains(html, ">unnamed-story</h1>") {
 		t.Error("expected the heading to fall back to the story key")
+	}
+}
+
+// livt:automates livt://mapping/preview-story-map-in-browser/rule/R-06
+// The story page leads back to its card in the story map's purple. The kind
+// alone does for a story on one map; on several, each link names its map, and a
+// story on none has no link at all.
+func TestRenderStoryLinksItsCardOnEachStoryMap(t *testing.T) {
+	story := &domain.Story{Key: domain.StoryKey{Value: "s"}, Name: "S"}
+	label := i18n.Of(i18n.En).Msg("label.story-map")
+	demo := storyMapRef{Name: "デモ", Path: "../story-map/demo.html#story-s"}
+	other := storyMapRef{Name: "別件", Path: "../story-map/other.html#story-s"}
+
+	for _, cards := range [][]storyMapRef{nil, {demo}, {demo, other}} {
+		var buf bytes.Buffer
+		if err := renderStory(&buf, i18n.En, story, "", nil, cards, nil); err != nil {
+			t.Fatal(err)
+		}
+		html := buf.String()
+		named := len(cards) > 1
+
+		if len(cards) == 0 && strings.Contains(html, "../story-map/") {
+			t.Error("expected no story map link for a story on no map")
+		}
+		for _, c := range cards {
+			at := strings.Index(html, `href="`+c.Path+`"`)
+			if at < 0 {
+				t.Fatalf("expected a Related link to %s", c.Path)
+			}
+			if tag := html[at : at+strings.Index(html[at:], ">")]; !strings.Contains(tag, "purple") {
+				t.Errorf("the link to %s wears %q, want the story map's purple", c.Path, tag)
+			}
+			text, _ := linkText(html, c.Path)
+			if !strings.Contains(text, label) || strings.Contains(text, c.Name) != named {
+				t.Errorf("with %d maps the link to %s reads %q, want %q, named: %v", len(cards), c.Path, text, label, named)
+			}
+		}
 	}
 }
