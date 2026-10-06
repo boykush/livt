@@ -37,3 +37,12 @@ activities:
         name: その場で定式化する
       - key: check-it-in-the-room
         name: その場で開いて確かめる
+  - key: close-proposals-by-agreement
+    name: 提案を合意で閉じる
+    steps:
+      - key: check-with-a-prototype
+        name: プロトタイプで確かめてもらう
+      - key: record-approval-as-agreement
+        name: 承認を合意として記録する
+      - key: close-proposals-without-agreement
+        name: 合意に至らない提案を閉じる
