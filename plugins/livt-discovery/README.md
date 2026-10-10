@@ -15,7 +15,8 @@ Live facilitation happens with people on a board (Miro, sticky notes). These ski
 - **Record** — *talk, then record* (Patton). A session's outcome is written out as text and committed, and the record never changes what the room agreed. On a story map that is two commits, the board verbatim and a structural edit consulting `usm-expert`; on an example mapping the edit has a station of its own.
 - **Formulate** — BDD's Formulation, at the story level. The recorded mapping is made into something every reader reads the same behaviour out of — rules that assert, examples named for what they show — as a structural edit over the committed baseline, whose diff is what the review reads. Mainstream BDD formulates by writing Gherkin; livt derives Gherkin from the mapping instead, so the act is the rewrite of the mapping itself. It runs again whenever the wording needs it, with no new board.
 - **Card** — the Card of Ron Jeffries' three Cs. A story candidate picked from the map gets `stories/{story-key}.md` and a stable key, so its own conversation — an Example Mapping — can be held and recorded against it. A story taken straight to its examples, such as a bug fix, can go without one: its mapping carries the name instead.
-- **Change** — discovery's **asynchronous lane**. A rule proposed, changed, or retired outside a session lands in the mapping as its own fine-grained commit; a proposal carries `status: proposed`, the review stands in for the conversation, and agreement is a one-line diff.
+- **Change** — a rule the team agreed, then changed. An added, reworded, or retired rule lands in the mapping as its own fine-grained commit.
+- **Propose** — a rule found without the people who have to agree to it, as when one person works a story through with an AI. It goes on the record with `status: proposed` and the people whose agreement it needs, and is accepted or turned down later, each step its own commit. A team that maps its examples together in one room agrees before it records, and has no use for this station.
 
 No skill here reads the implementation. The first read of the code is where the [delivery ring](../livt-delivery/README.md) begins.
 
@@ -89,7 +90,11 @@ What stays yours is the trigger, the ruleset, and the token. An action can ship 
 
 ### Change
 
-- **`/change-rule`** — change one business rule in an existing example mapping — propose, accept, reject, change, or retire it with its examples — as its own fine-grained commit. The canonical statements of the ID contract and the commit contract live here.
+- **`/change-rule`** — change one agreed business rule in an existing example mapping — add, change, or retire it with its examples — as its own fine-grained commit. The canonical statements of the ID contract and the commit contract live here.
+
+### Propose
+
+- **`/propose-rule`** — carry one rule from proposal to agreement — put it forward with the people whose agreement it needs, then accept or reject it — each step as its own fine-grained commit. It writes the request and never the agreement: where `livt agreements check` runs, that is what holds the acceptance to the people named.
 
 ## Expert skills
 

@@ -1,0 +1,56 @@
+rules:
+  - id: R-01
+    name: 提案から合意までは、合意済みのルールを変えるスキルとは別のスキル（propose-rule）が運ぶ
+    examples:
+      - id: EX-01
+        name: 提案中のルールを載せる、合意済みにする、却下するのは、propose-ruleの仕事になる
+      - id: EX-02
+        name: change-ruleは合意済みのルールの追加・変更・退役だけを扱い、書くルールにstatusを付けない
+      - id: EX-03
+        name: change-ruleがproposedのルールの変更を頼まれたら、propose-ruleに回す
+      - id: EX-04
+        name: 同期で実例マッピングをするチームは、propose-ruleを使わずに済む
+      - id: EX-05
+        name: 合意されたルールは、そこからchange-ruleが扱う
+  - id: R-02
+    name: 提案の一生の1歩が、1つのコミットになる
+    examples:
+      - id: EX-01
+        name: 提案するコミットは、ルールと具体例を proposed で足す
+      - id: EX-02
+        name: 合意済みにするコミットは、statusの1行だけを変える
+      - id: EX-03
+        name: 却下するコミットは、statusをrejectedにし、具体例を退役させる
+      - id: EX-04
+        name: 2つのルールを提案するなら、コミットは2つになる
+      - id: EX-05
+        name: 合意の中で意味が変わったルールは、却下して、新しいIDで提案し直す
+  - id: R-03
+    name: 誰の合意が要るかは、スキルが推測せずに尋ねて、decision_makersに書く
+    examples:
+      - id: EX-01
+        name: 提案を頼まれて、誰の合意が要るかを聞いていなければ、尋ねる
+      - id: EX-02
+        name: 個人のメンションで書き、チームは書かない
+      - id: EX-03
+        name: ルールを書いた本人が決める1人なら、本人も書く
+      - id: EX-04
+        name: 知らせるだけの人は書かない
+      - id: EX-05
+        name: 誰も挙がらなければ、decision_makersなしの提案として載せる
+  - id: R-04
+    name: スキルが書くのは合意の頼みまでで、合意そのものは書かない
+    examples:
+      - id: EX-01
+        name: agreements/ には書かない
+      - id: EX-02
+        name: 会話に「合意した」とあっても、それを承認として扱わない
+      - id: EX-03
+        name: チェックのないリポジトリでは、合意が要る人が合意したとユーザーが言ってから、acceptedにする
+      - id: EX-04
+        name: チェックがacceptedに書き換えるリポジトリでは、proposedのまま承認を待つ
+
+ubiquitous:
+  - example-mapping
+  - discovery
+  - livt-repository

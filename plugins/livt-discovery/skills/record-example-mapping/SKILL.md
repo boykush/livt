@@ -1,6 +1,6 @@
 ---
 name: record-example-mapping
-description: Record an Example Mapping session into discoveries/example-mappings/{story-key}.yaml — the board's rules, examples, and questions committed verbatim as the baseline every later diff is read against. Use after a session on a story's board, whether or not the story has a card, or when that board was reworked; it never changes what the room agreed, and never tidies what it wrote — sharpening the mapping is formulate-example-mapping's commit, laid over yours. A rule proposed, changed, or added outside a session routes to change-rule; this skill never reads the implementation.
+description: Record an Example Mapping session into discoveries/example-mappings/{story-key}.yaml — the board's rules, examples, and questions committed verbatim as the baseline every later diff is read against. Use after a session on a story's board, whether or not the story has a card, or when that board was reworked; it never changes what the room agreed, and never tidies what it wrote — sharpening the mapping is formulate-example-mapping's commit, laid over yours. A rule changed or added outside a session routes to change-rule, and one put forward for agreement to propose-rule; this skill never reads the implementation.
 ---
 
 You **record** an example mapping — the record station of the discovery ring, at the story level.
@@ -21,7 +21,7 @@ Making the mapping read well — rule clarity, example naming, grouping, questio
 
 - Before you: `write-story-card` wrote `stories/{story-key}.md`, and the team held the session on that story's board. A story taken straight to its rules and examples — a bug fix whose behaviour is already clear — may have no card at all; its board is then named by the mapping itself (see Name Contract).
 - You: record the board against the card's key, or against a key agreed with the user when there is no card.
-- After you: `formulate-example-mapping` lays the structural edit over your baseline, and the agreed mapping is handed outward from there by `file-story-issue` and `file-rule-issues` — the start of the delivery ring. A rule that changes later, or is proposed without a session, is `change-rule`'s.
+- After you: `formulate-example-mapping` lays the structural edit over your baseline, and the agreed mapping is handed outward from there by `file-story-issue` and `file-rule-issues` — the start of the delivery ring. A rule that changes later is `change-rule`'s; one put forward without a session, still waiting for agreement, is `propose-rule`'s.
 
 ## Recording the Baseline
 
