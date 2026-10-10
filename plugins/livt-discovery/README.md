@@ -30,6 +30,48 @@ Two authorities make a discovery skill true, and neither of them is your team:
 
 Every skill here is a plain [Agent Skill](https://agentskills.io) — no subagents, no hooks, no slash-command-only behaviour — so the whole discovery ring works in any conformant runtime, and the runtime-specific glue stays on your side of the line. The record skills consult the expert skills as peer skills for exactly that reason.
 
+## Holding accepted rules to the people they name
+
+A rule may name the people whose agreement it needs as `decision_makers`. `livt agreements check` holds a change to them — its `--help` says how — and it speaks to no forge: who wrote and who approved a pull request reaches it as a file. On GitHub that file is written by an action livt ships, which also reports the answer as a commit status:
+
+```yaml
+name: agreements
+
+on:
+  pull_request_target:
+    types: [opened, reopened, synchronize]
+  pull_request_review:
+    types: [submitted, dismissed]
+
+permissions: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # checkout, and fetch the base to compare against
+      pull-requests: read # who wrote it, who approved it
+      statuses: write # the answer
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+
+      - uses: boykush/livt/actions/agreements@<commit-sha> # <livt release>
+        with:
+          token: ${{ github.token }}
+          livt-version: <livt release> # omit to install the newest
+```
+
+Require the status `livt/agreements` in the branch's ruleset and a rule naming decision makers cannot be merged as accepted without them. The check runs on a review as well as on a push, and on a review taken back, because any of the three can change the answer; it is one status under one name so that the last answer replaces the one before it.
+
+The checkout is the pull request's head rather than the merge commit: the status is written against that commit, and the action refuses a tree at any other. Nothing in the head is executed — livt parses the mappings and the record, and that is all it does with them.
+
+With `write: true` the action also commits to the pull request's branch: who stood behind each rule the pull request touches goes into `agreements/{story-key}.json`, so an approval given here still counts on a later pull request, and a proposal everyone has agreed to is rewritten accepted. That needs a token of your own with Contents write — a push `GITHUB_TOKEN` signs starts no workflow run, so the commit it left would never be checked — and it is skipped on a fork's pull request, whose branch is not yours to push to. Leave it off and people accept a proposal by editing its status themselves; the check holds that edit to the same people.
+
+What stays yours is the trigger, the ruleset, and the token. An action can ship steps, never the events that wake it.
+
 ## Skills
 
 ### Record

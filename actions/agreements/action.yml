@@ -1,0 +1,202 @@
+name: livt agreements check
+description: Hold the rules a pull request accepts to the people they name, and report the answer as a commit status. Expects the pull request's head to be checked out already
+
+# The forge's half of the agreement check. It reads who wrote and who approved
+# the pull request, hands that to livt as plain facts, and reports what livt
+# answers. Every judgment about a rule is livt's; nothing here reads a mapping.
+inputs:
+  token:
+    description: A token that can read the pull request and write a commit status (Pull requests read, Commit statuses write). With write, it also pushes to the pull request's branch (Contents write), and GITHUB_TOKEN cannot stand in there — a push it signs starts no workflow run, so the commit it leaves would go unchecked
+    required: true
+  write:
+    description: Whether to record who agreed and turn a proposal everyone agreed to accepted, as true or false. The commit goes on the pull request's own branch
+    required: false
+    default: "false"
+  context:
+    description: The name the commit status is reported under. Require this name in the branch's ruleset
+    required: false
+    default: livt/agreements
+  livt-version:
+    description: The livt release to install, e.g. v0.20.0. It has to carry `livt agreements check`
+    required: false
+    default: latest
+
+outputs:
+  state:
+    description: What was reported, as success or failure
+    value: ${{ steps.report.outputs.state }}
+  commit:
+    description: The commit this run pushed to the pull request's branch; empty when it wrote nothing
+    value: ${{ steps.push.outputs.commit }}
+
+runs:
+  using: composite
+  steps:
+    # The number is the event's, and everything else is read back from the
+    # forge by that number: an event payload is a snapshot from when the run
+    # was queued, and a pull request moves on while a run waits.
+    - name: Read the pull request
+      id: pr
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        NUMBER: ${{ github.event.pull_request.number }}
+      run: |
+        set -euo pipefail
+        if ! printf %s "$NUMBER" | grep -qE '^[0-9]+$'; then
+          echo "::error::woken by $GITHUB_EVENT_NAME with no pull request; run this on pull_request, pull_request_target or pull_request_review"
+          exit 1
+        fi
+        gh api "repos/$GITHUB_REPOSITORY/pulls/$NUMBER" > "$RUNNER_TEMP/pr.json"
+        {
+          echo "number=$NUMBER"
+          echo "head=$(jq -r .head.sha "$RUNNER_TEMP/pr.json")"
+          echo "base=$(jq -r .base.sha "$RUNNER_TEMP/pr.json")"
+          echo "branch=$(jq -r .head.ref "$RUNNER_TEMP/pr.json")"
+          echo "same-repo=$(jq -r '.head.repo.full_name == .base.repo.full_name' "$RUNNER_TEMP/pr.json")"
+        } >> "$GITHUB_OUTPUT"
+
+    # The checkout is the caller's, so it is checked rather than trusted: the
+    # status below is written against the head read above, and a tree at any
+    # other commit would have it vouch for something that was never read.
+    - name: Check what is checked out
+      shell: bash
+      env:
+        HEAD_SHA: ${{ steps.pr.outputs.head }}
+      run: |
+        set -euo pipefail
+        at=$(git rev-parse HEAD)
+        if [ "$at" != "$HEAD_SHA" ]; then
+          echo "::error::checked out $at, but the pull request's head is $HEAD_SHA; check out the head, not the merge commit"
+          exit 1
+        fi
+
+    # Duplicated from the other actions rather than shared: a relative uses:
+    # inside a composite action resolves against the caller's workspace, so a
+    # shared step would only ever work for this repository.
+    - name: Install livt
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+        VERSION: ${{ inputs.livt-version }}
+      run: |
+        set -euo pipefail
+        case "$(uname -s)" in
+          Linux) os=linux ;;
+          Darwin) os=darwin ;;
+          *) echo "::error::livt ships no build for $(uname -s)"; exit 1 ;;
+        esac
+        case "$(uname -m)" in
+          x86_64) arch=amd64 ;;
+          aarch64 | arm64) arch=arm64 ;;
+          *) echo "::error::livt ships no build for $(uname -m)"; exit 1 ;;
+        esac
+        asset="livt_*_${os}_${arch}.tar.gz"
+        if [ "$VERSION" = latest ]; then
+          gh release download --repo boykush/livt --pattern "$asset" --output - > "$RUNNER_TEMP/livt.tar.gz"
+        else
+          gh release download "$VERSION" --repo boykush/livt --pattern "$asset" --output - > "$RUNNER_TEMP/livt.tar.gz"
+        fi
+        tar -xz -C "$RUNNER_TEMP" -f "$RUNNER_TEMP/livt.tar.gz" livt
+
+    # A person's standing is their latest review that took a side: an approval
+    # withdrawn or dismissed is no approval, and a later comment does not undo
+    # one. Whether the forge would count them towards its own required reviews
+    # is not asked — a decision maker need not have write access. A bot is
+    # nobody's author, so the person it wrote for approves like anyone else.
+    - name: Gather who wrote and who approved
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        NUMBER: ${{ steps.pr.outputs.number }}
+      run: |
+        set -euo pipefail
+        gh api --paginate "repos/$GITHUB_REPOSITORY/pulls/$NUMBER/reviews" | jq -s 'add' > "$RUNNER_TEMP/reviews.json"
+        jq -n \
+          --slurpfile pr "$RUNNER_TEMP/pr.json" \
+          --slurpfile reviews "$RUNNER_TEMP/reviews.json" \
+          -f "$GITHUB_ACTION_PATH/facts.jq" > "$RUNNER_TEMP/approvals.json"
+
+    # From the merge base, as the Files changed tab reads a pull request: what
+    # the branch changes, not what the base has moved on to since.
+    - name: Fetch the base
+      id: base
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        BASE_SHA: ${{ steps.pr.outputs.base }}
+        HEAD_SHA: ${{ steps.pr.outputs.head }}
+        REMOTE: https://github.com/${{ github.repository }}.git
+      run: |
+        set -euo pipefail
+        base=$(gh api "repos/$GITHUB_REPOSITORY/compare/$BASE_SHA...$HEAD_SHA" --jq .merge_base_commit.sha)
+        git fetch --quiet --no-tags --depth=1 "$REMOTE" "$base"
+        echo "sha=$base" >> "$GITHUB_OUTPUT"
+
+    # livt's exit status is the answer, so it is kept rather than allowed to
+    # stop the run: a refusal still has to be reported.
+    - name: Check
+      id: check
+      shell: bash
+      env:
+        BASE: ${{ steps.base.outputs.sha }}
+        WRITE: ${{ inputs.write == 'true' && steps.pr.outputs.same-repo == 'true' }}
+      run: |
+        set -euo pipefail
+        args=(agreements check "$BASE" --approvals "$RUNNER_TEMP/approvals.json")
+        if [ "$WRITE" = true ]; then
+          args+=(--write)
+        fi
+        state=success
+        "$RUNNER_TEMP/livt" "${args[@]}" > "$RUNNER_TEMP/check.txt" 2> "$RUNNER_TEMP/check.err" || state=failure
+        cat "$RUNNER_TEMP/check.txt" "$RUNNER_TEMP/check.err"
+        echo "state=$state" >> "$GITHUB_OUTPUT"
+
+    # Only on a branch of this repository: a fork's branch is not ours to push
+    # to. The record and the rewritten mapping are the whole of the commit.
+    - name: Push what was written
+      id: push
+      if: inputs.write == 'true' && steps.pr.outputs.same-repo == 'true'
+      shell: bash
+      env:
+        REMOTE: https://x-access-token:${{ inputs.token }}@github.com/${{ github.repository }}.git
+        BRANCH: ${{ steps.pr.outputs.branch }}
+        NUMBER: ${{ steps.pr.outputs.number }}
+      run: |
+        set -euo pipefail
+        git add --all -- discoveries/example-mappings
+        if [ -d agreements ]; then
+          git add --all -- agreements
+        fi
+        if git diff --cached --quiet; then
+          exit 0
+        fi
+        git config user.name 'github-actions[bot]'
+        git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+        git commit --quiet --message "docs: record the agreements reached in #$NUMBER"
+        git push --quiet "$REMOTE" "HEAD:refs/heads/$BRANCH"
+        echo "commit=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+    # One status under one name, on whichever commit is now the head. A check
+    # run would be listed once per event that woke this, and a stale failure
+    # from one of them would hold the merge; a status of the same name replaces
+    # the last.
+    - name: Report
+      id: report
+      shell: bash
+      env:
+        GH_TOKEN: ${{ inputs.token }}
+        SHA: ${{ steps.push.outputs.commit || steps.pr.outputs.head }}
+        STATE: ${{ steps.check.outputs.state }}
+        CONTEXT: ${{ inputs.context }}
+        RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+      run: |
+        set -euo pipefail
+        description=$(tail -n 1 "$RUNNER_TEMP/check.txt" | cut -c 1-140)
+        if [ "$STATE" = failure ]; then
+          description=$(tail -n 1 "$RUNNER_TEMP/check.err" | sed 's/^Error: //' | cut -c 1-140)
+        fi
+        jq -n --arg state "$STATE" --arg context "$CONTEXT" --arg description "$description" --arg url "$RUN_URL" \
+          '{state: $state, context: $context, description: $description, target_url: $url}' \
+          | gh api "repos/$GITHUB_REPOSITORY/statuses/$SHA" --method POST --input - > /dev/null
+        echo "state=$STATE" >> "$GITHUB_OUTPUT"
