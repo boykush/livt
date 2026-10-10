@@ -1,0 +1,6 @@
+# livt:automates livt://mapping/file-automation-issues-to-impl-repos/rule/R-05
+schema_version: "1.1"
+name: links-under-the-story-issue
+tags: [file-rule-issues]
+context:
+  scaffold_script: scaffold.sh

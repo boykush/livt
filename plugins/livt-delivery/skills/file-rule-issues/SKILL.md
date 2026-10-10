@@ -42,7 +42,7 @@ This skill ships no tracker knowledge on purpose: one team's answer shipped as e
 ## Filing Flow
 
 1. Read `discoveries/example-mappings/{story-key}.yaml` and `stories/{story-key}.md`. Resolve the destination(s) from the story's `repos:`, or from what the user named. A story with no card has no `repos:` to read, so ask for the destination.
-2. Select the rules to file (rule-id → that one; story-key only → all), keeping only rules with `status: accepted`: a `proposed` rule is not asked for yet, and a `rejected` or `retired` one is not asked for any more, so neither has anything to automate. Then dedupe each **rule × destination** pair against the record. A link to one destination never blocks filing to another.
+2. Select the rules to file (rule-id → that one; story-key only → all), keeping only agreed rules — `status: accepted`, or no `status` at all, which reads as accepted: a `proposed` rule is not asked for yet, and a `rejected` or `retired` one is not asked for any more, so neither has anything to automate. Then dedupe each **rule × destination** pair against the record. A link to one destination never blocks filing to another.
 3. Record the revision of the livt repository: `git rev-parse --short HEAD`.
 4. Compose each issue (see Issue Content) and file it with the tool the team uses — a tracker's CLI or MCP server. Never check out the target repository. With no tool that reaches the destination, hand the composed body to the user and take the created URL back; the record treats it exactly as one you filed.
 5. Where the story records a story issue and the tracker supports parent/child links, attach the new issue under it (see Parent Linking).

@@ -1,0 +1,5 @@
+schema_version: "1.1"
+name: reproposes-a-changed-rule
+tags: [propose-rule]
+context:
+  scaffold_script: scaffold.sh

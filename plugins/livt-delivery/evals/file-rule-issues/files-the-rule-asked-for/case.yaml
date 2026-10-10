@@ -1,0 +1,7 @@
+# livt:automates livt://mapping/file-automation-issues-to-impl-repos/rule/R-01
+# livt:automates livt://mapping/file-automation-issues-to-impl-repos/rule/R-06
+schema_version: "1.1"
+name: files-the-rule-asked-for
+tags: [file-rule-issues]
+context:
+  scaffold_script: scaffold.sh

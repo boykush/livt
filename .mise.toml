@@ -48,6 +48,18 @@ run = "go test -race ./..."
 description = "Run all CI checks"
 depends = ["fmt", "vet", "lint", "tidy", "build", "test"]
 
+[tasks.eval]
+description = "Run the plugins' eval suites (model calls, billed to your account)"
+# Not part of check: a run is a model call, and its answer can differ between
+# runs. One arm only — the cases claim what a skill does, not what it adds.
+run = '''
+for plugin in plugins/*/; do
+  [ -d "${plugin}evals" ] || continue
+  claude plugin eval "$plugin" --scaffold --trust-plugin --no-publish --ablation none \
+    --allow-tools Edit Write "Bash(git *)"
+done
+'''
+
 [tasks.snapshot]
 description = "Dry-run the goreleaser release build locally (no publish)"
 run = "goreleaser release --snapshot --clean"

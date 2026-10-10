@@ -23,6 +23,14 @@ mise run check   # fmt + vet + lint + tidy + build + test
 mise run test    # go test -race ./...
 ```
 
+The skills under `plugins/` are checked by eval cases instead, one directory per case under `plugins/*/evals/`:
+
+```bash
+mise run eval    # every case, three runs each
+```
+
+A run is a model call billed to your account, and its answer can differ from one run to the next, so the suites are not part of `mise run check`. A grader that checks an example cites it on a `livt:automates` line in its frontmatter, the way a Go test does in a comment. A run's shell commands are sandboxed, and on macOS the sandbox cannot run the git that Xcode ships: `proposes-two-rules` and `reproposes-a-changed-rule` need a commit to go through, fail there, and cite nothing until they have passed somewhere git runs.
+
 ## Docs
 
 The documentation site is plain HTML in `docs/site/`, in English and in Japanese, and Pages publishes it as it is. It says why livt exists and when it fits. Every other detail has a home of its own, beside what it describes; [Reference](docs/content/en/reference.md) says where.
