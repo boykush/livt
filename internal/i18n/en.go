@@ -78,12 +78,13 @@ var en = Catalog{
 
 	// What livt itself names on a changed item. The livt repository's own words
 	// — a frontmatter key, a story's name — are carried through as written.
-	"diff.gone":                "gone from here",
-	"diff.field.status":        "Status",
-	"diff.field.issue":         "Automation issue",
-	"diff.field.superseded-by": "Superseded by",
-	"diff.field.retired":       "Retired",
-	"diff.field.release":       "Release",
+	"diff.gone":                 "gone from here",
+	"diff.field.status":         "Status",
+	"diff.field.issue":          "Automation issue",
+	"diff.field.decision-maker": "Decision-maker",
+	"diff.field.superseded-by":  "Superseded by",
+	"diff.field.retired":        "Retired",
+	"diff.field.release":        "Release",
 
 	// A rule's status as a word. "accepted" is how the file spells it, not how
 	// the rule is read.

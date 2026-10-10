@@ -514,3 +514,24 @@ func TestBuildTasksListsProposedRulesApart(t *testing.T) {
 		}
 	}
 }
+
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-03/example/EX-03
+// The Tasks page lists who each proposed rule is waiting on beside it.
+func TestBuildTasksShowsDecisionMakersOnProposedRules(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	proposed := []taskItem{{
+		Kind: "proposed-rule", ID: "R-02", Text: "提案中のルール",
+		StoryKey: "checkout", MappingName: "チェックアウト",
+		MappingPath: "mapping/checkout.html#rule-R-02", DecisionMakers: []string{"@alice", "@bob"},
+	}}
+	if err := b.buildTasks(taskSet{ProposedRules: proposed}, nil, true); err != nil {
+		t.Fatal(err)
+	}
+	html := readRendered(t, filepath.Join(b.OutDir, "tasks.html"))
+
+	for _, who := range []string{">@alice</span>", ">@bob</span>"} {
+		if !strings.Contains(html, who) {
+			t.Fatalf("tasks.html missing %q beside the proposed rule", who)
+		}
+	}
+}
