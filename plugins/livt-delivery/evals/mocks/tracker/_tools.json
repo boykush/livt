@@ -1,0 +1,88 @@
+{
+  "tools": [
+    {
+      "name": "create_issue",
+      "description": "Create an issue in a repository's tracker and return its URL.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "repo": {
+            "type": "string",
+            "description": "The repository, as owner/repo"
+          },
+          "title": {
+            "type": "string",
+            "description": "The issue's title"
+          },
+          "body": {
+            "type": "string",
+            "description": "The issue's body, as Markdown"
+          }
+        },
+        "required": [
+          "repo",
+          "title",
+          "body"
+        ]
+      }
+    },
+    {
+      "name": "add_sub_issue",
+      "description": "Link one issue under another as its sub-issue. The two may sit in different repositories.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "parent": {
+            "type": "string",
+            "description": "The parent issue's URL"
+          },
+          "child": {
+            "type": "string",
+            "description": "The child issue's URL"
+          }
+        },
+        "required": [
+          "parent",
+          "child"
+        ]
+      }
+    },
+    {
+      "name": "list_sub_issues",
+      "description": "List the sub-issues linked under an issue.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "issue": {
+            "type": "string",
+            "description": "The issue's URL"
+          }
+        },
+        "required": [
+          "issue"
+        ]
+      }
+    },
+    {
+      "name": "search_issues",
+      "description": "Search a repository's issues.",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "repo": {
+            "type": "string",
+            "description": "The repository, as owner/repo"
+          },
+          "query": {
+            "type": "string",
+            "description": "Search text"
+          }
+        },
+        "required": [
+          "repo",
+          "query"
+        ]
+      }
+    }
+  ]
+}
