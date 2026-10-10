@@ -50,7 +50,7 @@ Then read, in this order: `stories/{story-key}.md` for the story's scope and key
 - Don't write Gherkin — example mapping stays low-tech, and the Gherkin livt derives from the mapping is Automation's output, not yours.
 - Don't change the mapping's key or its `name:`. The name is the story's, not a rule's, so sharpening it is no part of formulation — and where the story also has a card, the two have to stay the same string.
 - Don't retire rules or questions. The regrouped example is the only retirement in your remit; retiring a rule takes an agreed business decision, which is `change-rule`'s.
-- Don't change a rule's `status:`. Accepting or turning down a proposal is a business decision too, and `change-rule`'s.
+- Don't change a rule's `status:`. Accepting or turning down a proposal is a business decision too, and `propose-rule`'s.
 - Don't touch `ubiquitous:`. The pink stickies are the room's and the record is their path off the board; sharpening a rule's wording is not a licence to name a term nobody agreed. Tell the user what the wording seems to want instead.
 
 ## ID Contract
