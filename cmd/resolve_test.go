@@ -218,3 +218,34 @@ func keysOf(m map[string]any) []string {
 	}
 	return out
 }
+
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-04/example/EX-01
+// The command line returns what MCP returns: a rule read by its URI carries
+// the people it needs agreement from.
+func TestResolveURICarriesDecisionMakers(t *testing.T) {
+	root := t.TempDir()
+	path := filepath.Join(root, "discoveries", "example-mappings", "demo.yaml")
+	if err := os.MkdirAll(filepath.Dir(path), 0o755); err != nil {
+		t.Fatal(err)
+	}
+	mapping := "rules:\n  - id: R-01\n    name: ルール1\n    decision_makers: [\"@bob\", \"@alice\"]\n"
+	if err := os.WriteFile(path, []byte(mapping), 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	var out bytes.Buffer
+	if err := resolveURI(&out, root, "livt://mapping/demo/rule/R-01", formatJSON, ""); err != nil {
+		t.Fatal(err)
+	}
+	var payload struct {
+		Rule struct {
+			DecisionMakers []string `json:"decision_makers"`
+		} `json:"rule"`
+	}
+	if err := json.Unmarshal(out.Bytes(), &payload); err != nil {
+		t.Fatal(err)
+	}
+	if got := payload.Rule.DecisionMakers; len(got) != 2 || got[0] != "@bob" || got[1] != "@alice" {
+		t.Errorf("decision_makers = %v, want [@bob @alice] in written order", got)
+	}
+}

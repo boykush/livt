@@ -405,3 +405,36 @@ func TestMappingLinksItsStoryOnlyWhenTheFileExists(t *testing.T) {
 		}
 	}
 }
+
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-04
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-04/example/EX-01
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-04/example/EX-02
+// A rule's payload carries the people it needs agreement from in the order
+// they were written, and leaves the field out when it names nobody.
+func TestRulesCarryTheirDecisionMakers(t *testing.T) {
+	root := t.TempDir()
+	writeFile(t, filepath.Join(root, "discoveries", "example-mappings", "demo.yaml"),
+		"rules:\n"+
+			"  - id: R-01\n"+
+			"    name: 合意が要る人のあるルール\n"+
+			"    decision_makers: [\"@bob\", \"@alice\"]\n"+
+			"  - id: R-02\n"+
+			"    name: 誰も書かれていないルール\n")
+	s := NewServer(Config{Root: root}, "test")
+
+	res, err := s.readRule(context.Background(), readReq(uri.Rule("demo", "R-01")))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if body := resourceText(t, res); !strings.Contains(body, `"decision_makers":["@bob","@alice"]`) {
+		t.Errorf("payload = %s, want decision_makers in written order", body)
+	}
+
+	res, err = s.readRule(context.Background(), readReq(uri.Rule("demo", "R-02")))
+	if err != nil {
+		t.Fatal(err)
+	}
+	if body := resourceText(t, res); strings.Contains(body, "decision_makers") {
+		t.Errorf("payload = %s, want no decision_makers field", body)
+	}
+}
