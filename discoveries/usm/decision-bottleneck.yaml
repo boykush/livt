@@ -28,6 +28,8 @@ activities:
         stories:
           - name: ルールごとに合意が要る人を書く
             key: name-decision-makers-per-rule
+          - name: 提案から合意までをスキルで運ぶ
+            key: carry-proposals-to-agreement-with-skill
       - key: leave-questions-open
         name: 決めきれないものを疑問点に残す
   - key: close-within-the-session
