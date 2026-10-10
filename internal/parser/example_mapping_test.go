@@ -3,6 +3,7 @@ package parser
 import (
 	"os"
 	"path/filepath"
+	"slices"
 	"testing"
 
 	"github.com/boykush/livt/internal/domain"
@@ -300,5 +301,71 @@ func TestParseExampleMappingReadsItsOwnName(t *testing.T) {
 		if em.Name != want {
 			t.Errorf("%s: name = %q, want %q", filepath.Base(path), em.Name, want)
 		}
+	}
+}
+
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-01/example/EX-01
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-01/example/EX-02
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-01/example/EX-03
+// A rule names the people whose agreement it needs as forge mentions, and the
+// parser carries them as written whatever the rule's status: nobody here knows
+// whether @ghost exists, and it is not the parser's to find out.
+func TestParseExampleMappingReadsDecisionMakers(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "story.yaml")
+	data := []byte("rules:\n" +
+		"  - id: R-01\n" +
+		"    name: 提案中のルール\n" +
+		"    status: proposed\n" +
+		"    decision_makers: [\"@alice\", \"@acme/design\"]\n" +
+		"  - id: R-02\n" +
+		"    name: 合意済みのルール\n" +
+		"    decision_makers:\n" +
+		"      - \"@ghost\"\n")
+	if err := os.WriteFile(path, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	em, err := ParseExampleMapping(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	if got, want := em.Rules[0].DecisionMakers, []string{"@alice", "@acme/design"}; !slices.Equal(got, want) {
+		t.Errorf("proposed rule decision makers = %v, want %v as written", got, want)
+	}
+	if got, want := em.Rules[1].DecisionMakers, []string{"@ghost"}; !slices.Equal(got, want) {
+		t.Errorf("accepted rule decision makers = %v, want %v carried unchecked", got, want)
+	}
+}
+
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-02
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-02/example/EX-01
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-02/example/EX-02
+// The field is optional. A mapping written before it existed reads as it
+// always has, and a proposal may go without it.
+func TestParseExampleMappingReadsRulesWithoutDecisionMakers(t *testing.T) {
+	path := filepath.Join(t.TempDir(), "story.yaml")
+	data := []byte("rules:\n" +
+		"  - id: R-01\n" +
+		"    name: 合意済みのルール\n" +
+		"  - id: R-02\n" +
+		"    name: 提案中のルール\n" +
+		"    status: proposed\n")
+	if err := os.WriteFile(path, data, 0o644); err != nil {
+		t.Fatal(err)
+	}
+
+	em, err := ParseExampleMapping(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	for _, r := range em.Rules {
+		if len(r.DecisionMakers) != 0 {
+			t.Errorf("rule %s decision makers = %v, want none", r.ID, r.DecisionMakers)
+		}
+	}
+	if em.Rules[0].Proposed() || !em.Rules[1].Proposed() {
+		t.Errorf("rules = %+v, want R-01 accepted and R-02 proposed as before", em.Rules)
 	}
 }
