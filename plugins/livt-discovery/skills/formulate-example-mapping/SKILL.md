@@ -29,12 +29,16 @@ If the record is still sitting uncommitted, stop and say so. Committing it is `r
 
 Then read, in this order: `stories/{story-key}.md` for the story's scope and key — or, for a story with no card, the mapping's own `name:` — and the mapping as it stands — as it is, not as you would have recorded it.
 
+## An Open Question Is a Decision Not Made
+
+BDD formulates once the red cards are gone, and the reason carries over here: a question still open is a decision the room has not made, and a sharpened line over it reads as the answer. Read the questions before the edit. Where one bears on a rule or an example — it asks about the case that example shows, or about what the rule means — leave that item's wording as it is and say which question holds it. Where the questions touch none of the items, the edit goes on.
+
 ## The Edit
 
-1. Consult the `bdd-expert` skill for a structural critique — anti-patterns, rule/example balance, naming, whether the story should be split.
+1. Consult the `bdd-expert` skill for a structural critique — anti-patterns, rule/example balance, whether each example reads as a scenario, whether the story should be split.
 2. Apply the edit to `discoveries/example-mappings/{story-key}.yaml`:
    - **Rule clarity** — sharpen vague rule names into crisp business rules; keep the team's intent.
-   - **Example naming** — make examples concrete and memorable ("the one where…"); keep the same scenario.
+   - **Example naming** — make examples concrete and memorable ("the one where…"); keep the same scenario. An example's line is the only place its scenario lives, so write it the way a scenario reads: a reader takes a context, an action and an outcome they could observe from the one line. "A 12,000 EUR invoice without a purchase order number is refused" is read the same way by everyone; "a large invoice is handled" restates the rule and shows nothing. The outcome is what the user sees, not a state inside the system. Keep the data the record holds — Real data is what makes an example an example — and don't add any.
    - **Grouping** — example IDs are rule-scoped, so moving an example to the rule it actually illustrates always changes its ID. Move it only while it is still a draft — not yet on the default branch, so nothing can be pointing at it (see ID Contract). Once it has merged — and whenever you are unsure — retire it where it sits and add it under the right rule with a fresh ID, with `superseded_by:` on the retired one naming the new URI, so its old URI keeps resolving to the same text and says where the example went.
    - **Splitting** — if the map shows too many rules (story too large), recommend a split in the commit message; don't silently shard.
    - **Question phrasing** — make a Question precise without answering it.
@@ -44,6 +48,7 @@ Then read, in this order: `stories/{story-key}.md` for the story's scope and key
 ## What the Edit Never Touches
 
 - Don't add rules or examples that weren't discovered.
+- Don't add data the record doesn't hold. A line that can only be read one way with a value the room never gave — a threshold, a date, a count — is a gap in the record, not a line to complete: the number you would write is a decision, and it is the room's. Leave the line as it is and name the gap in your report and the commit body, so the team takes it back to the room. Don't mint a Question for it either; the red cards are the room's.
 - Don't fold in rule changes or additions decided after the session — `change-rule` ships those as their own fine-grained commits.
 - Don't resolve or delete open Questions.
 - Don't check the mapping against the implementation or design — no discovery skill reads code.
