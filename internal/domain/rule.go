@@ -8,6 +8,10 @@ type Rule struct {
 	// one of the two ways. The zero value is accepted, as every rule written
 	// before the field was; Proposed is what the surfaces branch on.
 	Status RuleStatus
+	// DecisionMakers are the people whose agreement the rule needs, as the
+	// forge mentions they were written as. livt carries the strings and reads
+	// nothing into them: what counts as their agreement is decided elsewhere.
+	DecisionMakers []string
 	// Issues are the rule's automation Issue URLs on implementation repos.
 	// The livt repository records the links; their state lives at the URL target.
 	Issues []string

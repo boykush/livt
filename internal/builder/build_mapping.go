@@ -169,7 +169,9 @@ func collectTasks(em *domain.ExampleMapping, mappingName, storyPath string, know
 		// a test already covers it.
 		switch {
 		case r.Proposed():
-			out.ProposedRules = append(out.ProposedRules, item("proposed-rule", r.ID, r.Name, sticky(r.ID, uri.RulePage)))
+			proposed := item("proposed-rule", r.ID, r.Name, sticky(r.ID, uri.RulePage))
+			proposed.DecisionMakers = r.DecisionMakers
+			out.ProposedRules = append(out.ProposedRules, proposed)
 		case known && !r.Automated():
 			out.UnautomatedRules = append(out.UnautomatedRules, item("rule", r.ID, r.Name, sticky(r.ID, uri.RulePage)))
 		}

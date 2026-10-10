@@ -8,6 +8,7 @@ import (
 	"html"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"strings"
 	"testing"
 
@@ -973,5 +974,64 @@ func TestBuildKeepsAMappingsNameApartFromItsStorys(t *testing.T) {
 	story := readRendered(t, filepath.Join(b.OutDir, "story", "checkout.html"))
 	if !strings.Contains(story, "<title>決済する - livt</title>") || strings.Contains(story, "決済の境界") {
 		t.Error("the story page should keep the story's own name")
+	}
+}
+
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-03
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-03/example/EX-01
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-03/example/EX-02
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-03/example/EX-04
+// The people a rule needs agreement from sit on its sticky, drawn the same way
+// whether the rule is proposed or agreed. A rule that names nobody gets no
+// such row at all, rather than one saying nobody was named.
+func TestRenderMappingShowsDecisionMakersOnTheRule(t *testing.T) {
+	em := &domain.ExampleMapping{
+		Rules: []domain.Rule{
+			{ID: "R-01", Name: "A proposal", Status: domain.RuleProposed, DecisionMakers: []string{"@alice", "@bob"}},
+			{ID: "R-02", Name: "An agreed rule", DecisionMakers: []string{"@carol"}},
+			{ID: "R-03", Name: "A rule naming nobody"},
+		},
+	}
+
+	var buf bytes.Buffer
+	if err := renderMapping(&buf, i18n.En, board{Mapping: em.Active()}, "Story", "", nil, nil, nil); err != nil {
+		t.Fatal(err)
+	}
+	html := buf.String()
+
+	for _, who := range []string{"@alice", "@bob", "@carol"} {
+		if !strings.Contains(html, `<span class="decision-maker `) || !strings.Contains(html, ">"+who+"</span>") {
+			t.Errorf("board does not show %s on its rule", who)
+		}
+	}
+	if got := strings.Count(html, `class="rule-decision-makers `); got != 2 {
+		t.Fatalf("decision-maker rows rendered %d times, want 2: one per rule that names someone", got)
+	}
+	if got := strings.Count(html, `<span class="decision-maker `); got != 3 {
+		t.Fatalf("decision makers rendered %d times, want 3 drawn alike", got)
+	}
+}
+
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-03/example/EX-03
+// A proposed rule carries the people it waits on to the Tasks page.
+func TestCollectTasksCarriesDecisionMakersOfProposedRules(t *testing.T) {
+	em := &domain.ExampleMapping{
+		StoryKey: domain.StoryKey{Value: "checkout"},
+		Rules: []domain.Rule{
+			{ID: "R-01", Name: "A proposal", Status: domain.RuleProposed, DecisionMakers: []string{"@alice", "@bob"}},
+			{ID: "R-02", Name: "A proposal naming nobody", Status: domain.RuleProposed},
+		},
+	}
+
+	out := collectTasks(em, "Checkout", "story/checkout.html", true)
+
+	if len(out.ProposedRules) != 2 {
+		t.Fatalf("proposed rules = %+v, want both", out.ProposedRules)
+	}
+	if got, want := out.ProposedRules[0].DecisionMakers, []string{"@alice", "@bob"}; !slices.Equal(got, want) {
+		t.Errorf("decision makers = %v, want %v", got, want)
+	}
+	if got := out.ProposedRules[1].DecisionMakers; len(got) != 0 {
+		t.Errorf("decision makers = %v, want none for a proposal that names nobody", got)
 	}
 }

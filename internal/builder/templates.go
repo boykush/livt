@@ -495,10 +495,13 @@ type taskItem struct {
 	StoryKey string
 	// MappingName is what the board's yellow sticky reads, so the chip and the
 	// sticky it stands for cannot name the same board two ways.
-	MappingName   string
-	StoryPath     string
-	MappingPath   string
-	Opportunities []opportunityRef
+	MappingName string
+	StoryPath   string
+	MappingPath string
+	// DecisionMakers says who a proposed rule is waiting on, where the rule
+	// names them. Empty for every other kind of item.
+	DecisionMakers []string
+	Opportunities  []opportunityRef
 }
 
 // tasksView is what the livt repository leaves unfinished, one list per way of

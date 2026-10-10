@@ -251,6 +251,9 @@ type ruleJSON struct {
 	// knowing that a rule written with no status is accepted.
 	Status   string        `json:"status"`
 	Examples []exampleJSON `json:"examples,omitempty"`
+	// DecisionMakers are the people whose agreement the rule needs, in the
+	// order and spelling the mapping gives them. Omitted when it names none.
+	DecisionMakers []string `json:"decision_makers,omitempty"`
 	// Issues are the rule's automation Issue URLs as recorded on the livt repository.
 	Issues []string `json:"issues,omitempty"`
 	// Automated is always present: consumers read it without distinguishing
@@ -433,7 +436,7 @@ func toRuleJSON(storyKey string, r domain.Rule) ruleJSON {
 	for _, e := range r.Examples {
 		examples = append(examples, toExampleJSON(storyKey, r.ID, e))
 	}
-	return ruleJSON{ID: r.ID, URI: uri.Rule(storyKey, r.ID), Name: r.Name, Status: string(r.Status.OrDefault()), Examples: examples, Issues: r.Issues, Automated: r.Automated(), Automations: toAutomationsJSON(r.Automations), SupersededBy: r.SupersededBy}
+	return ruleJSON{ID: r.ID, URI: uri.Rule(storyKey, r.ID), Name: r.Name, Status: string(r.Status.OrDefault()), Examples: examples, DecisionMakers: r.DecisionMakers, Issues: r.Issues, Automated: r.Automated(), Automations: toAutomationsJSON(r.Automations), SupersededBy: r.SupersededBy}
 }
 
 func toExampleJSON(storyKey, ruleID string, e domain.Example) exampleJSON {
