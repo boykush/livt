@@ -1,0 +1,5 @@
+schema_version: "1.1"
+name: leaves-a-questioned-rule-alone
+tags: [formulate-example-mapping]
+context:
+  scaffold_script: scaffold.sh

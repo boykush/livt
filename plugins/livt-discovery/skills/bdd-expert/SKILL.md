@@ -20,7 +20,7 @@ This skill is written in English for maintainability — English is not the lang
 - Never skip Discovery — teams that skip it lose the core value of BDD
 
 ### Formulation - "What it should do"
-- Translate Discovery outcomes into Gherkin (human and machine readable)
+- Give each example a scenario's shape — a context, an action, an outcome a user could observe — in business language. Gherkin is the mainstream notation for it; in livt the example's own line carries the shape, and Gherkin is derived later
 - BRIEF principle: Business language, Real data, Intention revealing, Essential, Focused
 - Prefer Illustrative Scenarios (single behavior) over Journey Scenarios (full user interaction)
 - Scenarios should be isolated — no execution order dependency
@@ -101,6 +101,8 @@ This skill is written in English for maintainability — English is not the lang
 - Automation without Discovery (Gherkin as test scripts)
 - Implementation details in scenarios (UI steps, DB state assertions)
 - Scenarios too long or unfocused
+- Examples that restate their rule, or end in an outcome nobody can observe ("is handled", "works correctly")
+- Data invented at Formulation — a value the Discovery record never gave
 - Inter-scenario dependencies
 - Rules buried in comments instead of using Rule keyword
 - Writing Gherkin during Example Mapping sessions
