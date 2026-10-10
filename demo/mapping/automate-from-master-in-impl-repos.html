@@ -56,7 +56,7 @@
   [data-view="list"] .example-card { padding: 0.625rem 1.25rem; }
   [data-view="list"] .mapping [data-copy-link],
   [data-view="list"] .proposed-badge { position: static; flex-shrink: 0; box-shadow: none; }
-  [data-view="list"] .mapping [data-copy-link], [data-view="list"] :is(.rule-automations, .rule-issues, .example-automations) { font-size: 0.75rem; }
+  [data-view="list"] .mapping [data-copy-link], [data-view="list"] :is(.rule-automations, .rule-decision-makers, .rule-issues, .example-automations) { font-size: 0.75rem; }
   [data-view="list"] .proposed-badge { font-size: 0.75rem; padding: 0.125rem 0.5rem; }
   [data-view="list"] :is(.rule-body, .example-body) { flex: 1; min-width: 0; }
   [data-view="list"] .rule-fold, [data-view="list"] .example-count { display: inline-flex; }
@@ -131,6 +131,7 @@
       
       
       
+      
       </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
@@ -191,6 +192,7 @@
       
       <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">実装リポジトリは別ディレクトリにあるlivtリポジトリの場所を指定できる</span>
+      
       
       
       
@@ -275,6 +277,7 @@
       
       
       
+      
       </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
@@ -335,6 +338,7 @@
       
       <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">実装リポジトリはストーリー単位で実例マッピングをリソースとして取得できる</span>
+      
       
       
       
@@ -419,6 +423,7 @@
       
       
       
+      
       </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
@@ -483,6 +488,7 @@
       
       
       
+      
       </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
@@ -543,6 +549,7 @@
       
       <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">消費側は stdio で livt mcp をサブプロセスとして起動し、消費者ごとに1対1で接続する</span>
+      
       
       
       
@@ -623,6 +630,7 @@
       
       <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">消費側は常駐する1つの livt mcp --http サーバーをURL参照で共有する</span>
+      
       
       
       
@@ -718,6 +726,7 @@
 <a href="https://github.com/boykush/livt/blob/e808093666768c93d618005f607051a5e297e4b3/internal/mcp/tools_test.go#L3" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: tools_test.go:3</span></a>
 
       </div>
+      
       
       
       </div>
@@ -847,6 +856,7 @@
       
       
       
+      
       </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
@@ -939,6 +949,7 @@
       
       <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">実装リポジトリはユビキタス言語の用語をリソースとして取得できる</span>
+      
       
       
       
@@ -1039,6 +1050,7 @@
       
       
       
+      
       </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
@@ -1124,6 +1136,7 @@
 <a href="https://github.com/boykush/livt/blob/e808093666768c93d618005f607051a5e297e4b3/internal/mcp/tools_test.go#L4" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: tools_test.go:4</span></a>
 
       </div>
+      
       
       
       <div class="rule-issues mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
@@ -1280,6 +1293,7 @@
       
       
       
+      
       </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>5</span>
@@ -1406,6 +1420,7 @@
       
       
       
+      
       </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
@@ -1498,6 +1513,7 @@
       
       <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">実装リポジトリはユビキタス言語の用語の一覧を取得できる</span>
+      
       
       
       

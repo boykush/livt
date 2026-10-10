@@ -56,7 +56,7 @@
   [data-view="list"] .example-card { padding: 0.625rem 1.25rem; }
   [data-view="list"] .mapping [data-copy-link],
   [data-view="list"] .proposed-badge { position: static; flex-shrink: 0; box-shadow: none; }
-  [data-view="list"] .mapping [data-copy-link], [data-view="list"] :is(.rule-automations, .rule-issues, .example-automations) { font-size: 0.75rem; }
+  [data-view="list"] .mapping [data-copy-link], [data-view="list"] :is(.rule-automations, .rule-decision-makers, .rule-issues, .example-automations) { font-size: 0.75rem; }
   [data-view="list"] .proposed-badge { font-size: 0.75rem; padding: 0.125rem 0.5rem; }
   [data-view="list"] :is(.rule-body, .example-body) { flex: 1; min-width: 0; }
   [data-view="list"] .rule-fold, [data-view="list"] .example-count { display: inline-flex; }
@@ -127,6 +127,7 @@
       
       <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">decision_makersのあるルールをacceptedにする変更には、その全員の承認が要る</span>
+      
       
       
       
@@ -323,6 +324,7 @@
       
       
       
+      
       </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>5</span>
@@ -431,6 +433,7 @@
       
       <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">承認は合意ファイルに残り、PRを跨いで引き継がれる</span>
+      
       
       
       
@@ -563,6 +566,7 @@
       
       
       
+      
       </div>
       
       <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
@@ -655,6 +659,7 @@
       
       <div class="rule-body min-w-0">
       <span class="rule-name sticky-text">forgeに触れるのはactionだけで、判定と書き込みはlivtのCLIがgitとファイルだけで行う</span>
+      
       
       
       
