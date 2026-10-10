@@ -74,7 +74,7 @@ rules:
         name: 別のforgeは、同じ形の事実を出す部分だけを書けば、同じCLIを使える
 
 questions:
-  - id: Q-05
+  - id: Q-01
     text: チームをdecision_makersに書けるようにするか（メンバーの照合に、organizationを読む権限が要る。このストーリーでは扱わない）
 
 ubiquitous:
