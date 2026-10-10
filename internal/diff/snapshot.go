@@ -75,16 +75,17 @@ type Field struct {
 // Labels livt puts on its own fields. Where the site already has a word for
 // something, that word is reused rather than a second one minted here.
 const (
-	LabelStatus       = "diff.field.status"
-	LabelAutomated    = "mapping.automated-title"
-	LabelIssue        = "diff.field.issue"
-	LabelSupersededBy = "diff.field.superseded-by"
-	LabelRetired      = "diff.field.retired"
-	LabelRelease      = "diff.field.release"
-	LabelTerms        = "nav.ubiquitous"
-	LabelActivity     = "label.activity"
-	LabelStep         = "label.step"
-	LabelStory        = "label.story"
+	LabelStatus        = "diff.field.status"
+	LabelAutomated     = "mapping.automated-title"
+	LabelIssue         = "diff.field.issue"
+	LabelDecisionMaker = "diff.field.decision-maker"
+	LabelSupersededBy  = "diff.field.superseded-by"
+	LabelRetired       = "diff.field.retired"
+	LabelRelease       = "diff.field.release"
+	LabelTerms         = "nav.ubiquitous"
+	LabelActivity      = "label.activity"
+	LabelStep          = "label.step"
+	LabelStory         = "label.story"
 	// canvasLabelPrefix addresses a canvas box's heading, which the sheet
 	// already reads off the same key.
 	canvasLabelPrefix = "canvas."
@@ -265,6 +266,7 @@ func idNumber(id string) int {
 // words for these and "accepted" is the spelling in the file, not the reading.
 func ruleFields(r domain.Rule) []Field {
 	fields := []Field{text(r.Name), labelled(LabelStatus, statusPrefix+string(r.Status.OrDefault()))}
+	fields = append(fields, listed(LabelDecisionMaker, r.DecisionMakers)...)
 	fields = append(fields, listed(LabelIssue, r.Issues)...)
 	return append(fields, listed(LabelSupersededBy, r.SupersededBy)...)
 }

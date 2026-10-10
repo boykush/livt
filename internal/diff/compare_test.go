@@ -635,3 +635,44 @@ func TestCompareLeavesOutTheCitationsOfAnItemRetiredInBothRevisions(t *testing.T
 		t.Errorf("got %v, want nothing — the rule was retired in both revisions", uris(changes))
 	}
 }
+
+const proposedRule = `rules:
+  - id: R-01
+    name: first
+    status: proposed
+`
+
+func decisionMaker(who string) string {
+	return LabelDecisionMaker + ": " + who
+}
+
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-05
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-05/example/EX-01
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-05/example/EX-03
+// Naming someone on a rule already on file is a change to that rule and to
+// nothing else about it: the same URI, the same wording, one line added.
+func TestCompareReadsAnAddedDecisionMakerAsAChangeToTheRule(t *testing.T) {
+	base := mapping(t, "checkout", proposedRule)
+	head := mapping(t, "checkout", proposedRule+"    decision_makers: [\"@alice\"]\n")
+
+	change := only(t, Compare(base, head))
+	if change.URI != "livt://mapping/checkout/rule/R-01" {
+		t.Fatalf("changed %s, want the rule itself", change.URI)
+	}
+	want := []string{" first", " " + status("proposed"), "+" + decisionMaker("@alice")}
+	if got := lineTexts(change.Lines); !equal(got, want) {
+		t.Errorf("lines = %v, want %v", got, want)
+	}
+}
+
+// livt:automates livt://mapping/name-decision-makers-per-rule/rule/R-05/example/EX-02
+func TestCompareReadsARemovedDecisionMakerAsAChangeToTheRule(t *testing.T) {
+	base := mapping(t, "checkout", proposedRule+"    decision_makers: [\"@alice\", \"@bob\"]\n")
+	head := mapping(t, "checkout", proposedRule+"    decision_makers: [\"@alice\"]\n")
+
+	change := only(t, Compare(base, head))
+	want := []string{" first", " " + status("proposed"), " " + decisionMaker("@alice"), "-" + decisionMaker("@bob")}
+	if got := lineTexts(change.Lines); !equal(got, want) {
+		t.Errorf("lines = %v, want %v", got, want)
+	}
+}
