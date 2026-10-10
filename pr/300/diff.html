@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>livt - 差分</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  
+  .diff-line { display: grid; grid-template-columns: 1.25rem 1fr; gap: 0.5rem; padding: 0.125rem 0.75rem; }
+  .diff-line > .sign { color: #9ca3af; user-select: none; text-align: center; }
+  .diff-add { background-color: #dcfce7; }
+  .diff-add > .sign { color: #15803d; }
+  .diff-del { background-color: #fee2e2; }
+  .diff-del > .sign { color: #b91c1c; }
+  
+  .diff-add .moved { background-color: #86efac; border-radius: 0.125rem; }
+  .diff-del .moved { background-color: #fca5a5; border-radius: 0.125rem; }
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="flex min-h-screen">
+
+<aside class="w-60 shrink-0 bg-white border-r border-gray-200 flex flex-col sticky top-0 h-screen">
+  <div class="px-5 py-4 border-b border-gray-100">
+    <a href="index.html" class="text-xl font-bold text-gray-900 tracking-tight">livt</a>
+    
+    <p class="text-[11px] text-gray-400 mt-0.5 leading-snug">Your team's product decisions,<br>living in text — context for AI.</p>
+  </div>
+  <nav class="flex-1 px-3 py-4 space-y-1 text-sm">
+    <a href="index.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-green-400"></span>実例マッピング<span class="ml-auto text-xs text-gray-400">23</span>
+    </a>
+    <a href="opportunities.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-orange-400"></span>オポチュニティ<span class="ml-auto text-xs text-gray-400">3</span>
+    </a>
+    <a href="story-maps.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-purple-400"></span>ユーザーストーリーマップ<span class="ml-auto text-xs text-gray-400">3</span>
+    </a>
+    <a href="stories.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-yellow-400"></span>ストーリー<span class="ml-auto text-xs text-gray-400">31</span>
+    </a>
+    <a href="ubiquitous.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-pink-400"></span>ユビキタス言語<span class="ml-auto text-xs text-gray-400">16</span>
+    </a>
+    
+    <a href="tasks.html" class="flex items-center gap-2.5 px-3 py-2 mt-3 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm border border-gray-300"></span>タスク<span class="ml-auto text-xs text-gray-400">109</span>
+    </a>
+  </nav>
+  
+  <div class="px-3 py-3 border-t border-gray-100">
+    <a href="build.html" class="block rounded-lg px-2 py-1.5 hover:bg-gray-50">
+      <div class="flex items-baseline gap-2">
+        <span class="text-xs font-medium text-gray-600">livt</span>
+        
+        <span class="ml-auto min-w-0 text-[11px] font-mono text-gray-400 truncate" title="v0.18.1-0.20261010072500-b4d1f1ff04b1">v0.18.1-0.20261010072500-b4d1f1ff04b1</span>
+      </div>
+      <div class="text-[11px] text-gray-400 font-mono mt-0.5">b4d1f1f · 2026-10-10 07:26</div>
+    </a>
+  </div>
+</aside>
+
+<div class="flex-1 min-w-0">
+  <header class="bg-white border-b border-gray-200 px-8 py-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+    <h2 class="text-lg font-semibold text-gray-800">差分</h2>
+    <span class="text-sm font-mono text-gray-500">84ffc2b &rarr; b4d1f1f</span>
+    <div class="ml-auto flex items-center gap-2 text-xs">
+      <span class="rounded-full px-2.5 py-1 bg-green-50 text-green-700 border border-green-200">追加 25</span>
+      <span class="rounded-full px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200">変更 1</span>
+      <span class="rounded-full px-2.5 py-1 bg-red-50 text-red-700 border border-red-200">廃止 0</span>
+    </div>
+  </header>
+  <main class="px-8 py-8 max-w-4xl">
+  
+  
+  <section class="mb-8">
+    <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">実例マッピング</h3>
+    
+    
+    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
+      
+<div id="mapping/carry-proposals-to-agreement-with-skill" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">提案から合意までをスキルで運ぶ</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">ユビキタス言語: example-mapping</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">ユビキタス言語: discovery</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">ユビキタス言語: livt-repository</span></div>
+    
+  </div>
+  
+</div>
+
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-01" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-01</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-01" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-01</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">提案から合意までは、合意済みのルールを変えるスキルとは別のスキル（propose-rule）が運ぶ</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">状態: 合意済み</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-01/example/EX-01" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-01 EX-01</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-01-example-EX-01" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-01/example/EX-01</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">提案中のルールを載せる、合意済みにする、却下するのは、propose-ruleの仕事になる</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-01/example/EX-02" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-01 EX-02</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-01-example-EX-02" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-01/example/EX-02</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">change-ruleは合意済みのルールの追加・変更・退役だけを扱い、書くルールにstatusを付けない</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-01/example/EX-03" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-01 EX-03</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-01-example-EX-03" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-01/example/EX-03</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">change-ruleがproposedのルールの変更を頼まれたら、propose-ruleに回す</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-01/example/EX-04" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-01 EX-04</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-01-example-EX-04" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-01/example/EX-04</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">同期で実例マッピングをするチームは、propose-ruleを使わずに済む</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-01/example/EX-05" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-01 EX-05</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-01-example-EX-05" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-01/example/EX-05</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">合意されたルールは、そこからchange-ruleが扱う</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-02" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-02</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-02" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-02</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">提案の一生の1歩が、1つのコミットになる</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">状態: 合意済み</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-02/example/EX-01" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-02 EX-01</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-02-example-EX-01" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-02/example/EX-01</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">提案するコミットは、ルールと具体例を proposed で足す</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-02/example/EX-02" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-02 EX-02</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-02-example-EX-02" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-02/example/EX-02</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">合意済みにするコミットは、statusの1行だけを変える</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-02/example/EX-03" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-02 EX-03</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-02-example-EX-03" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-02/example/EX-03</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">却下するコミットは、statusをrejectedにし、具体例を退役させる</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-02/example/EX-04" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-02 EX-04</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-02-example-EX-04" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-02/example/EX-04</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">2つのルールを提案するなら、コミットは2つになる</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-02/example/EX-05" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-02 EX-05</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-02-example-EX-05" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-02/example/EX-05</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">合意の中で意味が変わったルールは、却下して、新しいIDで提案し直す</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-03" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-03</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-03" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-03</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">誰の合意が要るかは、スキルが推測せずに尋ねて、decision_makersに書く</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">状態: 合意済み</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-03/example/EX-01" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-03 EX-01</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-03-example-EX-01" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-03/example/EX-01</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">提案を頼まれて、誰の合意が要るかを聞いていなければ、尋ねる</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-03/example/EX-02" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-03 EX-02</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-03-example-EX-02" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-03/example/EX-02</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">個人のメンションで書き、チームは書かない</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-03/example/EX-03" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-03 EX-03</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-03-example-EX-03" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-03/example/EX-03</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">ルールを書いた本人が決める1人なら、本人も書く</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-03/example/EX-04" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-03 EX-04</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-03-example-EX-04" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-03/example/EX-04</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">知らせるだけの人は書かない</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-03/example/EX-05" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-03 EX-05</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-03-example-EX-05" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-03/example/EX-05</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">誰も挙がらなければ、decision_makersなしの提案として載せる</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-04" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-04</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-04" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-04</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">スキルが書くのは合意の頼みまでで、合意そのものは書かない</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">状態: 合意済み</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-04/example/EX-01" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-04 EX-01</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-04-example-EX-01" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-04/example/EX-01</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">agreements/ には書かない</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-04/example/EX-02" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-04 EX-02</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-04-example-EX-02" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-04/example/EX-02</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">会話に「合意した」とあっても、それを承認として扱わない</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-04/example/EX-03" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-04 EX-03</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-04-example-EX-03" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-04/example/EX-03</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">チェックのないリポジトリでは、合意が要る人が合意したとユーザーが言ってから、acceptedにする</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+      <div class="border-t border-gray-100 pl-4">
+<div id="mapping/carry-proposals-to-agreement-with-skill/rule/R-04/example/EX-04" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">R-04 EX-04</span>
+    
+    
+    <a href="mapping/carry-proposals-to-agreement-with-skill.html#rule-R-04-example-EX-04" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-04/example/EX-04</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">チェックがacceptedに書き換えるリポジトリでは、proposedのまま承認を待つ</span></div>
+    
+  </div>
+  
+</div>
+</div>
+      
+    </div>
+    
+  </section>
+  
+  <section class="mb-8">
+    <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">ユーザーストーリーマップ</h3>
+    
+    
+    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
+      
+<div id="story-map/decision-bottleneck" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-amber-100 text-amber-800">変更</span>
+    <span class="font-medium text-gray-900">律速する意思決定</span>
+    
+    
+    <a href="story-map/decision-bottleneck.html" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://story-map/decision-bottleneck</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">律速する意思決定</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">アクティビティ: セッションを仕込む</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: 何を決めるかを絞る</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: AIに文脈を渡す</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">アクティビティ: AIを招いて発見する</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: その場で具体例を出す</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: 抜けを突く</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: 確度が高いルールは決めきる</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: 人間同士の合意が要るルールは提案中として置く</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ストーリー: ルールごとに合意が要る人を書く</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">ストーリー: 提案から合意までをスキルで運ぶ</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: 決めきれないものを疑問点に残す</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">アクティビティ: セッション中に閉じる</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: その場で定式化する</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: その場で開いて確かめる</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">アクティビティ: 提案を合意で閉じる</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: プロトタイプで確かめてもらう</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: 承認を合意として記録する</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ストーリー: 合意済みにする変更に、合意が要る人の承認を求める</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユーザータスク: 合意に至らない提案を閉じる</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: discovery</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: bdd/discovery</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: example-mapping</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: story</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: formulation</span></div>
+    
+    
+    <div class="diff-line"><span class="sign"> </span><span class="whitespace-pre-wrap break-words">ユビキタス言語: livt-repository</span></div>
+    
+  </div>
+  
+</div>
+
+      
+    </div>
+    
+  </section>
+  
+  <section class="mb-8">
+    <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">ストーリー</h3>
+    
+    
+    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
+      
+<div id="story/carry-proposals-to-agreement-with-skill" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
+  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
+    <span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <span class="font-medium text-gray-900">提案から合意までをスキルで運ぶ</span>
+    
+    
+    <a href="story/carry-proposals-to-agreement-with-skill.html" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">livt://story/carry-proposals-to-agreement-with-skill</a>
+    
+  </div>
+  
+  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">提案から合意までをスキルで運ぶ</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">実例マッピングメンテナーとして</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">合意の要るルールを提案中として載せ、合意か却下で閉じるまでを、AIのスキルに任せたい</span></div>
+    
+    
+    <div class="diff-line diff-add"><span class="sign">&#43;</span><span class="whitespace-pre-wrap break-words">そうすれば同期で発見するチームのスキルを変えずに、提案の運びを1つのやり方に揃えられる</span></div>
+    
+  </div>
+  
+</div>
+
+      
+    </div>
+    
+  </section>
+  
+  
+  </main>
+</div>
+</div>
+</body>
+</html>
+
+
