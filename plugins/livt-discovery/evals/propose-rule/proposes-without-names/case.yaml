@@ -1,0 +1,5 @@
+schema_version: "1.1"
+name: proposes-without-names
+tags: [propose-rule]
+context:
+  scaffold_script: scaffold.sh

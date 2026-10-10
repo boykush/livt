@@ -1,0 +1,5 @@
+schema_version: "1.1"
+name: waits-where-the-check-writes
+tags: [propose-rule]
+context:
+  scaffold_script: scaffold.sh

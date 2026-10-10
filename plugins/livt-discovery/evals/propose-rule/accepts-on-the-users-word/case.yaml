@@ -1,0 +1,6 @@
+# livt:automates livt://mapping/carry-proposals-to-agreement-with-skill/rule/R-04
+schema_version: "1.1"
+name: accepts-on-the-users-word
+tags: [propose-rule]
+context:
+  scaffold_script: scaffold.sh

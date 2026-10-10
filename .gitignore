@@ -2,6 +2,7 @@ livt
 dist/
 _site/
 .playwright-mcp/
+plugins/*/evals/results/
 
 # apm install unpacks dependencies here; the files it generates (.mcp.json etc.) are committed
 apm_modules/
