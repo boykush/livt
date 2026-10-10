@@ -1,0 +1,81 @@
+rules:
+  - id: R-01
+    name: decision_makersのあるルールをacceptedにする変更には、その全員の承認が要る
+    examples:
+      - id: EX-01
+        name: acceptedのルールで、decision_makersの誰か1人でも欠けていれば、チェックは通らない
+      - id: EX-02
+        name: 全員が揃っていれば、チェックは通る
+      - id: EX-03
+        name: proposedをacceptedに変えるPRでも、最初からacceptedで載せるPRでも、同じ扱いになる
+      - id: EX-04
+        name: statusのないルールもacceptedなので、decision_makersがあれば同じ扱いになる
+      - id: EX-05
+        name: proposedのまま載せる変更は、承認を待たずに通る
+      - id: EX-06
+        name: decision_makersのないルールには、何も求めない
+      - id: EX-07
+        name: 対象のないPRには「対象なし」として通る結果を付ける
+      - id: EX-08
+        name: PRの変更、承認、承認の取り消しのどれが起きても、確かめ直す
+      - id: EX-09
+        name: 確かめるのはacceptedにする変更を含むPRだけで、mainにすでにあるacceptedのルールは確かめ直さない
+      - id: EX-10
+        name: rejectedにする変更には、承認を求めない
+  - id: R-02
+    name: decision_makersの人は、作者としても承認者としても満たせる
+    examples:
+      - id: EX-01
+        name: PRの作者がdecision_makersにいれば、書いたことをもって満たされる
+      - id: EX-02
+        name: 作者でない人は、承認で満たす
+      - id: EX-03
+        name: AIやbotのアカウントが開いたPRでは人は作者にならず、本人の承認で満たす
+      - id: EX-04
+        name: forgeが必須の承認に数えない人の承認も数える
+      - id: EX-05
+        name: 照合するのは個人だけで、チームを書いた項目は満たせない（チェックは、個人で書くよう伝えて通らない）
+  - id: R-03
+    name: 承認は合意ファイルに残り、PRを跨いで引き継がれる
+    examples:
+      - id: EX-01
+        name: decision_makersの人が承認すると、ルールがproposedのままでも、機械がそのPRのブランチの合意ファイルに書く
+      - id: EX-02
+        name: 合意ファイルに書かれている人は、あとのPRでも満たされている
+      - id: EX-03
+        name: proposedのPRで承認した人は、mainに入ったあとで人が出すacceptedにするPRに、もう一度承認しなくてよい
+      - id: EX-04
+        name: そのPRで足された記録は、そのPRの作者か承認と合っていなければ通らない（人が手で書き足しても通らない）
+      - id: EX-05
+        name: 記録は、ルールのlivt URIと、承認した人、どのPRでかを持つ
+      - id: EX-06
+        name: 合意ファイルは、実例マッピングごとに1つ置く
+  - id: R-04
+    name: 承認の揃ったproposedのルールは、同じコマンドでacceptedに書き換えられる
+    examples:
+      - id: EX-01
+        name: 書き換えを有効にしたときだけ、proposedのままで全員が揃ったルールをacceptedにする
+      - id: EX-02
+        name: 書き換えたあとの状態は、同じコマンドのチェックを通る
+      - id: EX-03
+        name: 書き換えるのはproposedを載せたPRのブランチの上だけで、mainに入ったあとは人がacceptedにするPRを出す
+      - id: EX-04
+        name: 書き換えを使わなくても、人が自分でacceptedに書き換えれば、同じチェックを通る
+  - id: R-05
+    name: forgeに触れるのはactionだけで、判定と書き込みはlivtのCLIがgitとファイルだけで行う
+    examples:
+      - id: EX-01
+        name: actionはforgeから承認の事実（誰が承認したか、PRの作者は誰か）を読み、CLIに渡す
+      - id: EX-02
+        name: 判定にAIを使わない（PRの文面に承認済みと書かれていても、承認の記録だけを見る）
+      - id: EX-03
+        name: 別のforgeは、同じ形の事実を出す部分だけを書けば、同じCLIを使える
+
+questions:
+  - id: Q-01
+    text: チームをdecision_makersに書けるようにするか（メンバーの照合に、organizationを読む権限が要る。このストーリーでは扱わない）
+
+ubiquitous:
+  - example-mapping
+  - story
+  - livt-repository
