@@ -1,0 +1,6 @@
+name: agreements action の動作検証（マージしない）
+
+rules:
+  - id: R-01
+    name: 検証用のルール
+    decision_makers: ["@boykush"]

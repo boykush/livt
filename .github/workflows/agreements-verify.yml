@@ -1,0 +1,29 @@
+name: agreements-verify
+
+# Throwaway: exercises actions/agreements on the pull request that adds it.
+# Not for main.
+on:
+  pull_request:
+    types: [opened, reopened, synchronize]
+  pull_request_review:
+    types: [submitted, dismissed]
+
+permissions: {}
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # checkout, and fetch the base to compare against
+      pull-requests: read # who wrote it, who approved it
+      statuses: write # the answer
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+
+      - uses: ./actions/agreements
+        with:
+          token: ${{ github.token }}
+          livt-version: v0.18.0
