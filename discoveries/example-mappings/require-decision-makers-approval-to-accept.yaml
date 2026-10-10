@@ -20,6 +20,8 @@ rules:
         name: PRの変更、承認、承認の取り消しのどれが起きても、確かめ直す
       - id: EX-09
         name: 確かめるのはacceptedにする変更を含むPRだけで、mainにすでにあるacceptedのルールは確かめ直さない
+      - id: EX-10
+        name: rejectedにする変更には、承認を求めない
   - id: R-02
     name: decision_makersの人は、作者としても承認者としても満たせる
     examples:
@@ -70,8 +72,6 @@ rules:
         name: 別のforgeは、同じ形の事実を出す部分だけを書けば、同じCLIを使える
 
 questions:
-  - id: Q-01
-    text: rejectedにする変更にも、decision_makersの承認を求めるか
   - id: Q-02
     text: 合意ファイルの置き場所と単位をどうするか（実例マッピングごとに1ファイルにする案がある）
   - id: Q-03
