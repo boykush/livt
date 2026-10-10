@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ルールごとに合意が要る人を書く - livt</title>
+<title>合意済みにする変更に、合意が要る人の承認を求める - livt</title>
 <script src="https://cdn.tailwindcss.com"></script>
 
 <script>
@@ -94,8 +94,8 @@
   </div>
 </div>
 
-<a href="../story/name-decision-makers-per-rule.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow font-bold text-gray-800 w-[180px] mb-6 hover:bg-yellow-200 transition">
-  <span>ルールごとに合意が要る人を書く</span><span>&rarr;</span>
+<a href="../story/require-decision-makers-approval-to-accept.html" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow font-bold text-gray-800 w-[180px] mb-6 hover:bg-yellow-200 transition">
+  <span>合意済みにする変更に、合意が要る人の承認を求める</span><span>&rarr;</span>
 </a>
 
 
@@ -126,14 +126,14 @@
       
       
       <div class="rule-body min-w-0">
-      <span class="rule-name sticky-text">ルールは、合意が要る人をdecision_makersとして持てる</span>
+      <span class="rule-name sticky-text">decision_makersのあるルールをacceptedにする変更には、その全員の承認が要る</span>
       
       
       
       
       </div>
       
-      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
+      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>10</span>
       
     </div>
     
@@ -148,7 +148,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">人はforgeのメンションの形で書く（@alice、@acme/design）。あとに続くactionが、forgeのIDへ機械的に結び付けられる</span>
+      <span class="sticky-text">acceptedのルールで、decision_makersの誰か1人でも欠けていれば、チェックは通らない</span>
       
       
       
@@ -164,7 +164,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">livtは書かれた文字列をそのまま運び、実在する人やチームかは確かめない</span>
+      <span class="sticky-text">全員が揃っていれば、チェックは通る</span>
       
       
       
@@ -180,7 +180,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">ルールのstatusに関わらず書ける（提案中のルールにも、合意済みのルールにも）</span>
+      <span class="sticky-text">proposedをacceptedに変えるPRでも、最初からacceptedで載せるPRでも、同じ扱いになる</span>
       
       
       
@@ -196,7 +196,103 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">誰を書くかは任意で、ルールを書いた本人も書ける</span>
+      <span class="sticky-text">statusのないルールもacceptedなので、decision_makersがあれば同じ扱いになる</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-01-example-EX-05" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-01-example-EX-05" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-05</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">proposedのまま載せる変更は、承認を待たずに通る</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-01-example-EX-06" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-01-example-EX-06" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-06</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">decision_makersのないルールには、何も求めない</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-01-example-EX-07" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-01-example-EX-07" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-07</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">対象のないPRには「対象なし」として通る結果を付ける</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-01-example-EX-08" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-01-example-EX-08" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-08</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">PRの変更、承認、承認の取り消しのどれが起きても、確かめ直す</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-01-example-EX-09" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-01-example-EX-09" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-09</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">確かめるのはacceptedにする変更を含むPRだけで、mainにすでにあるacceptedのルールは確かめ直さない</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-01-example-EX-10" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-01-example-EX-10" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-10</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">rejectedにする変更には、承認を求めない</span>
       
       
       
@@ -222,14 +318,14 @@
       
       
       <div class="rule-body min-w-0">
-      <span class="rule-name sticky-text">decision_makersは任意で、書かれていないルールには何も求めない</span>
+      <span class="rule-name sticky-text">decision_makersの人は、作者としても承認者としても満たせる</span>
       
       
       
       
       </div>
       
-      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
+      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>5</span>
       
     </div>
     
@@ -244,7 +340,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">decision_makersのない実例マッピングは、これまでどおりに読める</span>
+      <span class="sticky-text">PRの作者がdecision_makersにいれば、書いたことをもって満たされる</span>
       
       
       
@@ -260,7 +356,55 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">提案中のルールにも書かなくてよい</span>
+      <span class="sticky-text">作者でない人は、承認で満たす</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-02-example-EX-03" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-02-example-EX-03" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">AIやbotのアカウントが開いたPRでは人は作者にならず、本人の承認で満たす</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-02-example-EX-04" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-02-example-EX-04" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">forgeが必須の承認に数えない人の承認も数える</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-02-example-EX-05" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-02-example-EX-05" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-05</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">照合するのは個人だけで、チームを書いた項目は満たせない（チェックは、個人で書くよう伝えて通らない）</span>
       
       
       
@@ -286,14 +430,14 @@
       
       
       <div class="rule-body min-w-0">
-      <span class="rule-name sticky-text">合意が要る人は、statusに関わらずルールと一緒に示される</span>
+      <span class="rule-name sticky-text">承認は合意ファイルに残り、PRを跨いで引き継がれる</span>
       
       
       
       
       </div>
       
-      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
+      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>6</span>
       
     </div>
     
@@ -308,7 +452,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">ボードのルール付箋に、合意が要る人が出る</span>
+      <span class="sticky-text">decision_makersの人が承認すると、ルールがproposedのままでも、機械がそのPRのブランチの合意ファイルに書く</span>
       
       
       
@@ -324,7 +468,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">提案中のルールでも合意済みのルールでも、同じ出方をする</span>
+      <span class="sticky-text">合意ファイルに書かれている人は、あとのPRでも満たされている</span>
       
       
       
@@ -340,7 +484,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">タスクページの提案中のルールにも、合意が要る人が並ぶ</span>
+      <span class="sticky-text">proposedのPRで承認した人は、mainに入ったあとで人が出すacceptedにするPRに、もう一度承認しなくてよい</span>
       
       
       
@@ -356,7 +500,39 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">decision_makersのないルールは、これまでどおりに出る（未定とは書かない）</span>
+      <span class="sticky-text">そのPRで足された記録は、そのPRの作者か承認と合っていなければ通らない（人が手で書き足しても通らない）</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-03-example-EX-05" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-03-example-EX-05" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-05</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">記録は、ルールのlivt URIと、承認した人、どのPRでかを持つ</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-03-example-EX-06" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-03-example-EX-06" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-06</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">合意ファイルは、実例マッピングごとに1つ置く</span>
       
       
       
@@ -382,14 +558,14 @@
       
       
       <div class="rule-body min-w-0">
-      <span class="rule-name sticky-text">MCPとCLIは、decision_makersをルールに付けて返す</span>
+      <span class="rule-name sticky-text">承認の揃ったproposedのルールは、同じコマンドでacceptedに書き換えられる</span>
       
       
       
       
       </div>
       
-      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>2</span>
+      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>4</span>
       
     </div>
     
@@ -404,7 +580,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">decision_makersのあるルールを読むと、書かれた順のまま返る</span>
+      <span class="sticky-text">書き換えを有効にしたときだけ、proposedのままで全員が揃ったルールをacceptedにする</span>
       
       
       
@@ -420,7 +596,39 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">decision_makersのないルールには、項目そのものが載らない</span>
+      <span class="sticky-text">書き換えたあとの状態は、同じコマンドのチェックを通る</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-04-example-EX-03" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-04-example-EX-03" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">書き換えるのはproposedを載せたPRのブランチの上だけで、mainに入ったあとは人がacceptedにするPRを出す</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-04-example-EX-04" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-04-example-EX-04" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">書き換えを使わなくても、人が自分でacceptedに書き換えれば、同じチェックを通る</span>
       
       
       
@@ -446,7 +654,7 @@
       
       
       <div class="rule-body min-w-0">
-      <span class="rule-name sticky-text">合意が要る人の変更は、差分にそのルールの変更として出る</span>
+      <span class="rule-name sticky-text">forgeに触れるのはactionだけで、判定と書き込みはlivtのCLIがgitとファイルだけで行う</span>
       
       
       
@@ -468,7 +676,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">提案中のままマージしたルールにあとから人を足すと、足した人が緑で並ぶ</span>
+      <span class="sticky-text">actionはforgeから承認の事実（誰が承認したか、PRの作者は誰か）を読み、CLIに渡す</span>
       
       
       
@@ -484,7 +692,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">人を消すと、消した人が赤で並ぶ</span>
+      <span class="sticky-text">判定にAIを使わない（PRの文面に承認済みと書かれていても、承認の記録だけを見る）</span>
       
       
       
@@ -500,7 +708,7 @@
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
 
       <div class="example-body min-w-0">
-      <span class="sticky-text">人だけが変わったルールは、IDも文言も変わらない</span>
+      <span class="sticky-text">別のforgeは、同じ形の事実を出す部分だけを書けば、同じCLIを使える</span>
       
       
       
@@ -516,7 +724,7 @@
     <div class="list-head items-baseline gap-2">
       <span class="w-2.5 h-2.5 rounded-sm bg-red-400"></span>
       <h2 class="text-sm font-semibold text-gray-800">疑問点</h2>
-      <span class="text-xs text-gray-400">4</span>
+      <span class="text-xs text-gray-400">1</span>
     </div>
     <div class="question-head bg-red-50 border-l-4 border-red-300 p-3 rounded text-xs font-semibold text-red-400 uppercase tracking-wide">
       疑問点
@@ -531,43 +739,7 @@
 <a href="#question-Q-01" data-copy-link title="リンクをコピー"
    class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-red-400/70 hover:text-red-600 hover:underline cursor-pointer select-none">#Q-01</a>
 
-      <span class="sticky-text">同じ人を全ルールに繰り返し書く手間をどうするか（実例マッピング全体の既定を1か所に書き、違うルールだけ上書きする形が考えられる）</span>
-      
-    </div>
-    
-    
-    
-    <div id="question-Q-02" class="question-card relative bg-red-100 border-red-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
-      
-
-<a href="#question-Q-02" data-copy-link title="リンクをコピー"
-   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-red-400/70 hover:text-red-600 hover:underline cursor-pointer select-none">#Q-02</a>
-
-      <span class="sticky-text">合意済みのルールに書かれた合意が要る人を、そのルールを変えるときにも合意が要る人として扱うか</span>
-      
-    </div>
-    
-    
-    
-    <div id="question-Q-03" class="question-card relative bg-red-100 border-red-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
-      
-
-<a href="#question-Q-03" data-copy-link title="リンクをコピー"
-   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-red-400/70 hover:text-red-600 hover:underline cursor-pointer select-none">#Q-03</a>
-
-      <span class="sticky-text">GitHub以外のforgeでの書き方をどう扱うか（livtは文字列として運ぶだけだが、チェックとスキルは解釈する）</span>
-      
-    </div>
-    
-    
-    
-    <div id="question-Q-04" class="question-card relative bg-red-100 border-red-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
-      
-
-<a href="#question-Q-04" data-copy-link title="リンクをコピー"
-   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-red-400/70 hover:text-red-600 hover:underline cursor-pointer select-none">#Q-04</a>
-
-      <span class="sticky-text">タスクページを合意が要る人で絞り込めるようにするか（自分を待っている提案だけを見たい。絞り込みの軸が1つ増えるので、別のストーリーになりそう）</span>
+      <span class="sticky-text">チームをdecision_makersに書けるようにするか（メンバーの照合に、organizationを読む権限が要る。このストーリーでは扱わない）</span>
       
     </div>
     
