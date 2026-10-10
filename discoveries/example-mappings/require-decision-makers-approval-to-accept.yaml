@@ -78,6 +78,8 @@ questions:
     text: 機械が人のブランチに積めないときの扱い（作者がforce pushして機械のコミットが消えた場合、forkからのPRの場合）
   - id: Q-04
     text: 機械のコミットがforgeの必須の承認を外すリポジトリで、どう通すか
+  - id: Q-05
+    text: チームをdecision_makersに書けるようにするか（メンバーの照合に、organizationを読む権限が要る。このストーリーでは扱わない）
 
 ubiquitous:
   - example-mapping
