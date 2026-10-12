@@ -50,7 +50,7 @@ jobs:
 
       - name: Generate the pr-approver App token
         id: approver
-        uses: boykush/workflows/.github/actions/github-app-token@e2c7b3f0b06970e4aaddeb8d99453e5e63bc68d0
+        uses: boykush/workflows/.github/actions/github-app-token@7e3f7182afe50c0ebf1834cd62302582a0c45531
         with:
           app: pr-approver
           permission-pull-requests: write
@@ -70,7 +70,7 @@ jobs:
       # workflow, so the board would go on showing the automation it had.
       - name: Generate the repo-writer App token
         id: writer
-        uses: boykush/workflows/.github/actions/github-app-token@e2c7b3f0b06970e4aaddeb8d99453e5e63bc68d0
+        uses: boykush/workflows/.github/actions/github-app-token@7e3f7182afe50c0ebf1834cd62302582a0c45531
         with:
           app: repo-writer
           permission-contents: write
