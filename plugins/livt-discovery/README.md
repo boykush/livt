@@ -71,6 +71,8 @@ The checkout is the pull request's head rather than the merge commit: the status
 
 With `write: true` the action also commits to the pull request's branch: who stood behind each rule the pull request touches goes into `agreements/{story-key}.json`, so an approval given here still counts on a later pull request, and a proposal everyone has agreed to is rewritten accepted. That needs a token of your own with Contents write — a push `GITHUB_TOKEN` signs starts no workflow run, so the commit it left would never be checked — and it is skipped on a fork's pull request, whose branch is not yours to push to. Leave it off and people accept a proposal by editing its status themselves; the check holds that edit to the same people.
 
+The events above are one choice, not a requirement. The action takes the pull request's number from the event when the event names one, and from `pull-request` when it does not, and reads everything else back from the forge by that number. So where a token that can push is issued only to a workflow running from the default branch — which `pull_request_review` is not — the check can run from `workflow_run` instead, after an unprivileged workflow woken by the review: resolve the number there, check out that pull request's head, and pass `pull-request`.
+
 What stays yours is the trigger, the ruleset, and the token. An action can ship steps, never the events that wake it.
 
 ## Skills

@@ -8,6 +8,10 @@ inputs:
   token:
     description: A token that can read the pull request and write a commit status (Pull requests read, Commit statuses write). With write, it also pushes to the pull request's branch (Contents write), and GITHUB_TOKEN cannot stand in there — a push it signs starts no workflow run, so the commit it leaves would go unchecked
     required: true
+  pull-request:
+    description: The pull request to check, as its number. Omit it on pull_request, pull_request_target and pull_request_review, whose event names it; give it on any other event, such as workflow_run
+    required: false
+    default: ""
   write:
     description: Whether to record who agreed and turn a proposal everyone agreed to accepted, as true or false. The commit goes on the pull request's own branch
     required: false
@@ -32,19 +36,20 @@ outputs:
 runs:
   using: composite
   steps:
-    # The number is the event's, and everything else is read back from the
-    # forge by that number: an event payload is a snapshot from when the run
-    # was queued, and a pull request moves on while a run waits.
+    # Only the number is taken from the caller or the event, and everything
+    # else is read back from the forge by it: which event woke the run is the
+    # caller's choice, and a payload is a snapshot from when the run was
+    # queued, while a pull request moves on as a run waits.
     - name: Read the pull request
       id: pr
       shell: bash
       env:
         GH_TOKEN: ${{ inputs.token }}
-        NUMBER: ${{ github.event.pull_request.number }}
+        NUMBER: ${{ inputs.pull-request || github.event.pull_request.number }}
       run: |
         set -euo pipefail
         if ! printf %s "$NUMBER" | grep -qE '^[0-9]+$'; then
-          echo "::error::woken by $GITHUB_EVENT_NAME with no pull request; run this on pull_request, pull_request_target or pull_request_review"
+          echo "::error::no pull request to check: $GITHUB_EVENT_NAME names none, so pass its number as pull-request"
           exit 1
         fi
         gh api "repos/$GITHUB_REPOSITORY/pulls/$NUMBER" > "$RUNNER_TEMP/pr.json"
