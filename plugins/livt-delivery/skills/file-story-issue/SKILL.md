@@ -1,6 +1,6 @@
 ---
 name: file-story-issue
-description: File a story-level issue from the livt repository to where the story's work is tracked — carrying the story body and backpointers, deduped against the story frontmatter's own record, with the created URL written back there. The backpointers, the write-back, and the dedupe are livt's; the tracker, the template, and the tool that files are the team's. Use when a story's context should be handed to an implementation repository, with or without rule issues; per-rule automation issues route to file-rule-issues.
+description: File a story-level issue from the livt repository to where the story's work is tracked — carrying the story body and backpointers, deduped against the story frontmatter's own record, with the created URL written back there. The backpointers, the write-back, and the dedupe are livt's; the tracker, the template, and the tool that files are the team's. Use when a story's context should be handed to an implementation repository, with or without rule issues; rule-level automation issues route to file-rule-issues.
 ---
 
 You **file a story issue** — the file station of the delivery ring, at the story level.
@@ -45,7 +45,7 @@ This skill ships no tracker knowledge on purpose: one team's answer shipped as e
 2. Dedupe per **story × destination** against the record. A link to one destination never blocks filing to another.
 3. Record the revision of the livt repository: `git rev-parse --short HEAD`.
 4. Compose the issue (see Issue Content) and file it with the tool the team uses — a tracker's CLI or MCP server. Never check out the target repository. With no tool that reaches the destination, hand the composed body to the user and take the created URL back; the record treats it exactly as one you filed.
-5. **Adopt existing rule issues** where the tracker supports a parent/child link (see Parent Linking): every issue URL in the mapping's rules' `issues:` becomes a child of the new story issue, save those whose own destination already records a story issue — that nearer story issue is their parent. Parenthood does not depend on filing order — rule issues filed earlier are adopted now; rule issues filed later attach themselves (`file-rule-issues`'s job). A tracker without such links, or one that refuses this one, skips the step; the record needs none of it.
+5. **Adopt existing rule issues** where the tracker supports a parent/child link (see Parent Linking): every issue URL in the mapping's rules' `issues:` becomes a child of the new story issue — once, however many rules share it — save those whose own destination already records a story issue — that nearer story issue is their parent — and those that also cover rules of another story, which have no single parent. Parenthood does not depend on filing order — rule issues filed earlier are adopted now; rule issues filed later attach themselves (`file-rule-issues`'s job). A tracker without such links, or one that refuses this one, skips the step; the record needs none of it.
 6. Write the created URL back to the story's frontmatter `issues:` — append to the list, creating it if absent. Touch nothing else in the file.
 7. Report what was filed, which rule issues were adopted, what was skipped, and remind the user the write-back is uncommitted.
 

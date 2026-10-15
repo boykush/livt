@@ -61,7 +61,7 @@ Parent links are write-only sugar for the tracker's UI. Dedupe and parenthood ar
 ## Skills
 
 - **`/file-story-issue`** — file a story-level issue carrying the story body and backpointers, deduped against the story frontmatter's `issues:`, with the created URL written back. Adopts the mapping's rule issues as children where the tracker supports it.
-- **`/file-rule-issues`** — file automation issues for a story's rules, one per rule × destination, deduped by the mapping's own record, each carrying the rule, its examples, and backpointers; the created URL is written back to the rule's `issues:`. Only rules with `status: accepted` are filed. Holds the canonical statement of the record contract.
+- **`/file-rule-issues`** — file automation issues for a story's rules, grouped as the team decides — one per rule by default — deduped per rule × destination by the mapping's own record, each carrying its rules, their examples, and backpointers; the created URL is written back to the `issues:` of every rule it covers. Also records an issue someone else cut against the rules it covers. Only rules with `status: accepted` are filed. Holds the canonical statement of the record contract.
 
 Every skill here is a plain [Agent Skill](https://agentskills.io) — no subagents, no hooks, no slash-command-only behaviour — so it works in any conformant runtime, and the runtime-specific glue stays on your side of the line.
 
