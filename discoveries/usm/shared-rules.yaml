@@ -1,0 +1,101 @@
+name: 行き場のない共通ルール
+ubiquitous:
+  - shared-rule
+  - example-mapping
+  - ubiquitous-language
+  - story
+  - livt-uri
+activities:
+  - key: notice-shared-rules
+    name: 共通ルールに気づく
+    steps:
+      - key: stop-at-as-existing
+        name: 「既存の実装通り」で立ち止まる
+        stories:
+          - name: AIが「既存の実装通り」のルールを指摘する
+            release: follow-a-precedent
+      - key: find-in-the-log
+        name: ログの中の共通ルールを見つける
+        stories:
+          - name: 実例マッピングのルールを共通ルールへ格上げする
+  - key: define-shared-rules
+    name: 共通ルールを定義する
+    steps:
+      - key: transcribe-from-implementation
+        name: 既存の実装から書き起こす
+        stories:
+          - name: 進行中のオポチュニティが倣う分だけ、既存の実装から共通ルールを書き起こす
+            release: follow-a-precedent
+      - key: write-apart-from-the-log
+        name: ログとは別に書く
+        stories:
+          - name: 共通ルールをストーリーに属さない場所に定義する
+            release: follow-a-precedent
+          - name: 共通ルールに具体例を添える
+      - key: group-by-subject
+        name: 主題で束ねる
+        stories:
+          - name: 共通ルールを自身の主題で束ねる
+  - key: follow-from-the-log
+    name: ログから共通ルールを引く
+    steps:
+      - key: follow-as-is
+        name: そのまま倣う
+        stories:
+          - name: 実例マッピングが倣う共通ルールを宣言する
+            release: follow-a-precedent
+      - key: refine
+        name: 倣ったうえで具体化する
+        stories:
+          - name: 実例マッピングのルールが共通ルールを参照する
+      - key: deviate
+        name: 外れる
+        stories:
+          - name: 共通ルールから外れることを実例マッピングのルールとして残す
+  - key: read-in-implementation
+    name: 実装で共通ルールを引く
+    steps:
+      - key: read
+        name: 読む
+        stories:
+          - name: MCPで共通ルールを引く
+            release: follow-a-precedent
+          - name: ストーリーの実例マッピングと一緒に、倣う共通ルールが届く
+  - key: expand-to-other-forms
+    name: 別の形式に展開する
+    steps:
+      - key: expand
+        name: ADR・デザインシステム・AIエージェントのルールを起こす
+        stories:
+          - name: 共通ルールからADRを起こす
+          - name: 共通ルールからデザインシステムのガイドを起こす
+          - name: 共通ルールからAIエージェントのルールを起こす
+      - key: cite-back
+        name: 展開先から元を辿る
+        stories:
+          - name: 展開先が元の共通ルールをlivt URIで引用する
+  - key: revise-shared-rules
+    name: 共通ルールを改める
+    steps:
+      - key: trace-change
+        name: 変更をログから辿る
+        stories:
+          - name: 共通ルールの変更を、変えた実例マッピングから辿れる
+      - key: see-impact
+        name: 影響を見る
+        stories:
+          - name: 共通ルールに倣う実例マッピングを一覧する
+      - key: retire
+        name: 退役させる
+        stories:
+          - name: 共通ルールを別の共通ルールに置き換えて退役させる
+  - key: absorb-into-terms
+    name: 用語に取り込む
+    steps:
+      - key: absorb
+        name: 概念として取り込む
+        stories:
+          - name: 共通ルールをユビキタス言語の用語に置き換えて退役させる
+releases:
+  - id: follow-a-precedent
+    name: 前例を書き起こして倣う
