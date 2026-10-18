@@ -1,0 +1,30 @@
+# This repository's entities in boykush's Backstage catalog, found on main by its
+# GitHub discovery (boykush/infrastructure-as-code's applications/backstage/).
+# How an entity is written — which edges to draw, what a tag means — is set in
+# boykush/github-management's AGENTS.md and the comments atop its catalog/ files.
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: livt
+  description: >-
+    discovery の成果（Opportunity Canvas・User Story Mapping・Example Mapping）を YAML と Markdown
+    のまま持ち、ボードとして描く CLI
+  links:
+    - url: https://boykush.github.io/livt/
+      title: ドキュメント
+      icon: docs
+  tags:
+    - go
+spec:
+  type: repository
+  lifecycle: production
+  owner: user:boykush
+  system: product
+  consumesApis:
+    - adr-mcp
+  dependsOn:
+    - component:ai-plugins
+    - component:workflows
+    - resource:github-pages
+    - resource:repo-writer-app
+    - resource:pr-approver-app
