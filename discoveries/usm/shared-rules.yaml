@@ -56,7 +56,7 @@ activities:
     name: 実装で共通ルールを引く
     steps:
       - key: read
-        name: 読む
+        name: 共通ルールを読む
         stories:
           - name: MCPで共通ルールを引く
             release: follow-a-precedent
@@ -65,7 +65,7 @@ activities:
     name: 別の形式に展開する
     steps:
       - key: expand
-        name: ADR・デザインシステム・AIエージェントのルールを起こす
+        name: 展開先を起こす
         stories:
           - name: 共通ルールからADRを起こす
           - name: 共通ルールからデザインシステムのガイドを起こす
@@ -75,7 +75,7 @@ activities:
         stories:
           - name: 展開先が元の共通ルールをlivt URIで引用する
   - key: revise-shared-rules
-    name: 共通ルールを改める
+    name: 共通ルールを改め、退役させる
     steps:
       - key: trace-change
         name: 変更をログから辿る
@@ -89,11 +89,8 @@ activities:
         name: 退役させる
         stories:
           - name: 共通ルールを別の共通ルールに置き換えて退役させる
-  - key: absorb-into-terms
-    name: 用語に取り込む
-    steps:
-      - key: absorb
-        name: 概念として取り込む
+      - key: absorb-into-terms
+        name: 用語に取り込む
         stories:
           - name: 共通ルールをユビキタス言語の用語に置き換えて退役させる
 releases:
