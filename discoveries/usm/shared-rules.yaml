@@ -16,8 +16,6 @@ activities:
   - key: define-shared-rules
     name: 共通ルールを定義する
     steps:
-      - key: transcribe-from-implementation
-        name: 既存の実装から書き起こす
       - key: write-apart-from-the-log
         name: ログとは別に書く
       - key: group-by-subject
