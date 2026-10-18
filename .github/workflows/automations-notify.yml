@@ -29,7 +29,7 @@ jobs:
       # one, scoped to itself — no owner input.
       - name: Generate the repo-writer App token
         id: app-token
-        uses: boykush/workflows/.github/actions/github-app-token@db56cdabc8b889ede81b4c93b4dad01fe8d18727
+        uses: boykush/workflows/.github/actions/github-app-token@f332e0211cce2ccfdc285791d1011b9c542cb609
         with:
           app: repo-writer
           permission-contents: write
