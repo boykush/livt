@@ -18,8 +18,6 @@ activities:
     steps:
       - key: write-apart-from-the-log
         name: ログとは別に書く
-      - key: group-by-subject
-        name: 主題で束ねる
   - key: follow-from-the-log
     name: ログから共通ルールを引く
     steps:
