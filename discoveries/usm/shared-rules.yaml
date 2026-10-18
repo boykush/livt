@@ -17,7 +17,7 @@ activities:
       - key: find-in-the-log
         name: ログの中の共通ルールを見つける
         stories:
-          - name: 実例マッピングのルールを共通ルールへ格上げする
+          - name: 実例マッピングのルールを共通ルールとして追加し、元のルールを参照に置き換える
   - key: define-shared-rules
     name: 共通ルールを定義する
     steps:
