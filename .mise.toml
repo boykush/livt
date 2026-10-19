@@ -7,7 +7,7 @@ node = "24.21.0"
 hk = "latest"
 pkl = "latest"
 golangci-lint = "2.15.0"
-goreleaser = "2.18.2"
+goreleaser = "2.18.3"
 
 # Check commands shared by CI (.github/workflows/ci.yml) and the hk pre-commit
 # hooks (hk.pkl) — one definition, no drift. Run them all with `mise run check`.
