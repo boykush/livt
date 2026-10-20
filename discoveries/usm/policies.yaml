@@ -20,6 +20,7 @@ activities:
         name: ログとは別に書く
         stories:
           - name: ポリシーを、ストーリーに属さない場所に定義する
+            key: define-policies-apart-from-stories
   - key: follow-from-the-log
     name: ログからポリシーを引く
     steps:
