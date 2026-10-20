@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>livt経由で各実装リポジトリに自動化Issueを起票する - livt</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
 </head>
 <body class="bg-gray-50 min-h-screen">
 <header class="bg-white border-b border-gray-200">
@@ -75,9 +75,10 @@
   <section class="mt-7">
     <h2 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">説明</h2>
     <div class="bg-white rounded-lg border border-gray-200 px-6 py-5">
-      <p class="text-sm text-gray-700 whitespace-pre-line leading-loose">ルールメンテナーとして
-livtリポジトリの未自動化ルールごとに、livt経由で各実装リポジトリへ自動化Issueを起票したい
+      <div class="prose prose-sm max-w-none text-gray-700 leading-loose"><p>ルールメンテナーとして<br>
+livtリポジトリの未自動化ルールごとに、livt経由で各実装リポジトリへ自動化Issueを起票したい<br>
 そうすれば実装リポジトリにテスト駆動の自動化を依頼でき、ディスカバリーと開発のギャップを埋められる</p>
+</div>
     </div>
   </section>
   
