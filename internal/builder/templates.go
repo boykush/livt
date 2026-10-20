@@ -38,6 +38,7 @@ func funcs(lang i18n.Lang) template.FuncMap {
 		"ruleURI":           uri.Rule,
 		"exampleURI":        uri.Example,
 		"questionURI":       uri.Question,
+		"markdown":          markdown,
 	}
 }
 
