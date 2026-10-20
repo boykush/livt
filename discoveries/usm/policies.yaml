@@ -18,6 +18,8 @@ activities:
     steps:
       - key: write-apart-from-the-log
         name: ログとは別に書く
+        stories:
+          - name: ポリシーを、ストーリーに属さない場所に定義する
   - key: follow-from-the-log
     name: ログからポリシーを引く
     steps:
