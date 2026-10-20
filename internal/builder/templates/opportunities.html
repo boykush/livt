@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>livt - {{t "nav.opportunities"}}</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
 <style>
   /* iframe preview: crop the page header so only the canvas shows. The canvas is
      a reading-width page, not a wide board, so it is scaled half as far as the
@@ -55,7 +55,7 @@
         {{end}}
       </a>
       {{if .Statement}}
-      <p class="px-4 py-3 text-sm text-gray-700 whitespace-pre-line leading-relaxed">{{.Statement}}</p>
+      <div class="px-4 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed">{{markdown .Statement}}</div>
       {{end}}
       <div class="px-4 pb-3 flex items-center gap-2 flex-wrap">
         <span class="font-mono text-xs text-gray-400">{{.Key}}</span>
