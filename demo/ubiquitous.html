@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ユビキタス言語 - livt</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
 </head>
 <body class="bg-gray-50 min-h-screen">
 <div class="flex min-h-screen">
@@ -17,7 +17,7 @@
   </div>
   <nav class="flex-1 px-3 py-4 space-y-1 text-sm">
     <a href="index.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
-      <span class="w-2.5 h-2.5 rounded-sm bg-green-400"></span>実例マッピング<span class="ml-auto text-xs text-gray-400">25</span>
+      <span class="w-2.5 h-2.5 rounded-sm bg-green-400"></span>実例マッピング<span class="ml-auto text-xs text-gray-400">26</span>
     </a>
     <a href="opportunities.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
       <span class="w-2.5 h-2.5 rounded-sm bg-orange-400"></span>オポチュニティ<span class="ml-auto text-xs text-gray-400">4</span>
@@ -26,14 +26,17 @@
       <span class="w-2.5 h-2.5 rounded-sm bg-purple-400"></span>ユーザーストーリーマップ<span class="ml-auto text-xs text-gray-400">4</span>
     </a>
     <a href="stories.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
-      <span class="w-2.5 h-2.5 rounded-sm bg-yellow-400"></span>ストーリー<span class="ml-auto text-xs text-gray-400">33</span>
+      <span class="w-2.5 h-2.5 rounded-sm bg-yellow-400"></span>ストーリー<span class="ml-auto text-xs text-gray-400">34</span>
     </a>
     <a href="ubiquitous.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-pink-50 text-pink-900 font-medium">
       <span class="w-2.5 h-2.5 rounded-sm bg-pink-400"></span>ユビキタス言語<span class="ml-auto text-xs text-gray-400">17</span>
     </a>
+    <a href="policies.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
+      <span class="w-2.5 h-2.5 rounded-sm bg-sky-400"></span>ポリシー<span class="ml-auto text-xs text-gray-400">5</span>
+    </a>
     
     <a href="tasks.html" class="flex items-center gap-2.5 px-3 py-2 mt-3 rounded-lg text-gray-600 hover:bg-gray-50">
-      <span class="w-2.5 h-2.5 rounded-sm border border-gray-300"></span>タスク<span class="ml-auto text-xs text-gray-400">112</span>
+      <span class="w-2.5 h-2.5 rounded-sm border border-gray-300"></span>タスク<span class="ml-auto text-xs text-gray-400">119</span>
     </a>
   </nav>
   
@@ -42,9 +45,9 @@
       <div class="flex items-baseline gap-2">
         <span class="text-xs font-medium text-gray-600">livt</span>
         
-        <span class="ml-auto min-w-0 text-[11px] font-mono text-gray-400 truncate" title="v0.0.0-20261024105236-33725c8b57c4">v0.0.0-20261024105236-33725c8b57c4</span>
+        <span class="ml-auto min-w-0 text-[11px] font-mono text-gray-400 truncate" title="v0.0.0-20261024120538-214df8690efd">v0.0.0-20261024120538-214df8690efd</span>
       </div>
-      <div class="text-[11px] text-gray-400 font-mono mt-0.5">33725c8 · 2026-10-24 10:52</div>
+      <div class="text-[11px] text-gray-400 font-mono mt-0.5">214df86 · 2026-10-24 12:05</div>
     </a>
   </div>
 </aside>
@@ -96,8 +99,9 @@
             
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">実装リポジトリのテストがルールや具体例をlivt URIで引用し、その振る舞いを実行できる仕様として確かめること。テストのコメントに `livt:automates` とlivt URIを並べて書く。
-BDD の Automation にあたる。livtが知るのは引用があるかどうかで、テストが通ったかではない。ルールと具体例はそれぞれ自分への引用で自動化され、一方が他方を兼ねない。</td>
+        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>実装リポジトリのテストがルールや具体例をlivt URIで引用し、その振る舞いを実行できる仕様として確かめること。テストのコメントに <code>livt:automates</code> とlivt URIを並べて書く。<br>
+BDD の Automation にあたる。livtが知るのは引用があるかどうかで、テストが通ったかではない。ルールと具体例はそれぞれ自分への引用で自動化され、一方が他方を兼ねない。</p>
+</td>
       </tr>
     
       <tr id="context" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
@@ -110,9 +114,10 @@ BDD の Automation にあたる。livtが知るのは引用があるかどうか
             
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">その用語の意味が通じる範囲。DDDの境界づけられたコンテキストにあたる。
-livt では `design/ubiquitous/{ctx}/` のディレクトリとして切り、同じ言葉が範囲ごとに違う意味を持つことを表す。
-文脈を切らない用語は、範囲を跨いで共通の意味を指す。</td>
+        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>その用語の意味が通じる範囲。DDDの境界づけられたコンテキストにあたる。<br>
+livt では <code>design/ubiquitous/{ctx}/</code> のディレクトリとして切り、同じ言葉が範囲ごとに違う意味を持つことを表す。<br>
+文脈を切らない用語は、範囲を跨いで共通の意味を指す。</p>
+</td>
       </tr>
     
       <tr id="discovery" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
@@ -125,8 +130,9 @@ livt では `design/ubiquitous/{ctx}/` のディレクトリとして切り、�
             
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">何を作るべきかをチームで探索する協働活動。
-livt はその結果を living text として残し、開発成果物との橋渡しをする。</td>
+        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>何を作るべきかをチームで探索する協働活動。<br>
+livt はその結果を living text として残し、開発成果物との橋渡しをする。</p>
+</td>
       </tr>
     
       <tr id="example-mapping" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
@@ -139,8 +145,9 @@ livt はその結果を living text として残し、開発成果物との橋�
             
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">1つのストーリーについて、ルール・具体例・疑問点を色分け付箋で整理する手法。
-詳細ディスカバリーで仕様を具体化するために使う。</td>
+        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>1つのストーリーについて、ルール・具体例・疑問点を色分け付箋で整理する手法。<br>
+詳細ディスカバリーで仕様を具体化するために使う。</p>
+</td>
       </tr>
     
       <tr id="formulation" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
@@ -153,8 +160,9 @@ livt はその結果を living text として残し、開発成果物との橋�
             
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">記録した素のマッピングを、ルールは言い切りに、具体例はその名前だけで何の話か分かる形にして、チームの誰が読んでも同じ振る舞いを思い浮かべられる文書に整える工程。実装は見ず、変えてよいのは表現と構造だけで、その差分がレビューの対象になる。
-BDD の Formulation にあたり、Gherkin を書く行為に相当するのが実例マッピングの書き換え。Gherkin はそこから起こす生成物で、正となるのはマッピングのほう。</td>
+        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>記録した素のマッピングを、ルールは言い切りに、具体例はその名前だけで何の話か分かる形にして、チームの誰が読んでも同じ振る舞いを思い浮かべられる文書に整える工程。実装は見ず、変えてよいのは表現と構造だけで、その差分がレビューの対象になる。<br>
+BDD の Formulation にあたり、Gherkin を書く行為に相当するのが実例マッピングの書き換え。Gherkin はそこから起こす生成物で、正となるのはマッピングのほう。</p>
+</td>
       </tr>
     
       <tr id="implementation-repository" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
@@ -167,9 +175,10 @@ BDD の Formulation にあたり、Gherkin を書く行為に相当するのが�
             
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">livtリポジトリのルールを、自プロダクトのテストとして自動化する側のリポジトリ。ストーリーの `repos:` で宣言する。
-外へ渡るのはIssueとlivt URIというポインタだけで、戻るのはテストが何を自動化しているかの引用。コードを読むのは実装リポジトリの中で走る走査であって、livtリポジトリのビルドはその結果しか読まない。
-livtリポジトリと同一のリポジトリでも成立するが、それは両者が別々であるという一般形の特殊ケース。本リポジトリ自身がその特殊ケースにあたるため、同一である前提が暗黙に紛れ込みやすい。</td>
+        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>livtリポジトリのルールを、自プロダクトのテストとして自動化する側のリポジトリ。ストーリーの <code>repos:</code> で宣言する。<br>
+外へ渡るのはIssueとlivt URIというポインタだけで、戻るのはテストが何を自動化しているかの引用。コードを読むのは実装リポジトリの中で走る走査であって、livtリポジトリのビルドはその結果しか読まない。<br>
+livtリポジトリと同一のリポジトリでも成立するが、それは両者が別々であるという一般形の特殊ケース。本リポジトリ自身がその特殊ケースにあたるため、同一である前提が暗黙に紛れ込みやすい。</p>
+</td>
       </tr>
     
       <tr id="livt-repository" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
@@ -182,8 +191,9 @@ livtリポジトリと同一のリポジトリでも成立するが、それは�
             
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">ディスカバリーで合意し記録した成果物（ストーリー・ユーザーストーリーマップ・実例マッピング・ユビキタス言語）を収める置き場で、全ての機能開発の起点。
-サイト・CLI・MCPの出力はすべてここからの導出物。livt URIはこの中の一点を指し、ルート（`--root` / `LIVT_ROOT`）は各環境における所在を指す。</td>
+        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>ディスカバリーで合意し記録した成果物（ストーリー・ユーザーストーリーマップ・実例マッピング・ユビキタス言語）を収める置き場で、全ての機能開発の起点。<br>
+サイト・CLI・MCPの出力はすべてここからの導出物。livt URIはこの中の一点を指し、ルート（<code>--root</code> / <code>LIVT_ROOT</code>）は各環境における所在を指す。</p>
+</td>
       </tr>
     
       <tr id="livt-resource" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
@@ -196,7 +206,8 @@ livtリポジトリと同一のリポジトリでも成立するが、それは�
             
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">[livt URI](/design/ubiquitous/livt-uri.md)で指せる、[livtリポジトリ](/design/ubiquitous/livt-repository.md)の一点。ディスカバリーの成果物か、設計の定義か、その中の一つ一つかを問わずにこう呼ぶ。</td>
+        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p><a href="ubiquitous.html#livt-uri">livt URI</a>で指せる、<a href="ubiquitous.html#livt-repository">livtリポジトリ</a>の一点。ディスカバリーの成果物か、設計の定義か、その中の一つ一つかを問わずにこう呼ぶ。</p>
+</td>
       </tr>
     
       <tr id="livt-uri" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
@@ -209,8 +220,9 @@ livtリポジトリと同一のリポジトリでも成立するが、それは�
             
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">livtリポジトリの一点（オポチュニティ・オポチュニティキャンバス・ユーザーストーリーマップ・ストーリー・実例マッピング・ルール・具体例・疑問点・用語）を指す安定した名前。
-`livt://` で始まり、MCP・CLI・SSGが同じ形を使う。デプロイ先のURLには依存しない。</td>
+        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>livtリポジトリの一点（オポチュニティ・オポチュニティキャンバス・ユーザーストーリーマップ・ストーリー・実例マッピング・ルール・具体例・疑問点・用語）を指す安定した名前。<br>
+<code>livt://</code> で始まり、MCP・CLI・SSGが同じ形を使う。デプロイ先のURLには依存しない。</p>
+</td>
       </tr>
     
       <tr id="opportunity-canvas" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
@@ -223,8 +235,9 @@ livtリポジトリと同一のリポジトリでも成立するが、それは�
             
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">オポチュニティを1枚で記述するキャンバス。検証できる事実・解決策・価値についての仮定を10個のボックスに分けて並べる。
-「作るか」を決める前に埋めるもので、埋まっていないボックスはそのまま未回答の問いとして残る。</td>
+        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>オポチュニティを1枚で記述するキャンバス。検証できる事実・解決策・価値についての仮定を10個のボックスに分けて並べる。<br>
+「作るか」を決める前に埋めるもので、埋まっていないボックスはそのまま未回答の問いとして残る。</p>
+</td>
       </tr>
     
       <tr id="opportunity" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
@@ -237,8 +250,9 @@ livtリポジトリと同一のリポジトリでも成立するが、それは�
             
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">プロダクトで取り組みうる機会。あるユーザーの課題と、それを解決したときに生まれる事業上の便益を、ひとつの検討単位として捉えたもの。
-`opportunities/{key}.md` に1文で書き、同じkeyのユーザーストーリーマップがそのオポチュニティに引いたジャーニーになる。各一覧の絞り込み軸になる。</td>
+        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>プロダクトで取り組みうる機会。あるユーザーの課題と、それを解決したときに生まれる事業上の便益を、ひとつの検討単位として捉えたもの。<br>
+<code>opportunities/{key}.md</code> に1文で書き、同じkeyのユーザーストーリーマップがそのオポチュニティに引いたジャーニーになる。各一覧の絞り込み軸になる。</p>
+</td>
       </tr>
     
       <tr id="record" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
@@ -251,8 +265,9 @@ livtリポジトリと同一のリポジトリでも成立するが、それは�
             
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">会話で決めたことを、解釈も改善も加えず、ボードのままテキストへ残す工程。
-Patton の「話して記録」にあたり、ここで残した素のマッピングが定式化のベースラインになる。</td>
+        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>会話で決めたことを、解釈も改善も加えず、ボードのままテキストへ残す工程。<br>
+Patton の「話して記録」にあたり、ここで残した素のマッピングが定式化のベースラインになる。</p>
+</td>
       </tr>
     
       <tr id="release-slice" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
@@ -265,8 +280,9 @@ Patton の「話して記録」にあたり、ここで残した素のマッピ�
             
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">ユーザーストーリーマップを横方向に区切り、どのストーリーをどの順序でリリースするかを示すまとまり。
-リリース未指定のストーリーは未スコープ行にまとまる。</td>
+        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>ユーザーストーリーマップを横方向に区切り、どのストーリーをどの順序でリリースするかを示すまとまり。<br>
+リリース未指定のストーリーは未スコープ行にまとまる。</p>
+</td>
       </tr>
     
       <tr id="story-map" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
@@ -279,9 +295,10 @@ Patton の「話して記録」にあたり、ここで残した素のマッピ�
             
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">アクティビティ・ユーザータスク・ストーリーをリリーススライスと共に俯瞰するボード。
-全体のストーリーを組み立て、ブラッシュアップするために使う。
-livt ではオポチュニティ1つにつき1枚で、そのオポチュニティと同じキーのファイル（`discoveries/usm/{key}.yaml`）に置く。</td>
+        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>アクティビティ・ユーザータスク・ストーリーをリリーススライスと共に俯瞰するボード。<br>
+全体のストーリーを組み立て、ブラッシュアップするために使う。<br>
+livt ではオポチュニティ1つにつき1枚で、そのオポチュニティと同じキーのファイル（<code>discoveries/usm/{key}.yaml</code>）に置く。</p>
+</td>
       </tr>
     
       <tr id="story" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
@@ -294,8 +311,9 @@ livt ではオポチュニティ1つにつき1枚で、そのオポチュニテ�
             
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">ユーザーにとって価値のある振る舞いの単位。
-3つのC のカードとして `stories/{story-key}.md` に書かれ、ユーザーストーリーマップや実例マッピングから参照される。</td>
+        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>ユーザーにとって価値のある振る舞いの単位。<br>
+3つのC のカードとして <code>stories/{story-key}.md</code> に書かれ、ユーザーストーリーマップや実例マッピングから参照される。</p>
+</td>
       </tr>
     
       <tr id="ubiquitous-language" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
@@ -308,8 +326,9 @@ livt ではオポチュニティ1つにつき1枚で、そのオポチュニテ�
             
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">チームが協働と実装で共通して使う用語。
-livt では用語ごとに Markdown ファイルとして管理し、一覧をテーブルとして閲覧する。</td>
+        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>チームが協働と実装で共通して使う用語。<br>
+livt では用語ごとに Markdown ファイルとして管理し、一覧をテーブルとして閲覧する。</p>
+</td>
       </tr>
     
       <tr id="bdd/discovery" data-filter-values="[&#34;bdd&#34;]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
@@ -322,8 +341,9 @@ livt では用語ごとに Markdown ファイルとして管理し、一覧を�
             <span class="text-[11px] text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-2 py-0.5">bdd</span>
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">具体例を出しながらストーリーの振る舞いを洗い出し、ルールを立て、決めきれないものを疑問点として残す協働。実例マッピングがその手法。
-BDD の Discovery にあたり、探索全体の傘であるディスカバリーとは別に、ストーリー1つ分のセッションを指す。部屋に誰がいるか——人間だけか、AIを招くか——は定義に入らない。</td>
+        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>具体例を出しながらストーリーの振る舞いを洗い出し、ルールを立て、決めきれないものを疑問点として残す協働。実例マッピングがその手法。<br>
+BDD の Discovery にあたり、探索全体の傘であるディスカバリーとは別に、ストーリー1つ分のセッションを指す。部屋に誰がいるか——人間だけか、AIを招くか——は定義に入らない。</p>
+</td>
       </tr>
     
     </tbody>
