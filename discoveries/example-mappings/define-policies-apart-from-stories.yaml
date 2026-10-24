@@ -38,6 +38,7 @@ rules:
         name: デザインシステムの文脈のポリシー「一覧はオポチュニティで絞り込める」は、入力にドメインの用語「オポチュニティ」を参照する
       - id: EX-02
         name: description に1文の要約を任意で持てる
+        retired: true
   - id: R-06
     name: ポリシーの状態は、ルールと同じ語彙で持つ
     examples:
