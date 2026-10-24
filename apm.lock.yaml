@@ -129,7 +129,25 @@ deployments:
   owners:
   - .
   active_owner: .
-  content_hash: sha256:f3ee0f7b39edabaec1c6610885c8fb64741a89b93acbd58c6565f97270829844
+  content_hash: sha256:75e67b849fae708ff0dfb74656f2d72e9f8a61f8bd3ef1cf8ed55d5c1852eb99
+- kind: project-relative
+  target: claude
+  value: .claude/skills/preview-changes
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/preview-changes/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:d0261129fb0120520521489c32d14effbec5127361524e042e83a596ac87ccd6
 - kind: project-relative
   target: claude
   value: .claude/skills/render-site
@@ -237,7 +255,25 @@ deployments:
   owners:
   - .
   active_owner: .
-  content_hash: sha256:f3ee0f7b39edabaec1c6610885c8fb64741a89b93acbd58c6565f97270829844
+  content_hash: sha256:75e67b849fae708ff0dfb74656f2d72e9f8a61f8bd3ef1cf8ed55d5c1852eb99
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/preview-changes
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: null
+- kind: project-relative
+  target: legacy
+  value: .agents/skills/preview-changes/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - .
+  active_owner: .
+  content_hash: sha256:d0261129fb0120520521489c32d14effbec5127361524e042e83a596ac87ccd6
 - kind: project-relative
   target: legacy
   value: .agents/skills/render-site
@@ -320,14 +356,20 @@ mcp_config_provenance:
 local_deployed_files:
 - .agents/skills/enrich-release-notes
 - .agents/skills/enrich-release-notes/SKILL.md
+- .agents/skills/preview-changes
+- .agents/skills/preview-changes/SKILL.md
 - .agents/skills/render-site
 - .agents/skills/render-site/SKILL.md
 - .claude/skills/enrich-release-notes
 - .claude/skills/enrich-release-notes/SKILL.md
+- .claude/skills/preview-changes
+- .claude/skills/preview-changes/SKILL.md
 - .claude/skills/render-site
 - .claude/skills/render-site/SKILL.md
 local_deployed_file_hashes:
-  .agents/skills/enrich-release-notes/SKILL.md: sha256:f3ee0f7b39edabaec1c6610885c8fb64741a89b93acbd58c6565f97270829844
+  .agents/skills/enrich-release-notes/SKILL.md: sha256:75e67b849fae708ff0dfb74656f2d72e9f8a61f8bd3ef1cf8ed55d5c1852eb99
+  .agents/skills/preview-changes/SKILL.md: sha256:d0261129fb0120520521489c32d14effbec5127361524e042e83a596ac87ccd6
   .agents/skills/render-site/SKILL.md: sha256:aca688ea2f49e8b4145e746d8c42c829cca03e10be7a2beb6ec925efa632be06
-  .claude/skills/enrich-release-notes/SKILL.md: sha256:f3ee0f7b39edabaec1c6610885c8fb64741a89b93acbd58c6565f97270829844
+  .claude/skills/enrich-release-notes/SKILL.md: sha256:75e67b849fae708ff0dfb74656f2d72e9f8a61f8bd3ef1cf8ed55d5c1852eb99
+  .claude/skills/preview-changes/SKILL.md: sha256:d0261129fb0120520521489c32d14effbec5127361524e042e83a596ac87ccd6
   .claude/skills/render-site/SKILL.md: sha256:aca688ea2f49e8b4145e746d8c42c829cca03e10be7a2beb6ec925efa632be06
