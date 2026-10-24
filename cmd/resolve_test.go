@@ -43,11 +43,11 @@ func newTestRepo(t *testing.T) string {
 	write(filepath.Join("stories", "demo.md"), "---\nname: デモストーリー\n---\n\n本文\n")
 	write(filepath.Join("discoveries", "usm", "demo-map.yaml"),
 		"name: デモマップ\nactivities: []\n")
-	write(filepath.Join("ubiquitous", "story.md"), "---\nname: ストーリー\n---\n\n定義\n")
+	write(filepath.Join("design", "ubiquitous", "story.md"), "---\nname: ストーリー\n---\n\n定義\n")
 	// The same key at the root and under a context: two terms, told apart by the
 	// directory holding them.
-	write(filepath.Join("ubiquitous", "invoice.md"), "---\nname: 共通の請求書\n---\n\n定義\n")
-	write(filepath.Join("ubiquitous", "billing", "invoice.md"), "---\nname: 請求の請求書\n---\n\n定義\n")
+	write(filepath.Join("design", "ubiquitous", "invoice.md"), "---\nname: 共通の請求書\n---\n\n定義\n")
+	write(filepath.Join("design", "ubiquitous", "billing", "invoice.md"), "---\nname: 請求の請求書\n---\n\n定義\n")
 	write(filepath.Join("design", "policies", "closed-items.md"), "---\nname: 閉じたものは未完了に数えない\ninput:\n  - story\n---\n\n本文\n")
 	write(filepath.Join("design", "policies", "billing", "invoices-are-numbered.md"), "---\nname: 請求書には番号を振る\n---\n")
 	write(filepath.Join("design", "policies", "withdrawn.md"), "---\nname: やめたポリシー\nstatus: retired\n---\n")

@@ -4,10 +4,20 @@ rules:
     examples:
       - id: EX-01
         name: ubiquitous/{ctx}/{term-key}.md に置いた用語は、その文脈の用語として読まれる
+        retired: true
+        superseded_by:
+          - livt://mapping/scope-terms-by-context/rule/R-01/example/EX-04
       - id: EX-02
         name: ubiquitous/{term-key}.md に置いた用語は文脈を持たず、文脈を跨いで共通の意味を指す
+        retired: true
+        superseded_by:
+          - livt://mapping/scope-terms-by-context/rule/R-01/example/EX-05
       - id: EX-03
         name: 同じ term-key がルートと文脈配下に共存でき、別々の用語として扱われる
+      - id: EX-04
+        name: design/ubiquitous/{ctx}/{term-key}.md に置いた用語は、その文脈の用語として読まれる
+      - id: EX-05
+        name: design/ubiquitous/{term-key}.md に置いた用語は文脈を持たず、文脈を跨いで共通の意味を指す
   - id: R-02
     name: 文脈は用語の識別子の一部になる
     examples:

@@ -52,7 +52,7 @@ func newBuilder(outDir string) (*builder.Builder, error) {
 		MappingsDir:      filepath.Join("discoveries", "example-mappings"),
 		StoriesDir:       "stories",
 		USMDir:           filepath.Join("discoveries", "usm"),
-		UbiquitousDir:    "ubiquitous",
+		UbiquitousDir:    filepath.Join("design", "ubiquitous"),
 		AutomationsDir:   reportsDir,
 		OutDir:           outDir,
 		Lang:             cfg.Lang,

@@ -95,12 +95,12 @@ Canonical statement in `write-story-card`; these bullets are verbatim from it. Y
 
 ## Ubiquitous Language
 
-Pink stickies are the words the room agreed on, and the record is their only path off the board. A term that never reaches `ubiquitous/` can never be looked up. `record-story-map` carries this section verbatim — a skill loads on its own, so both record skills have to hold it. Change one, change both.
+Pink stickies are the words the room agreed on, and the record is their only path off the board. A term that never reaches `design/ubiquitous/` can never be looked up. `record-story-map` carries this section verbatim — a skill loads on its own, so both record skills have to hold it. Change one, change both.
 
 - Capture every pink sticky as an `ubiquitous:` entry. The list holds **term references**, not display names: kebab-case English, `{ctx}/{term-key}` when the board scopes the word to a context. Mint the key from the term, and ask the user when the wording gives no obvious one.
-- When the board carries the term's agreed **definition**, write `ubiquitous/{term-key}.md` with the board's word as `name:` and the definition as the body.
+- When the board carries the term's agreed **definition**, write `design/ubiquitous/{term-key}.md` with the board's word as `name:` and the definition as the body.
 - When it carries only the word, capture the reference and tell the user which terms are still undefined. An unknown key renders as a plain pink card, so a reference without a file is a safe and visible state — inventing a definition is not.
-- A term already in `ubiquitous/` keeps its definition. The board naming a word does not license rewriting what the glossary already says about it.
+- A term already in `design/ubiquitous/` keeps its definition. The board naming a word does not license rewriting what the glossary already says about it.
 
 ## Re-recording an Existing Mapping
 
@@ -131,10 +131,10 @@ Before the baseline commit, verify the record is complete — not whether the ma
 - Every card on the board appears in the YAML; no card was dropped. The yellow sticky counts: the story's card names it, or `name:` carries it when there is no card.
 - Every green card sits under the same rule it sat under on the board.
 - Every red card is preserved as a Question — none were silently answered.
-- Every pink card appears in `ubiquitous:`, and every term whose definition the board carried has its `ubiquitous/{term-key}.md`.
+- Every pink card appears in `ubiquitous:`, and every term whose definition the board carried has its `design/ubiquitous/{term-key}.md`.
 - Wording matches the board; nothing was paraphrased away.
 - Re-recording only: every ID the default branch holds still names the same card, and nothing it holds was deleted to make room.
 
 ## Output
 
-`discoveries/example-mappings/{story-key}.yaml` as one commit: the verbatim baseline every later diff is read against. Plus the `ubiquitous/{term-key}.md` files the board's definitions produced, a note of which referenced terms are still undefined, and the hand-off to `formulate-example-mapping`.
+`discoveries/example-mappings/{story-key}.yaml` as one commit: the verbatim baseline every later diff is read against. Plus the `design/ubiquitous/{term-key}.md` files the board's definitions produced, a note of which referenced terms are still undefined, and the hand-off to `formulate-example-mapping`.

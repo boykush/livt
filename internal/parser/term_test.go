@@ -47,7 +47,7 @@ func TestParseTermReadsNameAndBody(t *testing.T) {
 	}
 }
 
-// livt:automates livt://mapping/scope-terms-by-context/rule/R-01/example/EX-01
+// livt:automates livt://mapping/scope-terms-by-context/rule/R-01/example/EX-04
 // The directory holding the file is the context, so a term under one reads as
 // scoped to it.
 func TestParseTermTakesContextFromItsDirectory(t *testing.T) {

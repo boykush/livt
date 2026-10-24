@@ -109,12 +109,12 @@ ubiquitous:
 
 ## Ubiquitous Language
 
-Pink stickies are the words the room agreed on, and the record is their only path off the board. A term that never reaches `ubiquitous/` can never be looked up. `record-example-mapping` carries this section verbatim — a skill loads on its own, so both record skills have to hold it. Change one, change both.
+Pink stickies are the words the room agreed on, and the record is their only path off the board. A term that never reaches `design/ubiquitous/` can never be looked up. `record-example-mapping` carries this section verbatim — a skill loads on its own, so both record skills have to hold it. Change one, change both.
 
 - Capture every pink sticky as an `ubiquitous:` entry. The list holds **term references**, not display names: kebab-case English, `{ctx}/{term-key}` when the board scopes the word to a context. Mint the key from the term, and ask the user when the wording gives no obvious one.
-- When the board carries the term's agreed **definition**, write `ubiquitous/{term-key}.md` with the board's word as `name:` and the definition as the body.
+- When the board carries the term's agreed **definition**, write `design/ubiquitous/{term-key}.md` with the board's word as `name:` and the definition as the body.
 - When it carries only the word, capture the reference and tell the user which terms are still undefined. An unknown key renders as a plain pink card, so a reference without a file is a safe and visible state — inventing a definition is not.
-- A term already in `ubiquitous/` keeps its definition. The board naming a word does not license rewriting what the glossary already says about it.
+- A term already in `design/ubiquitous/` keeps its definition. The board naming a word does not license rewriting what the glossary already says about it.
 
 ## Commit Contract
 
@@ -138,9 +138,9 @@ Before the baseline commit, verify the record is complete — not whether the ma
 - Backbone order (left to right) and story order (top to bottom) match the board.
 - Every story hangs under the same task it sat under on the board.
 - Every release slice on the board appears in `releases:`, in the board's top-to-bottom order, and every card above a divider carries its `release:`.
-- Every pink card appears in `ubiquitous:`, and every term whose definition the board carried has its `ubiquitous/{term-key}.md`.
+- Every pink card appears in `ubiquitous:`, and every term whose definition the board carried has its `design/ubiquitous/{term-key}.md`.
 - Wording matches the board; nothing was paraphrased away.
 
 ## Output
 
-`discoveries/usm/{opportunity-key}.yaml` as two commits: the verbatim baseline, and a structural edit whose diff the review reads. Plus the `ubiquitous/{term-key}.md` files the board's definitions produced, and a note of which referenced terms are still undefined.
+`discoveries/usm/{opportunity-key}.yaml` as two commits: the verbatim baseline, and a structural edit whose diff the review reads. Plus the `design/ubiquitous/{term-key}.md` files the board's definitions produced, and a note of which referenced terms are still undefined.
