@@ -439,22 +439,20 @@ func TestRulesCarryTheirDecisionMakers(t *testing.T) {
 	}
 }
 
-// livt:automates livt://mapping/define-policies-apart-from-stories/rule/R-05/example/EX-01
-// A policy read over MCP carries the terms it takes and yields, resolved the
-// way a board's terms are: a committed one gets its name and URI.
-func TestReadPolicyResolvesItsTerms(t *testing.T) {
+// livt:automates livt://mapping/define-policies-apart-from-stories/rule/R-08/example/EX-01
+// A policy read over MCP carries its body as written, links to terms included.
+func TestReadPolicyCarriesTheLinksInItsBody(t *testing.T) {
 	s := newTestServer(t)
-	writeFile(t, filepath.Join(s.cfg.Root, "design", "ubiquitous", "opportunity.md"), "---\nname: オポチュニティ\n---\n\n定義\n")
-	writeFile(t, filepath.Join(s.cfg.Root, "design", "policies", "design-system", "lists-filter-by-opportunity.md"),
-		"---\nname: 一覧はオポチュニティで絞り込める\ninput:\n  - opportunity\n---\n")
-	resURI := uri.Policy("design-system", "lists-filter-by-opportunity")
+	writeFile(t, filepath.Join(s.cfg.Root, "design", "policies", "lists-filter-by-opportunity.md"),
+		"---\nname: どの一覧も、オポチュニティで絞り込める\n---\n\n[オポチュニティ](/design/ubiquitous/opportunity.md)は各一覧の絞り込み軸になる。\n")
+	resURI := uri.Policy("", "lists-filter-by-opportunity")
 
 	got := readResource[policyResult](t, s.readPolicy, resURI).Policy
-	if got.URI != resURI || got.Ctx != "design-system" || got.Name != "一覧はオポチュニティで絞り込める" {
+	if got.URI != resURI || got.Name != "どの一覧も、オポチュニティで絞り込める" {
 		t.Errorf("policy = %+v", got)
 	}
-	if len(got.Input) != 1 || got.Input[0].Name != "オポチュニティ" || got.Input[0].URI != uri.Term("", "opportunity") {
-		t.Errorf("input = %+v, want opportunity resolved to its term", got.Input)
+	if !strings.Contains(got.Body, "[オポチュニティ](/design/ubiquitous/opportunity.md)") {
+		t.Errorf("body = %q, want the link to the term kept", got.Body)
 	}
 }
 

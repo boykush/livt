@@ -423,13 +423,9 @@ type policyJSON struct {
 	Name string `json:"name"`
 	// Status is always present, as a rule's is, so a reader need not know that
 	// a policy written with no status is accepted.
-	Status string `json:"status"`
-	// Input and Output are the terms the policy takes and yields, resolved the
-	// way a board's ubiquitous list is.
-	Input        []termRefJSON `json:"input,omitempty"`
-	Output       []termRefJSON `json:"output,omitempty"`
-	SupersededBy []string      `json:"superseded_by,omitempty"`
-	Body         string        `json:"body"`
+	Status       string   `json:"status"`
+	SupersededBy []string `json:"superseded_by,omitempty"`
+	Body         string   `json:"body"`
 }
 
 func (c Config) toPolicyJSON(p *domain.Policy) policyJSON {
@@ -441,12 +437,6 @@ func (c Config) toPolicyJSON(p *domain.Policy) policyJSON {
 		Status:       string(p.Status.OrDefault()),
 		SupersededBy: p.SupersededBy,
 		Body:         p.Body,
-	}
-	if len(p.Input) > 0 {
-		out.Input = c.toTermRefs(p.Input)
-	}
-	if len(p.Output) > 0 {
-		out.Output = c.toTermRefs(p.Output)
 	}
 	return out
 }

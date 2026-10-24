@@ -11,11 +11,6 @@ type Policy struct {
 	// Status is agreed the way a rule's is, so it reads the same vocabulary and
 	// the same default: a policy written with no status is accepted.
 	Status RuleStatus
-	// Input and Output are the terms the policy takes and yields, as the
-	// references a board's ubiquitous list authors: "{ctx}/{term-key}" or
-	// "{term-key}".
-	Input  []string
-	Output []string
 	// SupersededBy names what took a retired policy's place, as livt URIs.
 	// Absent means nothing replaced it: a policy can be retired on its own.
 	SupersededBy []string
