@@ -28,6 +28,8 @@ activities:
         name: そのまま倣う
       - key: refine
         name: 倣ったうえで具体化する
+        stories:
+          - name: 実例マッピングのルールが、ポリシーを参照する
       - key: deviate
         name: 外れる
   - key: read-in-implementation
