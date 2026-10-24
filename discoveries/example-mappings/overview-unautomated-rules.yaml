@@ -24,6 +24,8 @@ rules:
 
   - id: R-03
     name: 一覧はオポチュニティで絞り込める
+    policies:
+      - livt://policy/story-lists-filter-by-opportunity
     examples:
       - id: EX-01
         name: オポチュニティを選ぶと、そのマップに載るストーリーのルールだけが表示される
