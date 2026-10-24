@@ -6,6 +6,8 @@ rules:
         name: design/policies/ に置いたポリシーは、どの実例マッピングにも属さない
       - id: EX-02
         name: ポリシーは md で、フロントマターと本文を持つ
+      - id: EX-03
+        name: description に1文の要約を任意で持てる
   - id: R-02
     name: 用語とポリシーは design/ の下に、種類ごとにまとまる
     examples:
@@ -14,7 +16,7 @@ rules:
       - id: EX-02
         name: 今の ubiquitous/ の用語は design/ubiquitous/ に移る
   - id: R-03
-    name: ポリシーは文脈で切れ、文脈を持たないポリシーはすべての文脈に共通
+    name: ポリシーは文脈ディレクトリで切れる
     examples:
       - id: EX-01
         name: design/policies/{ctx}/{key}.md に置いたポリシーは、その文脈のポリシーとして読まれる
@@ -38,6 +40,9 @@ rules:
         name: デザインシステムの文脈のポリシー「一覧はオポチュニティで絞り込める」は、入力にドメインの用語「オポチュニティ」を参照する
       - id: EX-02
         name: description に1文の要約を任意で持てる
+        retired: true
+        superseded_by:
+          - livt://mapping/define-policies-apart-from-stories/rule/R-01/example/EX-03
   - id: R-06
     name: ポリシーの状態は、ルールと同じ語彙で持つ
     examples:
@@ -55,9 +60,9 @@ questions:
   - id: Q-01
     text: ポリシーの具体例を md でどう持つか（ID を付けて引用できるようにするか、Do／Don't に分けるか。ポリシーを書いてみてから決める）
   - id: Q-02
-    text: 文脈の説明をどこに置くか（scope-terms-by-context の Q-02 と同じ問い）
+    text: 文脈の説明をどこに置くか（livt://mapping/scope-terms-by-context/question/Q-02 と同じ問い）
   - id: Q-03
-    text: 状態を書かないポリシーをどう読むか
+    text: status を書かないポリシーを accepted として読むか（status のないルールは accepted として読む）
   - id: Q-04
     text: ポリシーに来歴（sources）を持たせるか
 
