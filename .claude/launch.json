@@ -12,6 +12,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-c", "import functools, http.server as s\nclass NoStore(s.SimpleHTTPRequestHandler):\n    def end_headers(self):\n        self.send_header('Cache-Control', 'no-store')\n        super().end_headers()\ns.ThreadingHTTPServer(('', 3001), functools.partial(NoStore, directory='docs/site')).serve_forever()"],
       "port": 3001
+    },
+    {
+      "name": "livt-diff",
+      "runtimeExecutable": "zsh",
+      "runtimeArgs": ["-lc", "base=$(git merge-base origin/main HEAD 2>/dev/null || git merge-base main HEAD) && exec go run . serve --diff \"$base\" -p 3002 -o \"${TMPDIR:-/tmp}/livt-diff\""],
+      "port": 3002
     }
   ]
 }
