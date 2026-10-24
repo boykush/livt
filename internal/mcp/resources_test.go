@@ -465,3 +465,30 @@ func TestReadPolicyRejectsATermURI(t *testing.T) {
 		t.Error("got nil, want the term URI refused by the policy handler")
 	}
 }
+
+// livt:automates livt://mapping/reference-policies-from-rules/rule/R-03/example/EX-01
+// A rule read over MCP carries the policies it references, named when the
+// policy is on file and left as its URI when it is not.
+func TestReadRuleCarriesItsPolicies(t *testing.T) {
+	s := newTestServer(t)
+	writeFile(t, filepath.Join(s.cfg.Root, "design", "policies", "id-stickies-show-id-and-link.md"),
+		"---\nname: ID を持つ付箋は、ID を示し、そのリンクをコピーできる\n---\n")
+	writeFile(t, filepath.Join(s.cfg.Root, "discoveries", "example-mappings", "linked.yaml"),
+		"rules:\n"+
+			"  - id: R-01\n"+
+			"    name: ルール\n"+
+			"    policies:\n"+
+			"      - livt://policy/id-stickies-show-id-and-link\n"+
+			"      - livt://policy/not-on-file\n")
+
+	got := readResource[ruleResult](t, s.readRule, uri.Rule("linked", "R-01")).Rule.Policies
+	if len(got) != 2 {
+		t.Fatalf("policies = %+v, want two", got)
+	}
+	if got[0].URI != "livt://policy/id-stickies-show-id-and-link" || got[0].Name != "ID を持つ付箋は、ID を示し、そのリンクをコピーできる" {
+		t.Errorf("policies[0] = %+v, want it named", got[0])
+	}
+	if got[1].URI != "livt://policy/not-on-file" || got[1].Name != "" {
+		t.Errorf("policies[1] = %+v, want only its URI", got[1])
+	}
+}
