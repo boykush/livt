@@ -16,7 +16,7 @@
     {
       "name": "livt-diff",
       "runtimeExecutable": "zsh",
-      "runtimeArgs": ["-lc", "base=$(git merge-base origin/main HEAD 2>/dev/null || git merge-base main HEAD) && exec go run . serve --diff \"$base\" -p 3002 -o \"${TMPDIR:-/tmp}/livt-diff\""],
+      "runtimeArgs": ["-lc", "exec go run . serve --diff \"$(git merge-base HEAD origin/HEAD)\" -p 3002 -o \"${TMPDIR:-/tmp}/livt-diff\""],
       "port": 3002
     }
   ]
