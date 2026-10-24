@@ -6,8 +6,6 @@ rules:
         name: design/policies/ に置いたポリシーは、どの実例マッピングにも属さない
       - id: EX-02
         name: ポリシーは md で、フロントマターと本文を持つ
-      - id: EX-03
-        name: description に1文の要約を任意で持てる
   - id: R-02
     name: 用語とポリシーは design/ の下に、種類ごとにまとまる
     examples:
@@ -40,9 +38,6 @@ rules:
         name: デザインシステムの文脈のポリシー「一覧はオポチュニティで絞り込める」は、入力にドメインの用語「オポチュニティ」を参照する
       - id: EX-02
         name: description に1文の要約を任意で持てる
-        retired: true
-        superseded_by:
-          - livt://mapping/define-policies-apart-from-stories/rule/R-01/example/EX-03
   - id: R-06
     name: ポリシーの状態は、ルールと同じ語彙で持つ
     examples:
