@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{t "nav.ubiquitous"}} - livt</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
 </head>
 <body class="bg-gray-50 min-h-screen">
 <div class="flex min-h-screen">
@@ -44,7 +44,7 @@
             {{if .Ctx}}<span class="text-[11px] text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-2 py-0.5">{{.Ctx}}</span>{{end}}
           </div>
         </td>
-        <td class="px-5 py-3 text-sm text-gray-700 whitespace-pre-wrap leading-relaxed">{{.Definition}}</td>
+        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed">{{.Definition}}</td>
       </tr>
     {{end}}
     </tbody>

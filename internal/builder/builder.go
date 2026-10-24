@@ -19,6 +19,7 @@ type Builder struct {
 	StoriesDir       string
 	USMDir           string
 	UbiquitousDir    string
+	PoliciesDir      string
 	// AutomationsDir holds the collected reports the implementation
 	// repositories push. Absent is the ordinary state of a livt repository no
 	// implementation points at, and the site then shows no automation at all.
@@ -387,6 +388,7 @@ func (b *Builder) InputDirs() []string {
 		b.StoriesDir,
 		b.USMDir,
 		b.UbiquitousDir,
+		b.PoliciesDir,
 		b.AutomationsDir,
 	}
 }

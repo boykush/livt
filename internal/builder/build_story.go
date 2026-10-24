@@ -26,5 +26,5 @@ func (b *Builder) buildStory(path string, story *domain.Story, mappingPath strin
 		return err
 	}
 	defer f.Close()
-	return renderStory(f, b.Lang, story, mappingPath, opportunities, storyCards, b.diffMark("../", uri.Story(story.Key.Value)))
+	return renderStory(f, b.Lang, story, b.markdown(story.Body, b.StoriesDir, "../"), mappingPath, opportunities, storyCards, b.diffMark("../", uri.Story(story.Key.Value)))
 }

@@ -87,7 +87,7 @@ func (b *Builder) buildOpportunities(mapByKey map[string]storyMapRef, storiesByK
 		tiles = append(tiles, opportunityTile{
 			Key:       o.Key.Value,
 			Name:      o.DisplayName(),
-			Statement: o.Body,
+			Statement: b.markdown(o.Body, b.OpportunitiesDir, ""),
 			HasCanvas: canvasPath != "",
 			StoryMap:  rootRelativeMap(storyMap),
 			Links:     urlMetaFieldViews(o.Meta),
@@ -107,6 +107,7 @@ func (b *Builder) renderOpportunityPage(path string, o *domain.Opportunity, canv
 	return renderOpportunity(f, b.Lang, opportunityView{
 		Diff:         b.diffMark("../", uri.Opportunity(o.Key.Value)),
 		Opportunity:  o,
+		Body:         b.markdown(o.Body, b.OpportunitiesDir, "../"),
 		Meta:         metaFieldViews(o.Meta),
 		CanvasPath:   canvasPath,
 		ProgressPath: progressPath,
