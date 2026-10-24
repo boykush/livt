@@ -12,8 +12,6 @@ import (
 type policyFrontmatter struct {
 	Name         string   `yaml:"name"`
 	Status       string   `yaml:"status"`
-	Input        []string `yaml:"input"`
-	Output       []string `yaml:"output"`
 	SupersededBy []string `yaml:"superseded_by"`
 }
 
@@ -56,8 +54,6 @@ func ParsePolicy(policiesDir, ref string) (*domain.Policy, error) {
 		Key:          key,
 		Name:         fm.Name,
 		Status:       status,
-		Input:        fm.Input,
-		Output:       fm.Output,
 		SupersededBy: fm.SupersededBy,
 		Body:         body,
 	}, nil

@@ -89,7 +89,7 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
 		Name:        "policy",
 		Title:       "Policy",
-		Description: "A policy: a decision that holds across stories, kept apart from the example mappings. Its name states it; status reads as a rule's does; input and output are the ubiquitous terms it takes and yields; superseded_by is what replaced a retired one. This shape addresses a policy that holds across contexts; one scoped to a single context is addressed by policy-in-context instead.",
+		Description: "A policy: a decision that holds across stories, kept apart from the example mappings. Its name states it; its body relates it to terms by links; status reads as a rule's does; superseded_by is what replaced a retired one. This shape addresses a policy that holds across contexts; one scoped to a single context is addressed by policy-in-context instead.",
 		MIMEType:    "application/json",
 		URITemplate: uri.PolicyTemplate,
 	}, s.readPolicy)

@@ -33,9 +33,15 @@ rules:
         name: 用語は置き場が design/ に移っても livt://ubiquitous/… のまま指せ、既存の参照は壊れない
   - id: R-05
     name: ポリシーは文を name に持ち、入力と出力の用語を参照する
+    status: retired
+    superseded_by:
+      - livt://mapping/define-policies-apart-from-stories/rule/R-08
     examples:
       - id: EX-01
         name: デザインシステムの文脈のポリシー「一覧はオポチュニティで絞り込める」は、入力にドメインの用語「オポチュニティ」を参照する
+        retired: true
+        superseded_by:
+          - livt://mapping/define-policies-apart-from-stories/rule/R-08/example/EX-01
       - id: EX-02
         name: description に1文の要約を任意で持てる
         retired: true
@@ -53,6 +59,11 @@ rules:
         name: 退役したポリシーは消さずに残り、そのキーは他のポリシーに渡さない
       - id: EX-02
         name: 置き換え先があれば superseded_by で指し、なければ書かない
+  - id: R-08
+    name: ポリシーは文を name に持ち、本文から用語をファイルパスのリンクで指す
+    examples:
+      - id: EX-01
+        name: ポリシー「どの一覧も、オポチュニティで絞り込める」は、本文で [オポチュニティ](/design/ubiquitous/opportunity.md) とリンクする
 
 questions:
   - id: Q-01
@@ -66,6 +77,8 @@ questions:
       - livt://mapping/define-policies-apart-from-stories/rule/R-06/example/EX-02
   - id: Q-04
     text: ポリシーに来歴（sources）を持たせるか
+  - id: Q-05
+    text: 本文のリンク先に、ファイルパスに加えて livt URI も任意で使えるようにするか（あとで対応する）
 
 ubiquitous:
   - policy

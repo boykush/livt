@@ -39,7 +39,7 @@ func (s *Server) Resolve(p uri.Parsed) (any, error) {
 		if err != nil {
 			return nil, notFound(err)
 		}
-		return ruleResult{versioned: s.versioned(), Rule: toRuleJSON(p.StoryKey, rule)}, nil
+		return ruleResult{versioned: s.versioned(), Rule: s.cfg.toRuleJSON(p.StoryKey, rule)}, nil
 	case uri.KindExample:
 		example, err := s.cfg.example(p.StoryKey, p.RuleID, p.ExampleID)
 		if err != nil {
