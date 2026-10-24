@@ -44,6 +44,8 @@ rules:
     examples:
       - id: EX-01
         name: 合意前のポリシーは proposed、合意済みは accepted、却下は rejected、退役は retired
+      - id: EX-02
+        name: status を書かないポリシーは、ルールと同じく accepted として読まれる
   - id: R-07
     name: ポリシーはそれ自体で退役でき、置き換え先は任意
     examples:
@@ -59,6 +61,9 @@ questions:
     text: 文脈の説明をどこに置くか（livt://mapping/scope-terms-by-context/question/Q-02 と同じ問い）
   - id: Q-03
     text: status を書かないポリシーを accepted として読むか（status のないルールは accepted として読む）
+    retired: true
+    superseded_by:
+      - livt://mapping/define-policies-apart-from-stories/rule/R-06/example/EX-02
   - id: Q-04
     text: ポリシーに来歴（sources）を持たせるか
 
