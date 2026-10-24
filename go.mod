@@ -6,6 +6,7 @@ require (
 	github.com/modelcontextprotocol/go-sdk v1.8.0
 	github.com/spf13/cobra v1.10.2
 	github.com/yuin/goldmark v1.8.6
+	github.com/yuin/goldmark/v2 v2.1.8
 	gopkg.in/yaml.v3 v3.0.1
 )
 
