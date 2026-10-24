@@ -1,7 +1,7 @@
 // Package uri builds and parses livt URIs — the deployment-independent way to
 // address one point of the livt repository: an opportunity, its canvas, a story map, a
-// story, an example mapping, a rule, an example, a question, or a ubiquitous
-// language term. The MCP server,
+// story, an example mapping, a rule, an example, a question, a ubiquitous
+// language term, or a policy. The MCP server,
 // the CLI, and the site build all have to agree on the form, so it lives here
 // rather than inside any one of them.
 package uri
@@ -31,6 +31,10 @@ const (
 	// term shapes both stand: a context is optional, so a term that holds across
 	// contexts keeps the address it had before contexts existed.
 	ScopedTermTemplate = "livt://ubiquitous/{ctx}/{term_key}"
+	PolicyTemplate     = "livt://policy/{policy_key}"
+	// ScopedPolicyTemplate addresses a policy that belongs to one context, in
+	// the same two shapes a term takes and for the same reason.
+	ScopedPolicyTemplate = "livt://policy/{ctx}/{policy_key}"
 )
 
 const (
@@ -40,6 +44,7 @@ const (
 	opportunityCanvasPrefix = "livt://opportunity-canvas/"
 	storyPrefix             = "livt://story/"
 	termPrefix              = "livt://ubiquitous/"
+	policyPrefix            = "livt://policy/"
 	ruleInfix               = "/rule/"
 	exampleInfix            = "/example/"
 	questionInfix           = "/question/"
@@ -108,21 +113,46 @@ func Term(ctx, termKey string) string {
 // its URI, the reference a board's ubiquitous list authors, and its anchor in
 // the glossary table.
 func TermRef(ctx, termKey string) string {
-	if ctx == "" {
-		return termKey
-	}
-	return ctx + termCtxSep + termKey
+	return scopedRef(ctx, termKey)
 }
 
 // SplitTermRef takes a term reference apart. Both segments are guarded, so a
 // reference can neither escape the ubiquitous directory nor nest a context
 // inside another: contexts are one level deep, the same depth the URI carries.
 func SplitTermRef(ref string) (ctx, termKey string, ok bool) {
-	if c, key, found := strings.Cut(ref, termCtxSep); found {
-		if !ValidSegment(c) || !ValidSegment(key) {
+	return splitScopedRef(ref)
+}
+
+// Policy builds the URI for a policy. An empty ctx addresses a policy that
+// holds across contexts.
+func Policy(ctx, policyKey string) string {
+	return policyPrefix + PolicyRef(ctx, policyKey)
+}
+
+// PolicyRef is how a policy is named where a single string is wanted: the tail
+// of its URI, and its path under the policies directory without ".md".
+func PolicyRef(ctx, policyKey string) string {
+	return scopedRef(ctx, policyKey)
+}
+
+// SplitPolicyRef takes a policy reference apart, guarded the way a term's is.
+func SplitPolicyRef(ref string) (ctx, policyKey string, ok bool) {
+	return splitScopedRef(ref)
+}
+
+func scopedRef(ctx, key string) string {
+	if ctx == "" {
+		return key
+	}
+	return ctx + termCtxSep + key
+}
+
+func splitScopedRef(ref string) (ctx, key string, ok bool) {
+	if c, k, found := strings.Cut(ref, termCtxSep); found {
+		if !ValidSegment(c) || !ValidSegment(k) {
 			return "", "", false
 		}
-		return c, key, true
+		return c, k, true
 	}
 	if !ValidSegment(ref) {
 		return "", "", false
@@ -234,6 +264,16 @@ func ParseTerm(s string) (ctx, termKey string, ok bool) {
 		return "", "", false
 	}
 	return SplitTermRef(ref)
+}
+
+// ParsePolicy extracts the context and policy key from a policy URI. A
+// context-free policy yields an empty ctx.
+func ParsePolicy(s string) (ctx, policyKey string, ok bool) {
+	ref, found := strings.CutPrefix(s, policyPrefix)
+	if !found {
+		return "", "", false
+	}
+	return SplitPolicyRef(ref)
 }
 
 // ValidSegment guards externally-supplied URI/key segments so they resolve to a
