@@ -444,7 +444,7 @@ func TestRulesCarryTheirDecisionMakers(t *testing.T) {
 // way a board's terms are: a committed one gets its name and URI.
 func TestReadPolicyResolvesItsTerms(t *testing.T) {
 	s := newTestServer(t)
-	writeFile(t, filepath.Join(s.cfg.Root, "ubiquitous", "opportunity.md"), "---\nname: オポチュニティ\n---\n\n定義\n")
+	writeFile(t, filepath.Join(s.cfg.Root, "design", "ubiquitous", "opportunity.md"), "---\nname: オポチュニティ\n---\n\n定義\n")
 	writeFile(t, filepath.Join(s.cfg.Root, "design", "policies", "design-system", "lists-filter-by-opportunity.md"),
 		"---\nname: 一覧はオポチュニティで絞り込める\ninput:\n  - opportunity\n---\n")
 	resURI := uri.Policy("design-system", "lists-filter-by-opportunity")

@@ -72,7 +72,7 @@ func (c Config) usmDir() string {
 }
 
 func (c Config) ubiquitousDir() string {
-	return filepath.Join(c.Root, "ubiquitous")
+	return filepath.Join(c.Root, "design", "ubiquitous")
 }
 
 func (c Config) policiesDir() string {
