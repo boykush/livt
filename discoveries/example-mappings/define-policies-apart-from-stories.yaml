@@ -79,6 +79,10 @@ questions:
     text: ポリシーに来歴（sources）を持たせるか
   - id: Q-05
     text: 本文のリンク先に、ファイルパスに加えて livt URI も任意で使えるようにするか（あとで対応する）
+    retired: true
+    superseded_by:
+      - livt://mapping/link-artifacts-from-body-text/rule/R-01
+      - livt://mapping/link-artifacts-from-body-text/rule/R-03
 
 ubiquitous:
   - policy

@@ -116,7 +116,6 @@ func (p Parsed) String() string {
 // Page is where the URI lands on the generated site, relative to the output
 // root. Deployment stays out of it: a deployed URL is this path with the site
 // root prefixed, which is what lets one livt repository be served from several places.
-// A kind the site does not render yet, a policy, has no page and yields "".
 func (p Parsed) Page() string {
 	switch p.Kind {
 	case KindMapping:
@@ -137,6 +136,8 @@ func (p Parsed) Page() string {
 		return StoryPage(p.StoryKey)
 	case KindTerm:
 		return TermPage(p.TermCtx, p.TermKey)
+	case KindPolicy:
+		return PolicyPage(p.PolicyCtx, p.PolicyKey)
 	}
 	return ""
 }

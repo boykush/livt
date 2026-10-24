@@ -1,0 +1,60 @@
+rules:
+  - id: R-01
+    name: 本文のリンク先にlivt URIを書くと、サイトではそのURIが着地するページへのリンクになる
+    policies:
+      - livt://policy/body-references-link-to-pages
+    examples:
+      - id: EX-01
+        name: 用語の定義に [オポチュニティ](livt://ubiquitous/opportunity) と書くと、用語集のオポチュニティの行へ辿れる
+      - id: EX-02
+        name: ストーリーの本文から livt://mapping/{story-key}/rule/R-01 を指すと、ボードのそのルールの付箋へ辿れる
+  - id: R-02
+    name: リンクのテキストを空にすると、リンク先の名前が入る
+    examples:
+      - id: EX-01
+        name: "[](livt://ubiquitous/opportunity) は「オポチュニティ」と表示される"
+      - id: EX-02
+        name: ルールを指す空のリンクには、そのルールの name が入る
+  - id: R-03
+    name: リンク先にlivtリポジトリ内のファイルパスを書いても、同じページへ辿れる
+    policies:
+      - livt://policy/body-references-link-to-pages
+    examples:
+      - id: EX-01
+        name: "[オポチュニティ](/design/ubiquitous/opportunity.md) は、livt://ubiquitous/opportunity と同じ行へ辿れる"
+      - id: EX-02
+        name: ポリシーの本文に書いた相対パス ../ubiquitous/opportunity.md も、同じ行へ辿れる
+  - id: R-04
+    name: 辿れない参照はリンクにせず、文字だけを残す
+    examples:
+      - id: EX-01
+        name: まだ書かれていない用語を指すリンクは、テキストだけが表示され、ビルドは止まらない
+      - id: EX-02
+        name: テキストが空で辿れないリンクは、書かれたlivt URIをそのまま表示する
+      - id: EX-03
+        name: livtリポジトリの外を指すURLは、これまでどおりそのままリンクになる
+  - id: R-05
+    name: リンクが解決されるのは、用語の定義・ポリシー・ストーリー・オポチュニティの本文
+    examples:
+      - id: EX-01
+        name: 用語集の定義は、ストーリーの本文と同じく Markdown として描画される
+  - id: R-06
+    name: ポリシーはサイトに一覧のページを持ち、ポリシーのlivt URIはその行に着地する
+    examples:
+      - id: EX-01
+        name: livt://policy/story-lists-filter-by-opportunity は、ポリシー一覧のその行を指す
+      - id: EX-02
+        name: 文脈を持つポリシーは、文脈を添えて並ぶ
+
+questions:
+  - id: Q-01
+    text: MCP と livt resolve が返す本文でも、livt URI を解決するか（今は書かれたまま返す）
+  - id: Q-02
+    text: 用語やポリシーの行に、そこへリンクしている本文（被リンク）を出すか（用語を分けたり寄せたりするとき、影響の範囲がそこから見える）
+
+ubiquitous:
+  - ubiquitous-language
+  - livt-uri
+  - policy
+  - story
+  - opportunity

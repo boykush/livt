@@ -63,6 +63,8 @@ activities:
             key: look-up-terms-in-glossary
           - name: 用語を文脈で切り分ける
             key: scope-terms-by-context
+          - name: 本文から、用語やポリシーをlivt URIでリンクする
+            key: link-artifacts-from-body-text
   - key: record-and-formulate
     name: 発見の成果を記録して定式化する
     steps:

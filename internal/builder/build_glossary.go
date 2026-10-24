@@ -29,7 +29,7 @@ func (b *Builder) buildGlossary() error {
 			Ctx:        t.Ctx,
 			Key:        t.Key,
 			Name:       t.Name,
-			Definition: t.Body,
+			Definition: b.markdown(t.Body, filepath.Join(b.UbiquitousDir, t.Ctx), ""),
 			Diff:       b.diffMark("", uri.Term(t.Ctx, t.Key)),
 		})
 		// Context-free terms offer no axis to filter on: they belong to every

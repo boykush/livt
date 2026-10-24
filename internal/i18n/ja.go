@@ -15,6 +15,7 @@ var ja = Catalog{
 	"nav.ubiquitous":       "ユビキタス言語",
 	"nav.tasks":            "タスク",
 	"nav.diff":             "差分",
+	"nav.policies":         "ポリシー",
 
 	"build.title":        "ビルド情報",
 	"build.livt":         "livt",
@@ -52,6 +53,7 @@ var ja = Catalog{
 	"empty.story-maps":       "ユーザーストーリーマップはまだありません。",
 	"empty.stories":          "ストーリーが見つかりません。",
 	"empty.terms":            "用語が見つかりません。",
+	"empty.policies":         "ポリシーはまだありません。",
 
 	"tasks.questions":                "未解決の疑問点",
 	"tasks.questions-hint":           "会話で閉じる",
@@ -88,6 +90,10 @@ var ja = Catalog{
 	"glossary.term":       "用語",
 	"glossary.key":        "キー",
 	"glossary.definition": "定義",
+
+	"policies.policy": "ポリシー",
+	"policies.key":    "キー",
+	"policies.body":   "本文",
 
 	"story.metadata":    "メタデータ",
 	"story.related":     "関連",

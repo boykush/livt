@@ -55,7 +55,7 @@
         {{end}}
       </a>
       {{if .Statement}}
-      <div class="px-4 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed">{{markdown .Statement}}</div>
+      <div class="px-4 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed">{{.Statement}}</div>
       {{end}}
       <div class="px-4 pb-3 flex items-center gap-2 flex-wrap">
         <span class="font-mono text-xs text-gray-400">{{.Key}}</span>

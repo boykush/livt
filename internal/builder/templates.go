@@ -38,7 +38,6 @@ func funcs(lang i18n.Lang) template.FuncMap {
 		"ruleURI":           uri.Rule,
 		"exampleURI":        uri.Example,
 		"questionURI":       uri.Question,
-		"markdown":          markdown,
 	}
 }
 
@@ -295,6 +294,7 @@ type Sidebar struct {
 	StoryMaps int
 	Stories   int
 	Terms     int
+	Policies  int
 	// LivtVersion, SpecVersion and Built are what the foot of every page says
 	// this build was made from, and the link there leads to the rest of it.
 	// They sit below the nav rather than in it: none of the three is a decision or
@@ -372,7 +372,7 @@ func rootRelativeMap(ref *storyMapRef) *storyMapRef {
 type opportunityTile struct {
 	Key       string
 	Name      string
-	Statement string
+	Statement template.HTML
 	HasCanvas bool
 	StoryMap  *storyMapRef
 	Links     []metaFieldView
@@ -393,6 +393,7 @@ type opportunitiesIndexView struct {
 type opportunityView struct {
 	Diff        *diffMarkView
 	Opportunity *domain.Opportunity
+	Body        template.HTML
 	Meta        []metaFieldView
 	CanvasPath  string
 	// ProgressPath is empty when the opportunity has taken on no story, the
@@ -530,7 +531,7 @@ type glossaryCard struct {
 	Ctx        string
 	Key        string
 	Name       string
-	Definition string
+	Definition template.HTML
 	// Diff is the note the row carries when the term changed between the
 	// revisions a diff build was given, nil otherwise.
 	Diff *diffMarkView
@@ -543,6 +544,25 @@ type glossaryView struct {
 	DiffGone *diffGoneView
 	Sidebar  Sidebar
 	Terms    []glossaryCard
+	Contexts []string
+}
+
+// policyRow is one row of the policies table, anchored and keyed the way a
+// glossary row is. Proposed marks a policy still waiting for agreement.
+type policyRow struct {
+	Anchor   string
+	Ctx      string
+	Key      string
+	Name     string
+	Proposed bool
+	Body     template.HTML
+}
+
+// policiesView is every policy in force as one table, narrowed by context the
+// way the glossary is.
+type policiesView struct {
+	Sidebar  Sidebar
+	Policies []policyRow
 	Contexts []string
 }
 
@@ -596,6 +616,7 @@ type diffPartView struct {
 
 type storyView struct {
 	Story         *domain.Story
+	Body          template.HTML
 	Meta          []metaFieldView
 	MappingPath   string
 	Opportunities []opportunityRef
@@ -671,9 +692,10 @@ func renderStoriesIndex(w io.Writer, lang i18n.Lang, view storiesIndexView) erro
 	return templates(lang).ExecuteTemplate(w, "stories.html", view)
 }
 
-func renderStory(w io.Writer, lang i18n.Lang, story *domain.Story, mappingPath string, opportunities []opportunityRef, storyCards []storyMapRef, mark *diffMarkView) error {
+func renderStory(w io.Writer, lang i18n.Lang, story *domain.Story, body template.HTML, mappingPath string, opportunities []opportunityRef, storyCards []storyMapRef, mark *diffMarkView) error {
 	return templates(lang).ExecuteTemplate(w, "story.html", storyView{
 		Story:         story,
+		Body:          body,
 		Meta:          metaFieldViews(story.Meta),
 		MappingPath:   mappingPath,
 		Opportunities: opportunities,
@@ -699,6 +721,10 @@ func renderStoryMap(w io.Writer, lang i18n.Lang, view storyMapView) error {
 
 func renderGlossary(w io.Writer, lang i18n.Lang, view glossaryView) error {
 	return templates(lang).ExecuteTemplate(w, "glossary.html", view)
+}
+
+func renderPolicies(w io.Writer, lang i18n.Lang, view policiesView) error {
+	return templates(lang).ExecuteTemplate(w, "policies.html", view)
 }
 
 func renderDiff(w io.Writer, lang i18n.Lang, view diffView) error {
