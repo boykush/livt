@@ -29,6 +29,8 @@ rules:
         name: 一覧ページに埋め込まれたプレビューは、埋め込み先のリロードに連れて反映される
   - id: R-05
     name: どの成果物の一覧も、現在の内容を映したプレビュー付きのタイルで並ぶ
+    policies:
+      - livt://policy/board-lists-show-preview-tiles
     examples:
       - id: EX-01
         name: 実例マッピング・ユーザーストーリーマップ・オポチュニティのどの一覧も、プレビュー付きのタイルで並び各ボードへ辿れる
