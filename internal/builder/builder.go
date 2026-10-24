@@ -110,6 +110,7 @@ type sidebarCounts struct {
 	storyMaps     int
 	stories       int
 	terms         int
+	policies      int
 }
 
 // computeCounts tallies every resource type so the shared sidebar can show
@@ -142,6 +143,16 @@ func (b *Builder) computeCounts() (sidebarCounts, error) {
 	if err != nil {
 		return sidebarCounts{}, err
 	}
+	policies, err := parser.ParseAllPolicies(b.PoliciesDir)
+	if err != nil {
+		return sidebarCounts{}, err
+	}
+	activePolicies := 0
+	for _, p := range policies {
+		if p.Status.Active() {
+			activePolicies++
+		}
+	}
 	// The un-automated half is only listed where a report was collected, so the
 	// badge has to ask the same question the page does.
 	automationKnown := !automations.Empty()
@@ -165,6 +176,7 @@ func (b *Builder) computeCounts() (sidebarCounts, error) {
 		storyMaps:     len(maps),
 		stories:       len(stories),
 		terms:         len(terms),
+		policies:      activePolicies,
 	}, nil
 }
 
@@ -187,6 +199,7 @@ func (b *Builder) sidebar(active, prefix string) (Sidebar, error) {
 		StoryMaps:     c.storyMaps,
 		Stories:       c.stories,
 		Terms:         c.terms,
+		Policies:      c.policies,
 	}
 	return sb, nil
 }
@@ -311,6 +324,10 @@ func (b *Builder) Build() error {
 	}
 
 	if err := b.buildGlossary(); err != nil {
+		return err
+	}
+
+	if err := b.buildPolicies(); err != nil {
 		return err
 	}
 

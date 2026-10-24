@@ -166,3 +166,32 @@ func TestParsePolicyRefusesATraversingReference(t *testing.T) {
 		t.Error("got nil, want the reference refused")
 	}
 }
+
+// livt:automates livt://mapping/link-artifacts-from-body-text/rule/R-06/example/EX-02
+// Every policy is read for the policies page, the context-free ones first and
+// then each context's, with the context taken from the directory.
+func TestParseAllPoliciesReadsRootedThenScoped(t *testing.T) {
+	dir := t.TempDir()
+	writePolicy(t, dir, "design-system", "lists", "---\nname: 一覧\n---\n")
+	writePolicy(t, dir, "", "closed-items", "---\nname: 閉じたもの\n---\n")
+
+	policies, err := ParseAllPolicies(dir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	var got []string
+	for _, p := range policies {
+		got = append(got, p.Ctx+"|"+p.Key)
+	}
+	if want := []string{"|closed-items", "design-system|lists"}; !slices.Equal(got, want) {
+		t.Errorf("got %v, want %v", got, want)
+	}
+}
+
+// A livt repository with no policies directory has no policies, not an error.
+func TestParseAllPoliciesWithoutADirectoryIsEmpty(t *testing.T) {
+	policies, err := ParseAllPolicies(filepath.Join(t.TempDir(), "missing"))
+	if err != nil || len(policies) != 0 {
+		t.Errorf("got %v, %v; want none and no error", policies, err)
+	}
+}

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="{{t "lang.code"}}">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{t "nav.policies"}} - livt</title>
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+</head>
+<body class="bg-gray-50 min-h-screen">
+<div class="flex min-h-screen">
+{{template "sidebar" .Sidebar}}
+<div class="flex-1 min-w-0">
+  <header class="bg-white border-b border-gray-200 px-8 py-4">
+    <h2 class="text-lg font-semibold text-gray-800">{{t "nav.policies"}}</h2>
+  </header>
+  <main class="px-8 py-8">
+  {{template "filter" (filter "context" (t "label.context") .Contexts)}}
+  {{if .Policies}}
+  <div class="overflow-x-auto bg-white rounded-lg border border-gray-200">
+  <table class="w-full text-left border-collapse">
+    <thead>
+      <tr class="border-b border-gray-200 bg-gray-50 text-xs font-semibold uppercase tracking-wide text-gray-500">
+        <th class="px-5 py-3 w-1/4">{{t "policies.policy"}}</th>
+        <th class="px-5 py-3 w-1/5">{{t "policies.key"}}</th>
+        <th class="px-5 py-3">{{t "policies.body"}}</th>
+      </tr>
+    </thead>
+    <tbody>
+    {{range .Policies}}
+      <tr id="{{.Anchor}}" data-filter-values="{{contextValues .Ctx}}" class="border-b border-gray-100 last:border-0 align-top target:bg-sky-50 hover:bg-gray-50">
+        <td class="px-5 py-3 border-l-4 border-sky-300 font-medium text-gray-900">
+          <div class="flex flex-wrap items-baseline gap-2">{{.Name}}{{if .Proposed}}<span class="text-[11px] text-amber-700 bg-amber-50 border border-amber-200 rounded-full px-2 py-0.5">{{t "mapping.proposed-badge"}}</span>{{end}}</div>
+        </td>
+        <td class="px-5 py-3">
+          <div class="flex flex-col items-start gap-1">
+            <span class="text-xs font-mono text-sky-600">{{.Key}}</span>
+            {{if .Ctx}}<span class="text-[11px] text-purple-700 bg-purple-50 border border-purple-200 rounded-full px-2 py-0.5">{{.Ctx}}</span>{{end}}
+          </div>
+        </td>
+        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed">{{.Body}}</td>
+      </tr>
+    {{end}}
+    </tbody>
+  </table>
+  </div>
+  {{else}}
+  <p class="text-gray-400 text-sm">{{t "empty.policies"}}</p>
+  {{end}}
+  </main>
+</div>
+</div>
+{{template "filter-script"}}
+</body>
+</html>

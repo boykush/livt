@@ -65,6 +65,7 @@ func TestMarkdownNamesAnEmptyLinkAfterItsTarget(t *testing.T) {
 		"[](livt://ubiquitous/opportunity)":                   `<a href="ubiquitous.html#opportunity">オポチュニティ</a>`,
 		"[](livt://ubiquitous/billing/invoice)":               `<a href="ubiquitous.html#billing/invoice">請求書</a>`,
 		"[](livt://mapping/checkout/rule/R-01)":               `<a href="mapping/checkout.html#rule-R-01">在庫がなければ買えない</a>`,
+		"[](livt://policy/design-system/tiles)":               `<a href="policies.html#design-system/tiles">タイルで並ぶ</a>`,
 		"[](livt://story/checkout)":                           `<a href="story/checkout.html">購入する</a>`,
 		"[](livt://mapping/checkout/rule/R-01/example/EX-01)": `<a href="mapping/checkout.html#rule-R-01-example-EX-01">在庫0なら買えない</a>`,
 	}
@@ -151,5 +152,35 @@ func TestBuildGlossaryRendersDefinitionsAsMarkdown(t *testing.T) {
 		if !strings.Contains(html, want) {
 			t.Errorf("glossary lacks %s", want)
 		}
+	}
+}
+
+// livt:automates livt://mapping/link-artifacts-from-body-text/rule/R-06/example/EX-01
+// livt:automates livt://mapping/link-artifacts-from-body-text/rule/R-06/example/EX-02
+// Every policy in force is a row anchored by its reference, a scoped one shown
+// with its context, and its body resolves links like any other.
+func TestBuildPoliciesRendersAnchoredRows(t *testing.T) {
+	b := linkRepo(t)
+	writeFile(t, filepath.Join(b.PoliciesDir, "withdrawn.md"), "---\nname: 退役した決まり\nstatus: retired\n---\n")
+	if err := b.buildPolicies(); err != nil {
+		t.Fatal(err)
+	}
+	out, err := os.ReadFile(filepath.Join(b.OutDir, "policies.html"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	html := string(out)
+	for _, want := range []string{
+		`id="lists-filter"`,
+		`id="design-system/tiles"`,
+		">design-system</span>",
+		`<a href="ubiquitous.html#opportunity">オポチュニティ</a>`,
+	} {
+		if !strings.Contains(html, want) {
+			t.Errorf("policies page lacks %s", want)
+		}
+	}
+	if strings.Contains(html, "退役した決まり") {
+		t.Error("a retired policy is still on the table")
 	}
 }

@@ -294,6 +294,7 @@ type Sidebar struct {
 	StoryMaps int
 	Stories   int
 	Terms     int
+	Policies  int
 	// LivtVersion, SpecVersion and Built are what the foot of every page says
 	// this build was made from, and the link there leads to the rest of it.
 	// They sit below the nav rather than in it: none of the three is a decision or
@@ -546,6 +547,25 @@ type glossaryView struct {
 	Contexts []string
 }
 
+// policyRow is one row of the policies table, anchored and keyed the way a
+// glossary row is. Proposed marks a policy still waiting for agreement.
+type policyRow struct {
+	Anchor   string
+	Ctx      string
+	Key      string
+	Name     string
+	Proposed bool
+	Body     template.HTML
+}
+
+// policiesView is every policy in force as one table, narrowed by context the
+// way the glossary is.
+type policiesView struct {
+	Sidebar  Sidebar
+	Policies []policyRow
+	Contexts []string
+}
+
 // diffView is what changed between two revisions, gathered by resource type.
 // Base and Head are the short hashes git resolved; an empty Head is the working
 // tree, which the page says in words because it has no hash to print.
@@ -701,6 +721,10 @@ func renderStoryMap(w io.Writer, lang i18n.Lang, view storyMapView) error {
 
 func renderGlossary(w io.Writer, lang i18n.Lang, view glossaryView) error {
 	return templates(lang).ExecuteTemplate(w, "glossary.html", view)
+}
+
+func renderPolicies(w io.Writer, lang i18n.Lang, view policiesView) error {
+	return templates(lang).ExecuteTemplate(w, "policies.html", view)
 }
 
 func renderDiff(w io.Writer, lang i18n.Lang, view diffView) error {

@@ -9,6 +9,7 @@ import (
 )
 
 // livt:automates livt://mapping/trace-test-to-rule/rule/R-02/example/EX-02
+// livt:automates livt://mapping/link-artifacts-from-body-text/rule/R-06/example/EX-01
 // The cases below write down the derivation from a livt URI to its anchor on
 // the page, and this is the one implementation the SSG and the CLI both read
 // it through, so neither can drift off the table.
@@ -26,6 +27,8 @@ func TestPagesFollowTheDocumentedScheme(t *testing.T) {
 		{StoryMap("discovery"), StoryMapPage("discovery"), "story-map/discovery.html"},
 		{Term("", "livt-uri"), TermPage("", "livt-uri"), "ubiquitous.html#livt-uri"},
 		{Term("billing", "invoice"), TermPage("billing", "invoice"), "ubiquitous.html#billing/invoice"},
+		{Policy("", "closed-items"), PolicyPage("", "closed-items"), "policies.html#closed-items"},
+		{Policy("design-system", "lists"), PolicyPage("design-system", "lists"), "policies.html#design-system/lists"},
 	}
 
 	for _, c := range cases {
@@ -74,6 +77,7 @@ func TestPagesCarryNoDeployment(t *testing.T) {
 		StoryMapPage("discovery"),
 		TermPage("", "livt-uri"),
 		TermPage("billing", "invoice"),
+		PolicyPage("design-system", "lists"),
 	} {
 		if strings.Contains(got, "://") || strings.HasPrefix(got, "/") {
 			t.Errorf("%q resolves on its own; prefixing the deployment is the renderer's job", got)

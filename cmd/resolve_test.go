@@ -302,12 +302,16 @@ func TestResolveURIResolvesARetiredPolicy(t *testing.T) {
 	}
 }
 
-// A policy has no page on the site yet, so the URL form refuses it rather than
-// print a link to nothing.
-func TestResolveURIRefusesAPolicyURL(t *testing.T) {
+// livt:automates livt://mapping/link-artifacts-from-body-text/rule/R-06/example/EX-01
+// A policy lands on its row in the policies table, so the URL form prints it
+// the way it prints a term's.
+func TestResolveURIPrintsAPolicyURL(t *testing.T) {
 	root := newTestRepo(t)
-	err := resolveURI(&bytes.Buffer{}, root, "livt://policy/closed-items", formatURL, "https://example.com")
-	if err == nil || !strings.Contains(err.Error(), "no page") {
-		t.Errorf("got %v, want an error saying there is no page", err)
+	var out bytes.Buffer
+	if err := resolveURI(&out, root, "livt://policy/closed-items", formatURL, "https://example.com"); err != nil {
+		t.Fatal(err)
+	}
+	if got, want := strings.TrimSpace(out.String()), "https://example.com/policies.html#closed-items"; got != want {
+		t.Errorf("got %q, want %q", got, want)
 	}
 }
