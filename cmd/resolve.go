@@ -83,6 +83,9 @@ func resolveURI(out io.Writer, root, rawURI, format, baseURL string) error {
 		if err := (mcp.Config{Root: root}).Verify(p); err != nil {
 			return err
 		}
+		if p.Page() == "" {
+			return fmt.Errorf("%s has no page on the site yet: a %s is not rendered", rawURI, p.Kind)
+		}
 		_, err := fmt.Fprintln(out, strings.TrimSuffix(baseURL, "/")+"/"+p.Page())
 		return err
 	}

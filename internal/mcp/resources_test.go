@@ -438,3 +438,32 @@ func TestRulesCarryTheirDecisionMakers(t *testing.T) {
 		t.Errorf("payload = %s, want no decision_makers field", body)
 	}
 }
+
+// livt:automates livt://mapping/define-policies-apart-from-stories/rule/R-05/example/EX-01
+// A policy read over MCP carries the terms it takes and yields, resolved the
+// way a board's terms are: a committed one gets its name and URI.
+func TestReadPolicyResolvesItsTerms(t *testing.T) {
+	s := newTestServer(t)
+	writeFile(t, filepath.Join(s.cfg.Root, "ubiquitous", "opportunity.md"), "---\nname: オポチュニティ\n---\n\n定義\n")
+	writeFile(t, filepath.Join(s.cfg.Root, "design", "policies", "design-system", "lists-filter-by-opportunity.md"),
+		"---\nname: 一覧はオポチュニティで絞り込める\ninput:\n  - opportunity\n---\n")
+	resURI := uri.Policy("design-system", "lists-filter-by-opportunity")
+
+	got := readResource[policyResult](t, s.readPolicy, resURI).Policy
+	if got.URI != resURI || got.Ctx != "design-system" || got.Name != "一覧はオポチュニティで絞り込める" {
+		t.Errorf("policy = %+v", got)
+	}
+	if len(got.Input) != 1 || got.Input[0].Name != "オポチュニティ" || got.Input[0].URI != uri.Term("", "opportunity") {
+		t.Errorf("input = %+v, want opportunity resolved to its term", got.Input)
+	}
+}
+
+// The policy handler answers for policy URIs only, so a term URI with the same
+// reference is not served as a policy.
+func TestReadPolicyRejectsATermURI(t *testing.T) {
+	s := newTestServer(t)
+	_, err := s.readPolicy(context.Background(), &mcpsdk.ReadResourceRequest{Params: &mcpsdk.ReadResourceParams{URI: uri.Term("", "story")}})
+	if err == nil {
+		t.Error("got nil, want the term URI refused by the policy handler")
+	}
+}

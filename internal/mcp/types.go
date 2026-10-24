@@ -193,6 +193,12 @@ type storyResult struct {
 	Story storyJSON `json:"story"`
 }
 
+// policyResult is the body of the livt://policy/{policy_key} resource.
+type policyResult struct {
+	versioned
+	Policy policyJSON `json:"policy"`
+}
+
 // termResult is the body of the livt://ubiquitous/{term_key} resource.
 type termResult struct {
 	versioned
@@ -406,6 +412,43 @@ type termJSON struct {
 	Ctx  string `json:"ctx,omitempty"`
 	Name string `json:"name"`
 	Body string `json:"body"`
+}
+
+type policyJSON struct {
+	Key string `json:"key"`
+	// Ctx is the context the policy belongs to, omitted when it holds across
+	// them, for the same reason a term's is.
+	Ctx  string `json:"ctx,omitempty"`
+	URI  string `json:"uri"`
+	Name string `json:"name"`
+	// Status is always present, as a rule's is, so a reader need not know that
+	// a policy written with no status is accepted.
+	Status string `json:"status"`
+	// Input and Output are the terms the policy takes and yields, resolved the
+	// way a board's ubiquitous list is.
+	Input        []termRefJSON `json:"input,omitempty"`
+	Output       []termRefJSON `json:"output,omitempty"`
+	SupersededBy []string      `json:"superseded_by,omitempty"`
+	Body         string        `json:"body"`
+}
+
+func (c Config) toPolicyJSON(p *domain.Policy) policyJSON {
+	out := policyJSON{
+		Key:          p.Key,
+		Ctx:          p.Ctx,
+		URI:          uri.Policy(p.Ctx, p.Key),
+		Name:         p.Name,
+		Status:       string(p.Status.OrDefault()),
+		SupersededBy: p.SupersededBy,
+		Body:         p.Body,
+	}
+	if len(p.Input) > 0 {
+		out.Input = c.toTermRefs(p.Input)
+	}
+	if len(p.Output) > 0 {
+		out.Output = c.toTermRefs(p.Output)
+	}
+	return out
 }
 
 // termRefJSON points at a ubiquitous language term referenced from a mapping or

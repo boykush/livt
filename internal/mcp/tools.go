@@ -439,6 +439,23 @@ func (c Config) hasStory(storyKey string) bool {
 	return err == nil
 }
 
+// policy loads a policy by reference — "{ctx}/{policy-key}" for a policy
+// scoped to one context, "{policy-key}" for one that holds across them.
+func (c Config) policy(ref string) (*domain.Policy, error) {
+	ctx, key, ok := uri.SplitPolicyRef(ref)
+	if !ok {
+		return nil, fmt.Errorf("policy %q not found", ref)
+	}
+	if _, err := os.Stat(filepath.Join(c.policiesDir(), ctx, key+".md")); err != nil {
+		return nil, fmt.Errorf("policy %q not found", ref)
+	}
+	policy, err := parser.ParsePolicy(c.policiesDir(), ref)
+	if err != nil {
+		return nil, fmt.Errorf("parse policy %q: %w", ref, err)
+	}
+	return policy, nil
+}
+
 // term loads a ubiquitous language term by reference — "{ctx}/{term-key}" for a
 // term scoped to one context, "{term-key}" for one that holds across them. The
 // two are distinct terms even when the key matches, so the reference is what is

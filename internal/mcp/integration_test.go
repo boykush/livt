@@ -124,6 +124,7 @@ func TestEndToEnd(t *testing.T) {
 	for _, want := range []string{
 		uri.MappingTemplate, uri.RuleTemplate, uri.ExampleTemplate, uri.QuestionTemplate,
 		uri.StoryMapTemplate, uri.StoryTemplate, uri.TermTemplate,
+		uri.PolicyTemplate, uri.ScopedPolicyTemplate,
 	} {
 		if !hasTemplate(tmpls.ResourceTemplates, want) {
 			t.Errorf("resource template %q not advertised", want)
