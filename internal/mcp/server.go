@@ -75,10 +75,6 @@ func (c Config) ubiquitousDir() string {
 	return filepath.Join(c.Root, "ubiquitous")
 }
 
-func (c Config) policiesDir() string {
-	return filepath.Join(c.Root, "design", "policies")
-}
-
 // Server exposes the livt repository under Config over MCP. version is the livt build
 // version, reported in the MCP handshake (distinct from the per-result
 // spec_version, which is the livt repository's git revision).

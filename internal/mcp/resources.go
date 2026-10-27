@@ -86,20 +86,6 @@ func (s *Server) registerResources(srv *mcpsdk.Server) {
 		MIMEType:    "application/json",
 		URITemplate: uri.ScopedTermTemplate,
 	}, s.readTerm)
-	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
-		Name:        "policy",
-		Title:       "Policy",
-		Description: "A policy: a decision that holds across stories, kept apart from the example mappings. Its name states it; status reads as a rule's does; input and output are the ubiquitous terms it takes and yields; superseded_by is what replaced a retired one. This shape addresses a policy that holds across contexts; one scoped to a single context is addressed by policy-in-context instead.",
-		MIMEType:    "application/json",
-		URITemplate: uri.PolicyTemplate,
-	}, s.readPolicy)
-	srv.AddResourceTemplate(&mcpsdk.ResourceTemplate{
-		Name:        "policy-in-context",
-		Title:       "Policy in a context",
-		Description: "A policy scoped to one context, addressed by context and policy key. The ctx bounds where the policy holds, so it is part of what addresses the policy.",
-		MIMEType:    "application/json",
-		URITemplate: uri.ScopedPolicyTemplate,
-	}, s.readPolicy)
 }
 
 // readMapping serves livt://mapping/{story_key}.
@@ -140,12 +126,6 @@ func (s *Server) readStoryMap(_ context.Context, req *mcpsdk.ReadResourceRequest
 // readStory serves livt://story/{story_key}.
 func (s *Server) readStory(_ context.Context, req *mcpsdk.ReadResourceRequest) (*mcpsdk.ReadResourceResult, error) {
 	return s.read(req.Params.URI, uri.KindStory)
-}
-
-// readPolicy serves both policy shapes: livt://policy/{policy_key} and
-// livt://policy/{ctx}/{policy_key}.
-func (s *Server) readPolicy(_ context.Context, req *mcpsdk.ReadResourceRequest) (*mcpsdk.ReadResourceResult, error) {
-	return s.read(req.Params.URI, uri.KindPolicy)
 }
 
 // readTerm serves both term shapes: livt://ubiquitous/{term_key} and
