@@ -439,20 +439,22 @@ func TestRulesCarryTheirDecisionMakers(t *testing.T) {
 	}
 }
 
-// livt:automates livt://mapping/define-policies-apart-from-stories/rule/R-08/example/EX-01
-// A policy read over MCP carries its body as written, links to terms included.
-func TestReadPolicyCarriesTheLinksInItsBody(t *testing.T) {
+// livt:automates livt://mapping/define-policies-apart-from-stories/rule/R-05/example/EX-01
+// A policy read over MCP carries the terms it takes and yields, resolved the
+// way a board's terms are: a committed one gets its name and URI.
+func TestReadPolicyResolvesItsTerms(t *testing.T) {
 	s := newTestServer(t)
-	writeFile(t, filepath.Join(s.cfg.Root, "design", "policies", "lists-filter-by-opportunity.md"),
-		"---\nname: どの一覧も、オポチュニティで絞り込める\n---\n\n[オポチュニティ](/design/ubiquitous/opportunity.md)は各一覧の絞り込み軸になる。\n")
-	resURI := uri.Policy("", "lists-filter-by-opportunity")
+	writeFile(t, filepath.Join(s.cfg.Root, "design", "ubiquitous", "opportunity.md"), "---\nname: オポチュニティ\n---\n\n定義\n")
+	writeFile(t, filepath.Join(s.cfg.Root, "design", "policies", "design-system", "lists-filter-by-opportunity.md"),
+		"---\nname: 一覧はオポチュニティで絞り込める\ninput:\n  - opportunity\n---\n")
+	resURI := uri.Policy("design-system", "lists-filter-by-opportunity")
 
 	got := readResource[policyResult](t, s.readPolicy, resURI).Policy
-	if got.URI != resURI || got.Name != "どの一覧も、オポチュニティで絞り込める" {
+	if got.URI != resURI || got.Ctx != "design-system" || got.Name != "一覧はオポチュニティで絞り込める" {
 		t.Errorf("policy = %+v", got)
 	}
-	if !strings.Contains(got.Body, "[オポチュニティ](/design/ubiquitous/opportunity.md)") {
-		t.Errorf("body = %q, want the link to the term kept", got.Body)
+	if len(got.Input) != 1 || got.Input[0].Name != "オポチュニティ" || got.Input[0].URI != uri.Term("", "opportunity") {
+		t.Errorf("input = %+v, want opportunity resolved to its term", got.Input)
 	}
 }
 
@@ -463,32 +465,5 @@ func TestReadPolicyRejectsATermURI(t *testing.T) {
 	_, err := s.readPolicy(context.Background(), &mcpsdk.ReadResourceRequest{Params: &mcpsdk.ReadResourceParams{URI: uri.Term("", "story")}})
 	if err == nil {
 		t.Error("got nil, want the term URI refused by the policy handler")
-	}
-}
-
-// livt:automates livt://mapping/reference-policies-from-rules/rule/R-03/example/EX-01
-// A rule read over MCP carries the policies it references, named when the
-// policy is on file and left as its URI when it is not.
-func TestReadRuleCarriesItsPolicies(t *testing.T) {
-	s := newTestServer(t)
-	writeFile(t, filepath.Join(s.cfg.Root, "design", "policies", "id-stickies-show-id-and-link.md"),
-		"---\nname: ID を持つ付箋は、ID を示し、そのリンクをコピーできる\n---\n")
-	writeFile(t, filepath.Join(s.cfg.Root, "discoveries", "example-mappings", "linked.yaml"),
-		"rules:\n"+
-			"  - id: R-01\n"+
-			"    name: ルール\n"+
-			"    policies:\n"+
-			"      - livt://policy/id-stickies-show-id-and-link\n"+
-			"      - livt://policy/not-on-file\n")
-
-	got := readResource[ruleResult](t, s.readRule, uri.Rule("linked", "R-01")).Rule.Policies
-	if len(got) != 2 {
-		t.Fatalf("policies = %+v, want two", got)
-	}
-	if got[0].URI != "livt://policy/id-stickies-show-id-and-link" || got[0].Name != "ID を持つ付箋は、ID を示し、そのリンクをコピーできる" {
-		t.Errorf("policies[0] = %+v, want it named", got[0])
-	}
-	if got[1].URI != "livt://policy/not-on-file" || got[1].Name != "" {
-		t.Errorf("policies[1] = %+v, want only its URI", got[1])
 	}
 }

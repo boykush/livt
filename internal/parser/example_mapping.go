@@ -25,7 +25,6 @@ type ruleYAML struct {
 	// DecisionMakers is kept as written. A forge mention is the expected
 	// spelling, but a check here would have livt deciding who exists.
 	DecisionMakers []string `yaml:"decision_makers"`
-	Policies       []string `yaml:"policies"`
 	// Status reads as an ADR's does: proposed while the rule awaits agreement,
 	// accepted once it has it, rejected or retired once it has closed. Omitted
 	// means accepted, and it is the whole of a rule's standing: nothing else
@@ -88,7 +87,7 @@ func ParseExampleMapping(path string) (*domain.ExampleMapping, error) {
 		for _, ex := range r.Examples {
 			examples = append(examples, domain.Example{ID: ex.ID, Name: ex.Name, Retired: ex.Retired, SupersededBy: ex.SupersededBy})
 		}
-		rules = append(rules, domain.Rule{ID: r.ID, Name: r.Name, Examples: examples, Status: status, DecisionMakers: r.DecisionMakers, Policies: r.Policies, Issues: r.Issues, SupersededBy: r.SupersededBy})
+		rules = append(rules, domain.Rule{ID: r.ID, Name: r.Name, Examples: examples, Status: status, DecisionMakers: r.DecisionMakers, Issues: r.Issues, SupersededBy: r.SupersededBy})
 	}
 
 	var questions []domain.Question

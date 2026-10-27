@@ -369,32 +369,3 @@ func TestParseExampleMappingReadsRulesWithoutDecisionMakers(t *testing.T) {
 		t.Errorf("rules = %+v, want R-01 accepted and R-02 proposed as before", em.Rules)
 	}
 }
-
-// livt:automates livt://mapping/reference-policies-from-rules/rule/R-01/example/EX-01
-// livt:automates livt://mapping/reference-policies-from-rules/rule/R-02/example/EX-01
-// A rule names the policies it refines as livt URIs; a rule naming none reads
-// as it always did.
-func TestParseExampleMappingReadsRulePolicies(t *testing.T) {
-	path := filepath.Join(t.TempDir(), "trace-test-to-rule.yaml")
-	data := []byte("rules:\n" +
-		"  - id: R-03\n" +
-		"    name: どの付箋も自分のIDを示し、そのリンクをコピーできる\n" +
-		"    policies:\n" +
-		"      - livt://policy/id-stickies-show-id-and-link\n" +
-		"  - id: R-04\n" +
-		"    name: livt URIはCLIから解決できる\n")
-	if err := os.WriteFile(path, data, 0o644); err != nil {
-		t.Fatal(err)
-	}
-
-	em, err := ParseExampleMapping(path)
-	if err != nil {
-		t.Fatal(err)
-	}
-	if !slices.Equal(em.Rules[0].Policies, []string{"livt://policy/id-stickies-show-id-and-link"}) {
-		t.Errorf("got policies %v", em.Rules[0].Policies)
-	}
-	if len(em.Rules[1].Policies) != 0 {
-		t.Errorf("got policies %v on a rule naming none", em.Rules[1].Policies)
-	}
-}

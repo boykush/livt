@@ -1,8 +1,6 @@
 rules:
   - id: R-01
     name: 一覧はオポチュニティで絞り込める
-    policies:
-      - livt://policy/story-lists-filter-by-opportunity
     examples:
       - id: EX-01
         name: Stories一覧でオポチュニティを選ぶと、そのマップに載るストーリーだけが表示される

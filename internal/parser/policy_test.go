@@ -74,20 +74,23 @@ func TestParsePolicyAtTheRootHoldsAcrossContexts(t *testing.T) {
 	}
 }
 
-// livt:automates livt://mapping/define-policies-apart-from-stories/rule/R-08/example/EX-01
-// A policy relates to a term by linking it from the body; the link is kept
-// as written, and the sentence around it says how the two relate.
-func TestParsePolicyKeepsTheLinkToATermInItsBody(t *testing.T) {
+// livt:automates livt://mapping/define-policies-apart-from-stories/rule/R-05/example/EX-01
+// The terms a policy takes and yields are read as references, a context-scoped
+// one included.
+func TestParsePolicyReadsItsInputAndOutputTerms(t *testing.T) {
 	dir := t.TempDir()
-	writePolicy(t, dir, "", "lists-filter-by-opportunity",
-		"---\nname: どの一覧も、オポチュニティで絞り込める\n---\n\n[オポチュニティ](/design/ubiquitous/opportunity.md)は各一覧の絞り込み軸になる。\n")
+	writePolicy(t, dir, "design-system", "lists-filter-by-opportunity",
+		"---\nname: 一覧はオポチュニティで絞り込める\ninput:\n  - opportunity\noutput:\n  - design-system/list\n---\n")
 
-	p, err := ParsePolicy(dir, "lists-filter-by-opportunity")
+	p, err := ParsePolicy(dir, "design-system/lists-filter-by-opportunity")
 	if err != nil {
 		t.Fatal(err)
 	}
-	if !strings.Contains(p.Body, "[オポチュニティ](/design/ubiquitous/opportunity.md)") {
-		t.Errorf("got body %q, want the link to the term kept", p.Body)
+	if !slices.Equal(p.Input, []string{"opportunity"}) {
+		t.Errorf("got input %v", p.Input)
+	}
+	if !slices.Equal(p.Output, []string{"design-system/list"}) {
+		t.Errorf("got output %v", p.Output)
 	}
 }
 

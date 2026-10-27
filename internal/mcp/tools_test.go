@@ -135,7 +135,7 @@ func TestRuleJSONCarriesIssuesAndAutomated(t *testing.T) {
 	if err != nil {
 		t.Fatalf("rule: %v", err)
 	}
-	j := Config{}.toRuleJSON("demo", recorded)
+	j := toRuleJSON("demo", recorded)
 	if len(j.Issues) != 1 || j.Issues[0] != "https://github.com/boykush/livt/issues/25" {
 		t.Errorf("issues = %v, want the recorded URL", j.Issues)
 	}
@@ -147,7 +147,7 @@ func TestRuleJSONCarriesIssuesAndAutomated(t *testing.T) {
 	if err != nil {
 		t.Fatalf("rule: %v", err)
 	}
-	bj := Config{}.toRuleJSON("demo", bare)
+	bj := toRuleJSON("demo", bare)
 	if len(bj.Issues) != 0 || bj.Automated {
 		t.Errorf("R-02 should be unlinked and not automated, got issues=%v automated=%v", bj.Issues, bj.Automated)
 	}
