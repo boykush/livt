@@ -8,7 +8,7 @@ import (
 )
 
 // linkRepo lays out a livt repository under one root, the way cmd/build does,
-// holding a term, a scoped term, a policy, a story, and a mapping to link to.
+// holding a term, a scoped term, a story, and a mapping to link to.
 func linkRepo(t *testing.T) Builder {
 	t.Helper()
 	root := t.TempDir()
@@ -19,14 +19,11 @@ func linkRepo(t *testing.T) Builder {
 		MappingsDir:      filepath.Join(root, "discoveries", "example-mappings"),
 		StoriesDir:       filepath.Join(root, "stories"),
 		USMDir:           filepath.Join(root, "discoveries", "usm"),
-		UbiquitousDir:    filepath.Join(root, "design", "ubiquitous"),
-		PoliciesDir:      filepath.Join(root, "design", "policies"),
+		UbiquitousDir:    filepath.Join(root, "ubiquitous"),
 		OutDir:           t.TempDir(),
 	}
 	writeFile(t, filepath.Join(b.UbiquitousDir, "opportunity.md"), "---\nname: オポチュニティ\n---\n\n機会。\n")
 	writeFile(t, filepath.Join(b.UbiquitousDir, "billing", "invoice.md"), "---\nname: 請求書\n---\n\n請求。\n")
-	writeFile(t, filepath.Join(b.PoliciesDir, "lists-filter.md"), "---\nname: 一覧は絞り込める\n---\n\n[](livt://ubiquitous/opportunity)で絞り込める。\n")
-	writeFile(t, filepath.Join(b.PoliciesDir, "design-system", "tiles.md"), "---\nname: タイルで並ぶ\n---\n\n本文。\n")
 	writeFile(t, filepath.Join(b.StoriesDir, "checkout.md"), "---\nname: 購入する\n---\n")
 	writeFile(t, filepath.Join(b.MappingsDir, "checkout.yaml"), "rules:\n  - id: R-01\n    name: 在庫がなければ買えない\n    examples:\n      - id: EX-01\n        name: 在庫0なら買えない\n")
 	return b
@@ -79,7 +76,7 @@ func TestMarkdownNamesAnEmptyLinkAfterItsTarget(t *testing.T) {
 // A path from the livt repository's root lands where the term's URI does.
 func TestMarkdownLinksARootPathLikeItsURI(t *testing.T) {
 	b := linkRepo(t)
-	got := render(b, "[オポチュニティ](/design/ubiquitous/opportunity.md)", b.PoliciesDir, "")
+	got := render(b, "[オポチュニティ](/ubiquitous/opportunity.md)", b.StoriesDir, "")
 	if want := `<a href="ubiquitous.html#opportunity">オポチュニティ</a>`; !strings.Contains(got, want) {
 		t.Errorf("got %s, want it to contain %s", got, want)
 	}
@@ -89,11 +86,11 @@ func TestMarkdownLinksARootPathLikeItsURI(t *testing.T) {
 // A path relative to the file the body is in lands there too.
 func TestMarkdownLinksARelativePathLikeItsURI(t *testing.T) {
 	b := linkRepo(t)
-	got := render(b, "[オポチュニティ](../ubiquitous/opportunity.md)", b.PoliciesDir, "")
+	got := render(b, "[オポチュニティ](../ubiquitous/opportunity.md)", b.StoriesDir, "")
 	if want := `<a href="ubiquitous.html#opportunity">オポチュニティ</a>`; !strings.Contains(got, want) {
 		t.Errorf("got %s, want it to contain %s", got, want)
 	}
-	got = render(b, "[請求書](../../ubiquitous/billing/invoice.md)", filepath.Join(b.PoliciesDir, "design-system"), "")
+	got = render(b, "[請求書](../../ubiquitous/billing/invoice.md)", filepath.Join(b.StoriesDir, "billing"), "")
 	if want := `<a href="ubiquitous.html#billing/invoice">請求書</a>`; !strings.Contains(got, want) {
 		t.Errorf("got %s, want it to contain %s", got, want)
 	}
@@ -108,7 +105,7 @@ func TestMarkdownUnwrapsAReferenceItCannotFollow(t *testing.T) {
 		"まだない[用語](livt://ubiquitous/not-yet)だ":     "<p>まだない用語だ</p>",
 		"[](livt://ubiquitous/not-yet)":            "<p>livt://ubiquitous/not-yet</p>",
 		"[ルール](livt://mapping/checkout/rule/R-09)": "<p>ルール</p>",
-		"[**太字**](/design/ubiquitous/not-yet.md)":  "<p><strong>太字</strong></p>",
+		"[**太字**](/ubiquitous/not-yet.md)":         "<p><strong>太字</strong></p>",
 		"[README](/README.md)":                     "<p>README</p>",
 	}
 	for src, want := range cases {

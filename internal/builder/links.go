@@ -46,7 +46,6 @@ func (b *Builder) pathURI(path string) (uri.Parsed, bool) {
 		uri      func(ref string) string
 	}{
 		{b.UbiquitousDir, ".md", func(ref string) string { return uri.Term("", ref) }},
-		{b.PoliciesDir, ".md", func(ref string) string { return uri.Policy("", ref) }},
 		{b.StoriesDir, ".md", uri.Story},
 		{b.OpportunitiesDir, ".md", uri.Opportunity},
 		{b.MappingsDir, ".yaml", uri.Mapping},
@@ -79,12 +78,6 @@ func (b *Builder) linkName(p uri.Parsed) (string, bool) {
 			return "", false
 		}
 		return orKey(t.Name, t.Key), true
-	case uri.KindPolicy:
-		pol, err := parser.ParsePolicy(b.PoliciesDir, uri.PolicyRef(p.PolicyCtx, p.PolicyKey))
-		if err != nil {
-			return "", false
-		}
-		return orKey(pol.Name, pol.Key), true
 	case uri.KindStory:
 		s, err := parser.ParseStory(filepath.Join(b.StoriesDir, p.StoryKey+".md"))
 		if err != nil {
