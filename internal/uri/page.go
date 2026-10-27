@@ -72,18 +72,6 @@ func TermAnchor(ctx, termKey string) string {
 	return TermRef(ctx, termKey)
 }
 
-// PolicyPage is where Policy lands. Policies are one table, the way terms are,
-// so the anchor alone reaches one.
-func PolicyPage(ctx, policyKey string) string {
-	return "policies.html#" + PolicyAnchor(ctx, policyKey)
-}
-
-// PolicyAnchor is the id of a policy's row, its reference verbatim for the
-// reason TermAnchor gives.
-func PolicyAnchor(ctx, policyKey string) string {
-	return PolicyRef(ctx, policyKey)
-}
-
 // RuleAnchor is the id of a rule's sticky on its board.
 func RuleAnchor(ruleID string) string {
 	return "rule-" + ruleID

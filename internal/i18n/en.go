@@ -12,7 +12,6 @@ var en = Catalog{
 	"nav.ubiquitous":       "Ubiquitous Language",
 	"nav.tasks":            "Tasks",
 	"nav.diff":             "Diff",
-	"nav.policies":         "Policies",
 
 	// What this build was made from. Not a nav entry beside the resource
 	// types: none of it is a decision or a view of one, and the sidebar carries it
@@ -55,7 +54,6 @@ var en = Catalog{
 	"empty.story-maps":       "No story maps yet.",
 	"empty.stories":          "No stories found.",
 	"empty.terms":            "No terms found.",
-	"empty.policies":         "No policies yet.",
 
 	"tasks.questions":                "Open Questions",
 	"tasks.questions-hint":           "closed by a conversation",
@@ -98,10 +96,6 @@ var en = Catalog{
 	"glossary.term":       "Term",
 	"glossary.key":        "Key",
 	"glossary.definition": "Definition",
-
-	"policies.policy": "Policy",
-	"policies.key":    "Key",
-	"policies.body":   "Detail",
 
 	"story.metadata":    "Metadata",
 	"story.related":     "Related",

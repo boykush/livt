@@ -26,13 +26,7 @@ func ParsePolicy(policiesDir, ref string) (*domain.Policy, error) {
 		return nil, fmt.Errorf("invalid policy reference %q", ref)
 	}
 
-	return parsePolicyFile(filepath.Join(policiesDir, ctx, key+".md"), ctx)
-}
-
-// parsePolicyFile reads one policy file, taking its context from the caller for
-// the reason parseTermFile does.
-func parsePolicyFile(path, ctx string) (*domain.Policy, error) {
-	key, frontmatter, body, err := splitFrontmatter(path)
+	_, frontmatter, body, err := splitFrontmatter(filepath.Join(policiesDir, ctx, key+".md"))
 	if err != nil {
 		return nil, err
 	}
@@ -51,7 +45,7 @@ func parsePolicyFile(path, ctx string) (*domain.Policy, error) {
 	if fm.Status != "" {
 		status = domain.RuleStatus(fm.Status)
 		if !status.Valid() {
-			return nil, fmt.Errorf("policy %q: unknown status %q (supported: %s)", uri.PolicyRef(ctx, key), fm.Status, domain.RuleStatusList())
+			return nil, fmt.Errorf("policy %q: unknown status %q (supported: %s)", ref, fm.Status, domain.RuleStatusList())
 		}
 	}
 
@@ -63,35 +57,4 @@ func parsePolicyFile(path, ctx string) (*domain.Policy, error) {
 		SupersededBy: fm.SupersededBy,
 		Body:         body,
 	}, nil
-}
-
-// ParseAllPolicies reads every policy in the policies directory, bounded and
-// ordered the way ParseAllTerms bounds and orders terms. A missing directory
-// holds no policies rather than failing: most livt repositories have none.
-func ParseAllPolicies(policiesDir string) ([]*domain.Policy, error) {
-	rooted, err := filepath.Glob(filepath.Join(policiesDir, "*.md"))
-	if err != nil {
-		return nil, err
-	}
-	scoped, err := filepath.Glob(filepath.Join(policiesDir, "*", "*.md"))
-	if err != nil {
-		return nil, err
-	}
-
-	var policies []*domain.Policy
-	for _, f := range rooted {
-		policy, err := parsePolicyFile(f, "")
-		if err != nil {
-			return nil, err
-		}
-		policies = append(policies, policy)
-	}
-	for _, f := range scoped {
-		policy, err := parsePolicyFile(f, filepath.Base(filepath.Dir(f)))
-		if err != nil {
-			return nil, err
-		}
-		policies = append(policies, policy)
-	}
-	return policies, nil
 }
