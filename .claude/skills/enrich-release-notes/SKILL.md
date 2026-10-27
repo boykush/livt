@@ -7,7 +7,7 @@ You **enrich a release's notes**. GoReleaser publishes every `v*` tag with a cha
 
 ## Language
 
-The notes are English, like everything that is the tool or the process (see `AGENTS.md`). Quote this repository's livt repository verbatim — a term from `design/ubiquitous/` stays in its own words. Talk to the maintainer in the language they are using.
+The notes are English, like everything that is the tool or the process (see `AGENTS.md`). Quote this repository's livt repository verbatim — a term from `ubiquitous/` stays in its own words. Talk to the maintainer in the language they are using.
 
 ## When This Runs
 
@@ -24,7 +24,7 @@ Each reader uses one or more of these, and the notes answer for each:
 - **The Claude Code plugins** — `livt-discovery`, `livt-delivery`, `livt-automation`, served from `main` by the marketplace in `.claude-plugin/marketplace.json`, by path rather than by tag. Their shared version is in `plugins/*/.claude-plugin/plugin.json`.
 - **The docs site** — its text in `docs/content/`, published from `main`: why livt exists and when it fits. It keeps no reference, so a release rarely moves it.
 
-This repository's own livt repository (`discoveries/`, `stories/`, `design/`, `opportunities/`) is livt describing itself: mention it only when a term the plugins speak moved with it. CI, agent config, and dependency bumps stay in the changelog alone.
+This repository's own livt repository (`discoveries/`, `stories/`, `ubiquitous/`, `opportunities/`) is livt describing itself: mention it only when a term the plugins speak moved with it. CI, agent config, and dependency bumps stay in the changelog alone.
 
 ## Gather
 

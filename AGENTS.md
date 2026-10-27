@@ -1,6 +1,6 @@
 # AGENTS.md
 
-livt turns a livt repository — opportunities, story maps, example mappings, ubiquitous language — into a living document (static site, CLI, MCP server). The repo dogfoods itself: `opportunities/`, `discoveries/`, `stories/`, and `design/` hold a real livt repository describing livt, rendered by livt.
+livt turns a livt repository — opportunities, story maps, example mappings, ubiquitous language — into a living document (static site, CLI, MCP server). The repo dogfoods itself: `opportunities/`, `discoveries/`, `stories/`, and `ubiquitous/` hold a real livt repository describing livt, rendered by livt.
 
 Setup, checks, and the conventional-commit rule are in [CONTRIBUTING.md](CONTRIBUTING.md); this file adds only what is specific to working here. Run `mise run check` before pushing.
 
@@ -19,8 +19,7 @@ Two languages, split by what the text *is* — not by who wrote it.
 - `opportunities/*.md` — `name:` and the opportunity's statement
 - `stories/*.md` — `name:` and the user-story body
 - `discoveries/**/*.yaml` — `name:` and `text:`
-- `design/ubiquitous/**/*.md` — `name:` and the definition
-- `design/policies/**/*.md` — `name:` and the policy's body
+- `ubiquitous/*.md` — `name:` and the definition
 - `internal/i18n/ja.go` — the Japanese chrome catalog. Go code holding Japanese by design; its keys, like every identifier, stay English
 - `docs/content/ja/` — the docs site's Japanese text, written in Japanese rather than translated from `docs/content/en/`. Code, identifiers and names stay as they are
 
@@ -30,7 +29,7 @@ Consequences worth stating:
 
 - Quoting the livt repository inside English text keeps the Japanese verbatim. A commit body naming a story map writes 協働ディスカバリー, not a translation of it.
 - What livt renders *of itself* — nav labels, headings, empty states — follows `lang:` in [livt.yaml](livt.yaml), which this repository sets to `ja`, matching the artifacts the site renders. That is a per-repository setting and not a property of livt, whose own default is `en`. So a string the site shows is never a literal in a template or in `internal/domain/`: it goes in `internal/i18n/en.go` and is owed a translation in `ja.go`, and the templates reach it with `{{t "…"}}`. The one exception is the wordmark and its tagline — livt's own name and slogan, English wherever livt is named.
-- `ja.go`, `docs/content/ja/` and `design/ubiquitous/` name the same things and must agree. A term renamed in one is renamed in the others, or a board ends up labelled 具体例 above a glossary that calls it 実例 — the drift ubiquitous language exists to prevent, on the site whose job is to show it.
+- `ja.go`, `docs/content/ja/` and `ubiquitous/` name the same things and must agree. A term renamed in one is renamed in the others, or a board ends up labelled 具体例 above a glossary that calls it 実例 — the drift ubiquitous language exists to prevent, on the site whose job is to show it.
 - A change to one language's text in `docs/content/` is owed in the other, written in that language rather than translated; [CONTRIBUTING.md](CONTRIBUTING.md#docs) has the steps.
 
 [CONTRIBUTING.md](CONTRIBUTING.md) welcomes issues and pull requests "in English or Japanese". That is an invitation to human contributors, and it stands. The rules above govern agents working in this repo.
@@ -44,7 +43,7 @@ Consequences worth stating:
 
 ## Commits and PRs
 
-- livt repository changes (`opportunities/`, `discoveries/`, `stories/`, `design/`) ship as `docs:`. The branch prefix mirrors the type: `docs/…`, `feat/…`, `fix/…`.
+- livt repository changes (`opportunities/`, `discoveries/`, `stories/`, `ubiquitous/`) ship as `docs:`. The branch prefix mirrors the type: `docs/…`, `feat/…`, `fix/…`.
 - The body explains **why** the change is right — the diff already says what changed. Wrap at ~80 columns.
 - One rule-level change per commit: `docs: add rule R-11 to file-automation-issues-to-impl-repos`. The ID and commit contracts live in [change-rule/SKILL.md](plugins/livt-discovery/skills/change-rule/SKILL.md) — a filed rule ID is immutable.
 - No rule here is recorded as `status: proposed`. Every decision in this repository is the maintainer's alone, so there is nobody for a proposal to wait on: a rule goes on file once the maintainer has decided it, and not before. [propose-rule](plugins/livt-discovery/skills/propose-rule/SKILL.md) is for a team, and is not used here.
