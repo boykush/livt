@@ -17,26 +17,23 @@
   </div>
   <nav class="flex-1 px-3 py-4 space-y-1 text-sm">
     <a href="index.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
-      <span class="w-2.5 h-2.5 rounded-sm bg-green-400"></span>実例マッピング<span class="ml-auto text-xs text-gray-400">26</span>
+      <span class="w-2.5 h-2.5 rounded-sm bg-green-400"></span>実例マッピング<span class="ml-auto text-xs text-gray-400">24</span>
     </a>
     <a href="opportunities.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
-      <span class="w-2.5 h-2.5 rounded-sm bg-orange-400"></span>オポチュニティ<span class="ml-auto text-xs text-gray-400">4</span>
+      <span class="w-2.5 h-2.5 rounded-sm bg-orange-400"></span>オポチュニティ<span class="ml-auto text-xs text-gray-400">3</span>
     </a>
     <a href="story-maps.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
-      <span class="w-2.5 h-2.5 rounded-sm bg-purple-400"></span>ユーザーストーリーマップ<span class="ml-auto text-xs text-gray-400">4</span>
+      <span class="w-2.5 h-2.5 rounded-sm bg-purple-400"></span>ユーザーストーリーマップ<span class="ml-auto text-xs text-gray-400">3</span>
     </a>
     <a href="stories.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
-      <span class="w-2.5 h-2.5 rounded-sm bg-yellow-400"></span>ストーリー<span class="ml-auto text-xs text-gray-400">34</span>
+      <span class="w-2.5 h-2.5 rounded-sm bg-yellow-400"></span>ストーリー<span class="ml-auto text-xs text-gray-400">32</span>
     </a>
     <a href="ubiquitous.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg bg-pink-50 text-pink-900 font-medium">
-      <span class="w-2.5 h-2.5 rounded-sm bg-pink-400"></span>ユビキタス言語<span class="ml-auto text-xs text-gray-400">17</span>
-    </a>
-    <a href="policies.html" class="flex items-center gap-2.5 px-3 py-2 rounded-lg text-gray-600 hover:bg-gray-50">
-      <span class="w-2.5 h-2.5 rounded-sm bg-sky-400"></span>ポリシー<span class="ml-auto text-xs text-gray-400">5</span>
+      <span class="w-2.5 h-2.5 rounded-sm bg-pink-400"></span>ユビキタス言語<span class="ml-auto text-xs text-gray-400">16</span>
     </a>
     
     <a href="tasks.html" class="flex items-center gap-2.5 px-3 py-2 mt-3 rounded-lg text-gray-600 hover:bg-gray-50">
-      <span class="w-2.5 h-2.5 rounded-sm border border-gray-300"></span>タスク<span class="ml-auto text-xs text-gray-400">119</span>
+      <span class="w-2.5 h-2.5 rounded-sm border border-gray-300"></span>タスク<span class="ml-auto text-xs text-gray-400">107</span>
     </a>
   </nav>
   
@@ -45,9 +42,9 @@
       <div class="flex items-baseline gap-2">
         <span class="text-xs font-medium text-gray-600">livt</span>
         
-        <span class="ml-auto min-w-0 text-[11px] font-mono text-gray-400 truncate" title="v0.0.0-20261024120653-db7cdd4b0549">v0.0.0-20261024120653-db7cdd4b0549</span>
+        <span class="ml-auto min-w-0 text-[11px] font-mono text-gray-400 truncate" title="v0.0.0-20261027142520-6657a3491f39">v0.0.0-20261027142520-6657a3491f39</span>
       </div>
-      <div class="text-[11px] text-gray-400 font-mono mt-0.5">db7cdd4 · 2026-10-24 12:07</div>
+      <div class="text-[11px] text-gray-400 font-mono mt-0.5">6657a34 · 2026-10-27 14:25</div>
     </a>
   </div>
 </aside>
@@ -115,7 +112,7 @@ BDD の Automation にあたる。livtが知るのは引用があるかどうか
           </div>
         </td>
         <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>その用語の意味が通じる範囲。DDDの境界づけられたコンテキストにあたる。<br>
-livt では <code>design/ubiquitous/{ctx}/</code> のディレクトリとして切り、同じ言葉が範囲ごとに違う意味を持つことを表す。<br>
+livt では <code>ubiquitous/{ctx}/</code> のディレクトリとして切り、同じ言葉が範囲ごとに違う意味を持つことを表す。<br>
 文脈を切らない用語は、範囲を跨いで共通の意味を指す。</p>
 </td>
       </tr>
@@ -193,20 +190,6 @@ livtリポジトリと同一のリポジトリでも成立するが、それは�
         </td>
         <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>ディスカバリーで合意し記録した成果物（ストーリー・ユーザーストーリーマップ・実例マッピング・ユビキタス言語）を収める置き場で、全ての機能開発の起点。<br>
 サイト・CLI・MCPの出力はすべてここからの導出物。livt URIはこの中の一点を指し、ルート（<code>--root</code> / <code>LIVT_ROOT</code>）は各環境における所在を指す。</p>
-</td>
-      </tr>
-    
-      <tr id="livt-resource" data-filter-values="[]" class="border-b border-gray-100 last:border-0 align-top target:bg-pink-50 hover:bg-gray-50">
-        <td class="px-5 py-3 border-l-4 border-pink-300 font-medium text-gray-900">
-          <div class="flex flex-wrap items-baseline gap-2">livtリソース</div>
-        </td>
-        <td class="px-5 py-3">
-          <div class="flex flex-col items-start gap-1">
-            <span class="text-xs font-mono text-pink-600">livt-resource</span>
-            
-          </div>
-        </td>
-        <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p><a href="ubiquitous.html#livt-uri">livt URI</a>で指せる、<a href="ubiquitous.html#livt-repository">livtリポジトリ</a>の一点。ディスカバリーの成果物か、設計の定義か、その中の一つ一つかを問わずにこう呼ぶ。</p>
 </td>
       </tr>
     
