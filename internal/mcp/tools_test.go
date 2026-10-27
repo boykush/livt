@@ -66,7 +66,7 @@ func newTestServer(t *testing.T) *Server {
 			"            key: demo\n"+
 			"            release: mvp\n"+
 			"          - name: 候補ストーリー\n")
-	writeFile(t, filepath.Join(root, "design", "ubiquitous", "story.md"), "---\nname: ストーリー\n---\n\nストーリーの定義\n")
+	writeFile(t, filepath.Join(root, "ubiquitous", "story.md"), "---\nname: ストーリー\n---\n\nストーリーの定義\n")
 	// Keyed demo-map so it joins the story map by filename, the way an example
 	// mapping joins its story.
 	writeFile(t, filepath.Join(root, "opportunities", "demo-map.md"),
@@ -135,7 +135,7 @@ func TestRuleJSONCarriesIssuesAndAutomated(t *testing.T) {
 	if err != nil {
 		t.Fatalf("rule: %v", err)
 	}
-	j := Config{}.toRuleJSON("demo", recorded)
+	j := toRuleJSON("demo", recorded)
 	if len(j.Issues) != 1 || j.Issues[0] != "https://github.com/boykush/livt/issues/25" {
 		t.Errorf("issues = %v, want the recorded URL", j.Issues)
 	}
@@ -147,7 +147,7 @@ func TestRuleJSONCarriesIssuesAndAutomated(t *testing.T) {
 	if err != nil {
 		t.Fatalf("rule: %v", err)
 	}
-	bj := Config{}.toRuleJSON("demo", bare)
+	bj := toRuleJSON("demo", bare)
 	if len(bj.Issues) != 0 || bj.Automated {
 		t.Errorf("R-02 should be unlinked and not automated, got issues=%v automated=%v", bj.Issues, bj.Automated)
 	}
@@ -344,8 +344,8 @@ func TestListTermsEnumeratesGlossaryWithResourceURIs(t *testing.T) {
 	s := newTestServer(t)
 	// A term under a context directory, and one no board references — the
 	// glossary is the livt repository's vocabulary, not what the boards cite.
-	writeFile(t, filepath.Join(s.cfg.Root, "design", "ubiquitous", "unreferenced.md"), "---\nname: 未参照の用語\n---\n\n定義\n")
-	writeFile(t, filepath.Join(s.cfg.Root, "design", "ubiquitous", "billing", "story.md"), "---\nname: ストーリー（請求）\n---\n\n請求文脈の定義\n")
+	writeFile(t, filepath.Join(s.cfg.Root, "ubiquitous", "unreferenced.md"), "---\nname: 未参照の用語\n---\n\n定義\n")
+	writeFile(t, filepath.Join(s.cfg.Root, "ubiquitous", "billing", "story.md"), "---\nname: ストーリー（請求）\n---\n\n請求文脈の定義\n")
 
 	_, out, err := s.listTerms(context.Background(), nil, listTermsInput{})
 	if err != nil {

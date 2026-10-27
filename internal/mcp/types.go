@@ -193,12 +193,6 @@ type storyResult struct {
 	Story storyJSON `json:"story"`
 }
 
-// policyResult is the body of the livt://policy/{policy_key} resource.
-type policyResult struct {
-	versioned
-	Policy policyJSON `json:"policy"`
-}
-
 // termResult is the body of the livt://ubiquitous/{term_key} resource.
 type termResult struct {
 	versioned
@@ -260,9 +254,6 @@ type ruleJSON struct {
 	// DecisionMakers are the people whose agreement the rule needs, in the
 	// order and spelling the mapping gives them. Omitted when it names none.
 	DecisionMakers []string `json:"decision_makers,omitempty"`
-	// Policies are the policies the rule refines, each with its name when the
-	// policy is on file. Omitted when it references none.
-	Policies []policyRefJSON `json:"policies,omitempty"`
 	// Issues are the rule's automation Issue URLs as recorded on the livt repository.
 	Issues []string `json:"issues,omitempty"`
 	// Automated is always present: consumers read it without distinguishing
@@ -417,33 +408,6 @@ type termJSON struct {
 	Body string `json:"body"`
 }
 
-type policyJSON struct {
-	Key string `json:"key"`
-	// Ctx is the context the policy belongs to, omitted when it holds across
-	// them, for the same reason a term's is.
-	Ctx  string `json:"ctx,omitempty"`
-	URI  string `json:"uri"`
-	Name string `json:"name"`
-	// Status is always present, as a rule's is, so a reader need not know that
-	// a policy written with no status is accepted.
-	Status       string   `json:"status"`
-	SupersededBy []string `json:"superseded_by,omitempty"`
-	Body         string   `json:"body"`
-}
-
-func (c Config) toPolicyJSON(p *domain.Policy) policyJSON {
-	out := policyJSON{
-		Key:          p.Key,
-		Ctx:          p.Ctx,
-		URI:          uri.Policy(p.Ctx, p.Key),
-		Name:         p.Name,
-		Status:       string(p.Status.OrDefault()),
-		SupersededBy: p.SupersededBy,
-		Body:         p.Body,
-	}
-	return out
-}
-
 // termRefJSON points at a ubiquitous language term referenced from a mapping or
 // story map. Key and Ctx are the reference taken apart — Ctx empty for a term
 // that holds across contexts. Name and URI are filled when the term file exists;
@@ -467,37 +431,12 @@ type opportunityRefJSON struct {
 	URI  string `json:"uri"`
 }
 
-func (c Config) toRuleJSON(storyKey string, r domain.Rule) ruleJSON {
+func toRuleJSON(storyKey string, r domain.Rule) ruleJSON {
 	examples := make([]exampleJSON, 0, len(r.Examples))
 	for _, e := range r.Examples {
 		examples = append(examples, toExampleJSON(storyKey, r.ID, e))
 	}
-	return ruleJSON{ID: r.ID, URI: uri.Rule(storyKey, r.ID), Name: r.Name, Status: string(r.Status.OrDefault()), Examples: examples, DecisionMakers: r.DecisionMakers, Policies: c.toPolicyRefs(r.Policies), Issues: r.Issues, Automated: r.Automated(), Automations: toAutomationsJSON(r.Automations), SupersededBy: r.SupersededBy}
-}
-
-// policyRefJSON points at a policy a rule references. Name is filled when the
-// policy is on file; a reference to one that is not keeps only its URI, the
-// way an uncommitted term reference keeps only its key.
-type policyRefJSON struct {
-	URI  string `json:"uri"`
-	Name string `json:"name,omitempty"`
-}
-
-func (c Config) toPolicyRefs(uris []string) []policyRefJSON {
-	if len(uris) == 0 {
-		return nil
-	}
-	refs := make([]policyRefJSON, 0, len(uris))
-	for _, u := range uris {
-		ref := policyRefJSON{URI: u}
-		if ctx, key, ok := uri.ParsePolicy(u); ok {
-			if p, err := c.policy(uri.PolicyRef(ctx, key)); err == nil {
-				ref.Name = p.Name
-			}
-		}
-		refs = append(refs, ref)
-	}
-	return refs
+	return ruleJSON{ID: r.ID, URI: uri.Rule(storyKey, r.ID), Name: r.Name, Status: string(r.Status.OrDefault()), Examples: examples, DecisionMakers: r.DecisionMakers, Issues: r.Issues, Automated: r.Automated(), Automations: toAutomationsJSON(r.Automations), SupersededBy: r.SupersededBy}
 }
 
 func toExampleJSON(storyKey, ruleID string, e domain.Example) exampleJSON {
@@ -514,7 +453,7 @@ func toQuestionJSON(storyKey string, q domain.Question) questionJSON {
 func (c Config) toExampleMappingJSON(em *domain.ExampleMapping) exampleMappingJSON {
 	rules := make([]ruleJSON, 0, len(em.Rules))
 	for _, r := range em.Rules {
-		rules = append(rules, c.toRuleJSON(em.StoryKey.Value, r))
+		rules = append(rules, toRuleJSON(em.StoryKey.Value, r))
 	}
 	questions := make([]questionJSON, 0, len(em.Questions))
 	for _, q := range em.Questions {

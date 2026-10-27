@@ -19,10 +19,6 @@ type Rule struct {
 	// collected reports, never written in the mapping: a rule and its
 	// examples are cited separately and neither answers for the other.
 	Automations []Automation
-	// Policies are the policies the rule refines, as livt URIs. The rule and
-	// the tests citing it stay with the story; the direction it follows is
-	// stated once, in the policy.
-	Policies []string
 	// SupersededBy names what took a closed rule's place, as livt URIs, so a
 	// reference landing on it can go forward. Only the pointer is structured:
 	// why the rule closed belongs to the commit that closed it, and a copy of

@@ -13,7 +13,6 @@ const (
 	KindOpportunityCanvas Kind = "opportunity canvas"
 	KindStory             Kind = "story"
 	KindTerm              Kind = "ubiquitous language term"
-	KindPolicy            Kind = "policy"
 )
 
 // Templates lists every shape a livt URI can take, so a caller can show the
@@ -29,8 +28,6 @@ var Templates = []string{
 	StoryTemplate,
 	TermTemplate,
 	ScopedTermTemplate,
-	PolicyTemplate,
-	ScopedPolicyTemplate,
 }
 
 // Parsed is a livt URI taken apart. Only the fields its Kind addresses are set.
@@ -43,8 +40,6 @@ type Parsed struct {
 	OpportunityKey string // opportunity, opportunity canvas, story map
 	TermKey        string // term
 	TermCtx        string // term, empty when the term holds across contexts
-	PolicyKey      string // policy
-	PolicyCtx      string // policy, empty when the policy holds across contexts
 }
 
 // Parse recognises any livt URI shape. A caller that already knows which shape
@@ -80,9 +75,6 @@ func Parse(s string) (Parsed, bool) {
 	if ctx, key, ok := ParseTerm(s); ok {
 		return Parsed{Kind: KindTerm, TermKey: key, TermCtx: ctx}, true
 	}
-	if ctx, key, ok := ParsePolicy(s); ok {
-		return Parsed{Kind: KindPolicy, PolicyKey: key, PolicyCtx: ctx}, true
-	}
 	return Parsed{}, false
 }
 
@@ -107,8 +99,6 @@ func (p Parsed) String() string {
 		return Story(p.StoryKey)
 	case KindTerm:
 		return Term(p.TermCtx, p.TermKey)
-	case KindPolicy:
-		return Policy(p.PolicyCtx, p.PolicyKey)
 	}
 	return ""
 }
@@ -136,8 +126,6 @@ func (p Parsed) Page() string {
 		return StoryPage(p.StoryKey)
 	case KindTerm:
 		return TermPage(p.TermCtx, p.TermKey)
-	case KindPolicy:
-		return PolicyPage(p.PolicyCtx, p.PolicyKey)
 	}
 	return ""
 }

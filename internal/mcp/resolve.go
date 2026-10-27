@@ -39,7 +39,7 @@ func (s *Server) Resolve(p uri.Parsed) (any, error) {
 		if err != nil {
 			return nil, notFound(err)
 		}
-		return ruleResult{versioned: s.versioned(), Rule: s.cfg.toRuleJSON(p.StoryKey, rule)}, nil
+		return ruleResult{versioned: s.versioned(), Rule: toRuleJSON(p.StoryKey, rule)}, nil
 	case uri.KindExample:
 		example, err := s.cfg.example(p.StoryKey, p.RuleID, p.ExampleID)
 		if err != nil {
@@ -94,12 +94,6 @@ func (s *Server) Resolve(p uri.Parsed) (any, error) {
 			return nil, notFound(err)
 		}
 		return termResult{versioned: s.versioned(), Term: toTermJSON(term)}, nil
-	case uri.KindPolicy:
-		policy, err := s.cfg.policy(uri.PolicyRef(p.PolicyCtx, p.PolicyKey))
-		if err != nil {
-			return nil, notFound(err)
-		}
-		return policyResult{versioned: s.versioned(), Policy: s.cfg.toPolicyJSON(policy)}, nil
 	}
 	return nil, fmt.Errorf("cannot resolve livt URI kind %q", p.Kind)
 }
@@ -129,8 +123,6 @@ func (c Config) Verify(p uri.Parsed) error {
 		_, err = c.story(p.StoryKey)
 	case uri.KindTerm:
 		_, err = c.term(uri.TermRef(p.TermCtx, p.TermKey))
-	case uri.KindPolicy:
-		_, err = c.policy(uri.PolicyRef(p.PolicyCtx, p.PolicyKey))
 	default:
 		return fmt.Errorf("cannot verify livt URI kind %q", p.Kind)
 	}

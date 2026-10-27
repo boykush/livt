@@ -43,14 +43,11 @@ func newTestRepo(t *testing.T) string {
 	write(filepath.Join("stories", "demo.md"), "---\nname: デモストーリー\n---\n\n本文\n")
 	write(filepath.Join("discoveries", "usm", "demo-map.yaml"),
 		"name: デモマップ\nactivities: []\n")
-	write(filepath.Join("design", "ubiquitous", "story.md"), "---\nname: ストーリー\n---\n\n定義\n")
+	write(filepath.Join("ubiquitous", "story.md"), "---\nname: ストーリー\n---\n\n定義\n")
 	// The same key at the root and under a context: two terms, told apart by the
 	// directory holding them.
-	write(filepath.Join("design", "ubiquitous", "invoice.md"), "---\nname: 共通の請求書\n---\n\n定義\n")
-	write(filepath.Join("design", "ubiquitous", "billing", "invoice.md"), "---\nname: 請求の請求書\n---\n\n定義\n")
-	write(filepath.Join("design", "policies", "closed-items.md"), "---\nname: 閉じたものは未完了に数えない\n---\n\n本文\n")
-	write(filepath.Join("design", "policies", "billing", "invoices-are-numbered.md"), "---\nname: 請求書には番号を振る\n---\n")
-	write(filepath.Join("design", "policies", "withdrawn.md"), "---\nname: やめたポリシー\nstatus: retired\n---\n")
+	write(filepath.Join("ubiquitous", "invoice.md"), "---\nname: 共通の請求書\n---\n\n定義\n")
+	write(filepath.Join("ubiquitous", "billing", "invoice.md"), "---\nname: 請求の請求書\n---\n\n定義\n")
 
 	return root
 }
@@ -250,68 +247,5 @@ func TestResolveURICarriesDecisionMakers(t *testing.T) {
 	}
 	if got := payload.Rule.DecisionMakers; len(got) != 2 || got[0] != "@bob" || got[1] != "@alice" {
 		t.Errorf("decision_makers = %v, want [@bob @alice] in written order", got)
-	}
-}
-
-// livt:automates livt://mapping/define-policies-apart-from-stories/rule/R-01/example/EX-01
-// livt:automates livt://mapping/define-policies-apart-from-stories/rule/R-04/example/EX-01
-// livt:automates livt://mapping/define-policies-apart-from-stories/rule/R-04/example/EX-02
-// A policy filed under design/policies resolves by its own URI, with or
-// without a context, and belongs to no mapping.
-func TestResolveURIResolvesAPolicy(t *testing.T) {
-	root := newTestRepo(t)
-	cases := []struct{ uri, name, ctx string }{
-		{"livt://policy/closed-items", "閉じたものは未完了に数えない", ""},
-		{"livt://policy/billing/invoices-are-numbered", "請求書には番号を振る", "billing"},
-	}
-	for _, c := range cases {
-		var out bytes.Buffer
-		if err := resolveURI(&out, root, c.uri, formatJSON, ""); err != nil {
-			t.Errorf("resolve %s: %v", c.uri, err)
-			continue
-		}
-		var payload struct {
-			Policy struct {
-				URI    string `json:"uri"`
-				Name   string `json:"name"`
-				Ctx    string `json:"ctx"`
-				Status string `json:"status"`
-			} `json:"policy"`
-		}
-		if err := json.Unmarshal(out.Bytes(), &payload); err != nil {
-			t.Fatal(err)
-		}
-		p := payload.Policy
-		if p.URI != c.uri || p.Name != c.name || p.Ctx != c.ctx || p.Status != "accepted" {
-			t.Errorf("%s resolved to %+v", c.uri, p)
-		}
-	}
-}
-
-// livt:automates livt://mapping/define-policies-apart-from-stories/rule/R-07/example/EX-01
-// A retired policy still resolves, saying it is retired, so a reference to it
-// keeps working.
-func TestResolveURIResolvesARetiredPolicy(t *testing.T) {
-	root := newTestRepo(t)
-	var out bytes.Buffer
-	if err := resolveURI(&out, root, "livt://policy/withdrawn", formatJSON, ""); err != nil {
-		t.Fatal(err)
-	}
-	if !strings.Contains(out.String(), `"status": "retired"`) {
-		t.Errorf("got %s, want it to resolve as retired", out.String())
-	}
-}
-
-// livt:automates livt://mapping/link-artifacts-from-body-text/rule/R-06/example/EX-01
-// A policy lands on its row in the policies table, so the URL form prints it
-// the way it prints a term's.
-func TestResolveURIPrintsAPolicyURL(t *testing.T) {
-	root := newTestRepo(t)
-	var out bytes.Buffer
-	if err := resolveURI(&out, root, "livt://policy/closed-items", formatURL, "https://example.com"); err != nil {
-		t.Fatal(err)
-	}
-	if got, want := strings.TrimSpace(out.String()), "https://example.com/policies.html#closed-items"; got != want {
-		t.Errorf("got %q, want %q", got, want)
 	}
 }

@@ -8,7 +8,7 @@ import (
 )
 
 // linkRepo lays out a livt repository under one root, the way cmd/build does,
-// holding a term, a scoped term, a policy, a story, and a mapping to link to.
+// holding a term, a scoped term, a story, and a mapping to link to.
 func linkRepo(t *testing.T) Builder {
 	t.Helper()
 	root := t.TempDir()
@@ -19,14 +19,11 @@ func linkRepo(t *testing.T) Builder {
 		MappingsDir:      filepath.Join(root, "discoveries", "example-mappings"),
 		StoriesDir:       filepath.Join(root, "stories"),
 		USMDir:           filepath.Join(root, "discoveries", "usm"),
-		UbiquitousDir:    filepath.Join(root, "design", "ubiquitous"),
-		PoliciesDir:      filepath.Join(root, "design", "policies"),
+		UbiquitousDir:    filepath.Join(root, "ubiquitous"),
 		OutDir:           t.TempDir(),
 	}
 	writeFile(t, filepath.Join(b.UbiquitousDir, "opportunity.md"), "---\nname: オポチュニティ\n---\n\n機会。\n")
 	writeFile(t, filepath.Join(b.UbiquitousDir, "billing", "invoice.md"), "---\nname: 請求書\n---\n\n請求。\n")
-	writeFile(t, filepath.Join(b.PoliciesDir, "lists-filter.md"), "---\nname: 一覧は絞り込める\n---\n\n[](livt://ubiquitous/opportunity)で絞り込める。\n")
-	writeFile(t, filepath.Join(b.PoliciesDir, "design-system", "tiles.md"), "---\nname: タイルで並ぶ\n---\n\n本文。\n")
 	writeFile(t, filepath.Join(b.StoriesDir, "checkout.md"), "---\nname: 購入する\n---\n")
 	writeFile(t, filepath.Join(b.MappingsDir, "checkout.yaml"), "rules:\n  - id: R-01\n    name: 在庫がなければ買えない\n    examples:\n      - id: EX-01\n        name: 在庫0なら買えない\n")
 	return b
@@ -65,7 +62,6 @@ func TestMarkdownNamesAnEmptyLinkAfterItsTarget(t *testing.T) {
 		"[](livt://ubiquitous/opportunity)":                   `<a href="ubiquitous.html#opportunity">オポチュニティ</a>`,
 		"[](livt://ubiquitous/billing/invoice)":               `<a href="ubiquitous.html#billing/invoice">請求書</a>`,
 		"[](livt://mapping/checkout/rule/R-01)":               `<a href="mapping/checkout.html#rule-R-01">在庫がなければ買えない</a>`,
-		"[](livt://policy/design-system/tiles)":               `<a href="policies.html#design-system/tiles">タイルで並ぶ</a>`,
 		"[](livt://story/checkout)":                           `<a href="story/checkout.html">購入する</a>`,
 		"[](livt://mapping/checkout/rule/R-01/example/EX-01)": `<a href="mapping/checkout.html#rule-R-01-example-EX-01">在庫0なら買えない</a>`,
 	}
@@ -80,7 +76,7 @@ func TestMarkdownNamesAnEmptyLinkAfterItsTarget(t *testing.T) {
 // A path from the livt repository's root lands where the term's URI does.
 func TestMarkdownLinksARootPathLikeItsURI(t *testing.T) {
 	b := linkRepo(t)
-	got := render(b, "[オポチュニティ](/design/ubiquitous/opportunity.md)", b.PoliciesDir, "")
+	got := render(b, "[オポチュニティ](/ubiquitous/opportunity.md)", b.StoriesDir, "")
 	if want := `<a href="ubiquitous.html#opportunity">オポチュニティ</a>`; !strings.Contains(got, want) {
 		t.Errorf("got %s, want it to contain %s", got, want)
 	}
@@ -90,11 +86,11 @@ func TestMarkdownLinksARootPathLikeItsURI(t *testing.T) {
 // A path relative to the file the body is in lands there too.
 func TestMarkdownLinksARelativePathLikeItsURI(t *testing.T) {
 	b := linkRepo(t)
-	got := render(b, "[オポチュニティ](../ubiquitous/opportunity.md)", b.PoliciesDir, "")
+	got := render(b, "[オポチュニティ](../ubiquitous/opportunity.md)", b.StoriesDir, "")
 	if want := `<a href="ubiquitous.html#opportunity">オポチュニティ</a>`; !strings.Contains(got, want) {
 		t.Errorf("got %s, want it to contain %s", got, want)
 	}
-	got = render(b, "[請求書](../../ubiquitous/billing/invoice.md)", filepath.Join(b.PoliciesDir, "design-system"), "")
+	got = render(b, "[請求書](../../ubiquitous/billing/invoice.md)", filepath.Join(b.StoriesDir, "billing"), "")
 	if want := `<a href="ubiquitous.html#billing/invoice">請求書</a>`; !strings.Contains(got, want) {
 		t.Errorf("got %s, want it to contain %s", got, want)
 	}
@@ -109,7 +105,7 @@ func TestMarkdownUnwrapsAReferenceItCannotFollow(t *testing.T) {
 		"まだない[用語](livt://ubiquitous/not-yet)だ":     "<p>まだない用語だ</p>",
 		"[](livt://ubiquitous/not-yet)":            "<p>livt://ubiquitous/not-yet</p>",
 		"[ルール](livt://mapping/checkout/rule/R-09)": "<p>ルール</p>",
-		"[**太字**](/design/ubiquitous/not-yet.md)":  "<p><strong>太字</strong></p>",
+		"[**太字**](/ubiquitous/not-yet.md)":         "<p><strong>太字</strong></p>",
 		"[README](/README.md)":                     "<p>README</p>",
 	}
 	for src, want := range cases {
@@ -152,35 +148,5 @@ func TestBuildGlossaryRendersDefinitionsAsMarkdown(t *testing.T) {
 		if !strings.Contains(html, want) {
 			t.Errorf("glossary lacks %s", want)
 		}
-	}
-}
-
-// livt:automates livt://mapping/link-artifacts-from-body-text/rule/R-06/example/EX-01
-// livt:automates livt://mapping/link-artifacts-from-body-text/rule/R-06/example/EX-02
-// Every policy in force is a row anchored by its reference, a scoped one shown
-// with its context, and its body resolves links like any other.
-func TestBuildPoliciesRendersAnchoredRows(t *testing.T) {
-	b := linkRepo(t)
-	writeFile(t, filepath.Join(b.PoliciesDir, "withdrawn.md"), "---\nname: 退役した決まり\nstatus: retired\n---\n")
-	if err := b.buildPolicies(); err != nil {
-		t.Fatal(err)
-	}
-	out, err := os.ReadFile(filepath.Join(b.OutDir, "policies.html"))
-	if err != nil {
-		t.Fatal(err)
-	}
-	html := string(out)
-	for _, want := range []string{
-		`id="lists-filter"`,
-		`id="design-system/tiles"`,
-		">design-system</span>",
-		`<a href="ubiquitous.html#opportunity">オポチュニティ</a>`,
-	} {
-		if !strings.Contains(html, want) {
-			t.Errorf("policies page lacks %s", want)
-		}
-	}
-	if strings.Contains(html, "退役した決まり") {
-		t.Error("a retired policy is still on the table")
 	}
 }

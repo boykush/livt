@@ -72,11 +72,7 @@ func (c Config) usmDir() string {
 }
 
 func (c Config) ubiquitousDir() string {
-	return filepath.Join(c.Root, "design", "ubiquitous")
-}
-
-func (c Config) policiesDir() string {
-	return filepath.Join(c.Root, "design", "policies")
+	return filepath.Join(c.Root, "ubiquitous")
 }
 
 // Server exposes the livt repository under Config over MCP. version is the livt build

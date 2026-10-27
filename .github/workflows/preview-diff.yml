@@ -10,7 +10,7 @@ on:
       - "opportunities/**"
       - "discoveries/**"
       - "stories/**"
-      - "design/ubiquitous/**"
+      - "ubiquitous/**"
       # The collect station's pull requests. A report reads worst of all as a
       # file: every scan pins each citation's URL to a new revision, so the
       # whole file is rewritten around the one claim that changed.

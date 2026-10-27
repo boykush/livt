@@ -21,8 +21,6 @@ rules:
         name: 人が共有するURLはボードから、成果物に残すlivt URIはCLIから取る
   - id: R-03
     name: どの付箋も自分のIDを示し、そのリンクをコピーできる
-    policies:
-      - livt://policy/id-stickies-show-id-and-link
     examples:
       - id: EX-01
         name: ルール・具体例・疑問点の各カード右下にIDが薄字で出る
