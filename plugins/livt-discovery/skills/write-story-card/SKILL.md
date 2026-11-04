@@ -43,6 +43,8 @@ You write the card's `name:` and, when asked, its As a / I want / So that body. 
 
 When a story is conceived directly — with no candidate on a map — create `stories/{key}.md` from a name given by the user, following the same key and body rules, and skip the map write-back. This is the secondary path; a card written from a map is the norm. A story that so far lived only as a named example mapping takes that mapping's key and, unless the user says otherwise, its `name:`.
 
+A map is what joins its cards to the opportunity it is filed under, so a standalone story has no opportunity until its card names one. Ask which opportunity it serves, and write that opportunity's key as `opportunity:` in the frontmatter — the story then carries its chip, sits under its filters, and counts toward its progress, as a card on its map would. An opportunity taken on with a story or two needs no map drawn for that. A card written from a map takes no `opportunity:`: the map already says it.
+
 ## Key Contract
 
 - Keys are kebab-case and **English** — they are used as the filename `stories/{key}.md` and as cross-references from story maps and example mappings.
