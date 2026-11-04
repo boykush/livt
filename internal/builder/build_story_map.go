@@ -31,8 +31,9 @@ type storyMapBuild struct {
 
 // buildStoryMaps builds story map HTML pages. Paths in the returned refs are
 // relative to the story/ directory, the deepest page that renders one. A story
-// can sit on several maps, so each key maps to a slice in map order.
-func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (storyMapBuild, error) {
+// can belong to several opportunities, so each key maps to a slice in the
+// order domain.DeriveOpportunityStories gives.
+func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity, stories []*domain.Story) (storyMapBuild, error) {
 	maps, err := parser.ParseAllStoryMaps(b.USMDir)
 	if err != nil {
 		return storyMapBuild{}, err
@@ -44,23 +45,17 @@ func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (
 		MapByOpportunity:     make(map[string]storyMapRef),
 		StoriesByOpportunity: make(map[string][]opportunityReleaseStories),
 	}
+	mapByKey := make(map[domain.OpportunityKey]*domain.StoryMap, len(maps))
 	for _, sm := range maps {
 		key := sm.OpportunityKey.Value
+		mapByKey[sm.OpportunityKey] = sm
 		ref := mapOpportunity(sm, opportunities)
 		// The map page names its opportunity only when a file backs it; a map
 		// standing in as its own opportunity would just link to itself.
 		var own *opportunityRef
-		var slices *releaseSlices
 		if _, ok := opportunities[key]; ok {
 			own = &ref
 			out.MapByOpportunity[key] = storyMapRef{Name: sm.DisplayName(), Path: "../" + uri.StoryMapPage(key)}
-			slices = newReleaseSlices()
-			// Declared first and in the map's own order, so the slices read the
-			// way the map draws them rather than the order stories happen to be
-			// hung under the backbone.
-			for i, r := range sm.Releases {
-				slices.declare(r.ID, r.DisplayName(i))
-			}
 		}
 
 		view := b.toStoryMapView(sm, own)
@@ -73,7 +68,7 @@ func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (
 
 		out.Tiles = append(out.Tiles, storyMapTile{Key: key, Name: sm.DisplayName(), Opportunity: own})
 
-		// A key can recur across steps/releases within one map; add its chip once.
+		// A key can recur across steps/releases within one map; link its card once.
 		seen := make(map[string]bool)
 		for _, a := range sm.Activities {
 			for _, s := range a.Steps {
@@ -82,22 +77,57 @@ func (b *Builder) buildStoryMaps(opportunities map[string]*domain.Opportunity) (
 						continue
 					}
 					seen[sc.Key.Value] = true
-					out.StoryOpportunities[sc.Key.Value] = append(out.StoryOpportunities[sc.Key.Value], ref)
 					out.StoryCards[sc.Key.Value] = append(out.StoryCards[sc.Key.Value], storyMapRef{
 						Name: sm.DisplayName(),
 						Path: "../" + uri.StoryMapPage(key) + "#" + uri.StoryCardAnchor(sc.Key.Value),
 					})
-					if slices != nil {
-						slices.add(sc.Release, sc.Key.Value)
-					}
 				}
 			}
 		}
-		if slices != nil {
-			out.StoriesByOpportunity[key] = slices.rows()
+	}
+
+	joined := domain.DeriveOpportunityStories(maps, stories)
+	for story, keys := range joined.ByStory {
+		for _, key := range keys {
+			if ref, ok := opportunityRefOf(key, mapByKey, opportunities); ok {
+				out.StoryOpportunities[story.Value] = append(out.StoryOpportunities[story.Value], ref)
+			}
 		}
 	}
+	for key, members := range joined.ByOpportunity {
+		// Progress is read on an opportunity's own page, so only one a file
+		// backs is counted.
+		if _, ok := opportunities[key.Value]; !ok {
+			continue
+		}
+		slices := newReleaseSlices()
+		// Declared first and in the map's own order, so the slices read the
+		// way the map draws them rather than the order stories happen to be
+		// hung under the backbone.
+		if sm, ok := mapByKey[key]; ok {
+			for i, r := range sm.Releases {
+				slices.declare(r.ID, r.DisplayName(i))
+			}
+		}
+		for _, m := range members {
+			slices.add(m.Release, m.Key.Value)
+		}
+		out.StoriesByOpportunity[key.Value] = slices.rows()
+	}
 	return out, nil
+}
+
+// opportunityRefOf is the chip for an opportunity a story belongs to. A key
+// with neither a map nor a file names nothing a chip could lead to, so a card
+// pointing at one earns none.
+func opportunityRefOf(key domain.OpportunityKey, maps map[domain.OpportunityKey]*domain.StoryMap, opportunities map[string]*domain.Opportunity) (opportunityRef, bool) {
+	if sm, ok := maps[key]; ok {
+		return mapOpportunity(sm, opportunities), true
+	}
+	if o, ok := opportunities[key.Value]; ok {
+		return opportunityRef{Name: o.DisplayName(), Path: "../" + uri.OpportunityPage(o.Key.Value)}, true
+	}
+	return opportunityRef{}, false
 }
 
 // opportunityReleaseStories is one release slice of an opportunity's stories.

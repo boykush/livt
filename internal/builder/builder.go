@@ -235,16 +235,16 @@ func (b *Builder) Build() error {
 		return err
 	}
 
-	maps, err := b.buildStoryMaps(opportunities)
-	if err != nil {
-		return err
-	}
-	storyToMaps := maps.StoryOpportunities
-
 	stories, err := parser.ParseAllStories(b.StoriesDir)
 	if err != nil {
 		return err
 	}
+
+	maps, err := b.buildStoryMaps(opportunities, stories)
+	if err != nil {
+		return err
+	}
+	storyToMaps := maps.StoryOpportunities
 
 	var storyItems []storyItem
 	var storyOpportunitySets [][]opportunityRef

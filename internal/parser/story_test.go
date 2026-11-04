@@ -90,3 +90,23 @@ func TestParseStoryNameOnlyHasNoMeta(t *testing.T) {
 		t.Fatalf("got name %q meta %+v", story.Name, story.Meta)
 	}
 }
+
+// The opportunity a card names is a join, not a field the team added to
+// prepare the conversation, so it is read out of the meta it would otherwise
+// be listed among.
+func TestParseStoryReadsOpportunityOutOfMeta(t *testing.T) {
+	dir := t.TempDir()
+	path := writeStoryFile(t, dir, "small-change.md",
+		"---\nname: Small change\nopportunity: some-opportunity\nissue: https://example.com/1\n---\n")
+
+	story, err := ParseStory(path)
+	if err != nil {
+		t.Fatal(err)
+	}
+	if story.Opportunity.Value != "some-opportunity" {
+		t.Fatalf("got opportunity %q, want some-opportunity", story.Opportunity.Value)
+	}
+	if len(story.Meta) != 1 || story.Meta[0].Key != "issue" {
+		t.Fatalf("got meta %+v, want only issue", story.Meta)
+	}
+}

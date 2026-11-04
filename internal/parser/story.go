@@ -17,12 +17,17 @@ func ParseStory(path string) (*domain.Story, error) {
 		return nil, err
 	}
 
-	return &domain.Story{
-		Key:  domain.StoryKey{Value: key},
-		Name: name,
-		Body: body,
-		Meta: meta,
-	}, nil
+	story := &domain.Story{Key: domain.StoryKey{Value: key}, Name: name, Body: body}
+	// opportunity is a join, read like a map's filename rather than shown as
+	// one more field the team added to prepare the conversation.
+	for _, m := range meta {
+		if m.Key == "opportunity" {
+			story.Opportunity = domain.OpportunityKey{Value: m.Value}
+			continue
+		}
+		story.Meta = append(story.Meta, m)
+	}
+	return story, nil
 }
 
 // FindStoryByKey reads the story a mapping names, falling back to a bare keyed

@@ -5,6 +5,7 @@ import (
 	"net/url"
 	"os"
 	"path/filepath"
+	"reflect"
 	"strings"
 	"testing"
 
@@ -191,7 +192,7 @@ func TestStoryChipsPointAtTheOpportunityTheMapServes(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	built, err := b.buildStoryMaps(opportunities)
+	built, err := b.buildStoryMaps(opportunities, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -223,7 +224,7 @@ func TestMapWithNoOpportunityFileStandsInAsItsOwn(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	built, err := b.buildStoryMaps(opportunities)
+	built, err := b.buildStoryMaps(opportunities, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -290,7 +291,7 @@ func TestNamelessOpportunityFallsBackToItsKey(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	built, err := b.buildStoryMaps(opportunities)
+	built, err := b.buildStoryMaps(opportunities, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -665,4 +666,94 @@ func TestOpportunitiesHubCarriesTheSameFigures(t *testing.T) {
 // in the single unscoped slice, which is the common case.
 func oneSlice(keys ...string) []opportunityReleaseStories {
 	return []opportunityReleaseStories{{Keys: keys}}
+}
+
+// livt:automates livt://mapping/show-opportunity-progress/rule/R-01/example/EX-07
+// livt:automates livt://mapping/show-opportunity-progress/rule/R-02/example/EX-06
+// An opportunity with no map still has stories when their cards name it, so it
+// gets a progress page, and those stories sit in the one unheaded group a map
+// without releases would draw.
+func TestOpportunityWithoutMapGetsProgressFromItsCards(t *testing.T) {
+	b := progressBuilder(t)
+	if err := os.Remove(filepath.Join(b.USMDir, "demo.yaml")); err != nil {
+		t.Fatal(err)
+	}
+	writeFile(t, filepath.Join(b.StoriesDir, "held-story.md"), "---\nname: 押さえたストーリー\nopportunity: demo\n---\n")
+
+	stories, err := parser.ParseAllStories(b.StoriesDir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	opportunities, err := b.opportunityIndex()
+	if err != nil {
+		t.Fatal(err)
+	}
+	built, err := b.buildStoryMaps(opportunities, stories)
+	if err != nil {
+		t.Fatal(err)
+	}
+	slices := built.StoriesByOpportunity["demo"]
+	if len(slices) != 1 || slices[0].ID != "" || !reflect.DeepEqual(slices[0].Keys, []string{"held-story"}) {
+		t.Fatalf("got slices %+v, want one unheaded slice holding held-story", slices)
+	}
+
+	if err := b.Build(); err != nil {
+		t.Fatal(err)
+	}
+	html := readFile(t, filepath.Join(b.OutDir, "opportunity-progress", "demo.html"))
+	if !strings.Contains(html, "押さえたストーリー") {
+		t.Error("the progress page does not list the story its card joined")
+	}
+}
+
+// livt:automates livt://mapping/show-opportunity-progress/rule/R-02/example/EX-07
+// livt:automates livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-07
+// A story on the map that also names the opportunity in its card is still one
+// story: one row in its map's slice, one chip.
+func TestStoryJoinedBothWaysCountsOnce(t *testing.T) {
+	b := progressBuilder(t)
+	writeFile(t, filepath.Join(b.StoriesDir, "held-story.md"), "---\nname: 押さえたストーリー\nopportunity: demo\n---\n")
+
+	stories, err := parser.ParseAllStories(b.StoriesDir)
+	if err != nil {
+		t.Fatal(err)
+	}
+	opportunities, err := b.opportunityIndex()
+	if err != nil {
+		t.Fatal(err)
+	}
+	built, err := b.buildStoryMaps(opportunities, stories)
+	if err != nil {
+		t.Fatal(err)
+	}
+	slices := built.StoriesByOpportunity["demo"]
+	want := []string{"held-story", "half-story", "unmapped-story"}
+	if len(slices) != 1 || !reflect.DeepEqual(slices[0].Keys, want) {
+		t.Fatalf("got slices %+v, want one slice with %v", slices, want)
+	}
+	if refs := built.StoryOpportunities["held-story"]; len(refs) != 1 {
+		t.Fatalf("got %d chips for held-story, want 1", len(refs))
+	}
+}
+
+// livt:automates livt://mapping/filter-lists-by-opportunity/rule/R-01/example/EX-04
+// livt:automates livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-06
+// A story on no map that names an opportunity in its card carries that
+// opportunity's chip and filter value on the Stories list.
+func TestStoryNamingOpportunityWithoutMapIsOnItsFilter(t *testing.T) {
+	b := progressBuilder(t)
+	writeFile(t, filepath.Join(b.StoriesDir, "small-change.md"), "---\nname: 小さな変更\nopportunity: demo\n---\n")
+	if err := b.Build(); err != nil {
+		t.Fatal(err)
+	}
+
+	html := readFile(t, filepath.Join(b.OutDir, "stories.html"))
+	i := strings.Index(html, "小さな変更")
+	if i < 0 {
+		t.Fatal("the story is not on the Stories list")
+	}
+	card := html[strings.LastIndex(html[:i], "data-filter-values"):i]
+	if !strings.Contains(card, "デモ機会") {
+		t.Errorf("the story's card does not carry the opportunity it names: %s", card)
+	}
 }

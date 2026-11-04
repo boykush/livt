@@ -3,8 +3,12 @@ package domain
 type Story struct {
 	Key  StoryKey
 	Name string
-	Body string
-	Meta []MetaField
+	// Opportunity is the one the card names in `opportunity:`, empty when it
+	// names none. A story on a map belongs to that map's opportunity without
+	// it, so this is for a story no map places.
+	Opportunity OpportunityKey
+	Body        string
+	Meta        []MetaField
 }
 
 // DisplayName is what a page shows for the story. Name is free text and a story

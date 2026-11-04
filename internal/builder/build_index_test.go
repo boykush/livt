@@ -351,7 +351,7 @@ func TestBuildStoriesIndexShowsOpportunityChipNamedAfterTheMap(t *testing.T) {
 	}
 }
 
-// livt:automates livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-02
+// livt:automates livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-04
 // A story on several maps carries one chip per map.
 func TestBuildStoriesIndexShowsAChipPerMapForMultiMapStory(t *testing.T) {
 	b := emptyDirsBuilder(t)
@@ -378,7 +378,7 @@ func TestBuildStoriesIndexShowsAChipPerMapForMultiMapStory(t *testing.T) {
 	}
 }
 
-// livt:automates livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-03
+// livt:automates livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-05
 // A story on no map carries no chip and its filter data is empty, so it
 // matches no opportunity filter axis.
 func TestBuildStoriesIndexStoryOnNoMapHasNoChipAndMatchesNoFilter(t *testing.T) {

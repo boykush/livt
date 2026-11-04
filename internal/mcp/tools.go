@@ -231,13 +231,17 @@ func sitsOn(refs []opportunityRefJSON, opportunityKey string) bool {
 	return false
 }
 
-// storyOpportunities indexes every story key to the opportunities it sits on,
-// one ref per map in map file order — the same derivation the site build uses
-// for its opportunity chips, down to a map with no opportunity file standing in
-// as its own. A key can recur across steps within one map and still gets a
-// single ref for it.
+// storyOpportunities indexes every story key to the opportunities it belongs
+// to, in the order domain.DeriveOpportunityStories gives — the same derivation
+// the site build uses for its opportunity chips, down to a map with no
+// opportunity file standing in as its own, and a key naming neither a map nor
+// an opportunity earning no ref.
 func (c Config) storyOpportunities() (map[string][]opportunityRefJSON, error) {
 	maps, err := parser.ParseAllStoryMaps(c.usmDir())
+	if err != nil {
+		return nil, err
+	}
+	stories, err := parser.ParseAllStories(c.storiesDir())
 	if err != nil {
 		return nil, err
 	}
@@ -245,27 +249,20 @@ func (c Config) storyOpportunities() (map[string][]opportunityRefJSON, error) {
 	if err != nil {
 		return nil, err
 	}
-	described := make(map[string]*domain.Opportunity, len(opportunities))
-	for _, o := range opportunities {
-		described[o.Key.Value] = o
-	}
-	index := make(map[string][]opportunityRefJSON)
+	refs := make(map[domain.OpportunityKey]opportunityRefJSON, len(maps)+len(opportunities))
 	for _, sm := range maps {
 		key := sm.OpportunityKey.Value
-		ref := opportunityRefJSON{Key: key, Name: sm.DisplayName(), URI: uri.StoryMap(key)}
-		if o, ok := described[key]; ok {
-			ref.Name, ref.URI = o.DisplayName(), uri.Opportunity(key)
-		}
-		seen := make(map[string]bool)
-		for _, a := range sm.Activities {
-			for _, st := range a.Steps {
-				for _, sc := range st.Stories {
-					if !sc.HasKey() || seen[sc.Key.Value] {
-						continue
-					}
-					seen[sc.Key.Value] = true
-					index[sc.Key.Value] = append(index[sc.Key.Value], ref)
-				}
+		refs[sm.OpportunityKey] = opportunityRefJSON{Key: key, Name: sm.DisplayName(), URI: uri.StoryMap(key)}
+	}
+	for _, o := range opportunities {
+		key := o.Key.Value
+		refs[o.Key] = opportunityRefJSON{Key: key, Name: o.DisplayName(), URI: uri.Opportunity(key)}
+	}
+	index := make(map[string][]opportunityRefJSON)
+	for story, keys := range domain.DeriveOpportunityStories(maps, stories).ByStory {
+		for _, key := range keys {
+			if ref, ok := refs[key]; ok {
+				index[story.Value] = append(index[story.Value], ref)
 			}
 		}
 	}

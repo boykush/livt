@@ -239,7 +239,7 @@ func TestMapWithNoOpportunityFileStandsInAsItsOwn(t *testing.T) {
 	}
 }
 
-// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-07
+// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-09
 // The opportunity parameter takes the key list_opportunities hands out and
 // keeps only the stories on its map. A name is not a key, so it matches none.
 func TestListStoriesFiltersByOpportunity(t *testing.T) {
@@ -591,7 +591,7 @@ func TestListExampleMappingsReachesAMappingWithoutAStory(t *testing.T) {
 	}
 }
 
-// livt:automates livt://mapping/name-example-mapping-itself/rule/R-06/example/EX-03
+// livt:automates livt://mapping/name-example-mapping-itself/rule/R-06/example/EX-04
 // Narrowed to an opportunity, the list keeps the mappings on that map, and one
 // with no story sits on none.
 func TestListExampleMappingsFiltersByOpportunity(t *testing.T) {
@@ -608,5 +608,26 @@ func TestListExampleMappingsFiltersByOpportunity(t *testing.T) {
 	}
 	if got := out.ExampleMappings[0].Opportunities; len(got) != 1 || got[0] != demoOpportunityRef {
 		t.Errorf("demo opportunities = %+v, want [%+v]", got, demoOpportunityRef)
+	}
+}
+
+// livt:automates livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-09
+// A story on no map that names the opportunity in its card is one of its
+// stories too, so the filter keeps it and its entry carries the same ref.
+func TestListStoriesKeepsAStoryNamingTheOpportunityInItsCard(t *testing.T) {
+	s := newTestServer(t)
+	writeFile(t, filepath.Join(s.cfg.Root, "stories", "small-change.md"),
+		"---\nname: 小さな変更\nopportunity: demo-map\n---\n")
+
+	_, out, err := s.listStories(context.Background(), nil, listStoriesInput{Opportunity: "demo-map"})
+	if err != nil {
+		t.Fatalf("listStories: %v", err)
+	}
+	byKey := storiesByKey(out.Stories)
+	if len(out.Stories) != 2 || byKey["demo"].Key == "" {
+		t.Fatalf("stories = %+v, want demo and small-change", out.Stories)
+	}
+	if got := byKey["small-change"].Opportunities; len(got) != 1 || got[0] != demoOpportunityRef {
+		t.Errorf("small-change opportunities = %+v, want [%+v]", got, demoOpportunityRef)
 	}
 }
