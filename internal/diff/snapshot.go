@@ -106,6 +106,11 @@ type Entry struct {
 	Parent string
 	Title  string
 	Fields []Field
+	// Path and Line are where the entry is written, so a review can be taken
+	// to the line on the forge. Path is relative to the repository root once
+	// the snapshot is rebased; empty where livt does not track the file.
+	Path string
+	Line int
 	// Live is whether the entry is agreed in this revision. A rule closed and an
 	// example or question retired are still on file, and still have to be read
 	// back by their URI, but they no longer hold.
@@ -118,6 +123,20 @@ type Entry struct {
 type Snapshot struct {
 	Entries []Entry
 	byURI   map[string]int
+}
+
+// rebase makes every entry's path relative to the root it was read under, so
+// a revision read from a temporary export names the file as the repository
+// does.
+func (s *Snapshot) rebase(root string) {
+	for i, e := range s.Entries {
+		if e.Path == "" {
+			continue
+		}
+		if rel, err := filepath.Rel(root, e.Path); err == nil {
+			s.Entries[i].Path = filepath.ToSlash(rel)
+		}
+	}
 }
 
 func (s *Snapshot) add(e Entry) {
@@ -171,6 +190,8 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 	for _, em := range mappings {
 		key := em.StoryKey.Value
 		mappingURI := uri.Mapping(key)
+		path := filepath.Join(dirs.Mappings, key+".yaml")
+		lines := mappingLines(path, mappingURI)
 		// Named as its board is, since the mapping heads a group of rules. Its own
 		// name is a line only when it has one: every nameless mapping carrying a
 		// blank line would add one to each mapping a diff adds.
@@ -184,6 +205,8 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 			Live:   true,
 			Title:  em.DisplayName(parser.FindStoryByKey(dirs.Stories, em.StoryKey)),
 			Fields: fields,
+			Path:   path,
+			Line:   lines[mappingURI],
 		})
 		// Scanned as recorded rather than as the board shows it: a retirement
 		// and an agreement are exactly the changes a reviewer came for, and
@@ -195,6 +218,8 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 				Parent: mappingURI,
 				Title:  r.ID,
 				Fields: ruleFields(r),
+				Path:   path,
+				Line:   lines[uri.Rule(key, r.ID)],
 				Live:   r.Status.Active(),
 			}, automations))
 			for _, ex := range byID(r.Examples, func(ex domain.Example) string { return ex.ID }) {
@@ -204,6 +229,8 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 					Parent: mappingURI,
 					Title:  r.ID + " " + ex.ID,
 					Fields: itemFields(ex.Name, ex.Retired, ex.SupersededBy),
+					Path:   path,
+					Line:   lines[uri.Example(key, r.ID, ex.ID)],
 					// An example under a closed rule went with it: the statement
 					// it illustrates is no longer one the team agrees to.
 					Live: !ex.Retired && r.Status.Active(),
@@ -217,6 +244,8 @@ func scanMappings(s *Snapshot, dirs Dirs) error {
 				Parent: mappingURI,
 				Title:  q.ID,
 				Fields: itemFields(q.Text, q.Retired, q.SupersededBy),
+				Path:   path,
+				Line:   lines[uri.Question(key, q.ID)],
 				Live:   !q.Retired,
 			})
 		}

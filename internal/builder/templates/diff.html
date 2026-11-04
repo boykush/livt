@@ -162,6 +162,11 @@ stickies side by side needs the width the sidebar would take.
   something said about it, so it sits smaller beneath. */}}
   <div class="{{if .Label}}text-xs font-normal text-gray-600 mt-1{{end}}"><span class="whitespace-pre-wrap break-words{{if eq .Op "+"}} diff-add{{else if eq .Op "-"}} diff-del{{end}}{{if .Parts}} reworded{{end}}">{{if .Parts}}{{if .Label}}{{.Label}}: {{end}}{{range .Parts}}{{if .Changed}}<span class="moved">{{.Text}}</span>{{else}}{{.Text}}{{end}}{{end}}{{else}}{{.Text}}{{end}}</span></div>
   {{end}}
+  {{if .Comment}}
+  {{/* The same tab: a reviewer came from the pull request in it, and going back
+  returns to the change picked here, which the URL's fragment keeps. */}}
+  <a href="{{.Comment}}" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>{{t "diff.comment"}} &nearr;</a>
+  {{end}}
   {{if and .Nested .Status}}
   <div class="mt-2 flex flex-wrap items-center gap-2 text-[11px]">
     {{template "diff-status" .Status}}

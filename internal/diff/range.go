@@ -74,6 +74,7 @@ func (r Range) Compute(root string, dirs Dirs) (*Result, error) {
 	if err != nil {
 		return nil, err
 	}
+	site.rebase(root)
 	base, baseRev, err := scanRev(root, r.Base, dirs)
 	if err != nil {
 		return nil, err
@@ -123,6 +124,7 @@ func scanRev(root, rev string, dirs Dirs) (*Snapshot, string, error) {
 	if err != nil {
 		return nil, "", fmt.Errorf("read revision %s: %w", short, err)
 	}
+	snapshot.rebase(dir)
 	return snapshot, short, nil
 }
 

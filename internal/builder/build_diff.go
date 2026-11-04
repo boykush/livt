@@ -2,6 +2,9 @@ package builder
 
 import (
 	"cmp"
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -325,7 +328,23 @@ func (b *Builder) diffCards(c diff.Change, kind uri.Kind) (before, after diffCar
 	}
 	before.Empty = len(before.Lines) == 0
 	after.Ghost = c.Became == diff.BecameWithdrawn
+	if c.InBase {
+		before.Comment = b.commentHref(c.Path, c.Line, "L")
+	} else {
+		after.Comment = b.commentHref(c.Path, c.Line, "R")
+	}
 	return before, after
+}
+
+// commentHref opens one line of the pull request's Files changed, where GitHub
+// takes review comments: the file is addressed by the SHA-256 of its path, the
+// line by its side, L for the base and R for the head.
+func (b *Builder) commentHref(path string, line int, side string) string {
+	if b.PullRequest == "" || path == "" || line == 0 {
+		return ""
+	}
+	sum := sha256.Sum256([]byte(path))
+	return fmt.Sprintf("%s/files#diff-%s%s%d", b.PullRequest, hex.EncodeToString(sum[:]), side, line)
 }
 
 // diffSummary is the item's own sentence, for the list: the line with no field

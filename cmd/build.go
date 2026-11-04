@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"path/filepath"
+	"strings"
 
 	"github.com/boykush/livt/internal/builder"
 	"github.com/boykush/livt/internal/config"
@@ -15,6 +16,7 @@ import (
 var outDir string
 var diffRange string
 var reportsDir string
+var pullRequest string
 
 // diffFlagUsage is worded once and set on both commands, so `livt serve --diff`
 // cannot come to mean something `livt build --diff` does not.
@@ -31,6 +33,7 @@ func init() {
 	buildCmd.Flags().StringVarP(&outDir, "out", "o", "dist", "output directory")
 	buildCmd.Flags().StringVar(&diffRange, "diff", "", diffFlagUsage)
 	buildCmd.Flags().StringVar(&reportsDir, "reports", defaultReportsDir, reportsFlagUsage)
+	buildCmd.Flags().StringVar(&pullRequest, "pull-request", "", "URL of the pull request the --diff is reviewed in, so each change links to its line there")
 	rootCmd.AddCommand(buildCmd)
 }
 
@@ -57,6 +60,7 @@ func newBuilder(outDir string) (*builder.Builder, error) {
 		OutDir:           outDir,
 		Lang:             cfg.Lang,
 		Diff:             revisions,
+		PullRequest:      strings.TrimSuffix(pullRequest, "/"),
 		// What the site foots with. The binary knows its own version, and the
 		// livt repository is the working directory the paths above are
 		// relative to.

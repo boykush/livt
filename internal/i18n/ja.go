@@ -80,6 +80,7 @@ var ja = Catalog{
 	"diff.next":        "次の変更",
 	"diff.changes":     "変更一覧",
 	"diff.mapping-own": "名前・ユビキタス言語",
+	"diff.comment":     "GitHubでコメント",
 
 	"diff.gone":                 "件がここから消えました",
 	"diff.field.status":         "状態",
