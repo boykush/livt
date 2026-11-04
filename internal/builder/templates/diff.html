@@ -62,12 +62,14 @@ stickies side by side needs the width the sidebar would take.
       {{end}}
     </nav>
     <main class="flex-1 min-w-0 px-8 py-6">
-      {{range .Sections}}{{range .Groups}}{{range .Items}}{{template "diff-item" .}}{{end}}{{end}}{{range .Items}}{{template "diff-item" .}}{{end}}{{end}}
-      <div class="flex items-center justify-between text-sm mt-6" data-pager hidden>
-        <button type="button" data-step="-1" class="py-2 text-violet-700 hover:text-violet-900">&larr; {{t "diff.prev"}}</button>
+      {{/* Above the item and pinned there, so stepping through never chases a
+      button that moved with the height of the last item. */}}
+      <div class="sticky top-0 z-10 -mx-8 px-8 py-2 mb-4 bg-gray-50/95 border-b border-gray-200 flex items-center gap-4 text-sm" data-pager hidden>
+        <button type="button" data-step="-1" class="py-1.5 px-3 rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-100">&larr; {{t "diff.prev"}}</button>
+        <button type="button" data-step="1" class="py-1.5 px-3 rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-100">{{t "diff.next"}} &rarr;</button>
         <span class="text-gray-500" data-position></span>
-        <button type="button" data-step="1" class="py-2 text-violet-700 hover:text-violet-900">{{t "diff.next"}} &rarr;</button>
       </div>
+      {{range .Sections}}{{range .Groups}}{{range .Items}}{{template "diff-item" .}}{{end}}{{end}}{{range .Items}}{{template "diff-item" .}}{{end}}{{end}}
     </main>
   </div>
   {{else}}
