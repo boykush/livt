@@ -159,3 +159,25 @@ func TestComputeReadsTheReportsEachRevisionHeld(t *testing.T) {
 		t.Errorf("got %s with %d changed, want the rule the report now cites", change.URI, result.Changed)
 	}
 }
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-08/example/EX-03
+// An example is read with the rule it illustrates. When only the example moved,
+// the rule's own words still come along — unchanged, and not counted.
+func TestComputeCarriesTheRuleAnExampleChangedUnder(t *testing.T) {
+	root := committedRepo(t)
+	write(t, filepath.Join(root, relDirs.Mappings, "checkout.yaml"), oneRule+`      - id: EX-02
+        name: another example
+`)
+
+	result, err := Range{Base: "HEAD"}.Compute(root, relDirs)
+	if err != nil {
+		t.Fatal(err)
+	}
+	rule, held := result.Context["livt://mapping/checkout/rule/R-01"]
+	if !held || rule.Title == "" {
+		t.Fatalf("context = %v, want the unchanged rule the example hangs off", result.Context)
+	}
+	if result.Added != 1 || result.Changed != 0 {
+		t.Errorf("added %d, changed %d: the rule carried for context was counted", result.Added, result.Changed)
+	}
+}

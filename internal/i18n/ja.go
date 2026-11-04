@@ -72,6 +72,15 @@ var ja = Catalog{
 	"diff.working-tree": "作業ツリー",
 	"diff.empty":        "このリビジョン間に変更はありません。",
 
+	"diff.before":      "変更前",
+	"diff.after":       "変更後",
+	"diff.none":        "なし",
+	"diff.no-page":     "開くページはありません（リポジトリから消えました）",
+	"diff.prev":        "前の変更",
+	"diff.next":        "次の変更",
+	"diff.changes":     "変更一覧",
+	"diff.mapping-own": "名前・ユビキタス言語",
+
 	"diff.gone":                 "件がここから消えました",
 	"diff.field.status":         "状態",
 	"diff.field.issue":          "自動化Issue",

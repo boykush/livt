@@ -139,6 +139,7 @@ func TestABoardCarriesNoMarksWithoutADiff(t *testing.T) {
 }
 
 // livt:automates livt://mapping/review-diff-between-revisions/rule/R-02/example/EX-05
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-08/example/EX-01
 // Rules, examples and questions gather under the mapping they hang off. A
 // mapping whose own fields did not change is listed once, as the heading for
 // the ones that did — not once per child.
@@ -317,7 +318,7 @@ func TestABoardWithoutADiffPutsNothingBack(t *testing.T) {
 	}
 }
 
-// livt:automates livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-07
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-10
 // The entry's colour comes from its lines, because its lines now follow the
 // decision too. Nothing is painted on top of them.
 func TestAWithdrawnEntryReadsRedFromItsOwnLines(t *testing.T) {
@@ -386,5 +387,108 @@ func TestABoardWithoutADiffFadesNothing(t *testing.T) {
 
 	if strings.Contains(page, "relative unchanged") || strings.Contains(page, `class="unchanged `) {
 		t.Error("a board built without a diff fades a sticky")
+	}
+}
+
+func exampleChange(ruleID, exampleID string, became diff.Became) diff.Change {
+	u := "livt://mapping/checkout/rule/" + ruleID + "/example/" + exampleID
+	return diff.Change{
+		URI:    u,
+		Kind:   uri.KindExample,
+		Parent: "livt://mapping/checkout",
+		Title:  ruleID + " " + exampleID,
+		Became: became,
+		Lines:  []diff.Line{{Op: diff.OpAdd, Field: diff.Field{Value: "an example"}}},
+		Page:   "mapping/checkout.html#" + uri.ExampleAnchor(ruleID, exampleID),
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-09
+// A rewording reads as the sticky it was beside the sticky it became, and only
+// the words that moved are picked out in either.
+func TestBuildDiffSetsAChangedStickyBesideWhatItWas(t *testing.T) {
+	changed := ruleChange("R-01", diff.BecameChanged)
+	changed.Lines = []diff.Line{
+		{Op: diff.OpDel, Field: diff.Field{Value: "pay by card"}, Parts: []diff.Part{{Text: "pay by "}, {Changed: true, Text: "card"}}},
+		{Op: diff.OpAdd, Field: diff.Field{Value: "pay by invoice"}, Parts: []diff.Part{{Text: "pay by "}, {Changed: true, Text: "invoice"}}},
+	}
+	page := renderedDiff(t, &diff.Result{Base: "abc1234", Changes: []diff.Change{changed}, Changed: 1})
+
+	before, after, ok := strings.Cut(page[strings.Index(page, `class="diff-before`):], `class="diff-after`)
+	if !ok {
+		t.Fatal("the item has no before and after side by side")
+	}
+	if !strings.Contains(before, `<span class="moved">card</span>`) || strings.Contains(before, "invoice") {
+		t.Error("the before side does not read the old wording with the moved words picked out")
+	}
+	if !strings.Contains(after, `<span class="moved">invoice</span>`) {
+		t.Error("the after side does not read the new wording with the moved words picked out")
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-08/example/EX-02
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-08/example/EX-05
+// An example is no row of its own: it is read under its rule. It still lands
+// where a link to it points and says what became of it, so the list misses
+// none of the URIs the diff counts.
+func TestBuildDiffReadsAnExampleUnderItsRule(t *testing.T) {
+	page := renderedDiff(t, &diff.Result{
+		Base:    "abc1234",
+		Changes: []diff.Change{ruleChange("R-01", diff.BecameAdded), exampleChange("R-01", "EX-01", diff.BecameAdded)},
+		Added:   2,
+	})
+
+	if strings.Contains(page, `href="#mapping/checkout/rule/R-01/example/EX-01"`) {
+		t.Error("the example has a row of its own in the list")
+	}
+	if !strings.Contains(page, `id="mapping/checkout/rule/R-01/example/EX-01"`) {
+		t.Error("a link to the example has nowhere to land")
+	}
+	if !strings.Contains(page, `>livt://mapping/checkout/rule/R-01/example/EX-01</a>`) {
+		t.Error("the example does not carry its own URI")
+	}
+	if got := strings.Count(page, `data-item="`); got != 1 {
+		t.Errorf("%d items, want the rule and its example as one", got)
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-08/example/EX-03
+// The rule stood still and only its example moved: the rule heads the item in
+// its own words, with no mark, and the same on both sides.
+func TestBuildDiffHeadsAnExampleWithTheRuleThatStoodStill(t *testing.T) {
+	rule := diff.Entry{Title: "R-01", Fields: []diff.Field{{Value: "the rule as it stands"}}}
+	page := renderedDiff(t, &diff.Result{
+		Base:    "abc1234",
+		Changes: []diff.Change{exampleChange("R-01", "EX-01", diff.BecameAdded)},
+		Context: map[string]diff.Entry{"livt://mapping/checkout/rule/R-01": rule},
+		Added:   1,
+	})
+
+	if got := strings.Count(page, "the rule as it stands"); got < 2 {
+		t.Errorf("the unchanged rule is read %d times, want it on both sides", got)
+	}
+	nav := page[strings.Index(page, `href="#mapping/checkout/rule/R-01"`):]
+	nav = nav[:strings.Index(nav, "</a>")]
+	if strings.Contains(nav, "Added") || strings.Contains(nav, "Changed") {
+		t.Error("the rule that stood still is marked as though it had changed")
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-08/example/EX-04
+// The mapping in the list is a heading. Its own change — its name, the terms it
+// draws on — is one more item under it, named for what it holds.
+func TestBuildDiffListsAMappingsOwnChangeUnderIt(t *testing.T) {
+	own := diff.Change{
+		URI: "livt://mapping/checkout", Kind: uri.KindMapping, Title: "Checkout", Became: diff.BecameAdded,
+		Lines: []diff.Line{{Op: diff.OpAdd, Field: diff.Field{Label: "ubiquitous", Value: "order"}}},
+		Page:  "mapping/checkout.html",
+	}
+	page := renderedDiff(t, &diff.Result{Base: "abc1234", Changes: []diff.Change{own, ruleChange("R-01", diff.BecameAdded)}, Added: 2})
+
+	if !strings.Contains(page, `href="#mapping/checkout"`) {
+		t.Error("the mapping's own change is not an item in the list")
+	}
+	if !strings.Contains(page, "Name and ubiquitous language") {
+		t.Error("the mapping's own change is not named for what it holds")
 	}
 }
