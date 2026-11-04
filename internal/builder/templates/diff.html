@@ -19,7 +19,7 @@
   .diff-del .moved { text-decoration: line-through; text-decoration-color: #b91c1c; }
   .reworded { background-color: transparent; text-decoration: none; }
   .ghost { border-style: dashed; box-shadow: none; opacity: 0.8; }
-  .diff-card:target { box-shadow: 0 0 0 2px #fff, 0 0 0 5px #7c3aed; }
+  .diff-card.nested:target { box-shadow: 0 0 0 2px #fff, 0 0 0 5px #7c3aed; }
   [data-nav][aria-current="true"] { background-color: #f5f3ff; box-shadow: inset 3px 0 0 #7c3aed; font-weight: 600; }
 </style>
 </head>
@@ -143,8 +143,8 @@ stickies side by side needs the width the sidebar would take.
       <div class="text-xs font-semibold text-gray-600">{{t "diff.before"}}</div>
       {{range .Before}}{{template "diff-card" .}}{{end}}
     </div>
-    <div class="diff-after bg-white border-2 border-violet-500 rounded-lg p-4 flex flex-col gap-3">
-      <div class="text-xs font-semibold text-violet-700">{{t "diff.after"}}</div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">{{t "diff.after"}}</div>
       {{range .After}}{{template "diff-card" .}}{{end}}
     </div>
   </div>
@@ -155,7 +155,7 @@ stickies side by side needs the width the sidebar would take.
 {{if .Empty}}
 <div class="{{if .Nested}}ml-5 {{end}}border border-dashed border-gray-300 rounded px-3 py-3 text-sm text-gray-500">{{.Title}} {{t "diff.none"}}</div>
 {{else}}
-<div{{if .Anchor}} id="{{.Anchor}}"{{end}} class="diff-card {{if .Nested}}ml-5 {{end}}{{.Tone}}{{if .Ghost}} ghost{{else}} shadow{{end}} border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+<div{{if .Anchor}} id="{{.Anchor}}"{{end}} class="diff-card {{if .Nested}}nested ml-5 {{end}}{{.Tone}}{{if .Ghost}} ghost{{else}} shadow{{end}} border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
   <div class="text-[11px] font-semibold text-gray-500 mb-1">{{.Title}}</div>
   {{range .Lines}}
   {{/* A line with no label is the item speaking for itself; a labelled one is
