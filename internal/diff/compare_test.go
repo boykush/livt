@@ -264,7 +264,7 @@ func TestCompareOrdersAMappingsChangesByTheirIDs(t *testing.T) {
 	}
 }
 
-// livt:automates livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-02
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-09
 // EX-03: what changed is a removal beside its replacement, and what did not
 // is still there to read it against.
 func TestCompareKeepsUnchangedLinesAsContext(t *testing.T) {
@@ -296,7 +296,7 @@ func TestCompareReadsARetiredRuleAsAWithdrawalTheRecordStillHolds(t *testing.T) 
 	}
 }
 
-// livt:automates livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-07
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-10
 // EX-08: a withdrawal is drawn as the removal it is. Retiring *adds* the line
 // that retires, so drawn off the record it would read as the opposite of what
 // happened — and the line that records it says nothing the badge has not.

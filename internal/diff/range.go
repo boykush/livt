@@ -51,6 +51,10 @@ type Result struct {
 	Base    string
 	Head    string
 	Changes []Change
+	// Context holds the rules that did not change but have examples that did,
+	// keyed by URI. A rule is read together with what illustrates it, so its
+	// own words are needed even where it stood still.
+	Context map[string]Entry
 	// Counted by what became of each item as a decision, which is what the page says.
 	Added     int
 	Changed   int
@@ -81,6 +85,7 @@ func (r Range) Compute(root string, dirs Dirs) (*Result, error) {
 		}
 	}
 	result := &Result{Base: baseRev, Head: headRev, Changes: Compare(base, head)}
+	result.Context = unchangedRules(base, head, result.Changes)
 	for i, c := range result.Changes {
 		result.Changes[i].Page = page(site, c.URI)
 		if parent, held := head.get(c.Parent); held {
@@ -133,4 +138,30 @@ func page(site *Snapshot, u string) string {
 		return ""
 	}
 	return parsed.Page()
+}
+
+// unchangedRules is every rule a changed example hangs off that did not change
+// itself, as the head has it — or the base, where the head no longer holds it.
+func unchangedRules(base, head *Snapshot, changes []Change) map[string]Entry {
+	changed := make(map[string]bool, len(changes))
+	for _, c := range changes {
+		changed[c.URI] = true
+	}
+	rules := make(map[string]Entry)
+	for _, c := range changes {
+		parsed, ok := uri.Parse(c.URI)
+		if !ok || parsed.Kind != uri.KindExample {
+			continue
+		}
+		ruleURI := uri.Rule(parsed.StoryKey, parsed.RuleID)
+		if changed[ruleURI] {
+			continue
+		}
+		if e, held := head.get(ruleURI); held {
+			rules[ruleURI] = e
+		} else if e, held := base.get(ruleURI); held {
+			rules[ruleURI] = e
+		}
+	}
+	return rules
 }

@@ -78,6 +78,15 @@ var en = Catalog{
 
 	// What livt itself names on a changed item. The livt repository's own words
 	// — a frontmatter key, a story's name — are carried through as written.
+	"diff.before":      "Before",
+	"diff.after":       "After",
+	"diff.none":        "None",
+	"diff.no-page":     "No page — it is no longer in the repository",
+	"diff.prev":        "Previous change",
+	"diff.next":        "Next change",
+	"diff.changes":     "Changes",
+	"diff.mapping-own": "Name and ubiquitous language",
+
 	"diff.gone":                 "gone from here",
 	"diff.field.status":         "Status",
 	"diff.field.issue":          "Automation issue",

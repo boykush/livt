@@ -550,31 +550,60 @@ type glossaryView struct {
 // Base and Head are the short hashes git resolved; an empty Head is the working
 // tree, which the page says in words because it has no hash to print.
 type diffView struct {
-	Sidebar   Sidebar
 	Base      string
 	Head      string
 	Added     int
 	Changed   int
 	Withdrawn int
-	Groups    []diffGroupView
+	Sections  []diffSectionView
 }
 
+// diffSectionView is one resource type's changes. Mappings come as Groups, one
+// per mapping, since the list folds them; every other type has Items alone.
+type diffSectionView struct {
+	Label  string
+	Groups []diffGroupView
+	Items  []diffItemView
+}
+
+// diffGroupView is one mapping in the list. Status is set only when the mapping
+// itself was added, changed or withdrawn; Count is every changed URI under it.
 type diffGroupView struct {
-	Label   string
-	Entries []diffEntryView
+	Title  string
+	Status string
+	Count  int
+	Items  []diffItemView
 }
 
-// diffEntryView is one livt URI's change. Status is empty on a mapping listed
-// only to head its changed rules, and Path is empty when the site holds no page
-// for the URI — which is every removed one.
-type diffEntryView struct {
-	URI      string
+// diffItemView is one thing a reviewer picks from the list and compares: a
+// rule with the examples that changed under it, or anything else on its own.
+// Anchor is the head card's, which is what a link to the item lands on.
+type diffItemView struct {
 	Anchor   string
 	Title    string
+	Summary  string
 	Status   string
+	URI      string
 	Path     string
-	Lines    []diffLineView
-	Children []diffEntryView
+	Examples int
+	Before   []diffCardView
+	After    []diffCardView
+}
+
+// diffCardView is one sticky on one side of an item. Empty stands where the
+// side held nothing — before an addition — and Ghost is a withdrawal, drawn
+// struck through. Anchor is set on the after side only, so an id is unique.
+type diffCardView struct {
+	Anchor string
+	Title  string
+	Status string
+	URI    string
+	Path   string
+	Tone   string
+	Nested bool
+	Empty  bool
+	Ghost  bool
+	Lines  []diffLineView
 }
 
 // diffLineView is one line of an entry's diff, Op being git diff's own " ", "+"
@@ -632,6 +661,8 @@ type mappingView struct {
 	// are rendered straight off the domain types, so the mark is looked up
 	// beside each rather than carried on it.
 	DiffMarks map[string]*diffMarkView
+	// Fade steps back every sticky without a mark, on a board where one changed.
+	Fade bool
 	// AutomationKnown says whether the automation axis is drawn at all.
 	AutomationKnown bool
 }
@@ -690,7 +721,7 @@ func renderStory(w io.Writer, lang i18n.Lang, story *domain.Story, body template
 func renderMapping(w io.Writer, lang i18n.Lang, bd board, name, storyPath string, ubiquitous []termCard, diff *diffMarkView, marks map[string]*diffMarkView) error {
 	return templates(lang).ExecuteTemplate(w, "mapping.html", mappingView{
 		Name: name, StoryPath: storyPath, Mapping: bd.Mapping,
-		Ubiquitous: ubiquitous, Diff: diff, Ghosts: bd.Ghosts, DiffMarks: marks,
+		Ubiquitous: ubiquitous, Diff: diff, Ghosts: bd.Ghosts, DiffMarks: marks, Fade: bd.Fade,
 		AutomationKnown: bd.AutomationKnown,
 	})
 }

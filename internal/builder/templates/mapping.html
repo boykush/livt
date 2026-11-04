@@ -64,6 +64,11 @@ board whatever the reader chose.
   the stamp is what tells them apart.
   */}}
   .ghost .sticky-text { text-decoration: line-through; text-decoration-color: #9ca3af; }
+  {{/*
+  On a board built with a diff, what did not change steps back, so the marked
+  stickies say where the change sits without a reader hunting for the marks.
+  */}}
+  .unchanged { opacity: 0.4; }
   [data-view="list"] :is(.rule-card, .question-card):not(.proposed) { color: #111827; }
   [data-view="list"] .question-card { font-size: 1rem; }
   [data-view="list"] .example-card { padding: 0.625rem 1.25rem; }
@@ -110,11 +115,11 @@ board whatever the reader chose.
   </div>
 </div>
 {{if .StoryPath}}
-<a href="{{.StoryPath}}" class="flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow font-bold text-gray-800 w-[180px] mb-6 hover:bg-yellow-200 transition">
+<a href="{{.StoryPath}}" class="{{if and .Fade (not .Diff)}}unchanged {{end}}flex items-center justify-between bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow font-bold text-gray-800 w-[180px] mb-6 hover:bg-yellow-200 transition">
   <span>{{.Name}}</span><span>&rarr;</span>
 </a>
 {{else}}
-<div class="bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow font-bold text-gray-800 w-[180px] mb-6">
+<div class="{{if and .Fade (not .Diff)}}unchanged {{end}}bg-yellow-100 border-l-4 border-yellow-400 p-3 rounded shadow font-bold text-gray-800 w-[180px] mb-6">
   {{.Name}}
 </div>
 {{end}}
@@ -140,7 +145,7 @@ back up into one row.
     {{/* A proposed rule is drawn pale, dashed and unpinned, and stamped as well,
     so telling it from an agreed one never rests on colour alone. */}}
     {{$ruleGhost := index $.Ghosts (ruleURI $.Mapping.StoryKey.Value $rule.ID)}}
-    <div{{if $rule.ID}} id="{{ruleAnchor $rule.ID}}"{{end}} class="rule-card relative {{if $ruleGhost}}ghost bg-blue-50 border-blue-300 border-dashed text-gray-500{{else if $rule.Proposed}}proposed bg-blue-50 border-blue-300 border-dashed text-gray-500{{else}}bg-blue-100 border-blue-400 shadow text-gray-800{{end}} border-l-4 px-3 pt-3 pb-6 rounded font-semibold scroll-mt-24">
+    <div{{if $rule.ID}} id="{{ruleAnchor $rule.ID}}"{{end}} class="rule-card relative {{if and $.Fade (not (index $.DiffMarks (ruleURI $.Mapping.StoryKey.Value $rule.ID)))}}unchanged {{end}}{{if $ruleGhost}}ghost bg-blue-50 border-blue-300 border-dashed text-gray-500{{else if $rule.Proposed}}proposed bg-blue-50 border-blue-300 border-dashed text-gray-500{{else}}bg-blue-100 border-blue-400 shadow text-gray-800{{end}} border-l-4 px-3 pt-3 pb-6 rounded font-semibold scroll-mt-24">
       {{if $rule.Examples}}
       <button type="button" data-fold aria-expanded="false" aria-controls="examples-{{$i}}" aria-label="{{t "label.examples"}}" class="rule-fold w-4 shrink-0 justify-center text-gray-400"><span class="chevron" aria-hidden="true">&#9656;</span></button>
       {{else}}
@@ -189,7 +194,7 @@ back up into one row.
     two reading differently costs nothing: what a click copies is the URL.
     */}}
     {{$exGhost := index $.Ghosts (exampleURI $.Mapping.StoryKey.Value $rule.ID .ID)}}
-    <div{{if and $rule.ID .ID}} id="{{exampleAnchor $rule.ID .ID}}"{{end}} class="example-card relative {{if $exGhost}}ghost bg-green-50 border-green-300 border-dashed text-gray-500{{else if $rule.Proposed}}proposed bg-green-50 border-green-300 border-dashed text-gray-500{{else}}bg-green-100 border-green-400 shadow text-gray-700{{end}} border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+    <div{{if and $rule.ID .ID}} id="{{exampleAnchor $rule.ID .ID}}"{{end}} class="example-card relative {{if and $.Fade (not (index $.DiffMarks (exampleURI $.Mapping.StoryKey.Value $rule.ID .ID)))}}unchanged {{end}}{{if $exGhost}}ghost bg-green-50 border-green-300 border-dashed text-gray-500{{else if $rule.Proposed}}proposed bg-green-50 border-green-300 border-dashed text-gray-500{{else}}bg-green-100 border-green-400 shadow text-gray-700{{end}} border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
       {{if and $rule.ID .ID}}{{template "id-badge" exampleBadge $rule.ID .ID}}{{end}}
       <div class="example-body min-w-0">
       <span class="sticky-text">{{.Name}}</span>
@@ -224,7 +229,7 @@ back up into one row.
     {{range .Mapping.Questions}}
     {{/* Keyed questions get an anchor so the Tasks page can link to the sticky. */}}
     {{$qGhost := index $.Ghosts (questionURI $.Mapping.StoryKey.Value .ID)}}
-    <div{{if .ID}} id="{{questionAnchor .ID}}"{{end}} class="question-card relative {{if $qGhost}}ghost bg-red-50 border-red-300 border-dashed text-gray-500{{else}}bg-red-100 border-red-400 shadow text-gray-700{{end}} border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+    <div{{if .ID}} id="{{questionAnchor .ID}}"{{end}} class="question-card relative {{if and $.Fade (not (index $.DiffMarks (questionURI $.Mapping.StoryKey.Value .ID)))}}unchanged {{end}}{{if $qGhost}}ghost bg-red-50 border-red-300 border-dashed text-gray-500{{else}}bg-red-100 border-red-400 shadow text-gray-700{{end}} border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
       {{if .ID}}{{template "id-badge" questionBadge .ID}}{{end}}
       <span class="sticky-text">{{.Text}}</span>
       {{with index $.DiffMarks (questionURI $.Mapping.StoryKey.Value .ID)}}{{template "diff-mark" .}}{{end}}
