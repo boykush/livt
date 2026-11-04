@@ -130,17 +130,12 @@ func (b *Builder) gone(count int, href string) *diffGoneView {
 // to link a diff the build did not write.
 func (b *Builder) buildDiff() error {
 	result := b.diffResult
-	sb, err := b.sidebar("diff", "")
-	if err != nil {
-		return err
-	}
 	f, err := os.Create(filepath.Join(b.OutDir, diffPage))
 	if err != nil {
 		return err
 	}
 	defer f.Close()
 	return renderDiff(f, b.Lang, diffView{
-		Sidebar:   sb,
 		Base:      result.Base,
 		Head:      result.Head,
 		Added:     result.Added,

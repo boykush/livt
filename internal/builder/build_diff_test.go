@@ -81,10 +81,11 @@ func TestBuildDiffNamesTheRevisionsItCompared(t *testing.T) {
 // repository holds — it is something said about the things it does — and an
 // entry beside the five resource types would read as a sixth.
 func TestBuildDiffTakesNoSidebarEntry(t *testing.T) {
-	page := renderedDiff(t, &diff.Result{Base: "abc1234", Changes: []diff.Change{ruleChange("R-01", diff.BecameAdded)}, Added: 1})
-
-	nav := page[strings.Index(page, "<nav"):strings.Index(page, "</nav>")]
-	if strings.Contains(nav, diffPage) {
+	var out strings.Builder
+	if err := templates(i18n.Default).ExecuteTemplate(&out, "sidebar", Sidebar{}); err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(out.String(), diffPage) {
 		t.Error("the sidebar carries a diff entry")
 	}
 }

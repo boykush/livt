@@ -550,7 +550,6 @@ type glossaryView struct {
 // Base and Head are the short hashes git resolved; an empty Head is the working
 // tree, which the page says in words because it has no hash to print.
 type diffView struct {
-	Sidebar   Sidebar
 	Base      string
 	Head      string
 	Added     int

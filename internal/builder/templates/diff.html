@@ -24,10 +24,13 @@
 </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
-<div class="flex min-h-screen">
-{{template "sidebar" .Sidebar}}
-<div class="flex-1 min-w-0 flex flex-col">
+{{/*
+No site sidebar: the list of changes is this page's nav, and comparing two
+stickies side by side needs the width the sidebar would take.
+*/}}
+<div class="min-h-screen flex flex-col">
   <header class="bg-white border-b border-gray-200 px-8 py-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+    <a href="index.html" class="text-xl font-bold text-gray-900 tracking-tight">livt</a>
     <h2 class="text-lg font-semibold text-gray-800">{{t "nav.diff"}}</h2>
     <span class="text-sm font-mono text-gray-500">{{.Base}} &rarr; {{if .Head}}{{.Head}}{{else}}{{t "diff.working-tree"}}{{end}}</span>
     <div class="ml-auto flex items-center gap-2 text-xs">
@@ -70,7 +73,6 @@
   {{else}}
   <p class="px-8 py-8 text-gray-400">{{t "diff.empty"}}</p>
   {{end}}
-</div>
 </div>
 <script>
   (function () {
