@@ -4,10 +4,15 @@ rules:
     examples:
       - id: EX-01
         name: Stories一覧でオポチュニティを選ぶと、そのマップに載るストーリーだけが表示される
+        retired: true
+        superseded_by:
+          - livt://mapping/filter-lists-by-opportunity/rule/R-01/example/EX-04
       - id: EX-02
         name: Example Mappings一覧でも同じ軸で絞り込める
       - id: EX-03
         name: 絞り込みを解除すると全件表示に戻る
+      - id: EX-04
+        name: Stories一覧でオポチュニティを選ぶと、そのオポチュニティのストーリーだけが表示される
     issues:
       - https://github.com/boykush/livt/issues/76
   - id: R-02
