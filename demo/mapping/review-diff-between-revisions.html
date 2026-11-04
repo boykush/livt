@@ -51,6 +51,8 @@
   [data-view="list"] .proposed, [data-view="list"] .ghost { border-style: solid solid solid dashed; }
   
   .ghost .sticky-text { text-decoration: line-through; text-decoration-color: #9ca3af; }
+  
+  .unchanged { opacity: 0.4; }
   [data-view="list"] :is(.rule-card, .question-card):not(.proposed) { color: #111827; }
   [data-view="list"] .question-card { font-size: 1rem; }
   [data-view="list"] .example-card { padding: 0.625rem 1.25rem; }
@@ -107,7 +109,7 @@
 <div class="list-head items-baseline gap-2">
   <span class="w-2.5 h-2.5 rounded-sm bg-blue-400"></span>
   <h2 class="text-sm font-semibold text-gray-800">ルール</h2>
-  <span class="text-xs text-gray-400">7</span>
+  <span class="text-xs text-gray-400">9</span>
 </div>
 
 
@@ -483,29 +485,6 @@
     
     
     
-    <div id="rule-R-03-example-EX-02" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
-      
-
-<a href="#rule-R-03-example-EX-02" data-copy-link title="リンクをコピー"
-   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
-
-      <div class="example-body min-w-0">
-      <span class="sticky-text">文言が変わったURIは、変わった行だけが赤と緑の対で並ぶ</span>
-      
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
-        
-
-<a href="https://github.com/boykush/livt/blob/6657a3491f3996962ba2ed3d8a7de2ba75cf8f30/internal/diff/compare_test.go#L267" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: compare_test.go:267</span></a>
-
-      </div>
-      
-      </div>
-    </div>
-    
-    
-    
     <div id="rule-R-03-example-EX-03" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
       
 
@@ -570,32 +549,6 @@
     
     
     
-    <div id="rule-R-03-example-EX-07" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
-      
-
-<a href="#rule-R-03-example-EX-07" data-copy-link title="リンクをコピー"
-   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-07</a>
-
-      <div class="example-body min-w-0">
-      <span class="sticky-text">廃止された項目は、記録上どう書かれていても赤い「-」で並ぶ（退役はファイル上「退役」の行が増えるが、決定としては削除と同じく「この文が無くなった」）</span>
-      
-      
-      
-      <div class="example-automations mt-2 flex flex-wrap gap-1 font-mono text-[10px] font-normal">
-        
-
-<a href="https://github.com/boykush/livt/blob/6657a3491f3996962ba2ed3d8a7de2ba75cf8f30/internal/builder/build_diff_test.go#L320" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: build_diff_test.go:320</span></a>
-
-
-<a href="https://github.com/boykush/livt/blob/6657a3491f3996962ba2ed3d8a7de2ba75cf8f30/internal/diff/compare_test.go#L299" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: compare_test.go:299</span></a>
-
-      </div>
-      
-      </div>
-    </div>
-    
-    
-    
     <div id="rule-R-03-example-EX-08" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
       
 
@@ -604,6 +557,38 @@
 
       <div class="example-body min-w-0">
       <span class="sticky-text">退役したことを書いた行そのもの（「退役」やstatusの変更）は出ない。それは廃止という印が言っている。後継だけが残る</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-03-example-EX-09" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-03-example-EX-09" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-09</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">文言が変わったURIは、変更前と変更後の付箋が並び、変わった語句だけが赤と緑で際立つ</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-03-example-EX-10" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-03-example-EX-10" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-10</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">廃止された項目は、記録上どう書かれていても、赤い取り消し線の付箋として並ぶ（退役はファイル上「退役」の行が増えるが、決定としては削除と同じく「この文が無くなった」）</span>
       
       
       
@@ -1126,6 +1111,200 @@
 <a href="https://github.com/boykush/livt/blob/6657a3491f3996962ba2ed3d8a7de2ba75cf8f30/internal/diff/compare_test.go#L607" target="_blank" rel="noopener" title="テストで自動化済み" class="test-chip inline-flex items-start gap-1 max-w-full rounded-sm px-1 bg-violet-100 text-violet-700 ring-1 ring-inset ring-violet-200 hover:underline"><svg width="12" height="12" class="w-3 h-3 shrink-0 mt-px" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 1.75H4.25a1 1 0 0 0-1 1v10.5a1 1 0 0 0 1 1h7.5a1 1 0 0 0 1-1V4.5Z"/><path d="M9.5 1.75V4.5h3.25"/><path d="M6.6 7.3v4.4L10.2 9.5Z" fill="currentColor"/></svg><span class="min-w-0 break-all">livt: compare_test.go:607</span></a>
 
       </div>
+      
+      </div>
+    </div>
+    
+    </div>
+    
+  </div>
+
+  <div class="rule-group" data-rule-group data-foldable>
+    
+    
+    <div id="rule-R-08" class="rule-card relative bg-blue-100 border-blue-400 shadow text-gray-800 border-l-4 px-3 pt-3 pb-6 rounded font-semibold scroll-mt-24">
+      
+      <button type="button" data-fold aria-expanded="false" aria-controls="examples-7" aria-label="具体例" class="rule-fold w-4 shrink-0 justify-center text-gray-400"><span class="chevron" aria-hidden="true">&#9656;</span></button>
+      
+      
+
+<a href="#rule-R-08" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-08</a>
+
+      
+      
+      <div class="rule-body min-w-0">
+      <span class="rule-name sticky-text">差分は、変わったものの一覧から1件ずつ選び、変更前と変更後を比べて読む</span>
+      
+      
+      
+      
+      
+      </div>
+      
+      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>5</span>
+      
+    </div>
+    
+    <div id="examples-7" class="example-stack">
+    
+    
+    
+    <div id="rule-R-08-example-EX-01" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-08-example-EX-01" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">一覧では実例マッピングを見出しに、その下に変わったルールと疑問点が並ぶ</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-08-example-EX-02" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-08-example-EX-02" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">具体例は一覧に行を持たず、ルールを選ぶと、ルールの付箋の下で変わった具体例の変更前と変更後が並ぶ（それぞれが自分の印とURIを持つ）</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-08-example-EX-03" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-08-example-EX-03" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">ルールが変わらず具体例だけが変わると、ルールは印を持たずに並び、具体例だけに差が出る</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-08-example-EX-04" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-08-example-EX-04" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-04</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">一覧の実例マッピングは見出しで、実例マッピング自体が追加・変更されたときは、その下の1件として変更前と変更後が並ぶ</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-08-example-EX-05" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-08-example-EX-05" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-05</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">ボードで具体例の印から辿ると、そのルールが選ばれた状態で、その具体例に着地する</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    </div>
+    
+  </div>
+
+  <div class="rule-group" data-rule-group data-foldable>
+    
+    
+    <div id="rule-R-09" class="rule-card relative bg-blue-100 border-blue-400 shadow text-gray-800 border-l-4 px-3 pt-3 pb-6 rounded font-semibold scroll-mt-24">
+      
+      <button type="button" data-fold aria-expanded="false" aria-controls="examples-8" aria-label="具体例" class="rule-fold w-4 shrink-0 justify-center text-gray-400"><span class="chevron" aria-hidden="true">&#9656;</span></button>
+      
+      
+
+<a href="#rule-R-09" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-blue-400/70 hover:text-blue-600 hover:underline cursor-pointer select-none">#R-09</a>
+
+      
+      
+      <div class="rule-body min-w-0">
+      <span class="rule-name sticky-text">差分を載せたボードでは、変わっていない付箋が薄くなる</span>
+      
+      
+      
+      
+      
+      </div>
+      
+      <span class="example-count shrink-0 items-center gap-1 text-xs font-normal text-gray-400"><span class="inline-block w-3 h-3 bg-green-100 border-l-2 border-green-400 rounded-sm" aria-hidden="true"></span><span class="sr-only">具体例</span>3</span>
+      
+    </div>
+    
+    <div id="examples-8" class="example-stack">
+    
+    
+    
+    <div id="rule-R-09-example-EX-01" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-09-example-EX-01" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-01</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">変わった付箋は印を付けていつもの濃さで、変わっていない付箋は薄く並び、どこが変わったかがボード上の位置で読める</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-09-example-EX-02" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-09-example-EX-02" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-02</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">差分を載せていないビルドのボードでは、どの付箋も薄くならない</span>
+      
+      
+      
+      </div>
+    </div>
+    
+    
+    
+    <div id="rule-R-09-example-EX-03" class="example-card relative bg-green-100 border-green-400 shadow text-gray-700 border-l-4 px-3 pt-3 pb-6 rounded text-sm scroll-mt-24">
+      
+
+<a href="#rule-R-09-example-EX-03" data-copy-link title="リンクをコピー"
+   class="absolute bottom-1 right-2 max-w-[calc(100%-1rem)] truncate font-mono text-[10px] font-normal text-green-400/70 hover:text-green-600 hover:underline cursor-pointer select-none">#EX-03</a>
+
+      <div class="example-body min-w-0">
+      <span class="sticky-text">差分を載せたビルドでも、何も変わっていないボードでは、どの付箋も薄くならない（全部が薄いと、どこも指さない）</span>
+      
+      
       
       </div>
     </div>
