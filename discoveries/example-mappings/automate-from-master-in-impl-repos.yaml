@@ -153,8 +153,13 @@ rules:
         name: オポチュニティのファイルがないユーザーストーリーマップでは、キーはそのままに、名前とURIをマップのものが兼ねる
       - id: EX-07
         name: list_stories に opportunity パラメータ（オポチュニティのキー）を指定すると、そのオポチュニティのユーザーストーリーマップに載るストーリーだけが返る
+        retired: true
+        superseded_by:
+          - livt://mapping/automate-from-master-in-impl-repos/rule/R-13/example/EX-09
       - id: EX-08
         name: 存在しないオポチュニティのキーの指定は空の一覧を返す
+      - id: EX-09
+        name: list_stories に opportunity パラメータ（オポチュニティのキー）を指定すると、そのオポチュニティのストーリーだけが返る
     issues:
       - https://github.com/boykush/livt/issues/82
   - id: R-14
