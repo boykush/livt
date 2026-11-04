@@ -662,6 +662,8 @@ type mappingView struct {
 	// are rendered straight off the domain types, so the mark is looked up
 	// beside each rather than carried on it.
 	DiffMarks map[string]*diffMarkView
+	// Fade steps back every sticky without a mark, on a board where one changed.
+	Fade bool
 	// AutomationKnown says whether the automation axis is drawn at all.
 	AutomationKnown bool
 }
@@ -720,7 +722,7 @@ func renderStory(w io.Writer, lang i18n.Lang, story *domain.Story, body template
 func renderMapping(w io.Writer, lang i18n.Lang, bd board, name, storyPath string, ubiquitous []termCard, diff *diffMarkView, marks map[string]*diffMarkView) error {
 	return templates(lang).ExecuteTemplate(w, "mapping.html", mappingView{
 		Name: name, StoryPath: storyPath, Mapping: bd.Mapping,
-		Ubiquitous: ubiquitous, Diff: diff, Ghosts: bd.Ghosts, DiffMarks: marks,
+		Ubiquitous: ubiquitous, Diff: diff, Ghosts: bd.Ghosts, DiffMarks: marks, Fade: bd.Fade,
 		AutomationKnown: bd.AutomationKnown,
 	})
 }

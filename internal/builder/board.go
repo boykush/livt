@@ -1,6 +1,8 @@
 package builder
 
 import (
+	"strings"
+
 	"github.com/boykush/livt/internal/diff"
 	"github.com/boykush/livt/internal/domain"
 	"github.com/boykush/livt/internal/uri"
@@ -21,6 +23,9 @@ import (
 type board struct {
 	Mapping *domain.ExampleMapping
 	Ghosts  map[string]bool
+	// Fade says the stickies without a mark step back: only on a board where
+	// something changed, since fading every sticky would point at nothing.
+	Fade bool
 	// AutomationKnown says whether to draw the automation axis at all. False is
 	// a board nothing has spoken about, where the ✓ legend would promise a mark
 	// no sticky can carry.
@@ -31,7 +36,7 @@ type board struct {
 // and nothing more, which is every build that was given no revisions.
 func (b *Builder) boardFor(em *domain.ExampleMapping, automationKnown bool) board {
 	if b.diffResult == nil {
-		return board{Mapping: em.Active(), AutomationKnown: automationKnown}
+		return board{Mapping: em.Active(), Fade: b.changedUnder(uri.Mapping(em.StoryKey.Value)), AutomationKnown: automationKnown}
 	}
 	out := &domain.ExampleMapping{StoryKey: em.StoryKey, Name: em.Name, Ubiquitous: em.Ubiquitous}
 	ghosts := make(map[string]bool)
@@ -76,12 +81,22 @@ func (b *Builder) boardFor(em *domain.ExampleMapping, automationKnown bool) boar
 	}
 
 	b.addDeleted(out, ghosts, em.StoryKey)
-	return board{Mapping: out, Ghosts: ghosts, AutomationKnown: automationKnown}
+	return board{Mapping: out, Ghosts: ghosts, Fade: b.changedUnder(uri.Mapping(key)), AutomationKnown: automationKnown}
 }
 
 func (b *Builder) changed(u string) bool {
 	_, ok := b.diffByURI[u]
 	return ok
+}
+
+// changedUnder says whether the mapping or anything hanging off it changed.
+func (b *Builder) changedUnder(mappingURI string) bool {
+	for u := range b.diffByURI {
+		if u == mappingURI || strings.HasPrefix(u, mappingURI+"/") {
+			return true
+		}
+	}
+	return false
 }
 
 // addDeleted puts back what the working tree does not hold at all. Its text

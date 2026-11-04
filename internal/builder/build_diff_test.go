@@ -492,3 +492,21 @@ func TestBuildDiffListsAMappingsOwnChangeUnderIt(t *testing.T) {
 		t.Error("the mapping's own change is not named for what it holds")
 	}
 }
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-09/example/EX-03
+// A board nothing on which changed keeps every sticky. Faded all over, it would
+// point at nothing, and read as though the whole board were being withdrawn.
+func TestADiffBoardWithNothingChangedFadesNothing(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	if err := b.resetGeneratedDirs(); err != nil {
+		t.Fatal(err)
+	}
+	writeFile(t, filepath.Join(b.MappingsDir, "checkout.yaml"), "rules:\n  - id: R-01\n    name: a rule\n")
+	b.diffByURI = map[string]diff.Became{"livt://mapping/checkout-v2/rule/R-01": diff.BecameChanged}
+
+	page := renderedBoard(t, &b)
+
+	if strings.Contains(page, "relative unchanged") || strings.Contains(page, `class="unchanged `) {
+		t.Error("a board nothing on which changed is faded")
+	}
+}
