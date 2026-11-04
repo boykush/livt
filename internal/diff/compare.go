@@ -89,6 +89,12 @@ type Change struct {
 	Became Became
 	Lines  []Line
 	Page   string
+	// Path and Line are where the change can be read in the repository, on the
+	// head's side — or, for an entry the head no longer holds at all, on the
+	// base's, which InBase says. Empty Path where livt does not track the file.
+	Path   string
+	Line   int
+	InBase bool
 }
 
 // Compare pairs the two snapshots by URI. A URI both hold with the same fields
@@ -138,13 +144,15 @@ func removals(base, head *Snapshot) []placedChange {
 			continue
 		}
 		after++
-		placed = append(placed, placedChange{anchor: anchor, after: after, change: change(e, StatusRemoved, BecameWithdrawn, withdrawn(e, Entry{}))})
+		gone := change(e, StatusRemoved, BecameWithdrawn, withdrawn(e, Entry{}))
+		gone.InBase = true
+		placed = append(placed, placedChange{anchor: anchor, after: after, change: gone})
 	}
 	return placed
 }
 
 func change(e Entry, status Status, became Became, lines []Line) Change {
-	return Change{URI: e.URI, Kind: e.Kind, Parent: e.Parent, Title: e.Title, Status: status, Became: became, Lines: lines}
+	return Change{URI: e.URI, Kind: e.Kind, Parent: e.Parent, Title: e.Title, Status: status, Became: became, Lines: lines, Path: e.Path, Line: e.Line}
 }
 
 // lines draws the change. A withdrawal is drawn as the removal it is, whichever

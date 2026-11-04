@@ -51,13 +51,15 @@ jobs:
 
       # From the merge base, as the Files changed tab reads a pull request:
       # what the branch changes, not what the base has moved on to since.
+      # The pull request's URL lets each change link to its line there.
       - name: Build the site with its diff
         env:
           BASE: ${{ github.event.pull_request.base.sha }}
+          PULL_REQUEST: ${{ github.event.pull_request.html_url }}
         run: |
           base=$(git merge-base "$BASE" HEAD)
           go build -o "$RUNNER_TEMP/livt" .
-          "$RUNNER_TEMP/livt" build -o dist --diff "$base..HEAD"
+          "$RUNNER_TEMP/livt" build -o dist --diff "$base..HEAD" --pull-request "$PULL_REQUEST"
 
       - name: Upload the site
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2

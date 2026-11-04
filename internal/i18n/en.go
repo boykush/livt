@@ -86,6 +86,7 @@ var en = Catalog{
 	"diff.next":        "Next change",
 	"diff.changes":     "Changes",
 	"diff.mapping-own": "Name and ubiquitous language",
+	"diff.comment":     "Comment on GitHub",
 
 	"diff.gone":                 "gone from here",
 	"diff.field.status":         "Status",

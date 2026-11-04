@@ -604,6 +604,9 @@ type diffCardView struct {
 	Empty  bool
 	Ghost  bool
 	Lines  []diffLineView
+	// Comment opens the card's line in the pull request, empty with no pull
+	// request or on a side the change cannot be commented from.
+	Comment string
 }
 
 // diffLineView is one line of an entry's diff, Op being git diff's own " ", "+"

@@ -181,3 +181,29 @@ func TestComputeCarriesTheRuleAnExampleChangedUnder(t *testing.T) {
 		t.Errorf("added %d, changed %d: the rule carried for context was counted", result.Added, result.Changed)
 	}
 }
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-10/example/EX-01
+// EX-02: a change is placed on the line of its own words, in the file as the
+// repository names it. One the head still holds is read on the head's side;
+// one gone from the file can only be read where the base had it.
+func TestComputePlacesEachChangeOnItsLine(t *testing.T) {
+	root := committedRepo(t)
+	write(t, filepath.Join(root, relDirs.Mappings, "checkout.yaml"), `rules:
+  - id: R-02
+    name: replaced the first
+`)
+
+	result, err := Range{Base: "HEAD"}.Compute(root, relDirs)
+	if err != nil {
+		t.Fatal(err)
+	}
+	const path = "discoveries/example-mappings/checkout.yaml"
+	added := findURI(t, result.Changes, "livt://mapping/checkout/rule/R-02")
+	if added.Path != path || added.Line != 3 || added.InBase {
+		t.Errorf("added rule at %s:%d (in base %v), want %s:3 on the head", added.Path, added.Line, added.InBase, path)
+	}
+	removed := findURI(t, result.Changes, "livt://mapping/checkout/rule/R-01/example/EX-01")
+	if removed.Path != path || removed.Line != 6 || !removed.InBase {
+		t.Errorf("removed example at %s:%d (in base %v), want %s:6 on the base", removed.Path, removed.Line, removed.InBase, path)
+	}
+}

@@ -5,6 +5,8 @@ package builder
 // livt:automates livt://mapping/review-diff-between-revisions/rule/R-06
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"os"
 	"path/filepath"
 	"strings"
@@ -509,5 +511,85 @@ func TestADiffBoardWithNothingChangedFadesNothing(t *testing.T) {
 
 	if strings.Contains(page, "relative unchanged") || strings.Contains(page, `class="unchanged `) {
 		t.Error("a board nothing on which changed is faded")
+	}
+}
+
+// renderedReview is the diff page of a build reviewed in a pull request.
+func renderedReview(t *testing.T, pullRequest string, result *diff.Result) string {
+	t.Helper()
+	b := emptyDirsBuilder(t)
+	b.PullRequest = pullRequest
+	b.diffResult = result
+	if err := b.buildDiff(); err != nil {
+		t.Fatal(err)
+	}
+	out, err := os.ReadFile(filepath.Join(b.OutDir, diffPage))
+	if err != nil {
+		t.Fatal(err)
+	}
+	return string(out)
+}
+
+// fileAnchor is how GitHub's Files changed addresses a file: the SHA-256 of its path.
+func fileAnchor(path string) string {
+	sum := sha256.Sum256([]byte(path))
+	return "diff-" + hex.EncodeToString(sum[:])
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-10/example/EX-01
+// A change the head holds opens its own line in the pull request, on the head's
+// side, where GitHub takes the review comment.
+func TestBuildDiffLinksAChangeToItsLineInThePullRequest(t *testing.T) {
+	const path = "discoveries/example-mappings/checkout.yaml"
+	added := ruleChange("R-01", diff.BecameAdded)
+	added.Path, added.Line = path, 3
+	page := renderedReview(t, "https://github.com/acme/repo/pull/7", &diff.Result{Base: "abc1234", Changes: []diff.Change{added}, Added: 1})
+
+	want := `href="https://github.com/acme/repo/pull/7/files#` + fileAnchor(path) + `R3"`
+	if !strings.Contains(page, want) {
+		t.Errorf("the change does not open its line in the pull request: no %s", want)
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-10/example/EX-02
+// Gone from the file, a change has no line on the head: it opens where the base
+// had it, from the before side, which is where it is still drawn.
+func TestBuildDiffLinksAChangeGoneFromItsFileToTheBase(t *testing.T) {
+	const path = "discoveries/example-mappings/checkout.yaml"
+	gone := ruleChange("R-01", diff.BecameWithdrawn)
+	gone.Lines = []diff.Line{{Op: diff.OpDel, Field: diff.Field{Value: "a rule"}}}
+	gone.Path, gone.Line, gone.InBase = path, 3, true
+	page := renderedReview(t, "https://github.com/acme/repo/pull/7", &diff.Result{Base: "abc1234", Changes: []diff.Change{gone}, Withdrawn: 1})
+
+	before, _, _ := strings.Cut(page[strings.Index(page, `class="diff-before`):], `class="diff-after`)
+	if !strings.Contains(before, fileAnchor(path)+`L3"`) {
+		t.Error("the change gone from its file does not open the base's line from the before side")
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-10/example/EX-03
+// With no pull request there is nowhere to comment, so nothing offers to.
+func TestBuildDiffWithoutAPullRequestOffersNoComment(t *testing.T) {
+	added := ruleChange("R-01", diff.BecameAdded)
+	added.Path, added.Line = "discoveries/example-mappings/checkout.yaml", 3
+	page := renderedReview(t, "", &diff.Result{Base: "abc1234", Changes: []diff.Change{added}, Added: 1})
+
+	if strings.Contains(page, "/files#diff-") || strings.Contains(page, "Comment on GitHub") {
+		t.Error("a diff built without a pull request offers a comment")
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-10/example/EX-04
+// The link stays in the tab: the reviewer came from the pull request there, and
+// going back returns to the change, which the fragment keeps.
+func TestBuildDiffOpensThePullRequestInTheSameTab(t *testing.T) {
+	added := ruleChange("R-01", diff.BecameAdded)
+	added.Path, added.Line = "discoveries/example-mappings/checkout.yaml", 3
+	page := renderedReview(t, "https://github.com/acme/repo/pull/7", &diff.Result{Base: "abc1234", Changes: []diff.Change{added}, Added: 1})
+
+	link := page[strings.Index(page, `href="https://github.com/acme/repo/pull/7/files`):]
+	link = link[:strings.Index(link, ">")]
+	if strings.Contains(link, "target=") {
+		t.Errorf("the comment link opens elsewhere than the tab: %s", link)
 	}
 }
