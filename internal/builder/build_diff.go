@@ -1,6 +1,10 @@
 package builder
 
 import (
+	"cmp"
+	"crypto/sha256"
+	"encoding/hex"
+	"fmt"
 	"os"
 	"path/filepath"
 	"strings"
@@ -129,23 +133,18 @@ func (b *Builder) gone(count int, href string) *diffGoneView {
 // to link a diff the build did not write.
 func (b *Builder) buildDiff() error {
 	result := b.diffResult
-	sb, err := b.sidebar("diff", "")
-	if err != nil {
-		return err
-	}
 	f, err := os.Create(filepath.Join(b.OutDir, diffPage))
 	if err != nil {
 		return err
 	}
 	defer f.Close()
 	return renderDiff(f, b.Lang, diffView{
-		Sidebar:   sb,
 		Base:      result.Base,
 		Head:      result.Head,
 		Added:     result.Added,
 		Changed:   result.Changed,
 		Withdrawn: result.Withdrawn,
-		Groups:    b.diffGroupViews(result.Changes),
+		Sections:  b.diffSectionViews(result),
 	})
 }
 
@@ -158,72 +157,233 @@ func (b *Builder) removeDiff() error {
 	return nil
 }
 
-// diffGroupViews gathers the changes under their resource type, and the ones
-// belonging to a mapping under that mapping. A mapping whose own fields did not
-// change still heads its rules: the group needs something to hang them off, so
-// it is listed with no status of its own.
-func (b *Builder) diffGroupViews(changes []diff.Change) []diffGroupView {
-	entries := make(map[uri.Kind][]*diffEntryView)
-	parents := make(map[string]*diffEntryView)
-	for _, c := range changes {
-		entry := &diffEntryView{
-			URI:    c.URI,
-			Anchor: diffAnchor(c.URI),
-			Title:  c.Title,
-			Status: string(c.Became),
-			Path:   c.Page,
-			Lines:  b.diffLineViews(c.Lines),
+// diffSectionViews gathers the changes under their resource type. Under a
+// mapping, an example joins the item of the rule it illustrates, since a rule
+// is weighed together with what illustrates it; a rule that did not change
+// itself still heads that item, in the words result.Context carries for it.
+func (b *Builder) diffSectionViews(result *diff.Result) []diffSectionView {
+	type group struct {
+		view  diffGroupView
+		items []*diffItemView
+		byURI map[string]*diffItemView
+	}
+	groups := make(map[string]*group)
+	var groupOrder []string
+	flat := make(map[uri.Kind][]diffItemView)
+	for _, c := range result.Changes {
+		kind := diffKindGroup[c.Kind]
+		if kind != uri.KindMapping {
+			flat[kind] = append(flat[kind], b.diffItem(c))
+			continue
 		}
-		group := diffKindGroup[c.Kind]
-		if c.Parent == "" {
-			if held, ok := parents[c.URI]; ok {
-				// The mapping was listed as a bare header by a child that came
-				// first; fill in its own change rather than listing it twice.
-				held.Status, held.Path, held.Lines = entry.Status, entry.Path, entry.Lines
+		mapping := c.Parent
+		if c.Kind == uri.KindMapping {
+			mapping = c.URI
+		}
+		g, ok := groups[mapping]
+		if !ok {
+			g = &group{view: diffGroupView{Title: cmp.Or(c.ParentTitle, mapping)}, byURI: make(map[string]*diffItemView)}
+			groups[mapping] = g
+			groupOrder = append(groupOrder, mapping)
+		}
+		g.view.Count++
+		switch c.Kind {
+		case uri.KindMapping:
+			g.view.Title, g.view.Status = cmp.Or(c.Title, g.view.Title), string(c.Became)
+			item := b.diffItem(c)
+			item.Title = i18n.Of(b.Lang).Msg("diff.mapping-own")
+			// The mapping's name is already its group's heading.
+			item.Before[0].Title, item.After[0].Title = "", ""
+			g.items = append([]*diffItemView{&item}, g.items...)
+		case uri.KindExample:
+			parsed, _ := uri.Parse(c.URI)
+			ruleURI := uri.Rule(parsed.StoryKey, parsed.RuleID)
+			item, held := g.byURI[ruleURI]
+			if !held {
+				item = b.diffContextItem(ruleURI, result.Context[ruleURI])
+				g.byURI[ruleURI] = item
+				g.items = append(g.items, item)
+			}
+			before, after := b.diffCards(c, uri.KindExample)
+			before.Nested, after.Nested = true, true
+			item.Before = append(item.Before, before)
+			item.After = append(item.After, after)
+			item.Examples++
+		default:
+			item := b.diffItem(c)
+			if held, ok := g.byURI[c.URI]; ok {
+				// The rule's examples came first and gave it a stand-in head;
+				// the rule's own change takes that place.
+				*held = mergeHead(item, *held)
 				continue
 			}
-			parents[c.URI] = entry
-			entries[group] = append(entries[group], entry)
+			g.byURI[c.URI] = &item
+			g.items = append(g.items, &item)
+		}
+	}
+	var sections []diffSectionView
+	for _, dg := range diffGroups {
+		section := diffSectionView{Label: dg.label}
+		if dg.kind == uri.KindMapping {
+			for _, m := range groupOrder {
+				g := groups[m]
+				for _, item := range g.items {
+					g.view.Items = append(g.view.Items, *item)
+				}
+				section.Groups = append(section.Groups, g.view)
+			}
+		} else {
+			section.Items = flat[dg.kind]
+		}
+		if len(section.Groups) == 0 && len(section.Items) == 0 {
 			continue
 		}
-		parent, ok := parents[c.Parent]
-		if !ok {
-			// Named off the child, because the mapping has no change of its own
-			// to be named by: nothing about it moved except the rules hanging
-			// off it.
-			parent = &diffEntryView{URI: c.Parent, Anchor: diffAnchor(c.Parent), Title: c.ParentTitle}
-			parents[c.Parent] = parent
-			entries[group] = append(entries[group], parent)
-		}
-		parent.Children = append(parent.Children, *entry)
+		sections = append(sections, section)
 	}
-	var groups []diffGroupView
-	for _, g := range diffGroups {
-		listed := entries[g.kind]
-		if len(listed) == 0 {
-			continue
-		}
-		view := diffGroupView{Label: g.label}
-		for _, e := range listed {
-			view.Entries = append(view.Entries, *e)
-		}
-		groups = append(groups, view)
-	}
-	return groups
+	return sections
 }
 
-func (b *Builder) diffLineViews(lines []diff.Line) []diffLineView {
-	views := make([]diffLineView, 0, len(lines))
-	for _, l := range lines {
-		label := b.diffLabel(l.Field)
-		views = append(views, diffLineView{
-			Op:    string(l.Op),
-			Label: label,
-			Text:  diffText(label, b.diffValue(l.Field)),
-			Parts: diffPartViews(l.Parts),
-		})
+// mergeHead puts a rule's own change in front of the examples already held
+// under it.
+func mergeHead(head, held diffItemView) diffItemView {
+	head.Before = append(head.Before, held.Before[1:]...)
+	head.After = append(head.After, held.After[1:]...)
+	head.Examples = held.Examples
+	return head
+}
+
+// diffItem is one change read on its own.
+func (b *Builder) diffItem(c diff.Change) diffItemView {
+	before, after := b.diffCards(c, c.Kind)
+	return diffItemView{
+		Anchor:  diffAnchor(c.URI),
+		Title:   c.Title,
+		Summary: diffSummary(c.Lines),
+		Status:  string(c.Became),
+		URI:     c.URI,
+		Path:    c.Page,
+		Before:  []diffCardView{before},
+		After:   []diffCardView{after},
 	}
-	return views
+}
+
+// diffContextItem heads an item with a rule that did not change, so the same
+// sticky stands on both sides and only its examples differ.
+func (b *Builder) diffContextItem(ruleURI string, rule diff.Entry) *diffItemView {
+	lines := make([]diffLineView, 0, len(rule.Fields))
+	for _, f := range rule.Fields {
+		lines = append(lines, b.diffLineView(diff.Line{Op: diff.OpContext, Field: f}))
+	}
+	page := ""
+	if parsed, ok := uri.Parse(ruleURI); ok {
+		page = parsed.Page()
+	}
+	card := diffCardView{Title: rule.Title, URI: ruleURI, Path: page, Tone: diffTone[uri.KindRule], Lines: lines}
+	after := card
+	after.Anchor = diffAnchor(ruleURI)
+	return &diffItemView{
+		Anchor:  diffAnchor(ruleURI),
+		Title:   rule.Title,
+		Summary: diffSummary(contextLines(rule.Fields)),
+		URI:     ruleURI,
+		Path:    page,
+		Before:  []diffCardView{card},
+		After:   []diffCardView{after},
+	}
+}
+
+func contextLines(fields []diff.Field) []diff.Line {
+	lines := make([]diff.Line, 0, len(fields))
+	for _, f := range fields {
+		lines = append(lines, diff.Line{Op: diff.OpContext, Field: f})
+	}
+	return lines
+}
+
+// diffCards draws one change as the sticky it was and the sticky it became.
+// An addition has nothing before it. A withdrawal's after side is its last
+// words struck through, with what replaced it beside them; its before side is
+// those words as they stood.
+func (b *Builder) diffCards(c diff.Change, kind uri.Kind) (before, after diffCardView) {
+	base := diffCardView{Title: c.Title, Status: string(c.Became), URI: c.URI, Path: c.Page, Tone: diffTone[kind]}
+	before, after = base, base
+	after.Anchor = diffAnchor(c.URI)
+	for _, l := range c.Lines {
+		switch {
+		case c.Became == diff.BecameWithdrawn:
+			if l.Op == diff.OpDel {
+				before.Lines = append(before.Lines, b.diffLineView(diff.Line{Op: diff.OpContext, Field: l.Field}))
+			}
+			after.Lines = append(after.Lines, b.diffLineView(l))
+		case c.Became == diff.BecameAdded:
+			after.Lines = append(after.Lines, b.diffLineView(diff.Line{Op: diff.OpContext, Field: l.Field}))
+		case l.Op == diff.OpDel:
+			before.Lines = append(before.Lines, b.diffLineView(l))
+		case l.Op == diff.OpAdd:
+			after.Lines = append(after.Lines, b.diffLineView(l))
+		default:
+			before.Lines = append(before.Lines, b.diffLineView(l))
+			after.Lines = append(after.Lines, b.diffLineView(l))
+		}
+	}
+	before.Empty = len(before.Lines) == 0
+	after.Ghost = c.Became == diff.BecameWithdrawn
+	if c.InBase {
+		before.Comment = b.commentHref(c.Path, c.Line, "L")
+	} else {
+		after.Comment = b.commentHref(c.Path, c.Line, "R")
+	}
+	return before, after
+}
+
+// commentHref opens one line of the pull request's Files changed, where GitHub
+// takes review comments: the file is addressed by the SHA-256 of its path, the
+// line by its side, L for the base and R for the head.
+func (b *Builder) commentHref(path string, line int, side string) string {
+	if b.PullRequest == "" || path == "" || line == 0 {
+		return ""
+	}
+	sum := sha256.Sum256([]byte(path))
+	return fmt.Sprintf("%s/files#diff-%s%s%d", b.PullRequest, hex.EncodeToString(sum[:]), side, line)
+}
+
+// diffSummary is the item's own sentence, for the list: the line with no field
+// name in front of it, as the head has it where it still holds.
+func diffSummary(lines []diff.Line) string {
+	summary := ""
+	for _, l := range lines {
+		if l.Field.Label != "" {
+			continue
+		}
+		if l.Op != diff.OpDel {
+			return l.Field.Value
+		}
+		summary = cmp.Or(summary, l.Field.Value)
+	}
+	return summary
+}
+
+// diffTone is each kind's sticky, the colours the boards already use for it.
+var diffTone = map[uri.Kind]string{
+	uri.KindMapping:           "bg-yellow-100 border-yellow-400",
+	uri.KindRule:              "bg-blue-100 border-blue-400 font-semibold",
+	uri.KindExample:           "bg-green-100 border-green-400",
+	uri.KindQuestion:          "bg-red-100 border-red-400",
+	uri.KindOpportunity:       "bg-orange-100 border-orange-400",
+	uri.KindOpportunityCanvas: "bg-orange-100 border-orange-400",
+	uri.KindStoryMap:          "bg-purple-100 border-purple-400",
+	uri.KindStory:             "bg-yellow-100 border-yellow-400",
+	uri.KindTerm:              "bg-pink-100 border-pink-400",
+}
+
+func (b *Builder) diffLineView(l diff.Line) diffLineView {
+	label := b.diffLabel(l.Field)
+	return diffLineView{
+		Op:    string(l.Op),
+		Label: label,
+		Text:  diffText(label, b.diffValue(l.Field)),
+		Parts: diffPartViews(l.Parts),
+	}
 }
 
 // diffLabel and diffValue put the site's own words on a field. What livt names

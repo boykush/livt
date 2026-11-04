@@ -5,6 +5,8 @@ package builder
 // livt:automates livt://mapping/review-diff-between-revisions/rule/R-06
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"os"
 	"path/filepath"
 	"strings"
@@ -81,10 +83,11 @@ func TestBuildDiffNamesTheRevisionsItCompared(t *testing.T) {
 // repository holds — it is something said about the things it does — and an
 // entry beside the five resource types would read as a sixth.
 func TestBuildDiffTakesNoSidebarEntry(t *testing.T) {
-	page := renderedDiff(t, &diff.Result{Base: "abc1234", Changes: []diff.Change{ruleChange("R-01", diff.BecameAdded)}, Added: 1})
-
-	nav := page[strings.Index(page, "<nav"):strings.Index(page, "</nav>")]
-	if strings.Contains(nav, diffPage) {
+	var out strings.Builder
+	if err := templates(i18n.Default).ExecuteTemplate(&out, "sidebar", Sidebar{}); err != nil {
+		t.Fatal(err)
+	}
+	if strings.Contains(out.String(), diffPage) {
 		t.Error("the sidebar carries a diff entry")
 	}
 }
@@ -139,6 +142,7 @@ func TestABoardCarriesNoMarksWithoutADiff(t *testing.T) {
 }
 
 // livt:automates livt://mapping/review-diff-between-revisions/rule/R-02/example/EX-05
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-08/example/EX-01
 // Rules, examples and questions gather under the mapping they hang off. A
 // mapping whose own fields did not change is listed once, as the heading for
 // the ones that did — not once per child.
@@ -317,7 +321,7 @@ func TestABoardWithoutADiffPutsNothingBack(t *testing.T) {
 	}
 }
 
-// livt:automates livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-07
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-10
 // The entry's colour comes from its lines, because its lines now follow the
 // decision too. Nothing is painted on top of them.
 func TestAWithdrawnEntryReadsRedFromItsOwnLines(t *testing.T) {
@@ -330,5 +334,262 @@ func TestAWithdrawnEntryReadsRedFromItsOwnLines(t *testing.T) {
 	}
 	if strings.Contains(page, "entry-withdrawn") || strings.Contains(page, "own-text") {
 		t.Error("the entry is painted over its lines rather than read from them")
+	}
+}
+
+func renderedBoard(t *testing.T, b *Builder) string {
+	t.Helper()
+	if _, _, _, err := b.buildMappings(); err != nil {
+		t.Fatal(err)
+	}
+	out, err := os.ReadFile(filepath.Join(b.OutDir, "mapping", "checkout.html"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	return string(out)
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-09/example/EX-01
+// What changed keeps its weight and what did not steps back, so the board says
+// where the change sits before a reader has found a single mark.
+func TestADiffBoardFadesWhatDidNotChange(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	if err := b.resetGeneratedDirs(); err != nil {
+		t.Fatal(err)
+	}
+	writeFile(t, filepath.Join(b.MappingsDir, "checkout.yaml"), "rules:\n  - id: R-01\n    name: changed\n    examples:\n      - id: EX-01\n        name: untouched example\n  - id: R-02\n    name: untouched\nquestions:\n  - id: Q-01\n    text: untouched question\n")
+	b.diffByURI = map[string]diff.Became{"livt://mapping/checkout/rule/R-01": diff.BecameChanged}
+
+	page := renderedBoard(t, &b)
+
+	if strings.Contains(page, `id="rule-R-01" class="rule-card relative unchanged`) {
+		t.Error("the changed rule is faded with the stickies that did not change")
+	}
+	for _, want := range []string{
+		`id="rule-R-02" class="rule-card relative unchanged`,
+		`class="example-card relative unchanged`,
+		`class="question-card relative unchanged`,
+	} {
+		if !strings.Contains(page, want) {
+			t.Errorf("an unchanged sticky is not faded: no %q", want)
+		}
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-09/example/EX-02
+// Fading is something said about a diff. A board built without one has nothing
+// to step back from, so every sticky keeps its weight.
+func TestABoardWithoutADiffFadesNothing(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	if err := b.resetGeneratedDirs(); err != nil {
+		t.Fatal(err)
+	}
+	writeFile(t, filepath.Join(b.MappingsDir, "checkout.yaml"), "rules:\n  - id: R-01\n    name: a rule\n")
+
+	page := renderedBoard(t, &b)
+
+	if strings.Contains(page, "relative unchanged") || strings.Contains(page, `class="unchanged `) {
+		t.Error("a board built without a diff fades a sticky")
+	}
+}
+
+func exampleChange(ruleID, exampleID string, became diff.Became) diff.Change {
+	u := "livt://mapping/checkout/rule/" + ruleID + "/example/" + exampleID
+	return diff.Change{
+		URI:    u,
+		Kind:   uri.KindExample,
+		Parent: "livt://mapping/checkout",
+		Title:  ruleID + " " + exampleID,
+		Became: became,
+		Lines:  []diff.Line{{Op: diff.OpAdd, Field: diff.Field{Value: "an example"}}},
+		Page:   "mapping/checkout.html#" + uri.ExampleAnchor(ruleID, exampleID),
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-09
+// A rewording reads as the sticky it was beside the sticky it became, and only
+// the words that moved are picked out in either.
+func TestBuildDiffSetsAChangedStickyBesideWhatItWas(t *testing.T) {
+	changed := ruleChange("R-01", diff.BecameChanged)
+	changed.Lines = []diff.Line{
+		{Op: diff.OpDel, Field: diff.Field{Value: "pay by card"}, Parts: []diff.Part{{Text: "pay by "}, {Changed: true, Text: "card"}}},
+		{Op: diff.OpAdd, Field: diff.Field{Value: "pay by invoice"}, Parts: []diff.Part{{Text: "pay by "}, {Changed: true, Text: "invoice"}}},
+	}
+	page := renderedDiff(t, &diff.Result{Base: "abc1234", Changes: []diff.Change{changed}, Changed: 1})
+
+	before, after, ok := strings.Cut(page[strings.Index(page, `class="diff-before`):], `class="diff-after`)
+	if !ok {
+		t.Fatal("the item has no before and after side by side")
+	}
+	if !strings.Contains(before, `<span class="moved">card</span>`) || strings.Contains(before, "invoice") {
+		t.Error("the before side does not read the old wording with the moved words picked out")
+	}
+	if !strings.Contains(after, `<span class="moved">invoice</span>`) {
+		t.Error("the after side does not read the new wording with the moved words picked out")
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-08/example/EX-02
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-08/example/EX-05
+// An example is no row of its own: it is read under its rule. It still lands
+// where a link to it points and says what became of it, so the list misses
+// none of the URIs the diff counts.
+func TestBuildDiffReadsAnExampleUnderItsRule(t *testing.T) {
+	page := renderedDiff(t, &diff.Result{
+		Base:    "abc1234",
+		Changes: []diff.Change{ruleChange("R-01", diff.BecameAdded), exampleChange("R-01", "EX-01", diff.BecameAdded)},
+		Added:   2,
+	})
+
+	if strings.Contains(page, `href="#mapping/checkout/rule/R-01/example/EX-01"`) {
+		t.Error("the example has a row of its own in the list")
+	}
+	if !strings.Contains(page, `id="mapping/checkout/rule/R-01/example/EX-01"`) {
+		t.Error("a link to the example has nowhere to land")
+	}
+	if !strings.Contains(page, `>livt://mapping/checkout/rule/R-01/example/EX-01</a>`) {
+		t.Error("the example does not carry its own URI")
+	}
+	if got := strings.Count(page, `data-item="`); got != 1 {
+		t.Errorf("%d items, want the rule and its example as one", got)
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-08/example/EX-03
+// The rule stood still and only its example moved: the rule heads the item in
+// its own words, with no mark, and the same on both sides.
+func TestBuildDiffHeadsAnExampleWithTheRuleThatStoodStill(t *testing.T) {
+	rule := diff.Entry{Title: "R-01", Fields: []diff.Field{{Value: "the rule as it stands"}}}
+	page := renderedDiff(t, &diff.Result{
+		Base:    "abc1234",
+		Changes: []diff.Change{exampleChange("R-01", "EX-01", diff.BecameAdded)},
+		Context: map[string]diff.Entry{"livt://mapping/checkout/rule/R-01": rule},
+		Added:   1,
+	})
+
+	if got := strings.Count(page, "the rule as it stands"); got < 2 {
+		t.Errorf("the unchanged rule is read %d times, want it on both sides", got)
+	}
+	nav := page[strings.Index(page, `href="#mapping/checkout/rule/R-01"`):]
+	nav = nav[:strings.Index(nav, "</a>")]
+	if strings.Contains(nav, "Added") || strings.Contains(nav, "Changed") {
+		t.Error("the rule that stood still is marked as though it had changed")
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-08/example/EX-04
+// The mapping in the list is a heading. Its own change — its name, the terms it
+// draws on — is one more item under it, named for what it holds.
+func TestBuildDiffListsAMappingsOwnChangeUnderIt(t *testing.T) {
+	own := diff.Change{
+		URI: "livt://mapping/checkout", Kind: uri.KindMapping, Title: "Checkout", Became: diff.BecameAdded,
+		Lines: []diff.Line{{Op: diff.OpAdd, Field: diff.Field{Label: "ubiquitous", Value: "order"}}},
+		Page:  "mapping/checkout.html",
+	}
+	page := renderedDiff(t, &diff.Result{Base: "abc1234", Changes: []diff.Change{own, ruleChange("R-01", diff.BecameAdded)}, Added: 2})
+
+	if !strings.Contains(page, `href="#mapping/checkout"`) {
+		t.Error("the mapping's own change is not an item in the list")
+	}
+	if !strings.Contains(page, "Name and ubiquitous language") {
+		t.Error("the mapping's own change is not named for what it holds")
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-09/example/EX-03
+// A board nothing on which changed keeps every sticky. Faded all over, it would
+// point at nothing, and read as though the whole board were being withdrawn.
+func TestADiffBoardWithNothingChangedFadesNothing(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	if err := b.resetGeneratedDirs(); err != nil {
+		t.Fatal(err)
+	}
+	writeFile(t, filepath.Join(b.MappingsDir, "checkout.yaml"), "rules:\n  - id: R-01\n    name: a rule\n")
+	b.diffByURI = map[string]diff.Became{"livt://mapping/checkout-v2/rule/R-01": diff.BecameChanged}
+
+	page := renderedBoard(t, &b)
+
+	if strings.Contains(page, "relative unchanged") || strings.Contains(page, `class="unchanged `) {
+		t.Error("a board nothing on which changed is faded")
+	}
+}
+
+// renderedReview is the diff page of a build reviewed in a pull request.
+func renderedReview(t *testing.T, pullRequest string, result *diff.Result) string {
+	t.Helper()
+	b := emptyDirsBuilder(t)
+	b.PullRequest = pullRequest
+	b.diffResult = result
+	if err := b.buildDiff(); err != nil {
+		t.Fatal(err)
+	}
+	out, err := os.ReadFile(filepath.Join(b.OutDir, diffPage))
+	if err != nil {
+		t.Fatal(err)
+	}
+	return string(out)
+}
+
+// fileAnchor is how GitHub's Files changed addresses a file: the SHA-256 of its path.
+func fileAnchor(path string) string {
+	sum := sha256.Sum256([]byte(path))
+	return "diff-" + hex.EncodeToString(sum[:])
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-10/example/EX-01
+// A change the head holds opens its own line in the pull request, on the head's
+// side, where GitHub takes the review comment.
+func TestBuildDiffLinksAChangeToItsLineInThePullRequest(t *testing.T) {
+	const path = "discoveries/example-mappings/checkout.yaml"
+	added := ruleChange("R-01", diff.BecameAdded)
+	added.Path, added.Line = path, 3
+	page := renderedReview(t, "https://github.com/acme/repo/pull/7", &diff.Result{Base: "abc1234", Changes: []diff.Change{added}, Added: 1})
+
+	want := `href="https://github.com/acme/repo/pull/7/files#` + fileAnchor(path) + `R3"`
+	if !strings.Contains(page, want) {
+		t.Errorf("the change does not open its line in the pull request: no %s", want)
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-10/example/EX-02
+// Gone from the file, a change has no line on the head: it opens where the base
+// had it, from the before side, which is where it is still drawn.
+func TestBuildDiffLinksAChangeGoneFromItsFileToTheBase(t *testing.T) {
+	const path = "discoveries/example-mappings/checkout.yaml"
+	gone := ruleChange("R-01", diff.BecameWithdrawn)
+	gone.Lines = []diff.Line{{Op: diff.OpDel, Field: diff.Field{Value: "a rule"}}}
+	gone.Path, gone.Line, gone.InBase = path, 3, true
+	page := renderedReview(t, "https://github.com/acme/repo/pull/7", &diff.Result{Base: "abc1234", Changes: []diff.Change{gone}, Withdrawn: 1})
+
+	before, _, _ := strings.Cut(page[strings.Index(page, `class="diff-before`):], `class="diff-after`)
+	if !strings.Contains(before, fileAnchor(path)+`L3"`) {
+		t.Error("the change gone from its file does not open the base's line from the before side")
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-10/example/EX-03
+// With no pull request there is nowhere to comment, so nothing offers to.
+func TestBuildDiffWithoutAPullRequestOffersNoComment(t *testing.T) {
+	added := ruleChange("R-01", diff.BecameAdded)
+	added.Path, added.Line = "discoveries/example-mappings/checkout.yaml", 3
+	page := renderedReview(t, "", &diff.Result{Base: "abc1234", Changes: []diff.Change{added}, Added: 1})
+
+	if strings.Contains(page, "/files#diff-") || strings.Contains(page, "Comment on GitHub") {
+		t.Error("a diff built without a pull request offers a comment")
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-10/example/EX-04
+// The link stays in the tab: the reviewer came from the pull request there, and
+// going back returns to the change, which the fragment keeps.
+func TestBuildDiffOpensThePullRequestInTheSameTab(t *testing.T) {
+	added := ruleChange("R-01", diff.BecameAdded)
+	added.Path, added.Line = "discoveries/example-mappings/checkout.yaml", 3
+	page := renderedReview(t, "https://github.com/acme/repo/pull/7", &diff.Result{Base: "abc1234", Changes: []diff.Change{added}, Added: 1})
+
+	link := page[strings.Index(page, `href="https://github.com/acme/repo/pull/7/files`):]
+	link = link[:strings.Index(link, ">")]
+	if strings.Contains(link, "target=") {
+		t.Errorf("the comment link opens elsewhere than the tab: %s", link)
 	}
 }

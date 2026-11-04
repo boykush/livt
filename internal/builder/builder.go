@@ -33,6 +33,10 @@ type Builder struct {
 	// the directory the input directories are relative to.
 	Diff *diff.Range
 	Root string
+	// PullRequest is the URL of the pull request the diff is reviewed in, empty
+	// when there is none. Each change on the diff page then links to its line
+	// there, which is where GitHub takes review comments.
+	PullRequest string
 
 	// diffResult is the range computed for the run in progress. `livt serve`
 	// rebuilds on every edit and the working tree is usually the head, so the

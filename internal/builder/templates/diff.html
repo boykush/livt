@@ -7,31 +7,30 @@
 <script src="https://cdn.tailwindcss.com"></script>
 <style>
   {{/*
-  The diff body borrows git's own colours rather than the sticky palette: the
-  page is read as a diff first, and a reader arriving from a PR already knows
-  what red and green mean here. The left rail carries the sign so the change is
-  legible without relying on the fill alone.
+  Red and green are git's, so a reader arriving from a pull request already
+  knows them; here they pick out only the words that moved inside a sticky,
+  since the two columns already say which side is which.
   */}}
-  .diff-line { display: grid; grid-template-columns: 1.25rem 1fr; gap: 0.5rem; padding: 0.125rem 0.75rem; }
-  .diff-line > .sign { color: #9ca3af; user-select: none; text-align: center; }
+  .diff-del { background-color: #fee2e2; text-decoration: line-through; text-decoration-color: #b91c1c; }
   .diff-add { background-color: #dcfce7; }
-  .diff-add > .sign { color: #15803d; }
-  .diff-del { background-color: #fee2e2; }
-  .diff-del > .sign { color: #b91c1c; }
-  {{/*
-  Inside a reworded pair, the phrase that actually moved is picked out of the
-  line it sits in. Most of what the livt repository holds is a sentence, and a
-  one-phrase edit read as two whole sentences is work the page can do instead.
-  */}}
-  .diff-add .moved { background-color: #86efac; border-radius: 0.125rem; }
-  .diff-del .moved { background-color: #fca5a5; border-radius: 0.125rem; }
+  .diff-del .moved { background-color: #fca5a5; }
+  .diff-add .moved { background-color: #86efac; }
+  .diff-del .moved, .diff-add .moved { border-radius: 0.125rem; }
+  .diff-del .moved { text-decoration: line-through; text-decoration-color: #b91c1c; }
+  .reworded { background-color: transparent; text-decoration: none; }
+  .ghost { border-style: dashed; box-shadow: none; opacity: 0.8; }
+  .diff-card.nested:target { box-shadow: 0 0 0 2px #fff, 0 0 0 5px #7c3aed; }
+  [data-nav][aria-current="true"] { background-color: #f5f3ff; box-shadow: inset 3px 0 0 #7c3aed; font-weight: 600; }
 </style>
 </head>
 <body class="bg-gray-50 min-h-screen">
-<div class="flex min-h-screen">
-{{template "sidebar" .Sidebar}}
-<div class="flex-1 min-w-0">
+{{/*
+No site sidebar: the list of changes is this page's nav, and comparing two
+stickies side by side needs the width the sidebar would take.
+*/}}
+<div class="min-h-screen flex flex-col">
   <header class="bg-white border-b border-gray-200 px-8 py-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+    <a href="index.html" class="text-xl font-bold text-gray-900 tracking-tight">livt</a>
     <h2 class="text-lg font-semibold text-gray-800">{{t "nav.diff"}}</h2>
     <span class="text-sm font-mono text-gray-500">{{.Base}} &rarr; {{if .Head}}{{.Head}}{{else}}{{t "diff.working-tree"}}{{end}}</span>
     <div class="ml-auto flex items-center gap-2 text-xs">
@@ -40,59 +39,140 @@
       <span class="rounded-full px-2.5 py-1 bg-red-50 text-red-700 border border-red-200">{{t "diff.withdrawn"}} {{.Withdrawn}}</span>
     </div>
   </header>
-  <main class="px-8 py-8 max-w-4xl">
-  {{if .Groups}}
-  {{range .Groups}}
-  <section class="mb-8">
-    <h3 class="text-xs font-semibold uppercase tracking-wide text-gray-400 mb-3">{{t .Label}}</h3>
-    {{range .Entries}}
+  {{if .Sections}}
+  <div class="flex-1 flex flex-col md:flex-row min-h-0">
     {{/*
-    A mapping with no status of its own is listed only to head the rules that
-    changed under it, so it renders as a heading rather than as an entry with an
-    empty diff below it.
+    The list is the way through the diff, one change at a time, the way a
+    visual review tool walks its snapshots. Every item is on the page all
+    along — the script only shows one — so a link from a board's mark lands on
+    its own sticky, and a page without scripts still reads top to bottom.
     */}}
-    <div class="mb-4 bg-white rounded-lg border border-gray-200 overflow-hidden">
-      {{template "diff-entry" .}}
-      {{range .Children}}
-      <div class="border-t border-gray-100 pl-4">{{template "diff-entry" .}}</div>
+    <nav aria-label="{{t "diff.changes"}}" class="md:w-80 shrink-0 bg-white border-b md:border-b-0 md:border-r border-gray-200 py-4 text-sm md:sticky md:top-0 md:self-start md:max-h-screen md:overflow-y-auto">
+      {{range .Sections}}
+      <div class="px-5 pt-3 pb-1 text-xs font-semibold uppercase tracking-wide text-gray-400">{{t .Label}}</div>
+      {{range .Groups}}
+      <div class="flex items-center gap-2 px-5 py-2 text-gray-700">
+        <span class="w-2.5 h-2.5 rounded-sm bg-yellow-300 shrink-0"></span>
+        <span class="flex-1 min-w-0 truncate font-medium">{{.Title}}</span>
+        {{if .Status}}{{template "diff-status" .Status}}{{end}}
+      </div>
+      {{range .Items}}{{template "diff-nav-item" .}}{{end}}
       {{end}}
-    </div>
-    {{end}}
-  </section>
-  {{end}}
+      {{range .Items}}{{template "diff-nav-item" .}}{{end}}
+      {{end}}
+    </nav>
+    <main class="flex-1 min-w-0 px-8 py-6">
+      {{/* Above the item and pinned there, so stepping through never chases a
+      button that moved with the height of the last item. */}}
+      <div class="sticky top-0 z-10 -mx-8 px-8 py-2 mb-4 bg-gray-50/95 border-b border-gray-200 flex items-center gap-4 text-sm" data-pager hidden>
+        <button type="button" data-step="-1" class="py-1.5 px-3 rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-100">&larr; {{t "diff.prev"}}</button>
+        <button type="button" data-step="1" class="py-1.5 px-3 rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-100">{{t "diff.next"}} &rarr;</button>
+        <span class="text-gray-500" data-position></span>
+      </div>
+      {{range .Sections}}{{range .Groups}}{{range .Items}}{{template "diff-item" .}}{{end}}{{end}}{{range .Items}}{{template "diff-item" .}}{{end}}{{end}}
+    </main>
+  </div>
   {{else}}
-  <p class="text-gray-400">{{t "diff.empty"}}</p>
+  <p class="px-8 py-8 text-gray-400">{{t "diff.empty"}}</p>
   {{end}}
-  </main>
 </div>
-</div>
+<script>
+  (function () {
+    var items = Array.prototype.slice.call(document.querySelectorAll("[data-item]"));
+    if (!items.length) return;
+    var links = document.querySelectorAll("[data-nav]");
+    var pager = document.querySelector("[data-pager]");
+    var position = document.querySelector("[data-position]");
+    var current = 0;
+    function show(id, scroll) {
+      var target = id && document.getElementById(id);
+      var item = target ? target.closest("[data-item]") : null;
+      current = Math.max(0, items.indexOf(item));
+      items.forEach(function (el, i) { el.hidden = i !== current; });
+      links.forEach(function (a) { a.setAttribute("aria-current", String(a.getAttribute("href") === "#" + items[current].dataset.item)); });
+      pager.hidden = false;
+      position.textContent = (current + 1) + " / " + items.length;
+      if (target && target.id !== items[current].dataset.item) target.scrollIntoView({ block: "center" });
+      else if (scroll) window.scrollTo(0, 0);
+    }
+    pager.addEventListener("click", function (e) {
+      var step = e.target.closest("[data-step]");
+      if (!step) return;
+      var next = (current + Number(step.dataset.step) + items.length) % items.length;
+      location.hash = items[next].dataset.item;
+    });
+    window.addEventListener("hashchange", function () { show(decodeURIComponent(location.hash.slice(1)), true); });
+    show(decodeURIComponent(location.hash.slice(1)), false);
+  })();
+</script>
 </body>
 </html>
 
-{{define "diff-entry"}}
-<div id="{{.Anchor}}" class="px-4 py-3 scroll-mt-4 target:bg-violet-50">
-  <div class="flex flex-wrap items-baseline gap-x-2 gap-y-1">
-    {{if .Status}}<span class="shrink-0 text-[11px] font-semibold uppercase tracking-wide rounded px-1.5 py-0.5 {{if eq .Status "added"}}bg-green-100 text-green-800{{else if eq .Status "withdrawn"}}bg-red-100 text-red-800{{else}}bg-amber-100 text-amber-800{{end}}">{{t (print "diff." .Status)}}</span>{{end}}
-    {{if .Title}}<span class="font-medium text-gray-900">{{.Title}}</span>{{end}}
-    {{/*
-    The URI is the entry's name here, not a decoration: it is what a reviewer
-    quotes in the thread, and the link is the same derivation `livt resolve`
-    makes. A removed URI carries no link because the site holds no page for it.
-    */}}
-    {{if .Path}}
-    <a href="{{.Path}}" class="text-xs font-mono text-gray-400 hover:text-gray-700 break-all">{{.URI}}</a>
-    {{else}}
-    <span class="text-xs font-mono text-gray-400 break-all">{{.URI}}</span>
-    {{end}}
+{{define "diff-status"}}<span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 {{if eq . "added"}}bg-green-100 text-green-800{{else if eq . "withdrawn"}}bg-red-100 text-red-800{{else}}bg-amber-100 text-amber-800{{end}}">{{t (print "diff." .)}}</span>{{end}}
+
+{{define "diff-nav-item"}}
+<a href="{{print "#" .Anchor}}" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">{{.Title}} <span class="text-gray-500">{{.Summary}}</span></span>
+  {{if .Examples}}<span class="shrink-0 text-[11px] text-gray-500">{{t "label.examples"}} {{.Examples}}</span>{{end}}
+  {{if .Status}}{{template "diff-status" .Status}}{{end}}
+</a>
+{{end}}
+
+{{define "diff-item"}}
+<section data-item="{{.Anchor}}" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        {{if .Status}}{{template "diff-status" .Status}}{{end}}
+        <span class="font-semibold text-gray-900">{{.Title}}</span>
+      </div>
+      {{/*
+      The URI is the item's name here: what a reviewer quotes in the thread.
+      Drawn as the link it is, because a grey monospace line read as a label.
+      */}}
+      {{if .Path}}
+      <a href="{{.Path}}" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">{{.URI}} &nearr;</a>
+      {{else}}
+      <span class="mt-1 block text-sm font-mono text-gray-500 break-all">{{.URI}}</span>
+      <span class="block text-xs text-gray-500">{{t "diff.no-page"}}</span>
+      {{end}}
+    </div>
   </div>
-  {{if .Lines}}
-  <div class="mt-2 text-sm font-mono leading-relaxed border border-gray-100 rounded overflow-x-auto">
-    {{range .Lines}}
-    {{/* A line with no label is the item speaking for itself — the statement a
-    withdrawal is the end of, which is why it is the one struck through. */}}
-    <div class="diff-line{{if eq .Op "+"}} diff-add{{else if eq .Op "-"}} diff-del{{end}}"><span class="sign">{{.Op}}</span><span class="whitespace-pre-wrap break-words">{{if .Parts}}{{if .Label}}{{.Label}}: {{end}}{{range .Parts}}{{if .Changed}}<span class="moved">{{.Text}}</span>{{else}}{{.Text}}{{end}}{{end}}{{else}}{{.Text}}{{end}}</span></div>
-    {{end}}
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">{{t "diff.before"}}</div>
+      {{range .Before}}{{template "diff-card" .}}{{end}}
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">{{t "diff.after"}}</div>
+      {{range .After}}{{template "diff-card" .}}{{end}}
+    </div>
+  </div>
+</section>
+{{end}}
+
+{{define "diff-card"}}
+{{if .Empty}}
+<div class="{{if .Nested}}ml-5 {{end}}border border-dashed border-gray-300 rounded px-3 py-3 text-sm text-gray-500">{{.Title}} {{t "diff.none"}}</div>
+{{else}}
+<div{{if .Anchor}} id="{{.Anchor}}"{{end}} class="diff-card {{if .Nested}}nested ml-5 {{end}}{{.Tone}}{{if .Ghost}} ghost{{else}} shadow{{end}} border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">{{.Title}}</div>
+  {{range .Lines}}
+  {{/* A line with no label is the item speaking for itself; a labelled one is
+  something said about it, so it sits smaller beneath. */}}
+  <div class="{{if .Label}}text-xs font-normal text-gray-600 mt-1{{end}}"><span class="whitespace-pre-wrap break-words{{if eq .Op "+"}} diff-add{{else if eq .Op "-"}} diff-del{{end}}{{if .Parts}} reworded{{end}}">{{if .Parts}}{{if .Label}}{{.Label}}: {{end}}{{range .Parts}}{{if .Changed}}<span class="moved">{{.Text}}</span>{{else}}{{.Text}}{{end}}{{end}}{{else}}{{.Text}}{{end}}</span></div>
+  {{end}}
+  {{if .Comment}}
+  {{/* The same tab: a reviewer came from the pull request in it, and going back
+  returns to the change picked here, which the URL's fragment keeps. */}}
+  <a href="{{.Comment}}" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>{{t "diff.comment"}} &nearr;</a>
+  {{end}}
+  {{if and .Nested .Status}}
+  <div class="mt-2 flex flex-wrap items-center gap-2 text-[11px]">
+    {{template "diff-status" .Status}}
+    {{if .Path}}<a href="{{.Path}}" class="font-mono text-violet-700 underline underline-offset-2 break-all">{{.URI}}</a>{{else}}<span class="font-mono text-gray-500 break-all">{{.URI}}</span>{{end}}
   </div>
   {{end}}
 </div>
+{{end}}
 {{end}}
