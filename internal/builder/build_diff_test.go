@@ -332,3 +332,59 @@ func TestAWithdrawnEntryReadsRedFromItsOwnLines(t *testing.T) {
 		t.Error("the entry is painted over its lines rather than read from them")
 	}
 }
+
+func renderedBoard(t *testing.T, b *Builder) string {
+	t.Helper()
+	if _, _, _, err := b.buildMappings(); err != nil {
+		t.Fatal(err)
+	}
+	out, err := os.ReadFile(filepath.Join(b.OutDir, "mapping", "checkout.html"))
+	if err != nil {
+		t.Fatal(err)
+	}
+	return string(out)
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-09/example/EX-01
+// What changed keeps its weight and what did not steps back, so the board says
+// where the change sits before a reader has found a single mark.
+func TestADiffBoardFadesWhatDidNotChange(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	if err := b.resetGeneratedDirs(); err != nil {
+		t.Fatal(err)
+	}
+	writeFile(t, filepath.Join(b.MappingsDir, "checkout.yaml"), "rules:\n  - id: R-01\n    name: changed\n    examples:\n      - id: EX-01\n        name: untouched example\n  - id: R-02\n    name: untouched\nquestions:\n  - id: Q-01\n    text: untouched question\n")
+	b.diffByURI = map[string]diff.Became{"livt://mapping/checkout/rule/R-01": diff.BecameChanged}
+
+	page := renderedBoard(t, &b)
+
+	if strings.Contains(page, `id="rule-R-01" class="rule-card relative unchanged`) {
+		t.Error("the changed rule is faded with the stickies that did not change")
+	}
+	for _, want := range []string{
+		`id="rule-R-02" class="rule-card relative unchanged`,
+		`class="example-card relative unchanged`,
+		`class="question-card relative unchanged`,
+	} {
+		if !strings.Contains(page, want) {
+			t.Errorf("an unchanged sticky is not faded: no %q", want)
+		}
+	}
+}
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-09/example/EX-02
+// Fading is something said about a diff. A board built without one has nothing
+// to step back from, so every sticky keeps its weight.
+func TestABoardWithoutADiffFadesNothing(t *testing.T) {
+	b := emptyDirsBuilder(t)
+	if err := b.resetGeneratedDirs(); err != nil {
+		t.Fatal(err)
+	}
+	writeFile(t, filepath.Join(b.MappingsDir, "checkout.yaml"), "rules:\n  - id: R-01\n    name: a rule\n")
+
+	page := renderedBoard(t, &b)
+
+	if strings.Contains(page, "relative unchanged") || strings.Contains(page, `class="unchanged `) {
+		t.Error("a board built without a diff fades a sticky")
+	}
+}
