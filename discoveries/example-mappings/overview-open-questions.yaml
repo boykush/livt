@@ -22,10 +22,15 @@ rules:
     examples:
       - id: EX-01
         name: オポチュニティを選ぶと、そのマップに載るストーリーの疑問点だけが表示される
+        retired: true
+        superseded_by:
+          - livt://mapping/overview-open-questions/rule/R-03/example/EX-04
       - id: EX-02
         name: Stories・Example Mappings一覧と同じ絞り込みUIで、同じ軸が使える
       - id: EX-03
         name: 絞り込み状態はURLに反映され、共有したURLで同じ一覧が開く
+      - id: EX-04
+        name: オポチュニティを選ぶと、そのオポチュニティのストーリーの疑問点だけが表示される
 
 questions:
   - id: Q-01
