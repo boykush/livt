@@ -2,7 +2,7 @@
 experimental = true
 
 [tools]
-go = "1.27.1"
+go = "1.27.3"
 node = "24.21.0"
 hk = "latest"
 pkl = "latest"
