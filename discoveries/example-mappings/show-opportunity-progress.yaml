@@ -14,6 +14,11 @@ rules:
         name: オポチュニティのページは現況を持たず、そのページへの入口だけを持つ
       - id: EX-04
         name: ユーザーストーリーマップを持たないオポチュニティには、現況のページがない
+        retired: true
+        superseded_by:
+          - livt://mapping/show-opportunity-progress/rule/R-01/example/EX-07
+      - id: EX-07
+        name: ストーリーを1つも持たないオポチュニティには、現況のページがない
   - id: R-02
     name: 現況の内訳はストーリー単位で並ぶ
     examples:
