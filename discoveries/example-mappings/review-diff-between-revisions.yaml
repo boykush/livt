@@ -32,6 +32,9 @@ rules:
         name: 追加されたURIは緑、廃止されたURIは赤で並ぶ
       - id: EX-02
         name: 文言が変わったURIは、変わった行だけが赤と緑の対で並ぶ
+        retired: true
+        superseded_by:
+          - livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-09
       - id: EX-03
         name: 変わっていない行は、前後の地として同じ場所に残る
       - id: EX-04
@@ -42,8 +45,15 @@ rules:
         name: 1つの付箋に付く印は1つだけ（退役は機械的にはstatusの変更だが、その付箋に起きたことは廃止のひとつ）
       - id: EX-07
         name: 廃止された項目は、記録上どう書かれていても赤い「-」で並ぶ（退役はファイル上「退役」の行が増えるが、決定としては削除と同じく「この文が無くなった」）
+        retired: true
+        superseded_by:
+          - livt://mapping/review-diff-between-revisions/rule/R-03/example/EX-10
       - id: EX-08
         name: 退役したことを書いた行そのもの（「退役」やstatusの変更）は出ない。それは廃止という印が言っている。後継だけが残る
+      - id: EX-09
+        name: 文言が変わったURIは、変更前と変更後の付箋が並び、変わった語句だけが赤と緑で際立つ
+      - id: EX-10
+        name: 廃止された項目は、記録上どう書かれていても、赤い取り消し線の付箋として並ぶ（退役はファイル上「退役」の行が増えるが、決定としては削除と同じく「この文が無くなった」）
   - id: R-04
     name: ボードが隠している変更も、差分には映る
     examples:
