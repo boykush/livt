@@ -45,6 +45,11 @@ rules:
         name: ストーリーのある実例マッピングはstory_uriを持ち、名前はそのストーリーから引く
       - id: EX-03
         name: オポチュニティで絞り込むと、そのユーザーストーリーマップに載る実例マッピングだけが並ぶ
+        retired: true
+        superseded_by:
+          - livt://mapping/name-example-mapping-itself/rule/R-06/example/EX-04
+      - id: EX-04
+        name: オポチュニティで絞り込むと、そのオポチュニティのストーリーの実例マッピングだけが並ぶ
 
 questions:
   - id: Q-01

@@ -349,7 +349,7 @@ func TestStoryMapLegendKeysOnlyTheBoard(t *testing.T) {
 	}
 }
 
-// livt:automates livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-02
+// livt:automates livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-04
 // At the source: a story key that appears on two maps collects an opportunity
 // ref per map, so its card can carry a chip for each.
 func TestBuildStoryMapsCollectsMultipleOpportunitiesPerStory(t *testing.T) {
@@ -379,7 +379,7 @@ func TestBuildStoryMapsCollectsMultipleOpportunitiesPerStory(t *testing.T) {
 	}
 	b := Builder{USMDir: usmDir, OutDir: outDir}
 
-	built, err := b.buildStoryMaps(nil)
+	built, err := b.buildStoryMaps(nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -427,7 +427,7 @@ func TestBuildStoryMapsPointsEachStoryAtItsCard(t *testing.T) {
 	}
 	b := Builder{USMDir: usmDir, OutDir: outDir}
 
-	built, err := b.buildStoryMaps(nil)
+	built, err := b.buildStoryMaps(nil, nil)
 	if err != nil {
 		t.Fatal(err)
 	}

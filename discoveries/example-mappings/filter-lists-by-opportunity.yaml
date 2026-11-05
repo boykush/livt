@@ -4,10 +4,15 @@ rules:
     examples:
       - id: EX-01
         name: Stories一覧でオポチュニティを選ぶと、そのマップに載るストーリーだけが表示される
+        retired: true
+        superseded_by:
+          - livt://mapping/filter-lists-by-opportunity/rule/R-01/example/EX-04
       - id: EX-02
         name: Example Mappings一覧でも同じ軸で絞り込める
       - id: EX-03
         name: 絞り込みを解除すると全件表示に戻る
+      - id: EX-04
+        name: Stories一覧でオポチュニティを選ぶと、そのオポチュニティのストーリーだけが表示される
     issues:
       - https://github.com/boykush/livt/issues/76
   - id: R-02
@@ -17,8 +22,22 @@ rules:
         name: ストーリーカードの汎用「Story Map」バッジは、オポチュニティ名のチップに置き換わる
       - id: EX-02
         name: 複数のマップに載るストーリーは、その数だけチップを持つ
+        retired: true
+        superseded_by:
+          - livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-04
       - id: EX-03
         name: どのマップにも載らないストーリーはチップを持たず、どのオポチュニティの絞り込みにも現れない
+        retired: true
+        superseded_by:
+          - livt://mapping/filter-lists-by-opportunity/rule/R-02/example/EX-05
+      - id: EX-04
+        name: 複数のオポチュニティのストーリーは、その数だけチップを持つ
+      - id: EX-05
+        name: どのオポチュニティのストーリーでもないストーリーはチップを持たず、どのオポチュニティの絞り込みにも現れない
+      - id: EX-06
+        name: どのマップにも載らなくても、カードの opportunity にオポチュニティを書いたストーリーはそのチップを持つ
+      - id: EX-07
+        name: マップに載り、カードの opportunity でも同じオポチュニティを名指すストーリーのチップは1つ
     issues:
       - https://github.com/boykush/livt/issues/77
   - id: R-03

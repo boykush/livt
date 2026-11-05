@@ -452,6 +452,9 @@ func scanStories(s *Snapshot, dirs Dirs) error {
 	}
 	for _, story := range stories {
 		fields := append([]Field{text(story.Name)}, bodyFields(story.Body)...)
+		if o := story.Opportunity.Value; o != "" {
+			fields = append(fields, authored("opportunity", o))
+		}
 		s.add(Entry{
 			URI:    uri.Story(story.Key.Value),
 			Kind:   uri.KindStory,

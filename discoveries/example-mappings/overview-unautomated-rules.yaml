@@ -27,10 +27,15 @@ rules:
     examples:
       - id: EX-01
         name: オポチュニティを選ぶと、そのマップに載るストーリーのルールだけが表示される
+        retired: true
+        superseded_by:
+          - livt://mapping/overview-unautomated-rules/rule/R-03/example/EX-04
       - id: EX-02
         name: 既存の一覧と同じ絞り込みUIで、同じ軸が使える
       - id: EX-03
         name: 絞り込み状態はURLに反映され、共有したURLで同じ一覧が開く
+      - id: EX-04
+        name: オポチュニティを選ぶと、そのオポチュニティのストーリーのルールだけが表示される
 
 questions:
   - id: Q-01
