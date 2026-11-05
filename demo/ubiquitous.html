@@ -42,9 +42,9 @@
       <div class="flex items-baseline gap-2">
         <span class="text-xs font-medium text-gray-600">livt</span>
         
-        <span class="ml-auto min-w-0 text-[11px] font-mono text-gray-400 truncate" title="v0.0.0-20261104144159-d06d8437748e">v0.0.0-20261104144159-d06d8437748e</span>
+        <span class="ml-auto min-w-0 text-[11px] font-mono text-gray-400 truncate" title="v0.0.0-20261105005350-c81bc533ba2c">v0.0.0-20261105005350-c81bc533ba2c</span>
       </div>
-      <div class="text-[11px] text-gray-400 font-mono mt-0.5">d06d843 · 2026-11-04 14:42</div>
+      <div class="text-[11px] text-gray-400 font-mono mt-0.5">c81bc53 · 2026-11-05 00:54</div>
     </a>
   </div>
 </aside>
@@ -234,7 +234,8 @@ livtリポジトリと同一のリポジトリでも成立するが、それは�
           </div>
         </td>
         <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>プロダクトで取り組みうる機会。あるユーザーの課題と、それを解決したときに生まれる事業上の便益を、ひとつの検討単位として捉えたもの。<br>
-<code>opportunities/{key}.md</code> に1文で書き、同じkeyのユーザーストーリーマップがそのオポチュニティに引いたジャーニーになる。各一覧の絞り込み軸になる。</p>
+<code>opportunities/{key}.md</code> に1文で書き、同じkeyのユーザーストーリーマップがそのオポチュニティに引いたジャーニーになる。各一覧の絞り込み軸になる。<br>
+オポチュニティのストーリーは、そのユーザーストーリーマップに載るストーリーと、ストーリーカードの <code>opportunity:</code> にそのkeyを書いたストーリー。マップを描かないオポチュニティも、後者でストーリーを持てる。</p>
 </td>
       </tr>
     
@@ -295,7 +296,8 @@ livt ではオポチュニティ1つにつき1枚で、そのオポチュニテ�
           </div>
         </td>
         <td class="px-5 py-3 prose prose-sm max-w-none text-gray-700 leading-relaxed"><p>ユーザーにとって価値のある振る舞いの単位。<br>
-3つのC のカードとして <code>stories/{story-key}.md</code> に書かれ、ユーザーストーリーマップや実例マッピングから参照される。</p>
+3つのC のカードとして <code>stories/{story-key}.md</code> に書かれ、ユーザーストーリーマップや実例マッピングから参照される。<br>
+カードは <code>opportunity:</code> で取り組むオポチュニティを名指せる。マップに載るストーリーは、そのマップのオポチュニティを名指さずとも持つ。</p>
 </td>
       </tr>
     
