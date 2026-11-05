@@ -496,6 +496,32 @@ func TestBuildDiffListsAMappingsOwnChangeUnderIt(t *testing.T) {
 	}
 }
 
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-08/example/EX-06
+// A mapping added or withdrawn with neither a name nor terms has nothing of its
+// own to compare. Its heading says what became of it; an item under it would be
+// an empty pair, and the first one a reviewer lands on.
+func TestBuildDiffListsNoItemForAMappingWithNothingOfItsOwn(t *testing.T) {
+	for became, label := range map[diff.Became]string{diff.BecameAdded: "Added", diff.BecameWithdrawn: "Withdrawn"} {
+		t.Run(string(became), func(t *testing.T) {
+			own := diff.Change{URI: "livt://mapping/checkout", Kind: uri.KindMapping, Title: "Checkout", Became: became, Page: "mapping/checkout.html"}
+			rule := ruleChange("R-01", became)
+			page := renderedDiff(t, &diff.Result{Base: "abc1234", Changes: []diff.Change{own, rule}})
+
+			if strings.Contains(page, `data-item="mapping/checkout"`) || strings.Contains(page, "Name and ubiquitous language") {
+				t.Error("a mapping with nothing of its own is listed as an item")
+			}
+			if !strings.Contains(page, `data-item="mapping/checkout/rule/R-01"`) {
+				t.Error("the mapping's rule is not listed")
+			}
+			heading := `<span class="flex-1 min-w-0 truncate font-medium">Checkout</span>`
+			at := strings.Index(page, heading)
+			if at < 0 || !strings.Contains(page[at:min(len(page), at+len(heading)+200)], ">"+label+"<") {
+				t.Error("the mapping's heading does not say what became of it")
+			}
+		})
+	}
+}
+
 // livt:automates livt://mapping/review-diff-between-revisions/rule/R-09/example/EX-03
 // A board nothing on which changed keeps every sticky. Faded all over, it would
 // point at nothing, and read as though the whole board were being withdrawn.

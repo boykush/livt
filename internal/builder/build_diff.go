@@ -190,6 +190,12 @@ func (b *Builder) diffSectionViews(result *diff.Result) []diffSectionView {
 		switch c.Kind {
 		case uri.KindMapping:
 			g.view.Title, g.view.Status = cmp.Or(c.Title, g.view.Title), string(c.Became)
+			// A mapping added or withdrawn with no name and no terms has nothing
+			// of its own to compare. Its heading already carries what became of
+			// it; an item would be an empty pair the reviewer has to click past.
+			if len(c.Lines) == 0 {
+				continue
+			}
 			item := b.diffItem(c)
 			item.Title = i18n.Of(b.Lang).Msg("diff.mapping-own")
 			// The mapping's name is already its group's heading.
