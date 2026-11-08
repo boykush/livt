@@ -137,6 +137,9 @@ rules:
 questions:
   - id: Q-01
     text: 差分を載せたサイトを公開するか（いまのサイトはGitHub Pagesへ公開される。差分はレビューのあいだだけのものなので、同じ出力先に出していいか）
+    retired: true
+    superseded_by:
+      - livt://mapping/review-diff-between-revisions/rule/R-01
   - id: Q-02
     text: レビュアーは手元でビルドを走らせるのか、PRから差分に辿り着けるべきか（後者ならCIとプレビューの公開が要る）
   - id: Q-03
