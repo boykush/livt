@@ -39,16 +39,38 @@ A test that automates a rule or an example claims it, and a claim carries the ma
 A published living-document URL is a convenience link for humans, not the citation form: it depends on where the site is deployed, and the livt URI does not.`
 
 // Config locates the livt repository. Root points at the repository's root; the
-// input subdirectories are derived from it the same way build/serve lay them out.
+// input subdirectories are derived from it the same way build/serve lay them out,
+// unless Dirs places them.
 type Config struct {
 	Root string
+	// Dirs, when set, says where each input directory is instead of deriving
+	// it from Root. The builder resolves through this Config too, and its
+	// directories are its own fields rather than a fixed layout.
+	Dirs *Dirs
+}
+
+// Dirs is the livt repository's input layout, one directory per kind of item.
+type Dirs struct {
+	Opportunities string
+	Canvases      string
+	Mappings      string
+	Stories       string
+	USM           string
+	Ubiquitous    string
+	Automations   string
 }
 
 func (c Config) opportunitiesDir() string {
+	if c.Dirs != nil {
+		return c.Dirs.Opportunities
+	}
 	return filepath.Join(c.Root, "opportunities")
 }
 
 func (c Config) canvasesDir() string {
+	if c.Dirs != nil {
+		return c.Dirs.Canvases
+	}
 	return filepath.Join(c.Root, "discoveries", "opportunity-canvases")
 }
 
@@ -56,22 +78,37 @@ func (c Config) canvasesDir() string {
 // per request like everything else so a long-running server serves what was
 // merged a moment ago.
 func (c Config) automationsDir() string {
+	if c.Dirs != nil {
+		return c.Dirs.Automations
+	}
 	return filepath.Join(c.Root, "automations")
 }
 
 func (c Config) mappingsDir() string {
+	if c.Dirs != nil {
+		return c.Dirs.Mappings
+	}
 	return filepath.Join(c.Root, "discoveries", "example-mappings")
 }
 
 func (c Config) storiesDir() string {
+	if c.Dirs != nil {
+		return c.Dirs.Stories
+	}
 	return filepath.Join(c.Root, "stories")
 }
 
 func (c Config) usmDir() string {
+	if c.Dirs != nil {
+		return c.Dirs.USM
+	}
 	return filepath.Join(c.Root, "discoveries", "usm")
 }
 
 func (c Config) ubiquitousDir() string {
+	if c.Dirs != nil {
+		return c.Dirs.Ubiquitous
+	}
 	return filepath.Join(c.Root, "ubiquitous")
 }
 

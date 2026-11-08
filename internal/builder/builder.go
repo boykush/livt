@@ -229,6 +229,9 @@ func (b *Builder) Build() error {
 	if err := b.computeDiff(); err != nil {
 		return err
 	}
+	if err := b.checkSuccessors(); err != nil {
+		return err
+	}
 
 	opportunities, err := b.opportunityIndex()
 	if err != nil {
