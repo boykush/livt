@@ -142,6 +142,7 @@ questions:
       - livt://mapping/review-diff-between-revisions/rule/R-01
   - id: Q-02
     text: レビュアーは手元でビルドを走らせるのか、PRから差分に辿り着けるべきか（後者ならCIとプレビューの公開が要る）
+    retired: true
   - id: Q-03
     text: ビルドがgitリポジトリを要るようになることをどう置くか（いまのビルドはYAMLとMarkdownしか読まない。livt://mapping/show-opportunity-progress/question/Q-03 が同じ問いを別の入口から挙げている）
     retired: true
