@@ -57,6 +57,7 @@ questions:
     retired: true
   - id: Q-04
     text: タスクページを合意が要る人で絞り込めるようにするか（自分を待っている提案だけを見たい。絞り込みの軸が1つ増えるので、別のストーリーになりそう）
+    retired: true
 
 ubiquitous:
   - example-mapping
