@@ -113,6 +113,7 @@ questions:
       - livt://mapping/automate-from-master-in-impl-repos/rule/R-15
   - id: Q-02
     text: 1つのworkspaceが複数のlivtリポジトリを消費するとき、裸のlivt URIのスコープを何が復元するか（default宣言＋エイリアス修飾のxmlns型が候補。現時点では考慮外とし、R-08 EX-03で拡張の席だけ確保している）
+    retired: true
   - id: Q-03
     text: 代替先URIの妥当性を検証するか（現状は解決しないURIも素通しする。未コミットのubiquitous参照を素通しで見せるのと揃えてはいるが、退役の代替先は誰の目にも触れないまま壊れうる）
   - id: Q-04
