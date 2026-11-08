@@ -35,6 +35,9 @@ rules:
 questions:
   - id: Q-01
     text: 解決した疑問点はどう扱うか（現状はルール化して付箋を消す運用のため、一覧は常に未解決のみを映す）
+    retired: true
+    superseded_by:
+      - livt://mapping/overview-open-questions/rule/R-01
   - id: Q-02
     text: 同じ集約をMCPにも出すか（実装リポジトリのエージェントが着手前に未解決の疑問点を拾えるようにする）
 
