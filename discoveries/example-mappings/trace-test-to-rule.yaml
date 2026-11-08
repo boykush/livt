@@ -105,6 +105,12 @@ rules:
       - id: EX-05
         name: マージ前の具体例は、別のルールへ付け替えてIDが変わってもよい（外から参照されうるのはデフォルトブランチに載ってから）
 
+  - id: R-11
+    name: 退役した項目の代替先が、livtリポジトリで解決しないlivt URIなら、ビルドは失敗する
+    examples:
+      - id: EX-01
+        name: 存在しないルールを代替先に指した退役は、ビルドを失敗させる
+
 questions:
   - id: Q-01
     text: 実装リポジトリからlivtリポジトリをどう引くか（R-04はCLIに解決機構があることまでで、どこから解決できるかは誰も引き受けていない。現状は--rootでlivtリポジトリのチェックアウトを指す必要があり、実装が別リポジトリにある本ストーリーのアクターは辿れない）
@@ -116,6 +122,9 @@ questions:
     retired: true
   - id: Q-03
     text: 代替先URIの妥当性を検証するか（現状は解決しないURIも素通しする。未コミットのubiquitous参照を素通しで見せるのと揃えてはいるが、退役の代替先は誰の目にも触れないまま壊れうる）
+    retired: true
+    superseded_by:
+      - livt://mapping/trace-test-to-rule/rule/R-11
   - id: Q-04
     text: マージ前に却下された提案を、rejectedとして残すか削除するか（livt://mapping/propose-rule-before-agreement/rule/R-05/example/EX-02 は却下された提案を削除せずrejectedにすると言うが、デフォルトブランチに載らなかった提案まで含むかは決めていない。現状はrejectedとして残す）
 
