@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>livt - 差分</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<style>
+  
+  .diff-del { background-color: #fee2e2; text-decoration: line-through; text-decoration-color: #b91c1c; }
+  .diff-add { background-color: #dcfce7; }
+  .diff-del .moved { background-color: #fca5a5; }
+  .diff-add .moved { background-color: #86efac; }
+  .diff-del .moved, .diff-add .moved { border-radius: 0.125rem; }
+  .diff-del .moved { text-decoration: line-through; text-decoration-color: #b91c1c; }
+  .reworded { background-color: transparent; text-decoration: none; }
+  .ghost { border-style: dashed; box-shadow: none; opacity: 0.8; }
+  .diff-card.nested:target { box-shadow: 0 0 0 2px #fff, 0 0 0 5px #7c3aed; }
+  [data-nav][aria-current="true"] { background-color: #f5f3ff; box-shadow: inset 3px 0 0 #7c3aed; font-weight: 600; }
+</style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+
+<div class="min-h-screen flex flex-col">
+  <header class="bg-white border-b border-gray-200 px-8 py-4 flex flex-wrap items-center gap-x-4 gap-y-2">
+    <a href="index.html" class="text-xl font-bold text-gray-900 tracking-tight">livt</a>
+    <h2 class="text-lg font-semibold text-gray-800">差分</h2>
+    <span class="text-sm font-mono text-gray-500">9892c16 &rarr; 2e86562</span>
+    <div class="ml-auto flex items-center gap-2 text-xs">
+      <span class="rounded-full px-2.5 py-1 bg-green-50 text-green-700 border border-green-200">追加 2</span>
+      <span class="rounded-full px-2.5 py-1 bg-amber-50 text-amber-700 border border-amber-200">変更 0</span>
+      <span class="rounded-full px-2.5 py-1 bg-red-50 text-red-700 border border-red-200">廃止 19</span>
+    </div>
+  </header>
+  
+  <div class="flex-1 flex flex-col md:flex-row min-h-0">
+    
+    <nav aria-label="変更一覧" class="md:w-80 shrink-0 bg-white border-b md:border-b-0 md:border-r border-gray-200 py-4 text-sm md:sticky md:top-0 md:self-start md:max-h-screen md:overflow-y-auto">
+      
+      <div class="px-5 pt-3 pb-1 text-xs font-semibold uppercase tracking-wide text-gray-400">実例マッピング</div>
+      
+      <div class="flex items-center gap-2 px-5 py-2 text-gray-700">
+        <span class="w-2.5 h-2.5 rounded-sm bg-yellow-300 shrink-0"></span>
+        <span class="flex-1 min-w-0 truncate font-medium">実装リポジトリがlivtリポジトリを見てテスト駆動で自動化する</span>
+        
+      </div>
+      
+<a href="#mapping/automate-from-master-in-impl-repos/question/Q-05" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">Q-05 <span class="text-gray-500">ネットワーク（非ローカル）公開する場合の認証・公開モデルをどうするか（現状はローカル利用前提で認証なし）</span></span>
+  
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+</a>
+
+<a href="#mapping/automate-from-master-in-impl-repos/question/Q-06" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">Q-06 <span class="text-gray-500">同一性（どのlivtリポジトリか）と版方針を宣言するネイティブマニフェストを持つか（R-15のenv契約が供給するのは所在のみ。名前→所在のレジストリ、spec_versionのピン留めが論点）</span></span>
+  
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+</a>
+
+      
+      <div class="flex items-center gap-2 px-5 py-2 text-gray-700">
+        <span class="w-2.5 h-2.5 rounded-sm bg-yellow-300 shrink-0"></span>
+        <span class="flex-1 min-w-0 truncate font-medium">実装リポジトリのテストから自動化を集めてレポートにする</span>
+        
+      </div>
+      
+<a href="#mapping/collect-automations/question/Q-02" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">Q-02 <span class="text-gray-500">走査が拾うパターンをリポジトリごとに宣言できるようにするか（マーカーを1つに決めたので今は要らないが、言語ネイティブのアノテーションを使いたい場合の拡張先）</span></span>
+  
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+</a>
+
+      
+      <div class="flex items-center gap-2 px-5 py-2 text-gray-700">
+        <span class="w-2.5 h-2.5 rounded-sm bg-yellow-300 shrink-0"></span>
+        <span class="flex-1 min-w-0 truncate font-medium">本文から、用語やポリシーをlivt URIでリンクする</span>
+        
+      </div>
+      
+<a href="#mapping/link-artifacts-from-body-text/question/Q-01" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">Q-01 <span class="text-gray-500">MCP と livt resolve が返す本文でも、livt URI を解決するか（今は書かれたまま返す）</span></span>
+  
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+</a>
+
+<a href="#mapping/link-artifacts-from-body-text/question/Q-02" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">Q-02 <span class="text-gray-500">用語やポリシーの行に、そこへリンクしている本文（被リンク）を出すか（用語を分けたり寄せたりするとき、影響の範囲がそこから見える）</span></span>
+  
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+</a>
+
+      
+      <div class="flex items-center gap-2 px-5 py-2 text-gray-700">
+        <span class="w-2.5 h-2.5 rounded-sm bg-yellow-300 shrink-0"></span>
+        <span class="flex-1 min-w-0 truncate font-medium">ルールごとに合意が要る人を書く</span>
+        
+      </div>
+      
+<a href="#mapping/name-decision-makers-per-rule/question/Q-01" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">Q-01 <span class="text-gray-500">同じ人を全ルールに繰り返し書く手間をどうするか（実例マッピング全体の既定を1か所に書き、違うルールだけ上書きする形が考えられる）</span></span>
+  
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+</a>
+
+<a href="#mapping/name-decision-makers-per-rule/question/Q-02" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">Q-02 <span class="text-gray-500">合意済みのルールに書かれた合意が要る人を、そのルールを変えるときにも合意が要る人として扱うか</span></span>
+  
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+</a>
+
+<a href="#mapping/name-decision-makers-per-rule/question/Q-03" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">Q-03 <span class="text-gray-500">GitHub以外のforgeでの書き方をどう扱うか（livtは文字列として運ぶだけだが、チェックとスキルは解釈する）</span></span>
+  
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+</a>
+
+<a href="#mapping/name-decision-makers-per-rule/question/Q-04" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">Q-04 <span class="text-gray-500">タスクページを合意が要る人で絞り込めるようにするか（自分を待っている提案だけを見たい。絞り込みの軸が1つ増えるので、別のストーリーになりそう）</span></span>
+  
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+</a>
+
+      
+      <div class="flex items-center gap-2 px-5 py-2 text-gray-700">
+        <span class="w-2.5 h-2.5 rounded-sm bg-yellow-300 shrink-0"></span>
+        <span class="flex-1 min-w-0 truncate font-medium">未解決の疑問点を横断で見渡す</span>
+        
+      </div>
+      
+<a href="#mapping/overview-open-questions/question/Q-01" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">Q-01 <span class="text-gray-500">解決した疑問点はどう扱うか（現状はルール化して付箋を消す運用のため、一覧は常に未解決のみを映す）</span></span>
+  
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+</a>
+
+<a href="#mapping/overview-open-questions/question/Q-02" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">Q-02 <span class="text-gray-500">同じ集約をMCPにも出すか（実装リポジトリのエージェントが着手前に未解決の疑問点を拾えるようにする）</span></span>
+  
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+</a>
+
+      
+      <div class="flex items-center gap-2 px-5 py-2 text-gray-700">
+        <span class="w-2.5 h-2.5 rounded-sm bg-yellow-300 shrink-0"></span>
+        <span class="flex-1 min-w-0 truncate font-medium">未自動化のルールを横断で見渡す</span>
+        
+      </div>
+      
+<a href="#mapping/overview-unautomated-rules/rule/R-04" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">R-04 <span class="text-gray-500">一覧の並び順は意味を持たず、どこから書くかの優先度を表さない</span></span>
+  <span class="shrink-0 text-[11px] text-gray-500">具体例 1</span>
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+</a>
+
+<a href="#mapping/overview-unautomated-rules/question/Q-01" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">Q-01 <span class="text-gray-500">並び順を何を軸に決めるか（TDDのテストリストとして「どこから書くか」に答えるなら順序が要るが、リリーススライスは3マップ中2マップに存在せず軸にならない）</span></span>
+  
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+</a>
+
+<a href="#mapping/overview-unautomated-rules/question/Q-02" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">Q-02 <span class="text-gray-500">自動化Issueが起票済みのルールを「着手済み」として区別するか（livtリポジトリはIssueのリンクだけを持ち、その開閉状態は持たない）</span></span>
+  
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+</a>
+
+      
+      <div class="flex items-center gap-2 px-5 py-2 text-gray-700">
+        <span class="w-2.5 h-2.5 rounded-sm bg-yellow-300 shrink-0"></span>
+        <span class="flex-1 min-w-0 truncate font-medium">合意前のルールを提案中として実例マッピングに載せる</span>
+        
+      </div>
+      
+<a href="#mapping/propose-rule-before-agreement/question/Q-01" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">Q-01 <span class="text-gray-500">合意済みのルールをADRのようにイミュータブルに扱うか（現状はchange-ruleがルール本文の書き換えを許しており、変更を退役＋新ルールで表してはいない）</span></span>
+  
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+</a>
+
+      
+      <div class="flex items-center gap-2 px-5 py-2 text-gray-700">
+        <span class="w-2.5 h-2.5 rounded-sm bg-yellow-300 shrink-0"></span>
+        <span class="flex-1 min-w-0 truncate font-medium">合意済みにする変更に、合意が要る人の承認を求める</span>
+        
+      </div>
+      
+<a href="#mapping/require-decision-makers-approval-to-accept/question/Q-01" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">Q-01 <span class="text-gray-500">チームをdecision_makersに書けるようにするか（メンバーの照合に、organizationを読む権限が要る。このストーリーでは扱わない）</span></span>
+  
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+</a>
+
+      
+      <div class="flex items-center gap-2 px-5 py-2 text-gray-700">
+        <span class="w-2.5 h-2.5 rounded-sm bg-yellow-300 shrink-0"></span>
+        <span class="flex-1 min-w-0 truncate font-medium">リビジョン間の差分をlivt URI単位で読む</span>
+        
+      </div>
+      
+<a href="#mapping/review-diff-between-revisions/question/Q-01" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">Q-01 <span class="text-gray-500">差分を載せたサイトを公開するか（いまのサイトはGitHub Pagesへ公開される。差分はレビューのあいだだけのものなので、同じ出力先に出していいか）</span></span>
+  
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+</a>
+
+<a href="#mapping/review-diff-between-revisions/question/Q-02" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">Q-02 <span class="text-gray-500">レビュアーは手元でビルドを走らせるのか、PRから差分に辿り着けるべきか（後者ならCIとプレビューの公開が要る）</span></span>
+  
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+</a>
+
+<a href="#mapping/review-diff-between-revisions/question/Q-04" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">Q-04 <span class="text-gray-500">付箋の並び替えだけの変更を差分として映すか（livt URIは変わらないが、ボードの見えは変わる）</span></span>
+  
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+</a>
+
+<a href="#mapping/review-diff-between-revisions/question/Q-05" data-nav class="flex items-center gap-2 pl-9 pr-5 py-2 text-gray-800 hover:bg-gray-50">
+  <span class="flex-1 min-w-0 truncate">Q-05 <span class="text-gray-500">ルールにも具体例にも付かない引用（解決しないURIなど）が増減したとき、差分にどう映すか（付く先が無いので映らず、レポートのPRが開いても差分は空になりうる）</span></span>
+  
+  <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+</a>
+
+      
+      
+      
+    </nav>
+    <main class="flex-1 min-w-0 px-8 py-6">
+      
+      <div class="sticky top-0 z-10 -mx-8 px-8 py-2 mb-4 bg-gray-50/95 border-b border-gray-200 flex items-center gap-4 text-sm" data-pager hidden>
+        <button type="button" data-step="-1" class="py-1.5 px-3 rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-100">&larr; 前の変更</button>
+        <button type="button" data-step="1" class="py-1.5 px-3 rounded border border-gray-300 bg-white text-gray-700 hover:bg-gray-100">次の変更 &rarr;</button>
+        <span class="text-gray-500" data-position></span>
+      </div>
+      
+<section data-item="mapping/automate-from-master-in-impl-repos/question/Q-05" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+        <span class="font-semibold text-gray-900">Q-05</span>
+      </div>
+      
+      
+      <a href="mapping/automate-from-master-in-impl-repos.html#question-Q-05" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/automate-from-master-in-impl-repos/question/Q-05 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="diff-card bg-red-100 border-red-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-05</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">ネットワーク（非ローカル）公開する場合の認証・公開モデルをどうするか（現状はローカル利用前提で認証なし）</span></div>
+  
+  
+  
+</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/automate-from-master-in-impl-repos/question/Q-05" class="diff-card bg-red-100 border-red-400 ghost border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-05</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words diff-del">ネットワーク（非ローカル）公開する場合の認証・公開モデルをどうするか（現状はローカル利用前提で認証なし）</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-429d42997aa3b9fefcfa8cd36dad9fe6167b2a7df792fa46d7fe615306607fb2R202" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<section data-item="mapping/automate-from-master-in-impl-repos/question/Q-06" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+        <span class="font-semibold text-gray-900">Q-06</span>
+      </div>
+      
+      
+      <a href="mapping/automate-from-master-in-impl-repos.html#question-Q-06" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/automate-from-master-in-impl-repos/question/Q-06 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="diff-card bg-red-100 border-red-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-06</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">同一性（どのlivtリポジトリか）と版方針を宣言するネイティブマニフェストを持つか（R-15のenv契約が供給するのは所在のみ。名前→所在のレジストリ、spec_versionのピン留めが論点）</span></div>
+  
+  
+  
+</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/automate-from-master-in-impl-repos/question/Q-06" class="diff-card bg-red-100 border-red-400 ghost border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-06</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words diff-del">同一性（どのlivtリポジトリか）と版方針を宣言するネイティブマニフェストを持つか（R-15のenv契約が供給するのは所在のみ。名前→所在のレジストリ、spec_versionのピン留めが論点）</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-429d42997aa3b9fefcfa8cd36dad9fe6167b2a7df792fa46d7fe615306607fb2R205" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<section data-item="mapping/collect-automations/question/Q-02" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+        <span class="font-semibold text-gray-900">Q-02</span>
+      </div>
+      
+      
+      <a href="mapping/collect-automations.html#question-Q-02" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/collect-automations/question/Q-02 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="diff-card bg-red-100 border-red-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-02</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">走査が拾うパターンをリポジトリごとに宣言できるようにするか（マーカーを1つに決めたので今は要らないが、言語ネイティブのアノテーションを使いたい場合の拡張先）</span></div>
+  
+  
+  
+</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/collect-automations/question/Q-02" class="diff-card bg-red-100 border-red-400 ghost border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-02</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words diff-del">走査が拾うパターンをリポジトリごとに宣言できるようにするか（マーカーを1つに決めたので今は要らないが、言語ネイティブのアノテーションを使いたい場合の拡張先）</span></div>
+  
+  
+  <div class="text-xs font-normal text-gray-600 mt-1"><span class="whitespace-pre-wrap break-words">後継: livt://mapping/collect-automations/rule/R-01/example/EX-02</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-f6ac8322378ddc0c6460fea669ff0520733fef5dc5a00201a398255189c54b8cR194" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<section data-item="mapping/link-artifacts-from-body-text/question/Q-01" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+        <span class="font-semibold text-gray-900">Q-01</span>
+      </div>
+      
+      
+      <a href="mapping/link-artifacts-from-body-text.html#question-Q-01" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/link-artifacts-from-body-text/question/Q-01 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="diff-card bg-red-100 border-red-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-01</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">MCP と livt resolve が返す本文でも、livt URI を解決するか（今は書かれたまま返す）</span></div>
+  
+  
+  
+</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/link-artifacts-from-body-text/question/Q-01" class="diff-card bg-red-100 border-red-400 ghost border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-01</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words diff-del">MCP と livt resolve が返す本文でも、livt URI を解決するか（今は書かれたまま返す）</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-be89a94082caf9c0eecfd54550f91dd97d5a0cde0c009ba0e46238a665e766aeR51" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<section data-item="mapping/link-artifacts-from-body-text/question/Q-02" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+        <span class="font-semibold text-gray-900">Q-02</span>
+      </div>
+      
+      
+      <a href="mapping/link-artifacts-from-body-text.html#question-Q-02" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/link-artifacts-from-body-text/question/Q-02 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="diff-card bg-red-100 border-red-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-02</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">用語やポリシーの行に、そこへリンクしている本文（被リンク）を出すか（用語を分けたり寄せたりするとき、影響の範囲がそこから見える）</span></div>
+  
+  
+  
+</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/link-artifacts-from-body-text/question/Q-02" class="diff-card bg-red-100 border-red-400 ghost border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-02</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words diff-del">用語やポリシーの行に、そこへリンクしている本文（被リンク）を出すか（用語を分けたり寄せたりするとき、影響の範囲がそこから見える）</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-be89a94082caf9c0eecfd54550f91dd97d5a0cde0c009ba0e46238a665e766aeR54" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<section data-item="mapping/name-decision-makers-per-rule/question/Q-01" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+        <span class="font-semibold text-gray-900">Q-01</span>
+      </div>
+      
+      
+      <a href="mapping/name-decision-makers-per-rule.html#question-Q-01" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/name-decision-makers-per-rule/question/Q-01 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="diff-card bg-red-100 border-red-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-01</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">同じ人を全ルールに繰り返し書く手間をどうするか（実例マッピング全体の既定を1か所に書き、違うルールだけ上書きする形が考えられる）</span></div>
+  
+  
+  
+</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/name-decision-makers-per-rule/question/Q-01" class="diff-card bg-red-100 border-red-400 ghost border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-01</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words diff-del">同じ人を全ルールに繰り返し書く手間をどうするか（実例マッピング全体の既定を1か所に書き、違うルールだけ上書きする形が考えられる）</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-33f1932dc73dc871e04bfb9bb96281c7627b1cd1a61766c5cb758edf9eafb476R50" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<section data-item="mapping/name-decision-makers-per-rule/question/Q-02" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+        <span class="font-semibold text-gray-900">Q-02</span>
+      </div>
+      
+      
+      <a href="mapping/name-decision-makers-per-rule.html#question-Q-02" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/name-decision-makers-per-rule/question/Q-02 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="diff-card bg-red-100 border-red-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-02</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">合意済みのルールに書かれた合意が要る人を、そのルールを変えるときにも合意が要る人として扱うか</span></div>
+  
+  
+  
+</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/name-decision-makers-per-rule/question/Q-02" class="diff-card bg-red-100 border-red-400 ghost border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-02</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words diff-del">合意済みのルールに書かれた合意が要る人を、そのルールを変えるときにも合意が要る人として扱うか</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-33f1932dc73dc871e04bfb9bb96281c7627b1cd1a61766c5cb758edf9eafb476R53" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<section data-item="mapping/name-decision-makers-per-rule/question/Q-03" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+        <span class="font-semibold text-gray-900">Q-03</span>
+      </div>
+      
+      
+      <a href="mapping/name-decision-makers-per-rule.html#question-Q-03" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/name-decision-makers-per-rule/question/Q-03 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="diff-card bg-red-100 border-red-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-03</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">GitHub以外のforgeでの書き方をどう扱うか（livtは文字列として運ぶだけだが、チェックとスキルは解釈する）</span></div>
+  
+  
+  
+</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/name-decision-makers-per-rule/question/Q-03" class="diff-card bg-red-100 border-red-400 ghost border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-03</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words diff-del">GitHub以外のforgeでの書き方をどう扱うか（livtは文字列として運ぶだけだが、チェックとスキルは解釈する）</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-33f1932dc73dc871e04bfb9bb96281c7627b1cd1a61766c5cb758edf9eafb476R56" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<section data-item="mapping/name-decision-makers-per-rule/question/Q-04" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+        <span class="font-semibold text-gray-900">Q-04</span>
+      </div>
+      
+      
+      <a href="mapping/name-decision-makers-per-rule.html#question-Q-04" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/name-decision-makers-per-rule/question/Q-04 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="diff-card bg-red-100 border-red-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-04</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">タスクページを合意が要る人で絞り込めるようにするか（自分を待っている提案だけを見たい。絞り込みの軸が1つ増えるので、別のストーリーになりそう）</span></div>
+  
+  
+  
+</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/name-decision-makers-per-rule/question/Q-04" class="diff-card bg-red-100 border-red-400 ghost border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-04</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words diff-del">タスクページを合意が要る人で絞り込めるようにするか（自分を待っている提案だけを見たい。絞り込みの軸が1つ増えるので、別のストーリーになりそう）</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-33f1932dc73dc871e04bfb9bb96281c7627b1cd1a61766c5cb758edf9eafb476R59" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<section data-item="mapping/overview-open-questions/question/Q-01" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+        <span class="font-semibold text-gray-900">Q-01</span>
+      </div>
+      
+      
+      <a href="mapping/overview-open-questions.html#question-Q-01" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/overview-open-questions/question/Q-01 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="diff-card bg-red-100 border-red-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-01</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">解決した疑問点はどう扱うか（現状はルール化して付箋を消す運用のため、一覧は常に未解決のみを映す）</span></div>
+  
+  
+  
+</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/overview-open-questions/question/Q-01" class="diff-card bg-red-100 border-red-400 ghost border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-01</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words diff-del">解決した疑問点はどう扱うか（現状はルール化して付箋を消す運用のため、一覧は常に未解決のみを映す）</span></div>
+  
+  
+  <div class="text-xs font-normal text-gray-600 mt-1"><span class="whitespace-pre-wrap break-words">後継: livt://mapping/overview-open-questions/rule/R-01</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-06f8f3f896e632dac1ef0a67fca19438ab41d87992e0cb79cf1188aa3859d814R37" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<section data-item="mapping/overview-open-questions/question/Q-02" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+        <span class="font-semibold text-gray-900">Q-02</span>
+      </div>
+      
+      
+      <a href="mapping/overview-open-questions.html#question-Q-02" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/overview-open-questions/question/Q-02 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="diff-card bg-red-100 border-red-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-02</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">同じ集約をMCPにも出すか（実装リポジトリのエージェントが着手前に未解決の疑問点を拾えるようにする）</span></div>
+  
+  
+  
+</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/overview-open-questions/question/Q-02" class="diff-card bg-red-100 border-red-400 ghost border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-02</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words diff-del">同じ集約をMCPにも出すか（実装リポジトリのエージェントが着手前に未解決の疑問点を拾えるようにする）</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-06f8f3f896e632dac1ef0a67fca19438ab41d87992e0cb79cf1188aa3859d814R42" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<section data-item="mapping/overview-unautomated-rules/rule/R-04" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+        <span class="font-semibold text-gray-900">R-04</span>
+      </div>
+      
+      
+      <a href="mapping/overview-unautomated-rules.html#rule-R-04" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/overview-unautomated-rules/rule/R-04 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="border border-dashed border-gray-300 rounded px-3 py-3 text-sm text-gray-500">R-04 なし</div>
+
+
+
+<div class="ml-5 border border-dashed border-gray-300 rounded px-3 py-3 text-sm text-gray-500">R-04 EX-01 なし</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/overview-unautomated-rules/rule/R-04" class="diff-card bg-blue-100 border-blue-400 font-semibold shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">R-04</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">一覧の並び順は意味を持たず、どこから書くかの優先度を表さない</span></div>
+  
+  
+  <div class="text-xs font-normal text-gray-600 mt-1"><span class="whitespace-pre-wrap break-words">状態: 合意済み</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-9614dafca015334e490845279fc059e79b585a51141c6208df0c970b82ce3594R41" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+
+<div id="mapping/overview-unautomated-rules/rule/R-04/example/EX-01" class="diff-card nested ml-5 bg-green-100 border-green-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">R-04 EX-01</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">ルールは実例マッピングのキー順、その中ではルールIDの順に並ぶ</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-9614dafca015334e490845279fc059e79b585a51141c6208df0c970b82ce3594R44" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+  <div class="mt-2 flex flex-wrap items-center gap-2 text-[11px]">
+    <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-green-100 text-green-800">追加</span>
+    <a href="mapping/overview-unautomated-rules.html#rule-R-04-example-EX-01" class="font-mono text-violet-700 underline underline-offset-2 break-all">livt://mapping/overview-unautomated-rules/rule/R-04/example/EX-01</a>
+  </div>
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<section data-item="mapping/overview-unautomated-rules/question/Q-01" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+        <span class="font-semibold text-gray-900">Q-01</span>
+      </div>
+      
+      
+      <a href="mapping/overview-unautomated-rules.html#question-Q-01" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/overview-unautomated-rules/question/Q-01 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="diff-card bg-red-100 border-red-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-01</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">並び順を何を軸に決めるか（TDDのテストリストとして「どこから書くか」に答えるなら順序が要るが、リリーススライスは3マップ中2マップに存在せず軸にならない）</span></div>
+  
+  
+  
+</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/overview-unautomated-rules/question/Q-01" class="diff-card bg-red-100 border-red-400 ghost border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-01</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words diff-del">並び順を何を軸に決めるか（TDDのテストリストとして「どこから書くか」に答えるなら順序が要るが、リリーススライスは3マップ中2マップに存在せず軸にならない）</span></div>
+  
+  
+  <div class="text-xs font-normal text-gray-600 mt-1"><span class="whitespace-pre-wrap break-words">後継: livt://mapping/overview-unautomated-rules/rule/R-04</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-9614dafca015334e490845279fc059e79b585a51141c6208df0c970b82ce3594R48" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<section data-item="mapping/overview-unautomated-rules/question/Q-02" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+        <span class="font-semibold text-gray-900">Q-02</span>
+      </div>
+      
+      
+      <a href="mapping/overview-unautomated-rules.html#question-Q-02" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/overview-unautomated-rules/question/Q-02 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="diff-card bg-red-100 border-red-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-02</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">自動化Issueが起票済みのルールを「着手済み」として区別するか（livtリポジトリはIssueのリンクだけを持ち、その開閉状態は持たない）</span></div>
+  
+  
+  
+</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/overview-unautomated-rules/question/Q-02" class="diff-card bg-red-100 border-red-400 ghost border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-02</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words diff-del">自動化Issueが起票済みのルールを「着手済み」として区別するか（livtリポジトリはIssueのリンクだけを持ち、その開閉状態は持たない）</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-9614dafca015334e490845279fc059e79b585a51141c6208df0c970b82ce3594R53" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<section data-item="mapping/propose-rule-before-agreement/question/Q-01" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+        <span class="font-semibold text-gray-900">Q-01</span>
+      </div>
+      
+      
+      <a href="mapping/propose-rule-before-agreement.html#question-Q-01" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/propose-rule-before-agreement/question/Q-01 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="diff-card bg-red-100 border-red-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-01</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">合意済みのルールをADRのようにイミュータブルに扱うか（現状はchange-ruleがルール本文の書き換えを許しており、変更を退役＋新ルールで表してはいない）</span></div>
+  
+  
+  
+</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/propose-rule-before-agreement/question/Q-01" class="diff-card bg-red-100 border-red-400 ghost border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-01</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words diff-del">合意済みのルールをADRのようにイミュータブルに扱うか（現状はchange-ruleがルール本文の書き換えを許しており、変更を退役＋新ルールで表してはいない）</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-fbeedafdfcf3216e382c5828ae61481261578b47be59b51cae38aafb0b8aaabaR63" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<section data-item="mapping/require-decision-makers-approval-to-accept/question/Q-01" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+        <span class="font-semibold text-gray-900">Q-01</span>
+      </div>
+      
+      
+      <a href="mapping/require-decision-makers-approval-to-accept.html#question-Q-01" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/require-decision-makers-approval-to-accept/question/Q-01 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="diff-card bg-red-100 border-red-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-01</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">チームをdecision_makersに書けるようにするか（メンバーの照合に、organizationを読む権限が要る。このストーリーでは扱わない）</span></div>
+  
+  
+  
+</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/require-decision-makers-approval-to-accept/question/Q-01" class="diff-card bg-red-100 border-red-400 ghost border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-01</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words diff-del">チームをdecision_makersに書けるようにするか（メンバーの照合に、organizationを読む権限が要る。このストーリーでは扱わない）</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-41aaec6f894cdc9e7804e57e0d354d5d254510b219b05667c6ed03f32e0098aeR76" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<section data-item="mapping/review-diff-between-revisions/question/Q-01" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+        <span class="font-semibold text-gray-900">Q-01</span>
+      </div>
+      
+      
+      <a href="mapping/review-diff-between-revisions.html#question-Q-01" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/review-diff-between-revisions/question/Q-01 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="diff-card bg-red-100 border-red-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-01</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">差分を載せたサイトを公開するか（いまのサイトはGitHub Pagesへ公開される。差分はレビューのあいだだけのものなので、同じ出力先に出していいか）</span></div>
+  
+  
+  
+</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/review-diff-between-revisions/question/Q-01" class="diff-card bg-red-100 border-red-400 ghost border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-01</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words diff-del">差分を載せたサイトを公開するか（いまのサイトはGitHub Pagesへ公開される。差分はレビューのあいだだけのものなので、同じ出力先に出していいか）</span></div>
+  
+  
+  <div class="text-xs font-normal text-gray-600 mt-1"><span class="whitespace-pre-wrap break-words">後継: livt://mapping/review-diff-between-revisions/rule/R-01</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-b4b52b7e8a14c21e842da511fa3c4bbd5e0e7a931561544f73b505c3d4f9d595R139" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<section data-item="mapping/review-diff-between-revisions/question/Q-02" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+        <span class="font-semibold text-gray-900">Q-02</span>
+      </div>
+      
+      
+      <a href="mapping/review-diff-between-revisions.html#question-Q-02" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/review-diff-between-revisions/question/Q-02 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="diff-card bg-red-100 border-red-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-02</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">レビュアーは手元でビルドを走らせるのか、PRから差分に辿り着けるべきか（後者ならCIとプレビューの公開が要る）</span></div>
+  
+  
+  
+</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/review-diff-between-revisions/question/Q-02" class="diff-card bg-red-100 border-red-400 ghost border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-02</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words diff-del">レビュアーは手元でビルドを走らせるのか、PRから差分に辿り着けるべきか（後者ならCIとプレビューの公開が要る）</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-b4b52b7e8a14c21e842da511fa3c4bbd5e0e7a931561544f73b505c3d4f9d595R144" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<section data-item="mapping/review-diff-between-revisions/question/Q-04" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+        <span class="font-semibold text-gray-900">Q-04</span>
+      </div>
+      
+      
+      <a href="mapping/review-diff-between-revisions.html#question-Q-04" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/review-diff-between-revisions/question/Q-04 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="diff-card bg-red-100 border-red-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-04</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">付箋の並び替えだけの変更を差分として映すか（livt URIは変わらないが、ボードの見えは変わる）</span></div>
+  
+  
+  
+</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/review-diff-between-revisions/question/Q-04" class="diff-card bg-red-100 border-red-400 ghost border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-04</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words diff-del">付箋の並び替えだけの変更を差分として映すか（livt URIは変わらないが、ボードの見えは変わる）</span></div>
+  
+  
+  <div class="text-xs font-normal text-gray-600 mt-1"><span class="whitespace-pre-wrap break-words">後継: livt://mapping/review-diff-between-revisions/rule/R-02</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-b4b52b7e8a14c21e842da511fa3c4bbd5e0e7a931561544f73b505c3d4f9d595R152" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+<section data-item="mapping/review-diff-between-revisions/question/Q-05" class="mb-12">
+  <div class="flex flex-wrap items-start gap-4 mb-4">
+    <div class="flex-1 min-w-0">
+      <div class="flex items-center gap-2">
+        <span class="shrink-0 text-[11px] font-semibold rounded px-1.5 py-0.5 bg-red-100 text-red-800">廃止</span>
+        <span class="font-semibold text-gray-900">Q-05</span>
+      </div>
+      
+      
+      <a href="mapping/review-diff-between-revisions.html#question-Q-05" class="mt-1 inline-block text-sm font-mono text-violet-700 underline underline-offset-2 hover:text-violet-900 break-all">livt://mapping/review-diff-between-revisions/question/Q-05 &nearr;</a>
+      
+    </div>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-5 items-start">
+    <div class="diff-before bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更前</div>
+      
+
+<div class="diff-card bg-red-100 border-red-400 shadow border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-05</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words">ルールにも具体例にも付かない引用（解決しないURIなど）が増減したとき、差分にどう映すか（付く先が無いので映らず、レポートのPRが開いても差分は空になりうる）</span></div>
+  
+  
+  
+</div>
+
+
+    </div>
+    <div class="diff-after bg-white border border-gray-200 rounded-lg p-4 flex flex-col gap-3">
+      <div class="text-xs font-semibold text-gray-600">変更後</div>
+      
+
+<div id="mapping/review-diff-between-revisions/question/Q-05" class="diff-card bg-red-100 border-red-400 ghost border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
+  <div class="text-[11px] font-semibold text-gray-500 mb-1">Q-05</div>
+  
+  
+  <div class=""><span class="whitespace-pre-wrap break-words diff-del">ルールにも具体例にも付かない引用（解決しないURIなど）が増減したとき、差分にどう映すか（付く先が無いので映らず、レポートのPRが開いても差分は空になりうる）</span></div>
+  
+  
+  
+  <a href="https://github.com/boykush/livt/pull/411/files#diff-b4b52b7e8a14c21e842da511fa3c4bbd5e0e7a931561544f73b505c3d4f9d595R157" class="mt-2 inline-flex items-center gap-1 text-xs font-normal text-gray-700 hover:text-gray-900 underline underline-offset-2"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>GitHubでコメント &nearr;</a>
+  
+  
+</div>
+
+
+    </div>
+  </div>
+</section>
+
+    </main>
+  </div>
+  
+</div>
+<script>
+  (function () {
+    var items = Array.prototype.slice.call(document.querySelectorAll("[data-item]"));
+    if (!items.length) return;
+    var links = document.querySelectorAll("[data-nav]");
+    var pager = document.querySelector("[data-pager]");
+    var position = document.querySelector("[data-position]");
+    var current = 0;
+    function show(id, scroll) {
+      var target = id && document.getElementById(id);
+      var item = target ? target.closest("[data-item]") : null;
+      current = Math.max(0, items.indexOf(item));
+      items.forEach(function (el, i) { el.hidden = i !== current; });
+      links.forEach(function (a) { a.setAttribute("aria-current", String(a.getAttribute("href") === "#" + items[current].dataset.item)); });
+      pager.hidden = false;
+      position.textContent = (current + 1) + " / " + items.length;
+      if (target && target.id !== items[current].dataset.item) target.scrollIntoView({ block: "center" });
+      else if (scroll) window.scrollTo(0, 0);
+    }
+    pager.addEventListener("click", function (e) {
+      var step = e.target.closest("[data-step]");
+      if (!step) return;
+      var next = (current + Number(step.dataset.step) + items.length) % items.length;
+      location.hash = items[next].dataset.item;
+    });
+    window.addEventListener("hashchange", function () { show(decodeURIComponent(location.hash.slice(1)), true); });
+    show(decodeURIComponent(location.hash.slice(1)), false);
+  })();
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
