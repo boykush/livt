@@ -70,6 +70,7 @@ questions:
       - livt://mapping/show-opportunity-progress/rule/R-02/example/EX-01
   - id: Q-03
     text: いつ合意され、いつ自動化されたかという時間軸を映すか（livtはいまYAMLだけを読み、gitに依存していない。映すならビルドがgitリポジトリを要求する）
+    retired: true
 
 ubiquitous:
   - opportunity
