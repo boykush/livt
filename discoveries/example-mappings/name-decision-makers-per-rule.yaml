@@ -51,6 +51,7 @@ questions:
     retired: true
   - id: Q-02
     text: 合意済みのルールに書かれた合意が要る人を、そのルールを変えるときにも合意が要る人として扱うか
+    retired: true
   - id: Q-03
     text: GitHub以外のforgeでの書き方をどう扱うか（livtは文字列として運ぶだけだが、チェックとスキルは解釈する）
   - id: Q-04
