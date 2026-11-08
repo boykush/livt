@@ -203,6 +203,7 @@ questions:
     retired: true
   - id: Q-06
     text: 同一性（どのlivtリポジトリか）と版方針を宣言するネイティブマニフェストを持つか（R-15のenv契約が供給するのは所在のみ。名前→所在のレジストリ、spec_versionのピン留めが論点）
+    retired: true
 
 ubiquitous:
   - example-mapping
