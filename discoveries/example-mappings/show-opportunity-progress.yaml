@@ -60,6 +60,9 @@ rules:
 questions:
   - id: Q-01
     text: どのユーザーストーリーマップにも載っていない実例マッピングをどこに映すか（オポチュニティのページには定義上載らない）
+    retired: true
+    superseded_by:
+      - livt://mapping/show-opportunity-progress/rule/R-02/example/EX-06
   - id: Q-02
     text: ストーリーの分母をマップ上のカード数とストーリーファイル数のどちらで数えるか（前者はそのオポチュニティが取り上げた範囲、後者はlivtリポジトリ全体で、両者はズレる）
   - id: Q-03
