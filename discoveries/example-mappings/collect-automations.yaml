@@ -192,6 +192,9 @@ questions:
       - livt://mapping/collect-automations/rule/R-08
   - id: Q-02
     text: 走査が拾うパターンをリポジトリごとに宣言できるようにするか（マーカーを1つに決めたので今は要らないが、言語ネイティブのアノテーションを使いたい場合の拡張先）
+    retired: true
+    superseded_by:
+      - livt://mapping/collect-automations/rule/R-01/example/EX-02
   - id: Q-03
     text: フラットなテストでルールを引用した後にルールへ具体例が増えたとき、足したルールの引用をスキルが外すか（R-08はすべての具体例が引用されたときに足すことまでで、崩れたときを決めていない）
     retired: true

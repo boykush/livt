@@ -37,11 +37,21 @@ rules:
       - id: EX-04
         name: オポチュニティを選ぶと、そのオポチュニティのストーリーのルールだけが表示される
 
+  - id: R-04
+    name: 一覧の並び順は意味を持たず、どこから書くかの優先度を表さない
+    examples:
+      - id: EX-01
+        name: ルールは実例マッピングのキー順、その中ではルールIDの順に並ぶ
+
 questions:
   - id: Q-01
     text: 並び順を何を軸に決めるか（TDDのテストリストとして「どこから書くか」に答えるなら順序が要るが、リリーススライスは3マップ中2マップに存在せず軸にならない）
+    retired: true
+    superseded_by:
+      - livt://mapping/overview-unautomated-rules/rule/R-04
   - id: Q-02
     text: 自動化Issueが起票済みのルールを「着手済み」として区別するか（livtリポジトリはIssueのリンクだけを持ち、その開閉状態は持たない）
+    retired: true
 
 ubiquitous:
   - livt-repository

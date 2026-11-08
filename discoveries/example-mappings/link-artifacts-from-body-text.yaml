@@ -49,8 +49,10 @@ rules:
 questions:
   - id: Q-01
     text: MCP と livt resolve が返す本文でも、livt URI を解決するか（今は書かれたまま返す）
+    retired: true
   - id: Q-02
     text: 用語やポリシーの行に、そこへリンクしている本文（被リンク）を出すか（用語を分けたり寄せたりするとき、影響の範囲がそこから見える）
+    retired: true
 
 ubiquitous:
   - ubiquitous-language

@@ -137,8 +137,12 @@ rules:
 questions:
   - id: Q-01
     text: 差分を載せたサイトを公開するか（いまのサイトはGitHub Pagesへ公開される。差分はレビューのあいだだけのものなので、同じ出力先に出していいか）
+    retired: true
+    superseded_by:
+      - livt://mapping/review-diff-between-revisions/rule/R-01
   - id: Q-02
     text: レビュアーは手元でビルドを走らせるのか、PRから差分に辿り着けるべきか（後者ならCIとプレビューの公開が要る）
+    retired: true
   - id: Q-03
     text: ビルドがgitリポジトリを要るようになることをどう置くか（いまのビルドはYAMLとMarkdownしか読まない。livt://mapping/show-opportunity-progress/question/Q-03 が同じ問いを別の入口から挙げている）
     retired: true
@@ -146,8 +150,12 @@ questions:
       - livt://mapping/review-diff-between-revisions/rule/R-01
   - id: Q-04
     text: 付箋の並び替えだけの変更を差分として映すか（livt URIは変わらないが、ボードの見えは変わる）
+    retired: true
+    superseded_by:
+      - livt://mapping/review-diff-between-revisions/rule/R-02
   - id: Q-05
     text: ルールにも具体例にも付かない引用（解決しないURIなど）が増減したとき、差分にどう映すか（付く先が無いので映らず、レポートのPRが開いても差分は空になりうる）
+    retired: true
 
 ubiquitous:
   - livt-uri
