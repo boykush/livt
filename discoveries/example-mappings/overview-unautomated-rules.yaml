@@ -51,6 +51,7 @@ questions:
       - livt://mapping/overview-unautomated-rules/rule/R-04
   - id: Q-02
     text: 自動化Issueが起票済みのルールを「着手済み」として区別するか（livtリポジトリはIssueのリンクだけを持ち、その開閉状態は持たない）
+    retired: true
 
 ubiquitous:
   - livt-repository
