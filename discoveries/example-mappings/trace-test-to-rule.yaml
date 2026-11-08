@@ -127,6 +127,9 @@ questions:
       - livt://mapping/trace-test-to-rule/rule/R-11
   - id: Q-04
     text: マージ前に却下された提案を、rejectedとして残すか削除するか（livt://mapping/propose-rule-before-agreement/rule/R-05/example/EX-02 は却下された提案を削除せずrejectedにすると言うが、デフォルトブランチに載らなかった提案まで含むかは決めていない。現状はrejectedとして残す）
+    retired: true
+    superseded_by:
+      - livt://mapping/trace-test-to-rule/rule/R-10
 
 ubiquitous:
   - livt-uri
