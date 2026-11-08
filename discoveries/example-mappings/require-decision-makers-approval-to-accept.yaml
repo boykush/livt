@@ -74,6 +74,7 @@ rules:
 questions:
   - id: Q-01
     text: チームをdecision_makersに書けるようにするか（メンバーの照合に、organizationを読む権限が要る。このストーリーでは扱わない）
+    retired: true
 
 ubiquitous:
   - example-mapping
