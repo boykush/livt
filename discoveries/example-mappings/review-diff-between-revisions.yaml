@@ -155,6 +155,7 @@ questions:
       - livt://mapping/review-diff-between-revisions/rule/R-02
   - id: Q-05
     text: ルールにも具体例にも付かない引用（解決しないURIなど）が増減したとき、差分にどう映すか（付く先が無いので映らず、レポートのPRが開いても差分は空になりうる）
+    retired: true
 
 ubiquitous:
   - livt-uri
