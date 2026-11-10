@@ -39,7 +39,7 @@ jobs:
       # whether a pull request is warranted is decided inside the action.
       - name: Generate the repo-writer App token
         id: app-token
-        uses: boykush/workflows/.github/actions/github-app-token@3464d3618394e79262cef965746b284eb915862e
+        uses: boykush/workflows/.github/actions/github-app-token@4eacb8177818e792b0ee716ff62c64f48850ab99
         with:
           app: repo-writer
           permission-contents: write
