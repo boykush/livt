@@ -618,6 +618,9 @@ type diffLineView struct {
 	Label string
 	Text  string
 	Parts []diffPartView
+	// Href is the value itself when it is an http(s) URL, as on a story's
+	// own page, so a link in the record stays one to follow from the diff.
+	Href string
 }
 
 // diffPartView is a run of a reworded line, marked where it changed.

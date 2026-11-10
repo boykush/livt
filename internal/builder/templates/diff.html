@@ -160,7 +160,7 @@ stickies side by side needs the width the sidebar would take.
   {{range .Lines}}
   {{/* A line with no label is the item speaking for itself; a labelled one is
   something said about it, so it sits smaller beneath. */}}
-  <div class="{{if .Label}}text-xs font-normal text-gray-600 mt-1{{end}}"><span class="whitespace-pre-wrap break-words{{if eq .Op "+"}} diff-add{{else if eq .Op "-"}} diff-del{{end}}{{if .Parts}} reworded{{end}}">{{if .Parts}}{{if .Label}}{{.Label}}: {{end}}{{range .Parts}}{{if .Changed}}<span class="moved">{{.Text}}</span>{{else}}{{.Text}}{{end}}{{end}}{{else}}{{.Text}}{{end}}</span></div>
+  <div class="{{if .Label}}text-xs font-normal text-gray-600 mt-1{{end}}"><span class="whitespace-pre-wrap break-words{{if eq .Op "+"}} diff-add{{else if eq .Op "-"}} diff-del{{end}}{{if .Parts}} reworded{{end}}">{{if .Href}}{{if .Label}}{{.Label}}: {{end}}<a href="{{.Href}}" class="text-blue-700 underline underline-offset-2 hover:text-blue-900">{{if .Parts}}{{range .Parts}}{{if .Changed}}<span class="moved">{{.Text}}</span>{{else}}{{.Text}}{{end}}{{end}}{{else}}{{.Href}}{{end}}</a>{{else if .Parts}}{{if .Label}}{{.Label}}: {{end}}{{range .Parts}}{{if .Changed}}<span class="moved">{{.Text}}</span>{{else}}{{.Text}}{{end}}{{end}}{{else}}{{.Text}}{{end}}</span></div>
   {{end}}
   {{if .Comment}}
   {{/* The same tab: a reviewer came from the pull request in it, and going back
