@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>livt - {{t "nav.diff"}}</title>
-<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.tailwindcss.com?plugins=typography"></script>
 <style>
   {{/*
   Red and green are git's, so a reader arriving from a pull request already
@@ -18,6 +18,9 @@
   .diff-del .moved, .diff-add .moved { border-radius: 0.125rem; }
   .diff-del .moved { text-decoration: line-through; text-decoration-color: #b91c1c; }
   .reworded { background-color: transparent; text-decoration: none; }
+  .diff-fold { margin: 0.25rem 0; }
+  .diff-fold > summary { cursor: pointer; font-size: 0.75rem; color: #6b7280; list-style: none; border: 1px dashed #d1d5db; border-radius: 0.25rem; padding: 0.125rem 0.5rem; width: fit-content; }
+  .diff-fold[open] > summary { margin-bottom: 0.5rem; }
   .ghost { border-style: dashed; box-shadow: none; opacity: 0.8; }
   .diff-card.nested:target { box-shadow: 0 0 0 2px #fff, 0 0 0 5px #7c3aed; }
   [data-nav][aria-current="true"] { background-color: #f5f3ff; box-shadow: inset 3px 0 0 #7c3aed; font-weight: 600; }
@@ -158,9 +161,13 @@ stickies side by side needs the width the sidebar would take.
 <div{{if .Anchor}} id="{{.Anchor}}"{{end}} class="diff-card {{if .Nested}}nested ml-5 {{end}}{{.Tone}}{{if .Ghost}} ghost{{else}} shadow{{end}} border-l-4 rounded px-3 py-3 text-sm text-gray-800 leading-relaxed scroll-mt-24">
   <div class="text-[11px] font-semibold text-gray-500 mb-1">{{.Title}}</div>
   {{range .Lines}}
+  {{if .HTML}}
+  <div class="prose prose-sm max-w-none text-gray-800 font-normal">{{.HTML}}</div>
+  {{else}}
   {{/* A line with no label is the item speaking for itself; a labelled one is
   something said about it, so it sits smaller beneath. */}}
   <div class="{{if .Label}}text-xs font-normal text-gray-600 mt-1{{end}}"><span class="whitespace-pre-wrap break-words{{if eq .Op "+"}} diff-add{{else if eq .Op "-"}} diff-del{{end}}{{if .Parts}} reworded{{end}}">{{if .Parts}}{{if .Label}}{{.Label}}: {{end}}{{range .Parts}}{{if .Changed}}<span class="moved">{{.Text}}</span>{{else}}{{.Text}}{{end}}{{end}}{{else}}{{.Text}}{{end}}</span></div>
+  {{end}}
   {{end}}
   {{if .Comment}}
   {{/* The same tab: a reviewer came from the pull request in it, and going back
