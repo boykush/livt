@@ -618,6 +618,9 @@ type diffLineView struct {
 	Label string
 	Text  string
 	Parts []diffPartView
+	// HTML is a run of body lines rendered as markdown, with its changes
+	// marked inline. When set, it stands for the whole run.
+	HTML template.HTML
 }
 
 // diffPartView is a run of a reworded line, marked where it changed.
