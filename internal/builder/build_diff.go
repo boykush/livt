@@ -420,12 +420,17 @@ func (b *Builder) proseDir(u string) string {
 
 func (b *Builder) diffLineView(l diff.Line) diffLineView {
 	label := b.diffLabel(l.Field)
-	return diffLineView{
+	value := b.diffValue(l.Field)
+	view := diffLineView{
 		Op:    string(l.Op),
 		Label: label,
-		Text:  diffText(label, b.diffValue(l.Field)),
+		Text:  diffText(label, value),
 		Parts: diffPartViews(l.Parts),
 	}
+	if isHTTPURL(value) {
+		view.Href = value
+	}
+	return view
 }
 
 // diffLabel and diffValue put the site's own words on a field. What livt names

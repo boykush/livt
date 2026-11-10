@@ -619,3 +619,22 @@ func TestBuildDiffOpensThePullRequestInTheSameTab(t *testing.T) {
 		t.Errorf("the comment link opens elsewhere than the tab: %s", link)
 	}
 }
+
+// A field whose value is a URL reads as the link it is, as on the story's own
+// page, and still marks the words of it that moved.
+func TestBuildDiffLinksAURLValue(t *testing.T) {
+	changed := ruleChange("R-01", diff.BecameChanged)
+	changed.Lines = []diff.Line{
+		{Op: diff.OpAdd, Field: diff.Field{Label: "issues", Value: "https://github.com/o/r/issues/1"}},
+		{Op: diff.OpDel, Field: diff.Field{Label: "pr", Value: "https://github.com/o/r/pull/1"}, Parts: []diff.Part{{Text: "https://github.com/o/r/pull/"}, {Changed: true, Text: "1"}}},
+		{Op: diff.OpAdd, Field: diff.Field{Label: "pr", Value: "https://github.com/o/r/pull/2"}, Parts: []diff.Part{{Text: "https://github.com/o/r/pull/"}, {Changed: true, Text: "2"}}},
+	}
+	page := renderedDiff(t, &diff.Result{Base: "abc1234", Changes: []diff.Change{changed}, Changed: 1})
+
+	if !strings.Contains(page, `issues: <a href="https://github.com/o/r/issues/1"`) {
+		t.Error("a URL value is not a link")
+	}
+	if !strings.Contains(page, `href="https://github.com/o/r/pull/2" class="text-blue-700 underline underline-offset-2 hover:text-blue-900">https://github.com/o/r/pull/<span class="moved">2</span></a>`) {
+		t.Error("a reworded URL loses its link or its moved part")
+	}
+}
