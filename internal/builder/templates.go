@@ -621,6 +621,9 @@ type diffLineView struct {
 	// Href is the value itself when it is an http(s) URL, as on a story's
 	// own page, so a link in the record stays one to follow from the diff.
 	Href string
+	// HTML is a run of body lines rendered as markdown, with its changes
+	// marked inline. When set, it stands for the whole run.
+	HTML template.HTML
 }
 
 // diffPartView is a run of a reworded line, marked where it changed.

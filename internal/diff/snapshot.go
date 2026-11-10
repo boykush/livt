@@ -70,6 +70,9 @@ type Field struct {
 	// own word and is carried through as written.
 	Translate bool
 	Value     string
+	// Prose marks a line of a markdown body, so a page can render the run of
+	// them as the markdown it is rather than as source.
+	Prose bool
 }
 
 // Labels livt puts on its own fields. Where the site already has a word for
@@ -533,7 +536,7 @@ func bodyFields(body string) []Field {
 	}
 	var fields []Field
 	for _, line := range strings.Split(trimmed, "\n") {
-		fields = append(fields, text(line))
+		fields = append(fields, Field{Value: line, Prose: true})
 	}
 	return fields
 }

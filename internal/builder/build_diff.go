@@ -314,24 +314,27 @@ func (b *Builder) diffCards(c diff.Change, kind uri.Kind) (before, after diffCar
 	base := diffCardView{Title: c.Title, Status: string(c.Became), URI: c.URI, Path: c.Page, Tone: diffTone[kind]}
 	before, after = base, base
 	after.Anchor = diffAnchor(c.URI)
+	var beforeLines, afterLines []diff.Line
 	for _, l := range c.Lines {
 		switch {
 		case c.Became == diff.BecameWithdrawn:
 			if l.Op == diff.OpDel {
-				before.Lines = append(before.Lines, b.diffLineView(diff.Line{Op: diff.OpContext, Field: l.Field}))
+				beforeLines = append(beforeLines, diff.Line{Op: diff.OpContext, Field: l.Field})
 			}
-			after.Lines = append(after.Lines, b.diffLineView(l))
+			afterLines = append(afterLines, l)
 		case c.Became == diff.BecameAdded:
-			after.Lines = append(after.Lines, b.diffLineView(diff.Line{Op: diff.OpContext, Field: l.Field}))
+			afterLines = append(afterLines, diff.Line{Op: diff.OpContext, Field: l.Field})
 		case l.Op == diff.OpDel:
-			before.Lines = append(before.Lines, b.diffLineView(l))
+			beforeLines = append(beforeLines, l)
 		case l.Op == diff.OpAdd:
-			after.Lines = append(after.Lines, b.diffLineView(l))
+			afterLines = append(afterLines, l)
 		default:
-			before.Lines = append(before.Lines, b.diffLineView(l))
-			after.Lines = append(after.Lines, b.diffLineView(l))
+			beforeLines = append(beforeLines, l)
+			afterLines = append(afterLines, l)
 		}
 	}
+	dir := b.proseDir(c.URI)
+	before.Lines, after.Lines = b.diffLineViews(beforeLines, dir), b.diffLineViews(afterLines, dir)
 	before.Empty = len(before.Lines) == 0
 	after.Ghost = c.Became == diff.BecameWithdrawn
 	if c.InBase {
@@ -380,6 +383,39 @@ var diffTone = map[uri.Kind]string{
 	uri.KindStoryMap:          "bg-purple-100 border-purple-400",
 	uri.KindStory:             "bg-yellow-100 border-yellow-400",
 	uri.KindTerm:              "bg-pink-100 border-pink-400",
+}
+
+// diffLineViews draws a side's lines, a run of body lines as one rendered block.
+func (b *Builder) diffLineViews(lines []diff.Line, sourceDir string) []diffLineView {
+	var views []diffLineView
+	for i := 0; i < len(lines); {
+		if !lines[i].Field.Prose {
+			views = append(views, b.diffLineView(lines[i]))
+			i++
+			continue
+		}
+		j := i
+		for j < len(lines) && lines[j].Field.Prose {
+			j++
+		}
+		views = append(views, diffLineView{HTML: b.diffProse(lines[i:j], sourceDir)})
+		i = j
+	}
+	return views
+}
+
+// proseDir is the directory a body's relative links resolve against.
+func (b *Builder) proseDir(u string) string {
+	p, _ := uri.Parse(u)
+	switch p.Kind {
+	case uri.KindStory:
+		return b.StoriesDir
+	case uri.KindOpportunity:
+		return b.OpportunitiesDir
+	case uri.KindTerm:
+		return filepath.Join(b.UbiquitousDir, p.TermCtx)
+	}
+	return ""
 }
 
 func (b *Builder) diffLineView(l diff.Line) diffLineView {
