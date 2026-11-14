@@ -3,7 +3,7 @@ experimental = true
 
 [tools]
 go = "1.27.4"
-node = "24.22.3"
+node = "26.13.1"
 hk = "latest"
 pkl = "latest"
 golangci-lint = "2.15.0"
