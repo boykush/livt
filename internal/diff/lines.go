@@ -2,6 +2,8 @@ package diff
 
 import (
 	"os"
+	"path/filepath"
+	"strings"
 
 	"gopkg.in/yaml.v3"
 
@@ -75,4 +77,41 @@ func lineOf(item *yaml.Node, key string) int {
 		return n.Line
 	}
 	return item.Line
+}
+
+// nameLine is the line a file that is one item answers to: its name, in a
+// Markdown file's frontmatter or at a YAML file's top level, or the top of the
+// file when it has none. A file that will not read gives no line.
+func nameLine(path string) int {
+	data, err := os.ReadFile(path)
+	if err != nil {
+		return 0
+	}
+	if filepath.Ext(path) == ".md" {
+		return frontmatterNameLine(string(data))
+	}
+	var doc yaml.Node
+	if yaml.Unmarshal(data, &doc) != nil || len(doc.Content) == 0 {
+		return 1
+	}
+	if n := valueOf(doc.Content[0], "name"); n != nil {
+		return n.Line
+	}
+	return 1
+}
+
+func frontmatterNameLine(text string) int {
+	lines := strings.Split(text, "\n")
+	if len(lines) == 0 || strings.TrimSpace(lines[0]) != "---" {
+		return 1
+	}
+	for i, l := range lines[1:] {
+		if strings.TrimSpace(l) == "---" {
+			break
+		}
+		if strings.HasPrefix(l, "name:") {
+			return i + 2
+		}
+	}
+	return 1
 }

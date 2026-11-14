@@ -207,3 +207,40 @@ func TestComputePlacesEachChangeOnItsLine(t *testing.T) {
 		t.Errorf("removed example at %s:%d (in base %v), want %s:6 on the base", removed.Path, removed.Line, removed.InBase, path)
 	}
 }
+
+// livt:automates livt://mapping/review-diff-between-revisions/rule/R-10/example/EX-01
+// An item written as a file of its own is placed on its name, wherever the file
+// writes it, or on the top of the file when it has none.
+func TestComputePlacesAFileOfItsOwnOnItsName(t *testing.T) {
+	root := committedRepo(t)
+	files := map[string]string{
+		filepath.Join(relDirs.Opportunities, "pay.md"):      "---\nrepos:\n  - o/r\nname: pay\n---\nbody\n",
+		filepath.Join(relDirs.Canvases, "pay.yaml"):         "canvas:\n  problems:\n    - slow\n",
+		filepath.Join(relDirs.USM, "pay.yaml"):              "ubiquitous: []\nname: pay map\n",
+		filepath.Join(relDirs.Stories, "checkout.md"):       "---\nname: checkout\n---\nbody\n",
+		filepath.Join(relDirs.Ubiquitous, "ctx", "cart.md"): "---\nname: cart\n---\nbody\n",
+	}
+	for path, content := range files {
+		write(t, filepath.Join(root, path), content)
+	}
+
+	result, err := Range{Base: "HEAD"}.Compute(root, relDirs)
+	if err != nil {
+		t.Fatal(err)
+	}
+	for u, want := range map[string]struct {
+		path string
+		line int
+	}{
+		"livt://opportunity/pay":        {"opportunities/pay.md", 4},
+		"livt://opportunity-canvas/pay": {"discoveries/opportunity-canvases/pay.yaml", 1},
+		"livt://story-map/pay":          {"discoveries/usm/pay.yaml", 2},
+		"livt://story/checkout":         {"stories/checkout.md", 2},
+		"livt://ubiquitous/ctx/cart":    {"ubiquitous/ctx/cart.md", 2},
+	} {
+		c := findURI(t, result.Changes, u)
+		if c.Path != want.path || c.Line != want.line {
+			t.Errorf("%s at %s:%d, want %s:%d", u, c.Path, c.Line, want.path, want.line)
+		}
+	}
+}

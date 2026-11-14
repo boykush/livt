@@ -358,21 +358,24 @@ func scanOpportunities(s *Snapshot, dirs Dirs) error {
 	for _, o := range opportunities {
 		key := o.Key.Value
 		fields := append([]Field{text(o.Name)}, bodyFields(o.Body)...)
+		path := filepath.Join(dirs.Opportunities, key+".md")
 		s.add(Entry{
 			URI:    uri.Opportunity(key),
 			Kind:   uri.KindOpportunity,
 			Live:   true,
 			Title:  o.DisplayName(),
 			Fields: append(fields, metaFields(o.Meta)...),
+			Path:   path,
+			Line:   nameLine(path),
 		})
 		if canvas, ok := unpaired[key]; ok {
-			addCanvas(s, canvas, o.DisplayName())
+			addCanvas(s, dirs, canvas, o.DisplayName())
 			delete(unpaired, key)
 		}
 	}
 	for _, c := range canvases {
 		if _, ok := unpaired[c.OpportunityKey.Value]; ok {
-			addCanvas(s, c, c.OpportunityKey.Value)
+			addCanvas(s, dirs, c, c.OpportunityKey.Value)
 		}
 	}
 	return nil
@@ -380,13 +383,16 @@ func scanOpportunities(s *Snapshot, dirs Dirs) error {
 
 // addCanvas reads one canvas in, titled as its sheet is: by its opportunity's
 // name, or by the key when no opportunity file shares it.
-func addCanvas(s *Snapshot, c *domain.OpportunityCanvas, title string) {
+func addCanvas(s *Snapshot, dirs Dirs, c *domain.OpportunityCanvas, title string) {
+	path := filepath.Join(dirs.Canvases, c.OpportunityKey.Value+".yaml")
 	s.add(Entry{
 		URI:    uri.OpportunityCanvas(c.OpportunityKey.Value),
 		Kind:   uri.KindOpportunityCanvas,
 		Live:   true,
 		Title:  title,
 		Fields: canvasFields(c),
+		Path:   path,
+		Line:   nameLine(path),
 	})
 }
 
@@ -406,12 +412,15 @@ func scanStoryMaps(s *Snapshot, dirs Dirs) error {
 		return err
 	}
 	for _, m := range maps {
+		path := filepath.Join(dirs.USM, m.OpportunityKey.Value+".yaml")
 		s.add(Entry{
 			URI:    uri.StoryMap(m.OpportunityKey.Value),
 			Kind:   uri.KindStoryMap,
 			Live:   true,
 			Title:  m.DisplayName(),
 			Fields: storyMapFields(m),
+			Path:   path,
+			Line:   nameLine(path),
 		})
 	}
 	return nil
@@ -458,12 +467,15 @@ func scanStories(s *Snapshot, dirs Dirs) error {
 		if o := story.Opportunity.Value; o != "" {
 			fields = append(fields, authored("opportunity", o))
 		}
+		path := filepath.Join(dirs.Stories, story.Key.Value+".md")
 		s.add(Entry{
 			URI:    uri.Story(story.Key.Value),
 			Kind:   uri.KindStory,
 			Live:   true,
 			Title:  story.DisplayName(),
 			Fields: append(fields, metaFields(story.Meta)...),
+			Path:   path,
+			Line:   nameLine(path),
 		})
 	}
 	return nil
@@ -475,12 +487,15 @@ func scanTerms(s *Snapshot, dirs Dirs) error {
 		return err
 	}
 	for _, t := range terms {
+		path := filepath.Join(dirs.Ubiquitous, t.Ctx, t.Key+".md")
 		s.add(Entry{
 			URI:    uri.Term(t.Ctx, t.Key),
 			Kind:   uri.KindTerm,
 			Live:   true,
 			Title:  t.Name,
 			Fields: append([]Field{text(t.Name)}, bodyFields(t.Body)...),
+			Path:   path,
+			Line:   nameLine(path),
 		})
 	}
 	return nil
