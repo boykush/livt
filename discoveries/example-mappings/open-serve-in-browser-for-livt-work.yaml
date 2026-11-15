@@ -9,6 +9,11 @@ rules:
     examples:
       - id: EX-01
         name: ブラウザのツールを繋いでいないターミナルのClaude Codeでは、livt serveのURLが渡される
+  - id: R-03
+    name: Codexアプリでは、アプリ内のブラウザにlivt serveを開く
+    examples:
+      - id: EX-01
+        name: Codexアプリでlivtリポジトリの作業を始めると、アプリ内のブラウザにlivt serveが開く
 
 questions: []
 
