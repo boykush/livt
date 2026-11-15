@@ -1,0 +1,11 @@
+rules:
+  - id: R-01
+    name: Claude desktopでは、アプリ内のブラウザにlivt serveを開く
+    examples:
+      - id: EX-01
+        name: Claude desktopでlivtリポジトリの作業を始めると、アプリ内のブラウザにlivt serveが開く
+
+questions: []
+
+ubiquitous:
+  - livt-repository
