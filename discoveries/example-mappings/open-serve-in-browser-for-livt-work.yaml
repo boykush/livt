@@ -4,6 +4,11 @@ rules:
     examples:
       - id: EX-01
         name: Claude desktopでlivtリポジトリの作業を始めると、アプリ内のブラウザにlivt serveが開く
+  - id: R-02
+    name: ブラウザを開く手段がないプラットフォームでは、URLを渡す
+    examples:
+      - id: EX-01
+        name: ブラウザのツールを繋いでいないターミナルのClaude Codeでは、livt serveのURLが渡される
 
 questions: []
 
