@@ -3,6 +3,7 @@ module github.com/boykush/livt
 go 1.26.1
 
 require (
+	github.com/caarlos0/env/v11 v11.4.2
 	github.com/modelcontextprotocol/go-sdk v1.8.0
 	github.com/spf13/cobra v1.10.2
 	github.com/yuin/goldmark v1.8.7

@@ -8,6 +8,7 @@ targets:
 dependencies:
   apm:
     - boykush/ai-plugins/plugins/adr-remote-mcp#e36040c30078bbe9b4f99094f45a52ada99ee076
+    - ./plugins/livt-discovery/skills/preview-changes
   mcp:
     - name: playwright
       registry: false

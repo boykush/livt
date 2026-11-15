@@ -4,10 +4,10 @@ import (
 	"context"
 	"errors"
 	"io"
-	"os"
 	"strings"
 
 	"github.com/boykush/livt/internal/mcp"
+	"github.com/caarlos0/env/v11"
 	"github.com/spf13/cobra"
 )
 
@@ -68,14 +68,20 @@ func isCleanShutdown(err error) bool {
 	return strings.Contains(msg, "EOF") || strings.Contains(msg, "server is closing")
 }
 
+// environment declares every environment variable livt reads.
+type environment struct {
+	Root string `env:"LIVT_ROOT"`
+}
+
 // resolveRoot selects the livt repository location: the --root flag wins, then the
 // LIVT_ROOT environment variable, then the current directory.
 func resolveRoot(flagRoot string) string {
 	if flagRoot != "" {
 		return flagRoot
 	}
-	if env := os.Getenv("LIVT_ROOT"); env != "" {
-		return env
+	// A string field has no conversion to fail, so Parse cannot return an error here.
+	if cfg, err := env.ParseAs[environment](); err == nil && cfg.Root != "" {
+		return cfg.Root
 	}
 	return "."
 }

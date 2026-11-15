@@ -39,6 +39,9 @@ activities:
         name: その場で定式化する
       - key: check-it-in-the-room
         name: その場で開いて確かめる
+        stories:
+          - name: livtリポジトリの作業中は、livt serveをブラウザで開いておく
+            key: open-serve-in-browser-for-livt-work
   - key: close-proposals-by-agreement
     name: 提案を合意で閉じる
     steps:

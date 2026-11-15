@@ -98,6 +98,10 @@ What stays yours is the trigger, the ruleset, and the token. An action can ship 
 
 - **`/propose-rule`** — carry one rule from proposal to agreement — put it forward with the people whose agreement it needs, then accept or reject it — each step as its own fine-grained commit. It writes the request and never the agreement: where `livt agreements check` runs, that is what holds the acceptance to the people named.
 
+### Preview
+
+- **`/preview-changes`** — serve the livt site with the diff of the current branch and open it in a browser, from the start of the work rather than at its end, so every edit is read as livt renders it. It opens the site with what the platform it runs on gives it and hands over the URL where nothing does; it is the one skill here that names platforms, because how a browser gets opened is a fact about each of them.
+
 ## Expert skills
 
 The expert skills are the **knowledge backend** the record and formulation skills consult for their structural edit; you can also invoke them standalone (`/opportunity-expert`, `/usm-expert`, `/bdd-expert`) for ad-hoc consulting.
