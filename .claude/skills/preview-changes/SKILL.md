@@ -1,6 +1,6 @@
 ---
 name: preview-changes
-description: Serve the livt site with the diff of the current branch and open it in a browser, so the user sees what the change does to the board — the diff page, and each changed page with its mark. Use right after editing the livt repository (opportunities/, discoveries/, stories/, design/, livt.yaml), and whenever asked to preview, show, or diff a change.
+description: Serve the livt site with the diff of the current branch and open it in a browser, so the user sees what the change does to the board — the diff page, and each changed page with its mark. Use when work on the livt repository (opportunities/, discoveries/, stories/, design/, livt.yaml) starts, so the site is open for the whole of it, right after editing it, and whenever asked to preview, show, or diff a change.
 ---
 
 You **preview a change** the way a reviewer of it would read it: as livt renders it, not as a YAML diff. `livt serve --diff <base>` builds the site with a diff page at `diff.html`, marks every changed page, and rebuilds and reloads as the files change. What the diff shows is decided in `livt://mapping/review-diff-between-revisions`; this skill only opens it.
@@ -24,15 +24,23 @@ livt serve --diff "$(git merge-base HEAD origin/HEAD)" -p 3002 -o "${TMPDIR:-/tm
 - The base is where this branch left the default branch, so the diff is everything the branch does, committed or not, and the default branch's newer commits never show up reversed. Without `origin/HEAD`, use the default branch by name.
 - The port and output directory keep clear of a plain `livt serve` on 3000 and its `dist/`, and nothing lands in the repository.
 
-Open the URL in the browser you have: the desktop app's browser pane, or the Playwright MCP server. With neither, give the user the URL.
-
 `livt serve` watches the livt repository, not livt itself: when the livt you run changes — upgraded, or rebuilt from source — restart the preview.
+
+## Open
+
+Open the URL with what the platform you run on gives you. Which platform opens it how is decided in `livt://mapping/open-serve-in-browser-for-livt-work`:
+
+- **Claude desktop** — the app's browser pane.
+- **Codex app** — the app's in-app browser.
+- **Nothing that opens a browser** — give the user the URL. A terminal session with no browser tool connected is this case, and the page still reloads for them as the files change.
+
+A browser tool the user connected themselves, such as the Playwright MCP server, opens it too.
 
 ## Walk the Change
 
 1. Open `/diff.html`. Its head counts what was added, changed and withdrawn; check they match what the change meant to do.
 2. Follow each entry to the page it lands on, and look at the mark there. An entry with no link is one whose page is gone; the list that held it says so by its count.
-3. Take a screenshot of the diff page and of the page that matters most to the change, so the user sees it without opening anything.
+3. Where you opened it yourself, take a screenshot of the diff page and of the page that matters most to the change, so the user sees it without opening anything.
 
 ## Report
 
