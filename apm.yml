@@ -7,7 +7,7 @@ targets:
 # apm install generates .mcp.json and .codex/config.toml from this file; don't edit them by hand.
 dependencies:
   apm:
-    - boykush/ai-plugins/plugins/adr-remote-mcp#9bebfb8fddd8582eb06c3cb78a43bf07b6c71248
+    - boykush/ai-plugins/plugins/adr-remote-mcp#f74e0becc7a51feba68f6b1951991450277e6e2f
     - ./plugins/livt-discovery/skills/preview-changes
   mcp:
     - name: playwright
