@@ -1,0 +1,36 @@
+{
+  "name": "livt-discovery",
+  "version": "7.3.0",
+  "description": "The discovery ring of a livt repository: record a story-mapping or example-mapping session as text (the board verbatim), formulate the recorded mapping as a structural edit the review reads, write a story's card, change an agreed rule, and carry a proposed one to agreement — with expert skills for the Opportunity Canvas, User Story Mapping, and BDD Example Mapping",
+  "author": {
+    "name": "boykush",
+    "email": "boykush315@gmail.com"
+  },
+  "homepage": "https://boykush.github.io/livt",
+  "repository": "https://github.com/boykush/livt",
+  "license": "MIT",
+  "keywords": [
+    "livt",
+    "bdd",
+    "example-mapping",
+    "user-story-mapping"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "livt Discovery",
+    "shortDescription": "Record and formulate discovery conversations as livt text",
+    "longDescription": "The discovery ring of a livt repository: record a story-mapping or example-mapping session as text (the board verbatim), formulate the recorded mapping as a structural edit the review reads, write a story's card, change an agreed rule, and carry a proposed one to agreement — with expert skills for the Opportunity Canvas, User Story Mapping, and BDD Example Mapping",
+    "developerName": "boykush",
+    "category": "Engineering",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://boykush.github.io/livt/",
+    "defaultPrompt": [
+      "Record this story-mapping session",
+      "Write the card for this story"
+    ],
+    "screenshots": []
+  }
+}

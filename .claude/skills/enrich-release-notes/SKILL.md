@@ -21,14 +21,14 @@ Each reader uses one or more of these, and the notes answer for each:
 
 - **The `livt` binary** — the CLI, the site it builds, and `livt mcp`, built from the tag. It changes only when `main.go`, `cmd/`, `internal/`, `go.mod`, or `go.sum` do.
 - **The reader's own livt repository** — the files the binary reads. A renamed field, a removed flag, or a new file layout breaks it even when every command still runs.
-- **The Claude Code plugins** — `livt-discovery`, `livt-delivery`, `livt-automation`, served from `main` by the marketplace in `.claude-plugin/marketplace.json`, by path rather than by tag. Their shared version is in `plugins/*/.claude-plugin/plugin.json`.
+- **The Claude Code plugins** — `livt-discovery`, `livt-delivery`, `livt-automation`, served from `main` by the marketplace in `.claude-plugin/marketplace.json`, by path rather than by tag. Their shared version is in `plugins/*/.claude-plugin/plugin.json`; `plugin-tags.yml` tags each one `<plugin>--v<version>` once that version lands on `main`, for apm users who pin a plugin by tag.
 - **The docs site** — its text in `docs/content/`, published from `main`: why livt exists and when it fits. It keeps no reference, so a release rarely moves it.
 
 This repository's own livt repository (`discoveries/`, `stories/`, `ubiquitous/`, `opportunities/`) is livt describing itself: mention it only when a term the plugins speak moved with it. CI, agent config, and dependency bumps stay in the changelog alone.
 
 ## Gather
 
-Let `$prev` be the tag before `$tag`: `git describe --tags --abbrev=0 "$tag^"`.
+Let `$prev` be the tag before `$tag`: `git describe --tags --abbrev=0 --match 'v[0-9]*' "$tag^"`. The `--match` skips the plugins' own `<plugin>--v<version>` tags, which can sit on the same commits.
 
 1. Save the published body: `gh release view "$tag" --json body --jq .body`. Everything from `## Changelog` down, the attestation footer included, is GoReleaser's and goes back unchanged. Keep the copy — publishing it again is how the edit is undone.
 2. Read every commit in the range with its body: `git log --no-merges --format='%h %s%n%n%b' "$prev..$tag"`. The body says why. A `BREAKING CHANGE:` footer is the maintainer's own statement of what broke and what replaces it.

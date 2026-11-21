@@ -72,6 +72,23 @@ Every skill here is a plain [Agent Skill](https://agentskills.io) — no subagen
 /plugin install livt-delivery@livt-claude-code-plugins
 ```
 
+For Codex:
+
+```bash
+codex plugin marketplace add boykush/livt
+codex plugin add livt-delivery@livt-codex-plugins
+```
+
+### With apm
+
+To pin the plugin as an [apm](https://github.com/microsoft/apm) dependency instead, name a tag in your `apm.yml`. Each version of the plugin is tagged `livt-delivery--v<version>` when it lands on `main`, apart from livt's own `v*` releases:
+
+```yaml
+dependencies:
+  apm:
+    - boykush/livt/plugins/livt-delivery#livt-delivery--v<version>
+```
+
 ## Coming from 4.x
 
 `/inspect-automation` is gone, and so is the `automated:` flag it kept. A rule is automated when a test cites it, livt collects the citations from the implementation repository and derives the status, and there is no longer a record here for a skill to propose changes to. livt went on reading a flag a mapping still carried through 0.16, so a board did not go dark while its rules gained citations; from 0.17.0 it reads none, and a line left in a mapping says nothing.
