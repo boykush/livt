@@ -35,6 +35,16 @@ One server backs every repository on your machine: no per-repo checkout of the l
 
 The agent can then read the livt repository through the server's tools and resources, which the server lists and describes itself, so the agent needs nothing beyond the connection. A rule whose `status` is `proposed` is a candidate awaiting agreement, not a decision to automate yet.
 
+### With apm
+
+To pin the plugin as an [apm](https://github.com/microsoft/apm) dependency instead, name a tag in your `apm.yml`. Each version of the plugin is tagged `livt-automation--v<version>` when it lands on `main`, apart from livt's own `v*` releases:
+
+```yaml
+dependencies:
+  apm:
+    - boykush/livt/plugins/livt-automation#livt-automation--v<version>
+```
+
 ## Configuration
 
 The server URL defaults to `http://localhost:5488/mcp`. To use a different port or host, set `LIVT_MCP_URL` before launching your agent:

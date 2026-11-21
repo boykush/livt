@@ -54,10 +54,24 @@ jobs:
             exit 1
           fi
 
+      # plugin-tags.yml tags each plugin as <name>--v<version>, often on the
+      # very commit this tag names. Pin GoReleaser to the v* tags so it neither
+      # releases under a plugin's tag nor starts the changelog from one.
+      - name: Find the previous release tag
+        id: prev
+        env:
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          prev=$(git describe --tags --abbrev=0 --match 'v[0-9]*' "${TAG}^" 2>/dev/null || true)
+          echo "tag=${prev}" >> "$GITHUB_OUTPUT"
+
       - name: Build and publish release
         run: goreleaser release --clean
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GORELEASER_CURRENT_TAG: ${{ github.ref_name }}
+          GORELEASER_PREVIOUS_TAG: ${{ steps.prev.outputs.tag }}
 
       # Sigstore-signed build provenance for every artifact, verifiable with
       # `gh attestation verify <artifact> --repo boykush/livt`.

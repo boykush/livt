@@ -117,6 +117,16 @@ The expert skills are the **knowledge backend** the record and formulation skill
 /plugin install livt-discovery@livt-claude-code-plugins
 ```
 
+### With apm
+
+To pin the plugin as an [apm](https://github.com/microsoft/apm) dependency instead, name a tag in your `apm.yml`. Each version of the plugin is tagged `livt-discovery--v<version>` when it lands on `main`, apart from livt's own `v*` releases:
+
+```yaml
+dependencies:
+  apm:
+    - boykush/livt/plugins/livt-discovery#livt-discovery--v<version>
+```
+
 ## Coming from 4.x
 
 `/record-story-map` and `/write-story-card` file a story map under its opportunity's key, not under the map's own name:
