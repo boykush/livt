@@ -5,87 +5,55 @@ dependencies:
   name: preview-changes
   version: unknown
   package_type: claude_skill
+  deployed_files:
+  - .agents/skills/preview-changes
+  - .agents/skills/preview-changes/SKILL.md
+  - .claude/skills/preview-changes
+  - .claude/skills/preview-changes/SKILL.md
+  deployed_file_hashes:
+    .agents/skills/preview-changes/SKILL.md: sha256:a3435bfe8f2330c67ab43b64b792c1da74ac13c97df249c6bc242eb31e6b1f0e
+    .claude/skills/preview-changes/SKILL.md: sha256:a3435bfe8f2330c67ab43b64b792c1da74ac13c97df249c6bc242eb31e6b1f0e
   source: local
   local_path: ./plugins/livt-discovery/skills/preview-changes
   content_hash: sha256:f9825bec215b7ae2ae7d45db3e6cdbb905dd2daa46c6b3841616510ded1b2747
-- repo_url: boykush/ai-plugins
+- repo_url: boykush/adr
   name: adr-remote-mcp
   host: github.com
-  resolved_commit: cee25253a3af876a92d067f38c85189d1b9faf2b
-  resolved_ref: cee25253a3af876a92d067f38c85189d1b9faf2b
+  resolved_commit: 0ace14215204963afc46838a03502819e705c4c4
+  resolved_ref: 0ace14215204963afc46838a03502819e705c4c4
   version: 0.1.0
   virtual_path: plugins/adr-remote-mcp
   is_virtual: true
-  package_type: apm_package
-  content_hash: sha256:9b29e265b9f21105810073263e25f31048a1129d0a02e9cfd4acacc4512a1fea
-- repo_url: boykush/adr
-  name: ade-rule-dsl
-  host: github.com
-  resolved_commit: cfacdf8431dabcb580a04919ca48cf63bb5c6fe8
-  resolved_ref: cfacdf8431dabcb580a04919ca48cf63bb5c6fe8
-  version: unknown
-  virtual_path: plugins/adr-remote-mcp/skills/ade-rule-dsl
-  is_virtual: true
-  depth: 2
-  resolved_by: boykush/ai-plugins
-  package_type: claude_skill
+  package_type: skill_bundle
   deployed_files:
   - .agents/skills/ade-rule-dsl
   - .agents/skills/ade-rule-dsl/SKILL.md
   - .agents/skills/ade-rule-dsl/references/LICENSE
   - .agents/skills/ade-rule-dsl/references/dsl-reference.md
+  - .agents/skills/adr-check
+  - .agents/skills/adr-check/SKILL.md
+  - .agents/skills/adr-review
+  - .agents/skills/adr-review/SKILL.md
   - .claude/skills/ade-rule-dsl
   - .claude/skills/ade-rule-dsl/SKILL.md
   - .claude/skills/ade-rule-dsl/references/LICENSE
   - .claude/skills/ade-rule-dsl/references/dsl-reference.md
+  - .claude/skills/adr-check
+  - .claude/skills/adr-check/SKILL.md
+  - .claude/skills/adr-review
+  - .claude/skills/adr-review/SKILL.md
   deployed_file_hashes:
     .agents/skills/ade-rule-dsl/SKILL.md: sha256:77acc0d7a76a8504fe6f8e938386bae8e9894b9474ba1beac96eb88f4272ad6e
     .agents/skills/ade-rule-dsl/references/LICENSE: sha256:c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
     .agents/skills/ade-rule-dsl/references/dsl-reference.md: sha256:f1902a0e36446191ca0bdfe6542360c58ff3374e4285fec3a2c87f119ae42a84
+    .agents/skills/adr-check/SKILL.md: sha256:0a96dea6cda4f3dc8e3a570befa669a5d81e506960ad19e4b61325a5c409b26d
+    .agents/skills/adr-review/SKILL.md: sha256:7db35c60c4f6922baaf1118445ef6282dc4ed01454ea1ebab4ef6f358790eb67
     .claude/skills/ade-rule-dsl/SKILL.md: sha256:77acc0d7a76a8504fe6f8e938386bae8e9894b9474ba1beac96eb88f4272ad6e
     .claude/skills/ade-rule-dsl/references/LICENSE: sha256:c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
     .claude/skills/ade-rule-dsl/references/dsl-reference.md: sha256:f1902a0e36446191ca0bdfe6542360c58ff3374e4285fec3a2c87f119ae42a84
-  content_hash: sha256:770b856e17dda98605242444200d8f1b2921d8a08c34a7f0d34ffd1bc76ac14d
-- repo_url: boykush/adr
-  name: adr-check
-  host: github.com
-  resolved_commit: cfacdf8431dabcb580a04919ca48cf63bb5c6fe8
-  resolved_ref: cfacdf8431dabcb580a04919ca48cf63bb5c6fe8
-  version: unknown
-  virtual_path: plugins/adr-remote-mcp/skills/adr-check
-  is_virtual: true
-  depth: 2
-  resolved_by: boykush/ai-plugins
-  package_type: claude_skill
-  deployed_files:
-  - .agents/skills/adr-check
-  - .agents/skills/adr-check/SKILL.md
-  - .claude/skills/adr-check
-  - .claude/skills/adr-check/SKILL.md
-  deployed_file_hashes:
-    .agents/skills/adr-check/SKILL.md: sha256:0a96dea6cda4f3dc8e3a570befa669a5d81e506960ad19e4b61325a5c409b26d
     .claude/skills/adr-check/SKILL.md: sha256:0a96dea6cda4f3dc8e3a570befa669a5d81e506960ad19e4b61325a5c409b26d
-  content_hash: sha256:0ffebca3346275207979d83e492bb0f6227b1efeae9984de5ec59a81d1511736
-- repo_url: boykush/adr
-  name: adr-review
-  host: github.com
-  resolved_commit: cfacdf8431dabcb580a04919ca48cf63bb5c6fe8
-  resolved_ref: cfacdf8431dabcb580a04919ca48cf63bb5c6fe8
-  version: unknown
-  virtual_path: plugins/adr-remote-mcp/skills/adr-review
-  is_virtual: true
-  depth: 2
-  resolved_by: boykush/ai-plugins
-  package_type: claude_skill
-  deployed_files:
-  - .agents/skills/adr-review
-  - .agents/skills/adr-review/SKILL.md
-  - .claude/skills/adr-review
-  - .claude/skills/adr-review/SKILL.md
-  deployed_file_hashes:
-    .agents/skills/adr-review/SKILL.md: sha256:7db35c60c4f6922baaf1118445ef6282dc4ed01454ea1ebab4ef6f358790eb67
     .claude/skills/adr-review/SKILL.md: sha256:7db35c60c4f6922baaf1118445ef6282dc4ed01454ea1ebab4ef6f358790eb67
-  content_hash: sha256:28019f3b1a1e6a4fc7ea56130585044622cac384dbe8f19005b9be57e0eeabe0
+  content_hash: sha256:59c0853c4fef2ad5971b2a653cf2bdd9cab710a64827cd97f23b4d73c0e9dc20
 deployments:
 - kind: project-relative
   target: claude
@@ -93,8 +61,8 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - boykush/adr/plugins/adr-remote-mcp/skills/ade-rule-dsl
-  active_owner: boykush/adr/plugins/adr-remote-mcp/skills/ade-rule-dsl
+  - boykush/adr/plugins/adr-remote-mcp
+  active_owner: boykush/adr/plugins/adr-remote-mcp
   content_hash: null
 - kind: project-relative
   target: claude
@@ -102,8 +70,8 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - boykush/adr/plugins/adr-remote-mcp/skills/ade-rule-dsl
-  active_owner: boykush/adr/plugins/adr-remote-mcp/skills/ade-rule-dsl
+  - boykush/adr/plugins/adr-remote-mcp
+  active_owner: boykush/adr/plugins/adr-remote-mcp
   content_hash: sha256:77acc0d7a76a8504fe6f8e938386bae8e9894b9474ba1beac96eb88f4272ad6e
 - kind: project-relative
   target: claude
@@ -111,8 +79,8 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - boykush/adr/plugins/adr-remote-mcp/skills/ade-rule-dsl
-  active_owner: boykush/adr/plugins/adr-remote-mcp/skills/ade-rule-dsl
+  - boykush/adr/plugins/adr-remote-mcp
+  active_owner: boykush/adr/plugins/adr-remote-mcp
   content_hash: sha256:c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
 - kind: project-relative
   target: claude
@@ -120,8 +88,8 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - boykush/adr/plugins/adr-remote-mcp/skills/ade-rule-dsl
-  active_owner: boykush/adr/plugins/adr-remote-mcp/skills/ade-rule-dsl
+  - boykush/adr/plugins/adr-remote-mcp
+  active_owner: boykush/adr/plugins/adr-remote-mcp
   content_hash: sha256:f1902a0e36446191ca0bdfe6542360c58ff3374e4285fec3a2c87f119ae42a84
 - kind: project-relative
   target: claude
@@ -129,8 +97,8 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - boykush/adr/plugins/adr-remote-mcp/skills/adr-check
-  active_owner: boykush/adr/plugins/adr-remote-mcp/skills/adr-check
+  - boykush/adr/plugins/adr-remote-mcp
+  active_owner: boykush/adr/plugins/adr-remote-mcp
   content_hash: null
 - kind: project-relative
   target: claude
@@ -138,8 +106,8 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - boykush/adr/plugins/adr-remote-mcp/skills/adr-check
-  active_owner: boykush/adr/plugins/adr-remote-mcp/skills/adr-check
+  - boykush/adr/plugins/adr-remote-mcp
+  active_owner: boykush/adr/plugins/adr-remote-mcp
   content_hash: sha256:0a96dea6cda4f3dc8e3a570befa669a5d81e506960ad19e4b61325a5c409b26d
 - kind: project-relative
   target: claude
@@ -147,8 +115,8 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - boykush/adr/plugins/adr-remote-mcp/skills/adr-review
-  active_owner: boykush/adr/plugins/adr-remote-mcp/skills/adr-review
+  - boykush/adr/plugins/adr-remote-mcp
+  active_owner: boykush/adr/plugins/adr-remote-mcp
   content_hash: null
 - kind: project-relative
   target: claude
@@ -156,8 +124,8 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - boykush/adr/plugins/adr-remote-mcp/skills/adr-review
-  active_owner: boykush/adr/plugins/adr-remote-mcp/skills/adr-review
+  - boykush/adr/plugins/adr-remote-mcp
+  active_owner: boykush/adr/plugins/adr-remote-mcp
   content_hash: sha256:7db35c60c4f6922baaf1118445ef6282dc4ed01454ea1ebab4ef6f358790eb67
 - kind: project-relative
   target: claude
@@ -177,6 +145,24 @@ deployments:
   - .
   active_owner: .
   content_hash: sha256:f3ee0f7b39edabaec1c6610885c8fb64741a89b93acbd58c6565f97270829844
+- kind: project-relative
+  target: claude
+  value: .claude/skills/preview-changes
+  runtime: null
+  scope: project
+  owners:
+  - ./plugins/livt-discovery/skills/preview-changes
+  active_owner: ./plugins/livt-discovery/skills/preview-changes
+  content_hash: null
+- kind: project-relative
+  target: claude
+  value: .claude/skills/preview-changes/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./plugins/livt-discovery/skills/preview-changes
+  active_owner: ./plugins/livt-discovery/skills/preview-changes
+  content_hash: sha256:a3435bfe8f2330c67ab43b64b792c1da74ac13c97df249c6bc242eb31e6b1f0e
 - kind: project-relative
   target: claude
   value: .claude/skills/render-site
@@ -201,8 +187,8 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - boykush/adr/plugins/adr-remote-mcp/skills/ade-rule-dsl
-  active_owner: boykush/adr/plugins/adr-remote-mcp/skills/ade-rule-dsl
+  - boykush/adr/plugins/adr-remote-mcp
+  active_owner: boykush/adr/plugins/adr-remote-mcp
   content_hash: null
 - kind: project-relative
   target: codex
@@ -210,8 +196,8 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - boykush/adr/plugins/adr-remote-mcp/skills/ade-rule-dsl
-  active_owner: boykush/adr/plugins/adr-remote-mcp/skills/ade-rule-dsl
+  - boykush/adr/plugins/adr-remote-mcp
+  active_owner: boykush/adr/plugins/adr-remote-mcp
   content_hash: sha256:77acc0d7a76a8504fe6f8e938386bae8e9894b9474ba1beac96eb88f4272ad6e
 - kind: project-relative
   target: codex
@@ -219,8 +205,8 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - boykush/adr/plugins/adr-remote-mcp/skills/ade-rule-dsl
-  active_owner: boykush/adr/plugins/adr-remote-mcp/skills/ade-rule-dsl
+  - boykush/adr/plugins/adr-remote-mcp
+  active_owner: boykush/adr/plugins/adr-remote-mcp
   content_hash: sha256:c71d239df91726fc519c6eb72d318ec65820627232b2f796219e87dcf35d0ab4
 - kind: project-relative
   target: codex
@@ -228,8 +214,8 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - boykush/adr/plugins/adr-remote-mcp/skills/ade-rule-dsl
-  active_owner: boykush/adr/plugins/adr-remote-mcp/skills/ade-rule-dsl
+  - boykush/adr/plugins/adr-remote-mcp
+  active_owner: boykush/adr/plugins/adr-remote-mcp
   content_hash: sha256:f1902a0e36446191ca0bdfe6542360c58ff3374e4285fec3a2c87f119ae42a84
 - kind: project-relative
   target: codex
@@ -237,8 +223,8 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - boykush/adr/plugins/adr-remote-mcp/skills/adr-check
-  active_owner: boykush/adr/plugins/adr-remote-mcp/skills/adr-check
+  - boykush/adr/plugins/adr-remote-mcp
+  active_owner: boykush/adr/plugins/adr-remote-mcp
   content_hash: null
 - kind: project-relative
   target: codex
@@ -246,8 +232,8 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - boykush/adr/plugins/adr-remote-mcp/skills/adr-check
-  active_owner: boykush/adr/plugins/adr-remote-mcp/skills/adr-check
+  - boykush/adr/plugins/adr-remote-mcp
+  active_owner: boykush/adr/plugins/adr-remote-mcp
   content_hash: sha256:0a96dea6cda4f3dc8e3a570befa669a5d81e506960ad19e4b61325a5c409b26d
 - kind: project-relative
   target: codex
@@ -255,8 +241,8 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - boykush/adr/plugins/adr-remote-mcp/skills/adr-review
-  active_owner: boykush/adr/plugins/adr-remote-mcp/skills/adr-review
+  - boykush/adr/plugins/adr-remote-mcp
+  active_owner: boykush/adr/plugins/adr-remote-mcp
   content_hash: null
 - kind: project-relative
   target: codex
@@ -264,8 +250,8 @@ deployments:
   runtime: null
   scope: project
   owners:
-  - boykush/adr/plugins/adr-remote-mcp/skills/adr-review
-  active_owner: boykush/adr/plugins/adr-remote-mcp/skills/adr-review
+  - boykush/adr/plugins/adr-remote-mcp
+  active_owner: boykush/adr/plugins/adr-remote-mcp
   content_hash: sha256:7db35c60c4f6922baaf1118445ef6282dc4ed01454ea1ebab4ef6f358790eb67
 - kind: project-relative
   target: codex
@@ -285,6 +271,24 @@ deployments:
   - .
   active_owner: .
   content_hash: sha256:f3ee0f7b39edabaec1c6610885c8fb64741a89b93acbd58c6565f97270829844
+- kind: project-relative
+  target: codex
+  value: .agents/skills/preview-changes
+  runtime: null
+  scope: project
+  owners:
+  - ./plugins/livt-discovery/skills/preview-changes
+  active_owner: ./plugins/livt-discovery/skills/preview-changes
+  content_hash: null
+- kind: project-relative
+  target: codex
+  value: .agents/skills/preview-changes/SKILL.md
+  runtime: null
+  scope: project
+  owners:
+  - ./plugins/livt-discovery/skills/preview-changes
+  active_owner: ./plugins/livt-discovery/skills/preview-changes
+  content_hash: sha256:a3435bfe8f2330c67ab43b64b792c1da74ac13c97df249c6bc242eb31e6b1f0e
 - kind: project-relative
   target: codex
   value: .agents/skills/render-site

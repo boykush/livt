@@ -23,7 +23,7 @@ spec:
   consumesApis:
     - adr-mcp
   dependsOn:
-    - component:ai-plugins
+    - component:adr
     - component:workflows
     - resource:github-pages
     - resource:repo-writer-app
