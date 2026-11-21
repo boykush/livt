@@ -1,0 +1,36 @@
+{
+  "name": "livt-delivery",
+  "version": "7.3.0",
+  "description": "The delivery ring of a livt repository: file story and rule issues to the team's tracker with livt URI backpointers",
+  "author": {
+    "name": "boykush",
+    "email": "boykush315@gmail.com"
+  },
+  "homepage": "https://boykush.github.io/livt",
+  "repository": "https://github.com/boykush/livt",
+  "license": "MIT",
+  "keywords": [
+    "livt",
+    "bdd",
+    "example-mapping",
+    "user-story-mapping"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "livt Delivery",
+    "shortDescription": "File livt stories and rules to the issue tracker",
+    "longDescription": "The delivery ring of a livt repository: file story and rule issues to the team's tracker with livt URI backpointers",
+    "developerName": "boykush",
+    "category": "Engineering",
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://boykush.github.io/livt/",
+    "defaultPrompt": [
+      "File this story as an issue",
+      "File the rules of this story as issues"
+    ],
+    "screenshots": []
+  }
+}

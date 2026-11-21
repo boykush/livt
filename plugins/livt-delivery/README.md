@@ -72,6 +72,13 @@ Every skill here is a plain [Agent Skill](https://agentskills.io) — no subagen
 /plugin install livt-delivery@livt-claude-code-plugins
 ```
 
+For Codex:
+
+```bash
+codex plugin marketplace add boykush/livt
+codex plugin add livt-delivery@livt-codex-plugins
+```
+
 ### With apm
 
 To pin the plugin as an [apm](https://github.com/microsoft/apm) dependency instead, name a tag in your `apm.yml`. Each version of the plugin is tagged `livt-delivery--v<version>` when it lands on `main`, apart from livt's own `v*` releases:

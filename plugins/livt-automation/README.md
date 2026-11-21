@@ -35,6 +35,15 @@ One server backs every repository on your machine: no per-repo checkout of the l
 
 The agent can then read the livt repository through the server's tools and resources, which the server lists and describes itself, so the agent needs nothing beyond the connection. A rule whose `status` is `proposed` is a candidate awaiting agreement, not a decision to automate yet.
 
+### With Codex
+
+```bash
+codex plugin marketplace add boykush/livt
+codex plugin add livt-automation@livt-codex-plugins
+```
+
+Codex reads the URL as written and does not expand `LIVT_MCP_URL`, so under Codex the plugin always connects to `http://localhost:5488/mcp`: serve on that address.
+
 ### With apm
 
 To pin the plugin as an [apm](https://github.com/microsoft/apm) dependency instead, name a tag in your `apm.yml`. Each version of the plugin is tagged `livt-automation--v<version>` when it lands on `main`, apart from livt's own `v*` releases:
